@@ -2,6 +2,9 @@ ArcBit
 ===========
 Bitcoin wallet for iOS. First mobile wallet to support reusable/stealth addresses. Visit http://www.arcbit.io/ for more information.
 
+#####App store Link:
+https://itunes.apple.com/app/arcbit-bitcoin-wallet/id999487888
+
 #####Features:
 - No signup required
 - Encrypted iCloud backup support
