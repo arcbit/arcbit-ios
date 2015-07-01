@@ -42,6 +42,10 @@ ArcBit is made possible by, but not limited to these projects.
 
 - https://github.com/oleganza/CoreBitcoin
 
+- https://github.com/bitpay/insight
+
+- https://github.com/bitpay/insight-api
+
 - https://github.com/voisine/breadwallet
 
 - https://github.com/AFNetworking/AFNetworking
