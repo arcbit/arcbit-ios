@@ -134,7 +134,7 @@ import Foundation
     
     func getAccountAmountChangeForTx(txHash: String) -> (TLCoin?) {
         if (self.accountObject != nil) {
-            return self.accountObject!.getAccountAmountChangeForTx(txHash)
+            return self.accountObject!.getAccountAmountChangeForTx(txHash)!
         } else if (self.importedAddress != nil) {
             return self.importedAddress!.getAccountAmountChangeForTx(txHash)
         }
