@@ -40,9 +40,9 @@ import Foundation
     private var mainArchivedAddresses: NSMutableArray?
     private var changeArchivedAddresses: NSMutableArray?
     private var address2BalanceDict: NSMutableDictionary?
-    private var address2HDIndexDict: NSMutableDictionary?
-    private var address2IsMainAddress: NSMutableDictionary?
-    private var address2NumberOfTransactions = NSMutableDictionary()
+    private var address2HDIndexDict = [String:Int]()
+    private var address2IsMainAddress = [String:Bool]()
+    private var address2NumberOfTransactions = [String:Int]()
     private var HDIndexToArchivedMainAddress: NSMutableDictionary?
     private var HDIndexToArchivedChangeAddress: NSMutableDictionary?
     private var txObjectArray: NSMutableArray?
@@ -83,10 +83,10 @@ import Foundation
             let addressDict = addressesArray.objectAtIndex(i) as! NSDictionary
             let HDIndex = addressDict.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_INDEX) as! Int
             let address = addressDict.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String
-            address2HDIndexDict!.setObject(HDIndex, forKey: address)
-            address2IsMainAddress!.setObject(true, forKey: address)
+            address2HDIndexDict[address] = HDIndex
+            address2IsMainAddress[address] = true
             address2BalanceDict!.setObject(TLCoin.zero(), forKey: address)
-            address2NumberOfTransactions.setObject(0, forKey: address)
+            address2NumberOfTransactions[address] = 0
             mainActiveAddresses!.addObject(address)
             activeAddressesDict!.setObject("", forKey: address)
         }
@@ -108,10 +108,10 @@ import Foundation
             let addressDict = addressesArray.objectAtIndex(i) as! NSDictionary
             let HDIndex = addressDict.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_INDEX) as! Int
             let address = addressDict.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String
-            address2HDIndexDict!.setObject(HDIndex, forKey: address)
-            address2IsMainAddress!.setObject(false, forKey: address)
+            address2HDIndexDict[address] = HDIndex
+            address2IsMainAddress[address] = false
             address2BalanceDict!.setObject(TLCoin.zero(), forKey: address)
-            address2NumberOfTransactions.setObject(0, forKey: address)
+            address2NumberOfTransactions[address] = 0
             changeActiveAddresses!.addObject(address)
             activeAddressesDict!.setObject("", forKey: address)
         }
@@ -130,11 +130,11 @@ import Foundation
             
             let address = addressDict.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String
             
-            address2HDIndexDict!.setObject(HDIndex, forKey: address)
-            address2IsMainAddress!.setObject(true, forKey: address)
-            
+            address2HDIndexDict[address] = HDIndex
+            address2IsMainAddress[address] = true
+
             address2BalanceDict!.setObject(TLCoin.zero(), forKey: address)
-            address2NumberOfTransactions.setObject(0, forKey: address)
+            address2NumberOfTransactions[address] = 0
             mainArchivedAddresses!.addObject(address)
         }
     }
@@ -151,10 +151,10 @@ import Foundation
             
             let address = addressDict.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String
             assert((addressDict.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS) as! Int) == Int(TLAddressStatus.Archived.rawValue), "")
-            address2HDIndexDict!.setObject(HDIndex, forKey: address)
-            address2IsMainAddress!.setObject(false, forKey: address)
+            address2HDIndexDict[address] = HDIndex
+            address2IsMainAddress[address] = false
             address2BalanceDict!.setObject(TLCoin.zero(), forKey: address)
-            address2NumberOfTransactions.setObject(0, forKey: address)
+            address2NumberOfTransactions[address] = 0
             changeArchivedAddresses!.addObject(address)
         }
     }
@@ -169,8 +169,6 @@ import Foundation
         
         txidToAccountAmountDict = NSMutableDictionary()
         txidToAccountAmountTypeDict = NSMutableDictionary()
-        address2HDIndexDict = NSMutableDictionary()
-        address2IsMainAddress = NSMutableDictionary()
         address2BalanceDict = NSMutableDictionary()
         activeAddressesDict = NSMutableDictionary()
         activeAddressesDict = NSMutableDictionary()
@@ -317,18 +315,18 @@ import Foundation
         }
     }
     
-    func getNumberOfTransactionsForAddress(address: String) -> Int {
+    func getNumberOfTransactionsForAddress(address: String) -> Int? {
         assert(self.isHDWalletAddress(address))
-        return address2NumberOfTransactions.objectForKey(address) as! Int
+        return address2NumberOfTransactions[address]
     }
     
-    func getAddressHDIndex(address: String) -> UInt {
-        return address2HDIndexDict!.objectForKey(address) as! UInt
+    func getAddressHDIndex(address: String) -> Int {
+        return address2HDIndexDict[address]!
     }
     
     func getAccountPrivateKey(address: String) -> String? {
         if self.isHDWalletAddress(address) {
-            if (address2IsMainAddress!.objectForKey(address) as! Bool == true) {
+            if (address2IsMainAddress[address] == true) {
                 return getMainPrivateKey(address)
             } else {
                 return getChangePrivateKey(address)
@@ -339,9 +337,8 @@ import Foundation
     }
     
     func getMainPrivateKey(address: String) -> String {
-        let HDIndexNumber = address2HDIndexDict!.objectForKey(address) as! Int?
-        assert(HDIndexNumber != nil, "HDIndexNumberv == nil")
-        let addressSequence = [Int(TLAddressType.Main.rawValue), HDIndexNumber!]
+        let HDIndexNumber = address2HDIndexDict[address]!
+        let addressSequence = [Int(TLAddressType.Main.rawValue), HDIndexNumber]
         if (accountType == TLAccountType.ImportedWatch) {
             assert(extendedPrivateKey != nil, "")
             return TLHDWalletWrapper.getPrivateKey(extendedPrivateKey!, sequence: addressSequence)
@@ -351,9 +348,8 @@ import Foundation
     }
     
     func getChangePrivateKey(address: String) -> String {
-        let HDIndexNumber = address2HDIndexDict!.objectForKey(address) as! Int?
-        assert(HDIndexNumber != nil, "HDIndexNumberv == nil")
-        let addressSequence = [TLAddressType.Change.rawValue, HDIndexNumber!]
+        let HDIndexNumber = address2HDIndexDict[address]!
+        let addressSequence = [TLAddressType.Change.rawValue, HDIndexNumber]
         if (accountType == TLAccountType.ImportedWatch) {
             assert(extendedPrivateKey != nil, "")
             return TLHDWalletWrapper.getPrivateKey(extendedPrivateKey!, sequence: addressSequence)
@@ -384,7 +380,7 @@ import Foundation
     }
     
     func isHDWalletAddress(address: String) -> Bool {
-        return address2HDIndexDict!.objectForKey(address) != nil
+        return address2HDIndexDict[address] != nil
     }
     
     func isAddressPartOfAccount(address: String) -> Bool {
@@ -486,8 +482,8 @@ import Foundation
                             
                             address2hasUpdatedNTxCount.setObject("", forKey: address)
                             
-                            let ntxs = getNumberOfTransactionsForAddress(address)
-                            address2NumberOfTransactions.setObject(ntxs + 1, forKey: address)
+                            let ntxs = getNumberOfTransactionsForAddress(address)!
+                            address2NumberOfTransactions[address] = ntxs + 1
                     }
                 } else if self.stealthWallet != nil && self.stealthWallet!.isPaymentAddress(address) {
                     currentTxAdd += value
@@ -525,8 +521,8 @@ import Foundation
                         address2hasUpdatedNTxCount.objectForKey(address) == nil) {
                             
                             address2hasUpdatedNTxCount.setObject("", forKey: address)
-                            let ntxs = getNumberOfTransactionsForAddress(address)
-                            address2NumberOfTransactions.setObject(ntxs + 1, forKey: address)
+                            let ntxs = getNumberOfTransactionsForAddress(address)!
+                            address2NumberOfTransactions[address] = ntxs + 1
                     }
                 } else if self.stealthWallet != nil && self.stealthWallet!.isPaymentAddress(address) {
                     currentTxSubtract += value
@@ -576,7 +572,7 @@ import Foundation
         var addressIdx = 0
         for (addressIdx = 0; addressIdx < mainActiveAddresses!.count; addressIdx++) {
             let address = mainActiveAddresses!.objectAtIndex(addressIdx) as! String
-            if (getNumberOfTransactionsForAddress(address) == 0) {
+            if (getNumberOfTransactionsForAddress(address)! == 0) {
                 break
             }
         }
@@ -590,7 +586,7 @@ import Foundation
             }
             
             let address = mainActiveAddresses!.objectAtIndex(addressIdx) as! String
-            if (getNumberOfTransactionsForAddress(address) == 0) {
+            if (getNumberOfTransactionsForAddress(address)! == 0) {
                 receivingAddressesArray!.addObject(address)
                 if receivingAddressesStartIdx == -1 {
                     receivingAddressesStartIdx = addressIdx
@@ -624,7 +620,7 @@ import Foundation
         var addressIdx = 0
         for (; addressIdx < changeActiveAddresses!.count; addressIdx++) {
             let address = changeActiveAddresses!.objectAtIndex(addressIdx) as! String
-            if (getNumberOfTransactionsForAddress(address) == 0) {
+            if (getNumberOfTransactionsForAddress(address)! == 0) {
                 break
             }
         }
@@ -649,22 +645,22 @@ import Foundation
         for _address in activeMainAddresses {
             let address = _address as! String
             if (getAddressBalance(address).lessOrEqual(TLCoin.zero()) &&
-                getNumberOfTransactionsForAddress(address) > 0) {
+                getNumberOfTransactionsForAddress(address)! > 0) {
 
-                    let addressIdx = address2HDIndexDict!.objectForKey(address) as! UInt
+                    let addressIdx = address2HDIndexDict[address]!
                     let accountIdx = accountDict!.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_IDX) as! Int
                     
                     if (TLWalletUtils.STATIC_MEMBERS.SHOULD_SAVE_ARCHIVED_ADDRESSES_IN_JSON) {
                         
-                        assert(Int(addressIdx) == mainArchivedAddresses!.count, "")
+                        assert(addressIdx == mainArchivedAddresses!.count, "")
                         mainArchivedAddresses!.addObject(address)
                     } else {
                         if (accountType == TLAccountType.HDWallet) {
-                            assert(Int(addressIdx) == TLWallet.instance().getMinMainAddressIdxFromHDWallet(accountIdx), "")
+                            assert(addressIdx == TLWallet.instance().getMinMainAddressIdxFromHDWallet(accountIdx), "")
                         } else if (accountType == TLAccountType.Imported) {
-                            assert(Int(addressIdx) == TLWallet.instance().getMinMainAddressIdxFromImportedAccount(getPositionInWalletArray()), "")
+                            assert(addressIdx == TLWallet.instance().getMinMainAddressIdxFromImportedAccount(getPositionInWalletArray()), "")
                         } else {
-                            assert(Int(addressIdx) == TLWallet.instance().getMinMainAddressIdxFromImportedWatchAccount(getPositionInWalletArray()), "")
+                            assert(addressIdx == TLWallet.instance().getMinMainAddressIdxFromImportedWatchAccount(getPositionInWalletArray()), "")
                         }
                     }
                     
@@ -673,15 +669,15 @@ import Foundation
                     activeAddressesDict!.removeObjectForKey(address)
                     if (accountType == TLAccountType.HDWallet) {
                         TLWallet.instance().updateMainAddressStatusFromHDWallet(accountIdx,
-                            addressIdx: Int(addressIdx),
+                            addressIdx: addressIdx,
                             addressStatus: TLAddressStatus.Archived)
                     } else if (accountType == TLAccountType.Imported) {
                         TLWallet.instance().updateMainAddressStatusFromImportedAccount(getPositionInWalletArray(),
-                            addressIdx: Int(addressIdx),
+                            addressIdx: addressIdx,
                             addressStatus: TLAddressStatus.Archived)
                     } else {
                         TLWallet.instance().updateMainAddressStatusFromImportedWatchAccount(getPositionInWalletArray(),
-                            addressIdx: Int(addressIdx),
+                            addressIdx: addressIdx,
                             addressStatus: TLAddressStatus.Archived)
                     }
             } else {
@@ -704,9 +700,9 @@ import Foundation
             let address = _address as! String
             
             if (getAddressBalance(address).lessOrEqual(TLCoin.zero()) &&
-                getNumberOfTransactionsForAddress(address) > 0) {
+                getNumberOfTransactionsForAddress(address)! > 0) {
                     
-                    let addressIdx = address2HDIndexDict!.objectForKey(address) as! Int
+                    let addressIdx = address2HDIndexDict[address]!
                     let accountIdx = accountDict!.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_IDX) as! Int
                     
                     if (TLWalletUtils.STATIC_MEMBERS.SHOULD_SAVE_ARCHIVED_ADDRESSES_IN_JSON) {
@@ -789,10 +785,10 @@ import Foundation
         
         let address = addressDict.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String
         let HDIndex = addressDict.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_INDEX) as! Int
-        address2HDIndexDict!.setObject(HDIndex, forKey: address)
-        address2IsMainAddress!.setObject(true, forKey: address)
+        address2HDIndexDict[address] = HDIndex
+        address2IsMainAddress[address] = true
         address2BalanceDict!.setObject(TLCoin.zero(), forKey: address)
-        address2NumberOfTransactions.setObject(0, forKey: address)
+        address2NumberOfTransactions[address] = 0
         mainActiveAddresses!.addObject(address)
         activeAddressesDict!.setObject("", forKey: address)
         
@@ -815,10 +811,10 @@ import Foundation
         
         let address = addressDict.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String
         let HDIndex = addressDict.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_INDEX) as! Int
-        address2HDIndexDict!.setObject(HDIndex, forKey: address)
-        address2IsMainAddress!.setObject(false, forKey: address)
+        address2HDIndexDict[address] = HDIndex
+        address2IsMainAddress[address] = false
         address2BalanceDict!.setObject(TLCoin.zero(), forKey: address)
-        address2NumberOfTransactions.setObject(0, forKey: address)
+        address2NumberOfTransactions[address] = 0
         changeActiveAddresses!.addObject(address)
         activeAddressesDict!.setObject("", forKey: address)
         
@@ -840,18 +836,18 @@ import Foundation
         
         if (mainActiveAddresses!.count > 0) {
             let address = mainActiveAddresses!.lastObject as! String!
-            address2HDIndexDict!.removeObjectForKey(address)
+            address2HDIndexDict.removeValueForKey(address)
             address2BalanceDict!.removeObjectForKey(address)
-            address2NumberOfTransactions.removeObjectForKey(address)
+            address2NumberOfTransactions.removeValueForKey(address)
             mainActiveAddresses!.removeLastObject()
             activeAddressesDict!.removeObjectForKey(address)
             return true
         } else if (TLWalletUtils.STATIC_MEMBERS.SHOULD_SAVE_ARCHIVED_ADDRESSES_IN_JSON) {
             if (mainArchivedAddresses!.count > 0) {
                 let address = mainArchivedAddresses!.lastObject as! String!
-                address2HDIndexDict!.removeObjectForKey(address)
+                address2HDIndexDict.removeValueForKey(address)
                 address2BalanceDict!.removeObjectForKey(address)
-                address2NumberOfTransactions.removeObjectForKey(address)
+                address2NumberOfTransactions.removeValueForKey(address)
                 mainArchivedAddresses!.removeLastObject()
                 activeAddressesDict!.removeObjectForKey(address)
             }
@@ -874,9 +870,9 @@ import Foundation
         
         if (changeActiveAddresses!.count > 0) {
             let address = changeActiveAddresses!.lastObject as! String!
-            address2HDIndexDict!.removeObjectForKey(address)
+            address2HDIndexDict.removeValueForKey(address)
             address2BalanceDict!.removeObjectForKey(address)
-            address2NumberOfTransactions.removeObjectForKey(address)
+            address2NumberOfTransactions.removeValueForKey(address)
             changeActiveAddresses!.removeLastObject()
             activeAddressesDict!.removeObjectForKey(address)
             
@@ -884,9 +880,9 @@ import Foundation
         } else if (TLWalletUtils.STATIC_MEMBERS.SHOULD_SAVE_ARCHIVED_ADDRESSES_IN_JSON) {
             if (changeArchivedAddresses!.count > 0) {
                 let address = changeArchivedAddresses!.lastObject as! String!
-                address2HDIndexDict!.removeObjectForKey(address)
+                address2HDIndexDict.removeValueForKey(address)
                 address2BalanceDict!.removeObjectForKey(address)
-                address2NumberOfTransactions.removeObjectForKey(address)
+                address2NumberOfTransactions.removeValueForKey(address)
                 changeArchivedAddresses!.removeLastObject()
                 activeAddressesDict!.removeObjectForKey(address)
                 
@@ -900,7 +896,7 @@ import Foundation
     func getCurrentChangeAddress() -> String {
         for _address in changeActiveAddresses! {
             let address = _address as! String
-            if getNumberOfTransactionsForAddress(address) == 0 && self.getAddressBalance(address).equalTo(TLCoin.zero()) {
+            if getNumberOfTransactionsForAddress(address)! == 0 && self.getAddressBalance(address).equalTo(TLCoin.zero()) {
                 return address
             }
         }
@@ -982,8 +978,8 @@ import Foundation
                 address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: mainAddressSequence)
                 HDIndexToArchivedMainAddress!.setObject(address!, forKey: HDIndex)
                 
-                address2HDIndexDict!.setObject(HDIndex, forKey: address!)
-                address2IsMainAddress!.setObject(true, forKey: address!)
+                address2HDIndexDict[address!] = HDIndex
+                address2IsMainAddress[address!] = true
             }
             return address!
         }
@@ -1001,8 +997,8 @@ import Foundation
                 address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: mainAddressSequence)
                 HDIndexToArchivedChangeAddress!.setObject(address!, forKey: HDIndex)
                 
-                address2HDIndexDict!.setObject(HDIndex, forKey: address!)
-                address2IsMainAddress!.setObject(false, forKey: address!)
+                address2HDIndexDict[address!] = HDIndex
+                address2IsMainAddress[address!] = false
             }
             return address!
         }
@@ -1037,7 +1033,7 @@ import Foundation
                 let addressDict = _addressDict as! NSDictionary
                 let n_tx = addressDict.objectForKey("n_tx") as! Int
                 let address = addressDict.objectForKey("address") as! String
-                address2NumberOfTransactions.setObject(n_tx, forKey: address)
+                address2NumberOfTransactions[address] = n_tx
                 let addressBalance = (addressDict.objectForKey("final_balance") as! NSNumber).unsignedLongLongValue
                 balance += addressBalance
                 address2BalanceDict!.setObject(TLCoin(uint64: addressBalance), forKey: address)
@@ -1099,7 +1095,7 @@ import Foundation
                 let addressDict = _addressDict as! NSDictionary
                 let n_tx = addressDict.objectForKey("n_tx") as! Int
                 let address = addressDict.objectForKey("address") as! String
-                address2NumberOfTransactions.setObject(n_tx, forKey: address)
+                address2NumberOfTransactions[address] = n_tx
                 let addressBalance = (addressDict.objectForKey("final_balance") as! NSNumber).unsignedLongLongValue
                 balance += addressBalance
                 address2BalanceDict!.setObject(TLCoin(uint64: addressBalance), forKey: address)
@@ -1171,10 +1167,9 @@ import Foundation
         
         txidToAccountAmountDict = NSMutableDictionary()
         txidToAccountAmountTypeDict = NSMutableDictionary()
-        address2HDIndexDict = NSMutableDictionary()
-        address2IsMainAddress = NSMutableDictionary()
+        address2HDIndexDict = [String:Int]()
         address2BalanceDict = NSMutableDictionary()
-        address2NumberOfTransactions = NSMutableDictionary()
+        address2NumberOfTransactions = [String:Int]()
         activeAddressesDict = NSMutableDictionary()
         
         
@@ -1368,7 +1363,7 @@ import Foundation
                     let addressDict = _addressDict as! NSDictionary
                     let n_tx = addressDict.objectForKey("n_tx") as! Int
                     let address = addressDict.objectForKey("address") as! String
-                    self.address2NumberOfTransactions.setObject(n_tx, forKey: address)
+                    self.address2NumberOfTransactions[address] = n_tx
                     let addressBalance = (addressDict.objectForKey("final_balance") as! NSNumber).unsignedLongLongValue
                     balance += addressBalance
                     self.address2BalanceDict!.setObject(TLCoin(uint64: addressBalance), forKey: address)
@@ -1404,7 +1399,7 @@ import Foundation
                 let addressDict = _addressDict as! NSDictionary
                 let n_tx = addressDict.objectForKey("n_tx") as! Int
                 let address = addressDict.objectForKey("address") as! String
-                address2NumberOfTransactions.setObject(n_tx, forKey: address)
+                address2NumberOfTransactions[address] = n_tx
                 let addressBalance = (addressDict.objectForKey("final_balance") as! NSNumber).unsignedLongLongValue
                 balance += addressBalance
                 address2BalanceDict!.setObject(TLCoin(uint64: addressBalance), forKey: address)
@@ -1427,26 +1422,26 @@ import Foundation
     private func resetAccountBalances() -> () {
         txObjectArray = NSMutableArray()
         address2BalanceDict = NSMutableDictionary()
-        address2NumberOfTransactions = NSMutableDictionary()
+        address2NumberOfTransactions = [String:Int]()
         
         accountBalance = TLCoin.zero()
         
         for address in mainActiveAddresses! {
             address2BalanceDict!.setObject(TLCoin.zero(), forKey: address as! String)
-            address2NumberOfTransactions.setObject(0, forKey: address as! String)
+            address2NumberOfTransactions[address as! String] = 0
         }
         for address in changeActiveAddresses! {
             address2BalanceDict!.setObject(TLCoin.zero(), forKey: address as! String)
-            address2NumberOfTransactions.setObject(0, forKey: address as! String)
+            address2NumberOfTransactions[address as! String] = 0
         }
         if (TLWalletUtils.STATIC_MEMBERS.SHOULD_SAVE_ARCHIVED_ADDRESSES_IN_JSON) {
             for address in mainArchivedAddresses! {
                 address2BalanceDict!.setObject(TLCoin.zero(), forKey: address as! String)
-                address2NumberOfTransactions.setObject(0, forKey: address as! String)
+                address2NumberOfTransactions[address as! String] = 0
             }
             for address in changeArchivedAddresses! {
                 address2BalanceDict!.setObject(TLCoin.zero(), forKey: address as! String)
-                address2NumberOfTransactions.setObject(0, forKey: address as! String)
+                address2NumberOfTransactions[address as! String] = 0
             }
         }
     }
@@ -1565,7 +1560,7 @@ import Foundation
             let addressDict = _addressDict as! NSDictionary
             let n_tx = addressDict.objectForKey("n_tx") as! Int
             let address = addressDict.objectForKey("address") as! String
-            self.address2NumberOfTransactions.setObject(n_tx, forKey: address)
+            self.address2NumberOfTransactions[address] = n_tx
             let addressBalance = (addressDict.objectForKey("final_balance") as! NSNumber).unsignedLongLongValue
             balance += addressBalance
             self.address2BalanceDict!.setObject(TLCoin(uint64: addressBalance), forKey: address)

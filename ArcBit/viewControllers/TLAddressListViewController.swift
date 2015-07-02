@@ -259,7 +259,7 @@ import UIKit
                     balance = TLWalletUtils.getProperAmount(self.accountObject!.getAddressBalance(address)) as String
                     cell!.amountButton!.setTitle(balance, forState: UIControlState.Normal)
                     if indexPath.section != 0 {
-                        numberOfTransactions = Int(self.accountObject!.getNumberOfTransactionsForAddress(address))
+                        numberOfTransactions = self.accountObject!.getNumberOfTransactionsForAddress(address)!
                     }
             } else {
                 cell!.amountButton!.hidden = true
@@ -319,15 +319,15 @@ import UIKit
             title = "Payment Index: \(self.accountObject!.stealthWallet!.getStealthAddressPaymentsCount() - indexPath.row)"
         } else if (indexPath.section == 1 || indexPath.section == 3) {
             addressType = .Main
-            title = String(format: "Address ID: %lu", Int(self.accountObject!.getAddressHDIndex(address)))
+            title = String(format: "Address ID: %lu", self.accountObject!.getAddressHDIndex(address))
         } else {
             addressType = .Change
-            title = String(format: "Address ID: %lu", Int(self.accountObject!.getAddressHDIndex(address)))
+            title = String(format: "Address ID: %lu", self.accountObject!.getAddressHDIndex(address))
         }
         
         var nTxs = 0
         if (indexPath.section == 1 || indexPath.section == 3) {
-            nTxs = Int(self.accountObject!.getNumberOfTransactionsForAddress(address))
+            nTxs = self.accountObject!.getNumberOfTransactionsForAddress(address)!
         }
         
         promptAddressActionSheet(address, addressType: addressType, title: title,
