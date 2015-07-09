@@ -74,7 +74,7 @@ import UIKit
     }
     
     private func setAllCoinsBarButton() {
-        let allBarButtonItem = UIBarButtonItem(title: "Use all funds", style: UIBarButtonItemStyle.Plain, target: self, action: "fillAmountFieldWithWholeBalance")
+        let allBarButtonItem = UIBarButtonItem(title: "Use all funds".localized, style: UIBarButtonItemStyle.Plain, target: self, action: "fillAmountFieldWithWholeBalance")
         navigationItem.rightBarButtonItem = allBarButtonItem
     }
     
@@ -298,12 +298,12 @@ import UIKit
                     }
 
                     if (!TLCoreBitcoinWrapper.isValidPrivateKey(privKey)) {
-                        TLPrompts.promptErrorMessage("Error", message: "Invalid private key")
+                        TLPrompts.promptErrorMessage("Error".localized, message: "Invalid private key".localized)
                     } else {
                         let importedAddress = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLImportedAddress?
                         let success = importedAddress!.setPrivateKeyInMemory(privKey)
                         if (!success) {
-                            TLPrompts.promptSuccessMessage("Error", message: "Private key does not match imported address")
+                            TLPrompts.promptSuccessMessage("Error".localized, message: "Private key does not match imported address".localized)
                         } else {
                             self._reviewPaymentClicked()
                         }
@@ -405,7 +405,7 @@ import UIKit
                 self.isShowingSendHUD = false
                 NSObject.cancelPreviousPerformRequestsWithTarget(self, selector:"hideHudAndRefreshSendAccount", object:nil)
             } else {
-                TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: "Sending", animated: true)
+                TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: "Sending".localized, animated: true)
                 self.isShowingSendHUD = true
                 
                 // relying on websocket to know when a payment has been sent can be unreliable, so cancel after a certain time
@@ -452,10 +452,10 @@ import UIKit
             TLSendFormData.instance().setAddress(address)
             return true
         } else {
-            let av = UIAlertView(title: "Invalid Bitcoin Address",
+            let av = UIAlertView(title: "Invalid Bitcoin Address".localized,
                 message: "",
                 delegate: nil,
-                cancelButtonTitle: "OK"
+                cancelButtonTitle: "OK".localized
             )
             
             av.show()
@@ -470,12 +470,12 @@ import UIKit
         }
         
         UIAlertController.showAlertInViewController(self,
-            withTitle: "Transaction Fee",
-            message: "Input desired transaction fee in \(TLWalletUtils.getBitcoinDisplayWord()) (\(TLWalletUtils.getBitcoinDisplay()))",
+            withTitle: "Transaction Fee".localized,
+            message: String(format: "Input desired transaction fee in %@ %@".localized, TLWalletUtils.getBitcoinDisplayWord(), TLWalletUtils.getBitcoinDisplay()),
             preferredStyle: .Alert,
-            cancelButtonTitle: "Cancel",
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Next"],
+            otherButtonTitles: ["Next".localized],
             preShowBlock: {(controller:UIAlertController!) in
                 controller.addTextFieldWithConfigurationHandler(addTextField)
             },
@@ -495,7 +495,7 @@ import UIKit
         let toAddress = self.toAddressTextField!.text
     
         if (!TLCoreBitcoinWrapper.isValidAddress(toAddress, isTestnet: TLWalletUtils.STATIC_MEMBERS.IS_TESTNET)) {
-            TLPrompts.promptErrorMessage("Error", message: "You must provide a valid bitcoin address.")
+            TLPrompts.promptErrorMessage("Error".localized, message: "You must provide a valid bitcoin address.".localized)
             return
         }
 
@@ -503,15 +503,15 @@ import UIKit
         let inputedAmount = TLWalletUtils.properBitcoinAmountStringToCoin(bitcoinAmount)
         
         if (inputedAmount.equalTo(TLCoin.zero())) {
-            TLPrompts.promptErrorMessage("Error", message: "Amount entered must be greater then zero.")
+            TLPrompts.promptErrorMessage("Error".localized, message: "Amount entered must be greater then zero.".localized)
             return
         }
         
         let amountNeeded = inputedAmount.add(feeAmount)
         let sendFromBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
         if (amountNeeded.greater(sendFromBalance)) {
-            let msg = String(format: "You have %@ %@, but %@ is needed. (This includes the transactions fee)", TLWalletUtils.coinToProperBitcoinAmountString(sendFromBalance), TLWalletUtils.getBitcoinDisplay(), TLWalletUtils.coinToProperBitcoinAmountString(amountNeeded))
-            TLPrompts.promptErrorMessage("Insufficient Balance", message: msg)
+            let msg = String(format: "You have %@ %@, but %@ is needed. (This includes the transactions fee)".localized, TLWalletUtils.coinToProperBitcoinAmountString(sendFromBalance), TLWalletUtils.getBitcoinDisplay(), TLWalletUtils.coinToProperBitcoinAmountString(amountNeeded))
+            TLPrompts.promptErrorMessage("Insufficient Balance".localized, message: msg)
             return
         }
         
@@ -520,15 +520,15 @@ import UIKit
         
         let feeAmountDisplay = TLWalletUtils.coinToProperBitcoinAmountString(feeAmount)
         
-        let txSummary = String(format: "To: %@\nAmount:\n%@ %@\n%@ %@\nfee: %@ %@", toAddress, bitcoinAmount, bitcoinDisplay, fiatAmount, currency, feeAmountDisplay, bitcoinDisplay)
+        let txSummary = String(format: "To: %@\nAmount:\n%@ %@\n%@ %@\nfee: %@ %@".localized, toAddress, bitcoinAmount, bitcoinDisplay, fiatAmount, currency, feeAmountDisplay, bitcoinDisplay)
         
         UIAlertController.showAlertInViewController(self,
-            withTitle: "Transaction Summary",
+            withTitle: "Transaction Summary".localized,
             message:txSummary,
             preferredStyle: .Alert,
-            cancelButtonTitle: "Cancel",
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Send"],
+            otherButtonTitles: ["Send".localized],
             
             preShowBlock: {(controller:UIAlertController!) in
                 if(controller.textFields != nil)
@@ -556,7 +556,7 @@ import UIKit
                             // can only happen if unspentOutputsSum is for some reason less then the balance computed from the transactions, which it shouldn't
                             self.setSendingHUDHidden(true)
                             let unspentOutputsSumString = TLWalletUtils.coinToProperBitcoinAmountString(unspentOutputsSum)
-                            TLPrompts.promptErrorMessage("Error: Insufficient Funds", message: "Account only has a balance of \(unspentOutputsSumString) \(TLWalletUtils.getBitcoinDisplay())")
+                            TLPrompts.promptErrorMessage("Error: Insufficient Funds".localized, message: String(format: "Account only has a balance of %@ %@".localized, unspentOutputsSumString, TLWalletUtils.getBitcoinDisplay()))
                             return
                         }
                         
@@ -567,7 +567,7 @@ import UIKit
                             error: {
                                 (data: String?) in
                                 self.setSendingHUDHidden(true)
-                                TLPrompts.promptErrorMessage("Error", message: data! ?? "")
+                                TLPrompts.promptErrorMessage("Error".localized, message: data! ?? "")
                         })
 
                         let txHexAndTxHash = ret.0
@@ -638,7 +638,7 @@ import UIKit
                             if (code == 200) {
                                 handlePushTxSuccess()
                             } else {
-                                TLPrompts.promptErrorMessage("Error", message: status)
+                                TLPrompts.promptErrorMessage("Error".localized, message: status)
                             }
                             self.setSendingHUDHidden(true)
                         })
@@ -654,12 +654,12 @@ import UIKit
     
     private func handleTempararyImportPrivateKey(privateKey: String, feeAmount: TLCoin) {
         if (!TLCoreBitcoinWrapper.isValidPrivateKey(privateKey)) {
-            TLPrompts.promptErrorMessage("Error", message: "Invalid private key")
+            TLPrompts.promptErrorMessage("Error".localized, message: "Invalid private key".localized)
         } else {
             let importedAddress = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLImportedAddress?
             let success = importedAddress!.setPrivateKeyInMemory(privateKey)
             if (!success) {
-                TLPrompts.promptSuccessMessage("Error", message: "Private key does not match imported address")
+                TLPrompts.promptSuccessMessage("Error".localized, message: "Private key does not match imported address".localized)
             } else {
                 self.showFinalPromptReviewTx(feeAmount)
             }
@@ -672,11 +672,11 @@ import UIKit
             TLPrompts.promptForTempararyImportExtendedPrivateKey(self, success: {
                 (data: String!) in
                 if (!TLHDWalletWrapper.isValidExtendedPrivateKey(data)) {
-                    TLPrompts.promptErrorMessage("Error", message: "Invalid account private key")
+                    TLPrompts.promptErrorMessage("Error".localized, message: "Invalid account private key".localized)
                 } else {
                     let success = accountObject.setExtendedPrivateKeyInMemory(data)
                     if (!success) {
-                        TLPrompts.promptErrorMessage("Error", message: "Account private key does not match imported account public key")
+                        TLPrompts.promptErrorMessage("Error".localized, message: "Account private key does not match imported account public key".localized)
                     } else {
                         self.showFinalPromptReviewTx(feeAmount)
                     }
@@ -712,7 +712,7 @@ import UIKit
                 let importedAddress = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLImportedAddress?
                 let success = importedAddress!.setPrivateKeyInMemory(privKey)
                 if (!success) {
-                    TLPrompts.promptSuccessMessage("Error", message: "Private key does not match imported address")
+                    TLPrompts.promptSuccessMessage("Error".localized, message: "Private key does not match imported address".localized)
                 } else {
                     self.showFinalPromptReviewTx(feeAmount)
                 }
@@ -757,7 +757,7 @@ import UIKit
             let parsedBitcoinURI = TLWalletUtils.parseBitcoinURI(data)
             let address = parsedBitcoinURI!.objectForKey("address") as! String?
             if (address == nil) {
-                TLPrompts.promptErrorMessage("Error", message: "URL does not contain an address.")
+                TLPrompts.promptErrorMessage("Error".localized, message: "URL does not contain an address.".localized)
                 return
             }
             
@@ -781,7 +781,7 @@ import UIKit
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) -> () {
         if (segue.identifier == "selectAccount") {
             let vc = segue.destinationViewController as! UIViewController
-            vc.navigationItem.title = "Select Account"
+            vc.navigationItem.title = "Select Account".localized
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "onAccountSelected:",
                 name: TLNotificationEvents.EVENT_ACCOUNT_SELECTED(), object: nil)
         }
@@ -816,8 +816,8 @@ import UIKit
         let toAddress = self.toAddressTextField!.text
         if toAddress != nil && TLStealthAddress.isStealthAddress(toAddress, isTestnet: false) &&
             TLSuggestions.instance().enabledShowStealthPaymentDelayInfo() && TLPreferences.getBlockExplorerAPI() == .Blockchain {
-            let msg = "Sending payment to a forward addresses might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For forward address payments to show up faster, configure your app to use the Insight API in advance settings."
-            TLPrompts.promtForOK(self, title:"Warning", message:msg, success: {
+            let msg = "Sending payment to a forward addresses might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For forward address payments to show up faster, configure your app to use the Insight API in advance settings.".localized
+            TLPrompts.promtForOK(self, title:"Warning".localized, message:msg, success: {
                 () in
                 self._reviewPaymentClicked()
                 TLSuggestions.instance().setEnableShowStealthPaymentDelayInfo(false)

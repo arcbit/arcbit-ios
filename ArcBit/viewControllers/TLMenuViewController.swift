@@ -42,7 +42,7 @@ import UIKit
         self.menuTopView!.backgroundColor = TLColors.mainAppColor()
         self.tableView!.backgroundColor = TLColors.mainAppColor()
         self.tableView!.separatorInset = UIEdgeInsetsZero
-        menuItems = ["Send", "Receive", "History", "Accounts", "Help", "Settings"]
+        menuItems = ["Send".localized, "Receive".localized, "History".localized, "Accounts".localized, "Help".localized, "Settings".localized]
     }
     
     override func viewDidAppear(animated:Bool) -> () {
@@ -88,27 +88,27 @@ import UIKit
         switch (indexPath.row) {
         case 0:
             imageName = TLWalletUtils.SEND_ICON_IMAGE_NAME()
-            name = "Send"
+            name = "Send".localized
             break
         case 1:
             imageName = TLWalletUtils.RECEIVE_ICON_IMAGE_NAME()
-            name = "Receive"
+            name = "Receive".localized
             break
         case 2:
             imageName = TLWalletUtils.HISTORY_ICON_IMAGE_NAME()
-            name = "History"
+            name = "History".localized
             break
         case 3:
             imageName = TLWalletUtils.ACCOUNT_ICON_IMAGE_NAME()
-            name = "Accounts"
+            name = "Accounts".localized
             break
         case 4:
             imageName = TLWalletUtils.HELP_ICON_IMAGE_NAME()
-            name = "Help"
+            name = "Help".localized
             break
         default:
             imageName = TLWalletUtils.SETTINGS_ICON_IMAGE_NAME()
-            name = "Settings"
+            name = "Settings".localized
             break
         }
         cell!.textLabel!.text = name

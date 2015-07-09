@@ -106,11 +106,11 @@ import UIKit
     func promptToSuggestEnablePin(vc:UIViewController) -> () {
         
         UIAlertController.showAlertInViewController(vc,
-            withTitle: "Enable Pin Code",
-            message: "Enable PIN code in settings to better secure your wallet.",
-            cancelButtonTitle: "Remind me Later",
+            withTitle: "Enable Pin Code".localized,
+            message: "Enable PIN code in settings to better secure your wallet.".localized,
+            cancelButtonTitle: "Remind me Later".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Don't remind me again"],
+            otherButtonTitles: ["Don't remind me again".localized],
             
             tapBlock: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView.firstOtherButtonIndex) {
@@ -143,11 +143,11 @@ import UIKit
     }
     
     func promptToSuggestBackUpWalletPassphrase(vc:UIViewController) -> () {
-        UIAlertController.showAlertInViewController(vc, withTitle: "Back up wallet",
-            message: "Write down or memorize your 12 word wallet backup passphrase. You can view it by clicking \"Show backup passphrase\" in Settings. Your wallet backup passphrase is needed to recover your bitcoins.",
-            cancelButtonTitle: "Remind me Later",
+        UIAlertController.showAlertInViewController(vc, withTitle: "Back up wallet".localized,
+            message: "Write down or memorize your 12 word wallet backup passphrase. You can view it by clicking \"Show backup passphrase\" in Settings. Your wallet backup passphrase is needed to recover your bitcoins.".localized,
+            cancelButtonTitle: "Remind me Later".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Don't remind me again"],
+            otherButtonTitles: ["Don't remind me again".localized],
             tapBlock: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView.firstOtherButtonIndex) {
                     self.setEnabledSuggestedBackUpWalletPassphrase(false)

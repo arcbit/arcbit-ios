@@ -57,10 +57,10 @@ import UIKit
     
     func tableView(tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
         if(section == 0) {
-            return "Achievement List"
+            return "Achievement List".localized
         }
         else {
-            return "Advance Achievement List"
+            return "Advance Achievement List".localized
         }
     }
     

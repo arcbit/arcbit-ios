@@ -25,7 +25,7 @@ import UIKit
 
 @objc class TLQRImageModal:NSObject {
     struct STATIC_MEMBERS {
-        static var DISMISS_TEXT = "Dismiss"
+        static var DISMISS_TEXT = "Dismiss".localized
     }
     
     private let alertView:CustomIOS7AlertView

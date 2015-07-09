@@ -58,13 +58,13 @@ import UIKit
         let passphrase = TLPreferences.getWalletPassphrase()
         self.passPhraseTextView!.text = (passphrase)
         if (!TLPreferences.enabledAdvanceMode()) {
-            self.backupPassphraseExplanation!.text = "Write down the 12 word passphrase below and keep it safe. You can restore your entire wallets' bitcoins with this single passphrase."
+            self.backupPassphraseExplanation!.text = "Write down the 12 word passphrase below and keep it safe. You can restore your entire wallets' bitcoins with this single passphrase.".localized
             self.masterSeedHexTitleLabel!.hidden = true
             self.masterSeedHexTitleExplanation!.hidden = true
             self.masterSeedHexTextView!.hidden = true
             self.masterSeedHexTextView!.text = ("")
         } else {
-            self.backupPassphraseExplanation!.text = "Write down the 12 word passphrase below and keep it safe. You can restore your entire wallets' bitcoins (excluding imported accounts and addresses) with this single passphrase."
+            self.backupPassphraseExplanation!.text = "Write down the 12 word passphrase below and keep it safe. You can restore your entire wallets' bitcoins (excluding imported accounts and addresses) with this single passphrase.".localized
             self.masterSeedHexTitleLabel!.hidden = false
             self.masterSeedHexTitleExplanation!.hidden = false
             self.masterSeedHexTextView!.hidden = false
@@ -74,11 +74,11 @@ import UIKit
     }
     
     func passPhraseTextViewTapped(sender:AnyObject) {
-        TLPrompts.promptSuccessMessage("", message:"The backup passphrase is not selectable on purpose, It is not recommended that you copy it to your clipboard or paste it anywhere on a device that connects to the internet. Instead the backup passphrase should be memorized or written down on a piece of paper.")
+        TLPrompts.promptSuccessMessage("", message:"The backup passphrase is not selectable on purpose, It is not recommended that you copy it to your clipboard or paste it anywhere on a device that connects to the internet. Instead the backup passphrase should be memorized or written down on a piece of paper.".localized)
     }
     
     func masterSeedHexTextViewTapped(sender:AnyObject) {
-        TLPrompts.promptSuccessMessage("", message:"The master seed hex is not selectable on purpose, It is not recommended that you copy it to your clipboard or paste it anywhere on a device that connects to the internet.")
+        TLPrompts.promptSuccessMessage("", message:"The master seed hex is not selectable on purpose, It is not recommended that you copy it to your clipboard or paste it anywhere on a device that connects to the internet.".localized)
     }
     
     override func viewDidAppear(animated:Bool) -> () {

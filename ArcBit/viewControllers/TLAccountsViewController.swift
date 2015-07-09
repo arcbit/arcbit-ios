@@ -85,7 +85,7 @@ import UIKit
     private func checkToRecoverAccounts() {
         if (AppDelegate.instance().aAccountNeedsRecovering()) {
             TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController!.view,
-                labelText: "Recovering Accounts", animated: true)
+                labelText: "Recovering Accounts".localized, animated: true)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
                 AppDelegate.instance().checkToRecoverAccounts()
                 dispatch_async(dispatch_get_main_queue()) {
@@ -394,20 +394,20 @@ import UIKit
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if (TLPreferences.enabledAdvanceMode()) {
             if (section == accountListSection) {
-                return "Accounts"
+                return "Accounts".localized
             } else if (section == importedAccountSection) {
-                return "Imported Accounts"
+                return "Imported Accounts".localized
             } else if (section == importedWatchAccountSection) {
-                return "Imported Watch Accounts"
+                return "Imported Watch Accounts".localized
             } else if (section == importedAddressSection) {
-                return "Imported Addresses"
+                return "Imported Addresses".localized
             } else if (section == importedWatchAddressSection) {
-                return "Imported Watch Addresses"
+                return "Imported Watch Addresses".localized
             } else {
             }
         } else {
             if (section == accountListSection) {
-                return "Accounts"
+                return "Accounts".localized
             } else {
             }
         }

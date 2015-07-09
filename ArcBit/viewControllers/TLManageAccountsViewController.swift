@@ -114,7 +114,7 @@ import UIKit
 
     func checkToRecoverAccounts() {
         if (AppDelegate.instance().aAccountNeedsRecovering()) {
-            TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: "Recovering Accounts", animated: true)
+            TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: "Recovering Accounts".localized, animated: true)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
                 AppDelegate.instance().checkToRecoverAccounts()
                 dispatch_async(dispatch_get_main_queue()) {
@@ -300,7 +300,7 @@ import UIKit
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) -> () {
         if (segue.identifier == "SegueAddressList") {
             let vc = segue.destinationViewController as! TLAddressListViewController
-            vc.navigationItem.title = "Addresses"
+            vc.navigationItem.title = "Addresses".localized
             vc.accountObject = showAddressListAccountObject
             vc.showBalances = showAddressListShowBalances
         }
@@ -387,11 +387,11 @@ import UIKit
 
     private func promptForTempararyImportExtendedPrivateKey(success: TLWalletUtils.SuccessWithString, error: TLWalletUtils.ErrorWithString) -> () {
         UIAlertController.showAlertInViewController(self,
-            withTitle: "Account private key missing",
-                message: "Do you want to temporary import your account private key?",
-                cancelButtonTitle: "NO",
+            withTitle: "Account private key missing".localized,
+                message: "Do you want to temporary import your account private key?".localized,
+                cancelButtonTitle: "NO".localized,
             destructiveButtonTitle: nil,
-                otherButtonTitles: ["YES"],
+                otherButtonTitles: ["YES".localized],
 
             tapBlock: {(alertView, action, buttonIndex) in
                 
@@ -414,16 +414,16 @@ import UIKit
 
     private func promtForLabel(success: TLPrompts.UserInputCallback, failure: TLPrompts.Failure) -> () {
         func addTextField(textField: UITextField!){
-            textField.placeholder = "label"
+            textField.placeholder = "label".localized
         }
         
         UIAlertController.showAlertInViewController(self,
-            withTitle: "Enter Label",
+            withTitle: "Enter Label".localized,
             message: "",
             preferredStyle: .Alert,
-            cancelButtonTitle: "Cancel",
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Save"],
+            otherButtonTitles: ["Save".localized],
             preShowBlock: {(controller:UIAlertController!) in
                 controller.addTextFieldWithConfigurationHandler(addTextField)
             },
@@ -441,16 +441,16 @@ import UIKit
 
     private func promtForNameAccount(success: TLPrompts.UserInputCallback, failure: TLPrompts.Failure) -> () {
         func addTextField(textField: UITextField!){
-            textField.placeholder = "account name"
+            textField.placeholder = "account name".localized
         }
         
         UIAlertController.showAlertInViewController(self,
-            withTitle: "Enter Label",
+            withTitle: "Enter Label".localized,
             message: "",
             preferredStyle: .Alert,
-            cancelButtonTitle: "Cancel",
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Save"],
+            otherButtonTitles: ["Save".localized],
             preShowBlock: {(controller:UIAlertController!) in
                 controller.addTextFieldWithConfigurationHandler(addTextField)
             },
@@ -460,11 +460,11 @@ import UIKit
                     
                     if (AppDelegate.instance().accounts!.accountNameExist(accountName) == true) {
                         UIAlertController.showAlertInViewController(self,
-                            withTitle: "Account name is taken",
+                            withTitle: "Account name is taken".localized,
                             message: "",
-                            cancelButtonTitle: "Cancel",
+                            cancelButtonTitle: "Cancel".localized,
                             destructiveButtonTitle: nil,
-                            otherButtonTitles: ["Rename"],
+                            otherButtonTitles: ["Rename".localized],
                             tapBlock: {(alertView, action, buttonIndex) in
                                 if (buttonIndex == alertView.firstOtherButtonIndex) {
                                     self.promtForNameAccount(success, failure: failure)
@@ -584,20 +584,20 @@ import UIKit
     private func promptAccountsActionSheet(idx: Int) -> () {
         let accountObject = AppDelegate.instance().accounts!.getAccountObjectForIdx(idx)
         let accountHDIndex = accountObject.getAccountHDIndex()
-        let title = String(format: "Account ID: %u", accountHDIndex)
+        let title = String(format: "Account ID: %u".localized, accountHDIndex)
         
         let otherButtonTitles:[String]
         if (TLPreferences.enabledAdvanceMode()) {
-            otherButtonTitles = ["View account public key QR code", "View account private key QR code", "View Addresses", "Scan For Forward Address Payment", "Edit Account Name", "Archive Account"]
+            otherButtonTitles = ["View account public key QR code".localized, "View account private key QR code".localized, "View Addresses".localized, "Scan For Forward Address Payment".localized, "Edit Account Name".localized, "Archive Account".localized]
         } else {
-            otherButtonTitles = ["View Addresses", "Edit Account Name", "Archive Account"]
+            otherButtonTitles = ["View Addresses".localized, "Edit Account Name".localized, "Archive Account".localized]
         }
         
         UIAlertController.showAlertInViewController(self,
             withTitle: title,
             message: "",
             preferredStyle: .ActionSheet,
-            cancelButtonTitle: "Cancel",
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
             otherButtonTitles: otherButtonTitles as [AnyObject],
             tapBlock: {(actionSheet, action, buttonIndex) in
@@ -617,13 +617,13 @@ import UIKit
                 }
                 
                 if (buttonIndex == VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX) {
-                    self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPubKey(), buttonCopyText: "Copy To Clipboard", vc: self)
+                    self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPubKey(), buttonCopyText: "Copy To Clipboard".localized, vc: self)
                     self.QRImageModal!.show()
                     NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_EXTENDED_PUBLIC_KEY(), object: accountObject, userInfo: nil)
                     
                     
                 } else if (buttonIndex == VIEW_EXTENDED_PRIVATE_KEY_BUTTON_IDX) {
-                    self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPrivKey()!, buttonCopyText: "Copy To Clipboard", vc: self)
+                    self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPrivKey()!, buttonCopyText: "Copy To Clipboard".localized, vc: self)
                     self.QRImageModal!.show()
                     NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_EXTENDED_PRIVATE_KEY(),
                         object: accountObject, userInfo: nil)
@@ -658,24 +658,24 @@ import UIKit
     private func promptImportedAccountsActionSheet(indexPath: NSIndexPath) -> () {
         let accountObject = AppDelegate.instance().importedAccounts!.getAccountObjectForIdx(indexPath.row)
         let accountHDIndex = accountObject.getAccountHDIndex()
-        let title = String(format: "Account ID: %u", accountHDIndex)
+        let title = String(format: "Account ID: %u".localized, accountHDIndex)
         
         UIAlertController.showAlertInViewController(self,
             withTitle: title,
             message: "",
             preferredStyle: .ActionSheet,
-            cancelButtonTitle: "Cancel",
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["View account public key QR code", "View account private key QR code", "View Addresses", "Manually Scan For Stealth Transaction", "Edit Account Name", "Archive Account"],
+            otherButtonTitles: ["View account public key QR code".localized, "View account private key QR code".localized, "View Addresses".localized, "Manually Scan For Forward Transaction".localized, "Edit Account Name".localized, "Archive Account".localized],
             tapBlock: {(actionSheet, action, buttonIndex) in
                 if (buttonIndex == actionSheet.firstOtherButtonIndex) {
                     self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPubKey(),
-                        buttonCopyText: "Copy To Clipboard", vc: self)
+                        buttonCopyText: "Copy To Clipboard".localized, vc: self)
                     self.QRImageModal!.show()
                     NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_EXTENDED_PUBLIC_KEY(), object: accountObject, userInfo: nil)
                 } else if (buttonIndex == actionSheet.firstOtherButtonIndex+1) {
                     self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPrivKey()!,
-                        buttonCopyText: "Copy To Clipboard", vc: self)
+                        buttonCopyText: "Copy To Clipboard".localized, vc: self)
                     self.QRImageModal!.show()
                     NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_EXTENDED_PRIVATE_KEY(), object: accountObject, userInfo: nil)
                     
@@ -708,21 +708,21 @@ import UIKit
     private func promptImportedWatchAccountsActionSheet(indexPath: NSIndexPath) -> () {
         let accountObject = AppDelegate.instance().importedWatchAccounts!.getAccountObjectForIdx(indexPath.row)
         let accountHDIndex = accountObject.getAccountHDIndex()
-        let title = String(format: "Account ID: %u", accountHDIndex)
+        let title = String(format: "Account ID: %u".localized, accountHDIndex)
         var addClearPrivateKeyButton = false
         let otherButtons:[String]
         if (accountObject.hasSetExtendedPrivateKeyInMemory()) {
             addClearPrivateKeyButton = true
-            otherButtons = ["Clear account private key from memory", "View account public key QR code", "View Addresses", "Manually Scan For Stealth Transaction",  "Edit Account Name", "Archive Account"]
+            otherButtons = ["Clear account private key from memory".localized, "View account public key QR code".localized, "View Addresses".localized, "Manually Scan For Forward Transaction".localized,  "Edit Account Name".localized, "Archive Account".localized]
         } else {
-            otherButtons = ["View account public key QR code", "View Addresses", "Manually Scan For Stealth Transaction", "Edit Account Name", "Archive Account"]
+            otherButtons = ["View account public key QR code".localized, "View Addresses".localized, "Manually Scan For Forward Transaction".localized, "Edit Account Name".localized, "Archive Account".localized]
         }
         
         UIAlertController.showAlertInViewController(self,
             withTitle: title,
             message:"",
             preferredStyle: .ActionSheet,
-            cancelButtonTitle: "Cancel",
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
             otherButtonTitles: otherButtons as [AnyObject],
             tapBlock: {(actionSheet, action, buttonIndex) in
@@ -745,10 +745,10 @@ import UIKit
                 if (addClearPrivateKeyButton && buttonIndex == CLEAR_ACCOUNT_PRIVATE_KEY_BUTTON_IDX) {
                 assert(accountObject.hasSetExtendedPrivateKeyInMemory(), "")
                 accountObject.clearExtendedPrivateKeyFromMemory()
-                TLPrompts.promptSuccessMessage(nil, message: "Account private key cleared from memory")
+                TLPrompts.promptSuccessMessage(nil, message: "Account private key cleared from memory".localized)
             } else if (buttonIndex == VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX) {
                 self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPubKey(),
-                        buttonCopyText: "Copy To Clipboard", vc: self)
+                        buttonCopyText: "Copy To Clipboard".localized, vc: self)
                 self.QRImageModal!.show()
                 NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_EXTENDED_PUBLIC_KEY(), object: accountObject, userInfo: nil)
             } else if (buttonIndex == VIEW_ADDRESSES_BUTTON_IDX) {
@@ -781,18 +781,18 @@ import UIKit
             withTitle: nil,
             message:"",
             preferredStyle: .ActionSheet,
-            cancelButtonTitle: "Cancel",
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["View address QR code", "View private key QR code", "View address in web", "Edit Label", "Archive address"],
+            otherButtonTitles: ["View address QR code".localized, "View private key QR code".localized, "View address in web".localized, "Edit Label".localized, "Archive address".localized],
             
             tapBlock: {(actionSheet, action, buttonIndex) in
      
         
             if (buttonIndex == actionSheet.firstOtherButtonIndex) {
-                self.QRImageModal = TLQRImageModal(data: importAddressObject.getAddress(), buttonCopyText: "Copy To Clipboard", vc: self)
+                self.QRImageModal = TLQRImageModal(data: importAddressObject.getAddress(), buttonCopyText: "Copy To Clipboard".localized, vc: self)
                 self.QRImageModal!.show()
             } else if (buttonIndex == actionSheet.firstOtherButtonIndex+1) {
-                self.QRImageModal = TLQRImageModal(data: importAddressObject.getEitherPrivateKeyOrEncryptedPrivateKey()!, buttonCopyText: "Copy To Clipboard", vc: self)
+                self.QRImageModal = TLQRImageModal(data: importAddressObject.getEitherPrivateKeyOrEncryptedPrivateKey()!, buttonCopyText: "Copy To Clipboard".localized, vc: self)
 
                 self.QRImageModal!.show()
 
@@ -823,19 +823,19 @@ import UIKit
             withTitle: nil,
             message:"",
             preferredStyle: .ActionSheet,
-            cancelButtonTitle: "Cancel",
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["View address QR code", "View private key QR code", "View address in web", "Edit Label", "Unarchived address", "Delete address"],
+            otherButtonTitles: ["View address QR code".localized, "View private key QR code".localized, "View address in web".localized, "Edit Label".localized, "Unarchived address".localized, "Delete address".localized],
             
             tapBlock: {(actionSheet, action, buttonIndex) in
                 
                 if (buttonIndex == actionSheet.firstOtherButtonIndex) {
-                    self.QRImageModal = TLQRImageModal(data: importAddressObject.getAddress(), buttonCopyText: "Copy To Clipboard", vc: self)
+                    self.QRImageModal = TLQRImageModal(data: importAddressObject.getAddress(), buttonCopyText: "Copy To Clipboard".localized, vc: self)
                     
                     self.QRImageModal!.show()
                     
                 } else if (buttonIndex == actionSheet.firstOtherButtonIndex+1) {
-                    self.QRImageModal = TLQRImageModal(data: importAddressObject.getEitherPrivateKeyOrEncryptedPrivateKey()!, buttonCopyText: "Copy To Clipboard", vc: self)
+                    self.QRImageModal = TLQRImageModal(data: importAddressObject.getEitherPrivateKeyOrEncryptedPrivateKey()!, buttonCopyText: "Copy To Clipboard".localized, vc: self)
                     
                     self.QRImageModal!.show()
                     
@@ -877,16 +877,16 @@ import UIKit
             VIEW_ADDRESS_IN_WEB_BUTTON_IDX = 2
             RENAME_ADDRESS_BUTTON_IDX = 3
             ARCHIVE_ADDRESS_BUTTON_IDX = 4
-            otherButtonTitles = ["Clear private key from memory", "View address QR code", "View address in web", "Edit Label", "Archive address"]
+            otherButtonTitles = ["Clear private key from memory".localized, "View address QR code".localized, "View address in web".localized, "Edit Label".localized, "Archive address".localized]
         } else {
-            otherButtonTitles = ["View address QR code", "View address in web", "Edit Label", "Archive address"]
+            otherButtonTitles = ["View address QR code".localized, "View address in web".localized, "Edit Label".localized, "Archive address".localized]
         }
 
         UIAlertController.showAlertInViewController(self,
             withTitle: nil,
             message:"",
             preferredStyle: .ActionSheet,
-            cancelButtonTitle: "Cancel",
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
             otherButtonTitles: otherButtonTitles as [AnyObject],
             
@@ -908,11 +908,11 @@ import UIKit
                 if (addClearPrivateKeyButton && buttonIndex == CLEAR_PRIVATE_KEY_BUTTON_IDX) {
                 assert(importAddressObject.hasSetPrivateKeyInMemory(), "")
                 importAddressObject.clearPrivateKeyFromMemory()
-                TLPrompts.promptSuccessMessage(nil, message: "Private key cleared from memory")
+                TLPrompts.promptSuccessMessage(nil, message: "Private key cleared from memory".localized)
             }
             if (buttonIndex == VIEW_ADDRESS_BUTTON_IDX) {
                 self.QRImageModal = TLQRImageModal(data: importAddressObject.getAddress(),
-                        buttonCopyText: "Copy To Clipboard", vc: self)
+                        buttonCopyText: "Copy To Clipboard".localized, vc: self)
                 self.QRImageModal!.show()
 
             } else if (buttonIndex == VIEW_ADDRESS_IN_WEB_BUTTON_IDX) {
@@ -941,16 +941,16 @@ import UIKit
         let otherButtonTitles:[String]
         if (importAddressObject.hasSetPrivateKeyInMemory()) {
             addClearPrivateKeyButton = true
-            otherButtonTitles = ["Clear private key from memory", "View address QR code", "View address in web", "Edit Label", "Unarchived address", "Delete address"]
+            otherButtonTitles = ["Clear private key from memory".localized, "View address QR code".localized, "View address in web".localized, "Edit Label".localized, "Unarchived address".localized, "Delete address".localized]
         } else {
-            otherButtonTitles = ["View address QR code", "View address in web", "Edit Label", "Unarchived address", "Delete address"]
+            otherButtonTitles = ["View address QR code".localized, "View address in web".localized, "Edit Label".localized, "Unarchived address".localized, "Delete address".localized]
         }
 
         UIAlertController.showAlertInViewController(self,
             withTitle: nil,
             message:"",
             preferredStyle: .ActionSheet,
-            cancelButtonTitle: "Cancel",
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
             otherButtonTitles: otherButtonTitles as [AnyObject],
             
@@ -975,11 +975,11 @@ import UIKit
                 if (addClearPrivateKeyButton && buttonIndex == CLEAR_PRIVATE_KEY_BUTTON_IDX) {
                 assert(importAddressObject.hasSetPrivateKeyInMemory(), "")
                 importAddressObject.clearPrivateKeyFromMemory()
-                TLPrompts.promptSuccessMessage(nil, message: "Private key cleared from memory")
+                TLPrompts.promptSuccessMessage(nil, message: "Private key cleared from memory".localized)
             }
             if (buttonIndex == VIEW_ADDRESS_BUTTON_IDX) {
                 self.QRImageModal = TLQRImageModal(data: importAddressObject.getAddress(),
-                        buttonCopyText: "Copy To Clipboard", vc: self)
+                        buttonCopyText: "Copy To Clipboard".localized, vc: self)
                 self.QRImageModal!.show()
 
             } else if (buttonIndex == VIEW_ADDRESS_IN_WEB_BUTTON_IDX) {
@@ -1015,19 +1015,19 @@ import UIKit
         }
         
         let accountHDIndex = accountObject!.getAccountHDIndex()
-        let title = String(format: "Account ID: %u", accountHDIndex)
+        let title = String(format: "Account ID: %u".localized, accountHDIndex)
         let otherButtonTitles:[String]
         if (accountObject!.getAccountType() == .Imported) {
-            otherButtonTitles = ["View account public key QR code", "View account private key QR code", "View Addresses", "Edit Account Name", "Unarchive Account", "Delete Account"]
+            otherButtonTitles = ["View account public key QR code".localized, "View account private key QR code".localized, "View Addresses".localized, "Edit Account Name".localized, "Unarchive Account".localized, "Delete Account".localized]
         } else {
-            otherButtonTitles = ["View account public key QR code", "View Addresses", "Edit Account Name", "Unarchive Account", "Delete Account"]
+            otherButtonTitles = ["View account public key QR code".localized, "View Addresses".localized, "Edit Account Name".localized, "Unarchive Account".localized, "Delete Account".localized]
         }
         
         UIAlertController.showAlertInViewController(self,
             withTitle: title,
             message:"",
             preferredStyle: .ActionSheet,
-            cancelButtonTitle: "Cancel",
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
             otherButtonTitles: otherButtonTitles as [AnyObject],
             
@@ -1048,14 +1048,14 @@ import UIKit
                 }
                 if (buttonIndex == VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX) {
                     self.QRImageModal = TLQRImageModal(data: accountObject!.getExtendedPubKey(),
-                        buttonCopyText: "Copy To Clipboard", vc: self)
+                        buttonCopyText: "Copy To Clipboard".localized, vc: self)
                     self.QRImageModal!.show()
                     NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_EXTENDED_PUBLIC_KEY(),
                         object: accountObject, userInfo: nil)
                     
                 } else if (buttonIndex == VIEW_EXTENDED_PRIVATE_KEY_BUTTON_IDX) {
                     self.QRImageModal = TLQRImageModal(data: accountObject!.getExtendedPrivKey()!,
-                        buttonCopyText: "Copy To Clipboard", vc: self)
+                        buttonCopyText: "Copy To Clipboard".localized, vc: self)
                     self.QRImageModal!.show()
                     NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_EXTENDED_PUBLIC_KEY(),
                         object: accountObject, userInfo: nil)
@@ -1078,7 +1078,7 @@ import UIKit
                         }))
                 } else if (buttonIndex == UNARCHIVE_ACCOUNT_BUTTON_IDX) {
                     if (AppDelegate.instance().importedAccounts!.getNumberOfAccounts() + AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts() >= self.MAX_IMPORTED_ACCOUNTS) {
-                        TLPrompts.promptErrorMessage("Maximum accounts reached.", message: "You need to archived an account in order to unarchive a different one.")
+                        TLPrompts.promptErrorMessage("Maximum accounts reached".localized, message: "You need to archived an account in order to unarchive a different one.".localized)
                         return
                     }
                     
@@ -1098,19 +1098,19 @@ import UIKit
     private func promptArchivedAccountsActionSheet(idx: Int) -> () {
         let accountObject = AppDelegate.instance().accounts!.getArchivedAccountObjectForIdx(idx)
         let accountHDIndex = accountObject.getAccountHDIndex()
-        let title = String(format: "Account ID: %u", accountHDIndex)
+        let title = String(format: "Account ID: %u".localized, accountHDIndex)
         let otherButtonTitles:[String]
         if (TLPreferences.enabledAdvanceMode()) {
-            otherButtonTitles = ["View account public key QR code", "View account private key QR code", "View Addresses", "Edit Account Name", "Unarchive Account"]
+            otherButtonTitles = ["View account public key QR code".localized, "View account private key QR code".localized, "View Addresses".localized, "Edit Account Name".localized, "Unarchive Account".localized]
         } else {
-            otherButtonTitles = ["View Addresses", "Edit Account Name", "Unarchive Account"]
+            otherButtonTitles = ["View Addresses".localized, "Edit Account Name".localized, "Unarchive Account".localized]
         }
 
         UIAlertController.showAlertInViewController(self,
             withTitle: title,
             message:"",
             preferredStyle: .ActionSheet,
-            cancelButtonTitle: "Cancel",
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
             otherButtonTitles: otherButtonTitles as [AnyObject],
             tapBlock: {(actionSheet, action, buttonIndex) in
@@ -1130,13 +1130,13 @@ import UIKit
             
             if (buttonIndex == VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX) {
                 self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPubKey(),
-                        buttonCopyText: "Copy To Clipboard", vc: self)
+                        buttonCopyText: "Copy To Clipboard".localized, vc: self)
                 self.QRImageModal!.show()
                 NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_EXTENDED_PUBLIC_KEY(), object: accountObject, userInfo: nil)
 
             } else if (buttonIndex == VIEW_EXTENDED_PRIVATE_KEY_BUTTON_IDX) {
                 self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPrivKey()!,
-                        buttonCopyText: "Copy To Clipboard", vc: self)
+                        buttonCopyText: "Copy To Clipboard".localized, vc: self)
                 self.QRImageModal!.show()
                 NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_EXTENDED_PRIVATE_KEY(), object: accountObject, userInfo: nil)
 
@@ -1154,7 +1154,7 @@ import UIKit
                 }))
             } else if (buttonIndex == UNARCHIVE_ACCOUNT_BUTTON_IDX) {
                 if (AppDelegate.instance().accounts!.getNumberOfAccounts() >= self.MAX_ACTIVE_CREATED_ACCOUNTS) {
-                    TLPrompts.promptErrorMessage("Maximum accounts reached.", message: "You need to archived an account in order to unarchive a different one.")
+                    TLPrompts.promptErrorMessage("Maximum accounts reached.".localized, message: "You need to archived an account in order to unarchive a different one.".localized)
                     return
                 }
 
@@ -1168,16 +1168,16 @@ import UIKit
 
     private func promptToManuallyScanForStealthTransactionAccount(accountObject: TLAccountObject) -> () {
         func addTextField(textField: UITextField!){
-            textField.placeholder = "transaction ID"
+            textField.placeholder = "Transaction ID".localized
         }
         
         UIAlertController.showAlertInViewController(self,
-            withTitle: "Scan for forward address transaction",
+            withTitle: "Scan for forward address transaction".localized,
             message: "",
             preferredStyle: .Alert,
-            cancelButtonTitle: "Cancel",
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Yes"],
+            otherButtonTitles: ["Yes".localized],
             
             preShowBlock: {(controller:UIAlertController!) in
                 controller.addTextFieldWithConfigurationHandler(addTextField)
@@ -1196,23 +1196,23 @@ import UIKit
 
     private func manuallyScanForStealthTransactionAccount(accountObject: TLAccountObject, txid: String) -> () {
         if accountObject.stealthWallet!.paymentTxidExist(txid) {
-            TLPrompts.promptSuccessMessage("", message: String(format: "Transaction %@ already accounted for.", txid))
+            TLPrompts.promptSuccessMessage("", message: String(format: "Transaction %@ already accounted for.".localized, txid))
             return
         }
         
         if count(txid) != 64 || TLWalletUtils.hexStringToData(txid) == nil {
-            TLPrompts.promptErrorMessage("Inputed Txid is invalid", message: "Txid must be a 64 character hex string.")
+            TLPrompts.promptErrorMessage("Inputed Txid is invalid".localized, message: "Txid must be a 64 character hex string.".localized)
             return
         }
 
-        TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: "Checking Transaction", animated: true)
+        TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: "Checking Transaction".localized, animated: true)
 
         TLBlockExplorerAPI.instance().getTx(txid, success: {
             (jsonData: AnyObject!) in
             let stealthDataScriptAndOutputAddresses = TLStealthWallet.getStealthDataScriptAndOutputAddresses(jsonData as! NSDictionary)
             if stealthDataScriptAndOutputAddresses == nil || stealthDataScriptAndOutputAddresses!.stealthDataScript == nil {
                 TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                TLPrompts.promptSuccessMessage("", message: "Txid is not a forward address transaction.")
+                TLPrompts.promptSuccessMessage("", message: "Txid is not a forward address transaction.".localized)
                 return
             }
             
@@ -1233,38 +1233,38 @@ import UIKit
                                 txid: txid, txTime: txTime, stealthPaymentStatus: TLStealthPaymentStatus.Unspent)
                             
                             TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                            TLPrompts.promptSuccessMessage("Success", message: String(format: "Transaction %@ belongs to this account. Funds imported", txid))
+                            TLPrompts.promptSuccessMessage("Success".localized, message: String(format: "Transaction %@ belongs to this account. Funds imported".localized, txid))
                             
                             AppDelegate.instance().pendingOperations.addSetUpAccountOperation(accountObject, fetchDataAgain: true, success: {
                                 self.refreshWalletAccounts(false)
                             })
                         } else {
                             TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                            TLPrompts.promptSuccessMessage("", message: "Funds have been claimed already.")
+                            TLPrompts.promptSuccessMessage("", message: "Funds have been claimed already.".localized)
                         }
                         }, failure: {(code: Int, status: String!) in
                             TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                            TLPrompts.promptSuccessMessage("", message: "Funds have been claimed already.")
+                            TLPrompts.promptSuccessMessage("", message: "Funds have been claimed already.".localized)
                     })
                 } else {
                     TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                    TLPrompts.promptSuccessMessage("", message: String(format: "Transaction %@ does not belong to this account.", txid))
+                    TLPrompts.promptSuccessMessage("", message: String(format: "Transaction %@ does not belong to this account.".localized, txid))
                 }
             } else {
                 TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                TLPrompts.promptSuccessMessage("", message: String(format: "Transaction %@ does not belong to this account.", txid))
+                TLPrompts.promptSuccessMessage("", message: String(format: "Transaction %@ does not belong to this account.".localized, txid))
             }
             
             }, failure: {
                 (code: Int, status: String!) in
                 TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                TLPrompts.promptSuccessMessage("Error", message: "Error fetching Transaction.")
+                TLPrompts.promptSuccessMessage("Error".localized, message: "Error fetching Transaction.".localized)
         })
     }
     
     private func promptInfoAndToManuallyScanForStealthTransactionAccount(accountObject: TLAccountObject) -> () {
         if (TLSuggestions.instance().enabledShowManuallyScanTransactionForStealthTxInfo()) {
-            TLPrompts.promtForOK(self, title:"", message: "This feature allows you to manually input a transaction id and see if the corresponding transaction contains a forwarding payment to your forward address. If so, then the funds will be added to your wallet. Normally the app will discover forwarding payments automatically for you, but if you believe a payment is missing you can use this feature.", success: {
+            TLPrompts.promtForOK(self, title:"", message: "This feature allows you to manually input a transaction id and see if the corresponding transaction contains a forwarding payment to your forward address. If so, then the funds will be added to your wallet. Normally the app will discover forwarding payments automatically for you, but if you believe a payment is missing you can use this feature.".localized, success: {
                 () in
                 self.promptToManuallyScanForStealthTransactionAccount(accountObject)
                 TLSuggestions.instance().setEnabledShowManuallyScanTransactionForStealthTxInfo(false)
@@ -1276,11 +1276,11 @@ import UIKit
 
     private func promptToUnarchiveAccount(accountObject: TLAccountObject) -> () {
         UIAlertController.showAlertInViewController(self,
-            withTitle: "Unarchive account",
-            message: String(format: "Are you sure you want to unarchive account %@", accountObject.getAccountName()),
-            cancelButtonTitle: "Cancel",
+            withTitle: "Unarchive account".localized,
+            message: String(format: "Are you sure you want to unarchive account %@".localized, accountObject.getAccountName()),
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Yes"],
+            otherButtonTitles: ["Yes".localized],
             tapBlock: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView.firstOtherButtonIndex) {
                     if (accountObject.getAccountType() == .HDWallet) {
@@ -1306,11 +1306,11 @@ import UIKit
 
     private func promptToArchiveAccount(accountObject: TLAccountObject) -> () {
         UIAlertController.showAlertInViewController(self,
-            withTitle:  "Archive account",
-            message: String(format: "Are you sure you want to archive account %@", accountObject.getAccountName()),
-            cancelButtonTitle: "Cancel",
+            withTitle:  "Archive account".localized,
+            message: String(format: "Are you sure you want to archive account %@?".localized, accountObject.getAccountName()),
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Yes"],
+            otherButtonTitles: ["Yes".localized],
 
             tapBlock: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView.firstOtherButtonIndex) {
@@ -1331,19 +1331,19 @@ import UIKit
 
     private func promptToArchiveAccountHDWalletAccount(accountObject: TLAccountObject) -> () {
         if (accountObject.getAccountIdx() == 0) {
-            let av = UIAlertView(title: "Cannot archive your first account",
+            let av = UIAlertView(title: "Cannot archive your default account".localized,
                     message: "",
                     delegate: nil,
                     cancelButtonTitle: nil,
-                    otherButtonTitles: "OK")
+                    otherButtonTitles: "OK".localized)
 
             av.show()
         } else if (AppDelegate.instance().accounts!.getNumberOfAccounts() <= 1) {
-            let av = UIAlertView(title: "Cannot archive your one and only account",
+            let av = UIAlertView(title: "Cannot archive your one and only account".localized,
                     message: "",
                     delegate: nil,
                     cancelButtonTitle: nil,
-                    otherButtonTitles: "OK")
+                    otherButtonTitles: "OK".localized)
 
             av.show()
         } else {
@@ -1353,11 +1353,11 @@ import UIKit
 
     private func promptToArchiveAddress(importedAddressObject: TLImportedAddress) -> () {
         UIAlertController.showAlertInViewController(self,
-            withTitle: "Archive address",
-            message: String(format: "Are you sure you want to archive address %@", importedAddressObject.getLabel()),
-            cancelButtonTitle: "Cancel",
+            withTitle: "Archive address".localized,
+            message: String(format: "Are you sure you want to archive address %@".localized, importedAddressObject.getLabel()),
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Yes"],
+            otherButtonTitles: ["Yes".localized],
             tapBlock: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView.firstOtherButtonIndex) {
                     if (importedAddressObject.isWatchOnly()) {
@@ -1376,11 +1376,11 @@ import UIKit
 
     private func promptToUnarchiveAddress(importedAddressObject: TLImportedAddress) -> () {
         UIAlertController.showAlertInViewController(self,
-            withTitle: "Unarchive address",
-            message:  String(format: "Are you sure you want to unarchive address %@", importedAddressObject.getLabel()),
-            cancelButtonTitle: "Cancel",
+            withTitle: "Unarchive address".localized,
+            message:  String(format: "Are you sure you want to unarchive address %@?".localized, importedAddressObject.getLabel()),
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Yes"],
+            otherButtonTitles: ["Yes".localized],
             tapBlock: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView.firstOtherButtonIndex) {
                     if (importedAddressObject.isWatchOnly()) {
@@ -1407,11 +1407,11 @@ import UIKit
         let accountObject = AppDelegate.instance().importedAccounts!.getArchivedAccountObjectForIdx(indexPath.row)
 
         UIAlertController.showAlertInViewController(self,
-            withTitle: String(format: "Delete %@", accountObject.getAccountName()),
-            message: "Are you sure you want to delete this account?",
-            cancelButtonTitle: "No",
+            withTitle: String(format: "Delete %@".localized, accountObject.getAccountName()),
+            message: "Are you sure you want to delete this account?".localized,
+            cancelButtonTitle: "No".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Yes"],
+            otherButtonTitles: ["Yes".localized],
             tapBlock: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView.firstOtherButtonIndex) {
                     AppDelegate.instance().importedAccounts!.deleteAccount(indexPath.row)
@@ -1433,11 +1433,11 @@ import UIKit
         let accountObject = AppDelegate.instance().importedWatchAccounts!.getArchivedAccountObjectForIdx(indexPath.row)
         
         UIAlertController.showAlertInViewController(self,
-            withTitle: String(format: "Delete %@", accountObject.getAccountName()),
-            message: "Are you sure you want to delete this account?",
-            cancelButtonTitle: "No",
+            withTitle: String(format: "Delete %@".localized, accountObject.getAccountName()),
+            message: "Are you sure you want to delete this account?".localized,
+            cancelButtonTitle: "No".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Yes"],
+            otherButtonTitles: ["Yes".localized],
             tapBlock: {(alertView, action, buttonIndex) in
                 
                 if (buttonIndex == alertView.firstOtherButtonIndex) {
@@ -1460,11 +1460,11 @@ import UIKit
         let importedAddressObject = AppDelegate.instance().importedAddresses!.getArchivedAddressObjectAtIdx(importedAddressIdx)
 
         UIAlertController.showAlertInViewController(self,
-            withTitle: String(format: "Delete %@", importedAddressObject.getLabel()),
-            message: "Are you sure you want to delete this account?",
-            cancelButtonTitle: "No",
+            withTitle: String(format: "Delete %@".localized, importedAddressObject.getLabel()),
+            message: "Are you sure you want to delete this account?".localized,
+            cancelButtonTitle: "No".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Yes"],
+            otherButtonTitles: ["Yes".localized],
             tapBlock: {(alertView, action, buttonIndex) in
         
             if (buttonIndex == alertView.firstOtherButtonIndex) {
@@ -1513,7 +1513,7 @@ import UIKit
             dispatch_async(dispatch_get_main_queue()) {
                 AppDelegate.instance().importedAccounts!.deleteAccount(AppDelegate.instance().importedAccounts!.getNumberOfAccounts() - 1)
                 TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                TLPrompts.promptErrorMessage("Error importing account", message: "")
+                TLPrompts.promptErrorMessage("Error importing account".localized, message: "")
                 self.setEditingAndRefreshAccounts()
             }
         }
@@ -1522,7 +1522,7 @@ import UIKit
             AppDelegate.instance().saveWalletJsonCloudBackground()
             AppDelegate.instance().saveWalletJSONEnabled = false
             let accountObject = AppDelegate.instance().importedAccounts!.addAccountWithExtendedKey(extendedPrivateKey)
-            TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: "Importing Account", animated: true)
+            TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: "Importing Account".localized, animated: true)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
                 SwiftTryCatch.try({
                     () -> () in
@@ -1540,10 +1540,10 @@ import UIKit
                                     accountName = accountObject.getDefaultNameAccount()
                                 }
                                 AppDelegate.instance().importedAccounts!.editLabel(accountName!, accountIdx: accountObject.getAccountIdx())
-                                let av = UIAlertView(title: String(format: "Account %@ imported", accountName!),
+                                let av = UIAlertView(title: String(format: "Account %@ imported".localized, accountName!),
                                     message: nil,
                                     delegate: nil,
-                                    cancelButtonTitle: "OK")
+                                    cancelButtonTitle: "OK".localized)
                                 
                                 av.show()
                                 self.setEditingAndRefreshAccounts()
@@ -1570,10 +1570,10 @@ import UIKit
             return true
 
         } else {
-            let av = UIAlertView(title: "Invalid account private key",
+            let av = UIAlertView(title: "Invalid account private key".localized,
                     message: "",
                     delegate: nil,
-                    cancelButtonTitle: "OK",
+                    cancelButtonTitle: "OK".localized,
                     otherButtonTitles: "")
 
             av.show()
@@ -1587,7 +1587,7 @@ import UIKit
             AppDelegate.instance().saveWalletJSONEnabled = false
             let accountObject = AppDelegate.instance().importedWatchAccounts!.addAccountWithExtendedKey(extendedPublicKey)
             
-            TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: "Importing Watch Account", animated: true)
+            TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: "Importing Watch Account".localized, animated: true)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
                 SwiftTryCatch.try({
                     () -> () in
@@ -1608,11 +1608,11 @@ import UIKit
                                 }
                                 AppDelegate.instance().importedWatchAccounts!.editLabel(accountName!, accountIdx: Int(accountObject.getAccountIdx()))
                             
-                                let titleStr = String(format: "Account %@ imported", accountName!)
+                                let titleStr = String(format: "Account %@ imported".localized, accountName!)
                                 let av = UIAlertView(title: titleStr,
                                     message: "",
                                     delegate: nil,
-                                    cancelButtonTitle: "OK")
+                                    cancelButtonTitle: "OK".localized)
                             
                                 av.show()
                                 self.setEditingAndRefreshAccounts()
@@ -1627,7 +1627,7 @@ import UIKit
                     dispatch_async(dispatch_get_main_queue()) {
                         AppDelegate.instance().importedWatchAccounts!.deleteAccount(AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts() - 1)
                         TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                        TLPrompts.promptErrorMessage("Error importing watch only account", message: "Try Again")
+                        TLPrompts.promptErrorMessage("Error importing watch only account".localized, message: "Try Again".localized)
                         self.setEditingAndRefreshAccounts()
                     }
                 }, finally: { () in })
@@ -1635,10 +1635,10 @@ import UIKit
             
             return true
         } else {
-            let av = UIAlertView(title: "Invalid account public Key",
+            let av = UIAlertView(title: "Invalid account public Key".localized,
                 message: "",
                 delegate: nil,
-                cancelButtonTitle: "OK",
+                cancelButtonTitle: "OK".localized,
                 otherButtonTitles: "")
             
             av.show()
@@ -1650,11 +1650,11 @@ import UIKit
         if (TLCoreBitcoinWrapper.isValidPrivateKey(privateKey)) {
             if (encryptedPrivateKey != nil) {
                 UIAlertController.showAlertInViewController(self,
-                    withTitle: "Import private key encrypted or unencrypted?",
-                    message: "Importing key encrypted will require you to input the password everytime you want to send bitcoins from it.",
-                    cancelButtonTitle: "encrypted",
+                    withTitle: "Import private key encrypted or unencrypted?".localized,
+                    message: "Importing key encrypted will require you to input the password everytime you want to send bitcoins from it.".localized,
+                    cancelButtonTitle: "encrypted".localized,
                     destructiveButtonTitle: nil,
-                    otherButtonTitles: ["unencrypted"],
+                    otherButtonTitles: ["unencrypted".localized],
 
                     tapBlock: {(alertView, action, buttonIndex) in
                     if (buttonIndex == alertView.firstOtherButtonIndex) {
@@ -1675,10 +1675,10 @@ import UIKit
 
             return true
         } else {
-            let av = UIAlertView(title: "Invalid private key",
+            let av = UIAlertView(title: "Invalid private key".localized,
                     message: "",
                     delegate: nil,
-                    cancelButtonTitle: "OK")
+                    cancelButtonTitle: "OK".localized)
 
             av.show()
             return false
@@ -1713,11 +1713,11 @@ import UIKit
         })
 
         let address = importedAddressObject.getAddress()
-        let msg = String(format: "Address %@ imported", address)
+        let msg = String(format: "Address %@ imported".localized, address)
         let av = UIAlertView(title: msg,
                 message: "",
                 delegate: nil,
-                cancelButtonTitle: "OK")
+                cancelButtonTitle: "OK".localized)
 
         av.show()
 
@@ -1727,7 +1727,7 @@ import UIKit
     private func checkAndImportWatchAddress(address: String) -> (Bool) {
         if (TLCoreBitcoinWrapper.isValidAddress(address, isTestnet: TLWalletUtils.STATIC_MEMBERS.IS_TESTNET)) {
             if (TLStealthAddress.isStealthAddress(address, isTestnet: TLWalletUtils.STATIC_MEMBERS.IS_TESTNET)) {
-                TLPrompts.promptErrorMessage("Error", message: "Cannot import forward address")
+                TLPrompts.promptErrorMessage("Error".localized, message: "Cannot import forward address".localized)
                 return false
             }
             
@@ -1758,16 +1758,16 @@ import UIKit
                     }
             })
             
-            let av = UIAlertView(title: String(format: "Address %@ imported", address),
+            let av = UIAlertView(title: String(format: "Address %@ imported".localized, address),
                 message: "",
                 delegate: nil,
-                cancelButtonTitle: "OK")
+                cancelButtonTitle: "OK".localized)
             
             av.show()
             NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_IMPORT_WATCH_ONLY_ADDRESS(), object: nil, userInfo: nil)
             return true
         } else {
-            TLPrompts.promptErrorMessage("Invalid address", message: "")
+            TLPrompts.promptErrorMessage("Invalid address".localized, message: "")
             return false
         }
     }
@@ -1775,12 +1775,12 @@ import UIKit
 
     private func promptImportAccountActionSheet() -> () {
         UIAlertController.showAlertInViewController(self,
-            withTitle: "Import Account",
+            withTitle: "Import Account".localized,
             message:"",
             preferredStyle: .ActionSheet,
-            cancelButtonTitle: "Cancel",
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Import via QR code", "Import via text input"],
+            otherButtonTitles: ["Import via QR code".localized, "Import via text input".localized],
             tapBlock: {(actionSheet, action, buttonIndex) in
             if (buttonIndex == actionSheet.firstOtherButtonIndex + 0) {
                 AppDelegate.instance().showExtendedPrivateKeyReaderController(self, success: {
@@ -1791,7 +1791,7 @@ import UIKit
                 })
 
             } else if (buttonIndex == actionSheet.firstOtherButtonIndex + 1) {
-                TLPrompts.promtForInputText(self, title: "Import Account", message: "Input account private key", textFieldPlaceholder: nil, success: {
+                TLPrompts.promtForInputText(self, title: "Import Account".localized, message: "Input account private key".localized, textFieldPlaceholder: nil, success: {
                     (inputText: String!) in
                     self.importAccount(inputText)
                 }, failure: {
@@ -1804,12 +1804,12 @@ import UIKit
 
     private func promptImportWatchAccountActionSheet() -> () {
         UIAlertController.showAlertInViewController(self,
-            withTitle: "Import Watch Account",
+            withTitle: "Import Watch Account".localized,
             message:"",
             preferredStyle: .ActionSheet,
-            cancelButtonTitle: "Cancel",
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Import via QR code", "Import via text input"],
+            otherButtonTitles: ["Import via QR code".localized, "Import via text input".localized],
             tapBlock: {(actionSheet, action, buttonIndex) in
                 if (buttonIndex == actionSheet.firstOtherButtonIndex + 0) {
                     AppDelegate.instance().showExtendedPublicKeyReaderController(self, success: {
@@ -1832,12 +1832,12 @@ import UIKit
 
     private func promptImportPrivateKeyActionSheet() -> () {
         UIAlertController.showAlertInViewController(self,
-            withTitle: "Import Private Key",
+            withTitle: "Import Private Key".localized,
             message:"",
             preferredStyle: .ActionSheet,
-            cancelButtonTitle: "Cancel",
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Import via QR code", "Import via text input"],
+            otherButtonTitles: ["Import via QR code".localized, "Import via text input".localized],
             tapBlock: {(actionSheet, action, buttonIndex) in
                 if (buttonIndex == actionSheet.firstOtherButtonIndex + 0) {
                     AppDelegate.instance().showPrivateKeyReaderController(self, success: {
@@ -1851,7 +1851,7 @@ import UIKit
                             (data: String?) in
                     })
                 } else if (buttonIndex == actionSheet.firstOtherButtonIndex + 1) {
-                    TLPrompts.promtForInputText(self, title: "Import Private Key", message: "Input private key", textFieldPlaceholder: nil, success: {
+                    TLPrompts.promtForInputText(self, title: "Import Private Key".localized, message: "Input private key".localized, textFieldPlaceholder: nil, success: {
                         (inputText: String!) in
                         if (TLCoreBitcoinWrapper.isBIP38EncryptedKey(inputText)) {
                             TLPrompts.promptForEncryptedPrivKeyPassword(self, view:self.slidingViewController().topViewController.view, encryptedPrivKey: inputText, success: {
@@ -1873,12 +1873,12 @@ import UIKit
 
     private func promptImportWatchAddressActionSheet() -> () {
         UIAlertController.showAlertInViewController(self,
-            withTitle: "Import Watch Address",
+            withTitle: "Import Watch Address".localized,
             message:"",
             preferredStyle: .ActionSheet,
-            cancelButtonTitle: "Cancel",
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Import via QR code", "Import via text input"],
+            otherButtonTitles: ["Import via QR code".localized, "Import via text input".localized],
             tapBlock: {(actionSheet, action, buttonIndex) in
                 if (buttonIndex == actionSheet.firstOtherButtonIndex + 0) {
                     AppDelegate.instance().showAddressReaderControllerFromViewController(self, success: {
@@ -1888,7 +1888,7 @@ import UIKit
                             (data: String?) in
                     })
                 } else if (buttonIndex == actionSheet.firstOtherButtonIndex + 1) {
-                    TLPrompts.promtForInputText(self, title: "Import Watch Address", message: "Input watch address", textFieldPlaceholder: nil, success: {
+                    TLPrompts.promtForInputText(self, title: "Import Watch Address".localized, message: "Input watch address".localized, textFieldPlaceholder: nil, success: {
                         (inputText: String!) in
                         self.checkAndImportWatchAddress(inputText)
                         }, failure: {
@@ -1902,7 +1902,7 @@ import UIKit
     private func doAccountAction(accountSelectIdx: Int) -> () {
         if (accountSelectIdx == 0) {
             if (AppDelegate.instance().accounts!.getNumberOfAccounts() >= MAX_ACTIVE_CREATED_ACCOUNTS) {
-                TLPrompts.promptErrorMessage("Maximum accounts reached.", message: "You need to archive an account in order to create a new one.")
+                TLPrompts.promptErrorMessage("Maximum accounts reached".localized, message: "You need to archive an account in order to create a new one.".localized)
                 return
             }
 
@@ -1919,25 +1919,25 @@ import UIKit
             })
         } else if (accountSelectIdx == 1) {
             if (AppDelegate.instance().importedAccounts!.getNumberOfAccounts() + AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts() >= MAX_IMPORTED_ACCOUNTS) {
-                TLPrompts.promptErrorMessage("Maximum imported accounts and watch only accounts reached.", message: "You need to archive an imported account or imported watch only account in order to import a new one.")
+                TLPrompts.promptErrorMessage("Maximum imported accounts and watch only accounts reached.".localized, message: "You need to archive an imported account or imported watch only account in order to import a new one.".localized)
                 return
             }
             self.promptImportAccountActionSheet()
         } else if (accountSelectIdx == 2) {
             if (AppDelegate.instance().importedAccounts!.getNumberOfAccounts() + AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts() >= MAX_IMPORTED_ACCOUNTS) {
-                TLPrompts.promptErrorMessage("Maximum imported accounts and watch only accounts reached.", message: "You need to archive an imported account or imported watch only account in order to import a new one.")
+                TLPrompts.promptErrorMessage("Maximum imported accounts and watch only accounts reached.".localized, message: "You need to archive an imported account or imported watch only account in order to import a new one.".localized)
                 return
             }
             self.promptImportWatchAccountActionSheet()
         } else if (accountSelectIdx == 3) {
             if (AppDelegate.instance().importedAddresses!.getCount() + AppDelegate.instance().importedWatchAddresses!.getCount() >= MAX_IMPORTED_ADDRESSES) {
-                TLPrompts.promptErrorMessage("Maximum imported addresses and private keys reached.", message: "You need to archive an imported private key or address in order to import a new one.")
+                TLPrompts.promptErrorMessage("Maximum imported addresses and private keys reached.".localized, message: "You need to archive an imported private key or address in order to import a new one.".localized)
                 return
             }
             self.promptImportPrivateKeyActionSheet()
         } else if (accountSelectIdx == 4) {
             if (AppDelegate.instance().importedAddresses!.getCount() + AppDelegate.instance().importedWatchAddresses!.getCount() >= MAX_IMPORTED_ADDRESSES) {
-                TLPrompts.promptErrorMessage("Maximum imported addresses and private keys reached.", message: "You need to archive an imported private key or address in order to import a new one.")
+                TLPrompts.promptErrorMessage("Maximum imported addresses and private keys reached.".localized, message: "You need to archive an imported private key or address in order to import a new one.".localized)
                 return
             }
             self.promptImportWatchAddressActionSheet()
@@ -1960,34 +1960,34 @@ import UIKit
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if (TLPreferences.enabledAdvanceMode()) {
             if (section == accountListSection) {
-                return "Accounts"
+                return "Accounts".localized
             } else if (section == importedAccountSection) {
-                return "Imported Accounts"
+                return "Imported Accounts".localized
             } else if (section == importedWatchAccountSection) {
-                return "Imported Watch Accounts"
+                return "Imported Watch Accounts".localized
             } else if (section == importedAddressSection) {
-                return "Imported Addresses"
+                return "Imported Addresses".localized
             } else if (section == importedWatchAddressSection) {
-                return "Imported Watch Addresses"
+                return "Imported Watch Addresses".localized
             } else if (section == archivedAccountSection) {
-                return "Archived Accounts"
+                return "Archived Accounts".localized
             } else if (section == archivedImportedAccountSection) {
-                return "Archived Imported Accounts"
+                return "Archived Imported Accounts".localized
             } else if (section == archivedImportedWatchAccountSection) {
-                return "Archived Imported Watch Accounts"
+                return "Archived Imported Watch Accounts".localized
             } else if (section == archivedImportedAddressSection) {
-                return "Archived Imported Addresses"
+                return "Archived Imported Addresses".localized
             } else if (section == archivedImportedWatchAddressSection) {
-                return "Archived Imported Watch Addresses"
+                return "Archived Imported Watch Addresses".localized
             } else {
-                return "Account Actions"
+                return "Account Actions".localized
             }
         } else {
             if (section == accountListSection) {
-                return "Accounts"
+                return "Accounts".localized
             } else if (section == archivedAccountSection) {
-                return "Archived Accounts" } else {
-                return "Account Actions"
+                return "Archived Accounts".localized } else {
+                return "Account Actions".localized
             }
         }
     }
@@ -2177,7 +2177,7 @@ import UIKit
 
     func customIOS7dialogButtonTouchUpInside(alertView: AnyObject!, clickedButtonAtIndex buttonIndex: Int) -> () {
         if (buttonIndex == 0) {
-            iToast.makeText("Copied To clipboard").setGravity(iToastGravityCenter).setDuration(1000).show()
+            iToast.makeText("Copied To clipboard".localized).setGravity(iToastGravityCenter).setDuration(1000).show()
             let pasteboard = UIPasteboard.generalPasteboard()
             pasteboard.string = self.QRImageModal!.QRcodeDisplayData
         } else {

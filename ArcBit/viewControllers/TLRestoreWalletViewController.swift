@@ -45,7 +45,7 @@ import UIKit
         setNavigationBarColors(self.navigationBar!)
         
         if (self.isRestoringFromEncryptedWalletJSON) {
-            self.restoreWalletDescriptionLabel!.text = "Enter passphrase for your iCloud backup wallet."
+            self.restoreWalletDescriptionLabel!.text = "Enter passphrase for your iCloud backup wallet.".localized
         }
         
         self.inputMnemonicTextView!.returnKeyType = .Done
@@ -57,18 +57,18 @@ import UIKit
     }
     
     private func showPromptToRestoreWallet(mnemonicPassphrase:String, walletPayload:NSDictionary?) -> () {
-        let msg = String(format:"Your current wallet will be deleted. Your can restore your current wallet later with the wallet passphrase, but any imported accounts or addresses created in advance mode cannot be recovered. Do you wish to continue?")
+        let msg = String(format:"Your current wallet will be deleted. Your can restore your current wallet later with the wallet passphrase, but any imported accounts or addresses created in advance mode cannot be recovered. Do you wish to continue?".localized)
         
         UIAlertController.showAlertInViewController(self,
-            withTitle:"Restoring Wallet",
+            withTitle:"Restoring Wallet".localized,
             message:msg,
-            cancelButtonTitle:"Cancel",
+            cancelButtonTitle:"Cancel".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles:["Continue"],
+            otherButtonTitles:["Continue".localized],
             tapBlock: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView.firstOtherButtonIndex) {
                     self.inputMnemonicTextView!.resignFirstResponder()
-                    TLHUDWrapper.showHUDAddedTo(self.view, labelText:"Restoring Wallet", animated:true)
+                    TLHUDWrapper.showHUDAddedTo(self.view, labelText:"Restoring Wallet".localized, animated:true)
                     
                     if (self.isRestoringFromEncryptedWalletJSON) {
                         AppDelegate.instance().initializeWalletAppAndShowInitialScreen(false, walletPayload:walletPayload)
@@ -107,7 +107,7 @@ import UIKit
             TLStealthWebSocket.instance().reconnect()
             TLHUDWrapper.hideHUDForView(self.view, animated:true)
             self.dismissViewControllerAnimated(true, completion:nil)
-            TLPrompts.promptSuccessMessage("Success", message:"Your wallet is now restored!")
+            TLPrompts.promptSuccessMessage("Success".localized, message:"Your wallet is now restored!".localized)
         }
     }
     
@@ -130,7 +130,7 @@ import UIKit
                     let encryptedWalletJSONPassphrase = passphrase
                     let walletPayload = TLWalletJson.getWalletJsonDict(self.encryptedWalletJSON, password:encryptedWalletJSONPassphrase)
                     if (walletPayload == nil) {
-                        TLPrompts.promptErrorMessage("Error", message:"Incorrect passphrase, could not decrypt iCloud wallet backup.")
+                        TLPrompts.promptErrorMessage("Error".localized, message:"Incorrect passphrase, could not decrypt iCloud wallet backup.".localized)
                     } else {
                         showPromptToRestoreWallet(passphrase, walletPayload:walletPayload!)
                     }
@@ -138,7 +138,7 @@ import UIKit
                     showPromptToRestoreWallet(passphrase, walletPayload:nil)
                 }
             } else {
-                TLPrompts.promptErrorMessage("Error", message:"Invalid mnemonic passphrase")
+                TLPrompts.promptErrorMessage("Error".localized, message:"Invalid backup passphrase".localized)
             }
             
             return false

@@ -352,6 +352,10 @@
 		C0AD2C5A1AC3DED100FEF982 /* TLBlockrAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AD2C581AC3DE3200FEF982 /* TLBlockrAPI.swift */; };
 		C0AD2C5B1AC4DF7700FEF982 /* TLUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A192F01ABF744300BED648 /* TLUtils.swift */; };
 		C0B4E7891AFAAEA200DC9B65 /* SRWebSocket+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = C0B4E7881AFAAEA200DC9B65 /* SRWebSocket+Helpers.m */; };
+		C0BD70011B4E2BE300A5788D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0BD70031B4E2BE300A5788D /* Localizable.strings */; };
+		C0BD70061B4E2C4F00A5788D /* TLStringLocalized.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD70051B4E2C4F00A5788D /* TLStringLocalized.swift */; };
+		C0BD70071B4E2C9200A5788D /* TLStringLocalized.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD70051B4E2C4F00A5788D /* TLStringLocalized.swift */; };
+		C0BD70081B4E2DDA00A5788D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0BD70031B4E2BE300A5788D /* Localizable.strings */; };
 		C0C1BE781AF92CB500B705C4 /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = C0C1BE711AF92CB500B705C4 /* base64.c */; };
 		C0C1BE791AF92CB500B705C4 /* NSData+SRB64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C1BE741AF92CB500B705C4 /* NSData+SRB64Additions.m */; };
 		C0C1BE7A1AF92CB500B705C4 /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C1BE771AF92CB500B705C4 /* SRWebSocket.m */; };
@@ -587,6 +591,9 @@
 		C0AD2C581AC3DE3200FEF982 /* TLBlockrAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLBlockrAPI.swift; sourceTree = "<group>"; };
 		C0B4E7871AFAAEA200DC9B65 /* SRWebSocket+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SRWebSocket+Helpers.h"; sourceTree = "<group>"; };
 		C0B4E7881AFAAEA200DC9B65 /* SRWebSocket+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SRWebSocket+Helpers.m"; sourceTree = "<group>"; };
+		C0BD70021B4E2BE300A5788D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C0BD70041B4E2BE600A5788D /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C0BD70051B4E2C4F00A5788D /* TLStringLocalized.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStringLocalized.swift; sourceTree = "<group>"; };
 		C0C1BE711AF92CB500B705C4 /* base64.c */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.c; path = base64.c; sourceTree = "<group>"; };
 		C0C1BE721AF92CB500B705C4 /* base64.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = base64.h; sourceTree = "<group>"; };
 		C0C1BE731AF92CB500B705C4 /* NSData+SRB64Additions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+SRB64Additions.h"; sourceTree = "<group>"; };
@@ -777,6 +784,7 @@
 			children = (
 				C02D3B111B4A45F500B3B7F0 /* ArcBit copy-Info.plist */,
 				C0A18F921ABF51C200BED648 /* Info.plist */,
+				C0BD70031B4E2BE300A5788D /* Localizable.strings */,
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
@@ -1112,6 +1120,7 @@
 		C0A190851ABF53A100BED648 /* utils */ = {
 			isa = PBXGroup;
 			children = (
+				C0BD70051B4E2C4F00A5788D /* TLStringLocalized.swift */,
 				C0A192EF1ABF744300BED648 /* TLMacros.swift */,
 				C0A192F01ABF744300BED648 /* TLUtils.swift */,
 				C0A192F11ABF744300BED648 /* TLColors.swift */,
@@ -1332,6 +1341,7 @@
 				C02D3AF21B4A45F500B3B7F0 /* download2.png in Resources */,
 				C02D3AF31B4A45F500B3B7F0 /* download@3x.png in Resources */,
 				C02D3AF41B4A45F500B3B7F0 /* LaunchScreen.xib in Resources */,
+				C0BD70081B4E2DDA00A5788D /* Localizable.strings in Resources */,
 				C02D3AF51B4A45F500B3B7F0 /* upload@2x.png in Resources */,
 				C02D3AF61B4A45F500B3B7F0 /* data.png in Resources */,
 				C02D3AF71B4A45F500B3B7F0 /* live.cer in Resources */,
@@ -1374,6 +1384,7 @@
 				C0A190A01ABF53A100BED648 /* download2.png in Resources */,
 				C0A190A91ABF53A100BED648 /* download@3x.png in Resources */,
 				C0A18F9E1ABF51C200BED648 /* LaunchScreen.xib in Resources */,
+				C0BD70011B4E2BE300A5788D /* Localizable.strings in Resources */,
 				C0A190B41ABF53A100BED648 /* upload@2x.png in Resources */,
 				C0A190A41ABF53A100BED648 /* data.png in Resources */,
 				C0D7B2DB1B16FDA10096E599 /* live.cer in Resources */,
@@ -1535,6 +1546,7 @@
 				C02D3A6B1B4A45F500B3B7F0 /* base64.c in Sources */,
 				C02D3A6C1B4A45F500B3B7F0 /* TLSpaghettiGodSend.swift in Sources */,
 				C02D3A6D1B4A45F500B3B7F0 /* IASKSettingsStore.m in Sources */,
+				C0BD70071B4E2C9200A5788D /* TLStringLocalized.swift in Sources */,
 				C02D3A6E1B4A45F500B3B7F0 /* TLAnalytics.swift in Sources */,
 				C02D3A6F1B4A45F500B3B7F0 /* IASKSettingsStoreUserDefaults.m in Sources */,
 				C02D3A701B4A45F500B3B7F0 /* TLMenuViewController.swift in Sources */,
@@ -1650,6 +1662,7 @@
 				C0C1BE781AF92CB500B705C4 /* base64.c in Sources */,
 				C0A190F81ABF53A100BED648 /* TLSpaghettiGodSend.swift in Sources */,
 				C0A190D11ABF53A100BED648 /* IASKSettingsStore.m in Sources */,
+				C0BD70061B4E2C4F00A5788D /* TLStringLocalized.swift in Sources */,
 				C0A192ED1ABF742D00BED648 /* TLAnalytics.swift in Sources */,
 				C0A190D31ABF53A100BED648 /* IASKSettingsStoreUserDefaults.m in Sources */,
 				C0A191251ABF53A100BED648 /* TLMenuViewController.swift in Sources */,
@@ -1845,6 +1858,15 @@
 				C0A192E71ABF707400BED648 /* Base */,
 			);
 			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		C0BD70031B4E2BE300A5788D /* Localizable.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				C0BD70021B4E2BE300A5788D /* Base */,
+				C0BD70041B4E2BE600A5788D /* ru */,
+			);
+			name = Localizable.strings;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */

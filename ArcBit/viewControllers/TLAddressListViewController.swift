@@ -28,8 +28,8 @@ import UIKit
     var accountObject: TLAccountObject?
     private var QRImageModal: TLQRImageModal?
     var showBalances: Bool = false
-    let TL_STRING_NO_STEALTH_PAYMENT_ADDRESSES_INFO = "Imported Watch Only Accounts can't see forward address payments."
-    let TL_STRING_NONE_CURRENTLY = "None currently"
+    let TL_STRING_NO_STEALTH_PAYMENT_ADDRESSES_INFO = "Imported Watch Only Accounts can't see forward address payments".localized
+    let TL_STRING_NONE_CURRENTLY = "None currently".localized
     
     @IBOutlet private var addressListTableView: UITableView?
     
@@ -71,9 +71,9 @@ import UIKit
             let VIEW_ADDRESSES_BUTTON_IDX = 1
             var VIEW_PRIVATE_KEY_BUTTON_IDX = 2
             if (TLPreferences.enabledAdvanceMode()) {
-                otherButtonTitles = ["View in web", "View address QR code", "View private key QR code"]
+                otherButtonTitles = ["View in web".localized, "View address QR code".localized, "View private key QR code".localized]
             } else {
-                otherButtonTitles = ["View in web", "View address QR code"]
+                otherButtonTitles = ["View in web".localized, "View address QR code".localized]
                 VIEW_PRIVATE_KEY_BUTTON_IDX = -1
             }
             
@@ -81,7 +81,7 @@ import UIKit
                 withTitle: title,
                 message:"",
                 preferredStyle: .ActionSheet,
-                cancelButtonTitle: "Cancel",
+                cancelButtonTitle: "Cancel".localized,
                 destructiveButtonTitle: nil,
                 otherButtonTitles: otherButtonTitles as [AnyObject],
                 
@@ -94,7 +94,7 @@ import UIKit
                         
                     } else if (buttonIndex == actionSheet.firstOtherButtonIndex + 1) {
                         if (TLSuggestions.instance().enabledSuggestDontManageIndividualAccountAddress()) {
-                            TLPrompts.promtForOK(self, title:"Warning", message: "Do not use the QR code from here to receive bitcoins. Go to the Receive screen to get a QR code to receive bitcoins.", success: {
+                            TLPrompts.promtForOK(self, title:"Warning".localized, message: "Do not use the QR code from here to receive bitcoins. Go to the Receive screen to get a QR code to receive bitcoins.".localized, success: {
                                 () in
                                 self.showAddressQRCode(address)
                                 TLSuggestions.instance().setEnableSuggestDontManageIndividualAccountAddress(false)
@@ -104,7 +104,7 @@ import UIKit
                         }
                     } else if (buttonIndex == actionSheet.firstOtherButtonIndex + 2) {
                         if (TLSuggestions.instance().enabledSuggestDontManageIndividualAccountPrivateKeys()) {
-                            TLPrompts.promtForOK(self,title:"Warning", message: "It is not recommended that you manually manage an accounts' private key yourself. A leak of a private key can lead to the compromise of your accounts' bitcoins.", success: {
+                            TLPrompts.promtForOK(self,title:"Warning".localized, message: "It is not recommended that you manually manage an accounts' private key yourself. A leak of a private key can lead to the compromise of your accounts' bitcoins.".localized, success: {
                                 () in
                                 self.showPrivateKeyQRCode(address, addressType: addressType)
                                 TLSuggestions.instance().setEnableSuggestDontManageIndividualAccountPrivateKeys(false)
@@ -118,7 +118,7 @@ import UIKit
     }
     
     private func showAddressQRCode(address: String) -> () {
-        self.QRImageModal = TLQRImageModal(data: address, buttonCopyText: "Copy To Clipboard", vc: self)
+        self.QRImageModal = TLQRImageModal(data: address, buttonCopyText: "Copy To Clipboard".localized, vc: self)
         self.QRImageModal!.show()
         NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_ACCOUNT_ADDRESS(),
             object: nil, userInfo: nil)
@@ -130,11 +130,11 @@ import UIKit
                 TLPrompts.promptForTempararyImportExtendedPrivateKey(self, success: {
                     (data: String!) -> () in
                     if (!TLHDWalletWrapper.isValidExtendedPrivateKey(data)) {
-                        TLPrompts.promptErrorMessage("Error", message: "Invalid account private key")
+                        TLPrompts.promptErrorMessage("Error".localized, message: "Invalid account private key".localized)
                     } else {
                         let success = self.accountObject!.setExtendedPrivateKeyInMemory(data)
                         if (!success) {
-                            TLPrompts.promptErrorMessage("Error", message: "Account private key does not match imported account public key")
+                            TLPrompts.promptErrorMessage("Error".localized, message: "Account private key does not match imported account public key".localized)
                         } else {
                             self.showPrivateKeyQRCodeFinal(address, addressType: addressType)
                         }
@@ -157,7 +157,7 @@ import UIKit
             privateKey = self.accountObject!.getChangePrivateKey(address)
         }
         
-        self.QRImageModal = TLQRImageModal(data: privateKey, buttonCopyText: "Copy To Clipboard", vc: self)
+        self.QRImageModal = TLQRImageModal(data: privateKey, buttonCopyText: "Copy To Clipboard".localized, vc: self)
         self.QRImageModal!.show()
         NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_ACCOUNT_PRIVATE_KEY(), object: nil, userInfo: nil)
     }
@@ -169,15 +169,15 @@ import UIKit
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if (section == 0) {
             //there are no archived stealth payment addresses, because old payment addresses are deleted
-            return "Forward Address Payment Addresses"
+            return "Forward Address Payment Addresses".localized
         } else if (section == 1) {
-            return "Active Main Addresses"
+            return "Active Main Addresses".localized
         } else if (section == 2) {
-            return "Archived Main Addresses"
+            return "Archived Main Addresses".localized
         } else if (section == 3) {
-            return "Active Change Addresses"
+            return "Active Change Addresses".localized
         } else {
-            return "Archived Change Addresses"
+            return "Archived Change Addresses".localized
         }
     }
     
@@ -316,13 +316,13 @@ import UIKit
         let title:String
         if indexPath.section == 0 {
             addressType = .Stealth
-            title = "Payment Index: \(self.accountObject!.stealthWallet!.getStealthAddressPaymentsCount() - indexPath.row)"
+            title = String(format: "Payment Index: %lu".localized, self.accountObject!.stealthWallet!.getStealthAddressPaymentsCount() - indexPath.row)
         } else if (indexPath.section == 1 || indexPath.section == 3) {
             addressType = .Main
-            title = String(format: "Address ID: %lu", self.accountObject!.getAddressHDIndex(address))
+            title = String(format: "Address ID: %lu".localized, self.accountObject!.getAddressHDIndex(address))
         } else {
             addressType = .Change
-            title = String(format: "Address ID: %lu", self.accountObject!.getAddressHDIndex(address))
+            title = String(format: "Address ID: %lu".localized, self.accountObject!.getAddressHDIndex(address))
         }
         
         var nTxs = 0
@@ -338,7 +338,7 @@ import UIKit
     
     func customIOS7dialogButtonTouchUpInside(alertView: AnyObject, clickedButtonAtIndex buttonIndex: Int) {
         if (buttonIndex == 0) {
-            iToast.makeText("Copied To clipboard").setGravity(iToastGravityCenter).setDuration(1000).show()
+            iToast.makeText("Copied To clipboard".localized).setGravity(iToastGravityCenter).setDuration(1000).show()
             
             let pasteboard = UIPasteboard.generalPasteboard()
             pasteboard.string = self.QRImageModal!.QRcodeDisplayData

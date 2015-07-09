@@ -64,7 +64,7 @@ import AVFoundation
         topBarView.addSubview(logo)
         
         var closeButton = UIButton(frame: CGRectMake(self.view.frame.size.width - 70, 15, 80, 51))
-        closeButton.setTitle("Close", forState: UIControlState.Normal)
+        closeButton.setTitle("Close".localized, forState: UIControlState.Normal)
         closeButton.setTitleColor(UIColor(white:0.56, alpha: 1.0), forState: UIControlState.Highlighted)
         closeButton.titleLabel!.font = UIFont.systemFontOfSize(15)
         closeButton.addTarget(self, action: "closeButtonClicked:", forControlEvents: .TouchUpInside)

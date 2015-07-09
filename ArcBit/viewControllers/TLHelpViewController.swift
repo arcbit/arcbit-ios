@@ -75,14 +75,14 @@ import UIKit
     override func prepareForSegue(segue: UIStoryboardSegue, sender:AnyObject!) -> () {
         if (segue.identifier == "SegueAchievements") {
             let vc = segue.destinationViewController as! UIViewController
-            vc.navigationItem.title = "Achievements"
+            vc.navigationItem.title = "Achievements".localized
         } else if (segue.identifier == "SegueText") {
             let vc = segue.destinationViewController as! TLTextViewViewController
-            vc.navigationItem.title = "Explanation"
+            vc.navigationItem.title = "Explanation".localized
             vc.text = FAQText as? String
         } else if (segue.identifier == "SegueInstructions") {
             let vc = segue.destinationViewController as! TLInstructionsViewController
-            vc.navigationItem.title = "Instructions"
+            vc.navigationItem.title = "Instructions".localized
             vc.action = action as? String
             vc.actionInstructionsSteps = instructions
         }
@@ -103,29 +103,29 @@ import UIKit
     func tableView(tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
         if (TLPreferences.enabledAdvanceMode()) {
             if(section == 0) {
-                return "Achievements"
+                return "Achievements".localized
             }
             else if(section == 1) {
-                return "FAQ"
+                return "FAQ".localized
             }
             else if(section == 2) {
-                return "How To:"
+                return "How To:".localized
             }
             else if(section == 3) {
-                return "Advance FAQ"
+                return "Advance FAQ".localized
             }
             else {
-                return "Advance how To:"
+                return "Advance how To:".localized
             }
         } else {
             if(section == 0) {
-                return "Achievements"
+                return "Achievements".localized
             }
             else if(section == 1) {
-                return "Features"
+                return "Features".localized
             }
             else {
-                return "How To:"
+                return "How To:".localized
             }
         }
     }
@@ -172,7 +172,7 @@ import UIKit
         
         if (TLPreferences.enabledAdvanceMode()) {
             if(indexPath.section == 0) {
-                cell!.textLabel!.text = "View Achievements"
+                cell!.textLabel!.text = "View Achievements".localized
             }
             else if(indexPath.section == 1) {
                 cell!.textLabel!.text = FAQArray!.objectAtIndex(indexPath.row) as? String
@@ -189,7 +189,7 @@ import UIKit
             }
         } else {
             if(indexPath.section == 0) {
-                cell!.textLabel!.text = "View Achievements"
+                cell!.textLabel!.text = "View Achievements".localized
             }
             else if(indexPath.section == 1) {
                 cell!.textLabel!.text = FAQArray!.objectAtIndex(indexPath.row) as? String

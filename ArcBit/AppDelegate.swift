@@ -254,7 +254,7 @@ import HockeySDK
         let MAX_CONSECUTIVE_UNUSED_ACCOUNT_LOOK_AHEAD_COUNT = 4
         
         while (true) {
-            let accountName = String(format:"Account %lu", (accountIdx + 1))
+            let accountName = String(format:"Account %lu".localized, (accountIdx + 1))
             let accountObject = self.accounts!.createNewAccount(accountName, accountType:.Normal, preloadStartingAddresses:false)
             
             DLog("recoverHDWalletaccountName %@", accountName)
@@ -275,7 +275,7 @@ import HockeySDK
         
         DLog("recoverHDWallet getNumberOfAccounts: \(self.accounts!.getNumberOfAccounts())")
         if (self.accounts!.getNumberOfAccounts() == 0) {
-            let accountObject = self.accounts!.createNewAccount("Account 1", accountType:.Normal)
+            let accountObject = self.accounts!.createNewAccount("Account 1".localized, accountType:.Normal)
         } else if (self.accounts!.getNumberOfAccounts() > 1) {
             while (self.accounts!.getNumberOfAccounts() > 1 && consecutiveUnusedAccountCount > 0) {
                 self.accounts!.popTopAccount()
@@ -821,7 +821,7 @@ import HockeySDK
             if success {
                 TLPreferences.setHasSetupHDWallet(true)
             } else {
-                NSException(name: "Error", reason: "Error saving wallet JSON file", userInfo: nil).raise()
+                NSException(name: "Error".localized, reason: "Error saving wallet JSON file".localized, userInfo: nil).raise()
             }
         } else {
             let masterHex = TLHDWalletWrapper.getMasterHex(passphrase ?? "")
@@ -829,8 +829,8 @@ import HockeySDK
             if (walletPayload != nil) {
                 TLWallet.instance().loadWalletPayload(walletPayload!, masterHex:masterHex)
             } else {
-                TLPrompts.promptErrorMessage("Error", message:"Error loading wallet JSON file")
-                NSException(name: "Error", reason: "Error loading wallet JSON file", userInfo: nil).raise()
+                TLPrompts.promptErrorMessage("Error".localized, message:"Error loading wallet JSON file".localized)
+                NSException(name: "Error".localized, reason: "Error loading wallet JSON file".localized, userInfo: nil).raise()
             }
         }
         
@@ -864,8 +864,8 @@ import HockeySDK
         let baseURL = NSURL(string:blockExplorerURL)
         TLNetworking.isReachable(baseURL!, reachable:{(reachable: TLDOMAINREACHABLE) in
             if (reachable == TLDOMAINREACHABLE.NOTREACHABLE) {
-                TLPrompts.promptErrorMessage("Network Error",
-                    message:String(format:"%@ servers not reachable.", blockExplorerURL))
+                TLPrompts.promptErrorMessage("Network Error".localized,
+                    message:String(format:"%@ servers not reachable.".localized, blockExplorerURL))
             }
         })
         
@@ -875,8 +875,8 @@ import HockeySDK
             TLBlockchainStatus.instance().blockHeight = blockHeight
             }, failure:{(code:NSInteger, status:String!) in
                 DLog("Error getting block height.")
-                TLPrompts.promptErrorMessage("Network Error",
-                    message:String(format:"Error getting block height."))
+                TLPrompts.promptErrorMessage("Network Error".localized,
+                    message:String(format:"Error getting block height.".localized))
         })
     }
     
@@ -921,7 +921,7 @@ import HockeySDK
     func showLocalNotificationForCoinsSent(txHash: String, address: String, amount: TLCoin) {
         if sentPaymentHashes[txHash] == nil {
             sentPaymentHashes[txHash] = ""
-            let msg = String(format:"Sent %@ to %@", TLWalletUtils.getProperAmount(amount), address)
+            let msg = String(format:"Sent %@ to %@".localized, TLWalletUtils.getProperAmount(amount), address)
             TLPrompts.promptSuccessMessage(msg, message: "")
             //self.showLocalNotification(msg)
         }
@@ -943,7 +943,7 @@ import HockeySDK
             message:""                                       ,
             delegate:nil                                       ,
             cancelButtonTitle:nil                               ,
-            otherButtonTitles:"OK")
+            otherButtonTitles:"OK".localized)
         
         av.show()
         AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
@@ -970,10 +970,10 @@ import HockeySDK
     private func promptAppNotAllowedCamera() {
         let displayName = TLUtils.defaultAppName()
         
-        let av = UIAlertView(title: String(format:"%@ is not allowed to access the camera", displayName),
-            message: String(format:"\nallow camera access in\n Settings->Privacy->Camera->%@", displayName),
+        let av = UIAlertView(title: String(format:"%@ is not allowed to access the camera".localized, displayName),
+            message: String(format:"\nallow camera access in\n Settings->Privacy->Camera->%@".localized, displayName),
             delegate:nil      ,
-            cancelButtonTitle:"OK")
+            cancelButtonTitle:"OK".localized)
         
         av.show()
     }
@@ -1220,7 +1220,7 @@ import HockeySDK
         
         if (!success) {
             dispatch_async(dispatch_get_main_queue()) {
-                TLPrompts.promptErrorMessage("Error!", message:"Local back up to wallet failed!")
+                TLPrompts.promptErrorMessage("Error".localized, message:"Local back up to wallet failed!".localized)
             }
         }
         

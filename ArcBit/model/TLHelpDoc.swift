@@ -32,47 +32,47 @@ class TLHelpDoc {
         static var _howToDoAdvanceAchievementsArray: NSArray?
         static var _eventsArray: NSArray?
         
-        static let FAQ_TRANSACTION_CONFIRMATIONS = "Transaction confirmations"
-        static let FAQ_HD_WALLET = "HD Wallet"
-        static let FAQ_STEALTH_ADDRESS = "Stealth/Reusable Addresses"
+        static let FAQ_TRANSACTION_CONFIRMATIONS = "Transaction confirmations".localized
+        static let FAQ_HD_WALLET = "HD Wallet".localized
+        static let FAQ_STEALTH_ADDRESS = "Stealth/Reusable Addresses".localized
         
-        static let ACCOUNT_ACTION_CREATE_NEW_ACCOUNT = "Create New Account"
-        static let ACCOUNT_ACTION_IMPORT_ACCOUNT = "Import Account"
-        static let ACCOUNT_ACTION_IMPORT_WATCH_ONLY_ACCOUNT = "Import Watch Only Account"
-        static let ACCOUNT_ACTION_IMPORT_PRIVATE_KEY = "Import Private Key"
-        static let ACCOUNT_ACTION_IMPORT_WATCH_ONLY_ADDRESS = "Import Watch Only Address"
+        static let ACCOUNT_ACTION_CREATE_NEW_ACCOUNT = "Create New Account".localized
+        static let ACCOUNT_ACTION_IMPORT_ACCOUNT = "Import Account".localized
+        static let ACCOUNT_ACTION_IMPORT_WATCH_ONLY_ACCOUNT = "Import Watch Only Account".localized
+        static let ACCOUNT_ACTION_IMPORT_PRIVATE_KEY = "Import Private Key".localized
+        static let ACCOUNT_ACTION_IMPORT_WATCH_ONLY_ADDRESS = "Import Watch Only Address".localized
         
-        static let ACTION_SEND_PAYMENT = "Send Payment"
-        static let ACTION_RECEIVE_PAYMENT = "Receive Payment"
-        static let ACTION_RECEIVE_PAYMENT_FROM_STEALTH_ADDRESS = "Receive Payment From Forward Address"
-        static let ACTION_VIEW_HISTORY = "View History"
-        static let ACTION_CREATE_NEW_ACCOUNT = "Create New Account"
-        static let ACTION_EDIT_ACCOUNT_NAME = "Edit Account Name"
-        static let ACTION_ARCHIVE_ACCOUNT = "Archive Account"
-        static let ACTION_ENABLE_PIN_CODE = "Enable PIN Code"
-        static let ACTION_BACKUP_PASSPHRASE = "Back Up Passphrase"
-        static let ACTION_RESTORE_WALLET = "Start/Restore Another Wallet"
-        static let ACTION_ADD_TO_ADDRESS_BOOK = "Add Address Book Entry"
-        static let ACTION_EDIT_ENTRY_ADDRESS_BOOK = "Edit Address Book Entry"
-        static let ACTION_DELETE_ENTRY_ADDRESS_BOOK = "Delete Address Book Entry"
-        static let ACTION_SEND_TO_ADDRESS_IN_ADDRESS_BOOK = "Send To Address In Address Book"
-        static let ACTION_TAG_TRANSACTION = "Tag transaction"
-        static let ACTION_TOGGLE_AUTOMATIC_TX_FEE = "Toggle Automatic Transaction Fee"
-        static let ACTION_CHANGE_AUTOMATIC_TX_FEE = "Change Automatic Transaction Fee"
-        static let ACTION_VIEW_ACCOUNT_ADDRESSES = "View Account Addresses"
-        static let ACTION_VIEW_ACCOUNT_ADDRESS_IN_WEB = "View Account Address In Web"
-        static let ACTION_VIEW_TRANSACTION_IN_WEB = "View Transaction Web"
-        static let ACTION_ENABLE_ADVANCE_MODE = "Enable advance mode"
+        static let ACTION_SEND_PAYMENT = "Send Payment".localized
+        static let ACTION_RECEIVE_PAYMENT = "Receive Payment".localized
+        static let ACTION_RECEIVE_PAYMENT_FROM_STEALTH_ADDRESS = "Receive Payment From Forward Address".localized
+        static let ACTION_VIEW_HISTORY = "View History".localized
+        static let ACTION_CREATE_NEW_ACCOUNT = "Create New Account".localized
+        static let ACTION_EDIT_ACCOUNT_NAME = "Edit Account Name".localized
+        static let ACTION_ARCHIVE_ACCOUNT = "Archive Account".localized
+        static let ACTION_ENABLE_PIN_CODE = "Enable PIN Code".localized
+        static let ACTION_BACKUP_PASSPHRASE = "Back Up Passphrase".localized
+        static let ACTION_RESTORE_WALLET = "Start/Restore Another Wallet".localized
+        static let ACTION_ADD_TO_ADDRESS_BOOK = "Add Address Book Entry".localized
+        static let ACTION_EDIT_ENTRY_ADDRESS_BOOK = "Edit Address Book Entry".localized
+        static let ACTION_DELETE_ENTRY_ADDRESS_BOOK = "Delete Address Book Entry".localized
+        static let ACTION_SEND_TO_ADDRESS_IN_ADDRESS_BOOK = "Send To Address In Address Book".localized
+        static let ACTION_TAG_TRANSACTION = "Tag transaction".localized
+        static let ACTION_TOGGLE_AUTOMATIC_TX_FEE = "Toggle Automatic Transaction Fee".localized
+        static let ACTION_CHANGE_AUTOMATIC_TX_FEE = "Change Automatic Transaction Fee".localized
+        static let ACTION_VIEW_ACCOUNT_ADDRESSES = "View Account Addresses".localized
+        static let ACTION_VIEW_ACCOUNT_ADDRESS_IN_WEB = "View Account Address In Web".localized
+        static let ACTION_VIEW_TRANSACTION_IN_WEB = "View Transaction In Web".localized
+        static let ACTION_ENABLE_ADVANCE_MODE = "Enable advance mode".localized
         
-        static let ACTION_IMPORT_ACCOUNT = "Import Account"
-        static let ACTION_IMPORT_WATCH_ONLY_ACCOUNT = "Import Watch Only Account"
-        static let ACTION_IMPORT_PRIVATE_KEY = "Import Private/Encrypted Key"
-        static let ACTION_IMPORT_WATCH_ONLY_ADDRESS = "Import Watch Only Address"
-        static let ACTION_CHANGE_BLOCKEXPLORER_TYPE = "Change Blockexplorer Type"
-        static let ACTION_VIEW_EXTENDED_PUBLIC_KEY = "View Account Public Key"
-        static let ACTION_VIEW_EXTENDED_PRIVATE_KEY = "View Account Private Key"
-        static let ACTION_VIEW_ACCOUNT_PRIVATE_KEY = "View Private Key"
-        static let ACTION_VIEW_ACCOUNT_ADDRESS = "View Account Address"
+        static let ACTION_IMPORT_ACCOUNT = "Import Account".localized
+        static let ACTION_IMPORT_WATCH_ONLY_ACCOUNT = "Import Watch Only Account".localized
+        static let ACTION_IMPORT_PRIVATE_KEY = "Import Private/Encrypted Key".localized
+        static let ACTION_IMPORT_WATCH_ONLY_ADDRESS = "Import Watch Only Address".localized
+        static let ACTION_CHANGE_BLOCKEXPLORER_TYPE = "Change Blockexplorer Type".localized
+        static let ACTION_VIEW_EXTENDED_PUBLIC_KEY = "View Account Public Key".localized
+        static let ACTION_VIEW_EXTENDED_PRIVATE_KEY = "View Account Private Key".localized
+        static let ACTION_VIEW_ACCOUNT_PRIVATE_KEY = "View Private Key".localized
+        static let ACTION_VIEW_ACCOUNT_ADDRESS = "View Account Address".localized
         
     }
     
@@ -80,156 +80,156 @@ class TLHelpDoc {
         if (STATIC_MEMBERS._actionEventToInstructionStepsTitleArray == nil) {
             STATIC_MEMBERS._actionEventToInstructionStepsTitleArray = [
                 [
-                    "Go to the side menu",
-                    "Click ‘Send’",
-                    "Fill address field",
-                    "Input amount",
-                    "Click ‘Review Payment’",
-                    "Click ’Send’",
+                    "Go to the side menu".localized,
+                    "Click ‘Send’".localized,
+                    "Fill address field".localized,
+                    "Input amount".localized,
+                    "Click ‘Review Payment’".localized,
+                    "Click ’Send’".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Receive’",
-                    "Click the button with the arrow",
-                    "Select and click an account to receive from",
-                    "Have sender scan QR code",
-                    "Have sender send you payment",
+                    "Go to the side menu".localized,
+                    "Click ‘Receive’".localized,
+                    "Click the button with the arrow".localized,
+                    "Select and click an account to receive from".localized,
+                    "Have sender scan QR code".localized,
+                    "Have sender send you payment".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Receive’",
-                    "Click the button with the arrow",
-                    "Select and click an account to receive from",
-                    "Have sender scan QR code",
-                    "Swipe to the right on the QR Code Image until you see the forward address",
-                    "Have sender send you payment",
+                    "Go to the side menu".localized,
+                    "Click ‘Receive’".localized,
+                    "Click the button with the arrow".localized,
+                    "Select and click an account to receive from".localized,
+                    "Have sender scan QR code".localized,
+                    "Swipe to the right on the QR Code Image until you see the forward address".localized,
+                    "Have sender send you payment".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘History’",
-                    "Click the button with the arrow",
-                    "Select and click an account to view it’s transaction history",
+                    "Go to the side menu".localized,
+                    "Click ‘History’".localized,
+                    "Click the button with the arrow".localized,
+                    "Select and click an account to view it’s transaction history".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Accounts’",
-                    "Scroll down to the section ‘Account Actions’",
-                    "Click ‘Create New Account’",
+                    "Go to the side menu".localized,
+                    "Click ‘Accounts’".localized,
+                    "Scroll down to the section ‘Account Actions’".localized,
+                    "Click ‘Create New Account’".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Accounts’",
-                    "Select and click an account",
-                    "Click ‘Edit Account Name’",
-                    "Input new account name",
+                    "Go to the side menu".localized,
+                    "Click ‘Accounts’".localized,
+                    "Select and click an account".localized,
+                    "Click ‘Edit Account Name’".localized,
+                    "Input new account name".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Accounts’",
-                    "Select and click an account",
-                    "Click ‘Archive Account’",
+                    "Go to the side menu".localized,
+                    "Click ‘Accounts’".localized,
+                    "Select and click an account".localized,
+                    "Click ‘Archive Account’".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Settings’",
-                    "Click ‘Enable PIN Code’",
-                    "Enter Pin Code",
-                    "Confirm Pin Code",
+                    "Go to the side menu".localized,
+                    "Click ‘Settings’".localized,
+                    "Click ‘Enable PIN Code’".localized,
+                    "Enter Pin Code".localized,
+                    "Confirm Pin Code".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Settings’",
-                    "Click ‘Show Backup Passphrase’",
-                    "Write down backup passphrase",
+                    "Go to the side menu".localized,
+                    "Click ‘Settings’".localized,
+                    "Click ‘Show Backup Passphrase’".localized,
+                    "Write down backup passphrase".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Settings’",
-                    "Click ‘Restore Wallet’",
-                    "Enter backup passphrase",
-                    "Click ‘Done’",
-                    "Click ‘Restore’",
+                    "Go to the side menu".localized,
+                    "Click ‘Settings’".localized,
+                    "Click ‘Restore Wallet’".localized,
+                    "Enter backup passphrase".localized,
+                    "Click ‘Done’".localized,
+                    "Click ‘Restore’".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Send’",
-                    "Click the ‘Address Book’ button",
-                    "Click the plus button at the top right",
-                    "Input a bitcoin address",
-                    "Input a label",
+                    "Go to the side menu".localized,
+                    "Click ‘Send’".localized,
+                    "Click the ‘Address Book’ button".localized,
+                    "Click the plus button at the top right".localized,
+                    "Input a bitcoin address".localized,
+                    "Input a label".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Send’",
-                    "Swipe right on an address",
-                    "Click ‘Edit’",
-                    "Input a new label",
+                    "Go to the side menu".localized,
+                    "Click ‘Send’".localized,
+                    "Swipe right on an address".localized,
+                    "Click ‘Edit’".localized,
+                    "Input a new label".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Send’",
-                    "Click the ‘Address Book’ button",
-                    "Swipe right on an address",
-                    "Click ‘Delete’",
+                    "Go to the side menu".localized,
+                    "Click ‘Send’".localized,
+                    "Click the ‘Address Book’ button".localized,
+                    "Swipe right on an address".localized,
+                    "Click ‘Delete’".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Send’",
-                    "Click the ‘Address Book’ button",
-                    "Click an address",
+                    "Go to the side menu".localized,
+                    "Click ‘Send’".localized,
+                    "Click the ‘Address Book’ button".localized,
+                    "Click an address".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘History’",
-                    "Select and click a transaction",
-                    "Click ‘Label transaction’",
-                    "Input label",
+                    "Go to the side menu".localized,
+                    "Click ‘History’".localized,
+                    "Select and click a transaction".localized,
+                    "Click ‘Label transaction’".localized,
+                    "Input label".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Settings’",
-                    "Toggle ‘Enable Transaction Fee’",
+                    "Go to the side menu".localized,
+                    "Click ‘Settings’".localized,
+                    "Toggle ‘Enable Transaction Fee’".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Settings’",
-                    "Enable Transaction Fee",
-                    "Click ‘Set Transaction Fee’",
-                    "Input transaction fee in bitcoins",
+                    "Go to the side menu".localized,
+                    "Click ‘Settings’".localized,
+                    "Enable Transaction Fee".localized,
+                    "Click ‘Set Transaction Fee’".localized,
+                    "Input transaction fee in bitcoins".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Accounts’",
-                    "Select and click an account",
-                    "Click ‘View Addresses’",
+                    "Go to the side menu".localized,
+                    "Click ‘Accounts’".localized,
+                    "Select and click an account".localized,
+                    "Click ‘View Addresses’".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Accounts’",
-                    "Select and click an account",
-                    "Click ‘View Addresses’",
-                    "Select and click an address",
-                    "Click ‘View address QR code’",
+                    "Go to the side menu".localized,
+                    "Click ‘Accounts’".localized,
+                    "Select and click an account".localized,
+                    "Click ‘View Addresses’".localized,
+                    "Select and click an address".localized,
+                    "Click ‘View address QR code’".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘History’",
-                    "Select and click a transaction",
-                    "Click ‘View in web’",
+                    "Go to the side menu".localized,
+                    "Click ‘History’".localized,
+                    "Select and click a transaction".localized,
+                    "Click ‘View in web’".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Accounts’",
-                    "Select and click an account",
-                    "Click ‘View Addresses’",
-                    "Select and click an address",
-                    "Click ‘View in web’",
+                    "Go to the side menu".localized,
+                    "Click ‘Accounts’".localized,
+                    "Select and click an account".localized,
+                    "Click ‘View Addresses’".localized,
+                    "Select and click an address".localized,
+                    "Click ‘View in web’".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Settings’",
-                    "Click ‘Advance options’",
-                    "Toggle ’Enable advance mode’",
+                    "Go to the side menu".localized,
+                    "Click ‘Settings’".localized,
+                    "Click ‘Advance options’".localized,
+                    "Toggle ’Enable advance mode’".localized,
                 ],
             ]
         }
@@ -242,56 +242,56 @@ class TLHelpDoc {
         if (STATIC_MEMBERS._advanceActionInstructionStepsArray == nil) {
             STATIC_MEMBERS._advanceActionInstructionStepsArray = [
                 [
-                    "Go to the side menu",
-                    "Click ‘Accounts’",
-                    "Scroll down to the section ‘Account Actions’",
-                    "Click ‘Import Account’",
+                    "Go to the side menu".localized,
+                    "Click ‘Accounts’".localized,
+                    "Scroll down to the section ‘Account Actions’".localized,
+                    "Click ‘Import Account’".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Accounts’",
-                    "Scroll down to the section ‘Account Actions’",
-                    "Click ‘Import Watch Only Account’",
+                    "Go to the side menu".localized,
+                    "Click ‘Accounts’".localized,
+                    "Scroll down to the section ‘Account Actions’".localized,
+                    "Click ‘Import Watch Only Account’".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Accounts’",
-                    "Scroll down to the section ‘Account Actions’",
-                    "Click ‘Import Private Key’",
+                    "Go to the side menu".localized,
+                    "Click ‘Accounts’".localized,
+                    "Scroll down to the section ‘Account Actions’".localized,
+                    "Click ‘Import Private Key’".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Accounts’",
-                    "Scroll down to the section ‘Account Actions’",
-                    "Click ‘Import Watch Only Address’",
+                    "Go to the side menu".localized,
+                    "Click ‘Accounts’".localized,
+                    "Scroll down to the section ‘Account Actions’".localized,
+                    "Click ‘Import Watch Only Address’".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Settings’",
-                    "Click ‘Advance options’",
-                    "Click ‘blockexplorer API type’",
-                    "Select and click a blockexplorer API",
-                    "Quit and re-enter app",
+                    "Go to the side menu".localized,
+                    "Click ‘Settings’".localized,
+                    "Click ‘Advance options’".localized,
+                    "Click ‘blockexplorer API type’".localized,
+                    "Select and click a blockexplorer API".localized,
+                    "Quit and re-enter app".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Accounts’",
-                    "Select and click an account",
-                    "Click ‘View account public key QR code’",
+                    "Go to the side menu".localized,
+                    "Click ‘Accounts’".localized,
+                    "Select and click an account".localized,
+                    "Click ‘View account public key QR code’".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Accounts’",
-                    "Select and click an account",
-                    "Click ‘View account private key QR code’",
+                    "Go to the side menu".localized,
+                    "Click ‘Accounts’".localized,
+                    "Select and click an account".localized,
+                    "Click ‘View account private key QR code’".localized,
                 ],
                 [
-                    "Go to the side menu",
-                    "Click ‘Accounts’",
-                    "Select and click an account",
-                    "Click ‘View Addresses’",
-                    "Select and click an address",
-                    "Click ‘View private key QR code’",
+                    "Go to the side menu".localized,
+                    "Click ‘Accounts’".localized,
+                    "Select and click an account".localized,
+                    "Click ‘View Addresses’".localized,
+                    "Select and click an address".localized,
+                    "Click ‘View private key QR code’".localized,
                 ],
             ]
         }
@@ -418,15 +418,15 @@ class TLHelpDoc {
         var _faqArray: NSArray?
         if (_faqArray == nil) {
             _faqArray = [
-                "What is Bitcoin?",
-                "What are the benefits and advantages of Bitcoin?",
-                "How do I get bitcoins?",
-                "What is a bitcoin wallet?",
-                "How does ArcBit Wallet work?",
-                "What makes ArcBit different from other bitcoin wallets?",
-                "What are transaction confirmations?",
-                "What are accounts?",
-                "What are stealth/forward addresses?",
+                "What is Bitcoin?".localized,
+                "What are the benefits and advantages of Bitcoin?".localized,
+                "How do I get bitcoins?".localized,
+                "What is a bitcoin wallet?".localized,
+                "How does ArcBit Wallet work?".localized,
+                "What makes ArcBit different from other bitcoin wallets?".localized,
+                "What are transaction confirmations?".localized,
+                "What are accounts?".localized,
+                "What are stealth/forward addresses?".localized,
             ]
         }
         return _faqArray!
@@ -435,15 +435,15 @@ class TLHelpDoc {
     class func getExplanation(idx: Int) -> String {
         if (STATIC_MEMBERS._explanationArray == nil) {
             STATIC_MEMBERS._explanationArray = [
-                "Bitcoin, uppercase 'B', is an online payment system invented in 2008, and released as open-source software in 2009 by a programmer name Satoshi Nakamoto. The system is decentralized and peer-to-peer, users can transact directly without needing an intermediary.\nBitcoin is also a platform where other decentralized applications can be built on top of. Bitcoin, lowercase 'b' is the currency unit that Bitcoin uses.",
-                "Bitcoin allows you to send money to anyone, anywhere in world that has an internet connections with minimum to zero fees, with no middlemen.",
-                "Bitcoins can be purchase from various bitcoin exchanges. ArcBit is not a bitcoin exchange. ArcBit is a bitcoin wallet. After you purchase some bitcoins from an exchange, you can move it to a bitcoin wallet.",
-                "A bitcoin wallet is a software application that allows people to send, receive and manage their bitcoins.\nBe aware of how other bitcoin applications store your bitcoins' private keys, which are needed to spend your bitcoins.\nThere are generally three different ways applications can your store your bitcoins.\n1.\nThe banking model where your bitcoin private keys are held for you by someone else.\n2.\nThe security box model where your bitcoin private keys are stored encrypted on someone else’s servers.\n3.\nThe wallet model where your bitcoin private keys are stored only on your device.",
-                "ArcBit used the the bitcoin wallet model (See the section ’What is a bitcoin wallet?’ to understand the 3 different security models of bitcoin software). However if you use iCloud to back up your wallet, you will be using the security box model. It is recommended that you do not use iCloud, and be responsible for your bitcoins yourself, but for those who don’t want to remember a simple backup passphrase, iCloud backup is a good alternative.",
-                "Here are some features that no other mobile bitcoin wallet supports.\n- Forwarding address support\n- Ability to import individual account (extended) keys\n- iCloud backup support\n- Over 150 local currencies supported",
-                "After a transaction is broadcast to the Bitcoin network, it may be included in a block that is published to the network. When that happens it is said that the transaction has been mined at a depth of 1 block. With each subsequent block that is found, the number of blocks deep is increased by one. To be secure against double spending, a transaction should not be considered as confirmed until it is a certain number of blocks deep.\nA good rule of thumb is that 1 confirmations is good for small value amounts of bitcoins, and a user should wait for more confirmations for larger value amounts.\nArcBit will display the confirmation number up until the 6th confirmation.",
-                "An account is a collection of bitcoin addresses. With accounts, you will no longer have to manage bitcoin addresses directly anymore. Since address reuse results in a loss of privacy for people using Bitcoin, ArcBit’s HD wallet account system will automatically handle the cycling of bitcoin addresses for you, so that you don’t use the same bitcoin address more then once.\nEach account also has a forward address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a forward address.\nYou can create an unlimited amount of accounts with ArcBit. See the help section on how to create a new account in ArcBit. ",
-                "Some people has compared bitcoin addresses to a bank routing number. It is a good analogy, however bitcoin addresses are public. So if you reuse the same bitcoin address for multiple payments like you would a routing number, people will be able to figure out how much bitcoins you have. Thus it is recommended that you only use one address per payment.\nThis causes usability issues because making the user use a new address whenever receiving a payment is cumbersome.\nStealth/forward addresses provides a better solution. When you give a sender a forward address, the sender will derive a one time regular bitcoin address from the forward address. Then the sender will send a payment to that regular bitcoin address. Now you can give many people just one forward address and have them all send you payments without letting other people know how much bitcoins you have.\nA forward address looks sometime like this vJmxthatTBXibYe9aZavx18iAT9gyiJETGkhwPX2WbHQGuzX83YvQXynD2t8yHU4Xjfonu5x9m6B4yxquytFP1c2CRbVR9mecxesvE. A forward address is a lot longer then a regular bitcoin address, it is 102 characters in length.\nForwarding addresses are great, however there are no other mobile bitcoin wallets but ArcBit that supports forward addresses for now. Which is why ArcBit support receiving payments from both regular bitcoin addresses and forward addresses.\nFor each account, you have one forward address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a forward address.",
+                "Bitcoin, uppercase 'B', is an online payment system invented in 2008, and released as open-source software in 2009 by a programmer name Satoshi Nakamoto. The system is decentralized and peer-to-peer, users can transact directly without needing an intermediary.\nBitcoin is also a platform where other decentralized applications can be built on top of. Bitcoin, lowercase 'b' is the currency unit that Bitcoin uses.".localized,
+                "Bitcoin allows you to send money to anyone, anywhere in world that has an internet connections with minimum to zero fees, with no middlemen.".localized,
+                "Bitcoins can be purchase from various bitcoin exchanges. ArcBit is not a bitcoin exchange. ArcBit is a bitcoin wallet. After you purchase some bitcoins from an exchange, you can move it to a bitcoin wallet.".localized,
+                "A bitcoin wallet is a software application that allows people to send, receive and manage their bitcoins.\nBe aware of how other bitcoin applications store your bitcoins' private keys, which are needed to spend your bitcoins.\nThere are generally three different ways applications can your store your bitcoins.\n1.\nThe banking model where your bitcoin private keys are held for you by someone else.\n2.\nThe security box model where your bitcoin private keys are stored encrypted on someone else’s servers.\n3.\nThe wallet model where your bitcoin private keys are stored only on your device.".localized,
+                "ArcBit used the the bitcoin wallet model (See the section ’What is a bitcoin wallet?’ to understand the 3 different security models of bitcoin software). However if you use iCloud to back up your wallet, you will be using the security box model. It is recommended that you do not use iCloud, and be responsible for your bitcoins yourself, but for those who don’t want to remember a simple backup passphrase, iCloud backup is a good alternative.".localized,
+                "Here are some features that no other mobile bitcoin wallet supports.\n- Forwarding address support\n- Ability to import individual account (extended) keys\n- iCloud backup support\n- Over 150 local currencies supported".localized,
+                "After a transaction is broadcast to the Bitcoin network, it may be included in a block that is published to the network. When that happens it is said that the transaction has been mined at a depth of 1 block. With each subsequent block that is found, the number of blocks deep is increased by one. To be secure against double spending, a transaction should not be considered as confirmed until it is a certain number of blocks deep.\nA good rule of thumb is that 1 confirmations is good for small value amounts of bitcoins, and a user should wait for more confirmations for larger value amounts.\nArcBit will display the confirmation number up until the 6th confirmation.".localized,
+                "An account is a collection of bitcoin addresses. With accounts, you will no longer have to manage bitcoin addresses directly anymore. Since address reuse results in a loss of privacy for people using Bitcoin, ArcBit’s HD wallet account system will automatically handle the cycling of bitcoin addresses for you, so that you don’t use the same bitcoin address more then once.\nEach account also has a forward address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a forward address.\nYou can create an unlimited amount of accounts with ArcBit. See the help section on how to create a new account in ArcBit.".localized,
+                "Some people has compared bitcoin addresses to a bank routing number. It is a good analogy, however bitcoin addresses are public. So if you reuse the same bitcoin address for multiple payments like you would a routing number, people will be able to figure out how much bitcoins you have. Thus it is recommended that you only use one address per payment.\nThis causes usability issues because making the user use a new address whenever receiving a payment is cumbersome.\nStealth/forward addresses provides a better solution. When you give a sender a forward address, the sender will derive a one time regular bitcoin address from the forward address. Then the sender will send a payment to that regular bitcoin address. Now you can give many people just one forward address and have them all send you payments without letting other people know how much bitcoins you have.\nA forward address looks sometime like this vJmxthatTBXibYe9aZavx18iAT9gyiJETGkhwPX2WbHQGuzX83YvQXynD2t8yHU4Xjfonu5x9m6B4yxquytFP1c2CRbVR9mecxesvE. A forward address is a lot longer then a regular bitcoin address, it is 102 characters in length.\nForwarding addresses are great, however there are no other mobile bitcoin wallets but ArcBit that supports forward addresses for now. Which is why ArcBit support receiving payments from both regular bitcoin addresses and forward addresses.\nFor each account, you have one forward address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a forward address.".localized,
             ]
         }
         return STATIC_MEMBERS._explanationArray!.objectAtIndex(idx) as! String
@@ -453,12 +453,12 @@ class TLHelpDoc {
         var _faqArray: NSArray?
         if (_faqArray == nil) {
             _faqArray = [
-                "What are Account/Extended Keys?",
-                "Import Feature",
-                "Importing an Account",
-                "Importing a Watch Only Account",
-                "Importing a Private Key",
-                "Importing a Watch Only Address",
+                "What are Account/Extended Keys?".localized,
+                "Import Feature".localized,
+                "Importing an Account".localized,
+                "Importing a Watch Only Account".localized,
+                "Importing a Private Key".localized,
+                "Importing a Watch Only Address".localized,
             ]
         }
         return _faqArray!
@@ -467,12 +467,12 @@ class TLHelpDoc {
     class func getAdvanceExplanation(idx: Int) -> String {
         if (STATIC_MEMBERS._advanceExplanationArray == nil) {
             STATIC_MEMBERS._advanceExplanationArray = [
-                "Each account has a public and private account/extended key. Accounts keys should be kept secret as they are used to view the account's transactions, and spend the accounts bitcoins.",
-                "In advance mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you back up imported keys and addresses separately.",
-                "An account private key begins with the letters 'xprv'. You can see, spend and recover the transactions and bitcoins of an entire account from an account private key.",
-                "An account public key begins with the letters 'xpub'. You can see the transactions and bitcoins of an entire account from an account private key, with the exception of forward address payments. Future releases will address this issue.\nYou can however temporary import the corresponding account private key for this accounts' account public key to spend your watch only accounts' bitcoins. Simply go the send screen and select a watch only account to spend from and you will be prompt to temporary import your account's private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen.",
-                "A private key begins with an 'L', 'K', or '5'.\nBIP 38 encrypted private keys can also be imported. They can either be imported encrypted or unencrypted. If you choose to import it encrypted, you will need to input the password each time you spend from your encrypted private key.",
-                "A bitcoin address typically begins with a '1' or '3'. You can see the transactions, and track the balance of an address, but you cannot spend from just an imported address.\nYou can however temporary import this watch only addresses' private key to spend its bitcoins. Simply go the send screen and select a watch only address to spend from and you will be prompt to temporary import your addresses' private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen.",
+                "Each account has a public and private account/extended key. Accounts keys should be kept secret as they are used to view the account's transactions, and spend the accounts bitcoins.".localized,
+                "In advance mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you back up imported keys and addresses separately.".localized,
+                "An account private key begins with the letters 'xprv'. You can see, spend and recover the transactions and bitcoins of an entire account from an account private key.".localized,
+                "An account public key begins with the letters 'xpub'. You can see the transactions and bitcoins of an entire account from an account private key, with the exception of forward address payments. Future releases will address this issue.\nYou can however temporary import the corresponding account private key for this accounts' account public key to spend your watch only accounts' bitcoins. Simply go the send screen and select a watch only account to spend from and you will be prompt to temporary import your account's private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen.".localized,
+                "A private key begins with an 'L', 'K', or '5'.\nBIP 38 encrypted private keys can also be imported. They can either be imported encrypted or unencrypted. If you choose to import it encrypted, you will need to input the password each time you spend from your encrypted private key.".localized,
+                "A bitcoin address typically begins with a '1' or '3'. You can see the transactions, and track the balance of an address, but you cannot spend from just an imported address.\nYou can however temporary import this watch only addresses' private key to spend its bitcoins. Simply go the send screen and select a watch only address to spend from and you will be prompt to temporary import your addresses' private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen.".localized,
             ]
         }
         

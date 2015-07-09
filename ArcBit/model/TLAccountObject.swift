@@ -254,7 +254,7 @@ import Foundation
     }
     
     func getDefaultNameAccount() -> String {
-        return "Default Account Name"
+        return "Default Account Name".localized
     }
     
     

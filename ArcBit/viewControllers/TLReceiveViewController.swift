@@ -40,8 +40,8 @@ import UIKit
     
     private var pageControlBeingUsed = false
     private var receiveAddresses: NSMutableArray?
-    let newAddressInfoText = "New addresses will be automatically generated and cycled for you as you use your current available addresses."
-    let importedWatchAccountStealthAddressInfoText = "Imported Watch Only Accounts can't see forward address payments, thus this accounts'c forward address is not available. If you want see the forward address for this account import the account private key that corresponds to this accounts public key."
+    let newAddressInfoText = "New addresses will be automatically generated and cycled for you as you use your current available addresses.".localized
+    let importedWatchAccountStealthAddressInfoText = "Imported Watch Only Accounts can't see forward address payments, thus this accounts' forward address is not available. If you want see the forward address for this account import the account private key that corresponds to this accounts public key.".localized
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -99,7 +99,7 @@ import UIKit
         
         if (AppDelegate.instance().justSetupHDWallet) {
             AppDelegate.instance().justSetupHDWallet = false
-            TLPrompts.promptSuccessMessage("Welcome!", message: "Start using the app now by depositing your Bitcoins here.")
+            TLPrompts.promptSuccessMessage("Welcome!".localized, message: "Start using the app now by depositing your Bitcoins here.".localized)
         }
         
         self.refreshSelectedAccount(false)
@@ -174,7 +174,7 @@ import UIKit
         let address = self.receiveAddresses!.objectAtIndex(self.receiveAddressesPageControl!.currentPage) as! String
         let pasteboard = UIPasteboard.generalPasteboard()
         pasteboard.string = address
-        iToast.makeText("Copied To clipboard").setGravity(iToastGravityCenter).setDuration(1000).show()
+        iToast.makeText("Copied To clipboard".localized).setGravity(iToastGravityCenter).setDuration(1000).show()
     }
     
     @IBAction private func scrollViewClicked(sender: AnyObject) {
@@ -185,7 +185,7 @@ import UIKit
         let address = self.receiveAddresses!.objectAtIndex(self.receiveAddressesPageControl!.currentPage) as! String
         let pasteboard = UIPasteboard.generalPasteboard()
         pasteboard.string = address
-        iToast.makeText("Copied To clipboard").setGravity(iToastGravityCenter).setDuration(1000).show()
+        iToast.makeText("Copied To clipboard".localized).setGravity(iToastGravityCenter).setDuration(1000).show()
     }
     
     private func getAddressInfoLabel(frame: CGRect, text: String) -> UILabel {
@@ -331,7 +331,7 @@ import UIKit
                     let infoLabel = UILabel(frame: UIEdgeInsetsInsetRect(infoLabelFrame, labelEdgeInsets))
                     infoLabel.textColor = TLColors.mainAppOppositeColor()
                     infoLabel.font = UIFont.boldSystemFontOfSize(addressLabel.font.pointSize - 5)
-                    infoLabel.text = "Forward Address:"
+                    infoLabel.text = "Forward Address:".localized
                     pageView.addSubview(infoLabel)
                     //QRCodeImageView.backgroundColor = UIColor.orangeColor()
                 }
@@ -447,7 +447,7 @@ import UIKit
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) -> () {
         if(segue.identifier == "selectAccount") {
             let vc = segue.destinationViewController as! UIViewController
-            vc.navigationItem.title = "Select Account"
+            vc.navigationItem.title = "Select Account".localized
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "onAccountSelected:", name: TLNotificationEvents.EVENT_ACCOUNT_SELECTED(), object: nil)
         }
     }

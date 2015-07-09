@@ -50,7 +50,7 @@ import AVFoundation
     override func viewDidAppear(animated: Bool) -> () {
         NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_SETTINGS_SCREEN(), object: nil)
         if (AppDelegate.instance().giveExitAppNoticeForBlockExplorerAPIToTakeEffect) {
-            TLPrompts.promptSuccessMessage("Notice", message: "You must close the app in order for the API change to take effect.")
+            TLPrompts.promptSuccessMessage("Notice".localized, message: "You must close the app in order for the API change to take effect.".localized)
             AppDelegate.instance().giveExitAppNoticeForBlockExplorerAPIToTakeEffect = false
         }
     }
@@ -98,20 +98,20 @@ import AVFoundation
     func showEmailSupportViewController() {
         let mc = MFMailComposeViewController()
         mc.mailComposeDelegate = self
-        mc.setSubject(String(format: "%@ Support", TLWalletUtils.APP_NAME()))
-        mc.setMessageBody("Hi, \n\nI need help with... ", isHTML: false)
+        mc.setSubject(String(format: "%@ Support".localized, TLWalletUtils.APP_NAME()))
+        mc.setMessageBody("Hi, \n\nI need help with... ".localized, isHTML: false)
         mc.setToRecipients(["support@arcbit.zendesk.com"])
         self.presentViewController(mc, animated: true, completion: nil)
     }
     
     private func showPromptForSetBlockExplorerURL() {
         UIAlertController.showAlertInViewController(self,
-            withTitle: "Set Block Explorer URL",
+            withTitle: "Set Block Explorer URL".localized,
             message: "",
             preferredStyle: .Alert,
-            cancelButtonTitle: "Cancel",
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["OK"],
+            otherButtonTitles: ["OK".localized],
             
             preShowBlock: {(controller:UIAlertController!) in
                 
@@ -132,12 +132,12 @@ import AVFoundation
                     if (candidateURL != nil && candidateURL!.scheme != nil && candidateURL!.host != nil) {
                         TLPreferences.setInAppSettingsKitBlockExplorerURL(candidateURL!.absoluteString!)
                         TLPreferences.setBlockExplorerURL(TLPreferences.getBlockExplorerAPI(), value: candidateURL!.absoluteString!)
-                        TLPrompts.promptSuccessMessage("Notice", message: "You must exit and kill this app in order for this to take effect.")
+                        TLPrompts.promptSuccessMessage("Notice".localized, message: "You must exit and kill this app in order for this to take effect.".localized)
                     } else {
                         UIAlertController.showAlertInViewController(self,
-                            withTitle:  "Invalid URL",
-                            message: "Enter something like https://example.com",
-                            cancelButtonTitle: "OK",
+                            withTitle:  "Invalid URL".localized,
+                            message: "Enter something like https://example.com".localized,
+                            cancelButtonTitle: "OK".localized,
                             destructiveButtonTitle: nil,
                             otherButtonTitles: nil,
                             tapBlock: {(alertView, action, buttonIndex) in
@@ -150,21 +150,21 @@ import AVFoundation
     }
     
     private func showPromptForSetTransactionFee() {
-        let msg = String(format: "Input a recommended amount between %@ and %@ bitcoins", TLWalletUtils.MIN_FEE_AMOUNT(), TLWalletUtils.MAX_FEE_AMOUNT())
+        let msg = String(format: "Input a recommended amount between %@ and %@ bitcoins".localized, TLWalletUtils.MIN_FEE_AMOUNT(), TLWalletUtils.MAX_FEE_AMOUNT())
         
         func addTextField(textField: UITextField!){
-            textField.placeholder = "fee amount"
+            textField.placeholder = "fee amount".localized
             textField.keyboardType = .DecimalPad
         }
         
         UIAlertController.showAlertInViewController(self,
-            withTitle: "Transaction Fee",
+            withTitle: "Transaction Fee".localized,
             
             message: msg,
             preferredStyle: .Alert,
-            cancelButtonTitle: "Cancel",
+            cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["OK"],
+            otherButtonTitles: ["OK".localized],
             
             preShowBlock: {(controller:UIAlertController!) in
                 controller.addTextFieldWithConfigurationHandler(addTextField)
@@ -180,9 +180,9 @@ import AVFoundation
                         NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_CHANGE_AUTOMATIC_TX_FEE(), object: nil)
                         
                     } else {
-                        let msg = String(format: "Too low a transaction fee can cause transactions to take a long time to confirm. Continue anyways?")
+                        let msg = String(format: "Too low a transaction fee can cause transactions to take a long time to confirm. Continue anyways?".localized)
                         
-                        TLPrompts.promtForOKCancel(self, title: "Non-recommended Amount Transaction Fee", message: msg, success: {
+                        TLPrompts.promtForOKCancel(self, title: "Non-recommended Amount Transaction Fee".localized, message: msg, success: {
                             () in
                             let amount = TLWalletUtils.properBitcoinAmountStringToCoin(feeAmount)
                             TLPreferences.setInAppSettingsKitTransactionFee(amount.bigIntegerToBitcoinAmountString(.Bitcoin))
@@ -243,11 +243,11 @@ import AVFoundation
     
     private func promptToConfirmOverwriteCloudWalletJSONFileWithLocalWalletJSONFile() {
         UIAlertController.showAlertInViewController(self,
-            withTitle: "iCloud backup will be lost. Are you sure you want to backup your local wallet to iCloud?",
+            withTitle: "iCloud backup will be lost. Are you sure you want to backup your local wallet to iCloud?".localized,
             message: "",
-            cancelButtonTitle: "No",
+            cancelButtonTitle: "No".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Yes"],
+            otherButtonTitles: ["Yes".localized],
             
             tapBlock: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView.firstOtherButtonIndex) {
@@ -263,11 +263,11 @@ import AVFoundation
     
     private func promptToConfirmOverwriteLocalWalletJSONFileWithCloudWalletJSONFile(encryptedWalletJSON: String) {
         UIAlertController.showAlertInViewController(self,
-            withTitle: "Local wallet will be lost. Are you sure you want to restore wallet from iCloud?",
+            withTitle: "Local wallet will be lost. Are you sure you want to restore wallet from iCloud?".localized,
             message: "",
-            cancelButtonTitle: "No",
+            cancelButtonTitle: "No".localized,
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Yes"],
+            otherButtonTitles: ["Yes".localized],
             
             tapBlock: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView.firstOtherButtonIndex) {
@@ -327,14 +327,14 @@ import AVFoundation
                         dateFormatter.dateStyle = .MediumStyle
                         dateFormatter.timeStyle = .MediumStyle
                         
-                        let msg = String(format: "Your iCloud backup was last saved on %@. Do you want to restore your wallet from iCloud or backup your local wallet to iCloud?", dateFormatter.stringFromDate(cloudWalletJSONDocumentSavedDate!))
+                        let msg = String(format: "Your iCloud backup was last saved on %@. Do you want to restore your wallet from iCloud or backup your local wallet to iCloud?".localized, dateFormatter.stringFromDate(cloudWalletJSONDocumentSavedDate!))
 
                         UIAlertController.showAlertInViewController(self,
-                            withTitle: "iCloud backup found",
+                            withTitle: "iCloud backup found".localized,
                             message: msg,
-                            cancelButtonTitle: "Restore from iCloud",
+                            cancelButtonTitle: "Restore from iCloud".localized,
                             destructiveButtonTitle: nil,
-                            otherButtonTitles: ["Backup local wallet"],
+                            otherButtonTitles: ["Backup local wallet".localized],
                             tapBlock: {(alertView, action, buttonIndex) in
                                 if (buttonIndex == alertView.firstOtherButtonIndex) {
                                     self.promptToConfirmOverwriteCloudWalletJSONFileWithLocalWalletJSONFile()

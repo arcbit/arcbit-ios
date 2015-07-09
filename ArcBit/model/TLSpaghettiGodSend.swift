@@ -413,12 +413,12 @@
                     DLog("createSignedSerializedTransactionHex dustCoinAmount %@", dustCoinAmount.toString())
                     DLog("createSignedSerializedTransactionHex valueNeeded %@", valueNeeded.toString())
                     let amountCanSendString = TLWalletUtils.coinToProperBitcoinAmountString(valueNeeded.subtract(dustCoinAmount))
-                    error(String(format: "Insufficient Funds. Account contains bitcoin dust. You can only send up to %@ %@ for now.", amountCanSendString, TLWalletUtils.getBitcoinDisplay()))
+                    error(String(format: "Insufficient Funds. Account contains bitcoin dust. You can only send up to %@ %@ for now.".localized, amountCanSendString, TLWalletUtils.getBitcoinDisplay()))
                     return (nil, stealthPaymentTxidsClaiming, realToAddresses)
                 }
                 let valueSelectedString = TLWalletUtils.coinToProperBitcoinAmountString(valueSelected)
                 let valueNeededString = TLWalletUtils.coinToProperBitcoinAmountString(valueNeeded)
-                error("Insufficient Funds. Account balance is \(valueSelectedString) \(TLWalletUtils.getBitcoinDisplay()) when \(valueNeededString) \(TLWalletUtils.getBitcoinDisplay()) is required.")
+                error(String(format: "Insufficient Funds. Account balance is %@ %@ when %@ %@ is required.".localized, valueSelectedString, TLWalletUtils.getBitcoinDisplay(), valueNeededString, TLWalletUtils.getBitcoinDisplay()))
                 return (nil, stealthPaymentTxidsClaiming, realToAddresses)
             }
             
@@ -474,7 +474,7 @@
                 let outputAmount = (_outputAmount as! NSNumber).unsignedLongLongValue
                 if outputAmount <= DUST_AMOUNT {
                     let dustAmountBitcoins = TLCoin(uint64: DUST_AMOUNT).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.Bitcoin)
-                    error("Cannot create transactions with outputs less then \(dustAmountBitcoins) bitcoins.")
+                    error(String(format: "Cannot create transactions with outputs less then %@ bitcoins.".localized, dustAmountBitcoins))
                     return (nil, stealthPaymentTxidsClaiming, realToAddresses)
                 }
             }
@@ -495,7 +495,7 @@
                 }
             }
             
-            error("Encountered error creating transaction. Please try again.")
+            error("Encountered error creating transaction. Please try again.".localized)
             return (nil, stealthPaymentTxidsClaiming, realToAddresses)
     }
 }
