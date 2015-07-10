@@ -1,0 +1,138 @@
+
+/* Class = "UILabel"; text = "BTC"; ObjectID = "3XA-yE-mb3"; */
+"3XA-yE-mb3.text" = "BTC";
+
+/* Class = "UINavigationItem"; title = "Restore Wallet"; ObjectID = "4al-pX-1Gn"; */
+"4al-pX-1Gn.title" = "Restore Wallet";
+
+/* Class = "UITabBarItem"; title = "Send"; ObjectID = "4mb-2o-3A1"; */
+"4mb-2o-3A1.title" = "Send";
+
+/* Class = "UITabBarItem"; title = "Receive"; ObjectID = "4vC-pM-f1o"; */
+"4vC-pM-f1o.title" = "Receive";
+
+/* Class = "UILabel"; text = "Amount:"; ObjectID = "59b-yN-GFc"; */
+"59b-yN-GFc.text" = "Amount:";
+
+/* Class = "UILabel"; text = "Account Name"; ObjectID = "5EJ-8r-ive"; */
+"5EJ-8r-ive.text" = "Account Name";
+
+/* Class = "UILabel"; text = "Master Seed Hex"; ObjectID = "6BY-dx-fLW"; */
+"6BY-dx-fLW.text" = "Master Seed Hex";
+
+/* Class = "UITextField"; placeholder = "address"; ObjectID = "6V1-g4-Kqz"; */
+"6V1-g4-Kqz.placeholder" = "address";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "AHj-6Y-pf6"; */
+"AHj-6Y-pf6.text" = "Label";
+
+/* Class = "UINavigationItem"; title = "Root View Controller"; ObjectID = "AUN-mh-2Qy"; */
+"AUN-mh-2Qy.title" = "Root View Controller";
+
+/* Class = "UILabel"; text = "Wallet backup passphrase"; ObjectID = "C32-6S-BC5"; */
+"C32-6S-BC5.text" = "Wallet backup passphrase";
+
+/* Class = "UILabel"; text = "USD"; ObjectID = "DlS-FL-u3H"; */
+"DlS-FL-u3H.text" = "USD";
+
+/* Class = "UILabel"; text = "Enter this wallet's backup phrase to wipe it and start/restore another."; ObjectID = "End-6K-7BJ"; */
+"End-6K-7BJ.text" = "Enter this wallet's backup phrase to wipe it and start/restore another.";
+
+/* Class = "UILabel"; text = "Account Name"; ObjectID = "GKZ-gr-jad"; */
+"GKZ-gr-jad.text" = "Account Name";
+
+/* Class = "UILabel"; text = "description"; ObjectID = "HDn-9v-o1a"; */
+"HDn-9v-o1a.text" = "description";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "JHD-rx-W8M"; */
+"JHD-rx-W8M.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Address Book"; ObjectID = "JvL-Cg-kNK"; */
+"JvL-Cg-kNK.normalTitle" = "Address Book";
+
+/* Class = "UITabBarItem"; title = "Send"; ObjectID = "KIz-U8-UaX"; */
+"KIz-U8-UaX.title" = "Send";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "Koj-wy-VOb"; */
+"Koj-wy-VOb.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "100 Confimations"; ObjectID = "Lf7-5m-ufO"; */
+"Lf7-5m-ufO.text" = "100 Confimations";
+
+/* Class = "UITextView"; text = "f23324e18c237876f96d2064abbc26399cc3cd34d503cc6f2b00a9403b003dcad2cf7642e4e3311cf2e5de32307d88b116ac743f0b02fc4c2afe0e30dcd843f6"; ObjectID = "N96-Pu-vSQ"; */
+"N96-Pu-vSQ.text" = "f23324e18c237876f96d2064abbc26399cc3cd34d503cc6f2b00a9403b003dcad2cf7642e4e3311cf2e5de32307d88b116ac743f0b02fc4c2afe0e30dcd843f6";
+
+/* Class = "UILabel"; text = "Receive From:"; ObjectID = "OX8-v3-aou"; */
+"OX8-v3-aou.text" = "Receive From:";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "P5j-13-Jpg"; */
+"P5j-13-Jpg.text" = "Label";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "P8X-aW-lhi"; */
+"P8X-aW-lhi.text" = "Label";
+
+/* Class = "UILabel"; text = "date"; ObjectID = "RAj-d0-yzE"; */
+"RAj-d0-yzE.text" = "date";
+
+/* Class = "UILabel"; text = "From:"; ObjectID = "VQ0-4Z-YAo"; */
+"VQ0-4Z-YAo.text" = "From:";
+
+/* Class = "UINavigationItem"; title = "Manage Accounts"; ObjectID = "WPt-OD-Zry"; */
+"WPt-OD-Zry.title" = "Manage Accounts";
+
+/* Class = "UITextView"; text = "Loading..."; ObjectID = "YlR-nU-l4e"; */
+"YlR-nU-l4e.text" = "Loading...";
+
+/* Class = "UIButton"; normalTitle = "Review Payment"; ObjectID = "b97-9w-wKT"; */
+"b97-9w-wKT.normalTitle" = "Review Payment";
+
+/* Class = "UINavigationItem"; title = "Send"; ObjectID = "bCV-xP-8V6"; */
+"bCV-xP-8V6.title" = "Send";
+
+/* Class = "UILabel"; text = "Account Name"; ObjectID = "cmA-Xp-Fwi"; */
+"cmA-Xp-Fwi.text" = "Account Name";
+
+/* Class = "UILabel"; text = "Write down the 12 word passphrase below and keep it safe. You can restore your wallet with this single passphrase."; ObjectID = "evC-L0-0Dc"; */
+"evC-L0-0Dc.text" = "Write down the 12 word passphrase below and keep it safe. You can restore your wallet with this single passphrase.";
+
+/* Class = "UITabBarItem"; title = "Receive"; ObjectID = "hWO-u0-HoS"; */
+"hWO-u0-HoS.title" = "Receive";
+
+/* Class = "UILabel"; text = "Label"; ObjectID = "i0i-6T-FsV"; */
+"i0i-6T-FsV.text" = "Label";
+
+/* Class = "UIButton"; normalTitle = "Scan QR"; ObjectID = "i9k-eB-RT8"; */
+"i9k-eB-RT8.normalTitle" = "Scan QR";
+
+/* Class = "UINavigationItem"; title = "History"; ObjectID = "kF7-DP-jfw"; */
+"kF7-DP-jfw.title" = "History";
+
+/* Class = "UINavigationItem"; title = "Help"; ObjectID = "m13-Co-pa3"; */
+"m13-Co-pa3.title" = "Help";
+
+/* Class = "UINavigationItem"; title = "Address Book"; ObjectID = "ob3-Xc-rR5"; */
+"ob3-Xc-rR5.title" = "Address Book";
+
+/* Class = "UITextView"; text = "nice muse brush descend pattern focus bleed college sneak calm leap flight"; ObjectID = "p18-DP-CtY"; */
+"p18-DP-CtY.text" = "nice muse brush descend pattern focus bleed college sneak calm leap flight";
+
+/* Class = "UIButton"; normalTitle = "Button"; ObjectID = "q2V-qX-91M"; */
+"q2V-qX-91M.normalTitle" = "Button";
+
+/* Class = "UILabel"; text = "Account Name"; ObjectID = "qKO-FH-M15"; */
+"qKO-FH-M15.text" = "Account Name";
+
+/* Class = "UINavigationItem"; title = "Receive"; ObjectID = "wZG-Zf-k4F"; */
+"wZG-Zf-k4F.title" = "Receive";
+
+/* Class = "UILabel"; text = "The master seed hex is derived from the passphrase. If you want to import Bitcoins into another wallet, and if that other wallets don't use BIP39, then it's possible to import the Bitcoins using the master seed hex as long as they support BIP44."; ObjectID = "wjz-SH-FCO"; */
+"wjz-SH-FCO.text" = "The master seed hex is derived from the passphrase. If you want to import Bitcoins into another wallet, and if that other wallets don't use BIP39, then it's possible to import the Bitcoins using the master seed hex as long as they support BIP44.";
+
+/* Class = "UILabel"; text = "To:"; ObjectID = "xuQ-JE-0IT"; */
+"xuQ-JE-0IT.text" = "To:";
+
+/* Class = "UILabel"; text = "From:"; ObjectID = "yUe-8I-uLU"; */
+"yUe-8I-uLU.text" = "From:";
+
+/* Class = "UINavigationItem"; title = "Passphrase"; ObjectID = "zdP-16-weC"; */
+"zdP-16-weC.title" = "Passphrase";

@@ -387,6 +387,7 @@
 		690A9A840A6B0FCCB49CD6CD /* Pods-ArcBitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArcBitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ArcBitTests/Pods-ArcBitTests.debug.xcconfig"; sourceTree = "<group>"; };
 		7817897D0741470B5FDCA66C /* Pods-ArcBit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArcBit.release.xcconfig"; path = "Pods/Target Support Files/Pods-ArcBit/Pods-ArcBit.release.xcconfig"; sourceTree = "<group>"; };
 		C00413491ACEFAF200505F31 /* TLOperationsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLOperationsManager.swift; sourceTree = "<group>"; };
+		C01A489E1B4F9E6E004D7FA0 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
 		C02D3B101B4A45F500B3B7F0 /* ArcBitBeta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ArcBitBeta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C02D3B111B4A45F500B3B7F0 /* ArcBit copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "ArcBit copy-Info.plist"; path = "/Users/timothylee/git/arcbit-ios/ArcBit copy-Info.plist"; sourceTree = "<absolute>"; };
 		C0378C921AF4A1850083206F /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
@@ -1856,6 +1857,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				C0A192E71ABF707400BED648 /* Base */,
+				C01A489E1B4F9E6E004D7FA0 /* ru */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
