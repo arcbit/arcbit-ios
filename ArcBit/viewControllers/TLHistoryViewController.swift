@@ -229,7 +229,7 @@ import CoreData
         let amount = TLWalletUtils.getProperAmount(AppDelegate.instance().historySelectedObject!.getAccountAmountChangeForTx(txObject!.getHash()! as String)!)
         let amountType = AppDelegate.instance().historySelectedObject!.getAccountAmountChangeTypeForTx(txObject!.getHash()! as String)
         var amountTypeString = ""
-        let txTag = TLWallet.instance().getTransactionTag(txObject!.getHash()! as String)
+        let txTag = AppDelegate.instance().appWallet.getTransactionTag(txObject!.getHash()! as String)
 
         cell!.descriptionLabel!.adjustsFontSizeToFitWidth = true
         if (amountType == .Send) {
@@ -359,9 +359,9 @@ import CoreData
                     TLPrompts.promtForInputText(self, title:"Edit Transaction tag".localized, message: "", textFieldPlaceholder: "tag".localized, success: {
                         (inputText: String!) in
                         if (inputText == "") {
-                            TLWallet.instance().deleteTransactionTag(txHash as String)
+                            AppDelegate.instance().appWallet.deleteTransactionTag(txHash as String)
                         } else {
-                            TLWallet.instance().setTransactionTag(txHash as String, tag: inputText)
+                            AppDelegate.instance().appWallet.setTransactionTag(txHash as String, tag: inputText)
                             NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_TAG_TRANSACTION(),
                                 object: nil, userInfo: nil)
                         }

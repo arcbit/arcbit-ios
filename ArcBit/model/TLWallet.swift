@@ -184,14 +184,6 @@ enum TLStealthPaymentStatus:Int {
     private var currentHDWalletIdx: Int?
     private var masterHex: String?
     
-    class func instance() -> (TLWallet) {
-        if (STATIC_MEMBERS._instance == nil) {
-            STATIC_MEMBERS._instance = TLWallet()
-        }
-        return STATIC_MEMBERS._instance!
-        
-    }
-    
     class func createAddressKey(changeIdx: Int, addressIdx: Int) -> String {
         return String(format: "%lu,%lu", changeIdx, addressIdx)
     }
@@ -358,7 +350,7 @@ enum TLStealthPaymentStatus:Int {
     func updateMainAddressStatusFromHDWallet(accountIdx: Int, addressIdx: Int,
         addressStatus: TLAddressStatus) -> () {
             let accountDict = getAccountDict(accountIdx)
-            TLWallet.instance().updateMainAddressStatus(accountDict,
+            self.updateMainAddressStatus(accountDict,
                 addressIdx: addressIdx,
                 addressStatus: addressStatus)
     }
@@ -366,7 +358,7 @@ enum TLStealthPaymentStatus:Int {
     func updateMainAddressStatusFromImportedAccount(idx: Int, addressIdx: Int,
         addressStatus: TLAddressStatus) -> () {
             let accountDict = getImportedAccountAtIndex(idx)
-            TLWallet.instance().updateMainAddressStatus(accountDict,
+            self.updateMainAddressStatus(accountDict,
                 addressIdx: addressIdx,
                 addressStatus: addressStatus)
     }
@@ -374,7 +366,7 @@ enum TLStealthPaymentStatus:Int {
     func updateMainAddressStatusFromImportedWatchAccount(idx: Int, addressIdx: Int,
         addressStatus: TLAddressStatus) -> () {
             let accountDict = getImportedWatchOnlyAccountAtIndex(idx)
-            TLWallet.instance().updateMainAddressStatus(accountDict,
+            self.updateMainAddressStatus(accountDict,
                 addressIdx: addressIdx,
                 addressStatus: addressStatus)
     }
@@ -405,7 +397,7 @@ enum TLStealthPaymentStatus:Int {
     func updateChangeAddressStatusFromHDWallet(accountIdx: Int, addressIdx: Int,
         addressStatus: TLAddressStatus) -> () {
             let accountDict = getAccountDict(accountIdx)
-            TLWallet.instance().updateChangeAddressStatus(accountDict,
+            self.updateChangeAddressStatus(accountDict,
                 addressIdx: addressIdx,
                 addressStatus: addressStatus)
     }
@@ -413,7 +405,7 @@ enum TLStealthPaymentStatus:Int {
     func updateChangeAddressStatusFromImportedAccount(idx: Int, addressIdx: Int,
         addressStatus: TLAddressStatus) -> () {
             let accountDict = getImportedAccountAtIndex(idx)
-            TLWallet.instance().updateChangeAddressStatus(accountDict,
+            self.updateChangeAddressStatus(accountDict,
                 addressIdx: addressIdx,
                 addressStatus: addressStatus)
     }
@@ -421,7 +413,7 @@ enum TLStealthPaymentStatus:Int {
     func updateChangeAddressStatusFromImportedWatchAccount(idx: Int, addressIdx: Int,
         addressStatus: TLAddressStatus) -> () {
             let accountDict = getImportedWatchOnlyAccountAtIndex(idx)
-            TLWallet.instance().updateChangeAddressStatus(accountDict,
+            self.updateChangeAddressStatus(accountDict,
                 addressIdx: addressIdx,
                 addressStatus: addressStatus)
     }
@@ -451,17 +443,17 @@ enum TLStealthPaymentStatus:Int {
     //----------------------------------------------------------------------------------------------------------------
     func getMinMainAddressIdxFromHDWallet(accountIdx: Int) -> Int {
         let accountDict = getAccountDict(accountIdx)
-        return TLWallet.instance().getMinMainAddressIdx(accountDict)
+        return self.getMinMainAddressIdx(accountDict)
     }
     
     func getMinMainAddressIdxFromImportedAccount(idx: Int) -> (Int) {
         let accountDict = getImportedAccountAtIndex(idx)
-        return TLWallet.instance().getMinMainAddressIdx(accountDict)
+        return self.getMinMainAddressIdx(accountDict)
     }
     
     func getMinMainAddressIdxFromImportedWatchAccount(idx: Int) -> (Int) {
         let accountDict = getImportedWatchOnlyAccountAtIndex(idx)
-        return TLWallet.instance().getMinMainAddressIdx(accountDict)
+        return self.getMinMainAddressIdx(accountDict)
     }
     
     func getMinMainAddressIdx(accountDict: NSMutableDictionary) -> (Int) {
@@ -470,17 +462,17 @@ enum TLStealthPaymentStatus:Int {
     
     func getMinChangeAddressIdxFromHDWallet(accountIdx: Int) -> (Int) {
         let accountDict = getAccountDict(accountIdx)
-        return TLWallet.instance().getMinChangeAddressIdx(accountDict) as Int
+        return self.getMinChangeAddressIdx(accountDict) as Int
     }
     
     func getMinChangeAddressIdxFromImportedAccount(idx: Int) -> (Int) {
         let accountDict = getImportedAccountAtIndex(idx)
-        return TLWallet.instance().getMinChangeAddressIdx(accountDict) as Int
+        return self.getMinChangeAddressIdx(accountDict) as Int
     }
     
     func getMinChangeAddressIdxFromImportedWatchAccount(idx: Int) -> (Int) {
         let accountDict = getImportedWatchOnlyAccountAtIndex(idx)
-        return TLWallet.instance().getMinChangeAddressIdx(accountDict) as Int
+        return self.getMinChangeAddressIdx(accountDict) as Int
     }
     
     func getMinChangeAddressIdx(accountDict: NSMutableDictionary) -> (Int) {
@@ -720,7 +712,7 @@ enum TLStealthPaymentStatus:Int {
                 setCurrentAccountID("0")
             }
             
-            return TLAccountObject(dict: accountDict, accountType: .HDWallet)
+            return TLAccountObject(appWallet: self, dict: accountDict, accountType: .HDWallet)
     }
     
     private func createWallet(passphrase: String, masterHex: String, walletName: String) -> (NSMutableDictionary) {
@@ -790,7 +782,7 @@ enum TLStealthPaymentStatus:Int {
         importedAccountsArray.addObject(accountDict)
         NSNotificationCenter.defaultCenter().postNotificationName(STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
         
-        return TLAccountObject(dict: accountDict, accountType: .Imported)
+        return TLAccountObject(appWallet: self, dict: accountDict, accountType: .Imported)
     }
     
     func deleteImportedAccount(idx: Int) -> () {
@@ -814,7 +806,7 @@ enum TLStealthPaymentStatus:Int {
         
         let accountObjectArray = NSMutableArray()
         for accountDict in accountsArray as! [NSDictionary] {
-            let accountObject = TLAccountObject(dict: accountDict, accountType: .Imported)
+            let accountObject = TLAccountObject(appWallet: self, dict: accountDict, accountType: .Imported)
             accountObjectArray.addObject(accountObject)
             
             
@@ -830,7 +822,7 @@ enum TLStealthPaymentStatus:Int {
         let watchOnlyAccountDict = createAccountDictWithPreload("", extendedKey: extendedPublicKey, isPrivateExtendedKey: false, accountIdx: accountIdx, preloadStartingAddresses: false)
         watchOnlyAccountsArray.addObject(watchOnlyAccountDict)
         NSNotificationCenter.defaultCenter().postNotificationName(STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
-        return TLAccountObject(dict: watchOnlyAccountDict, accountType: .ImportedWatch)
+        return TLAccountObject(appWallet: self, dict: watchOnlyAccountDict, accountType: .ImportedWatch)
     }
     
     func deleteWatchOnlyAccount(idx: Int) -> () {
@@ -857,7 +849,7 @@ enum TLStealthPaymentStatus:Int {
         
         let accountObjectArray = NSMutableArray()
         for accountDict in accountsArray as! [NSDictionary] {
-            let accountObject = TLAccountObject(dict: accountDict, accountType: .ImportedWatch)
+            let accountObject = TLAccountObject(appWallet: self, dict: accountDict, accountType: .ImportedWatch)
             accountObjectArray.addObject(accountObject)
         }
         return accountObjectArray
@@ -1145,7 +1137,7 @@ enum TLStealthPaymentStatus:Int {
         
         let accountObjectArray = NSMutableArray()
         for accountDict in accountsArray {
-            let accountObject = TLAccountObject(dict: accountDict as! NSDictionary, accountType: .HDWallet)
+            let accountObject = TLAccountObject(appWallet: self, dict: accountDict as! NSDictionary, accountType: .HDWallet)
             accountObjectArray.addObject(accountObject)
         }
         return accountObjectArray
@@ -1154,7 +1146,7 @@ enum TLStealthPaymentStatus:Int {
     private func getAccountObjectForIdx(accountIdx: Int) -> (TLAccountObject) {
         let accountsArray = getAccountsArray()
         let accountDict = accountsArray.objectAtIndex(accountIdx) as! NSDictionary
-        return TLAccountObject(dict: accountDict, accountType: .HDWallet)
+        return TLAccountObject(appWallet: self, dict: accountDict, accountType: .HDWallet)
     }
 }
 

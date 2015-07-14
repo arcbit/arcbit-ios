@@ -31,6 +31,7 @@ import Foundation
     let MAX_ACTIVE_CHANGE_ADDRESS_TO_HAVE = 55
     let EXTENDED_KEY_DEFAULT_ACCOUNT_NAME_LENGTH = 50
     
+    private var appWallet:TLWallet?
     private var accountDict: NSMutableDictionary?
     private var unspentOutputs: NSMutableArray?
     private var stealthPaymentUnspentOutputs: NSMutableArray?
@@ -59,7 +60,7 @@ import Foundation
     private var extendedPrivateKey: String?
     var stealthWallet: TLStealthWallet?
     var downloadState:TLDownloadState = .NotDownloading
-    
+
     class func MAX_ACCOUNT_WAIT_TO_RECEIVE_ADDRESS() -> (Int) {
         return 5
     }
@@ -159,8 +160,9 @@ import Foundation
         }
     }
     
-    init(dict: NSDictionary, accountType at: TLAccountType) {
+    init(appWallet: TLWallet, dict: NSDictionary, accountType at: TLAccountType) {
         super.init()
+        self.appWallet = appWallet
         accountType = at
         accountDict = NSMutableDictionary(dictionary: dict)
         unspentOutputs = nil
@@ -648,11 +650,11 @@ import Foundation
                         mainArchivedAddresses.append(address)
                     } else {
                         if (accountType == TLAccountType.HDWallet) {
-                            assert(addressIdx == TLWallet.instance().getMinMainAddressIdxFromHDWallet(accountIdx), "")
+                            assert(addressIdx == self.appWallet!.getMinMainAddressIdxFromHDWallet(accountIdx), "")
                         } else if (accountType == TLAccountType.Imported) {
-                            assert(addressIdx == TLWallet.instance().getMinMainAddressIdxFromImportedAccount(getPositionInWalletArray()), "")
+                            assert(addressIdx == self.appWallet!.getMinMainAddressIdxFromImportedAccount(getPositionInWalletArray()), "")
                         } else {
-                            assert(addressIdx == TLWallet.instance().getMinMainAddressIdxFromImportedWatchAccount(getPositionInWalletArray()), "")
+                            assert(addressIdx == self.appWallet!.getMinMainAddressIdxFromImportedWatchAccount(getPositionInWalletArray()), "")
                         }
                     }
                     
@@ -660,15 +662,15 @@ import Foundation
                     mainActiveAddresses.removeAtIndex(find(mainActiveAddresses, address)!)
                     activeAddressesDict.removeValueForKey(address)
                     if (accountType == TLAccountType.HDWallet) {
-                        TLWallet.instance().updateMainAddressStatusFromHDWallet(accountIdx,
+                        self.appWallet!.updateMainAddressStatusFromHDWallet(accountIdx,
                             addressIdx: addressIdx,
                             addressStatus: TLAddressStatus.Archived)
                     } else if (accountType == TLAccountType.Imported) {
-                        TLWallet.instance().updateMainAddressStatusFromImportedAccount(getPositionInWalletArray(),
+                        self.appWallet!.updateMainAddressStatusFromImportedAccount(getPositionInWalletArray(),
                             addressIdx: addressIdx,
                             addressStatus: TLAddressStatus.Archived)
                     } else {
-                        TLWallet.instance().updateMainAddressStatusFromImportedWatchAccount(getPositionInWalletArray(),
+                        self.appWallet!.updateMainAddressStatusFromImportedWatchAccount(getPositionInWalletArray(),
                             addressIdx: addressIdx,
                             addressStatus: TLAddressStatus.Archived)
                     }
@@ -702,11 +704,11 @@ import Foundation
                         changeArchivedAddresses.append(address)
                     } else {
                         if (accountType == TLAccountType.HDWallet) {
-                            assert(addressIdx == TLWallet.instance().getMinChangeAddressIdxFromHDWallet(accountIdx), "")
+                            assert(addressIdx == self.appWallet!.getMinChangeAddressIdxFromHDWallet(accountIdx), "")
                         } else if (accountType == TLAccountType.Imported) {
-                            assert(addressIdx == TLWallet.instance().getMinChangeAddressIdxFromImportedAccount(getPositionInWalletArray()), "")
+                            assert(addressIdx == self.appWallet!.getMinChangeAddressIdxFromImportedAccount(getPositionInWalletArray()), "")
                         } else {
-                            assert(addressIdx == TLWallet.instance().getMinChangeAddressIdxFromImportedWatchAccount(getPositionInWalletArray()), "")
+                            assert(addressIdx == self.appWallet!.getMinChangeAddressIdxFromImportedWatchAccount(getPositionInWalletArray()), "")
                         }
                     }
                     
@@ -714,15 +716,15 @@ import Foundation
                     changeActiveAddresses.removeAtIndex(find(changeActiveAddresses, address)!)
                     activeAddressesDict.removeValueForKey(address)
                     if (accountType == TLAccountType.HDWallet) {
-                        TLWallet.instance().updateChangeAddressStatusFromHDWallet(accountIdx,
+                        self.appWallet!.updateChangeAddressStatusFromHDWallet(accountIdx,
                             addressIdx: addressIdx,
                             addressStatus: TLAddressStatus.Archived)
                     } else if (accountType == TLAccountType.Imported) {
-                        TLWallet.instance().updateChangeAddressStatusFromImportedAccount(getPositionInWalletArray(),
+                        self.appWallet!.updateChangeAddressStatusFromImportedAccount(getPositionInWalletArray(),
                             addressIdx: addressIdx,
                             addressStatus: TLAddressStatus.Archived)
                     } else {
-                        TLWallet.instance().updateChangeAddressStatusFromImportedWatchAccount(getPositionInWalletArray(),
+                        self.appWallet!.updateChangeAddressStatusFromImportedWatchAccount(getPositionInWalletArray(),
                             addressIdx: addressIdx,
                             addressStatus: TLAddressStatus.Archived)
                     }
@@ -768,11 +770,11 @@ import Foundation
         
         if (accountType == TLAccountType.HDWallet) {
             let accountIdx = accountDict!.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_IDX) as! Int
-            addressDict = TLWallet.instance().getNewMainAddressFromHDWallet(accountIdx, expectedAddressIndex: expectedAddressIndex)
+            addressDict = self.appWallet!.getNewMainAddressFromHDWallet(accountIdx, expectedAddressIndex: expectedAddressIndex)
         } else if (accountType == TLAccountType.Imported) {
-            addressDict = TLWallet.instance().getNewMainAddressFromImportedAccount(positionInWalletArray, expectedAddressIndex: expectedAddressIndex)
+            addressDict = self.appWallet!.getNewMainAddressFromImportedAccount(positionInWalletArray, expectedAddressIndex: expectedAddressIndex)
         } else {
-            addressDict = TLWallet.instance().getNewMainAddressFromImportedWatchAccount(positionInWalletArray, expectedAddressIndex: expectedAddressIndex)
+            addressDict = self.appWallet!.getNewMainAddressFromImportedWatchAccount(positionInWalletArray, expectedAddressIndex: expectedAddressIndex)
         }
         
         let address = addressDict.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String
@@ -794,11 +796,11 @@ import Foundation
         
         if (accountType == TLAccountType.HDWallet) {
             let accountIdx = accountDict!.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_IDX) as! Int
-            addressDict = TLWallet.instance().getNewChangeAddressFromHDWallet(accountIdx, expectedAddressIndex: expectedAddressIndex)
+            addressDict = self.appWallet!.getNewChangeAddressFromHDWallet(accountIdx, expectedAddressIndex: expectedAddressIndex)
         } else if (accountType == TLAccountType.Imported) {
-            addressDict = TLWallet.instance().getNewChangeAddressFromImportedAccount(positionInWalletArray, expectedAddressIndex: expectedAddressIndex)
+            addressDict = self.appWallet!.getNewChangeAddressFromImportedAccount(positionInWalletArray, expectedAddressIndex: expectedAddressIndex)
         } else {
-            addressDict = TLWallet.instance().getNewChangeAddressFromImportedWatchAccount(UInt(positionInWalletArray), expectedAddressIndex: expectedAddressIndex)
+            addressDict = self.appWallet!.getNewChangeAddressFromImportedWatchAccount(UInt(positionInWalletArray), expectedAddressIndex: expectedAddressIndex)
         }
         
         let address = addressDict.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String
@@ -819,11 +821,11 @@ import Foundation
         var removedAddress = ""
         if (accountType == TLAccountType.HDWallet) {
             let accountIdx = accountDict!.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_IDX) as! Int
-            removedAddress = TLWallet.instance().removeTopMainAddressFromHDWallet(accountIdx)!
+            removedAddress = self.appWallet!.removeTopMainAddressFromHDWallet(accountIdx)!
         } else if (accountType == TLAccountType.Imported) {
-            removedAddress = TLWallet.instance().removeTopMainAddressFromImportedAccount(positionInWalletArray)!
+            removedAddress = self.appWallet!.removeTopMainAddressFromImportedAccount(positionInWalletArray)!
         } else if (accountType == TLAccountType.ImportedWatch) {
-            removedAddress = TLWallet.instance().removeTopMainAddressFromImportedWatchAccount(positionInWalletArray)!
+            removedAddress = self.appWallet!.removeTopMainAddressFromImportedWatchAccount(positionInWalletArray)!
         }
         
         if (count(mainActiveAddresses) > 0) {
@@ -853,11 +855,11 @@ import Foundation
         var removedAddress = ""
         if (accountType == TLAccountType.HDWallet) {
             let accountIdx = accountDict!.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_IDX) as! Int
-            removedAddress = TLWallet.instance().removeTopChangeAddressFromHDWallet(accountIdx)!
+            removedAddress = self.appWallet!.removeTopChangeAddressFromHDWallet(accountIdx)!
         } else if (accountType == TLAccountType.Imported) {
-            removedAddress = TLWallet.instance().removeTopChangeAddressFromImportedAccount(positionInWalletArray)!
+            removedAddress = self.appWallet!.removeTopChangeAddressFromImportedAccount(positionInWalletArray)!
         } else if (accountType == TLAccountType.ImportedWatch) {
-            removedAddress = TLWallet.instance().removeTopChangeAddressFromImportedWatchAccount(positionInWalletArray)!
+            removedAddress = self.appWallet!.removeTopChangeAddressFromImportedWatchAccount(positionInWalletArray)!
         }
         
         if (count(changeActiveAddresses) > 0) {
@@ -913,11 +915,11 @@ import Foundation
         } else {
             if (accountType == TLAccountType.HDWallet) {
                 let accountIdx = accountDict!.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_IDX) as! Int
-                return TLWallet.instance().getMinMainAddressIdxFromHDWallet(accountIdx)
+                return self.appWallet!.getMinMainAddressIdxFromHDWallet(accountIdx)
             } else if (accountType == TLAccountType.Imported) {
-                return TLWallet.instance().getMinMainAddressIdxFromImportedAccount(getPositionInWalletArray())
+                return self.appWallet!.getMinMainAddressIdxFromImportedAccount(getPositionInWalletArray())
             } else {
-                return TLWallet.instance().getMinMainAddressIdxFromImportedWatchAccount(getPositionInWalletArray())
+                return self.appWallet!.getMinMainAddressIdxFromImportedWatchAccount(getPositionInWalletArray())
             }
         }
     }
@@ -936,11 +938,11 @@ import Foundation
         } else {
             if (accountType == TLAccountType.HDWallet) {
                 let accountIdx = accountDict!.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_IDX) as! Int
-                return TLWallet.instance().getMinChangeAddressIdxFromHDWallet(accountIdx)
+                return self.appWallet!.getMinChangeAddressIdxFromHDWallet(accountIdx)
             } else if (accountType == TLAccountType.Imported) {
-                return TLWallet.instance().getMinChangeAddressIdxFromImportedAccount(getPositionInWalletArray())
+                return self.appWallet!.getMinChangeAddressIdxFromImportedAccount(getPositionInWalletArray())
             } else {
-                return TLWallet.instance().getMinChangeAddressIdxFromImportedWatchAccount(getPositionInWalletArray())
+                return self.appWallet!.getMinChangeAddressIdxFromImportedWatchAccount(getPositionInWalletArray())
             }
         }
     }
@@ -1140,11 +1142,11 @@ import Foundation
     func updateAccountNeedsRecovering(needsRecovering: Bool) -> () {
         if (accountType == TLAccountType.HDWallet) {
             let accountIdx = accountDict!.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_IDX) as! Int
-            TLWallet.instance().updateAccountNeedsRecoveringFromHDWallet(accountIdx, accountNeedsRecovering: needsRecovering)
+            self.appWallet!.updateAccountNeedsRecoveringFromHDWallet(accountIdx, accountNeedsRecovering: needsRecovering)
         } else if (accountType == TLAccountType.Imported) {
-            TLWallet.instance().updateAccountNeedsRecoveringFromImportedAccount(getPositionInWalletArray(), accountNeedsRecovering: needsRecovering)
+            self.appWallet!.updateAccountNeedsRecoveringFromImportedAccount(getPositionInWalletArray(), accountNeedsRecovering: needsRecovering)
         } else {
-            TLWallet.instance().updateAccountNeedsRecoveringFromImportedWatchAccount(getPositionInWalletArray(), accountNeedsRecovering: needsRecovering)
+            self.appWallet!.updateAccountNeedsRecoveringFromImportedWatchAccount(getPositionInWalletArray(), accountNeedsRecovering: needsRecovering)
         }
         accountDict!.setObject(needsRecovering, forKey: TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_NEEDS_RECOVERING)
     }
@@ -1166,13 +1168,13 @@ import Foundation
         
         if (accountType == TLAccountType.HDWallet) {
             let accountIdx = accountDict!.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_IDX) as! Int
-            TLWallet.instance().clearAllAddressesFromHDWallet(accountIdx)
-            TLWallet.instance().clearAllStealthPaymentsFromHDWallet(accountIdx)
+            self.appWallet!.clearAllAddressesFromHDWallet(accountIdx)
+            self.appWallet!.clearAllStealthPaymentsFromHDWallet(accountIdx)
         } else if (accountType == TLAccountType.Imported) {
-            TLWallet.instance().clearAllAddressesFromImportedAccount(getPositionInWalletArray())
-            TLWallet.instance().clearAllStealthPaymentsFromImportedAccount(getPositionInWalletArray())
+            self.appWallet!.clearAllAddressesFromImportedAccount(getPositionInWalletArray())
+            self.appWallet!.clearAllStealthPaymentsFromImportedAccount(getPositionInWalletArray())
         } else {
-            TLWallet.instance().clearAllAddressesFromImportedWatchAccount(getPositionInWalletArray())
+            self.appWallet!.clearAllAddressesFromImportedWatchAccount(getPositionInWalletArray())
         }
         
 
@@ -1440,35 +1442,35 @@ import Foundation
     func setStealthAddressServerStatus(serverURL: String, isWatching: Bool) -> () {
         if (self.accountType == TLAccountType.HDWallet) {
             let accountIdx = self.getAccountIdxNumber()
-            TLWallet.instance().setStealthAddressServerStatusHDWallet(accountIdx, serverURL: serverURL, isWatching: isWatching)
+            self.appWallet!.setStealthAddressServerStatusHDWallet(accountIdx, serverURL: serverURL, isWatching: isWatching)
         } else if (self.accountType == TLAccountType.Imported) {
-            TLWallet.instance().setStealthAddressServerStatusImportedAccount(self.getPositionInWalletArray(), serverURL: serverURL, isWatching: isWatching)
+            self.appWallet!.setStealthAddressServerStatusImportedAccount(self.getPositionInWalletArray(), serverURL: serverURL, isWatching: isWatching)
         } else {
-            TLWallet.instance().setStealthAddressServerStatusImportedWatchAccount(self.getPositionInWalletArray(), serverURL: serverURL, isWatching: isWatching)
+            self.appWallet!.setStealthAddressServerStatusImportedWatchAccount(self.getPositionInWalletArray(), serverURL: serverURL, isWatching: isWatching)
         }
     }
 
     func setStealthAddressLastTxTime(serverURL: String, lastTxTime: UInt64) -> () {
         if (self.accountType == TLAccountType.HDWallet) {
             let accountIdx = self.getAccountIdxNumber()
-            TLWallet.instance().setStealthAddressLastTxTimeHDWallet(accountIdx, serverURL: serverURL, lastTxTime: lastTxTime)
+            self.appWallet!.setStealthAddressLastTxTimeHDWallet(accountIdx, serverURL: serverURL, lastTxTime: lastTxTime)
         } else if (self.accountType == TLAccountType.Imported) {
-            TLWallet.instance().setStealthAddressLastTxTimeImportedAccount(self.getPositionInWalletArray(), serverURL: serverURL, lastTxTime: lastTxTime)
+            self.appWallet!.setStealthAddressLastTxTimeImportedAccount(self.getPositionInWalletArray(), serverURL: serverURL, lastTxTime: lastTxTime)
         } else {
-            TLWallet.instance().setStealthAddressLastTxTimeImportedWatchAccount(self.getPositionInWalletArray(), serverURL: serverURL, lastTxTime: lastTxTime)
+            self.appWallet!.setStealthAddressLastTxTimeImportedWatchAccount(self.getPositionInWalletArray(), serverURL: serverURL, lastTxTime: lastTxTime)
         }
     }
     
     func addStealthAddressPaymentKey(privateKey:String, address:String, txid: String, txTime: UInt64, stealthPaymentStatus: TLStealthPaymentStatus) -> () {
         if (accountType == TLAccountType.HDWallet) {
             let accountIdx = self.getAccountIdxNumber()
-            TLWallet.instance().addStealthAddressPaymentKeyHDWallet(accountIdx, privateKey:privateKey,
+            self.appWallet!.addStealthAddressPaymentKeyHDWallet(accountIdx, privateKey:privateKey,
                 address:address, txid:txid, txTime: txTime, stealthPaymentStatus: stealthPaymentStatus)
         } else if (accountType == TLAccountType.Imported) {
-            TLWallet.instance().addStealthAddressPaymentKeyImportedAccount(self.getPositionInWalletArray(),
+            self.appWallet!.addStealthAddressPaymentKeyImportedAccount(self.getPositionInWalletArray(),
                 privateKey:privateKey, address:address, txid:txid, txTime: txTime, stealthPaymentStatus: stealthPaymentStatus)
         } else if (accountType == TLAccountType.ImportedWatch) {
-            TLWallet.instance().addStealthAddressPaymentKeyImportedWatchAccount(self.getPositionInWalletArray(),
+            self.appWallet!.addStealthAddressPaymentKeyImportedWatchAccount(self.getPositionInWalletArray(),
                 privateKey:privateKey, address:address, txid:txid, txTime: txTime, stealthPaymentStatus: stealthPaymentStatus)
         }
     }
@@ -1476,13 +1478,13 @@ import Foundation
     func setStealthPaymentStatus(txid: String, stealthPaymentStatus: TLStealthPaymentStatus, lastCheckTime: UInt64) -> () {
         if (accountType == TLAccountType.HDWallet) {
             let accountIdx = self.getAccountIdxNumber()
-            TLWallet.instance().setStealthPaymentStatusHDWallet(accountIdx, txid:txid,
+            self.appWallet!.setStealthPaymentStatusHDWallet(accountIdx, txid:txid,
                 stealthPaymentStatus:stealthPaymentStatus, lastCheckTime: lastCheckTime)
         } else if (accountType == TLAccountType.Imported) {
-            TLWallet.instance().setStealthPaymentStatusImportedAccount(self.getPositionInWalletArray(),
+            self.appWallet!.setStealthPaymentStatusImportedAccount(self.getPositionInWalletArray(),
                 txid:txid, stealthPaymentStatus:stealthPaymentStatus, lastCheckTime: lastCheckTime)
         } else if (accountType == TLAccountType.ImportedWatch) {
-            TLWallet.instance().setStealthPaymentStatusImportedWatchAccount(self.getPositionInWalletArray(),
+            self.appWallet!.setStealthPaymentStatusImportedWatchAccount(self.getPositionInWalletArray(),
                 txid:txid, stealthPaymentStatus:stealthPaymentStatus, lastCheckTime: lastCheckTime)
         }
     }
@@ -1490,22 +1492,22 @@ import Foundation
     func removeOldStealthPayments() -> () {
         if (accountType == TLAccountType.HDWallet) {
             let accountIdx = self.getAccountIdxNumber()
-            TLWallet.instance().removeOldStealthPaymentsHDWallet(accountIdx)
+            self.appWallet!.removeOldStealthPaymentsHDWallet(accountIdx)
         } else if (accountType == TLAccountType.Imported) {
-            TLWallet.instance().removeOldStealthPaymentsImportedAccount(self.getPositionInWalletArray())
+            self.appWallet!.removeOldStealthPaymentsImportedAccount(self.getPositionInWalletArray())
         } else if (accountType == TLAccountType.ImportedWatch) {
-            TLWallet.instance().removeOldStealthPaymentsImportedWatchAccount(self.getPositionInWalletArray())
+            self.appWallet!.removeOldStealthPaymentsImportedWatchAccount(self.getPositionInWalletArray())
         }
     }
 
     func setStealthPaymentLastCheckTime(txid: String, lastCheckTime: UInt64) -> () {
         if (accountType == TLAccountType.HDWallet) {
             let accountIdx = self.getAccountIdxNumber()
-            TLWallet.instance().setStealthPaymentLastCheckTimeHDWallet(accountIdx, txid: txid, lastCheckTime: lastCheckTime)
+            self.appWallet!.setStealthPaymentLastCheckTimeHDWallet(accountIdx, txid: txid, lastCheckTime: lastCheckTime)
         } else if (accountType == TLAccountType.Imported) {
-            TLWallet.instance().setStealthPaymentLastCheckTimeImportedAccount(self.getPositionInWalletArray(), txid: txid, lastCheckTime: lastCheckTime)
+            self.appWallet!.setStealthPaymentLastCheckTimeImportedAccount(self.getPositionInWalletArray(), txid: txid, lastCheckTime: lastCheckTime)
         } else if (accountType == TLAccountType.ImportedWatch) {
-            TLWallet.instance().setStealthPaymentLastCheckTimeImportedWatchAccount(self.getPositionInWalletArray(), txid: txid, lastCheckTime: lastCheckTime)
+            self.appWallet!.setStealthPaymentLastCheckTimeImportedWatchAccount(self.getPositionInWalletArray(), txid: txid, lastCheckTime: lastCheckTime)
         }
     }
     

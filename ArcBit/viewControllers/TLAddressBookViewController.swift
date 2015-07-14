@@ -41,7 +41,7 @@ import UIKit
         super.viewDidLoad()
         self.setNavigationBarColors(self.navigationBar!)
         
-        addressBook = TLWallet.instance().getAddressBook()
+        addressBook = AppDelegate.instance().appWallet.getAddressBook()
         
         self.addressBookTableView!.delegate = self
         self.addressBookTableView!.dataSource = self
@@ -112,7 +112,7 @@ import UIKit
     private func promptForLabel(address: String) -> () {
         TLPrompts.promtForInputText(self, title: "Input label for address".localized, message: "", textFieldPlaceholder: "label".localized, success: {
             (inputText: String!) in
-            TLWallet.instance().addAddressBookEntry(address, label: inputText)
+            AppDelegate.instance().appWallet.addAddressBookEntry(address, label: inputText)
             NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_ADD_TO_ADDRESS_BOOK(), object: nil, userInfo: nil)
             
             self.addressBookTableView!.reloadData()
@@ -189,7 +189,7 @@ import UIKit
             
             TLPrompts.promtForInputText(self, title: "Edit address label".localized, message: "Input label for address".localized, textFieldPlaceholder: "address".localized, success: {
                 (inputText: String!) in
-                TLWallet.instance().editAddressBookEntry(indexPath.row, label: inputText)
+                AppDelegate.instance().appWallet.editAddressBookEntry(indexPath.row, label: inputText)
                 NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_EDIT_ENTRY_ADDRESS_BOOK(), object: nil, userInfo: nil)
                 tableView.reloadData()
                 }, failure: {
@@ -204,7 +204,7 @@ import UIKit
             
             TLPrompts.promtForOKCancel(self, title: "Delete address".localized, message: "Are you sure you want to delete this address?".localized, success: {
                 () in
-                TLWallet.instance().deleteAddressBookEntry(indexPath.row)
+                AppDelegate.instance().appWallet.deleteAddressBookEntry(indexPath.row)
                 NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_DELETE_ENTRY_ADDRESS_BOOK(), object: nil, userInfo: nil)
                 tableView.reloadData()
                 }, failure: {

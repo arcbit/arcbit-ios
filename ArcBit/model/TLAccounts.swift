@@ -23,13 +23,15 @@
 import Foundation
 
 @objc class TLAccounts:NSObject {
+    private var appWallet:TLWallet?
     private var accountsDict:NSMutableDictionary?
     private let accountsArray = NSMutableArray()
     private let archivedAccountsArray = NSMutableArray()
     private var accountType:TLAccountType?
-    
-    init(array accountsArray: NSArray, accountType at:TLAccountType) {
+
+    init(appWallet: TLWallet, accountsArray: NSArray, accountType at:TLAccountType) {
         super.init()
+        self.appWallet = appWallet
         accountType = at
         
         self.accountsDict = NSMutableDictionary(capacity: accountsArray.count)
@@ -52,9 +54,9 @@ import Foundation
         let accountObject:TLAccountObject
         
         if (accountType == TLAccountType.Imported) {
-            accountObject = TLWallet.instance().addImportedAccount(extendedPrivateKey)
+            accountObject = self.appWallet!.addImportedAccount(extendedPrivateKey)
         } else {
-            accountObject = TLWallet.instance().addWatchOnlyAccount(extendedPrivateKey)
+            accountObject = self.appWallet!.addWatchOnlyAccount(extendedPrivateKey)
         }
         self.accountsArray.addObject(accountObject)
         let positionInWalletArray = self.getNumberOfAccounts()+getNumberOfArchivedAccounts()-1
@@ -80,7 +82,7 @@ import Foundation
         assert(accountType == TLAccountType.HDWallet, "accountType != TLAccountTypeHDWallet")
         let accountObject = self.accountsDict!.objectForKey(accountIdxNumber) as! TLAccountObject
         accountObject.renameAccount(accountName)
-        TLWallet.instance().renameAccount(accountObject.getAccountIdxNumber(), accountName:accountName)
+        self.appWallet!.renameAccount(accountObject.getAccountIdxNumber(), accountName:accountName)
         return true
     }
     
@@ -89,9 +91,9 @@ import Foundation
         let accountObject = self.getAccountObjectForAccountIdxNumber(accountIdx)
         accountObject.renameAccount(accountName)
         if (accountType == TLAccountType.Imported) {
-            TLWallet.instance().setImportedAccountLabel(accountName, idx:accountIdx)
+            self.appWallet!.setImportedAccountLabel(accountName, idx:accountIdx)
         } else if (accountType == TLAccountType.ImportedWatch) {
-            TLWallet.instance().setWatchOnlyAccountLabel(accountName, idx:accountIdx)
+            self.appWallet!.setWatchOnlyAccountLabel(accountName, idx:accountIdx)
         }
         
         return true
@@ -161,11 +163,11 @@ import Foundation
         accountObject.archiveAccount(enabled)
         
         if (accountType == TLAccountType.HDWallet) {
-            TLWallet.instance().archiveAccountHDWallet(accountIdxNumber, enabled:enabled)
+            self.appWallet!.archiveAccountHDWallet(accountIdxNumber, enabled:enabled)
         } else if (accountType == TLAccountType.Imported) {
-            TLWallet.instance().archiveAccountImportedAccount(accountIdxNumber, enabled:enabled)
+            self.appWallet!.archiveAccountImportedAccount(accountIdxNumber, enabled:enabled)
         } else if (accountType == TLAccountType.ImportedWatch) {
-            TLWallet.instance().archiveAccountImportedWatchAccount(accountIdxNumber, enabled:enabled)
+            self.appWallet!.archiveAccountImportedWatchAccount(accountIdxNumber, enabled:enabled)
         }
     }
     
@@ -185,7 +187,7 @@ import Foundation
     }
     
     func createNewAccount(accountName:String, accountType:TLAccount) -> TLAccountObject {
-        let accountObject = TLWallet.instance().createNewAccount(accountName, accountType:TLAccount.Normal,
+        let accountObject = self.appWallet!.createNewAccount(accountName, accountType:TLAccount.Normal,
             preloadStartingAddresses:true)
         accountObject.updateAccountNeedsRecovering(false)
         addAccount(accountObject)
@@ -193,7 +195,7 @@ import Foundation
     }
     
     func createNewAccount(accountName:String, accountType:TLAccount, preloadStartingAddresses:Bool) -> TLAccountObject {
-        let accountObject = TLWallet.instance().createNewAccount(accountName, accountType:TLAccount.Normal, preloadStartingAddresses:preloadStartingAddresses)
+        let accountObject = self.appWallet!.createNewAccount(accountName, accountType:TLAccount.Normal, preloadStartingAddresses:preloadStartingAddresses)
         addAccount(accountObject)
         return accountObject
     }
@@ -207,7 +209,7 @@ import Foundation
         self.accountsDict!.removeObjectForKey(accountObject.getAccountIdxNumber())
         
         self.accountsArray.removeLastObject()
-        TLWallet.instance().removeTopAccount()
+        self.appWallet!.removeTopAccount()
         return true
     }
     
@@ -218,9 +220,9 @@ import Foundation
         self.archivedAccountsArray.removeObjectAtIndex(idx)
         
         if (accountType == TLAccountType.Imported) {
-            TLWallet.instance().deleteImportedAccount(accountObject.getPositionInWalletArray())
+            self.appWallet!.deleteImportedAccount(accountObject.getPositionInWalletArray())
         } else if (accountType == TLAccountType.ImportedWatch) {
-            TLWallet.instance().deleteWatchOnlyAccount(accountObject.getPositionInWalletArray())
+            self.appWallet!.deleteWatchOnlyAccount(accountObject.getPositionInWalletArray())
         }
         
         self.accountsDict!.removeObjectForKey(accountObject.getPositionInWalletArrayNumber())

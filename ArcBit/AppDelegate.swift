@@ -36,6 +36,7 @@ import HockeySDK
     var window:UIWindow?
     private var storyboard:UIStoryboard?
     private var modalDelegate:AnyObject?
+    var appWallet = TLWallet()
     var accounts:TLAccounts?
     var importedAccounts:TLAccounts?
     var importedWatchAccounts:TLAccounts?
@@ -240,13 +241,13 @@ import HockeySDK
             self.refreshApp(mnemonic)
         } else {
             let masterHex = TLHDWalletWrapper.getMasterHex(mnemonic)
-            TLWallet.instance().createInitialWalletPayload(mnemonic, masterHex:masterHex)
+            self.appWallet.createInitialWalletPayload(mnemonic, masterHex:masterHex)
             
-            self.accounts = TLAccounts(array:TLWallet.instance().getAccountObjectArray(), accountType:.HDWallet)
-            self.importedWatchAccounts = TLAccounts(array:TLWallet.instance().getAccountObjectArray(), accountType:.ImportedWatch)
-            self.importedAccounts = TLAccounts(array:TLWallet.instance().getImportedAccountArray(), accountType:.Imported)
-            self.importedAddresses = TLImportedAddresses(importedAddresses:TLWallet.instance().getImportedPrivateKeyArray(), accountAddressType:.Imported)
-            self.importedWatchAddresses = TLImportedAddresses(importedAddresses:TLWallet.instance().getWatchOnlyAddressArray(), accountAddressType:.ImportedWatch)
+            self.accounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getAccountObjectArray(), accountType:.HDWallet)
+            self.importedWatchAccounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getAccountObjectArray(), accountType:.ImportedWatch)
+            self.importedAccounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getImportedAccountArray(), accountType:.Imported)
+            self.importedAddresses = TLImportedAddresses(appWallet: self.appWallet, importedAddresses:self.appWallet.getImportedPrivateKeyArray(), accountAddressType:.Imported)
+            self.importedWatchAddresses = TLImportedAddresses(appWallet: self.appWallet, importedAddresses:self.appWallet.getWatchOnlyAddressArray(), accountAddressType:.ImportedWatch)
         }
         
         var accountIdx = 0
@@ -407,19 +408,19 @@ import HockeySDK
         
         if clearWalletInMemory {
             let masterHex = TLHDWalletWrapper.getMasterHex(passphrase)
-            TLWallet.instance().createInitialWalletPayload(passphrase, masterHex:masterHex)
+            self.appWallet.createInitialWalletPayload(passphrase, masterHex:masterHex)
             
-            self.accounts = TLAccounts(array:TLWallet.instance().getAccountObjectArray(), accountType:.HDWallet)
-            self.importedWatchAccounts = TLAccounts(array:TLWallet.instance().getAccountObjectArray(), accountType:.ImportedWatch)
-            self.importedAccounts = TLAccounts(array:TLWallet.instance().getImportedAccountArray(), accountType:.Imported)
-            self.importedAddresses = TLImportedAddresses(importedAddresses:TLWallet.instance().getImportedPrivateKeyArray(), accountAddressType:.Imported)
-            self.importedWatchAddresses = TLImportedAddresses(importedAddresses:TLWallet.instance().getWatchOnlyAddressArray(), accountAddressType:.ImportedWatch)
+            self.accounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getAccountObjectArray(), accountType:.HDWallet)
+            self.importedWatchAccounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getAccountObjectArray(), accountType:.ImportedWatch)
+            self.importedAccounts = TLAccounts(appWallet:self.appWallet, accountsArray:self.appWallet.getImportedAccountArray(), accountType:.Imported)
+            self.importedAddresses = TLImportedAddresses(appWallet: self.appWallet, importedAddresses:self.appWallet.getImportedPrivateKeyArray(), accountAddressType:.Imported)
+            self.importedWatchAddresses = TLImportedAddresses(appWallet: self.appWallet, importedAddresses:self.appWallet.getWatchOnlyAddressArray(), accountAddressType:.ImportedWatch)
         }
         
         self.receiveSelectedObject = TLSelectedObject()
         self.historySelectedObject = TLSelectedObject()
         
-        //TLWallet.instance().addAddressBookEntry("vJmwhHhMNevDQh188gSeHd2xxxYGBQmnVuMY2yG2MmVTC31UWN5s3vaM3xsM2Q1bUremdK1W7eNVgPg1BnvbTyQuDtMKAYJanahvse", label: "ArcBit Donation")
+        //self.appWallet.addAddressBookEntry("vJmwhHhMNevDQh188gSeHd2xxxYGBQmnVuMY2yG2MmVTC31UWN5s3vaM3xsM2Q1bUremdK1W7eNVgPg1BnvbTyQuDtMKAYJanahvse", label: "ArcBit Donation")
     }
     
     func setAccountsListeningToStealthPaymentsToFalse() {
@@ -815,7 +816,7 @@ import HockeySDK
                 AppDelegate.instance().updateHistorySelectedObject(TLSendFromType.HDWallet, sendFromIndex:0)
             }
             self.justSetupHDWallet = true
-            let encryptedWalletJson = TLWalletJson.getEncryptedWalletJsonContainer(TLWallet.instance().getWalletsJson()!,
+            let encryptedWalletJson = TLWalletJson.getEncryptedWalletJsonContainer(self.appWallet.getWalletsJson()!,
                 password:TLPreferences.getEncryptedWalletJSONPassphrase()!)
             let success = self.saveWalletJson(encryptedWalletJson, date:NSDate())
             if success {
@@ -827,18 +828,18 @@ import HockeySDK
             let masterHex = TLHDWalletWrapper.getMasterHex(passphrase ?? "")
             
             if (walletPayload != nil) {
-                TLWallet.instance().loadWalletPayload(walletPayload!, masterHex:masterHex)
+                self.appWallet.loadWalletPayload(walletPayload!, masterHex:masterHex)
             } else {
                 TLPrompts.promptErrorMessage("Error".localized, message:"Error loading wallet JSON file".localized)
                 NSException(name: "Error".localized, reason: "Error loading wallet JSON file".localized, userInfo: nil).raise()
             }
         }
         
-        self.accounts = TLAccounts(array:TLWallet.instance().getAccountObjectArray(), accountType:.HDWallet)
-        self.importedWatchAccounts = TLAccounts(array:TLWallet.instance().getWatchOnlyAccountArray(), accountType:.ImportedWatch)
-        self.importedAccounts = TLAccounts(array:TLWallet.instance().getImportedAccountArray(), accountType:.Imported)
-        self.importedAddresses = TLImportedAddresses(importedAddresses:TLWallet.instance().getImportedPrivateKeyArray(), accountAddressType:TLAccountAddressType.Imported)
-        self.importedWatchAddresses = TLImportedAddresses(importedAddresses:TLWallet.instance().getWatchOnlyAddressArray(), accountAddressType:TLAccountAddressType.ImportedWatch)
+        self.accounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getAccountObjectArray(), accountType:.HDWallet)
+        self.importedWatchAccounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getAccountObjectArray(), accountType:.ImportedWatch)
+        self.importedAccounts = TLAccounts(appWallet:self.appWallet, accountsArray:self.appWallet.getImportedAccountArray(), accountType:.Imported)
+        self.importedAddresses = TLImportedAddresses(appWallet: self.appWallet, importedAddresses:self.appWallet.getImportedPrivateKeyArray(), accountAddressType:TLAccountAddressType.Imported)
+        self.importedWatchAddresses = TLImportedAddresses(appWallet: self.appWallet, importedAddresses:self.appWallet.getWatchOnlyAddressArray(), accountAddressType:TLAccountAddressType.ImportedWatch)
         
         self.isAccountsAndImportsLoaded = true
         
@@ -1156,7 +1157,7 @@ import HockeySDK
     func applicationWillTerminate(application: UIApplication) {
         if (TLPreferences.getEnableBackupWithiCloud()) {
             // when terminating app must save immediately, don't wait to save to iCloud
-            let encryptedWalletJson = TLWalletJson.getEncryptedWalletJsonContainer(TLWallet.instance().getWalletsJson()!,
+            let encryptedWalletJson = TLWalletJson.getEncryptedWalletJsonContainer(self.appWallet.getWalletsJson()!,
                 password:TLPreferences.getEncryptedWalletJSONPassphrase()!)
             self.saveWalletJson(encryptedWalletJson, date:NSDate())
         }
@@ -1183,7 +1184,7 @@ import HockeySDK
     }
     
     func printOutWalletJSON() {
-        DLog("printOutWalletJSON:\n\(TLWallet.instance().getWalletsJson()!)")
+        DLog("printOutWalletJSON:\n\(self.appWallet.getWalletsJson()!)")
     }
     
     func saveWalletJsonCloud() {
@@ -1192,7 +1193,7 @@ import HockeySDK
             return
         }
         DLog("saveFileToCloud starting...")
-        let encryptedWalletJson = TLWalletJson.getEncryptedWalletJsonContainer(TLWallet.instance().getWalletsJson()!,
+        let encryptedWalletJson = TLWalletJson.getEncryptedWalletJsonContainer(self.appWallet.getWalletsJson()!,
             password:TLPreferences.getEncryptedWalletJSONPassphrase()!)
         if (TLPreferences.getEnableBackupWithiCloud()) {
             if (TLCloudDocumentSyncWrapper.instance().checkCloudAvailability()) {

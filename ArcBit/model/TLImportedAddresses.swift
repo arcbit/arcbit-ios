@@ -24,6 +24,7 @@ import Foundation
 
 @objc class TLImportedAddresses:NSObject
 {
+    private var appWallet:TLWallet?
     private let importedAddresses = NSMutableArray()
     private let archivedImportedAddresses = NSMutableArray()
     private let addressToIdxDict = NSMutableDictionary()
@@ -31,8 +32,9 @@ import Foundation
     private var accountAddressType:TLAccountAddressType?
     var downloadState:TLDownloadState = .NotDownloading
 
-    init(importedAddresses:NSArray, accountAddressType:(TLAccountAddressType)) {
+    init(appWallet: TLWallet, importedAddresses:NSArray, accountAddressType:(TLAccountAddressType)) {
         super.init()
+        self.appWallet = appWallet
         self.accountAddressType = accountAddressType
         
         for (var i = 0; i < importedAddresses.count; i++) {
@@ -158,7 +160,7 @@ import Foundation
     }
     
     func addImportedPrivateKey(privateKey:String, encryptedPrivateKey:String?) -> (TLImportedAddress) {
-        let importedPrivateKeyDict = TLWallet.instance().addImportedPrivateKey(privateKey, encryptedPrivateKey:encryptedPrivateKey)
+        let importedPrivateKeyDict = self.appWallet!.addImportedPrivateKey(privateKey, encryptedPrivateKey:encryptedPrivateKey)
         
         let importedAddressObject = TLImportedAddress(dict:importedPrivateKeyDict)
         self.importedAddresses.addObject(importedAddressObject)
@@ -182,7 +184,7 @@ import Foundation
     }
     
     func addImportedWatchAddress(address:String) -> (TLImportedAddress) {
-        let importedDict = TLWallet.instance().addWatchOnlyAddress(address)
+        let importedDict = self.appWallet!.addWatchOnlyAddress(address)
         let importedAddressObject = TLImportedAddress(dict:importedDict)
         self.importedAddresses.addObject(importedAddressObject)
         
@@ -207,9 +209,9 @@ import Foundation
         
         importedAddressObject.setLabel(label)
         if (self.accountAddressType == .Imported) {
-            TLWallet.instance().setImportedPrivateKeyLabel(label, idx:positionInWalletArray)
+            self.appWallet!.setImportedPrivateKeyLabel(label, idx:positionInWalletArray)
         } else if (self.accountAddressType! == .ImportedWatch) {
-            TLWallet.instance().setWatchOnlyAddressLabel(label, idx:positionInWalletArray)
+            self.appWallet!.setWatchOnlyAddressLabel(label, idx:positionInWalletArray)
         }
         
         return true
@@ -291,9 +293,9 @@ import Foundation
         
         importedAddressObject.setArchived(archive)
         if (self.accountAddressType! == .Imported) {
-            TLWallet.instance().setImportedPrivateKeyArchive(archive, idx:positionInWalletArray)
+            self.appWallet!.setImportedPrivateKeyArchive(archive, idx:positionInWalletArray)
         } else if (self.accountAddressType == .ImportedWatch) {
-            TLWallet.instance().setWatchOnlyAddressArchive(archive, idx:positionInWalletArray)
+            self.appWallet!.setWatchOnlyAddressArchive(archive, idx:positionInWalletArray)
         }
         
         return true
@@ -304,9 +306,9 @@ import Foundation
         
         self.archivedImportedAddresses.removeObjectAtIndex(idx)
         if (self.accountAddressType == .Imported) {
-            TLWallet.instance().deleteImportedPrivateKey(importedAddressObject.getPositionInWalletArray())
+            self.appWallet!.deleteImportedPrivateKey(importedAddressObject.getPositionInWalletArray())
         } else if (self.accountAddressType == .ImportedWatch) {
-            TLWallet.instance().deleteImportedWatchAddress(importedAddressObject.getPositionInWalletArray())
+            self.appWallet!.deleteImportedWatchAddress(importedAddressObject.getPositionInWalletArray())
         }
         
         self.addressToPositionInWalletArrayDict.removeObjectForKey(importedAddressObject.getPositionInWalletArrayNumber())
