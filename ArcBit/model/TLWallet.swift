@@ -180,6 +180,7 @@ enum TLStealthPaymentStatus:Int {
         static var _instance: TLWallet? = nil
     }
     
+    private var walletName: String?
     private var rootDict: NSMutableDictionary?
     private var currentHDWalletIdx: Int?
     private var masterHex: String?
@@ -195,7 +196,8 @@ enum TLStealthPaymentStatus:Int {
     }
     
     
-    init() {
+    init(walletName: String) {
+        self.walletName = walletName
         currentHDWalletIdx = 0
     }
     

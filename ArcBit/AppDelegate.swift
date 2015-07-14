@@ -36,7 +36,7 @@ import HockeySDK
     var window:UIWindow?
     private var storyboard:UIStoryboard?
     private var modalDelegate:AnyObject?
-    var appWallet = TLWallet()
+    var appWallet = TLWallet(walletName: "App Wallet")
     var accounts:TLAccounts?
     var importedAccounts:TLAccounts?
     var importedWatchAccounts:TLAccounts?
