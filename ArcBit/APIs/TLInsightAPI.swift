@@ -92,11 +92,12 @@ import Foundation
         
         let jsonData: AnyObject? = self.networking.httpGETSynchronous(url, parameters: parameters)
         
-        if jsonData is NSDictionary { // if don't get dict http error, will get array
+        if ((jsonData as! NSDictionary).objectForKey(TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) != nil) {
             return jsonData as! NSDictionary
         }
         
-        let transansformedJsonData = TLInsightAPI.insightAddressesTxsToBlockchainMultiaddr(addressArray, txs: jsonData as! NSArray)
+        let txs = (jsonData as! NSDictionary).objectForKey("items") as! NSArray
+        let transansformedJsonData = TLInsightAPI.insightAddressesTxsToBlockchainMultiaddr(addressArray, txs: txs)
         
         return transansformedJsonData
     }
@@ -110,8 +111,12 @@ import Foundation
         self.networking.httpGET(url, parameters: parameters,
             success: {
                 (jsonData: AnyObject!) in
-                
-                let transformedJsonData = TLInsightAPI.insightAddressesTxsToBlockchainMultiaddr(addressArray, txs: jsonData as! NSArray)
+                if ((jsonData as! NSDictionary).objectForKey(TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) != nil) {
+                    success(jsonData as! NSDictionary)
+                }
+ 
+                let txs = (jsonData as! NSDictionary).objectForKey("items") as! NSArray
+                let transformedJsonData = TLInsightAPI.insightAddressesTxsToBlockchainMultiaddr(addressArray, txs: txs)
                 
                 success(transformedJsonData)
             }, failure: failure)
