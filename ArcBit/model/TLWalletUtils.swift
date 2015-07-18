@@ -241,7 +241,11 @@ enum TLAccountAddressType: Int {
             return nil
         }
         
-        let replaced = urlString.stringByReplacingOccurrencesOfString("bitcoin:", withString: "bitcoin://").stringByReplacingOccurrencesOfString("////", withString: "//")
+        var replaced = urlString.stringByReplacingOccurrencesOfString("bitcoin:", withString: "bitcoin://").stringByReplacingOccurrencesOfString("////", withString: "//")
+        
+        if replaced.rangeOfString("&") == nil && replaced.rangeOfString("?") == nil {
+            replaced = replaced+"?"
+        }
         
         let url = NSURL(string: replaced)
         

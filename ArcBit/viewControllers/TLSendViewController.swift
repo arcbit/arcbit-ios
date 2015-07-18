@@ -755,6 +755,10 @@ import UIKit
     private func handleScannedAddress(data: String) {
         if (data.hasPrefix("bitcoin:")) {
             let parsedBitcoinURI = TLWalletUtils.parseBitcoinURI(data)
+            if parsedBitcoinURI == nil {
+                TLPrompts.promptErrorMessage("Error".localized, message: "URL does not contain an address.".localized)
+                return
+            }
             let address = parsedBitcoinURI!.objectForKey("address") as! String?
             if (address == nil) {
                 TLPrompts.promptErrorMessage("Error".localized, message: "URL does not contain an address.".localized)
