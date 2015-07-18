@@ -57,7 +57,7 @@ import UIKit
     }
     
     private func showPromptToRestoreWallet(mnemonicPassphrase:String, walletPayload:NSDictionary?) -> () {
-        let msg = String(format:"Your current wallet will be deleted. Your can restore your current wallet later with the wallet passphrase, but any imported accounts or addresses created in advance mode cannot be recovered. Do you wish to continue?".localized)
+        let msg = String(format:"Your current wallet will be deleted. Your can restore your current wallet later with the wallet passphrase, but any imported accounts or addresses created in advanced mode cannot be recovered. Do you wish to continue?".localized)
         
         UIAlertController.showAlertInViewController(self,
             withTitle:"Restoring Wallet".localized,

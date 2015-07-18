@@ -62,7 +62,7 @@ class TLHelpDoc {
         static let ACTION_VIEW_ACCOUNT_ADDRESSES = "View Account Addresses".localized
         static let ACTION_VIEW_ACCOUNT_ADDRESS_IN_WEB = "View Account Address In Web".localized
         static let ACTION_VIEW_TRANSACTION_IN_WEB = "View Transaction In Web".localized
-        static let ACTION_ENABLE_ADVANCE_MODE = "Enable advance mode".localized
+        static let ACTION_ENABLE_ADVANCE_MODE = "Enable advanced mode".localized
         
         static let ACTION_IMPORT_ACCOUNT = "Import Account".localized
         static let ACTION_IMPORT_WATCH_ONLY_ACCOUNT = "Import Watch Only Account".localized
@@ -228,8 +228,8 @@ class TLHelpDoc {
                 [
                     "Go to the side menu".localized,
                     "Click ‘Settings’".localized,
-                    "Click ‘Advance options’".localized,
-                    "Toggle ’Enable advance mode’".localized,
+                    "Click ‘Advanced options’".localized,
+                    "Toggle ’Enable advanced mode’".localized,
                 ],
             ]
         }
@@ -268,7 +268,7 @@ class TLHelpDoc {
                 [
                     "Go to the side menu".localized,
                     "Click ‘Settings’".localized,
-                    "Click ‘Advance options’".localized,
+                    "Click ‘Advanced options’".localized,
                     "Click ‘blockexplorer API type’".localized,
                     "Select and click a blockexplorer API".localized,
                     "Quit and re-enter app".localized,
@@ -468,7 +468,7 @@ class TLHelpDoc {
         if (STATIC_MEMBERS._advanceExplanationArray == nil) {
             STATIC_MEMBERS._advanceExplanationArray = [
                 "Each account has a public and private account/extended key. Accounts keys should be kept secret as they are used to view the account's transactions, and spend the accounts bitcoins.".localized,
-                "In advance mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you back up imported keys and addresses separately.".localized,
+                "In advanced mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you back up imported keys and addresses separately.".localized,
                 "An account private key begins with the letters 'xprv'. You can see, spend and recover the transactions and bitcoins of an entire account from an account private key.".localized,
                 "An account public key begins with the letters 'xpub'. You can see the transactions and bitcoins of an entire account from an account private key, with the exception of forward address payments. Future releases will address this issue.\nYou can however temporary import the corresponding account private key for this accounts' account public key to spend your watch only accounts' bitcoins. Simply go the send screen and select a watch only account to spend from and you will be prompt to temporary import your account's private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen.".localized,
                 "A private key begins with an 'L', 'K', or '5'.\nBIP 38 encrypted private keys can also be imported. They can either be imported encrypted or unencrypted. If you choose to import it encrypted, you will need to input the password each time you spend from your encrypted private key.".localized,

@@ -102,7 +102,7 @@
 
 "Enter passphrase for your iCloud backup wallet." = "Enter passphrase for your iCloud backup wallet.";
 
-"Your current wallet will be deleted. Your can restore your current wallet later with the wallet passphrase, but any imported accounts or addresses created in advance mode cannot be recovered. Do you wish to continue?" = "Your current wallet will be deleted. Your can restore your current wallet later with the wallet passphrase, but any imported accounts or addresses created in advance mode cannot be recovered. Do you wish to continue?";
+"Your current wallet will be deleted. Your can restore your current wallet later with the wallet passphrase, but any imported accounts or addresses created in advanced mode cannot be recovered. Do you wish to continue?" = "Your current wallet will be deleted. Your can restore your current wallet later with the wallet passphrase, but any imported accounts or addresses created in advanced mode cannot be recovered. Do you wish to continue?";
 
 "Restoring Wallet" = "Restoring Wallet";
 
@@ -569,7 +569,7 @@
 
 "View Transaction In Web" = "View Transaction In Web";
 
-"Enable advance mode" = "Enable advance mode";
+"Enable advanced mode" = "Enable advanced mode";
 
 "Import Private/Encrypted Key" = "Import Private/Encrypted Key";
 
@@ -683,9 +683,9 @@
 
 "Click ‘View in web’" = "Click ‘View in web’";
 
-"Click ‘Advance options’" = "Click ‘Advance options’";
+"Click ‘Advanced options’" = "Click ‘Advanced options’";
 
-"Toggle ’Enable advance mode’" = "Toggle ’Enable advance mode’";
+"Toggle ’Enable advanced mode’" = "Toggle ’Enable advanced mode’";
 
 "Click ‘Import Account’" = "Click ‘Import Account’";
 
@@ -757,7 +757,7 @@
 
 "Each account has a public and private account/extended key. Accounts keys should be kept secret as they are used to view the account's transactions, and spend the accounts bitcoins." = "Each account has a public and private account/extended key. Accounts keys should be kept secret as they are used to view the account's transactions, and spend the accounts bitcoins.";
 
-"In advance mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you back up imported keys and addresses separately." = "In advance mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you back up imported keys and addresses separately.";
+"In advanced mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you back up imported keys and addresses separately." = "In advanced mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you back up imported keys and addresses separately.";
 
 "An account private key begins with the letters 'xprv'. You can see, spend and recover the transactions and bitcoins of an entire account from an account private key." = "An account private key begins with the letters 'xprv'. You can see, spend and recover the transactions and bitcoins of an entire account from an account private key.";
 
