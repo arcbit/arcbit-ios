@@ -890,10 +890,15 @@ import UIKit
         if TLUtils.isIPhone5() {
             if textField == self.amountTextField || textField == self.fiatAmountTextField {
                 self.topView!.scrollToView(self.fiatAmountTextField!)
-                
             } else {
                 self.topView!.scrollToView(self.fiatAmountTextField!)
-            }            
+            }
+        } else if TLUtils.isIPhone4() {
+            if textField == self.amountTextField || textField == self.fiatAmountTextField {
+                self.topView!.scrollToY(-190)
+            } else {
+                self.topView!.scrollToView(self.fiatAmountTextField!)
+            }
         }
         
         return true

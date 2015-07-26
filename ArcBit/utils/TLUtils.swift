@@ -32,7 +32,10 @@ import Foundation
     
     //TODO: better way
     class func isIPhone5() -> Bool {
-        return UIScreen.mainScreen().bounds.size.width == 320
+        return UIScreen.mainScreen().bounds.size.height == 568
+    }
+    class func isIPhone4() -> Bool {
+        return UIScreen.mainScreen().bounds.size.height == 480
     }
     
     class func defaultAppName() -> String {

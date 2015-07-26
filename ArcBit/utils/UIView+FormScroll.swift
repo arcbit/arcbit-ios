@@ -38,8 +38,8 @@ extension UIView{
 
         let theFrame = view.frame
         var y = theFrame.origin.y - 15
-        y -= (y/1.7)
-        
+        y -= (y/1.7) - 60
+
         if (-y+OFFSET_Y < 0) {
             scrollToY(Float(-y+OFFSET_Y))
         } else {
