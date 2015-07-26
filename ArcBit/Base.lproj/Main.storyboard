@@ -439,38 +439,38 @@
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Master Seed Hex" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="6BY-dx-fLW">
-                                        <rect key="frame" x="8" y="166" width="592" height="21"/>
+                                        <rect key="frame" x="8" y="141" width="592" height="21"/>
                                         <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Write down the 12 word passphrase below and keep it safe. You can restore your wallet with this single passphrase." textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="4" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="evC-L0-0Dc">
-                                        <rect key="frame" x="8" y="49" width="592" height="32"/>
-                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <rect key="frame" x="8" y="37" width="592" height="29"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="8" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wjz-SH-FCO">
-                                        <rect key="frame" x="16" y="195" width="576" height="47"/>
+                                        <rect key="frame" x="16" y="170" width="576" height="43"/>
                                         <string key="text">The master seed hex is derived from the passphrase. If you want to import Bitcoins into another wallet, and if that other wallets don't use BIP39, then it's possible to import the Bitcoins using the master seed hex as long as they support BIP44.</string>
-                                        <fontDescription key="fontDescription" type="system" pointSize="13"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="12"/>
                                         <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" editable="NO" text="nice muse brush descend pattern focus bleed college sneak calm leap flight" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="p18-DP-CtY">
-                                        <rect key="frame" x="16" y="89" width="576" height="69"/>
+                                        <rect key="frame" x="16" y="74" width="576" height="59"/>
                                         <color key="backgroundColor" red="0.062279825470000001" green="1" blue="0.22195490649999999" alpha="1" colorSpace="calibratedRGB"/>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="22"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="18"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                         </userDefinedRuntimeAttributes>
                                     </textView>
                                     <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" bounces="NO" scrollEnabled="NO" editable="NO" textAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="N96-Pu-vSQ">
-                                        <rect key="frame" x="16" y="250" width="576" height="77"/>
+                                        <rect key="frame" x="16" y="221" width="576" height="55"/>
                                         <color key="backgroundColor" red="0.062279825470000001" green="1" blue="0.22195490649999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <string key="text">f23324e18c237876f96d2064abbc26399cc3cd34d503cc6f2b00a9403b003dcad2cf7642e4e3311cf2e5de32307d88b116ac743f0b02fc4c2afe0e30dcd843f6</string>
-                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
+                                        <fontDescription key="fontDescription" type="boldSystem" pointSize="16"/>
                                         <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                         <userDefinedRuntimeAttributes>
                                             <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
@@ -492,7 +492,7 @@
                                     <constraint firstAttribute="trailing" secondItem="C32-6S-BC5" secondAttribute="trailing" constant="8" id="ZMv-pv-N3a"/>
                                     <constraint firstAttribute="trailing" secondItem="wjz-SH-FCO" secondAttribute="trailing" constant="16" id="ci9-XE-xBD"/>
                                     <constraint firstItem="evC-L0-0Dc" firstAttribute="leading" secondItem="KBe-Ve-SYa" secondAttribute="leading" constant="8" id="gmd-vu-ogn"/>
-                                    <constraint firstItem="evC-L0-0Dc" firstAttribute="top" secondItem="C32-6S-BC5" secondAttribute="bottom" constant="20" id="iYE-bK-cqQ"/>
+                                    <constraint firstItem="evC-L0-0Dc" firstAttribute="top" secondItem="C32-6S-BC5" secondAttribute="bottom" constant="8" id="iYE-bK-cqQ"/>
                                     <constraint firstAttribute="trailing" secondItem="p18-DP-CtY" secondAttribute="trailing" constant="16" id="p20-Ay-vi0"/>
                                     <constraint firstItem="C32-6S-BC5" firstAttribute="top" secondItem="KBe-Ve-SYa" secondAttribute="top" constant="8" id="p9p-Le-8zj"/>
                                     <constraint firstItem="C32-6S-BC5" firstAttribute="leading" secondItem="KBe-Ve-SYa" secondAttribute="leading" constant="8" id="vSC-7g-LXP"/>
@@ -1869,6 +1869,6 @@
         <image name="upload.png" width="26" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="LPu-4e-rku"/>
+        <segue reference="ywA-pj-yl1"/>
     </inferredMetricsTieBreakers>
 </document>
