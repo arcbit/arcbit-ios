@@ -208,6 +208,7 @@ import Foundation
         bitcoinFormatter.numberStyle = .DecimalStyle
         bitcoinFormatter.roundingMode = .RoundHalfUp
         bitcoinFormatter.maximumFractionDigits = 8
+        bitcoinFormatter.locale = NSLocale(localeIdentifier: "en_US")
         let amount = TLCoin(bitcoinAmount: bitcoinFormatter.stringFromNumber(amountNumber)!, bitcoinDenomination: TLBitcoinDenomination.Bitcoin)
         blockchainUnspentOutputDict.setObject(NSNumber(unsignedLongLong: amount.toUInt64()), forKey: "value")
 
