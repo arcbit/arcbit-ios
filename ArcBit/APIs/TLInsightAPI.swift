@@ -83,11 +83,11 @@ import Foundation
         })
     }
     
-    func getAddressesInfoSynchronous(addressArray: Array<String>) -> NSDictionary {
+    func getAddressesInfoSynchronous(addressArray: Array<String>, txCountFrom: Int=0, allTxs: NSMutableArray=[]) -> NSDictionary {
         let endPoint = String(format: "%@%@%@", "api/addrs/", ",".join(addressArray), "/txs")
         
-        let parameters = [:]
-        
+        let parameters = ["from":txCountFrom]
+
         let url = NSURL(string: endPoint, relativeToURL: NSURL(string: self.baseURL))!
         
         let jsonData: AnyObject? = self.networking.httpGETSynchronous(url, parameters: parameters)
@@ -97,15 +97,28 @@ import Foundation
         }
         
         let txs = (jsonData as! NSDictionary).objectForKey("items") as! NSArray
-        let transansformedJsonData = TLInsightAPI.insightAddressesTxsToBlockchainMultiaddr(addressArray, txs: txs)
+        let to = ((jsonData as! NSDictionary).objectForKey("to") as! NSNumber)
+        let totalItems = ((jsonData as! NSDictionary).objectForKey("totalItems") as! NSNumber).unsignedLongLongValue
         
-        return transansformedJsonData
+        if to.unsignedLongLongValue >= totalItems {
+            if allTxs.count == 0 {
+                let transansformedJsonData = TLInsightAPI.insightAddressesTxsToBlockchainMultiaddr(addressArray, txs: txs)
+                return transansformedJsonData
+            } else {
+                allTxs.addObjectsFromArray(txs as [AnyObject])
+                let transansformedJsonData = TLInsightAPI.insightAddressesTxsToBlockchainMultiaddr(addressArray, txs: allTxs)
+                return transansformedJsonData
+            }
+        } else {
+            allTxs.addObjectsFromArray(txs as [AnyObject])
+            return self.getAddressesInfoSynchronous(addressArray, txCountFrom: to.integerValue, allTxs: allTxs)
+        }
     }
     
-    func getAddressesInfo(addressArray: Array<String>, success: TLNetworking.SuccessHandler, failure: TLNetworking.FailureHandler) {
+    func getAddressesInfo(addressArray: Array<String>, txCountFrom: Int=0, allTxs: NSMutableArray=[], success: TLNetworking.SuccessHandler, failure: TLNetworking.FailureHandler) {
         let endPoint = String(format: "%@%@%@", "api/addrs/", ",".join(addressArray), "/txs")
-        let parameters = [:]
-        
+        let parameters = ["from":txCountFrom]
+
         let url = NSURL(string: endPoint, relativeToURL: NSURL(string: self.baseURL))!
         
         self.networking.httpGET(url, parameters: parameters,
@@ -116,9 +129,21 @@ import Foundation
                 }
  
                 let txs = (jsonData as! NSDictionary).objectForKey("items") as! NSArray
-                let transformedJsonData = TLInsightAPI.insightAddressesTxsToBlockchainMultiaddr(addressArray, txs: txs)
-                
-                success(transformedJsonData)
+                let to = ((jsonData as! NSDictionary).objectForKey("to") as! NSNumber)
+                let totalItems = ((jsonData as! NSDictionary).objectForKey("totalItems") as! NSNumber).unsignedLongLongValue
+                if to.unsignedLongLongValue >= totalItems {
+                    if allTxs.count == 0 {
+                        let transformedJsonData = TLInsightAPI.insightAddressesTxsToBlockchainMultiaddr(addressArray, txs: txs)
+                        success(transformedJsonData)
+                    } else {
+                        allTxs.addObjectsFromArray(txs as [AnyObject])
+                        let transformedJsonData = TLInsightAPI.insightAddressesTxsToBlockchainMultiaddr(addressArray, txs: allTxs)
+                        success(transformedJsonData)
+                    }
+                } else {
+                    allTxs.addObjectsFromArray(txs as [AnyObject])
+                    self.getAddressesInfo(addressArray, allTxs: allTxs, txCountFrom: to.integerValue, success: success, failure: failure)
+                }
             }, failure: failure)
     }
     
