@@ -257,20 +257,7 @@ import CoreData
             amountTypeString = "+"
             cell!.amountButton!.backgroundColor = UIColor.greenColor()
             if txTag == nil || txTag == "" {
-                let inputAddressToValueArray = txObject!.getInputAddressToValueArray()
-                for _dict in inputAddressToValueArray! {
-                    let dict = _dict as! NSDictionary
-                    if let address = dict.objectForKey("addr") as? String {
-                        if AppDelegate.instance().historySelectedObject!.isAddressPartOfAccount(address) {
-                            cell!.descriptionLabel!.text = address
-                        } else {
-                            cell!.descriptionLabel!.text = address
-                            break
-                        }
-                    } else {
-                        cell!.descriptionLabel!.text = ""
-                    }
-                }
+                cell!.descriptionLabel!.text = ""
             } else {
                 cell!.descriptionLabel!.text = txTag
             }
