@@ -35,6 +35,10 @@ https://itunes.apple.com/app/arcbit-bitcoin-wallet/id999487888
 - Import HD wallet account keys support
 - Import HD wallet watch only account keys support
 
+Build
+===========
+To build ArcBit simply open the project from XCode and click run.
+
 
 Made Possible By
 ===========
