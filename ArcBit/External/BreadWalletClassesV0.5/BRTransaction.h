@@ -71,6 +71,7 @@ sequence:(uint32_t)sequence;
 
 - (void)addOutputAddress:(NSString *)address amount:(uint64_t)amount;
 - (void)addOutputScript:(NSData *)script amount:(uint64_t)amount;
+- (void)insertOutputScript:(NSData *)script amount:(uint64_t)amount;
 
 - (void)setInputAddress:(NSString *)address atIndex:(NSUInteger)index;
 

@@ -33,8 +33,8 @@ import Foundation
     
     private var appWallet:TLWallet?
     private var accountDict: NSMutableDictionary?
-    private var unspentOutputs: NSMutableArray?
-    private var stealthPaymentUnspentOutputs: NSMutableArray?
+    var unspentOutputs: NSMutableArray?
+    var stealthPaymentUnspentOutputs: NSMutableArray?
     private var mainActiveAddresses = [String]()
     private var changeActiveAddresses = [String]()
     private var activeAddressesDict = [String:Bool]()

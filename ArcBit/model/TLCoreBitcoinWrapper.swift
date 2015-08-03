@@ -33,6 +33,11 @@ import Foundation
         
         return nil
     }
+   
+    class func getStandardPubKeyHashScriptFromAddress(address:String) -> String {
+        let scriptData = BTCScript(address: BTCAddress(base58String: address))
+        return scriptData.hex
+    }
     
     class func getAddress(privateKey:String) -> (String?){
         let key = BRKey(privateKey:privateKey)
@@ -109,7 +114,7 @@ import Foundation
             if (outputScripts != nil) {
                 for (var i = 0; i < outputScripts!.count; i++) {
                     let outputScript = outputScripts!.objectAtIndex(i) as! String
-                    tx.addOutputScript(TLWalletUtils.hexStringToData(outputScript), amount:UInt64(0))
+                    tx.insertOutputScript(TLWalletUtils.hexStringToData(outputScript), amount:UInt64(0))
                 }
             }
             

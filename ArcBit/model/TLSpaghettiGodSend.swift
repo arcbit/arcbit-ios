@@ -253,16 +253,10 @@
     }
     
     func createSignedSerializedTransactionHex(toAddressesAndAmounts:NSArray,
-        feeAmount:TLCoin, error:TLWalletUtils.ErrorWithString) -> (NSDictionary?, Array<String>, Array<String>) {
-            let hashes = NSMutableArray()
-            let inputIndexes = NSMutableArray()
-            let inputScripts = NSMutableArray()
-            let privateKeys = NSMutableArray()
-            let outputAmounts = NSMutableArray()
-            let outputAddresses = NSMutableArray()
-            var stealthPaymentTxidsClaiming = [String]()
+        feeAmount:TLCoin, nonce: UInt32? = nil, ephemeralPrivateKeyHex: String? = nil, error:TLWalletUtils.ErrorWithString) -> (NSDictionary?, Array<String>, Array<String>) {
+            let inputsData = NSMutableArray()
+            let outputsData = NSMutableArray()
             var outputValueSum = TLCoin.zero()
-            var realToAddresses = [String]()
 
             for _toAddressAndAmount in toAddressesAndAmounts {
                 var amount = (_toAddressAndAmount as! NSDictionary).objectForKey("amount") as! TLCoin
@@ -293,10 +287,7 @@
                         
                         valueSelected = valueSelected.add(TLCoin(uint64:amount))
                         
-                        hashes.addObject(TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash") as! String)!)
-                        inputIndexes.addObject(unspentOutput.objectForKey("tx_output_n")!)
                         let outputScript = unspentOutput.objectForKey("script") as! String
-                        inputScripts.addObject(TLWalletUtils.hexStringToData(outputScript)!)
                         
                         let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript)
                         if (address == nil) {
@@ -306,7 +297,12 @@
                         assert(address == changeAddress, "! address == changeAddress")
                         let privateKey = importedAddress.getPrivateKey()
                         
-                        privateKeys.addObject(privateKey!)
+                        inputsData.addObject([
+                            "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash") as! String)!,
+                            "txid": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash_big_endian") as! String)!,
+                            "tx_output_n": unspentOutput.objectForKey("tx_output_n")!,
+                            "script": TLWalletUtils.hexStringToData(outputScript)!,
+                            "private_key": privateKey!])
                         
                         if (valueSelected.greaterOrEqual(valueNeeded)) {
                             break
@@ -314,6 +310,7 @@
                     }
                 }
             }
+            var stealthPaymentTxidsClaiming = [String]()
             if (valueSelected.less(valueNeeded)) {
                 changeAddress = nil
                 if sendFromAccounts != nil {
@@ -341,10 +338,7 @@
                             }
                             
                             valueSelected = valueSelected.add(TLCoin(uint64:amount))
-                            hashes.addObject(TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash") as! String)!)
-                            inputIndexes.addObject(unspentOutput.objectForKey("tx_output_n")!)
                             let outputScript = unspentOutput.objectForKey("script") as! String
-                            inputScripts.addObject(TLWalletUtils.hexStringToData(outputScript)!)
                             DLog("createSignedSerializedTransactionHex outputScript: %@", outputScript)
                             
                             let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript)
@@ -352,8 +346,13 @@
                                 DLog("address cannot be decoded. not normal pubkeyhash outputScript: %@", outputScript)
                                 continue
                             }
-
-                            privateKeys.addObject(accountObject.stealthWallet!.getPaymentAddressPrivateKey(address!)!)
+                            
+                            inputsData.addObject([
+                                "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash") as! String)!,
+                                "txid": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash_big_endian") as! String)!,
+                                "tx_output_n": unspentOutput.objectForKey("tx_output_n")!,
+                                "script": TLWalletUtils.hexStringToData(outputScript)!,
+                                "private_key": accountObject.stealthWallet!.getPaymentAddressPrivateKey(address!)!])
                             
                             let txid = unspentOutput.objectForKey("tx_hash_big_endian") as! String
                             stealthPaymentTxidsClaiming.append(txid)
@@ -381,10 +380,7 @@
                             
                             valueSelected = valueSelected.add(TLCoin(uint64:amount))
                             
-                            hashes.addObject(TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash") as! String)!)
-                            inputIndexes.addObject(unspentOutput.objectForKey("tx_output_n")!)
                             let outputScript = unspentOutput.objectForKey("script") as! String
-                            inputScripts.addObject(TLWalletUtils.hexStringToData(outputScript)!)
                             DLog("createSignedSerializedTransactionHex outputScript: %@", outputScript)
                             
                             let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript)
@@ -393,7 +389,12 @@
                                 continue
                             }
                             
-                            privateKeys.addObject(accountObject.getAccountPrivateKey(address!)!)
+                            inputsData.addObject([
+                                "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash") as! String)!,
+                                "txid": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash_big_endian") as! String)!,
+                                "tx_output_n": unspentOutput.objectForKey("tx_output_n")!,
+                                "script": TLWalletUtils.hexStringToData(outputScript)!,
+                                "private_key": accountObject.getAccountPrivateKey(address!)!])
                             
                             if (valueSelected.greaterOrEqual(valueNeeded)) {
                                 break
@@ -405,7 +406,7 @@
             
             DLog("createSignedSerializedTransactionHex valueSelected %@", valueSelected.toString())
             DLog("createSignedSerializedTransactionHex valueNeeded %@", valueNeeded.toString())
-
+            var realToAddresses = [String]()
             if (valueSelected.less(valueNeeded)) {
                 if (dustAmount > 0) {
                     let dustCoinAmount = TLCoin(uint64:dustAmount)
@@ -429,24 +430,29 @@
                 
                 if (!TLStealthAddress.isStealthAddress(toAddress, isTestnet:TLWalletUtils.STATIC_MEMBERS.IS_TESTNET)) {
                     realToAddresses.append(toAddress)
-                    outputAddresses.addObject(toAddress)
-                    outputAmounts.addObject((NSNumber (unsignedLongLong: amount!.toUInt64())))
+                    
+                    outputsData.addObject([
+                        "to_address":toAddress,
+                        "amount": NSNumber (unsignedLongLong: amount!.toUInt64())])
+                    
                 } else {
                     if (stealthOutputScripts == nil) {
                         stealthOutputScripts = NSMutableArray(capacity:1)
                     }
                     
-                    let ephemeralPrivateKey = TLStealthAddress.generateEphemeralPrivkey()
-                    let nonce = TLStealthAddress.generateNonce()
-                    let stealthDataScriptAndPaymentAddress = TLStealthAddress.createDataScriptAndPaymentAddress(toAddress, ephemeralPrivateKey: ephemeralPrivateKey, nonce: nonce, isTestnet: TLWalletUtils.STATIC_MEMBERS.IS_TESTNET)
+                    let ephemeralPrivateKey = ephemeralPrivateKeyHex != nil ? ephemeralPrivateKeyHex! : TLStealthAddress.generateEphemeralPrivkey()
+                    let stealthDataScriptNonce = nonce != nil ? nonce! : TLStealthAddress.generateNonce()
+                    let stealthDataScriptAndPaymentAddress = TLStealthAddress.createDataScriptAndPaymentAddress(toAddress,
+                        ephemeralPrivateKey: ephemeralPrivateKey, nonce: stealthDataScriptNonce, isTestnet: TLWalletUtils.STATIC_MEMBERS.IS_TESTNET)
                     
                     DLog("createSignedSerializedTransactionHex stealthDataScript: %@", stealthDataScriptAndPaymentAddress.0)
                     DLog("createSignedSerializedTransactionHex paymentAddress: %@", stealthDataScriptAndPaymentAddress.1)
                     stealthOutputScripts!.addObject(stealthDataScriptAndPaymentAddress.0)
                     let paymentAddress = stealthDataScriptAndPaymentAddress.1
                     realToAddresses.append(paymentAddress)
-                    outputAddresses.addObject(paymentAddress)
-                    outputAmounts.addObject((NSNumber (unsignedLongLong: amount!.toUInt64())))
+                    outputsData.addObject([
+                        "to_address":paymentAddress,
+                        "amount": NSNumber (unsignedLongLong: amount!.toUInt64())])
                 }
             }
             
@@ -454,10 +460,9 @@
             if (valueSelected.greater(valueNeeded)) {
                 if (changeAddress != nil) {
                     changeAmount = valueSelected.subtract(valueNeeded)
-                    let changeOutputIndex = Int(arc4random_uniform(UInt32(outputAmounts.count+1)))
-                    DLog("randomized changeOutputIndex: \(changeOutputIndex)")
-                    outputAmounts.insertObject((NSNumber(unsignedLongLong: changeAmount.toUInt64())), atIndex: changeOutputIndex)
-                    outputAddresses.insertObject(changeAddress!, atIndex: changeOutputIndex)
+                    outputsData.addObject([
+                        "to_address":changeAddress!,
+                        "amount": NSNumber(unsignedLongLong: changeAmount.toUInt64())])
                 }
             }
             
@@ -470,14 +475,98 @@
                 NSException(name:"Send Error", reason:"not enough unspent outputs", userInfo:nil).raise()
             }
             
-            for _outputAmount in outputAmounts {
-                let outputAmount = (_outputAmount as! NSNumber).unsignedLongLongValue
+            for outputData in outputsData {
+                let outputAmount = ((outputData as! NSDictionary).objectForKey("amount") as! NSNumber).unsignedLongLongValue
                 if outputAmount <= DUST_AMOUNT {
                     let dustAmountBitcoins = TLCoin(uint64: DUST_AMOUNT).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.Bitcoin)
                     error(String(format: "Cannot create transactions with outputs less then %@ bitcoins.".localized, dustAmountBitcoins))
                     return (nil, stealthPaymentTxidsClaiming, realToAddresses)
                 }
             }
+            
+            let sortedInputs = inputsData.sortedArrayUsingComparator {
+                (obj1, obj2) -> NSComparisonResult in
+                
+                let firstTxid = (obj1 as! NSDictionary).objectForKey("txid") as! NSData
+                let secondTxid = (obj2 as! NSDictionary).objectForKey("txid") as! NSData
+                
+                let firstTxBytes = UnsafePointer<UInt8>(firstTxid.bytes)
+                let secondTxBytes = UnsafePointer<UInt8>(secondTxid.bytes)
+                
+                for (var i = 0; i < firstTxid.length; i++) {
+                    if firstTxBytes[i] < secondTxBytes[i] {
+                        return NSComparisonResult.OrderedAscending
+                    } else if firstTxBytes[i] > secondTxBytes[i] {
+                        return NSComparisonResult.OrderedDescending
+                    }
+                }
+                
+                let firstTxOutputN = (obj1 as! NSDictionary).objectForKey("tx_output_n") as! NSNumber
+                let secondTxOutputN = (obj2 as! NSDictionary).objectForKey("tx_output_n") as! NSNumber
+
+                if firstTxOutputN.unsignedLongLongValue < secondTxOutputN.unsignedLongLongValue {
+                    return NSComparisonResult.OrderedAscending
+                } else if firstTxOutputN.unsignedLongLongValue > secondTxOutputN.unsignedLongLongValue {
+                    return NSComparisonResult.OrderedDescending
+                }
+
+                return NSComparisonResult.OrderedSame
+            }
+            
+            var hashes = NSMutableArray()
+            var inputIndexes = NSMutableArray()
+            var inputScripts = NSMutableArray()
+            var privateKeys = NSMutableArray()
+            for _sortedInput in sortedInputs {
+                let sortedInput = _sortedInput as! NSDictionary
+                hashes.addObject(sortedInput.objectForKey("tx_hash")!)
+                inputIndexes.addObject(sortedInput.objectForKey("tx_output_n")!)
+                privateKeys.addObject(sortedInput.objectForKey("private_key")!)
+                inputScripts.addObject(sortedInput.objectForKey("script")!)
+            }
+            let sortedOutputs = outputsData.sortedArrayUsingComparator {
+                (obj1, obj2) -> NSComparisonResult in
+                
+                let firstAmount = (obj1 as! NSDictionary).objectForKey("amount") as! NSNumber
+                let secondAmount = (obj2 as! NSDictionary).objectForKey("amount") as! NSNumber
+                
+                if firstAmount.unsignedLongLongValue < secondAmount.unsignedLongLongValue {
+                    return NSComparisonResult.OrderedAscending
+                } else if firstAmount.unsignedLongLongValue > secondAmount.unsignedLongLongValue {
+                    return NSComparisonResult.OrderedDescending
+                } else {
+                    let firstAddress = (obj1 as! NSDictionary).objectForKey("to_address") as! String
+                    let secondAddress = (obj2 as! NSDictionary).objectForKey("to_address") as! String
+                    
+                    let firstScript = TLCoreBitcoinWrapper.getStandardPubKeyHashScriptFromAddress(firstAddress)
+                    let secondScript = TLCoreBitcoinWrapper.getStandardPubKeyHashScriptFromAddress(secondAddress)
+                    
+                    let firstScriptData = TLWalletUtils.hexStringToData(firstScript)!
+                    let secondScriptData = TLWalletUtils.hexStringToData(secondScript)!
+                    
+                    let firstScriptBytes = UnsafePointer<UInt8>(firstScriptData.bytes)
+                    let secondScriptBytes = UnsafePointer<UInt8>(secondScriptData.bytes)
+
+                    for (var i = 0; i < count(firstScript)/2; i++) {
+                        if firstScriptBytes[i] < secondScriptBytes[i] {
+                            return NSComparisonResult.OrderedAscending
+                        } else if firstScriptBytes[i] > secondScriptBytes[i] {
+                            return NSComparisonResult.OrderedDescending
+                        }
+                    }
+                    
+                    return NSComparisonResult.OrderedSame
+                }
+            }
+            
+            var outputAmounts = NSMutableArray()
+            var outputAddresses = NSMutableArray()
+            for _sortedOutput in sortedOutputs {
+                let sortedOutput = _sortedOutput as! NSDictionary
+                outputAddresses.addObject(sortedOutput.objectForKey("to_address")!)
+                outputAmounts.addObject(sortedOutput.objectForKey("amount")!)
+            }
+            
             
             DLog("createSignedSerializedTransactionHex hashes: %@", hashes.debugDescription)
             DLog("createSignedSerializedTransactionHex inputIndexes: %@", inputIndexes.debugDescription)

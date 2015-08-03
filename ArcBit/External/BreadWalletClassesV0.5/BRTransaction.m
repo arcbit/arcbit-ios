@@ -260,6 +260,14 @@ sequence:(uint32_t)sequence
     [self.addresses addObject:(address) ? address : [NSNull null]];
 }
 
+- (void)insertOutputScript:(NSData *)script amount:(uint64_t)amount {
+    NSString *address = [NSString addressWithScriptPubKey:script];
+    
+    [self.amounts insertObject:@(amount) atIndex:0];
+    [self.outScripts insertObject:script atIndex: 0];
+    [self.addresses insertObject:(address) ? address : [NSNull null] atIndex: 0];
+}
+
 - (void)setInputAddress:(NSString *)address atIndex:(NSUInteger)index;
 {
     NSMutableData *d = [NSMutableData data];
