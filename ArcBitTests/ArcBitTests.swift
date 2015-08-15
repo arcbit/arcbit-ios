@@ -138,27 +138,27 @@ class ArcBitTests: XCTestCase {
     
     var plainText = "test"
     let pbk = UInt32(2000)
-    var cipherText = TLWalletJson.encrypt(plainText, password:"pass", PBKDF2Iterations:pbk)
-    var decryptedText = TLWalletJson.decrypt(cipherText, password:"pass", PBKDF2Iterations:pbk)
+    var cipherText = TLCrypto.encrypt(plainText, password:"pass", PBKDF2Iterations:pbk)
+    var decryptedText = TLCrypto.decrypt(cipherText, password:"pass", PBKDF2Iterations:pbk)
     
     NSLog("decryptedText: %@", decryptedText!)
     XCTAssert(plainText == decryptedText)
     
     
     plainText = "test"
-    cipherText = TLWalletJson.encrypt("test", password:"pass")
-    decryptedText = TLWalletJson.decrypt(cipherText, password:"pass")
+    cipherText = TLCrypto.encrypt("test", password:"pass")
+    decryptedText = TLCrypto.decrypt(cipherText, password:"pass")
     XCTAssert(plainText == decryptedText)
     
     
     plainText = "test"
-    cipherText = TLWalletJson.encrypt("test", password:"pass1", PBKDF2Iterations:pbk)
-    decryptedText = TLWalletJson.decrypt(cipherText, password:"pass2", PBKDF2Iterations:pbk)
+    cipherText = TLCrypto.encrypt("test", password:"pass1", PBKDF2Iterations:pbk)
+    decryptedText = TLCrypto.decrypt(cipherText, password:"pass2", PBKDF2Iterations:pbk)
     XCTAssert(decryptedText == nil)
     
     plainText = "test"
-    cipherText = TLWalletJson.encrypt("test", password:"pass", PBKDF2Iterations:pbk)
-    decryptedText = TLWalletJson.decrypt(cipherText, password:"pass", PBKDF2Iterations:UInt32(1000))
+    cipherText = TLCrypto.encrypt("test", password:"pass", PBKDF2Iterations:pbk)
+    decryptedText = TLCrypto.decrypt(cipherText, password:"pass", PBKDF2Iterations:UInt32(1000))
     XCTAssert(true)
     }
     

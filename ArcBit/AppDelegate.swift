@@ -376,7 +376,8 @@ import HockeySDK
         
         TLPreferences.setWalletPassphrase(passphrase)
         TLPreferences.setEncryptedWalletJSONPassphrase(passphrase)
-        
+        TLPreferences.clearEncryptedWalletPassphraseKey()
+
         TLPreferences.setCanRestoreDeletedApp(true)
         TLPreferences.setInAppSettingsCanRestoreDeletedApp(true)
         
@@ -802,7 +803,8 @@ import HockeySDK
             ,selector:"respondToStealthPayment:",
             name:TLNotificationEvents.EVENT_RECEIVED_STEALTH_PAYMENT(), object:nil)
     
-        var passphrase = TLPreferences.getWalletPassphrase()
+        var passphrase = TLWalletPassphrase.getDecryptedWalletPassphrase()
+
         if (!TLPreferences.hasSetupHDWallet()) {
             if (recoverHDWalletIfNewlyInstalledApp) {
                 self.recoverHDWallet(passphrase!)
@@ -817,7 +819,7 @@ import HockeySDK
             }
             self.justSetupHDWallet = true
             let encryptedWalletJson = TLWalletJson.getEncryptedWalletJsonContainer(self.appWallet.getWalletsJson()!,
-                password:TLPreferences.getEncryptedWalletJSONPassphrase()!)
+                password:TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase()!)
             let success = self.saveWalletJson(encryptedWalletJson, date:NSDate())
             if success {
                 TLPreferences.setHasSetupHDWallet(true)
@@ -826,7 +828,7 @@ import HockeySDK
             }
         } else {
             let masterHex = TLHDWalletWrapper.getMasterHex(passphrase ?? "")
-            
+
             if (walletPayload != nil) {
                 self.appWallet.loadWalletPayload(walletPayload!, masterHex:masterHex)
             } else {
@@ -1158,7 +1160,7 @@ import HockeySDK
         if (TLPreferences.getEnableBackupWithiCloud()) {
             // when terminating app must save immediately, don't wait to save to iCloud
             let encryptedWalletJson = TLWalletJson.getEncryptedWalletJsonContainer(self.appWallet.getWalletsJson()!,
-                password:TLPreferences.getEncryptedWalletJSONPassphrase()!)
+                password:TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase()!)
             self.saveWalletJson(encryptedWalletJson, date:NSDate())
         }
         self.saveWalletJsonCloud()
@@ -1187,14 +1189,15 @@ import HockeySDK
         DLog("printOutWalletJSON:\n\(self.appWallet.getWalletsJson()!)")
     }
     
-    func saveWalletJsonCloud() {
+    func saveWalletJsonCloud() -> Bool {
         if saveWalletJSONEnabled == false {
             DLog("saveWalletJSONEnabled disabled")
-            return
+            return false
         }
         DLog("saveFileToCloud starting...")
+        
         let encryptedWalletJson = TLWalletJson.getEncryptedWalletJsonContainer(self.appWallet.getWalletsJson()!,
-            password:TLPreferences.getEncryptedWalletJSONPassphrase()!)
+            password:TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase()!)
         if (TLPreferences.getEnableBackupWithiCloud()) {
             if (TLCloudDocumentSyncWrapper.instance().checkCloudAvailability()) {
                 TLCloudDocumentSyncWrapper.instance().saveFileToCloud(TLPreferences.getCloudBackupWalletFileName()!, content:encryptedWalletJson,
@@ -1214,6 +1217,7 @@ import HockeySDK
             self.saveWalletJson(encryptedWalletJson, date:NSDate())
             DLog("saveFileToCloud local done")
         }
+        return true
     }
     
     private func saveWalletJson(encryptedWalletJson: (NSString), date: (NSDate)) -> Bool {
@@ -1230,7 +1234,7 @@ import HockeySDK
     
     func getLocalWalletJsonDict() -> NSDictionary? {
         return TLWalletJson.getWalletJsonDict(TLWalletJson.getLocalWalletJSONFile(),
-            password:TLPreferences.getEncryptedWalletJSONPassphrase())
+            password:TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase())
     }
     
     private func menuShownHideStatusBar() {

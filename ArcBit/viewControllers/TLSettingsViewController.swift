@@ -299,8 +299,41 @@ import AVFoundation
             TLPreferences.setAdvanceMode(enabled)
         } else if ((info.object as! String) == "canrestoredeletedapp") {
             let enabled = (userInfo.objectForKey("canrestoredeletedapp")) as! Int == 1
+            TLPreferences.setInAppSettingsCanRestoreDeletedApp(!enabled) // make sure below code completes firstbefore enabling
+            if enabled {
+                let encryptedWalletPassphraseKey = TLPreferences.getEncryptedWalletPassphraseKey()
+                let encryptedWalletPassphrase = TLPreferences.getWalletPassphrase()
+                // settingDidChange gets called twice on one change, so need to do this
+                if (encryptedWalletPassphraseKey == nil) {
+                    TLPreferences.setInAppSettingsCanRestoreDeletedApp(enabled)
+                    return
+                }
+                assert(encryptedWalletPassphraseKey != nil)
+                let walletPassphrase = TLWalletPassphrase.decryptWalletPassphrase(encryptedWalletPassphrase!, key: encryptedWalletPassphraseKey!)
+                TLPreferences.setWalletPassphrase(walletPassphrase!)
+                TLPreferences.setEncryptedWalletJSONPassphrase(walletPassphrase!)
+                TLPreferences.clearEncryptedWalletPassphraseKey()
+                let success = AppDelegate.instance().saveWalletJsonCloud()
+                assert(success == true)
+            } else {
+                // settingDidChange gets called twice on one change, so need to do this
+                if (TLPreferences.getEncryptedWalletPassphraseKey() != nil) {
+                    TLPreferences.setInAppSettingsCanRestoreDeletedApp(enabled)
+                    return
+                }
+
+                let encryptedWalletPassphraseKey = TLWalletPassphrase.generateWalletPassphraseKey()
+                let walletPassphrase = TLPreferences.getWalletPassphrase()
+                let encryptedWalletPassphrase = TLWalletPassphrase.encryptWalletPassphrase(walletPassphrase!, key: encryptedWalletPassphraseKey)
+                assert(TLPreferences.getEncryptedWalletPassphraseKey() == nil)
+                TLPreferences.setEncryptedWalletPassphraseKey(encryptedWalletPassphraseKey)
+                TLPreferences.setWalletPassphrase(encryptedWalletPassphrase)
+                TLPreferences.setEncryptedWalletJSONPassphrase(encryptedWalletPassphrase)
+                let success = AppDelegate.instance().saveWalletJsonCloud()
+                assert(success == true)
+            }
+            TLPreferences.setInAppSettingsCanRestoreDeletedApp(enabled)
             TLPreferences.setCanRestoreDeletedApp(enabled)
-            
         } else if ((info.object as! String) == "enablesoundnotification") {
             let enabled = (userInfo.objectForKey("enablesoundnotification") as! Int) == 1
             if (enabled) {

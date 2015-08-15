@@ -55,7 +55,7 @@ import UIKit
         self.masterSeedHexTextView!.backgroundColor = TLColors.mainAppColor()
         self.masterSeedHexTextView!.textColor = TLColors.mainAppOppositeColor()
         
-        let passphrase = TLPreferences.getWalletPassphrase()
+        let passphrase = TLWalletPassphrase.getDecryptedWalletPassphrase()
         self.passPhraseTextView!.text = (passphrase)
         if (!TLPreferences.enabledAdvanceMode()) {
             self.backupPassphraseExplanation!.text = "Write down the 12 word passphrase below and keep it safe. You can restore your entire wallets' bitcoins with this single passphrase.".localized

@@ -36,14 +36,14 @@ import UIKit
 
     override func viewDidLoad() {
         super.viewDidLoad()
-    
+
         self.walletLoadingActivityIndicatorView!.hidden = true
         self.walletLoadingActivityIndicatorView!.color = UIColor.grayColor()
         
         self.navigationController!.navigationBar.hidden = true
         UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.None)
         
-        var passphrase = TLPreferences.getWalletPassphrase()
+        var passphrase = TLWalletPassphrase.getDecryptedWalletPassphrase()
         if (TLPreferences.canRestoreDeletedApp() && !TLPreferences.hasSetupHDWallet() && passphrase != nil) {
             // is fresh app but not first time installing
             UIAlertController.showAlertInViewController(self,
@@ -81,7 +81,7 @@ import UIKit
     }
     
     private func checkToLoadFromLocal() -> () {
-        if (TLPreferences.getEncryptedWalletJSONPassphrase() != nil) {
+        if (TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase() != nil) {
             var localWalletPayload = AppDelegate.instance().getLocalWalletJsonDict()
             self.initializeWalletAppAndShowInitialScreenAndGoToMainScreen(localWalletPayload)
         } else {
@@ -121,7 +121,7 @@ import UIKit
                         
                         if (comparisonResult == NSComparisonResult.OrderedDescending || comparisonResult == NSComparisonResult.OrderedSame) {
                             var encryptedWalletJSON = NSString(data: documentData, encoding: NSUTF8StringEncoding)
-                            var passphrase = TLPreferences.getEncryptedWalletJSONPassphrase()
+                            var passphrase = TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase()
                             walletPayload = TLWalletJson.getWalletJsonDict((encryptedWalletJSON as! String), password: passphrase)
                             if (walletPayload != nil) {
                                 self.initializeWalletAppAndShowInitialScreenAndGoToMainScreen(walletPayload!)

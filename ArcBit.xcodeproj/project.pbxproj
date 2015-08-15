@@ -369,6 +369,12 @@
 		C0E5393E1AD4555C00651FE4 /* TLHelpDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E5393C1AD454FD00651FE4 /* TLHelpDoc.swift */; };
 		C0EE6D6A1B1B7E6000982692 /* 360X80logo.png in Resources */ = {isa = PBXBuildFile; fileRef = C0EE6D681B1B7E6000982692 /* 360X80logo.png */; };
 		C0EE6D6B1B1B7E6000982692 /* 1200X1200logo.png in Resources */ = {isa = PBXBuildFile; fileRef = C0EE6D691B1B7E6000982692 /* 1200X1200logo.png */; };
+		F338F9561B794D1D00C02F74 /* TLWalletPassphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F338F9551B794D1D00C02F74 /* TLWalletPassphrase.swift */; };
+		F338F9581B79718900C02F74 /* TLCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F338F9571B79718900C02F74 /* TLCrypto.swift */; };
+		F34D5C601B7A2C0100DF37DC /* TLCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F338F9571B79718900C02F74 /* TLCrypto.swift */; };
+		F34D5C611B7A2C0100DF37DC /* TLCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F338F9571B79718900C02F74 /* TLCrypto.swift */; };
+		F34D5C621B7A3B4900DF37DC /* TLWalletPassphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F338F9551B794D1D00C02F74 /* TLWalletPassphrase.swift */; };
+		F34D5C631B7A3B4A00DF37DC /* TLWalletPassphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F338F9551B794D1D00C02F74 /* TLWalletPassphrase.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -531,7 +537,7 @@
 		C0A190661ABF53A100BED648 /* TLSuggestions.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLSuggestions.swift; sourceTree = "<group>"; };
 		C0A190671ABF53A100BED648 /* TLTxObject.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLTxObject.swift; sourceTree = "<group>"; };
 		C0A190681ABF53A100BED648 /* TLWallet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLWallet.swift; sourceTree = "<group>"; };
-		C0A190691ABF53A100BED648 /* TLWalletJson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLWalletJson.swift; sourceTree = "<group>"; };
+		C0A190691ABF53A100BED648 /* TLWalletJson.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TLWalletJson.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C0A1906A1ABF53A100BED648 /* TLWalletUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLWalletUtils.swift; sourceTree = "<group>"; };
 		C0A190861ABF53A100BED648 /* UINavigationController+StatusBarStyle.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UINavigationController+StatusBarStyle.swift"; sourceTree = "<group>"; };
 		C0A190871ABF53A100BED648 /* UIView+FormScroll.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIView+FormScroll.swift"; sourceTree = "<group>"; };
@@ -548,7 +554,7 @@
 		C0A190931ABF53A100BED648 /* TLManageAccountsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLManageAccountsViewController.swift; sourceTree = "<group>"; };
 		C0A190941ABF53A100BED648 /* TLMenuViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLMenuViewController.swift; sourceTree = "<group>"; };
 		C0A190951ABF53A100BED648 /* TLPassPhraseViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLPassPhraseViewController.swift; sourceTree = "<group>"; };
-		C0A190961ABF53A100BED648 /* TLPreloadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLPreloadViewController.swift; sourceTree = "<group>"; };
+		C0A190961ABF53A100BED648 /* TLPreloadViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TLPreloadViewController.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C0A190971ABF53A100BED648 /* TLQRCodeScannerViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLQRCodeScannerViewController.swift; sourceTree = "<group>"; };
 		C0A190981ABF53A100BED648 /* TLReceiveViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLReceiveViewController.swift; sourceTree = "<group>"; };
 		C0A190991ABF53A100BED648 /* TLSendViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLSendViewController.swift; sourceTree = "<group>"; };
@@ -568,7 +574,7 @@
 		C0A192E71ABF707400BED648 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		C0A192E91ABF742D00BED648 /* TLAchievements.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLAchievements.swift; sourceTree = "<group>"; };
 		C0A192EA1ABF742D00BED648 /* TLAnalytics.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLAnalytics.swift; sourceTree = "<group>"; };
-		C0A192EB1ABF742D00BED648 /* TLPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLPreferences.swift; sourceTree = "<group>"; };
+		C0A192EB1ABF742D00BED648 /* TLPreferences.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; lineEnding = 0; path = TLPreferences.swift; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.swift; };
 		C0A192EF1ABF744300BED648 /* TLMacros.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLMacros.swift; sourceTree = "<group>"; };
 		C0A192F01ABF744300BED648 /* TLUtils.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLUtils.swift; sourceTree = "<group>"; };
 		C0A192F11ABF744300BED648 /* TLColors.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLColors.swift; sourceTree = "<group>"; };
@@ -611,6 +617,8 @@
 		C0EE6D681B1B7E6000982692 /* 360X80logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 360X80logo.png; sourceTree = "<group>"; };
 		C0EE6D691B1B7E6000982692 /* 1200X1200logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1200X1200logo.png; sourceTree = "<group>"; };
 		CB2193BFA5ADE6BF5F8EC097 /* Pods-ArcBit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArcBit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ArcBit/Pods-ArcBit.debug.xcconfig"; sourceTree = "<group>"; };
+		F338F9551B794D1D00C02F74 /* TLWalletPassphrase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLWalletPassphrase.swift; sourceTree = "<group>"; };
+		F338F9571B79718900C02F74 /* TLCrypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLCrypto.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1115,6 +1123,8 @@
 				C0A190691ABF53A100BED648 /* TLWalletJson.swift */,
 				C0A1906A1ABF53A100BED648 /* TLWalletUtils.swift */,
 				C0E5393C1AD454FD00651FE4 /* TLHelpDoc.swift */,
+				F338F9551B794D1D00C02F74 /* TLWalletPassphrase.swift */,
+				F338F9571B79718900C02F74 /* TLCrypto.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -1155,8 +1165,8 @@
 				C0A190921ABF53A100BED648 /* TLInstructionsViewController.swift */,
 				C0A190931ABF53A100BED648 /* TLManageAccountsViewController.swift */,
 				C0A190941ABF53A100BED648 /* TLMenuViewController.swift */,
-				C0A190951ABF53A100BED648 /* TLPassPhraseViewController.swift */,
 				C0A190961ABF53A100BED648 /* TLPreloadViewController.swift */,
+				C0A190951ABF53A100BED648 /* TLPassPhraseViewController.swift */,
 				C0A190971ABF53A100BED648 /* TLQRCodeScannerViewController.swift */,
 				C0A190981ABF53A100BED648 /* TLReceiveViewController.swift */,
 				C0A190991ABF53A100BED648 /* TLSendViewController.swift */,
@@ -1562,6 +1572,7 @@
 				C02D3A781B4A45F500B3B7F0 /* QRCodeEncoderDemoViewController.mm in Sources */,
 				C02D3A791B4A45F500B3B7F0 /* DataMatrix.mm in Sources */,
 				C02D3A7A1B4A45F500B3B7F0 /* TLStealthWallet.swift in Sources */,
+				F34D5C631B7A3B4A00DF37DC /* TLWalletPassphrase.swift in Sources */,
 				C02D3A7B1B4A45F500B3B7F0 /* TransitionDelegate.swift in Sources */,
 				C02D3A7C1B4A45F500B3B7F0 /* TLWallet+Stealth.swift in Sources */,
 				C02D3A7D1B4A45F500B3B7F0 /* TLSelectedObject.swift in Sources */,
@@ -1647,6 +1658,7 @@
 				C02D3ACD1B4A45F500B3B7F0 /* TLReceiveViewController.swift in Sources */,
 				C02D3ACE1B4A45F500B3B7F0 /* TransparentViewController.swift in Sources */,
 				C02D3ACF1B4A45F500B3B7F0 /* TLNotificationEvents.swift in Sources */,
+				F34D5C611B7A2C0100DF37DC /* TLCrypto.swift in Sources */,
 				C02D3AD01B4A45F500B3B7F0 /* IASKPSTitleValueSpecifierViewCell.m in Sources */,
 				C02D3AD11B4A45F500B3B7F0 /* TLAddressBookViewController.swift in Sources */,
 				C02D3AD21B4A45F500B3B7F0 /* TLImportedAddresses.swift in Sources */,
@@ -1671,6 +1683,7 @@
 				C05C398B1AD0710B00AADE55 /* TLCloudDocumentSyncWrapper.m in Sources */,
 				C0A190FD1ABF53A100BED648 /* TLWallet.swift in Sources */,
 				C0A190DB1ABF53A100BED648 /* iToast.m in Sources */,
+				F338F9561B794D1D00C02F74 /* TLWalletPassphrase.swift in Sources */,
 				C0E5393D1AD454FD00651FE4 /* TLHelpDoc.swift in Sources */,
 				C0A190F41ABF53A100BED648 /* TLImportedAddress.swift in Sources */,
 				C0A1930D1ABF744E00BED648 /* TLExchangeRate.swift in Sources */,
@@ -1742,6 +1755,7 @@
 				C0A190EA1ABF53A100BED648 /* UINavigationBar+FixedHeightWhenStatusBarHidden.m in Sources */,
 				C0A193111ABF744E00BED648 /* TLStealthWebSocket.swift in Sources */,
 				C0A1930E1ABF744E00BED648 /* TLInsightAPI.swift in Sources */,
+				F338F9581B79718900C02F74 /* TLCrypto.swift in Sources */,
 				C0A191181ABF53A100BED648 /* UINavigationController+StatusBarStyle.swift in Sources */,
 				C0A190C81ABF53A100BED648 /* CustomIOS7AlertView.m in Sources */,
 				C0A1912C1ABF53A100BED648 /* TLTextViewViewController.swift in Sources */,
@@ -1787,6 +1801,7 @@
 				C004134B1ACEFCB700505F31 /* TLOperationsManager.swift in Sources */,
 				C0A193321ABF82E200BED648 /* TLBitcoinListener.swift in Sources */,
 				C0A1932A1ABF82AC00BED648 /* TLImportedAddresses.swift in Sources */,
+				F34D5C601B7A2C0100DF37DC /* TLCrypto.swift in Sources */,
 				C0A193331ABF82E400BED648 /* TLBlockchainAPI.swift in Sources */,
 				C03ECBF71B54A104005D4B0F /* TLStringLocalized.swift in Sources */,
 				C0A1932B1ABF82AF00BED648 /* TLSelectedObject.swift in Sources */,
@@ -1802,6 +1817,7 @@
 				C0A193241ABF829C00BED648 /* TLPreferences.swift in Sources */,
 				C0A193381ABF82EF00BED648 /* TLNetworking.swift in Sources */,
 				C0A1932E1ABF82B700BED648 /* TLStealthWallet.swift in Sources */,
+				F34D5C621B7A3B4900DF37DC /* TLWalletPassphrase.swift in Sources */,
 				C0C3BDED1AC11BD2001AC6CD /* TLWallet+Stealth.swift in Sources */,
 				C0A1931C1ABF81CB00BED648 /* TLStealthAddress.swift in Sources */,
 				C0A1931A1ABF751800BED648 /* BreadWalletTests.m in Sources */,

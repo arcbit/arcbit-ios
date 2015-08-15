@@ -72,6 +72,7 @@ import Foundation
         static let PREFERENCE_SEND_FROM_INDEX = "pref-send-from-index"
         static let PREFERENCE_HAS_SETUP_HDWALLET = "pref-has-setup-hdwallet"
         static let PREFERENCE_ENABLE_STEALTH_ADDRESS_DEFAULT = "pref-enable-stealth-address-default"
+        static let PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE_KEY = "pref-encrypted-backup-passphrase-key"
     }
     
     class func setHasSetupHDWallet(enabled:Bool) -> () {
@@ -373,6 +374,20 @@ import Foundation
     
     class func deleteEncryptedWalletJSONPassphrase()  -> (){
         JNKeychain.deleteValueForKey(CLASS_STATIC.PREFERENCE_ENCRYPTED_WALLET_JSON_PASSPHRASE)
+    }
+
+    class func getEncryptedWalletPassphraseKey() -> (String?) {
+        return NSUserDefaults.standardUserDefaults().stringForKey(CLASS_STATIC.PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE_KEY)
+    }
+    
+    class func setEncryptedWalletPassphraseKey(value:String)  -> (){
+        NSUserDefaults.standardUserDefaults().setObject(value ,forKey:CLASS_STATIC.PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE_KEY)
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+    
+    class func clearEncryptedWalletPassphraseKey() -> () {
+        NSUserDefaults.standardUserDefaults().removeObjectForKey(CLASS_STATIC.PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE_KEY)
+        NSUserDefaults.standardUserDefaults().synchronize()
     }
     
     class func setCanRestoreDeletedApp(enabled:Bool)  -> (){

@@ -21,79 +21,36 @@
 //   MA 02110-1301  USA
 
 import Foundation
-let kRNCryptorAES256Settings:RNCryptorSettings  = RNCryptorSettings(algorithm: CCAlgorithm(kCCAlgorithmAES128), blockSize: kCCBlockSizeAES128, IVSize: kCCBlockSizeAES128,
-    options: CCOptions(kCCOptionPKCS7Padding), HMACAlgorithm: CCHmacAlgorithm(kCCHmacAlgSHA256), HMACLength: Int(CC_SHA256_DIGEST_LENGTH),
-    keySettings: RNCryptorKeyDerivationSettings(keySize: kCCKeySizeAES256, saltSize: 8, PBKDFAlgorithm: CCPBKDFAlgorithm(kCCPBKDF2), PRF: CCPseudoRandomAlgorithm(kCCPRFHmacAlgSHA1), rounds: 10000, hasV2Password: false),
-    HMACKeySettings: RNCryptorKeyDerivationSettings(keySize: kCCKeySizeAES256, saltSize: 8, PBKDFAlgorithm: CCPBKDFAlgorithm(kCCPBKDF2), PRF: CCPseudoRandomAlgorithm(kCCPRFHmacAlgSHA1), rounds: 10000, hasV2Password: false))
-
 
 @objc class TLWalletJson {
 
+    class func getDecryptedEncryptedWalletJSONPassphrase() -> String? {
+        let encryptedWalletPassphraseKey = TLPreferences.getEncryptedWalletPassphraseKey()
+        if encryptedWalletPassphraseKey != nil {
+            let encryptedWalletPassphrase = TLPreferences.getEncryptedWalletJSONPassphrase()
+            let decryptedEncryptedWalletPassphrase = TLWalletPassphrase.decryptWalletPassphrase(encryptedWalletPassphrase!,
+                key: encryptedWalletPassphraseKey!)
+            assert(decryptedEncryptedWalletPassphrase != nil)
+            return decryptedEncryptedWalletPassphrase
+        } else {
+            return TLPreferences.getEncryptedWalletJSONPassphrase()
+        }
+    }
+    
     class func getWalletJsonFileName() -> (String) {
         return "wallet.json.asc"
     }
-    
-    class func getDefaultPBKDF2Iterations() -> UInt32 {        
-        return 10000
-    }
-    
-    class func encrypt(plainText: String, password: String) -> (String) {
-        return TLWalletJson.encrypt(plainText, password: password, PBKDF2Iterations: getDefaultPBKDF2Iterations())
-    }
-    
-    class func decrypt(cipherText: String, password: String) -> (String?) {
-        return TLWalletJson.decrypt(cipherText, password: password, PBKDF2Iterations: getDefaultPBKDF2Iterations())
-    }
-    
-    class func encrypt(plainText: String, password: String, PBKDF2Iterations: UInt32) -> String {
-        var settings = kRNCryptorAES256Settings
-        settings.keySettings.rounds = PBKDF2Iterations
-        //DLog("saveWalletJson encrypt: %@", plainText)
-
-        let data = plainText.dataUsingEncoding(NSUTF8StringEncoding)
-        var error: NSError? = nil
-        var encryptedData = RNEncryptor.encryptData(data, withSettings: settings, password: password, error: &error)
         
-        if (error != nil) {
-            DLog("TLWalletJson encrypt error: %@", error!.localizedDescription)
-            NSException(name: "Error", reason: "Error encrypting", userInfo: nil).raise()
-        }
-        
-        let base64EncryptedString = encryptedData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
-        //DLog("TLWalletJson encrypt base64EncryptedData: %@", base64EncryptedString)
-        return base64EncryptedString
-    }
-    
-    class func decrypt(cipherText: String, password: String, PBKDF2Iterations: UInt32) -> String? {
-        var settings = kRNCryptorAES256Settings
-        settings.keySettings.rounds = PBKDF2Iterations
-        
-        let encryptedData = NSData(base64EncodedString: cipherText, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
-        var error: NSError? = nil
-        let decryptedData = RNDecryptor.decryptData(encryptedData,
-            withSettings: settings,
-            password: password,
-            error: &error)
-        
-        // Note: there will only be error if password is incorrect, if PBKDF2Iterations dont match then there will be no error, just nil decryptedData
-        if (error != nil) {
-            return nil
-        }
-        
-        let decryptedString = NSString(data: decryptedData!, encoding: NSUTF8StringEncoding)
-        //DLog("TLWalletJson decrypt decryptedString: %@", decryptedString)
-        return decryptedString as? String
-    }
-    
     class func generatePayloadChecksum(payload: String) -> String {
         return TLUtils.doubleSHA256HashFor(payload)
     }
     
     class func getEncryptedWalletJsonContainer(walletJson: NSDictionary, password: String) -> (String) {
+        assert(TLHDWalletWrapper.phraseIsValid(password), "phrase is invalid")
         var str = TLUtils.dictionaryToJSONString(false, dict: walletJson)
         //DLog("getEncryptedWalletJsonContainer str: %@", str)
         let encryptJSONPassword = TLUtils.doubleSHA256HashFor(password)
-        str = encrypt(str, password: encryptJSONPassword)
+        str = TLCrypto.encrypt(str, password: encryptJSONPassword)
         let walletJsonEncryptedWrapperDict = ["version":1, "payload":str]
         let walletJsonEncryptedWrapperString = TLUtils.dictionaryToJSONString(true, dict: walletJsonEncryptedWrapperDict)
         return walletJsonEncryptedWrapperString
@@ -137,8 +94,7 @@ let kRNCryptorAES256Settings:RNCryptorSettings  = RNCryptorSettings(algorithm: C
             options: NSJSONReadingOptions.MutableContainers,
             error: &error) as! NSDictionary
         assert(error == nil, "Error serializing wallet json string")
-
-        //DLog("getWalletJsonDict: %@", walletDict.description())
+        //DLog("getWalletJsonDict: %@", walletDict.description)
         return walletDict
     }
     
@@ -160,9 +116,9 @@ let kRNCryptorAES256Settings:RNCryptorSettings  = RNCryptorSettings(algorithm: C
         if (encryptedWalletJSONFile == nil || password == nil) {
             return nil
         }
-        
+        assert(TLHDWalletWrapper.phraseIsValid(password!), "phrase is invalid")
         let encryptJSONPassword = TLUtils.doubleSHA256HashFor(password!)
-        let str = decrypt(encryptedWalletJSONFile!, password: encryptJSONPassword)
+        let str = TLCrypto.decrypt(encryptedWalletJSONFile!, password: encryptJSONPassword)
         //DLog("getWalletJsonString: %@", str)
         return str
     }

@@ -46,6 +46,7 @@ import Foundation
     }
     
     class func getMasterHex(mnemonic: String) -> String {
+        assert(phraseIsValid(mnemonic), "mnemonic is invalid")
         let mnemonicData = mnemonic.dataUsingEncoding(NSUTF8StringEncoding)
         let salt = "mnemonic".dataUsingEncoding(NSUTF8StringEncoding)
         
