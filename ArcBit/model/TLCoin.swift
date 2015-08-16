@@ -92,16 +92,16 @@ enum TLBitcoinDenomination:Int {
     
     init(bitcoinAmount:(String), bitcoinDenomination:(TLBitcoinDenomination)) {
         let satoshis:UInt64
+        let bitcoinAmountString = bitcoinAmount.stringByReplacingOccurrencesOfString(",", withString: ".")
         if (bitcoinDenomination == TLBitcoinDenomination.Bitcoin) {
-            satoshis = (NSDecimalNumber(string: bitcoinAmount).decimalNumberByMultiplyingBy(NSDecimalNumber(unsignedLongLong: 100000000))).unsignedLongLongValue
+            satoshis = (NSDecimalNumber(string: bitcoinAmountString).decimalNumberByMultiplyingBy(NSDecimalNumber(unsignedLongLong: 100000000))).unsignedLongLongValue
         }
         else if (bitcoinDenomination == TLBitcoinDenomination.MilliBit) {
-            satoshis = (NSDecimalNumber(string: bitcoinAmount).decimalNumberByMultiplyingBy(NSDecimalNumber(unsignedLongLong: 100000))).unsignedLongLongValue
+            satoshis = (NSDecimalNumber(string: bitcoinAmountString).decimalNumberByMultiplyingBy(NSDecimalNumber(unsignedLongLong: 100000))).unsignedLongLongValue
         }
         else {
-            satoshis = (NSDecimalNumber(string: bitcoinAmount).decimalNumberByMultiplyingBy(NSDecimalNumber(unsignedLongLong: 100))).unsignedLongLongValue
+            satoshis = (NSDecimalNumber(string: bitcoinAmountString).decimalNumberByMultiplyingBy(NSDecimalNumber(unsignedLongLong: 100))).unsignedLongLongValue
         }
-        
         coin = BTCMutableBigNumber(UInt64:satoshis)
     }
     

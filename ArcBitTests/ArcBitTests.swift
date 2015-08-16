@@ -1329,5 +1329,32 @@ class ArcBitTests: XCTestCase {
         testCreateSignedSerializedTransactionHexAndBIP69_6()
     }
     
-    
+    func testCoin() {
+        var coin = TLWalletUtils.bitcoinAmountStringToCoin("0.1")
+        XCTAssertTrue(coin.toUInt64() == 10000000)
+        
+        coin = TLWalletUtils.bitcoinAmountStringToCoin("0,1")
+        XCTAssertTrue(coin.toUInt64() == 10000000)
+        
+        coin = TLWalletUtils.bitcoinAmountStringToCoin("0.00000001")
+        XCTAssertTrue(coin.toUInt64() == 1)
+
+        coin = TLWalletUtils.bitcoinAmountStringToCoin("1.00000000")
+        XCTAssertTrue(coin.toUInt64() == 100000000)
+        coin = TLWalletUtils.bitcoinAmountStringToCoin("1")
+        XCTAssertTrue(coin.toUInt64() == 100000000)
+
+        coin = TLWalletUtils.bitcoinAmountStringToCoin("0.0")
+        XCTAssertTrue(coin.toUInt64() == 0)
+        coin = TLWalletUtils.bitcoinAmountStringToCoin("0")
+        XCTAssertTrue(coin.toUInt64() == 0)
+
+        coin = TLWalletUtils.bitcoinAmountStringToCoin("0.99999999")
+        XCTAssertTrue(coin.toUInt64() == 99999999)
+        coin = TLWalletUtils.bitcoinAmountStringToCoin(".99999999")
+        XCTAssertTrue(coin.toUInt64() == 99999999)
+
+        coin = TLWalletUtils.bitcoinAmountStringToCoin("21000000")
+        XCTAssertTrue(coin.toUInt64() == 2100000000000000)
+    }
 }

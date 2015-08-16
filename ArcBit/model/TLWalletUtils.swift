@@ -185,7 +185,7 @@ enum TLAccountAddressType: Int {
     
     private class func amountStringToCoin(amount: String, bitcoinDenomination: TLBitcoinDenomination) -> TLCoin {
         if count(amount) != 0 {
-            if let range = amount.rangeOfCharacterFromSet(NSCharacterSet(charactersInString: "0123456789.").invertedSet) {
+            if let range = amount.rangeOfCharacterFromSet(NSCharacterSet(charactersInString: "0123456789.,").invertedSet) {
                 return TLCoin.zero()
             } else {
                 return TLCoin(bitcoinAmount: amount, bitcoinDenomination: bitcoinDenomination)
