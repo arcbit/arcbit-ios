@@ -106,14 +106,20 @@ enum TLBitcoinDenomination:Int {
     }
     
     func bigIntegerToBitcoinAmountString(bitcoinDenomination: TLBitcoinDenomination) -> (String) {
+        let bitcoinFormatter = NSNumberFormatter()
+        bitcoinFormatter.numberStyle = .DecimalStyle
+        
         if (bitcoinDenomination == TLBitcoinDenomination.Bitcoin) {
-            return String(format: "%.08f", bigIntegerToBitcoin())
+            bitcoinFormatter.maximumFractionDigits = 8
+            return bitcoinFormatter.stringFromNumber(NSNumber(double: bigIntegerToBitcoin()))!
         }
         else if (bitcoinDenomination == TLBitcoinDenomination.MilliBit) {
-            return String(format: "%.05f", bigIntegerToMilliBit())
+            bitcoinFormatter.maximumFractionDigits = 5
+            return bitcoinFormatter.stringFromNumber(NSNumber(double: bigIntegerToMilliBit()))!
         }
         else {
-            return String(format: "%.02f", bigIntegerToBits())
+            bitcoinFormatter.maximumFractionDigits = 2
+            return bitcoinFormatter.stringFromNumber(NSNumber(double: bigIntegerToBits()))!
         }
     }
     

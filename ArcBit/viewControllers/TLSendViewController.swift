@@ -805,9 +805,12 @@ import UIKit
     
     @IBAction private func updateAmountTextFieldExchangeRate(sender: AnyObject?) {
         let currency = TLWalletUtils.getFiatCurrency()
-        let fiatAmount = (self.fiatAmountTextField!.text as NSString).doubleValue
-        if (fiatAmount != 0) {
-            let bitcoinAmount = TLExchangeRate.instance().bitcoinAmountFromFiat(currency, fiatAmount: fiatAmount)
+        let fiatFormatter = NSNumberFormatter()
+        fiatFormatter.numberStyle = .DecimalStyle
+        fiatFormatter.maximumFractionDigits = 2
+        let fiatAmount = fiatFormatter.numberFromString(self.fiatAmountTextField!.text)
+        if fiatAmount != nil && fiatAmount! != 0 {
+            let bitcoinAmount = TLExchangeRate.instance().bitcoinAmountFromFiat(currency, fiatAmount: fiatAmount!.doubleValue)
             self.amountTextField!.text = TLWalletUtils.coinToProperBitcoinAmountString(bitcoinAmount)
         } else {
             self.amountTextField!.text = "0"

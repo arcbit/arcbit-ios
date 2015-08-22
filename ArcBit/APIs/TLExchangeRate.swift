@@ -80,6 +80,9 @@ import Foundation
     }
     
     func fiatAmountStringFromBitcoin(currency:String, bitcoinAmount:TLCoin) -> (String){
-        return String(format: "%.02f", fiatAmountFromBitcoin(currency, bitcoinAmount:bitcoinAmount))
+        let bitcoinFormatter = NSNumberFormatter()
+        bitcoinFormatter.numberStyle = .DecimalStyle
+        bitcoinFormatter.maximumFractionDigits = 2
+        return bitcoinFormatter.stringFromNumber(NSNumber(double: fiatAmountFromBitcoin(currency, bitcoinAmount:bitcoinAmount)))!
     }
 }
