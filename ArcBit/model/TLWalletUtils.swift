@@ -69,15 +69,15 @@ enum TLAccountAddressType: Int {
     }
     
     class func DEFAULT_FEE_AMOUNT() -> (String) {
-        return STATIC_MEMBERS.DEFAULT_FEE_AMOUNT
+        return coinToProperBitcoinAmountString(bitcoinAmountStringToCoin(STATIC_MEMBERS.DEFAULT_FEE_AMOUNT, locale: NSLocale(localeIdentifier: "en_US")))
     }
     
     class func MAX_FEE_AMOUNT() -> (String) {
-        return STATIC_MEMBERS.MAX_FEE_AMOUNT
+        return coinToProperBitcoinAmountString(bitcoinAmountStringToCoin(STATIC_MEMBERS.MAX_FEE_AMOUNT, locale: NSLocale(localeIdentifier: "en_US")))
     }
     
     class func MIN_FEE_AMOUNT() -> (String) {
-        return STATIC_MEMBERS.MIN_FEE_AMOUNT
+        return coinToProperBitcoinAmountString(bitcoinAmountStringToCoin(STATIC_MEMBERS.MIN_FEE_AMOUNT, locale: NSLocale(localeIdentifier: "en_US")))
     }
 
     class func RECEIVE_ICON_IMAGE_NAME() -> (String) {
@@ -163,8 +163,8 @@ enum TLAccountAddressType: Int {
     }
     
     class func isValidInputTransactionFee(amount: TLCoin) -> Bool {
-        let maxFeeAmount = TLCoin(bitcoinAmount: STATIC_MEMBERS.MAX_FEE_AMOUNT, bitcoinDenomination: TLBitcoinDenomination.Bitcoin)
-        let minFeeAmount = TLCoin(bitcoinAmount: STATIC_MEMBERS.MIN_FEE_AMOUNT, bitcoinDenomination: TLBitcoinDenomination.Bitcoin)
+        let maxFeeAmount = TLCoin(bitcoinAmount: MAX_FEE_AMOUNT(), bitcoinDenomination: TLBitcoinDenomination.Bitcoin)
+        let minFeeAmount = TLCoin(bitcoinAmount: MIN_FEE_AMOUNT(), bitcoinDenomination: TLBitcoinDenomination.Bitcoin)
         if (amount.greater(maxFeeAmount)) {
             return false
         }
@@ -175,20 +175,26 @@ enum TLAccountAddressType: Int {
         return true
     }
     
-    class func bitcoinAmountStringToCoin(amount: String) -> TLCoin {
-        return amountStringToCoin(amount, bitcoinDenomination: TLBitcoinDenomination.Bitcoin)
+    class func bitcoinAmountStringToCoin(amount: String, locale: NSLocale=NSLocale.currentLocale()) -> TLCoin {
+        return amountStringToCoin(amount, bitcoinDenomination: TLBitcoinDenomination.Bitcoin, locale: locale)
     }
     
-    class func properBitcoinAmountStringToCoin(amount: String) -> TLCoin {
-        return amountStringToCoin(amount, bitcoinDenomination: TLPreferences.getBitcoinDenomination())
+    class func properBitcoinAmountStringToCoin(amount: String, locale: NSLocale=NSLocale.currentLocale()) -> TLCoin {
+        return amountStringToCoin(amount, bitcoinDenomination: TLPreferences.getBitcoinDenomination(), locale: locale)
     }
     
-    private class func amountStringToCoin(amount: String, bitcoinDenomination: TLBitcoinDenomination) -> TLCoin {
+    private class func amountStringToCoin(amount: String, bitcoinDenomination: TLBitcoinDenomination, locale: NSLocale) -> TLCoin {
+        let bitcoinFormatter = NSNumberFormatter()
+        bitcoinFormatter.numberStyle = .DecimalStyle
+        bitcoinFormatter.maximumFractionDigits = 8
+        bitcoinFormatter.locale = locale
+        let amountNumber = bitcoinFormatter.numberFromString(amount)
+        
         if count(amount) != 0 {
             if let range = amount.rangeOfCharacterFromSet(NSCharacterSet(charactersInString: "0123456789.,").invertedSet) {
                 return TLCoin.zero()
             } else {
-                return TLCoin(bitcoinAmount: amount, bitcoinDenomination: bitcoinDenomination)
+                return TLCoin(bitcoinAmount: amount, bitcoinDenomination: bitcoinDenomination, locale: locale)
             }
         } else {
             return TLCoin.zero()

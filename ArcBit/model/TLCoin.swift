@@ -90,17 +90,31 @@ enum TLBitcoinDenomination:Int {
         return STATIC_MEMBERS.numberFormatter.numberFromString(coin.decimalString)!.unsignedLongLongValue
     }
     
-    init(bitcoinAmount:(String), bitcoinDenomination:(TLBitcoinDenomination)) {
+    init(bitcoinAmount:(String), bitcoinDenomination:(TLBitcoinDenomination), locale: NSLocale=NSLocale.currentLocale()) {
+        let bitcoinFormatter = NSNumberFormatter()
+        bitcoinFormatter.numberStyle = .DecimalStyle
+        bitcoinFormatter.maximumFractionDigits = 8
+        bitcoinFormatter.locale = locale
+        
+        let tmpString = bitcoinFormatter.numberFromString(bitcoinAmount)
+        if tmpString == nil {
+            coin = BTCMutableBigNumber(UInt64:0)
+            return
+        }
+
         let satoshis:UInt64
-        let bitcoinAmountString = bitcoinAmount.stringByReplacingOccurrencesOfString(",", withString: ".")
+        let mericaFormatter = NSNumberFormatter()
+        mericaFormatter.maximumFractionDigits = 8
+        mericaFormatter.locale = NSLocale(localeIdentifier: "en_US")
+        let decimalAmount = NSDecimalNumber(string: mericaFormatter.stringFromNumber(bitcoinFormatter.numberFromString(bitcoinAmount)!))
         if (bitcoinDenomination == TLBitcoinDenomination.Bitcoin) {
-            satoshis = (NSDecimalNumber(string: bitcoinAmountString).decimalNumberByMultiplyingBy(NSDecimalNumber(unsignedLongLong: 100000000))).unsignedLongLongValue
+            satoshis = decimalAmount.decimalNumberByMultiplyingBy(NSDecimalNumber(string: "100000000")).unsignedLongLongValue
         }
         else if (bitcoinDenomination == TLBitcoinDenomination.MilliBit) {
-            satoshis = (NSDecimalNumber(string: bitcoinAmountString).decimalNumberByMultiplyingBy(NSDecimalNumber(unsignedLongLong: 100000))).unsignedLongLongValue
+            satoshis = (decimalAmount.decimalNumberByMultiplyingBy(NSDecimalNumber(unsignedLongLong: 100000))).unsignedLongLongValue
         }
         else {
-            satoshis = (NSDecimalNumber(string: bitcoinAmountString).decimalNumberByMultiplyingBy(NSDecimalNumber(unsignedLongLong: 100))).unsignedLongLongValue
+            satoshis = (decimalAmount.decimalNumberByMultiplyingBy(NSDecimalNumber(unsignedLongLong: 100))).unsignedLongLongValue
         }
         coin = BTCMutableBigNumber(UInt64:satoshis)
     }

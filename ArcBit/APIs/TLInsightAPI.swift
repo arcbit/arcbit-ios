@@ -234,7 +234,7 @@ import Foundation
         bitcoinFormatter.roundingMode = .RoundHalfUp
         bitcoinFormatter.maximumFractionDigits = 8
         bitcoinFormatter.locale = NSLocale(localeIdentifier: "en_US")
-        let amount = TLCoin(bitcoinAmount: bitcoinFormatter.stringFromNumber(amountNumber)!, bitcoinDenomination: TLBitcoinDenomination.Bitcoin)
+        let amount = TLCoin(bitcoinAmount: bitcoinFormatter.stringFromNumber(amountNumber)!, bitcoinDenomination: TLBitcoinDenomination.Bitcoin, locale: NSLocale(localeIdentifier: "en_US"))
         blockchainUnspentOutputDict.setObject(NSNumber(unsignedLongLong: amount.toUInt64()), forKey: "value")
 
 
@@ -463,7 +463,7 @@ import Foundation
             }
             
             let value = vout.objectForKey("value") as! String
-            let coinValue = TLCoin(bitcoinAmount: value, bitcoinDenomination: .Bitcoin)
+            let coinValue = TLCoin(bitcoinAmount: value, bitcoinDenomination: .Bitcoin, locale: NSLocale(localeIdentifier: "en_US"))
             aOut.setObject(Int(coinValue.toUInt64()), forKey: "value")
             
             outs.addObject(aOut)
