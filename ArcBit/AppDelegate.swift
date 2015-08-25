@@ -339,6 +339,7 @@ import HockeySDK
             TLPreferences.setInstallDate()
             TLPreferences.setAppVersion(appVersion)
         } else if appVersion != TLPreferences.getAppVersion() {
+            TLUpdateAppData.instance().beforeUpdatedAppVersion = TLPreferences.getAppVersion()
             DLog("set new appVersion %@", appVersion)
             TLPreferences.setAppVersion(appVersion)
         }
@@ -370,12 +371,12 @@ import HockeySDK
         if (TLPreferences.getCloudBackupWalletFileName() == nil) {
             TLPreferences.setCloudBackupWalletFileName()
         }
-        
+
         TLPreferences.deleteWalletPassphrase()
         TLPreferences.deleteEncryptedWalletJSONPassphrase()
         
-        TLPreferences.setWalletPassphrase(passphrase)
-        TLPreferences.setEncryptedWalletJSONPassphrase(passphrase)
+        TLPreferences.setWalletPassphrase(passphrase, useKeychain: true)
+        TLPreferences.setEncryptedWalletJSONPassphrase(passphrase, useKeychain: true)
         TLPreferences.clearEncryptedWalletPassphraseKey()
 
         TLPreferences.setCanRestoreDeletedApp(true)

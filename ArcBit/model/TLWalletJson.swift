@@ -27,13 +27,13 @@ import Foundation
     class func getDecryptedEncryptedWalletJSONPassphrase() -> String? {
         let encryptedWalletPassphraseKey = TLPreferences.getEncryptedWalletPassphraseKey()
         if encryptedWalletPassphraseKey != nil {
-            let encryptedWalletPassphrase = TLPreferences.getEncryptedWalletJSONPassphrase()
+            let encryptedWalletPassphrase = TLPreferences.getEncryptedWalletJSONPassphrase(TLPreferences.canRestoreDeletedApp())
             let decryptedEncryptedWalletPassphrase = TLWalletPassphrase.decryptWalletPassphrase(encryptedWalletPassphrase!,
                 key: encryptedWalletPassphraseKey!)
             assert(decryptedEncryptedWalletPassphrase != nil)
             return decryptedEncryptedWalletPassphrase
         } else {
-            return TLPreferences.getEncryptedWalletJSONPassphrase()
+            return TLPreferences.getEncryptedWalletJSONPassphrase(TLPreferences.canRestoreDeletedApp())
         }
     }
     

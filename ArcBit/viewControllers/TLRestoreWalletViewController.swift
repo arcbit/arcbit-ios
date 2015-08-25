@@ -73,8 +73,8 @@ import UIKit
                     if (self.isRestoringFromEncryptedWalletJSON) {
                         AppDelegate.instance().initializeWalletAppAndShowInitialScreen(false, walletPayload:walletPayload)
                         TLPreferences.setEnableBackupWithiCloud(true)
-                        TLPreferences.setWalletPassphrase(mnemonicPassphrase)
-                        TLPreferences.setEncryptedWalletJSONPassphrase(mnemonicPassphrase)
+                        TLPreferences.setWalletPassphrase(mnemonicPassphrase, useKeychain: true)
+                        TLPreferences.setEncryptedWalletJSONPassphrase(mnemonicPassphrase, useKeychain: true)
                         self.handleAfterRecoverWallet(mnemonicPassphrase)
                     } else {
                         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {

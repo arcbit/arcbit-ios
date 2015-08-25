@@ -10,14 +10,43 @@ import Foundation
 
 class TLWalletPassphrase {
 
-    class func getDecryptedWalletPassphrase() -> String? {
+    class func enableRecoverableFeature(useKeychain:Bool) {
         let encryptedWalletPassphraseKey = TLPreferences.getEncryptedWalletPassphraseKey()
-        if encryptedWalletPassphraseKey != nil {
-            let encryptedWalletPassphrase = TLPreferences.getWalletPassphrase()
-            return TLWalletPassphrase.decryptWalletPassphrase(encryptedWalletPassphrase!,
-                key: encryptedWalletPassphraseKey!)
+        let encryptedWalletPassphrase = TLPreferences.getWalletPassphrase(useKeychain)
+        assert(encryptedWalletPassphraseKey != nil)
+        let walletPassphrase = TLWalletPassphrase.decryptWalletPassphrase(encryptedWalletPassphrase!, key: encryptedWalletPassphraseKey!)
+        TLPreferences.setWalletPassphrase(walletPassphrase!, useKeychain: true)
+        TLPreferences.setEncryptedWalletJSONPassphrase(walletPassphrase!, useKeychain: true)
+        TLPreferences.clearEncryptedWalletPassphraseKey()
+    }
+    
+    class func disableRecoverableFeature(useKeychain:Bool) {
+        let encryptedWalletPassphraseKey = TLWalletPassphrase.generateWalletPassphraseKey()
+        let walletPassphrase = TLPreferences.getWalletPassphrase(useKeychain)
+        let encryptedWalletPassphrase = TLWalletPassphrase.encryptWalletPassphrase(walletPassphrase!, key: encryptedWalletPassphraseKey)
+        assert(TLPreferences.getEncryptedWalletPassphraseKey() == nil)
+        TLPreferences.setEncryptedWalletPassphraseKey(encryptedWalletPassphraseKey)
+        TLPreferences.setWalletPassphrase(encryptedWalletPassphrase, useKeychain: false)
+        TLPreferences.setEncryptedWalletJSONPassphrase(encryptedWalletPassphrase, useKeychain: false)
+    }
+    
+    class func getDecryptedWalletPassphrase() -> String? {
+        if TLUpdateAppData.instance().beforeUpdatedAppVersion != nil
+            && TLUpdateAppData.instance().beforeUpdatedAppVersion!.hasPrefix("1.0") {
+                if !TLPreferences.canRestoreDeletedApp() {
+                    TLWalletPassphrase.disableRecoverableFeature(true)
+                }
+                TLUpdateAppData.instance().beforeUpdatedAppVersion = nil
+                return TLPreferences.getWalletPassphrase(true)
         } else {
-            return TLPreferences.getWalletPassphrase()
+            let encryptedWalletPassphraseKey = TLPreferences.getEncryptedWalletPassphraseKey()
+            if encryptedWalletPassphraseKey != nil {
+                let encryptedWalletPassphrase = TLPreferences.getWalletPassphrase(TLPreferences.canRestoreDeletedApp())
+                return TLWalletPassphrase.decryptWalletPassphrase(encryptedWalletPassphrase!,
+                    key: encryptedWalletPassphraseKey!)
+            } else {
+                return TLPreferences.getWalletPassphrase(TLPreferences.canRestoreDeletedApp())
+            }
         }
     }
     
