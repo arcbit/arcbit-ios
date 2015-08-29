@@ -386,7 +386,7 @@ import HockeySDK
         TLPreferences.setInAppSettingsKitEnableBackupWithiCloud(false)
         
         TLPreferences.setIsAutomaticFee(true)
-        TLPreferences.setInAppSettingsKitTransactionFee(TLWalletUtils.DEFAULT_FEE_AMOUNT())
+        TLPreferences.setInAppSettingsKitTransactionFee(TLWalletUtils.DEFAULT_FEE_AMOUNT_IN_BITCOINS())
         TLPreferences.setEnablePINCode(false)
         TLSuggestions.instance().enabledAllSuggestions()
         TLPreferences.resetBlockExplorerAPIURL()

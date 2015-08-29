@@ -87,7 +87,7 @@ import UIKit
         let accountBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
         let fee:TLCoin
         if (!TLPreferences.isAutomaticFee()) {
-            fee = TLWalletUtils.bitcoinAmountStringToCoin(TLWalletUtils.DEFAULT_FEE_AMOUNT())
+            fee = TLWalletUtils.bitcoinAmountStringToCoin(TLWalletUtils.DEFAULT_FEE_AMOUNT_IN_BITCOINS())
         } else {
             let feeAmount = TLPreferences.getInAppSettingsKitTransactionFee()
             fee = TLWalletUtils.bitcoinAmountStringToCoin(feeAmount!)

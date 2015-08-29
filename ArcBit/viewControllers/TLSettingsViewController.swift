@@ -150,7 +150,7 @@ import AVFoundation
     }
     
     private func showPromptForSetTransactionFee() {
-        let msg = String(format: "Input a recommended amount between %@ and %@ bitcoins".localized, TLWalletUtils.MIN_FEE_AMOUNT(), TLWalletUtils.MAX_FEE_AMOUNT())
+        let msg = String(format: "Input a recommended amount. Somewhere between %@ and %@ bitcoins".localized, TLWalletUtils.MIN_FEE_AMOUNT_IN_BITCOINS(), TLWalletUtils.MAX_FEE_AMOUNT_IN_BITCOINS())
         
         func addTextField(textField: UITextField!){
             textField.placeholder = "fee amount".localized

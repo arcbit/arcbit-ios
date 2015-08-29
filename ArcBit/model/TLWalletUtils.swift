@@ -68,16 +68,16 @@ enum TLAccountAddressType: Int {
         return STATIC_MEMBERS.IS_TESTNET
     }
     
-    class func DEFAULT_FEE_AMOUNT() -> (String) {
-        return coinToProperBitcoinAmountString(bitcoinAmountStringToCoin(STATIC_MEMBERS.DEFAULT_FEE_AMOUNT, locale: NSLocale(localeIdentifier: "en_US")))
+    class func DEFAULT_FEE_AMOUNT_IN_BITCOINS() -> (String) {
+        return bitcoinAmountStringToCoin(STATIC_MEMBERS.DEFAULT_FEE_AMOUNT, locale: NSLocale(localeIdentifier: "en_US")).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.Bitcoin)
     }
     
-    class func MAX_FEE_AMOUNT() -> (String) {
-        return coinToProperBitcoinAmountString(bitcoinAmountStringToCoin(STATIC_MEMBERS.MAX_FEE_AMOUNT, locale: NSLocale(localeIdentifier: "en_US")))
+    class func MAX_FEE_AMOUNT_IN_BITCOINS() -> (String) {
+        return bitcoinAmountStringToCoin(STATIC_MEMBERS.MAX_FEE_AMOUNT, locale: NSLocale(localeIdentifier: "en_US")).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.Bitcoin)
     }
     
-    class func MIN_FEE_AMOUNT() -> (String) {
-        return coinToProperBitcoinAmountString(bitcoinAmountStringToCoin(STATIC_MEMBERS.MIN_FEE_AMOUNT, locale: NSLocale(localeIdentifier: "en_US")))
+    class func MIN_FEE_AMOUNT_IN_BITCOINS() -> (String) {
+        return bitcoinAmountStringToCoin(STATIC_MEMBERS.MIN_FEE_AMOUNT, locale: NSLocale(localeIdentifier: "en_US")).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.Bitcoin)
     }
 
     class func RECEIVE_ICON_IMAGE_NAME() -> (String) {
@@ -163,8 +163,8 @@ enum TLAccountAddressType: Int {
     }
     
     class func isValidInputTransactionFee(amount: TLCoin) -> Bool {
-        let maxFeeAmount = TLCoin(bitcoinAmount: MAX_FEE_AMOUNT(), bitcoinDenomination: TLBitcoinDenomination.Bitcoin)
-        let minFeeAmount = TLCoin(bitcoinAmount: MIN_FEE_AMOUNT(), bitcoinDenomination: TLBitcoinDenomination.Bitcoin)
+        let maxFeeAmount = TLCoin(bitcoinAmount: MAX_FEE_AMOUNT_IN_BITCOINS(), bitcoinDenomination: TLBitcoinDenomination.Bitcoin)
+        let minFeeAmount = TLCoin(bitcoinAmount: MIN_FEE_AMOUNT_IN_BITCOINS(), bitcoinDenomination: TLBitcoinDenomination.Bitcoin)
         if (amount.greater(maxFeeAmount)) {
             return false
         }
