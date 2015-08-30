@@ -174,7 +174,7 @@ import AVFoundation
                 if (buttonIndex == alertView.firstOtherButtonIndex) {
                     let feeAmount = (alertView.textFields![0] as! UITextField).text
                     
-                    let feeAmountCoin = TLWalletUtils.properBitcoinAmountStringToCoin(feeAmount)
+                    let feeAmountCoin = TLWalletUtils.bitcoinAmountStringToCoin(feeAmount)
                     if (TLWalletUtils.isValidInputTransactionFee(feeAmountCoin)) {
                         TLPreferences.setInAppSettingsKitTransactionFee(feeAmountCoin.bigIntegerToBitcoinAmountString(.Bitcoin))
                         NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_CHANGE_AUTOMATIC_TX_FEE(), object: nil)
@@ -184,7 +184,7 @@ import AVFoundation
                         
                         TLPrompts.promtForOKCancel(self, title: "Non-recommended Amount Transaction Fee".localized, message: msg, success: {
                             () in
-                            let amount = TLWalletUtils.properBitcoinAmountStringToCoin(feeAmount)
+                            let amount = TLWalletUtils.bitcoinAmountStringToCoin(feeAmount)
                             TLPreferences.setInAppSettingsKitTransactionFee(amount.bigIntegerToBitcoinAmountString(.Bitcoin))
                             NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_CHANGE_AUTOMATIC_TX_FEE(), object: nil)
                             
