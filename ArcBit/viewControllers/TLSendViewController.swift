@@ -646,6 +646,8 @@ import UIKit
                             () in
                         self._clearSendForm()
                         self.setSendingHUDHidden(true)
+                        self.refreshAccountDataAndSetBalanceView(fetchDataAgain: true)
+                        TLPrompts.promptErrorMessage("Error".localized, message: "Bitcoins has already been spent.")
                     })
                 } else if (buttonIndex == alertView.cancelButtonIndex) {
                 }
