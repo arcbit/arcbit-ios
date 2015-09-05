@@ -124,6 +124,16 @@ import UIKit
         self.reviewPaymentButton!.setTitleColor(TLColors.mainAppOppositeColor(), forState: .Normal)
         self.addressBookButton!.setTitleColor(TLColors.mainAppOppositeColor(), forState: .Normal)
         
+        if TLUtils.isIPhone5() || TLUtils.isIPhone4() {
+            let keyboardDoneButtonView = UIToolbar()
+            keyboardDoneButtonView.sizeToFit()
+            let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("dismissKeyboard") )
+            var toolbarButtons = [item]
+            keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
+            self.amountTextField!.inputAccessoryView = keyboardDoneButtonView
+            self.fiatAmountTextField!.inputAccessoryView = keyboardDoneButtonView
+        }
+
         NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_SEND_SCREEN_LOADING(),
             object: nil)
         
@@ -894,13 +904,13 @@ import UIKit
 
         if TLUtils.isIPhone5() {
             if textField == self.amountTextField || textField == self.fiatAmountTextField {
-                self.topView!.scrollToView(self.fiatAmountTextField!)
+                self.topView!.scrollToY(-140)
             } else {
                 self.topView!.scrollToView(self.fiatAmountTextField!)
             }
         } else if TLUtils.isIPhone4() {
             if textField == self.amountTextField || textField == self.fiatAmountTextField {
-                self.topView!.scrollToY(-190)
+                self.topView!.scrollToY(-230)
             } else {
                 self.topView!.scrollToView(self.fiatAmountTextField!)
             }
