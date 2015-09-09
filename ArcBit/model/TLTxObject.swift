@@ -193,7 +193,7 @@ import Foundation
             return String(format:"%@ %@", "Today", formatterTime.stringFromDate(transactionDate))
         } else {
             let formatterDate = NSDateFormatter()
-            formatterDate.dateFormat = "EEE dd MMM"
+            formatterDate.dateFormat = "EEE dd MMM YYYY"
             return String(format:"%@ %@", formatterDate.stringFromDate(transactionDate), formatterTime.stringFromDate(transactionDate))
         }
     }
