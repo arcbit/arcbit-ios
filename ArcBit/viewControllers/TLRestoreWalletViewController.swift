@@ -52,6 +52,7 @@ import UIKit
         self.inputMnemonicTextView!.delegate = self
         self.inputMnemonicTextView!.backgroundColor = TLColors.mainAppColor()
         self.inputMnemonicTextView!.textColor = TLColors.mainAppOppositeColor()
+        self.inputMnemonicTextView!.secureTextEntry = true
         
         self.inputMnemonicTextView!.becomeFirstResponder()
     }

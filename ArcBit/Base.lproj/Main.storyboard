@@ -920,7 +920,7 @@
                                 <rect key="frame" x="16" y="136" width="568" height="444"/>
                                 <color key="backgroundColor" red="0.062279825470000001" green="1" blue="0.22195490649999999" alpha="1" colorSpace="calibratedRGB"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="22"/>
-                                <textInputTraits key="textInputTraits"/>
+                                <textInputTraits key="textInputTraits" secureTextEntry="YES"/>
                                 <userDefinedRuntimeAttributes>
                                     <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                 </userDefinedRuntimeAttributes>
