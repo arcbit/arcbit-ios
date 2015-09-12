@@ -44,9 +44,9 @@
 
 @implementation BRTransaction
 
-+ (instancetype)transactionWithMessage:(NSData *)message
++ (instancetype)transactionWithMessage:(NSData *)message isTestnet:(BOOL)isTestnet
 {
-    return [[self alloc] initWithMessage:message];
+    return [[self alloc] initWithMessage:message isTestnet:isTestnet];
 }
 
 - (instancetype)init
@@ -68,7 +68,7 @@
     return self;
 }
 
-- (instancetype)initWithMessage:(NSData *)message
+- (instancetype)initWithMessage:(NSData *)message isTestnet:(BOOL)isTestnet
 {
     if (! (self = [self init])) return nil;
  
@@ -106,7 +106,7 @@
         d = [message dataAtOffset:off length:&l];
         [self.outScripts addObject:(d) ? d : [NSNull null]]; // output script
         off += l;
-        address = [NSString addressWithScriptPubKey:d]; // address from output script if applicable
+        address = [NSString addressWithScriptPubKey:d isTestnet:isTestnet]; // address from output script if applicable
         [self.addresses addObject:(address) ? address : [NSNull null]];
     }
     
@@ -117,7 +117,7 @@
 }
 
 - (instancetype)initWithInputHashes:(NSArray *)hashes inputIndexes:(NSArray *)indexes inputScripts:(NSArray *)scripts
-outputAddresses:(NSArray *)addresses outputAmounts:(NSArray *)amounts
+outputAddresses:(NSArray *)addresses outputAmounts:(NSArray *)amounts isTestnet:(BOOL)isTestnet
 {
     if (hashes.count == 0 || hashes.count != indexes.count) return nil;
     if (scripts.count > 0 && hashes.count != scripts.count) return nil;
@@ -144,7 +144,7 @@ outputAddresses:(NSArray *)addresses outputAmounts:(NSArray *)amounts
 
     for (int i = 0; i < addresses.count; i++) {
         [self.outScripts addObject:[NSMutableData data]];
-        [self.outScripts.lastObject appendScriptPubKeyForAddress:self.addresses[i]];
+        [self.outScripts.lastObject appendScriptPubKeyForAddress:self.addresses[i] isTestnet:isTestnet];
     }
 
     self.signatures = [NSMutableArray arrayWithCapacity:hashes.count];
@@ -243,48 +243,48 @@ sequence:(uint32_t)sequence
     [self.sequences addObject:@(sequence)];
 }
 
-- (void)addOutputAddress:(NSString *)address amount:(uint64_t)amount
+- (void)addOutputAddress:(NSString *)address amount:(uint64_t)amount isTestnet:(BOOL)isTestnet
 {
     [self.amounts addObject:@(amount)];
     [self.addresses addObject:address];
     [self.outScripts addObject:[NSMutableData data]];
-    [self.outScripts.lastObject appendScriptPubKeyForAddress:address];
+    [self.outScripts.lastObject appendScriptPubKeyForAddress:address isTestnet:isTestnet];
 }
 
-- (void)addOutputScript:(NSData *)script amount:(uint64_t)amount;
+- (void)addOutputScript:(NSData *)script amount:(uint64_t)amount isTestnet:(BOOL)isTestnet;
 {
-    NSString *address = [NSString addressWithScriptPubKey:script];
+    NSString *address = [NSString addressWithScriptPubKey:script isTestnet:isTestnet];
 
     [self.amounts addObject:@(amount)];
     [self.outScripts addObject:script];
     [self.addresses addObject:(address) ? address : [NSNull null]];
 }
 
-- (void)insertOutputScript:(NSData *)script amount:(uint64_t)amount {
-    NSString *address = [NSString addressWithScriptPubKey:script];
+- (void)insertOutputScript:(NSData *)script amount:(uint64_t)amount isTestnet:(BOOL)isTestnet {
+    NSString *address = [NSString addressWithScriptPubKey:script isTestnet:isTestnet];
     
     [self.amounts insertObject:@(amount) atIndex:0];
     [self.outScripts insertObject:script atIndex: 0];
     [self.addresses insertObject:(address) ? address : [NSNull null] atIndex: 0];
 }
 
-- (void)setInputAddress:(NSString *)address atIndex:(NSUInteger)index;
+- (void)setInputAddress:(NSString *)address atIndex:(NSUInteger)index isTestnet:(BOOL)isTestnet;
 {
     NSMutableData *d = [NSMutableData data];
 
-    [d appendScriptPubKeyForAddress:address];
+    [d appendScriptPubKeyForAddress:address isTestnet:isTestnet];
     [self.inScripts replaceObjectAtIndex:index withObject:d];
 }
 
-- (NSArray *)inputAddresses
+- (NSArray *)getInputAddresses:(BOOL)isTestnet
 {
     NSMutableArray *addresses = [NSMutableArray arrayWithCapacity:self.inScripts.count];
     NSInteger i = 0;
 
     for (NSData *script in self.inScripts) {
-        NSString *addr = [NSString addressWithScriptPubKey:script];
+        NSString *addr = [NSString addressWithScriptPubKey:script isTestnet:isTestnet];
 
-        if (! addr) addr = [NSString addressWithScriptSig:self.signatures[i]];
+        if (! addr) addr = [NSString addressWithScriptSig:self.signatures[i] isTestnet:isTestnet];
         [addresses addObject:(addr) ? addr : [NSNull null]];
         i++;
     }
@@ -336,13 +336,13 @@ sequence:(uint32_t)sequence
     return d;
 }
 
-- (BOOL)signWithPrivateKeys:(NSArray *)privateKeys
+- (BOOL)signWithPrivateKeys:(NSArray *)privateKeys isTestnet:(BOOL)isTestnet
 {
     NSMutableArray *addresses = [NSMutableArray arrayWithCapacity:privateKeys.count],
     *keys = [NSMutableArray arrayWithCapacity:privateKeys.count];
     
     for (NSString *pk in privateKeys) {
-        BRKey *key = [BRKey keyWithPrivateKey:pk];
+        BRKey *key = [BRKey keyWithPrivateKey:pk isTestnet:isTestnet];
         
         if (! key) continue;
         
@@ -351,7 +351,7 @@ sequence:(uint32_t)sequence
     }
     
     for (NSUInteger i = 0; i < self.hashes.count; i++) {
-        NSString *addr = [NSString addressWithScriptPubKey:self.inScripts[i]];
+        NSString *addr = [NSString addressWithScriptPubKey:self.inScripts[i] isTestnet:isTestnet];
         NSUInteger keyIdx = (addr) ? [addresses indexOfObject:addr] : NSNotFound;
         
         if (keyIdx == NSNotFound) continue;

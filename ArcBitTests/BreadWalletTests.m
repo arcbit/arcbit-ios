@@ -18,6 +18,8 @@
 #import "NSMutableData+Bitcoin.h"
 #import "NSString+Base58.h"
 
+BOOL isTestnet = NO;
+
 @interface BreadWalletTests : XCTestCase
 
 @end
@@ -65,28 +67,28 @@
 #if ! BITCOIN_TESTNET
 - (void)testKeyWithPrivateKey
 {
-    XCTAssertFalse([@"S6c56bnXQiBjk9mqSYE7ykVQ7NzrRz" isValidBitcoinPrivateKey],
+    XCTAssertFalse([@"S6c56bnXQiBjk9mqSYE7ykVQ7NzrRz" isValidBitcoinPrivateKey:isTestnet],
                    @"[NSString+Base58 isValidBitcoinPrivateKey]");
     
-    XCTAssertTrue([@"S6c56bnXQiBjk9mqSYE7ykVQ7NzrRy" isValidBitcoinPrivateKey],
+    XCTAssertTrue([@"S6c56bnXQiBjk9mqSYE7ykVQ7NzrRy" isValidBitcoinPrivateKey:isTestnet],
                   @"[NSString+Base58 isValidBitcoinPrivateKey]");
     
     // mini private key format
-    BRKey *key = [BRKey keyWithPrivateKey:@"S6c56bnXQiBjk9mqSYE7ykVQ7NzrRy"];
+    BRKey *key = [BRKey keyWithPrivateKey:@"S6c56bnXQiBjk9mqSYE7ykVQ7NzrRy" isTestnet:isTestnet];
     
     NSLog(@"privKey:S6c56bnXQiBjk9mqSYE7ykVQ7NzrRy = %@", key.address);
     XCTAssertEqualObjects(@"1CciesT23BNionJeXrbxmjc7ywfiyM4oLW", key.address, @"[BRKey keyWithPrivateKey:]");
-    XCTAssertTrue([@"SzavMBLoXU6kDrqtUVmffv" isValidBitcoinPrivateKey],
+    XCTAssertTrue([@"SzavMBLoXU6kDrqtUVmffv" isValidBitcoinPrivateKey:isTestnet],
                   @"[NSString+Base58 isValidBitcoinPrivateKey]");
     
     // old mini private key format
-    key = [BRKey keyWithPrivateKey:@"SzavMBLoXU6kDrqtUVmffv"];
+    key = [BRKey keyWithPrivateKey:@"SzavMBLoXU6kDrqtUVmffv" isTestnet:isTestnet];
     
     NSLog(@"privKey:SzavMBLoXU6kDrqtUVmffv = %@", key.address);
     XCTAssertEqualObjects(@"1CC3X2gu58d6wXUWMffpuzN9JAfTUWu4Kj", key.address, @"[BRKey keyWithPrivateKey:]");
     
     // uncompressed private key
-    key = [BRKey keyWithPrivateKey:@"5Kb8kLf9zgWQnogidDA76MzPL6TsZZY36hWXMssSzNydYXYB9KF"];
+    key = [BRKey keyWithPrivateKey:@"5Kb8kLf9zgWQnogidDA76MzPL6TsZZY36hWXMssSzNydYXYB9KF" isTestnet:isTestnet];
     
     NSLog(@"privKey:5Kb8kLf9zgWQnogidDA76MzPL6TsZZY36hWXMssSzNydYXYB9KF = %@", key.address);
     XCTAssertEqualObjects(@"1CC3X2gu58d6wXUWMffpuzN9JAfTUWu4Kj", key.address, @"[BRKey keyWithPrivateKey:]");
@@ -97,7 +99,7 @@
                           @"[BRKey privateKey]");
     
     // compressed private key
-    key = [BRKey keyWithPrivateKey:@"KyvGbxRUoofdw3TNydWn2Z78dBHSy2odn1d3wXWN2o3SAtccFNJL"];
+    key = [BRKey keyWithPrivateKey:@"KyvGbxRUoofdw3TNydWn2Z78dBHSy2odn1d3wXWN2o3SAtccFNJL" isTestnet:isTestnet];
     
     NSLog(@"privKey:KyvGbxRUoofdw3TNydWn2Z78dBHSy2odn1d3wXWN2o3SAtccFNJL = %@", key.address);
     XCTAssertEqualObjects(@"1JMsC6fCtYWkTjPPdDrYX3we2aBrewuEM3", key.address, @"[BRKey keyWithPrivateKey:]");
@@ -119,45 +121,45 @@
     
     // non EC multiplied, uncompressed
     key = [BRKey keyWithBIP38Key:@"6PRVWUbkzzsbcVac2qwfssoUJAN1Xhrg6bNk8J7Nzm5H7kxEbn2Nh2ZoGg"
-                   andPassphrase:@"TestingOneTwoThree"];
+                   andPassphrase:@"TestingOneTwoThree" isTestnet:isTestnet];
     NSLog(@"privKey = %@", key.privateKey);
     XCTAssertEqualObjects(@"5KN7MzqK5wt2TP1fQCYyHBtDrXdJuXbUzm4A9rKAteGu3Qi5CVR", key.privateKey,
                           @"[BRKey keyWithBIP38Key:andPassphrase:]");
-    XCTAssertEqualObjects([key BIP38KeyWithPassphrase:@"TestingOneTwoThree"],
+    XCTAssertEqualObjects([key BIP38KeyWithPassphrase:@"TestingOneTwoThree" isTestnet:isTestnet],
                           @"6PRVWUbkzzsbcVac2qwfssoUJAN1Xhrg6bNk8J7Nzm5H7kxEbn2Nh2ZoGg",
                           @"[BRKey BIP38KeyWithPassphrase:]");
     
     key = [BRKey keyWithBIP38Key:@"6PRNFFkZc2NZ6dJqFfhRoFNMR9Lnyj7dYGrzdgXXVMXcxoKTePPX1dWByq"
-                   andPassphrase:@"Satoshi"];
+                   andPassphrase:@"Satoshi" isTestnet:isTestnet];
     NSLog(@"privKey = %@", key.privateKey);
     XCTAssertEqualObjects(@"5HtasZ6ofTHP6HCwTqTkLDuLQisYPah7aUnSKfC7h4hMUVw2gi5", key.privateKey,
                           @"[BRKey keyWithBIP38Key:andPassphrase:]");
-    XCTAssertEqualObjects([key BIP38KeyWithPassphrase:@"Satoshi"],
+    XCTAssertEqualObjects([key BIP38KeyWithPassphrase:@"Satoshi" isTestnet:isTestnet],
                           @"6PRNFFkZc2NZ6dJqFfhRoFNMR9Lnyj7dYGrzdgXXVMXcxoKTePPX1dWByq",
                           @"[BRKey BIP38KeyWithPassphrase:]");
     
     // non EC multiplied, compressed
     key = [BRKey keyWithBIP38Key:@"6PYNKZ1EAgYgmQfmNVamxyXVWHzK5s6DGhwP4J5o44cvXdoY7sRzhtpUeo"
-                   andPassphrase:@"TestingOneTwoThree"];
+                   andPassphrase:@"TestingOneTwoThree" isTestnet:isTestnet];
     NSLog(@"privKey = %@", key.privateKey);
     XCTAssertEqualObjects(@"L44B5gGEpqEDRS9vVPz7QT35jcBG2r3CZwSwQ4fCewXAhAhqGVpP", key.privateKey,
                           @"[BRKey keyWithBIP38Key:andPassphrase:]");
-    XCTAssertEqualObjects([key BIP38KeyWithPassphrase:@"TestingOneTwoThree"],
+    XCTAssertEqualObjects([key BIP38KeyWithPassphrase:@"TestingOneTwoThree" isTestnet:isTestnet],
                           @"6PYNKZ1EAgYgmQfmNVamxyXVWHzK5s6DGhwP4J5o44cvXdoY7sRzhtpUeo",
                           @"[BRKey BIP38KeyWithPassphrase:]");
     
     key = [BRKey keyWithBIP38Key:@"6PYLtMnXvfG3oJde97zRyLYFZCYizPU5T3LwgdYJz1fRhh16bU7u6PPmY7"
-                   andPassphrase:@"Satoshi"];
+                   andPassphrase:@"Satoshi" isTestnet:isTestnet];
     NSLog(@"privKey = %@", key.privateKey);
     XCTAssertEqualObjects(@"KwYgW8gcxj1JWJXhPSu4Fqwzfhp5Yfi42mdYmMa4XqK7NJxXUSK7", key.privateKey,
                           @"[BRKey keyWithBIP38Key:andPassphrase:]");
-    XCTAssertEqualObjects([key BIP38KeyWithPassphrase:@"Satoshi"],
+    XCTAssertEqualObjects([key BIP38KeyWithPassphrase:@"Satoshi" isTestnet:isTestnet],
                           @"6PYLtMnXvfG3oJde97zRyLYFZCYizPU5T3LwgdYJz1fRhh16bU7u6PPmY7",
                           @"[BRKey BIP38KeyWithPassphrase:]");
     
     // EC multiplied, uncompressed, no lot/sequence number
     key = [BRKey keyWithBIP38Key:@"6PfQu77ygVyJLZjfvMLyhLMQbYnu5uguoJJ4kMCLqWwPEdfpwANVS76gTX"
-                   andPassphrase:@"TestingOneTwoThree"];
+                   andPassphrase:@"TestingOneTwoThree" isTestnet:isTestnet];
     NSLog(@"privKey = %@", key.privateKey);
     XCTAssertEqualObjects(@"5K4caxezwjGCGfnoPTZ8tMcJBLB7Jvyjv4xxeacadhq8nLisLR2", key.privateKey,
                           @"[BRKey keyWithBIP38Key:andPassphrase:]");
@@ -165,15 +167,15 @@
     NSLog(@"intercode = %@", intercode);
     privkey = [BRKey BIP38KeyWithIntermediateCode:intercode
                                             seedb:@"99241d58245c883896f80843d2846672d7312e6195ca1a6c".hexToData compressed:NO
-                                 confirmationCode:&confcode];
+                                 confirmationCode:&confcode isTestnet:isTestnet];
     NSLog(@"confcode = %@", confcode);
     XCTAssertEqualObjects(@"6PfQu77ygVyJLZjfvMLyhLMQbYnu5uguoJJ4kMCLqWwPEdfpwANVS76gTX", privkey,
                           @"[BRKey BIP38KeyWithIntermediateCode:]");
     XCTAssertTrue([BRKey confirmWithBIP38ConfirmationCode:confcode address:@"1PE6TQi6HTVNz5DLwB1LcpMBALubfuN2z2"
-                                               passphrase:@"TestingOneTwoThree"], @"[BRKey confirmWithBIP38ConfirmationCode:]");
+                                               passphrase:@"TestingOneTwoThree" isTestnet:isTestnet], @"[BRKey confirmWithBIP38ConfirmationCode:]");
     
     key = [BRKey keyWithBIP38Key:@"6PfLGnQs6VZnrNpmVKfjotbnQuaJK4KZoPFrAjx1JMJUa1Ft8gnf5WxfKd"
-                   andPassphrase:@"Satoshi"];
+                   andPassphrase:@"Satoshi" isTestnet:isTestnet];
     NSLog(@"privKey = %@", key.privateKey);
     XCTAssertEqualObjects(@"5KJ51SgxWaAYR13zd9ReMhJpwrcX47xTJh2D3fGPG9CM8vkv5sH", key.privateKey,
                           @"[BRKey keyWithBIP38Key:andPassphrase:]");
@@ -181,16 +183,16 @@
     NSLog(@"intercode = %@", intercode);
     privkey = [BRKey BIP38KeyWithIntermediateCode:intercode
                                             seedb:@"49111e301d94eab339ff9f6822ee99d9f49606db3b47a497".hexToData compressed:NO
-                                 confirmationCode:&confcode];
+                                 confirmationCode:&confcode isTestnet:isTestnet];
     NSLog(@"confcode = %@", confcode);
     XCTAssertEqualObjects(@"6PfLGnQs6VZnrNpmVKfjotbnQuaJK4KZoPFrAjx1JMJUa1Ft8gnf5WxfKd", privkey,
                           @"[BRKey BIP38KeyWithIntermediateCode:]");
     XCTAssertTrue([BRKey confirmWithBIP38ConfirmationCode:confcode address:@"1CqzrtZC6mXSAhoxtFwVjz8LtwLJjDYU3V"
-                                               passphrase:@"Satoshi"], @"[BRKey confirmWithBIP38ConfirmationCode:]");
+                                               passphrase:@"Satoshi" isTestnet:isTestnet], @"[BRKey confirmWithBIP38ConfirmationCode:]");
     
     // EC multiplied, uncompressed, with lot/sequence number
     key = [BRKey keyWithBIP38Key:@"6PgNBNNzDkKdhkT6uJntUXwwzQV8Rr2tZcbkDcuC9DZRsS6AtHts4Ypo1j"
-                   andPassphrase:@"MOLON LABE"];
+                   andPassphrase:@"MOLON LABE" isTestnet:isTestnet];
     NSLog(@"privKey = %@", key.privateKey);
     XCTAssertEqualObjects(@"5JLdxTtcTHcfYcmJsNVy1v2PMDx432JPoYcBTVVRHpPaxUrdtf8", key.privateKey,
                           @"[BRKey keyWithBIP38Key:andPassphrase:]");
@@ -198,15 +200,15 @@
     NSLog(@"intercode = %@", intercode);
     privkey = [BRKey BIP38KeyWithIntermediateCode:intercode
                                             seedb:@"87a13b07858fa753cd3ab3f1c5eafb5f12579b6c33c9a53f".hexToData compressed:NO
-                                 confirmationCode:&confcode];
+                                 confirmationCode:&confcode isTestnet:isTestnet];
     NSLog(@"confcode = %@", confcode);
     XCTAssertEqualObjects(@"6PgNBNNzDkKdhkT6uJntUXwwzQV8Rr2tZcbkDcuC9DZRsS6AtHts4Ypo1j", privkey,
                           @"[BRKey BIP38KeyWithIntermediateCode:]");
     XCTAssertTrue([BRKey confirmWithBIP38ConfirmationCode:confcode address:@"1Jscj8ALrYu2y9TD8NrpvDBugPedmbj4Yh"
-                                               passphrase:@"MOLON LABE"], @"[BRKey confirmWithBIP38ConfirmationCode:]");
+                                               passphrase:@"MOLON LABE" isTestnet:isTestnet], @"[BRKey confirmWithBIP38ConfirmationCode:]");
     
     key = [BRKey keyWithBIP38Key:@"6PgGWtx25kUg8QWvwuJAgorN6k9FbE25rv5dMRwu5SKMnfpfVe5mar2ngH"
-                   andPassphrase:@"\u039c\u039f\u039b\u03a9\u039d \u039b\u0391\u0392\u0395"];
+                   andPassphrase:@"\u039c\u039f\u039b\u03a9\u039d \u039b\u0391\u0392\u0395" isTestnet:isTestnet];
     NSLog(@"privKey = %@", key.privateKey);
     XCTAssertEqualObjects(@"5KMKKuUmAkiNbA3DazMQiLfDq47qs8MAEThm4yL8R2PhV1ov33D", key.privateKey,
                           @"[BRKey keyWithBIP38Key:andPassphrase:]");
@@ -215,23 +217,23 @@
     NSLog(@"intercode = %@", intercode);
     privkey = [BRKey BIP38KeyWithIntermediateCode:intercode
                                             seedb:@"03b06a1ea7f9219ae364560d7b985ab1fa27025aaa7e427a".hexToData compressed:NO
-                                 confirmationCode:&confcode];
+                                 confirmationCode:&confcode isTestnet:isTestnet];
     NSLog(@"confcode = %@", confcode);
     XCTAssertEqualObjects(@"6PgGWtx25kUg8QWvwuJAgorN6k9FbE25rv5dMRwu5SKMnfpfVe5mar2ngH", privkey,
                           @"[BRKey BIP38KeyWithIntermediateCode:]");
     XCTAssertTrue([BRKey confirmWithBIP38ConfirmationCode:confcode address:@"1Lurmih3KruL4xDB5FmHof38yawNtP9oGf"
-                                               passphrase:@"\u039c\u039f\u039b\u03a9\u039d \u039b\u0391\u0392\u0395"],
+                                               passphrase:@"\u039c\u039f\u039b\u03a9\u039d \u039b\u0391\u0392\u0395" isTestnet:isTestnet],
                   @"[BRKey confirmWithBIP38ConfirmationCode:]");
     
     // password NFC unicode normalization test
     key = [BRKey keyWithBIP38Key:@"6PRW5o9FLp4gJDDVqJQKJFTpMvdsSGJxMYHtHaQBF3ooa8mwD69bapcDQn"
-                   andPassphrase:@"\u03D2\u0301\0\U00010400\U0001F4A9"];
+                   andPassphrase:@"\u03D2\u0301\0\U00010400\U0001F4A9" isTestnet:isTestnet];
     NSLog(@"privKey = %@", key.privateKey);
     XCTAssertEqualObjects(@"5Jajm8eQ22H3pGWLEVCXyvND8dQZhiQhoLJNKjYXk9roUFTMSZ4", key.privateKey,
                           @"[BRKey keyWithBIP38Key:andPassphrase:]");
     
     // incorrect password test
-    key = [BRKey keyWithBIP38Key:@"6PRW5o9FLp4gJDDVqJQKJFTpMvdsSGJxMYHtHaQBF3ooa8mwD69bapcDQn" andPassphrase:@"foobar"];
+    key = [BRKey keyWithBIP38Key:@"6PRW5o9FLp4gJDDVqJQKJFTpMvdsSGJxMYHtHaQBF3ooa8mwD69bapcDQn" andPassphrase:@"foobar" isTestnet:isTestnet];
     NSLog(@"privKey = %@", key.privateKey);
     XCTAssertNil(key, @"[BRKey keyWithBIP38Key:andPassphrase:]");
 }
@@ -243,14 +245,14 @@
 {
     NSMutableData *hash = [NSMutableData dataWithLength:CC_SHA256_DIGEST_LENGTH], *script = [NSMutableData data];
     BRKey *k = [BRKey keyWithSecret:@"0000000000000000000000000000000000000000000000000000000000000001".hexToData
-                         compressed:YES];
+                         compressed:YES isTestnet:isTestnet];
     
-    [script appendScriptPubKeyForAddress:k.address];
+    [script appendScriptPubKeyForAddress:k.address isTestnet:isTestnet];
     
     BRTransaction *tx = [[BRTransaction alloc] initWithInputHashes:@[hash] inputIndexes:@[@0] inputScripts:@[script]
-                                                   outputAddresses:@[k.address, k.address] outputAmounts:@[@100000000, @4900000000]];
+                                                   outputAddresses:@[k.address, k.address] outputAmounts:@[@100000000, @4900000000] isTestnet:isTestnet];
     
-    [tx signWithPrivateKeys:@[k.privateKey]];
+    [tx signWithPrivateKeys:@[k.privateKey] isTestnet:isTestnet];
     
     XCTAssertTrue([tx isSigned], @"[BRTransaction signWithPrivateKeys:]");
     
@@ -264,7 +266,7 @@
     
     NSData *d = tx.data;
     
-    tx = [BRTransaction transactionWithMessage:d];
+    tx = [BRTransaction transactionWithMessage:d isTestnet:isTestnet];
     
     XCTAssertEqualObjects(d, tx.data, @"[BRTransaction transactionWithMessage:]");
     
@@ -274,9 +276,9 @@
                                     outputAddresses:@[k.address, k.address, k.address, k.address, k.address, k.address, k.address, k.address,
                                                       k.address, k.address]
                                       outputAmounts:@[@1000000, @1000000, @1000000, @1000000, @1000000, @1000000, @1000000, @1000000, @1000000,
-                                                      @1000000]];
+                                                      @1000000] isTestnet:isTestnet];
     
-    [tx signWithPrivateKeys:@[k.privateKey]];
+    [tx signWithPrivateKeys:@[k.privateKey] isTestnet:isTestnet];
     
     XCTAssertTrue([tx isSigned], @"[BRTransaction signWithPrivateKeys:]");
     
@@ -294,7 +296,7 @@
     XCTAssertTrue(priority >= TX_FREE_MIN_PRIORITY, @"[BRTransaction priorityForAmounts:withAges:]");
     
     d = tx.data;
-    tx = [BRTransaction transactionWithMessage:d];
+    tx = [BRTransaction transactionWithMessage:d isTestnet:isTestnet];
     
     XCTAssertEqualObjects(d, tx.data, @"[BRTransaction transactionWithMessage:]");
 }

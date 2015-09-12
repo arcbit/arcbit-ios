@@ -61,24 +61,25 @@ static NSData *hmac_drbg(NSData *entropy, NSData *nonce)
 @interface BRKey ()
 
 @property (nonatomic, assign) EC_KEY *key;
+@property (nonatomic, assign) BOOL isTestnet;
 
 @end
 
 @implementation BRKey
 
-+ (instancetype)keyWithPrivateKey:(NSString *)privateKey
++ (instancetype)keyWithPrivateKey:(NSString *)privateKey isTestnet:(BOOL)isTestnet
 {
-    return [[self alloc] initWithPrivateKey:privateKey];
+    return [[self alloc] initWithPrivateKey:privateKey isTestnet:isTestnet];
 }
 
-+ (instancetype)keyWithSecret:(NSData *)secret compressed:(BOOL)compressed
++ (instancetype)keyWithSecret:(NSData *)secret compressed:(BOOL)compressed isTestnet:(BOOL)isTestnet
 {
-    return [[self alloc] initWithSecret:secret compressed:compressed];
+    return [[self alloc] initWithSecret:secret compressed:compressed isTestnet:isTestnet];
 }
 
-+ (instancetype)keyWithPublicKey:(NSData *)publicKey
++ (instancetype)keyWithPublicKey:(NSData *)publicKey isTestnet:(BOOL)isTestnet
 {
-    return [[self alloc] initWithPublicKey:publicKey];
+    return [[self alloc] initWithPublicKey:publicKey isTestnet:isTestnet];
 }
 
 - (instancetype)init
@@ -95,30 +96,33 @@ static NSData *hmac_drbg(NSData *entropy, NSData *nonce)
     if (_key) EC_KEY_free(_key);
 }
 
-- (instancetype)initWithSecret:(NSData *)secret compressed:(BOOL)compressed
+- (instancetype)initWithSecret:(NSData *)secret compressed:(BOOL)compressed isTestnet:(BOOL)isTestnet
 {
     if (secret.length != 32) return nil;
 
     if (! (self = [self init])) return nil;
 
+    self.isTestnet = isTestnet;
     [self setSecret:secret compressed:compressed];
     
     return (EC_KEY_check_key(_key)) ? self : nil;
 }
 
-- (instancetype)initWithPrivateKey:(NSString *)privateKey
+- (instancetype)initWithPrivateKey:(NSString *)privateKey isTestnet:(BOOL)isTestnet
 {
     if (! (self = [self init])) return nil;
     
+    self.isTestnet = isTestnet;
     self.privateKey = privateKey;
     
     return (EC_KEY_check_key(_key)) ? self : nil;
 }
 
-- (instancetype)initWithPublicKey:(NSData *)publicKey
+- (instancetype)initWithPublicKey:(NSData *)publicKey isTestnet:(BOOL)isTestnet
 {
     if (! (self = [self init])) return nil;
     
+    self.isTestnet = isTestnet;
     self.publicKey = publicKey;
     
     return (EC_KEY_check_key(_key)) ? self : nil;
@@ -157,7 +161,7 @@ static NSData *hmac_drbg(NSData *entropy, NSData *nonce)
 {
     // mini private key format
     if ((privateKey.length == 30 || privateKey.length == 22) && [privateKey characterAtIndex:0] == 'S') {
-        if (! [privateKey isValidBitcoinPrivateKey]) return;
+        if (! [privateKey isValidBitcoinPrivateKey:self.isTestnet]) return;
         
         [self setSecret:[CFBridgingRelease(CFStringCreateExternalRepresentation(SecureAllocator(),
                          (CFStringRef)privateKey, kCFStringEncodingUTF8, 0)) SHA256] compressed:NO];
@@ -167,10 +171,10 @@ static NSData *hmac_drbg(NSData *entropy, NSData *nonce)
     NSData *d = privateKey.base58checkToData;
     uint8_t version = BITCOIN_PRIVKEY;
 
-#if BITCOIN_TESTNET
-    version = BITCOIN_PRIVKEY_TEST;
-#endif
-
+    if (self.isTestnet) {
+        version = BITCOIN_PRIVKEY_TEST;
+    }
+    
     if (! d || d.length == 28) d = privateKey.base58ToData;
     if (d.length < 32 || d.length > 34) d = privateKey.hexToData;
 
@@ -189,9 +193,9 @@ static NSData *hmac_drbg(NSData *entropy, NSData *nonce)
     NSMutableData *d = [NSMutableData secureDataWithCapacity:34];
     uint8_t version = BITCOIN_PRIVKEY;
 
-#if BITCOIN_TESTNET
-    version = BITCOIN_PRIVKEY_TEST;
-#endif
+    if (self.isTestnet) {
+        version = BITCOIN_PRIVKEY_TEST;
+    }
 
     [d appendBytes:&version length:1];
     d.length = 33;
@@ -235,9 +239,9 @@ static NSData *hmac_drbg(NSData *entropy, NSData *nonce)
     NSMutableData *d = [NSMutableData secureDataWithCapacity:hash.length + 1];
     uint8_t version = BITCOIN_PUBKEY_ADDRESS;
 
-#if BITCOIN_TESTNET
-    version = BITCOIN_PUBKEY_ADDRESS_TEST;
-#endif
+    if (self.isTestnet) {
+        version = BITCOIN_PUBKEY_ADDRESS_TEST;
+    }
     
     [d appendBytes:&version length:1];
     [d appendData:hash];

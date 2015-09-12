@@ -137,7 +137,7 @@ import Foundation
         return accountKeychain.extendedPrivateKey
     }
     
-    class func getAddress(extendPubKey:String, sequence:NSArray) -> String{
+    class func getAddress(extendPubKey:String, sequence:NSArray, isTestnet:Bool=false) -> String{
         var keyChain = BTCKeychain(extendedKey:extendPubKey)
         
         for _idx in sequence {
@@ -145,10 +145,14 @@ import Foundation
             keyChain = keyChain.derivedKeychainAtIndex(UInt32(idx), hardened:false)
         }
         
-        return keyChain.key.compressedPublicKeyAddress.base58String
+        if !isTestnet {
+            return keyChain.key.compressedPublicKeyAddress.string
+        } else {
+            return keyChain.key.addressTestnet.string
+        }
     }
     
-    class func getPrivateKey(extendPrivKey:NSString, sequence:NSArray) -> String{
+    class func getPrivateKey(extendPrivKey:NSString, sequence:NSArray, isTestnet:Bool=false) -> String{
         var keyChain = BTCKeychain(extendedKey:extendPrivKey as String)
         
         for _idx in sequence {
@@ -157,7 +161,10 @@ import Foundation
         }
         
         keyChain.key.publicKeyCompressed = true
-        var privkeyAddress = BTCPrivateKeyAddress(data: keyChain.key.privateKey, publicKeyCompressed:true)
-        return privkeyAddress.base58String
+        if !isTestnet {
+            return keyChain.key.WIF
+        } else {
+            return keyChain.key.WIFTestnet
+        }
     }
 }

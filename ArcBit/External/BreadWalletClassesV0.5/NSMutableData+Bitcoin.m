@@ -148,7 +148,7 @@
     [self appendData:d];
 }
 
-- (void)appendScriptPubKeyForAddress:(NSString *)address
+- (void)appendScriptPubKeyForAddress:(NSString *)address isTestnet:(BOOL)isTestnet
 {
     static uint8_t pubkeyAddress = BITCOIN_PUBKEY_ADDRESS, scriptAddress = BITCOIN_SCRIPT_ADDRESS;
     NSData *d = address.base58checkToData;
@@ -158,10 +158,10 @@
     uint8_t version = *(const uint8_t *)d.bytes;
     NSData *hash = [d subdataWithRange:NSMakeRange(1, d.length - 1)];
 
-#if BITCOIN_TESTNET
-    pubkeyAddress = BITCOIN_PUBKEY_ADDRESS_TEST;
-    scriptAddress = BITCOIN_SCRIPT_ADDRESS_TEST;
-#endif
+    if (isTestnet) {
+        pubkeyAddress = BITCOIN_PUBKEY_ADDRESS_TEST;
+        scriptAddress = BITCOIN_SCRIPT_ADDRESS_TEST;
+    }
 
     if (version == pubkeyAddress) {
         [self appendUInt8:OP_DUP];
@@ -179,9 +179,13 @@
 
 #pragma mark - bitcoin protocol
 
-- (void)appendMessage:(NSData *)message type:(NSString *)type;
+- (void)appendMessage:(NSData *)message type:(NSString *)type isTestnet:(BOOL)isTestnet;
 {
-    [self appendUInt32:BITCOIN_MAGIC_NUMBER];
+    if (isTestnet) {
+        [self appendUInt32:0x0709110b]; //BITCOIN_MAGIC_NUMBER
+    } else {
+        [self appendUInt32:0xd9b4bef9]; //BITCOIN_MAGIC_NUMBER
+    }
     [self appendNullPaddedString:type length:12];
     [self appendUInt32:(uint32_t)message.length];
     [self appendBytes:message.SHA256_2.bytes length:4];

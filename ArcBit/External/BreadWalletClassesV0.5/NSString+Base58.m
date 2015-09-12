@@ -212,7 +212,7 @@ breakout:
 // miss a receive transaction, only that transaction's funds are missed, however if we accept a receive transaction that
 // we are unable to correctly sign later, then the entire wallet balance after that point would become stuck with the
 // current coin selection code
-+ (NSString *)addressWithScriptPubKey:(NSData *)script
++ (NSString *)addressWithScriptPubKey:(NSData *)script isTestnet:(BOOL)isTestnet
 {
     if (script == (id)[NSNull null]) return nil;
 
@@ -221,9 +221,9 @@ breakout:
     NSMutableData *d = [NSMutableData data];
     uint8_t v = BITCOIN_PUBKEY_ADDRESS;
 
-#if BITCOIN_TESTNET
-    v = BITCOIN_PUBKEY_ADDRESS_TEST;
-#endif
+    if (isTestnet) {
+        v = BITCOIN_PUBKEY_ADDRESS_TEST;
+    }
 
     if (l == 5 && [elem[0] intValue] == OP_DUP && [elem[1] intValue] == OP_HASH160 && [elem[2] intValue] == 20 &&
         [elem[3] intValue] == OP_EQUALVERIFY && [elem[4] intValue] == OP_CHECKSIG) {
@@ -234,9 +234,9 @@ breakout:
     else if (l == 3 && [elem[0] intValue] == OP_HASH160 && [elem[1] intValue] == 20 && [elem[2] intValue] == OP_EQUAL) {
         // pay-to-script-hash scriptPubKey
         v = BITCOIN_SCRIPT_ADDRESS;
-#if BITCOIN_TESTNET
-        v = BITCOIN_SCRIPT_ADDRESS_TEST;
-#endif
+        if (isTestnet) {
+            v = BITCOIN_SCRIPT_ADDRESS_TEST;
+        }
         [d appendBytes:&v length:1];
         [d appendData:elem[1]];
     }
@@ -250,7 +250,7 @@ breakout:
     return [self base58checkWithData:d];
 }
 
-+ (NSString *)addressWithScriptSig:(NSData *)script
++ (NSString *)addressWithScriptSig:(NSData *)script isTestnet:(BOOL)isTestnet
 {
     if (script == (id)[NSNull null]) return nil;
 
@@ -259,10 +259,10 @@ breakout:
     NSMutableData *d = [NSMutableData data];
     uint8_t v = BITCOIN_PUBKEY_ADDRESS;
 
-#if BITCOIN_TESTNET
-    v = BITCOIN_PUBKEY_ADDRESS_TEST;
-#endif
-
+    if (isTestnet) {
+        v = BITCOIN_PUBKEY_ADDRESS_TEST;
+    }
+    
     if (l >= 2 && [elem[l - 2] intValue] <= OP_PUSHDATA4 && [elem[l - 2] intValue] > 0 &&
         ([elem[l - 1] intValue] == 65 || [elem[l - 1] intValue] == 33)) { // pay-to-pubkey-hash scriptSig
         [d appendBytes:&v length:1];
@@ -271,9 +271,9 @@ breakout:
     else if (l >= 2 && [elem[l - 2] intValue] <= OP_PUSHDATA4 && [elem[l - 2] intValue] > 0 &&
              [elem[l - 1] intValue] <= OP_PUSHDATA4 && [elem[l - 1] intValue] > 0) { // pay-to-script-hash scriptSig
         v = BITCOIN_SCRIPT_ADDRESS;
-#if BITCOIN_TESTNET
-        v = BITCOIN_SCRIPT_ADDRESS_TEST;
-#endif
+        if (isTestnet) {
+            v = BITCOIN_SCRIPT_ADDRESS_TEST;
+        }
         [d appendBytes:&v length:1];
         [d appendData:[elem[l - 1] hash160]];
     }
@@ -361,7 +361,7 @@ breakout:
     return (d.length == 160/8 + 1) ? [d subdataWithRange:NSMakeRange(1, d.length - 1)] : nil;
 }
 
-- (BOOL)isValidBitcoinAddress
+- (BOOL)isValidBitcoinAddress:(BOOL)isTestnet
 {
     NSData *d = self.base58checkToData;
     
@@ -369,23 +369,23 @@ breakout:
     
     uint8_t version = *(const uint8_t *)d.bytes;
         
-#if BITCOIN_TESTNET
-    return (version == BITCOIN_PUBKEY_ADDRESS_TEST || version == BITCOIN_SCRIPT_ADDRESS_TEST) ? YES : NO;
-#endif
-
+    if (isTestnet) {
+        return (version == BITCOIN_PUBKEY_ADDRESS_TEST || version == BITCOIN_SCRIPT_ADDRESS_TEST) ? YES : NO;
+    }
+    
     return (version == BITCOIN_PUBKEY_ADDRESS || version == BITCOIN_SCRIPT_ADDRESS) ? YES : NO;
 }
 
-- (BOOL)isValidBitcoinPrivateKey
+- (BOOL)isValidBitcoinPrivateKey:(BOOL)isTestnet
 {
     NSData *d = self.base58checkToData;
     
     if (d.length == 33 || d.length == 34) { // wallet import format: https://en.bitcoin.it/wiki/Wallet_import_format
-#if BITCOIN_TESNET
-        return (*(const uint8_t *)d.bytes == BITCOIN_PRIVKEY_TEST) ? YES : NO;
-#else
-        return (*(const uint8_t *)d.bytes == BITCOIN_PRIVKEY) ? YES : NO;
-#endif
+        if (isTestnet) {
+            return (*(const uint8_t *)d.bytes == BITCOIN_PRIVKEY_TEST) ? YES : NO;
+        } else {
+            return (*(const uint8_t *)d.bytes == BITCOIN_PRIVKEY) ? YES : NO;
+        }
     }
     else if ((self.length == 30 || self.length == 22) && [self characterAtIndex:0] == 'S') { // mini private key format
         NSMutableData *d = [NSMutableData secureDataWithCapacity:self.length + 1];

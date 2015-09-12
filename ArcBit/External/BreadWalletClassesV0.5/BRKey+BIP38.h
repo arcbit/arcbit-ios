@@ -31,7 +31,7 @@
 @interface BRKey (BIP38)
 
 // decrypts a BIP38 key using the given passphrase or retuns nil if passphrase is incorrect
-+ (instancetype)keyWithBIP38Key:(NSString *)key andPassphrase:(NSString *)passphrase;
++ (instancetype)keyWithBIP38Key:(NSString *)key andPassphrase:(NSString *)passphrase isTestnet:(BOOL)isTestnet;
 
 // generates an "intermediate code" for an EC multiply mode key, salt should be 64bits of random data
 + (NSString *)BIP38IntermediateCodeWithSalt:(uint64_t)salt andPassphrase:(NSString *)passphrase;
@@ -45,14 +45,14 @@ passphrase:(NSString *)passphrase;
 // compressed indicates if compressed pubKey format should be used for the bitcoin address, confcode (optional) will
 // be set to the "confirmation code"
 + (NSString *)BIP38KeyWithIntermediateCode:(NSString *)code seedb:(NSData *)seedb compressed:(BOOL)compressed
-confirmationCode:(NSString **)confcode;
+confirmationCode:(NSString **)confcode isTestnet:(BOOL)isTestnet;
 
 // returns true if the "confirmation code" confirms that the given bitcoin address depends on the specified passphrase
-+ (BOOL)confirmWithBIP38ConfirmationCode:(NSString *)code address:(NSString *)address passphrase:(NSString *)passphrase;
++ (BOOL)confirmWithBIP38ConfirmationCode:(NSString *)code address:(NSString *)address passphrase:(NSString *)passphrase isTestnet:(BOOL)isTestnet;
 
-- (instancetype)initWithBIP38Key:(NSString *)key andPassphrase:(NSString *)passphrase;
+- (instancetype)initWithBIP38Key:(NSString *)key andPassphrase:(NSString *)passphrase isTestnet:(BOOL)isTestnet;
 
 // encrypts receiver with passphrase and returns BIP38 key
-- (NSString *)BIP38KeyWithPassphrase:(NSString *)passphrase;
+- (NSString *)BIP38KeyWithPassphrase:(NSString *)passphrase isTestnet:(BOOL)isTestnet;
 
 @end

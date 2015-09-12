@@ -193,9 +193,9 @@ static NSData *point_multiply(NSData *point, const BIGNUM *factor, BOOL compress
 @implementation BRKey (BIP38)
 
 // decrypts a BIP38 key using the given passphrase or retuns nil if passphrase is incorrect
-+ (instancetype)keyWithBIP38Key:(NSString *)key andPassphrase:(NSString *)passphrase
++ (instancetype)keyWithBIP38Key:(NSString *)key andPassphrase:(NSString *)passphrase isTestnet:(BOOL)isTestnet
 {
-    return [[self alloc] initWithBIP38Key:key andPassphrase:passphrase];
+    return [[self alloc] initWithBIP38Key:key andPassphrase:passphrase isTestnet:isTestnet];
 }
 
 // generates an "intermediate code" for an EC multiply mode key, salt should be 64bits of random data
@@ -258,7 +258,7 @@ passphrase:(NSString *)passphrase
 // compressed indicates if compressed pubKey format should be used for the bitcoin address, confcode (optional) will
 // be set to the "confirmation code"
 + (NSString *)BIP38KeyWithIntermediateCode:(NSString *)code seedb:(NSData *)seedb compressed:(BOOL)compressed
-confirmationCode:(NSString **)confcode;
+confirmationCode:(NSString **)confcode isTestnet:(BOOL)isTestnet;
 {
     NSData *d = code.base58checkToData; // d = 0x2C 0xE9 0xB3 0xE1 0xFF 0x39 0xE2 0x51|0x53 + entropy + passpoint
 
@@ -276,7 +276,7 @@ confirmationCode:(NSString **)confcode;
 
     uint16_t prefix = CFSwapInt16HostToBig(BIP38_EC_PREFIX);
     uint8_t flag = (compressed) ? BIP38_COMPRESSED_FLAG : 0;
-    NSData *address = [[[BRKey keyWithPublicKey:pubKey] address] dataUsingEncoding:NSUTF8StringEncoding];
+    NSData *address = [[BRKey keyWithPublicKey:pubKey isTestnet:isTestnet].address dataUsingEncoding:NSUTF8StringEncoding];
     uint32_t addresshash = (address) ? *(uint32_t *)address.SHA256_2.bytes : 0;
     uint64_t entropy = *(const uint64_t *)((const uint8_t *)d.bytes + 8);
     NSData *derived = derive_key(passpoint, addresshash, entropy);
@@ -344,7 +344,7 @@ confirmationCode:(NSString **)confcode;
 }
 
 // returns true if the "confirmation code" confirms that the given bitcoin address depends on the specified passphrase
-+ (BOOL)confirmWithBIP38ConfirmationCode:(NSString *)code address:(NSString *)address passphrase:(NSString *)passphrase
++ (BOOL)confirmWithBIP38ConfirmationCode:(NSString *)code address:(NSString *)address passphrase:(NSString *)passphrase isTestnet:(BOOL)isTestnet
 {
     NSData *d = code.base58checkToData;
 
@@ -388,10 +388,10 @@ confirmationCode:(NSString **)confcode;
     BN_CTX_end(ctx);
     BN_CTX_free(ctx);
 
-    return ([[[BRKey keyWithPublicKey:pubKey] address] isEqual:address]) ? YES : NO;
+    return ([[BRKey keyWithPublicKey:pubKey isTestnet:isTestnet].address isEqual:address]) ? YES : NO;
 }
 
-- (instancetype)initWithBIP38Key:(NSString *)key andPassphrase:(NSString *)passphrase
+- (instancetype)initWithBIP38Key:(NSString *)key andPassphrase:(NSString *)passphrase isTestnet:(BOOL)isTestnet
 {
     NSData *d = key.base58checkToData;
 
@@ -463,7 +463,7 @@ confirmationCode:(NSString **)confcode;
         BN_CTX_free(ctx);
     }
 
-    if (! (self = [self initWithSecret:secret compressed:flag & BIP38_COMPRESSED_FLAG])) return nil;
+    if (! (self = [self initWithSecret:secret compressed:flag & BIP38_COMPRESSED_FLAG isTestnet:isTestnet])) return nil;
 
     NSData *address = [self.address dataUsingEncoding:NSUTF8StringEncoding];
 
@@ -476,7 +476,7 @@ confirmationCode:(NSString **)confcode;
 }
 
 // encrypts receiver with passphrase and returns BIP38 key
-- (NSString *)BIP38KeyWithPassphrase:(NSString *)passphrase
+- (NSString *)BIP38KeyWithPassphrase:(NSString *)passphrase isTestnet:(BOOL)isTestnet
 {
     NSData *priv = self.privateKey.base58checkToData;
 

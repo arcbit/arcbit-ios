@@ -374,6 +374,9 @@
 		F34D5C601B7A2C0100DF37DC /* TLCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F338F9571B79718900C02F74 /* TLCrypto.swift */; };
 		F34D5C611B7A2C0100DF37DC /* TLCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F338F9571B79718900C02F74 /* TLCrypto.swift */; };
 		F34D5C631B7A3B4A00DF37DC /* TLWalletPassphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F338F9551B794D1D00C02F74 /* TLWalletPassphrase.swift */; };
+		F37072461B8F570D0026505D /* TLWalletConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37072451B8F570D0026505D /* TLWalletConfig.swift */; };
+		F37072471B8F57810026505D /* TLWalletConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37072451B8F570D0026505D /* TLWalletConfig.swift */; };
+		F37072481B8F57810026505D /* TLWalletConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37072451B8F570D0026505D /* TLWalletConfig.swift */; };
 		F3BC360F1B8681A300CBB3F7 /* TLWalletPassphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F338F9551B794D1D00C02F74 /* TLWalletPassphrase.swift */; };
 		F3BC36111B8681FF00CBB3F7 /* TLUpdateAppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BC36101B8681FF00CBB3F7 /* TLUpdateAppData.swift */; };
 		F3BC36121B8681FF00CBB3F7 /* TLUpdateAppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BC36101B8681FF00CBB3F7 /* TLUpdateAppData.swift */; };
@@ -622,6 +625,7 @@
 		CB2193BFA5ADE6BF5F8EC097 /* Pods-ArcBit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArcBit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ArcBit/Pods-ArcBit.debug.xcconfig"; sourceTree = "<group>"; };
 		F338F9551B794D1D00C02F74 /* TLWalletPassphrase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLWalletPassphrase.swift; sourceTree = "<group>"; };
 		F338F9571B79718900C02F74 /* TLCrypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLCrypto.swift; sourceTree = "<group>"; };
+		F37072451B8F570D0026505D /* TLWalletConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLWalletConfig.swift; sourceTree = "<group>"; };
 		F3BC36101B8681FF00CBB3F7 /* TLUpdateAppData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLUpdateAppData.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -1129,6 +1133,7 @@
 				C0E5393C1AD454FD00651FE4 /* TLHelpDoc.swift */,
 				F338F9551B794D1D00C02F74 /* TLWalletPassphrase.swift */,
 				F338F9571B79718900C02F74 /* TLCrypto.swift */,
+				F37072451B8F570D0026505D /* TLWalletConfig.swift */,
 			);
 			path = model;
 			sourceTree = "<group>";
@@ -1566,6 +1571,7 @@
 				C0BD70071B4E2C9200A5788D /* TLStringLocalized.swift in Sources */,
 				C02D3A6E1B4A45F500B3B7F0 /* TLAnalytics.swift in Sources */,
 				C02D3A6F1B4A45F500B3B7F0 /* IASKSettingsStoreUserDefaults.m in Sources */,
+				F37072471B8F57810026505D /* TLWalletConfig.swift in Sources */,
 				C02D3A701B4A45F500B3B7F0 /* TLMenuViewController.swift in Sources */,
 				C02D3A711B4A45F500B3B7F0 /* TLCloudDocumentSyncWrapper.m in Sources */,
 				C02D3A721B4A45F500B3B7F0 /* TLWallet.swift in Sources */,
@@ -1685,6 +1691,7 @@
 				C0BD70061B4E2C4F00A5788D /* TLStringLocalized.swift in Sources */,
 				C0A192ED1ABF742D00BED648 /* TLAnalytics.swift in Sources */,
 				C0A190D31ABF53A100BED648 /* IASKSettingsStoreUserDefaults.m in Sources */,
+				F37072461B8F570D0026505D /* TLWalletConfig.swift in Sources */,
 				C0A191251ABF53A100BED648 /* TLMenuViewController.swift in Sources */,
 				C05C398B1AD0710B00AADE55 /* TLCloudDocumentSyncWrapper.m in Sources */,
 				C0A190FD1ABF53A100BED648 /* TLWallet.swift in Sources */,
@@ -1825,6 +1832,7 @@
 				C0A193381ABF82EF00BED648 /* TLNetworking.swift in Sources */,
 				C0A1932E1ABF82B700BED648 /* TLStealthWallet.swift in Sources */,
 				F3BC360F1B8681A300CBB3F7 /* TLWalletPassphrase.swift in Sources */,
+				F37072481B8F57810026505D /* TLWalletConfig.swift in Sources */,
 				C0C3BDED1AC11BD2001AC6CD /* TLWallet+Stealth.swift in Sources */,
 				C0A1931C1ABF81CB00BED648 /* TLStealthAddress.swift in Sources */,
 				C0A1931A1ABF751800BED648 /* BreadWalletTests.m in Sources */,

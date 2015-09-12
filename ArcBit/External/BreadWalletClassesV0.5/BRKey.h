@@ -32,13 +32,13 @@
 @property (nonatomic, readonly) NSString *address;
 @property (nonatomic, readonly) NSData *hash160;
 
-+ (instancetype)keyWithPrivateKey:(NSString *)privateKey;
-+ (instancetype)keyWithSecret:(NSData *)secret compressed:(BOOL)compressed;
-+ (instancetype)keyWithPublicKey:(NSData *)publicKey;
++ (instancetype)keyWithPrivateKey:(NSString *)privateKey isTestnet:(BOOL)isTestnet;
++ (instancetype)keyWithSecret:(NSData *)secret compressed:(BOOL)compressed isTestnet:(BOOL)isTestnet;
++ (instancetype)keyWithPublicKey:(NSData *)publicKey isTestnet:(BOOL)isTestnet;
 
-- (instancetype)initWithPrivateKey:(NSString *)privateKey;
-- (instancetype)initWithSecret:(NSData *)secret compressed:(BOOL)compressed;
-- (instancetype)initWithPublicKey:(NSData *)publicKey;
+- (instancetype)initWithPrivateKey:(NSString *)privateKey isTestnet:(BOOL)isTestnet;
+- (instancetype)initWithSecret:(NSData *)secret compressed:(BOOL)compressed isTestnet:(BOOL)isTestnet;
+- (instancetype)initWithPublicKey:(NSData *)publicKey isTestnet:(BOOL)isTestnet;
 
 - (NSData *)sign:(NSData *)d;
 - (BOOL)verify:(NSData *)d signature:(NSData *)sig;

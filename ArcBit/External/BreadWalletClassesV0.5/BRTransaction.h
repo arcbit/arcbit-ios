@@ -40,7 +40,8 @@
 
 @interface BRTransaction : NSObject
 
-@property (nonatomic, readonly) NSArray *inputAddresses;
+//@property (nonatomic, readonly) NSArray *inputAddresses;
+- (NSArray*)getInputAddresses:(BOOL)isTestnet;
 @property (nonatomic, readonly) NSArray *inputHashes;
 @property (nonatomic, readonly) NSArray *inputIndexes;
 @property (nonatomic, readonly) NSArray *inputScripts;
@@ -59,23 +60,23 @@
 @property (nonatomic, readonly) BOOL isSigned; // checks if all signatures exist, but does not verify them
 @property (nonatomic, readonly, getter = toData) NSData *data;
 
-+ (instancetype)transactionWithMessage:(NSData *)message;
++ (instancetype)transactionWithMessage:(NSData *)message isTestnet:(BOOL)isTestnet;
 
-- (instancetype)initWithMessage:(NSData *)message;
+- (instancetype)initWithMessage:(NSData *)message isTestnet:(BOOL)isTestnet;
 - (instancetype)initWithInputHashes:(NSArray *)hashes inputIndexes:(NSArray *)indexes inputScripts:(NSArray *)scripts
-outputAddresses:(NSArray *)addresses outputAmounts:(NSArray *)amounts;
+outputAddresses:(NSArray *)addresses outputAmounts:(NSArray *)amounts isTestnet:(BOOL)isTestnet;
 
 - (void)addInputHash:(NSData *)hash index:(NSUInteger)index script:(NSData *)script;
 - (void)addInputHash:(NSData *)hash index:(NSUInteger)index script:(NSData *)script signature:(NSData *)signature
 sequence:(uint32_t)sequence;
 
-- (void)addOutputAddress:(NSString *)address amount:(uint64_t)amount;
-- (void)addOutputScript:(NSData *)script amount:(uint64_t)amount;
-- (void)insertOutputScript:(NSData *)script amount:(uint64_t)amount;
+- (void)addOutputAddress:(NSString *)address amount:(uint64_t)amount isTestnet:(BOOL)isTestnet;
+- (void)addOutputScript:(NSData *)script amount:(uint64_t)amount isTestnet:(BOOL)isTestnet;
+- (void)insertOutputScript:(NSData *)script amount:(uint64_t)amount isTestnet:(BOOL)isTestnet;
 
-- (void)setInputAddress:(NSString *)address atIndex:(NSUInteger)index;
+- (void)setInputAddress:(NSString *)address atIndex:(NSUInteger)index isTestnet:(BOOL)isTestnet;
 
-- (BOOL)signWithPrivateKeys:(NSArray *)privateKeys;
+- (BOOL)signWithPrivateKeys:(NSArray *)privateKeys isTestnet:(BOOL)isTestnet;
 
 // priority = sum(input_amount_in_satoshis*input_age_in_blocks)/tx_size_in_bytes
 - (uint64_t)priorityForAmounts:(NSArray *)amounts withAges:(NSArray *)ages;

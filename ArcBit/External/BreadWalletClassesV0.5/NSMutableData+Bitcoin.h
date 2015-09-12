@@ -47,10 +47,10 @@
 - (void)appendVarInt:(uint64_t)i;
 - (void)appendString:(NSString *)s;
 
-- (void)appendScriptPubKeyForAddress:(NSString *)address;
+- (void)appendScriptPubKeyForAddress:(NSString *)address isTestnet:(BOOL)isTestnet;
 - (void)appendScriptPushData:(NSData *)d;
 
-- (void)appendMessage:(NSData *)message type:(NSString *)type;
+- (void)appendMessage:(NSData *)message type:(NSString *)type isTestnet:(BOOL)isTestnet;
 - (void)appendNullPaddedString:(NSString *)s length:(NSUInteger)length;
 - (void)appendNetAddress:(uint32_t)address port:(uint16_t)port services:(uint64_t)services;
 
