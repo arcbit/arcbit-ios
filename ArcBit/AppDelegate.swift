@@ -36,7 +36,7 @@ import HockeySDK
     var window:UIWindow?
     private var storyboard:UIStoryboard?
     private var modalDelegate:AnyObject?
-    var appWallet = TLWallet(walletName: "App Wallet")
+    var appWallet = TLWallet(walletName: "App Wallet", walletConfig: TLWalletConfig(isTestnet: false))
     var accounts:TLAccounts?
     var importedAccounts:TLAccounts?
     var importedWatchAccounts:TLAccounts?
@@ -846,7 +846,7 @@ import HockeySDK
         
         self.isAccountsAndImportsLoaded = true
         
-        self.godSend = TLSpaghettiGodSend()
+        self.godSend = TLSpaghettiGodSend(appWallet: self.appWallet)
         self.receiveSelectedObject = TLSelectedObject()
         self.historySelectedObject = TLSelectedObject()
         self.updateGodSend()
@@ -990,7 +990,7 @@ import HockeySDK
         }
         
         let reader = TLQRCodeScannerViewController(success:{(data: String?) in
-            if (TLCoreBitcoinWrapper.isBIP38EncryptedKey(data!)) {
+            if (TLCoreBitcoinWrapper.isBIP38EncryptedKey(data!, isTestnet: self.appWallet.walletConfig.isTestnet)) {
                 self.scannedEncryptedPrivateKey = data!
             }
                 

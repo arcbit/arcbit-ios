@@ -24,6 +24,7 @@ import Foundation
 
 @objc class TLImportedAddress : NSObject {
     
+    private var appWallet:TLWallet?
     private var addressDict:NSMutableDictionary?
     private var unspentOutputs:NSArray?
     private var unspentOutputsSum:TLCoin?
@@ -41,8 +42,9 @@ import Foundation
     private var importedAddress:String?
     var downloadState:TLDownloadState = .NotDownloading
 
-    init(dict:NSDictionary) {
+    init(appWallet: TLWallet, dict:NSDictionary) {
         super.init()
+        self.appWallet = appWallet
         addressDict = NSMutableDictionary(dictionary:dict)
         importedAddress = addressDict!.objectForKey(TLWallet.WALLET_PAYLOAD_KEY_ADDRESS()) as! String?
         unspentOutputs = NSMutableArray()
@@ -62,7 +64,7 @@ import Foundation
     }
     
     func setPrivateKeyInMemory(privKey:String) -> (Bool) {
-        if (TLCoreBitcoinWrapper.getAddress(privKey) == getAddress()) {
+        if (TLCoreBitcoinWrapper.getAddress(privKey, isTestnet: self.appWallet!.walletConfig.isTestnet) == getAddress()) {
             privateKey = privKey
             return true
         }
@@ -154,7 +156,7 @@ import Foundation
         if (self.watchOnly ?? false) {
             return false
         }
-        if (TLCoreBitcoinWrapper.isBIP38EncryptedKey(addressDict!.objectForKey("key") as! String)) {
+        if (TLCoreBitcoinWrapper.isBIP38EncryptedKey(addressDict!.objectForKey("key") as! String, isTestnet: self.appWallet!.walletConfig.isTestnet)) {
             return true
         }
         return false

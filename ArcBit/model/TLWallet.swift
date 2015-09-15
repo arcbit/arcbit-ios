@@ -181,6 +181,7 @@ enum TLStealthPaymentStatus:Int {
     }
     
     private var walletName: String?
+    var walletConfig: TLWalletConfig
     private var rootDict: NSMutableDictionary?
     private var currentHDWalletIdx: Int?
     private var masterHex: String?
@@ -196,8 +197,9 @@ enum TLStealthPaymentStatus:Int {
     }
     
     
-    init(walletName: String) {
+    init(walletName: String, walletConfig: TLWalletConfig) {
         self.walletName = walletName
+        self.walletConfig = walletConfig
         currentHDWalletIdx = 0
     }
     
@@ -206,7 +208,7 @@ enum TLStealthPaymentStatus:Int {
     private func createStealthAddressDict(extendKey: String, isPrivateExtendedKey: (Bool)) -> (NSMutableDictionary) {
         assert(isPrivateExtendedKey == true, "Cant generate stealth address scan key from xpub key")
         let stealthAddressDict = NSMutableDictionary()
-        let stealthAddressObject = TLHDWalletWrapper.getStealthAddress(extendKey, isTestnet: TLWalletUtils.STATIC_MEMBERS.IS_TESTNET)
+        let stealthAddressObject = TLHDWalletWrapper.getStealthAddress(extendKey, isTestnet: self.walletConfig.isTestnet)
         stealthAddressDict.setObject((stealthAddressObject.objectForKey("stealthAddress"))!, forKey: STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESS)
         stealthAddressDict.setObject((stealthAddressObject.objectForKey("scanPriv"))!, forKey: STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESS_SCAN_KEY)
         stealthAddressDict.setObject((stealthAddressObject.objectForKey("spendPriv"))!, forKey: STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESS_SPEND_KEY)
@@ -262,7 +264,7 @@ enum TLStealthPaymentStatus:Int {
                 let mainAddressSequence = [TLAddressType.Main.rawValue, (mainAddressIdx)]
                 
                 let extendedPublicKey = account.objectForKey(STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PUBLIC_KEY) as! String
-                let address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: mainAddressSequence)
+                let address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: mainAddressSequence, isTestnet: self.walletConfig.isTestnet)
                 mainAddressDict.setObject(address, forKey: STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS)
                 mainAddressDict.setObject(TLAddressStatus.Active.rawValue, forKey: STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS)
                 mainAddressDict.setObject(i, forKey: STATIC_MEMBERS.WALLET_PAYLOAD_KEY_INDEX)
@@ -275,7 +277,7 @@ enum TLStealthPaymentStatus:Int {
             let changeAddressSequence = [TLAddressType.Change.rawValue, changeAddressIdx]
             
             let extendedPublicKey = account.objectForKey(STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PUBLIC_KEY) as! String
-            let address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: changeAddressSequence)
+            let address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: changeAddressSequence, isTestnet: self.walletConfig.isTestnet)
             changeAddressDict.setObject(address, forKey: STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS)
             changeAddressDict.setObject(TLAddressStatus.Active.rawValue, forKey: STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS)
             changeAddressDict.setObject(0, forKey: STATIC_MEMBERS.WALLET_PAYLOAD_KEY_INDEX)
@@ -522,7 +524,7 @@ enum TLStealthPaymentStatus:Int {
         let mainAddressDict = NSMutableDictionary()
         
         let extendedPublicKey = accountDict.objectForKey(STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PUBLIC_KEY) as! String
-        let address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: mainAddressSequence)
+        let address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: mainAddressSequence, isTestnet: self.walletConfig.isTestnet)
         
         mainAddressDict.setObject(address, forKey: STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS)
         mainAddressDict.setObject((TLAddressStatus.Active.rawValue), forKey: STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS)
@@ -576,7 +578,7 @@ enum TLStealthPaymentStatus:Int {
         let changeAddressDict = NSMutableDictionary()
         
         let extendedPublicKey = accountDict.objectForKey(STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PUBLIC_KEY) as! String
-        let address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: changeAddressSequence)
+        let address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: changeAddressSequence, isTestnet: self.walletConfig.isTestnet)
         changeAddressDict.setObject(address, forKey: STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS)
         changeAddressDict.setObject(TLAddressStatus.Active.rawValue, forKey: STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS)
         changeAddressDict.setObject(changeAddressIdx, forKey: STATIC_MEMBERS.WALLET_PAYLOAD_KEY_INDEX)
@@ -860,7 +862,7 @@ enum TLStealthPaymentStatus:Int {
     func getImportedAddressObjectAtIdx(idx: Int) -> (TLImportedAddress) {
         let importedKeysDict = getImportedKeysDict()
         let importedAddress = importedKeysDict.objectForKey(STATIC_MEMBERS.WALLET_PAYLOAD_IMPORTED_ACCOUNTS) as! NSDictionary
-        return TLImportedAddress(dict: importedAddress)
+        return TLImportedAddress(appWallet: self, dict: importedAddress)
     }
     
     func addImportedPrivateKey(privateKey: String, encryptedPrivateKey: String?) -> (NSDictionary) {
@@ -871,14 +873,14 @@ enum TLStealthPaymentStatus:Int {
         if (encryptedPrivateKey == nil) {
             importedPrivateKey = [
                 STATIC_MEMBERS.WALLET_PAYLOAD_KEY_KEY: privateKey,
-                STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS: TLCoreBitcoinWrapper.getAddress(privateKey)!,
+                STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS: TLCoreBitcoinWrapper.getAddress(privateKey, isTestnet: self.walletConfig.isTestnet)!,
                 STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL: String(""),
                 STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS: Int(TLAddressStatus.Active.rawValue)
             ]
         } else {
             importedPrivateKey = [
                 STATIC_MEMBERS.WALLET_PAYLOAD_KEY_KEY: encryptedPrivateKey!,
-                STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS: TLCoreBitcoinWrapper.getAddress(privateKey)!,
+                STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS: TLCoreBitcoinWrapper.getAddress(privateKey, isTestnet: self.walletConfig.isTestnet)!,
                 STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL: String(),
                 STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS: Int(TLAddressStatus.Active.rawValue)
             ]
@@ -924,7 +926,7 @@ enum TLStealthPaymentStatus:Int {
         let importedAddressesObjectArray = NSMutableArray(capacity: importedAddresses.count)
         
         for addressDict in importedAddresses as! [NSDictionary] {
-            let importedAddressObject = TLImportedAddress(dict: addressDict)
+            let importedAddressObject = TLImportedAddress(appWallet: self, dict: addressDict)
             importedAddressesObjectArray.addObject(importedAddressObject)
         }
         return importedAddressesObjectArray
@@ -933,7 +935,7 @@ enum TLStealthPaymentStatus:Int {
     func getImportedWatchAddressObjectAtIdx(idx: Int) -> (TLImportedAddress) {
         let importedKeysDict = getImportedKeysDict()
         let importedAddress = importedKeysDict.objectForKey(STATIC_MEMBERS.WALLET_PAYLOAD_IMPORTED_PRIVATE_KEYS) as! NSDictionary
-        return TLImportedAddress(dict: importedAddress)
+        return TLImportedAddress(appWallet: self, dict: importedAddress)
     }
     
     func addWatchOnlyAddress(address: NSString) -> (NSDictionary) {
@@ -987,7 +989,7 @@ enum TLStealthPaymentStatus:Int {
         let importedAddressesObjectArray = NSMutableArray(capacity: importedAddresses.count)
         
         for addressDict in importedAddresses as! [NSDictionary] {
-            let importedAddressObject = TLImportedAddress(dict: addressDict)
+            let importedAddressObject = TLImportedAddress(appWallet: self, dict: addressDict)
             importedAddressesObjectArray.addObject(importedAddressObject)
         }
         

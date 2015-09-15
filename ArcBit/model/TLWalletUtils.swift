@@ -64,10 +64,6 @@ enum TLAccountAddressType: Int {
         return STATIC_MEMBERS.APP_NAME
     }
     
-    class func IS_TESTNET() -> Bool {
-        return STATIC_MEMBERS.IS_TESTNET
-    }
-    
     class func DEFAULT_FEE_AMOUNT_IN_BITCOINS() -> (String) {
         return bitcoinAmountStringToCoin(STATIC_MEMBERS.DEFAULT_FEE_AMOUNT, locale: NSLocale(localeIdentifier: "en_US")).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.Bitcoin)
     }
@@ -112,7 +108,6 @@ enum TLAccountAddressType: Int {
         static var _bitcoinDisplayWords: NSArray?
 
         static let APP_NAME = "ArcBit Wallet"
-        static let IS_TESTNET = false
         
         static let WALLET_JSON_CLOUD_BACKUP_FILE_NAME = "wallet.json.asc"
         static let WALLET_JSON_CLOUD_BACKUP_FILE_EXTENSION = "backup"
@@ -156,10 +151,6 @@ enum TLAccountAddressType: Int {
     
     class func reverseTxidHexString(txHashHex: String) -> String {
         return dataToHexString(hexStringToData(txHashHex)!.reverse())
-    }
-    
-    class func privateKeyFromEncryptedPrivateKey(encryptedPrivateKey: String, password: String) -> String? {
-        return TLCoreBitcoinWrapper.privateKeyFromEncryptedPrivateKey(encryptedPrivateKey, password: password)
     }
     
     class func isValidInputTransactionFee(amount: TLCoin) -> Bool {

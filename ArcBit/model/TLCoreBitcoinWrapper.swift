@@ -25,7 +25,7 @@ import Foundation
 @objc class TLCoreBitcoinWrapper {
     
     // WARNING: returns compressed address only
-    class func getAddressFromOutputScript(scriptHex:String, isTestnet:Bool=false) -> (String?){
+    class func getAddressFromOutputScript(scriptHex:String, isTestnet:Bool) -> (String?){
         let scriptData = TLWalletUtils.hexStringToData(scriptHex)!
         let script = BTCScript(data:scriptData)
         if let address = script.standardAddress {
@@ -39,12 +39,12 @@ import Foundation
         return nil
     }
    
-    class func getStandardPubKeyHashScriptFromAddress(address:String, isTestnet:Bool=false) -> String {
+    class func getStandardPubKeyHashScriptFromAddress(address:String, isTestnet:Bool) -> String {
         let scriptData = BTCScript(address: BTCAddress(base58String: address))
         return scriptData.hex
     }
     
-    class func getAddress(privateKey:String, isTestnet:Bool=false) -> (String?){
+    class func getAddress(privateKey:String, isTestnet:Bool) -> (String?){
         if let key = BTCKey(WIF: privateKey) {
             if !isTestnet {
                 return key.address.string
@@ -56,7 +56,7 @@ import Foundation
         }
     }
     
-    class func getAddressFromPublicKey(publicKey:String, isTestnet:Bool=false) -> (String?){
+    class func getAddressFromPublicKey(publicKey:String, isTestnet:Bool) -> (String?){
         if !isTestnet {
             if let key = BTCKey(publicKey: TLWalletUtils.hexStringToData(publicKey)!) {
                 return key.address.string
@@ -73,7 +73,7 @@ import Foundation
     }
     
     // WARNING: returns compressed address only
-    class func getAddressFromSecret(secret:String, isTestnet:Bool=false) -> (String?){
+    class func getAddressFromSecret(secret:String, isTestnet:Bool) -> (String?){
         if let key = BTCKey(privateKey: BTCDataFromHex(secret)) {
             if !isTestnet {
                 return key.compressedPublicKeyAddress.string
@@ -86,7 +86,7 @@ import Foundation
         }
     }
     
-    class func privateKeyFromEncryptedPrivateKey(encryptedPrivateKey:String, password:String, isTestnet:Bool=false) -> (String?) {
+    class func privateKeyFromEncryptedPrivateKey(encryptedPrivateKey:String, password:String, isTestnet:Bool) -> (String?) {
         if let key = BRKey(BIP38Key:encryptedPrivateKey, andPassphrase:password, isTestnet:isTestnet) {
             return key.privateKey
         }
@@ -94,7 +94,7 @@ import Foundation
     }
     
     // WARNING: returns compressed address only
-    class func privateKeyFromSecret(secret:String, isTestnet:Bool=false) -> (String){
+    class func privateKeyFromSecret(secret:String, isTestnet:Bool) -> (String){
         let key = BTCKey(privateKey:BTCDataFromHex(secret))
         key.publicKeyCompressed = true
         if !isTestnet {
@@ -104,7 +104,7 @@ import Foundation
         }
     }
     
-    class func isAddressVersion0(address:String, isTestnet:Bool=false) -> (Bool){
+    class func isAddressVersion0(address:String, isTestnet:Bool) -> (Bool){
         if !isTestnet {
             return address.hasPrefix("1")
         } else {
@@ -123,21 +123,21 @@ import Foundation
     }
     */
     
-    class func isValidAddress(address:String, isTestnet:Bool=false) -> (Bool){
+    class func isValidAddress(address:String, isTestnet:Bool) -> (Bool){
         return address.isValidBitcoinAddress(isTestnet) || TLStealthAddress.isStealthAddress(address, isTestnet:isTestnet)
     }
     
-    class func isValidPrivateKey(privateKey:String, isTestnet:Bool=false) -> Bool{
+    class func isValidPrivateKey(privateKey:String, isTestnet:Bool) -> Bool{
         return privateKey.isValidBitcoinPrivateKey(isTestnet)
     }
     
-    class func isBIP38EncryptedKey(privateKey:String, isTestnet:Bool=false) -> Bool{
+    class func isBIP38EncryptedKey(privateKey:String, isTestnet:Bool) -> Bool{
         return (privateKey as NSString).substringWithRange(NSMakeRange(0, 2)) == "6P"
     }
     
     class func createSignedSerializedTransactionHex(hashes:NSArray, inputIndexes indexes:NSArray, inputScripts scripts:NSArray,
         outputAddresses:NSArray, outputAmounts amounts:NSArray, privateKeys:NSArray,
-        outputScripts:NSArray?, isTestnet:Bool=false) -> NSDictionary? {
+        outputScripts:NSArray?, isTestnet:Bool) -> NSDictionary? {
             
             let tx = BRTransaction(inputHashes:hashes as [AnyObject], inputIndexes:indexes as [AnyObject],inputScripts:scripts as [AnyObject],
                 outputAddresses:outputAddresses as [AnyObject], outputAmounts:amounts as [AnyObject], isTestnet:isTestnet)

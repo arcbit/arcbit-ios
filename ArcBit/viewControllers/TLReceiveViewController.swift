@@ -322,7 +322,7 @@ import UIKit
                 }
                 pageView.addSubview(addressLabel)
                     
-                if (TLStealthAddress.isStealthAddress(address, isTestnet: TLWalletUtils.IS_TESTNET())) {
+                if (TLStealthAddress.isStealthAddress(address, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
                     let infoLabelFrame = CGRectMake(xToBeInCenter,
                         infoLabelY,
                         QRCodeImageWidth,

@@ -199,7 +199,7 @@ import UIKit
                     let password = (alertView.textFields![0] as! UITextField).text
                     
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
-                        let privKey = TLWalletUtils.privateKeyFromEncryptedPrivateKey(encryptedPrivKey, password: password)
+                        let privKey = TLCoreBitcoinWrapper.privateKeyFromEncryptedPrivateKey(encryptedPrivKey, password: password, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)
                         dispatch_async(dispatch_get_main_queue()) {
                             TLHUDWrapper.hideHUDForView(view, animated: true)
                             

@@ -116,7 +116,7 @@ import Foundation
     
     func getStealthAddressspendPublicKey() -> String {
         if spendPublicKey == nil {
-            let publicKeys = TLStealthAddress.getScanPublicKeyAndSpendPublicKey(self.getStealthAddress(), isTestnet: false)
+            let publicKeys = TLStealthAddress.getScanPublicKeyAndSpendPublicKey(self.getStealthAddress(), isTestnet: self.accountObject!.appWallet!.walletConfig.isTestnet)
             scanPublicKey = publicKeys.0
             spendPublicKey = publicKeys.1
         }
@@ -125,7 +125,7 @@ import Foundation
     
     func getStealthAddressscanPublicKey() -> String {
         if scanPublicKey == nil {
-            let publicKeys = TLStealthAddress.getScanPublicKeyAndSpendPublicKey(self.getStealthAddress(), isTestnet: false)
+            let publicKeys = TLStealthAddress.getScanPublicKeyAndSpendPublicKey(self.getStealthAddress(), isTestnet: self.accountObject!.appWallet!.walletConfig.isTestnet)
             scanPublicKey = publicKeys.0
             spendPublicKey = publicKeys.1
         }
@@ -213,50 +213,11 @@ import Foundation
         let scanKey = self.getStealthAddressScanKey()
         let spendKey = self.getStealthAddressSpendKey()
         if let secret = TLStealthAddress.getPaymentAddressPrivateKeySecretFromScript(script, scanPrivateKey: scanKey, spendPrivateKey: spendKey) {
-            let outputAddress = TLCoreBitcoinWrapper.getAddressFromSecret(secret)
+            let outputAddress = TLCoreBitcoinWrapper.getAddressFromSecret(secret, isTestnet: self.accountObject!.appWallet!.walletConfig.isTestnet)
             if outputAddress! == expectedAddress {
-                return TLCoreBitcoinWrapper.privateKeyFromSecret(secret)
+                return TLCoreBitcoinWrapper.privateKeyFromSecret(secret, isTestnet: self.accountObject!.appWallet!.walletConfig.isTestnet)
             }
         }
-        return nil
-    }
-    
-    class func parseTx(txObject: TLTxObject, scanPriv: String, spendPublicKey: String) -> (String, String, String, Int)? {
-        
-        let outputAddressToValueArray = txObject.getOutputAddressToValueArray()
-        var stealthScriptIndex:Int? = nil
-        
-        for (i, _output) in enumerate(outputAddressToValueArray!) {
-            let output = _output as! NSDictionary
-            let script = output.objectForKey("script") as! String
-            if count(script) == 80 {
-                stealthScriptIndex = i
-                break
-            }
-            
-        }
-        
-        if stealthScriptIndex == nil {
-            return nil
-        }
-        
-        let stealthScript = outputAddressToValueArray?.objectAtIndex(stealthScriptIndex!).objectForKey("script") as! String
-        let publicKey = TLStealthAddress.getPaymentAddressPublicKeyFromScript(stealthScript, scanPrivateKey: scanPriv, spendPublicKey: spendPublicKey)
-        if publicKey == nil {
-            return nil
-        }
-        
-        let outputAddress = TLCoreBitcoinWrapper.getAddressFromPublicKey(publicKey!)!
-        
-        for (i, _output) in enumerate(outputAddressToValueArray!) {
-            let output = _output as! NSDictionary
-            if i != stealthScriptIndex && output.objectForKey("addr") != nil {
-                if output.objectForKey("addr") as? String == outputAddress {
-                    return (stealthScript, outputAddress, output.objectForKey("script") as! String, stealthScriptIndex!)
-                }
-            }
-        }
-        
         return nil
     }
     

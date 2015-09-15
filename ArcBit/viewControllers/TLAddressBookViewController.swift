@@ -87,8 +87,8 @@ import UIKit
     }
     
     private func processAddressBookAddress(address: String) -> () {
-        if (TLCoreBitcoinWrapper.isValidAddress(address, isTestnet: TLWalletUtils.STATIC_MEMBERS.IS_TESTNET)) {
-            if (TLCoreBitcoinWrapper.isAddressVersion0(address)) {
+        if (TLCoreBitcoinWrapper.isValidAddress(address, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
+            if (TLCoreBitcoinWrapper.isAddressVersion0(address, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
                 if (TLSuggestions.instance().enabledSuggestDontAddNormalAddressToAddressBook()) {
                     TLPrompts.promtForOKCancel(self, title: "Warning".localized, message: "It is not recommended that you use a regular bitcoin address for multiple payments, but instead you should import a forward address. Add address anyways?".localized, success: {
                         () in

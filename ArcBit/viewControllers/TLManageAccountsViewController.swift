@@ -1220,13 +1220,13 @@ import UIKit
             let spendPriv = accountObject.stealthWallet!.getStealthAddressSpendKey()
             let stealthDataScript = stealthDataScriptAndOutputAddresses!.stealthDataScript!
             if let secret = TLStealthAddress.getPaymentAddressPrivateKeySecretFromScript(stealthDataScript, scanPrivateKey: scanPriv, spendPrivateKey: spendPriv) {
-                let paymentAddress = TLCoreBitcoinWrapper.getAddressFromSecret(secret)
+                let paymentAddress = TLCoreBitcoinWrapper.getAddressFromSecret(secret, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)
                 if find(stealthDataScriptAndOutputAddresses!.outputAddresses, paymentAddress!) != nil {
                     
                     TLBlockExplorerAPI.instance().getUnspentOutputs([paymentAddress!], success: {
                         (jsonData: AnyObject!) in
                         if ((jsonData as! NSDictionary).count > 0) {
-                            let privateKey = TLCoreBitcoinWrapper.privateKeyFromSecret(secret)
+                            let privateKey = TLCoreBitcoinWrapper.privateKeyFromSecret(secret, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)
                             let txObject = TLTxObject(dict:jsonData as! NSDictionary)
                             let txTime = txObject.getTxUnixTime()
                             accountObject.stealthWallet!.addStealthAddressPaymentKey(privateKey, paymentAddress: paymentAddress!,
@@ -1647,7 +1647,7 @@ import UIKit
     }
 
     private func checkAndImportAddress(privateKey: String, encryptedPrivateKey: String?) -> (Bool) {        
-        if (TLCoreBitcoinWrapper.isValidPrivateKey(privateKey)) {
+        if (TLCoreBitcoinWrapper.isValidPrivateKey(privateKey, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
             if (encryptedPrivateKey != nil) {
                 UIAlertController.showAlertInViewController(self,
                     withTitle: "Import private key encrypted or unencrypted?".localized,
@@ -1725,8 +1725,8 @@ import UIKit
     }
 
     private func checkAndImportWatchAddress(address: String) -> (Bool) {
-        if (TLCoreBitcoinWrapper.isValidAddress(address, isTestnet: TLWalletUtils.STATIC_MEMBERS.IS_TESTNET)) {
-            if (TLStealthAddress.isStealthAddress(address, isTestnet: TLWalletUtils.STATIC_MEMBERS.IS_TESTNET)) {
+        if (TLCoreBitcoinWrapper.isValidAddress(address, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
+            if (TLStealthAddress.isStealthAddress(address, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
                 TLPrompts.promptErrorMessage("Error".localized, message: "Cannot import forward address".localized)
                 return false
             }
@@ -1853,7 +1853,7 @@ import UIKit
                 } else if (buttonIndex == actionSheet.firstOtherButtonIndex + 1) {
                     TLPrompts.promtForInputText(self, title: "Import Private Key".localized, message: "Input private key".localized, textFieldPlaceholder: nil, success: {
                         (inputText: String!) in
-                        if (TLCoreBitcoinWrapper.isBIP38EncryptedKey(inputText)) {
+                        if (TLCoreBitcoinWrapper.isBIP38EncryptedKey(inputText, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
                             TLPrompts.promptForEncryptedPrivKeyPassword(self, view:self.slidingViewController().topViewController.view, encryptedPrivKey: inputText, success: {
                                 (privKey: String!) in
                                 self.checkAndImportAddress(privKey, encryptedPrivateKey: inputText)

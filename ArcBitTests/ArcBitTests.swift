@@ -192,40 +192,41 @@ class ArcBitTests: XCTestCase {
         XCTAssertTrue("xpub6D1h65zq9FR2pmvQNB6Fiij24dYxpJfHimYxibmfxBfgzfpobVSjQwcvFPr7pTATRisprc2YwYYWiysUEvJ1u9iuAQKMNsiLn2PPSrtVFt6" == extendPubKey)
         
         
+        let walletConfig = TLWalletConfig(isTestnet: false)
         let mainAddressIndex0 = [0,0]
-        let mainAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:mainAddressIndex0)
+        let mainAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:mainAddressIndex0, isTestnet:walletConfig.isTestnet)
         NSLog("mainAddress0: %@", mainAddress0)
         XCTAssertTrue("1K7fXZeeQydcUvbsfvkMSQmiacV5sKRYQz" == mainAddress0)
-        TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:mainAddressIndex0)
-        let mainPrivKey0 = TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:mainAddressIndex0)
+        TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:mainAddressIndex0, isTestnet:walletConfig.isTestnet)
+        let mainPrivKey0 = TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:mainAddressIndex0, isTestnet:walletConfig.isTestnet)
         NSLog("mainPrivKey0: %@", mainPrivKey0)
         XCTAssertTrue("KwJhkmrjjg3AEX5gvccNAHCDcXnQLwzyZshnp5yK7vXz1mHKqDDq" == mainPrivKey0)
         
         let mainAddressIndex1 = [0,1]
-        let mainAddress1 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:mainAddressIndex1)
+        let mainAddress1 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:mainAddressIndex1, isTestnet:walletConfig.isTestnet)
         NSLog("mainAddress1: %@", mainAddress1)
         XCTAssertTrue("12eQLjACXw6XwfGF9kqBwy9U7Se8qGoBuq" == mainAddress1)
-        TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:mainAddressIndex0)
-        let mainPrivKey1 = TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:mainAddressIndex1)
+        TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:mainAddressIndex0, isTestnet:walletConfig.isTestnet)
+        let mainPrivKey1 = TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:mainAddressIndex1, isTestnet:walletConfig.isTestnet)
         NSLog("mainPrivKey1: %@", mainPrivKey1)
         XCTAssertTrue("KwpCsb3wBGk7E1M9EXcZWZhRoKBoZLNc63RsSP4YspUR53Ndefyr" == mainPrivKey1)
         
         
         let changeAddressIndex0 = [1,0]
-        let changeAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:changeAddressIndex0)
+        let changeAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:changeAddressIndex0, isTestnet:walletConfig.isTestnet)
         NSLog("changeAddress0: %@", changeAddress0)
         XCTAssertTrue("1CvpGn9VxVY1nsWWL3MSWRYaBHdNkCDbmv" == changeAddress0)
-        TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:changeAddressIndex0)
-        let changePrivKey0 = TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:changeAddressIndex0)
+        TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:changeAddressIndex0, isTestnet:walletConfig.isTestnet)
+        let changePrivKey0 = TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:changeAddressIndex0, isTestnet:walletConfig.isTestnet)
         NSLog("changePrivKey0: %@", changePrivKey0)
         XCTAssertTrue("L33guNrQHMXdpFd9jpjo2mQzddwLUgUrNzK3KqAM83D9ZU1H5NDN" == changePrivKey0)
         
         let changeAddressIndex1 = [1,1]
-        let changeAddress1 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:changeAddressIndex1)
+        let changeAddress1 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:changeAddressIndex1, isTestnet:walletConfig.isTestnet)
         NSLog("changeAddress1: %@", changeAddress1)
         XCTAssertTrue("17vnH8d1fBbjX7GZx727X2Y6dheaid2NUR" == changeAddress1)
-        TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:changeAddressIndex1)
-        let changePrivKey1 = TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:changeAddressIndex1)
+        TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:changeAddressIndex1, isTestnet:walletConfig.isTestnet)
+        let changePrivKey1 = TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:changeAddressIndex1, isTestnet:walletConfig.isTestnet)
         NSLog("changePrivKey1: %@", changePrivKey1)
         XCTAssertTrue("KwiMiFtWv1PXNN3zV67TC59tWJxPbeagMJU1SSr3uLssAC82UKhf" == changePrivKey1)
     }
@@ -239,7 +240,7 @@ class ArcBitTests: XCTestCase {
         NSLog("txHash: %@", txHash)
         XCTAssertTrue(txHash == "c3ceef0ada07af11e0a8b098ad574fb626267f64b5ed6678f3030f92a41b442c")
         
-        let address = TLCoreBitcoinWrapper.getAddressFromOutputScript("76a9147ab89f9fae3f8043dcee5f7b5467a0f0a6e2f7e188ac")
+        let address = TLCoreBitcoinWrapper.getAddressFromOutputScript("76a9147ab89f9fae3f8043dcee5f7b5467a0f0a6e2f7e188ac", isTestnet: false)
         NSLog("address: %@", address!)
         XCTAssertTrue(address == "1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG")
     }
@@ -252,7 +253,7 @@ class ArcBitTests: XCTestCase {
         let address = "1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV"
         let privateKey = "L4rK1yDtCWekvXuE6oXD9jCYfFNV2cWRpVuPLBcCU2z8TrisoyY1"
         let txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex([hash], inputIndexes:[0], inputScripts:[script],
-            outputAddresses:[address], outputAmounts:[2500000], privateKeys:[privateKey], outputScripts:nil)!
+            outputAddresses:[address], outputAmounts:[2500000], privateKeys:[privateKey], outputScripts:nil, isTestnet: false)!
         
         let txHex = txHexAndTxHash.objectForKey("txHex") as! String
         let txHash = txHexAndTxHash.objectForKey("txHash") as! String
@@ -280,16 +281,17 @@ class ArcBitTests: XCTestCase {
         
         var backupPassphrase = "slogan lottery zone helmet fatigue rebuild solve best hint frown conduct ill"
         let masterHex = TLHDWalletWrapper.getMasterHex(backupPassphrase)
+        let walletConfig = TLWalletConfig(isTestnet: false)
         
         let extendPrivKey = TLHDWalletWrapper.getExtendPrivKey(masterHex, accountIdx:0)
         
         let extendPubKey = TLHDWalletWrapper.getExtendPubKey(extendPrivKey)
         let mainAddressIndex0 = [0,0]
-        let mainAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:mainAddressIndex0)
+        let mainAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:mainAddressIndex0, isTestnet:walletConfig.isTestnet)
         let fromAddress = BTCAddress(base58String: mainAddress0)
         XCTAssertTrue("1K7fXZeeQydcUvbsfvkMSQmiacV5sKRYQz" == mainAddress0)
         let changeAddressIndex0 = [1,0]
-        let changeAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:changeAddressIndex0)
+        let changeAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:changeAddressIndex0, isTestnet:walletConfig.isTestnet)
         XCTAssertTrue("1CvpGn9VxVY1nsWWL3MSWRYaBHdNkCDbmv" == changeAddress0)
 
         var hdWallets = NSMutableArray()
@@ -360,7 +362,8 @@ class ArcBitTests: XCTestCase {
         payload.setObject(wallets, forKey: "wallets")
         mockWalletPayload.setObject(payload, forKey: "payload")
         
-        let appWallet = TLWallet(walletName: "Test Wallet")
+        let appWallet = TLWallet(walletName: "Test Wallet", walletConfig: walletConfig)
+        let godSend = TLSpaghettiGodSend(appWallet: appWallet)
         appWallet.loadWalletPayload(mockWalletPayload, masterHex:masterHex)
         
         
@@ -368,7 +371,7 @@ class ArcBitTests: XCTestCase {
         
         
         let accountObject = accountsArray.objectAtIndex(0) as! TLAccountObject
-        TLSpaghettiGodSend.instance().setOnlyFromAccount(accountObject)
+        godSend.setOnlyFromAccount(accountObject)
         
         let mockUnspentOutput = { (txid: String, value: UInt64, txOutputN: Int) -> NSDictionary in
             var unspentOutput = NSMutableDictionary()
@@ -402,7 +405,7 @@ class ArcBitTests: XCTestCase {
                 accountObject.unspentOutputs!.addObject(unspentOutput1)
                 accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
                 
-                let ret = TLSpaghettiGodSend.instance().createSignedSerializedTransactionHex(toAddressesAndAmounts, feeAmount: feeAmount, error: {
+                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts, feeAmount: feeAmount, error: {
                     (data: String?) in
                 })
                 
@@ -448,7 +451,7 @@ class ArcBitTests: XCTestCase {
                 accountObject.unspentOutputs!.addObject(unspentOutput0)
                 accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
                 
-                let ret = TLSpaghettiGodSend.instance().createSignedSerializedTransactionHex(toAddressesAndAmounts, feeAmount: feeAmount, error: {
+                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts, feeAmount: feeAmount, error: {
                     (data: String?) in
                 })
                 
@@ -559,7 +562,7 @@ class ArcBitTests: XCTestCase {
                 
                 accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
                 
-                let ret = TLSpaghettiGodSend.instance().createSignedSerializedTransactionHex(toAddressesAndAmounts, feeAmount: feeAmount, error: {
+                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts, feeAmount: feeAmount, error: {
                     (data: String?) in
                 })
                 
@@ -666,7 +669,7 @@ class ArcBitTests: XCTestCase {
                 
                 accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
                 
-                let ret = TLSpaghettiGodSend.instance().createSignedSerializedTransactionHex(toAddressesAndAmounts, feeAmount: feeAmount, error: {
+                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts, feeAmount: feeAmount, error: {
                     (data: String?) in
                 })
                 
@@ -778,7 +781,7 @@ class ArcBitTests: XCTestCase {
                 accountObject.unspentOutputs!.addObject(unspentOutput1)
                 accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
                 
-                let ret = TLSpaghettiGodSend.instance().createSignedSerializedTransactionHex(toAddressesAndAmounts,
+                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts,
                     feeAmount: feeAmount, nonce: nonce, ephemeralPrivateKeyHex: ephemeralPrivateKeyHex, error: {
                         (data: String?) in
                 })
@@ -829,7 +832,7 @@ class ArcBitTests: XCTestCase {
                 accountObject.unspentOutputs!.addObject(unspentOutput0)
                 accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
                 
-                let ret = TLSpaghettiGodSend.instance().createSignedSerializedTransactionHex(toAddressesAndAmounts,
+                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts,
                     feeAmount: feeAmount, nonce: nonce, ephemeralPrivateKeyHex: ephemeralPrivateKeyHex, error: {
                         (data: String?) in
                 })
@@ -947,7 +950,7 @@ class ArcBitTests: XCTestCase {
                 
                 accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
                 
-                let ret = TLSpaghettiGodSend.instance().createSignedSerializedTransactionHex(toAddressesAndAmounts,
+                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts,
                     feeAmount: feeAmount, nonce: nonce, ephemeralPrivateKeyHex: ephemeralPrivateKeyHex, error: {
                     (data: String?) in
                 })
@@ -1060,7 +1063,7 @@ class ArcBitTests: XCTestCase {
                 
                 accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
                 
-                let ret = TLSpaghettiGodSend.instance().createSignedSerializedTransactionHex(toAddressesAndAmounts,
+                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts,
                     feeAmount: feeAmount, nonce: nonce, ephemeralPrivateKeyHex: ephemeralPrivateKeyHex, error: {
                     (data: String?) in
                 })
@@ -1174,7 +1177,7 @@ class ArcBitTests: XCTestCase {
                 accountObject.unspentOutputs!.addObject(unspentOutput1)
                 accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
                 
-                let ret = TLSpaghettiGodSend.instance().createSignedSerializedTransactionHex(toAddressesAndAmounts, feeAmount: feeAmount, error: {
+                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts, feeAmount: feeAmount, error: {
                     (data: String?) in
                 })
                 
@@ -1220,7 +1223,7 @@ class ArcBitTests: XCTestCase {
                 accountObject.unspentOutputs!.addObject(unspentOutput0)
                 accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
                 
-                let ret = TLSpaghettiGodSend.instance().createSignedSerializedTransactionHex(toAddressesAndAmounts, feeAmount: feeAmount, error: {
+                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts, feeAmount: feeAmount, error: {
                     (data: String?) in
                 })
                 
@@ -1280,7 +1283,7 @@ class ArcBitTests: XCTestCase {
                 accountObject.unspentOutputs!.addObject(unspentOutput1)
                 accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
                 
-                let ret = TLSpaghettiGodSend.instance().createSignedSerializedTransactionHex(toAddressesAndAmounts, feeAmount: feeAmount, error: {
+                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts, feeAmount: feeAmount, error: {
                     (data: String?) in
                 })
                 
@@ -1459,7 +1462,7 @@ class ArcBitTests: XCTestCase {
 
     func testCoreBitcoinWrapper() {
         let outputScript = "76a9149a1c78a507689f6f54b847ad1cef1e614ee23f1e88ac"
-        var address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript)
+        var address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript, isTestnet: false)
         NSLog("address: %@", address!)
         XCTAssertTrue(address == "1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV")
         address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript, isTestnet: true)
@@ -1468,7 +1471,7 @@ class ArcBitTests: XCTestCase {
         
         
         let secret = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-        address = TLCoreBitcoinWrapper.getAddressFromSecret(secret)
+        address = TLCoreBitcoinWrapper.getAddressFromSecret(secret, isTestnet: false)
         NSLog("address: %@", address!)
         XCTAssertTrue(address == "1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV")
         address = TLCoreBitcoinWrapper.getAddressFromSecret(secret, isTestnet: true)
@@ -1476,7 +1479,7 @@ class ArcBitTests: XCTestCase {
         XCTAssertTrue(address == "muZpTpBYhxmRFuCjLc7C6BBDF32C8XVJUi")
 
         var privateKey:String
-        privateKey = TLCoreBitcoinWrapper.privateKeyFromSecret(secret)
+        privateKey = TLCoreBitcoinWrapper.privateKeyFromSecret(secret, isTestnet: false)
         NSLog("privateKey: %@", privateKey)
         XCTAssertTrue(privateKey == "L4rK1yDtCWekvXuE6oXD9jCYfFNV2cWRpVuPLBcCU2z8TrisoyY1")
         privateKey = TLCoreBitcoinWrapper.privateKeyFromSecret(secret, isTestnet: true)
@@ -1484,17 +1487,17 @@ class ArcBitTests: XCTestCase {
         XCTAssertTrue(privateKey == "cVDJUtDjdaM25yNVVDLLX3hcHUfth4c7tY3rSc4hy9e8ibtCuj6G")
 
         var pubKeyHash:String
-        pubKeyHash = TLCoreBitcoinWrapper.getStandardPubKeyHashScriptFromAddress("1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV")
+        pubKeyHash = TLCoreBitcoinWrapper.getStandardPubKeyHashScriptFromAddress("1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV", isTestnet: false)
         NSLog("pubKeyHash: %@", pubKeyHash)
         XCTAssertTrue(pubKeyHash == "76a9149a1c78a507689f6f54b847ad1cef1e614ee23f1e88ac")
         pubKeyHash = TLCoreBitcoinWrapper.getStandardPubKeyHashScriptFromAddress("muZpTpBYhxmRFuCjLc7C6BBDF32C8XVJUi", isTestnet: true)
         NSLog("pubKeyHash: %@", pubKeyHash)
         XCTAssertTrue(pubKeyHash == "76a9149a1c78a507689f6f54b847ad1cef1e614ee23f1e88ac")
 
-        address = TLCoreBitcoinWrapper.getAddress("L4rK1yDtCWekvXuE6oXD9jCYfFNV2cWRpVuPLBcCU2z8TrisoyY1")
+        address = TLCoreBitcoinWrapper.getAddress("L4rK1yDtCWekvXuE6oXD9jCYfFNV2cWRpVuPLBcCU2z8TrisoyY1", isTestnet: false)
         NSLog("address: %@", address!)
         XCTAssertTrue(address! == "1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV")
-        address = TLCoreBitcoinWrapper.getAddress("5KYZdUEo39z3FPrtuX2QbbwGnNP5zTd7yyr2SC1j299sBCnWjss")
+        address = TLCoreBitcoinWrapper.getAddress("5KYZdUEo39z3FPrtuX2QbbwGnNP5zTd7yyr2SC1j299sBCnWjss", isTestnet: false)
         NSLog("address: %@", address!)
         XCTAssertTrue(address! == "1HZwkjkeaoZfTSaJxDw6aKkxp45agDiEzN")
         address = TLCoreBitcoinWrapper.getAddress("cVDJUtDjdaM25yNVVDLLX3hcHUfth4c7tY3rSc4hy9e8ibtCuj6G", isTestnet: true)
@@ -1506,39 +1509,39 @@ class ArcBitTests: XCTestCase {
 
         
         let compressedPubKey = "03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd"
-        address = TLCoreBitcoinWrapper.getAddressFromPublicKey(compressedPubKey)
+        address = TLCoreBitcoinWrapper.getAddressFromPublicKey(compressedPubKey, isTestnet: false)
         NSLog("address: %@", address!)
         XCTAssertTrue(address == "1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV")
         address = TLCoreBitcoinWrapper.getAddressFromPublicKey(compressedPubKey, isTestnet: true)
         NSLog("address: %@", address!)
         XCTAssertTrue(address == "muZpTpBYhxmRFuCjLc7C6BBDF32C8XVJUi")
         let uncompressedPubKey = "04a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd5b8dec5235a0fa8722476c7709c02559e3aa73aa03918ba2d492eea75abea235"
-        address = TLCoreBitcoinWrapper.getAddressFromPublicKey(uncompressedPubKey)
+        address = TLCoreBitcoinWrapper.getAddressFromPublicKey(uncompressedPubKey, isTestnet: false)
         NSLog("address: %@", address!)
         XCTAssertTrue(address == "1HZwkjkeaoZfTSaJxDw6aKkxp45agDiEzN")
         address = TLCoreBitcoinWrapper.getAddressFromPublicKey(uncompressedPubKey, isTestnet: true)
         NSLog("address: %@", address!)
         XCTAssertTrue(address == "mx5u3nqdPpzvEZ3vfnuUQEyHg3gHd8zrrH")
 
-        XCTAssertTrue(TLCoreBitcoinWrapper.isAddressVersion0("1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV"))
+        XCTAssertTrue(TLCoreBitcoinWrapper.isAddressVersion0("1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV", isTestnet: false))
         XCTAssertTrue(TLCoreBitcoinWrapper.isAddressVersion0("muZpTpBYhxmRFuCjLc7C6BBDF32C8XVJUi", isTestnet: true))
         XCTAssertTrue(TLCoreBitcoinWrapper.isAddressVersion0("n2MLT38EuTYgK8GcDrL2JQqbVvkSCGGf6S", isTestnet: true))
-        XCTAssertTrue(!TLCoreBitcoinWrapper.isAddressVersion0("3EktnHQD7RiAE6uzMj2ZifT9YgRrkSgzQX"))
+        XCTAssertTrue(!TLCoreBitcoinWrapper.isAddressVersion0("3EktnHQD7RiAE6uzMj2ZifT9YgRrkSgzQX", isTestnet: false))
         XCTAssertTrue(!TLCoreBitcoinWrapper.isAddressVersion0("2MzQwSSnBHWHqSAqtTVQ6v47XtaisrJa1Vc", isTestnet: true))
         
         // address = 13adjLZo3iUEZuQEeEAkyRvw2nKKrGLuKJ password = "murray rothbard"
-        XCTAssertTrue(TLCoreBitcoinWrapper.isBIP38EncryptedKey("6PfRr3RtH3GKh7qcRUfEe5rAcFBBcKxJAvQWZPwpksfL6dxTpC9kqMctoE"))
+        XCTAssertTrue(TLCoreBitcoinWrapper.isBIP38EncryptedKey("6PfRr3RtH3GKh7qcRUfEe5rAcFBBcKxJAvQWZPwpksfL6dxTpC9kqMctoE", isTestnet: false))
         // address = n1nKsF2UvyPgG3QLYupR4mwv1fQwLEJf9b password = "murray rothbard"
         XCTAssertTrue(TLCoreBitcoinWrapper.isBIP38EncryptedKey("6PfSacWmYziVFFjHqiAHM9nvxsZDMBpDnPtWVQSNgSH9qpo1s1VCCWYEno", isTestnet: true))
         
-        XCTAssertTrue(TLCoreBitcoinWrapper.isValidAddress("1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV"))
+        XCTAssertTrue(TLCoreBitcoinWrapper.isValidAddress("1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV", isTestnet: false))
         XCTAssertTrue(TLCoreBitcoinWrapper.isValidAddress("muZpTpBYhxmRFuCjLc7C6BBDF32C8XVJUi", isTestnet: true))
-        XCTAssertTrue(TLCoreBitcoinWrapper.isValidAddress("3EktnHQD7RiAE6uzMj2ZifT9YgRrkSgzQX"))
+        XCTAssertTrue(TLCoreBitcoinWrapper.isValidAddress("3EktnHQD7RiAE6uzMj2ZifT9YgRrkSgzQX", isTestnet: false))
         XCTAssertTrue(TLCoreBitcoinWrapper.isValidAddress("2MzQwSSnBHWHqSAqtTVQ6v47XtaisrJa1Vc", isTestnet: true))
-        XCTAssertTrue(TLCoreBitcoinWrapper.isValidAddress("vJmujDzf2PyDEcLQEQWyzVNthLpRAXqTi3ZencThu2WCzrRNi64eFYJP6ZyPWj53hSZBKTcUAk8J5Mb8rZC4wvGn77Sj4Z3yP7zE69"))
+        XCTAssertTrue(TLCoreBitcoinWrapper.isValidAddress("vJmujDzf2PyDEcLQEQWyzVNthLpRAXqTi3ZencThu2WCzrRNi64eFYJP6ZyPWj53hSZBKTcUAk8J5Mb8rZC4wvGn77Sj4Z3yP7zE69", isTestnet: false))
         XCTAssertTrue(TLCoreBitcoinWrapper.isValidAddress("waPUEHTatbqyM6RKtsbdCy63fqyjwW6ksSCi5KhD1NTGdYrvAgvSAneAqDooHxVzpMAx8nZLzZTnhAGM1WxpRFvvp9zF6wFuAA7dNW", isTestnet: true))
 
-        XCTAssertTrue(TLCoreBitcoinWrapper.isValidPrivateKey("L4rK1yDtCWekvXuE6oXD9jCYfFNV2cWRpVuPLBcCU2z8TrisoyY1"))
+        XCTAssertTrue(TLCoreBitcoinWrapper.isValidPrivateKey("L4rK1yDtCWekvXuE6oXD9jCYfFNV2cWRpVuPLBcCU2z8TrisoyY1", isTestnet: false))
         XCTAssertTrue(TLCoreBitcoinWrapper.isValidPrivateKey("cVDJUtDjdaM25yNVVDLLX3hcHUfth4c7tY3rSc4hy9e8ibtCuj6G", isTestnet: true))
     }
 

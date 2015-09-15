@@ -162,13 +162,13 @@ import Foundation
     func addImportedPrivateKey(privateKey:String, encryptedPrivateKey:String?) -> (TLImportedAddress) {
         let importedPrivateKeyDict = self.appWallet!.addImportedPrivateKey(privateKey, encryptedPrivateKey:encryptedPrivateKey)
         
-        let importedAddressObject = TLImportedAddress(dict:importedPrivateKeyDict)
+        let importedAddressObject = TLImportedAddress(appWallet:self.appWallet!, dict:importedPrivateKeyDict)
         self.importedAddresses.addObject(importedAddressObject)
         
         importedAddressObject.setPositionInWalletArray(self.importedAddresses.count - 1)
         self.addressToPositionInWalletArrayDict.setObject(importedAddressObject, forKey:importedAddressObject.getPositionInWalletArrayNumber())
         
-        let address = TLCoreBitcoinWrapper.getAddress(privateKey)
+        let address = TLCoreBitcoinWrapper.getAddress(privateKey, isTestnet: self.appWallet!.walletConfig.isTestnet)
         
         var indexes = self.addressToIdxDict.objectForKey(address!) as! NSMutableArray?
         if (indexes == nil) {
@@ -185,7 +185,7 @@ import Foundation
     
     func addImportedWatchAddress(address:String) -> (TLImportedAddress) {
         let importedDict = self.appWallet!.addWatchOnlyAddress(address)
-        let importedAddressObject = TLImportedAddress(dict:importedDict)
+        let importedAddressObject = TLImportedAddress(appWallet:self.appWallet!, dict:importedDict)
         self.importedAddresses.addObject(importedAddressObject)
         
         importedAddressObject.setPositionInWalletArray(self.importedAddresses.count - 1)

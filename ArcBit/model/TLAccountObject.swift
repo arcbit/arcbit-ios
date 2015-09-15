@@ -31,7 +31,7 @@ import Foundation
     let MAX_ACTIVE_CHANGE_ADDRESS_TO_HAVE = 55
     let EXTENDED_KEY_DEFAULT_ACCOUNT_NAME_LENGTH = 50
     
-    private var appWallet:TLWallet?
+    var appWallet:TLWallet?
     private var accountDict: NSMutableDictionary?
     var unspentOutputs: NSMutableArray?
     var stealthPaymentUnspentOutputs: NSMutableArray?
@@ -336,9 +336,9 @@ import Foundation
         let addressSequence = [Int(TLAddressType.Main.rawValue), HDIndexNumber]
         if (accountType == TLAccountType.ImportedWatch) {
             assert(extendedPrivateKey != nil, "")
-            return TLHDWalletWrapper.getPrivateKey(extendedPrivateKey!, sequence: addressSequence)
+            return TLHDWalletWrapper.getPrivateKey(extendedPrivateKey!, sequence: addressSequence, isTestnet: self.appWallet!.walletConfig.isTestnet)
         } else {
-            return TLHDWalletWrapper.getPrivateKey(accountDict!.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PRIVATE_KEY) as! String, sequence: addressSequence)
+            return TLHDWalletWrapper.getPrivateKey(accountDict!.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PRIVATE_KEY) as! String, sequence: addressSequence, isTestnet: self.appWallet!.walletConfig.isTestnet)
         }
     }
     
@@ -347,9 +347,9 @@ import Foundation
         let addressSequence = [TLAddressType.Change.rawValue, HDIndexNumber]
         if (accountType == TLAccountType.ImportedWatch) {
             assert(extendedPrivateKey != nil, "")
-            return TLHDWalletWrapper.getPrivateKey(extendedPrivateKey!, sequence: addressSequence)
+            return TLHDWalletWrapper.getPrivateKey(extendedPrivateKey!, sequence: addressSequence, isTestnet: self.appWallet!.walletConfig.isTestnet)
         } else {
-            return TLHDWalletWrapper.getPrivateKey(accountDict!.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PRIVATE_KEY) as! String, sequence: addressSequence)
+            return TLHDWalletWrapper.getPrivateKey(accountDict!.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PRIVATE_KEY) as! String, sequence: addressSequence, isTestnet: self.appWallet!.walletConfig.isTestnet)
         }
     }
     
@@ -968,7 +968,7 @@ import Foundation
             if (address == nil) {
                 let extendedPublicKey = accountDict!.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PUBLIC_KEY) as! String
                 let mainAddressSequence = [Int(TLAddressType.Main.rawValue), idx]
-                address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: mainAddressSequence)
+                address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: mainAddressSequence, isTestnet: self.appWallet!.walletConfig.isTestnet)
                 HDIndexToArchivedMainAddress[HDIndex] = address!
                 
                 address2HDIndexDict[address!] = HDIndex
@@ -987,7 +987,7 @@ import Foundation
             if (address == nil) {
                 let extendedPublicKey = accountDict!.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PUBLIC_KEY) as! String
                 let mainAddressSequence = [Int(TLAddressType.Main.rawValue), idx]
-                address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: mainAddressSequence)
+                address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: mainAddressSequence, isTestnet: self.appWallet!.walletConfig.isTestnet)
                 HDIndexToArchivedChangeAddress[HDIndex] = address!
                 
                 address2HDIndexDict[address!] = HDIndex
@@ -1241,7 +1241,7 @@ import Foundation
             for unspentOutput in unspentOutputs! {
                 let outputScript = unspentOutput.objectForKey("script") as! String
                 
-                let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript)
+                let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript, isTestnet: self.appWallet!.walletConfig.isTestnet)
                 if (address == nil) {
                     DLog("address cannot be decoded. not normal pubkeyhash outputScript: %@", outputScript)
                     continue

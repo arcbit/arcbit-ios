@@ -137,7 +137,7 @@ import Foundation
         return accountKeychain.extendedPrivateKey
     }
     
-    class func getAddress(extendPubKey:String, sequence:NSArray, isTestnet:Bool=false) -> String{
+    class func getAddress(extendPubKey:String, sequence:NSArray, isTestnet:Bool) -> String{
         var keyChain = BTCKeychain(extendedKey:extendPubKey)
         
         for _idx in sequence {
@@ -152,7 +152,7 @@ import Foundation
         }
     }
     
-    class func getPrivateKey(extendPrivKey:NSString, sequence:NSArray, isTestnet:Bool=false) -> String{
+    class func getPrivateKey(extendPrivKey:NSString, sequence:NSArray, isTestnet:Bool) -> String{
         var keyChain = BTCKeychain(extendedKey:extendPrivKey as String)
         
         for _idx in sequence {

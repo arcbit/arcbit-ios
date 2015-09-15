@@ -307,7 +307,7 @@ import UIKit
                         return
                     }
 
-                    if (!TLCoreBitcoinWrapper.isValidPrivateKey(privKey)) {
+                    if (!TLCoreBitcoinWrapper.isValidPrivateKey(privKey, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
                         TLPrompts.promptErrorMessage("Error".localized, message: "Invalid private key".localized)
                     } else {
                         let importedAddress = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLImportedAddress?
@@ -457,7 +457,7 @@ import UIKit
     }
     
     private func fillToAddressTextField(address: String) -> Bool {
-        if (TLCoreBitcoinWrapper.isValidAddress(address, isTestnet: TLWalletUtils.STATIC_MEMBERS.IS_TESTNET)) {
+        if (TLCoreBitcoinWrapper.isValidAddress(address, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
             self.toAddressTextField!.text = address
             TLSendFormData.instance().setAddress(address)
             return true
@@ -504,7 +504,7 @@ import UIKit
         let fiatAmount = self.fiatAmountTextField!.text
         let toAddress = self.toAddressTextField!.text
     
-        if (!TLCoreBitcoinWrapper.isValidAddress(toAddress, isTestnet: TLWalletUtils.STATIC_MEMBERS.IS_TESTNET)) {
+        if (!TLCoreBitcoinWrapper.isValidAddress(toAddress, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
             TLPrompts.promptErrorMessage("Error".localized, message: "You must provide a valid bitcoin address.".localized)
             return
         }
@@ -665,7 +665,7 @@ import UIKit
     }
     
     private func handleTempararyImportPrivateKey(privateKey: String, feeAmount: TLCoin) {
-        if (!TLCoreBitcoinWrapper.isValidPrivateKey(privateKey)) {
+        if (!TLCoreBitcoinWrapper.isValidPrivateKey(privateKey, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
             TLPrompts.promptErrorMessage("Error".localized, message: "Invalid private key".localized)
         } else {
             let importedAddress = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLImportedAddress?
@@ -701,7 +701,7 @@ import UIKit
         } else if (AppDelegate.instance().godSend!.needWatchOnlyAddressPrivateKey()) {
             TLPrompts.promptForTempararyImportPrivateKey(self, success: {
                 (data: String!) in
-                if (TLCoreBitcoinWrapper.isBIP38EncryptedKey(data)) {
+                if (TLCoreBitcoinWrapper.isBIP38EncryptedKey(data, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
                     TLPrompts.promptForEncryptedPrivKeyPassword(self, view:self.slidingViewController().topViewController.view, encryptedPrivKey: data, success: {
                         (privKey: String!) in
                         self.handleTempararyImportPrivateKey(privKey, feeAmount: feeAmount)
