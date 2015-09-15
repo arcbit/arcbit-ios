@@ -415,7 +415,6 @@ import Foundation
     private func subtractToAddressBalance(address: String, amount: TLCoin) -> () {
         var addressBalance = address2BalanceDict[address]
         if (addressBalance == nil) {
-            addressBalance = amount
             addressBalance = TLCoin.zero().subtract(amount)
             address2BalanceDict[address] = addressBalance!
         } else {

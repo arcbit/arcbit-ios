@@ -55,14 +55,6 @@ import Foundation
         })
     }
     
-    func getTickerData(success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
-        let endPoint = "ticker"
-        let parameters = [:]
-        let url = NSURL(string:endPoint, relativeToURL:NSURL(string:self.baseURL))
-        self.networking.httpGET(url!, parameters:parameters,
-            success:success, failure:failure)
-    }
-    
     func getAddressData(address:String, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
         let endPoint = String(format:"%@%@", STATIC_MEMBERS.BLOCKCHAIN_ENDPOINT_ADDRESS, address)
         let parameters = [

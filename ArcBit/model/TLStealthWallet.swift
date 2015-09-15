@@ -41,7 +41,6 @@ import Foundation
     private var paymentTxid2PaymentAddressDict = [String:String]()
     private var scanPublicKey: String? = nil
     private var spendPublicKey: String? = nil
-    private var accountType: TLAccountType?
     private var accountObject: TLAccountObject?
     var hasUpdateStealthPaymentStatuses = false
     var isListeningToStealthPayment: Bool = false
@@ -209,7 +208,6 @@ import Foundation
     }
     
     func getPrivateKeyForAddress(expectedAddress: String, script: String) -> String? {
-        let stealthAddress = self.getStealthAddress()
         let scanKey = self.getStealthAddressScanKey()
         let spendKey = self.getStealthAddressSpendKey()
         if let secret = TLStealthAddress.getPaymentAddressPrivateKeySecretFromScript(script, scanPrivateKey: scanKey, spendPrivateKey: spendKey) {

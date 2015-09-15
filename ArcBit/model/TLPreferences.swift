@@ -45,7 +45,6 @@ import Foundation
         static let PREFERENCE_BITCOIN_DISPLAY = "pref-bitcoin-display"
         static let PREFERENCE_BLOCKEXPLORER_API = "pref-blockexplorer-api"
         static let PREFERENCE_BLOCKEXPLORER_API_URL_DICT = "pref-blockexplorer-api-url"
-        static let PREFERENCE_PIN = "pref-pin"
         static let PREFERENCE_BTC_SYMBOL_TOGGLED = "pref-btc-symbol-toggled"
         static let PREFERENCE_RECEIVING_ADDRESS = "pref-receiving-address"
         static let PREFERENCE_RECEIVING_NAME = "pref-receiving-name"
@@ -270,15 +269,6 @@ import Foundation
     
     class func setInAppSettingsKitDisplayLocalCurrency(enabled:Bool) -> () {
         NSUserDefaults.standardUserDefaults().setBool(enabled ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_DISPLAY_LOCAL_CURRENCY)
-        NSUserDefaults.standardUserDefaults().synchronize()
-    }
-
-    class func getPIN() -> (String?) {
-        return NSUserDefaults.standardUserDefaults().stringForKey(CLASS_STATIC.PREFERENCE_PIN)
-    }
-    
-    class func setPIN(value:String) -> () {
-        NSUserDefaults.standardUserDefaults().setObject(value ,forKey:CLASS_STATIC.PREFERENCE_PIN)
         NSUserDefaults.standardUserDefaults().synchronize()
     }
     
