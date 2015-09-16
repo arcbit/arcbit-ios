@@ -138,8 +138,8 @@ enum TLBlockExplorer:Int {
             self.blockchainAPI!.getTx(txHash, success:success, failure:failure)
         } else {
             self.insightAPI!.getTx(txHash, success:{(jsonData:AnyObject!) in
-                let transansformedTx = TLInsightAPI.insightTxToBlockchainTx(jsonData as! NSDictionary)
-                success(transansformedTx)
+                let transformedTx = TLInsightAPI.insightTxToBlockchainTx(jsonData as! NSDictionary)
+                success(transformedTx)
                 }, failure:{(code:NSInteger, status:String!) in
                     failure(code, status)
             })
@@ -151,8 +151,8 @@ enum TLBlockExplorer:Int {
             self.blockchainAPI!.getTxBackground(txHash, success:success, failure:failure)
         } else {
             self.insightAPI!.getTxBackground(txHash, success:{(jsonData:AnyObject!) in
-                let transansformedTx = TLInsightAPI.insightTxToBlockchainTx(jsonData as! NSDictionary)
-                success(transansformedTx)
+                let transformedTx = TLInsightAPI.insightTxToBlockchainTx(jsonData as! NSDictionary)
+                success(transformedTx)
                 }, failure:{(code:NSInteger, status:String!) in
                     failure(code, status)
             })

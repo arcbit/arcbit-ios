@@ -157,15 +157,15 @@ import Foundation
                 (jsonData: AnyObject!) in
                 
                 let txs = (jsonData as! NSDictionary!).objectForKey("txs") as! NSArray
-                let transansformedTxs = NSMutableArray(capacity:txs.count)
+                let transformedTxs = NSMutableArray(capacity:txs.count)
                 
                 for tx in txs as! [NSDictionary]
                 {
-                    transansformedTxs.addObject(TLInsightAPI.insightTxToBlockchainTx(tx))
+                    transformedTxs.addObject(TLInsightAPI.insightTxToBlockchainTx(tx))
                 }
                 
                 let transansformedJsonData = NSMutableDictionary()
-                transansformedJsonData.setObject(transansformedTxs, forKey:"txs")
+                transansformedJsonData.setObject(transformedTxs, forKey:"txs")
                 
                 success(transansformedJsonData)
             }, failure: failure)
@@ -179,14 +179,14 @@ import Foundation
         let jsonData: AnyObject? = self.networking.httpGETSynchronous(url, parameters: parameters)
         
         let txs = (jsonData as! NSDictionary!).objectForKey("txs") as! NSArray
-        let transansformedTxs = NSMutableArray(capacity:txs.count)
+        let transformedTxs = NSMutableArray(capacity:txs.count)
         
         for tx in txs as! [NSDictionary] {
-            transansformedTxs.addObject(TLInsightAPI.insightTxToBlockchainTx(tx))
+            transformedTxs.addObject(TLInsightAPI.insightTxToBlockchainTx(tx))
         }
         
         let transansformedJsonData = NSMutableDictionary()
-        transansformedJsonData.setObject(transansformedTxs, forKey:"txs")
+        transansformedJsonData.setObject(transformedTxs, forKey:"txs")
         
         return transansformedJsonData
     }
@@ -292,7 +292,7 @@ import Foundation
             transansformedAddressesDict.setObject(transformedAddress, forKey: address)
         }
         
-        let transansformedTxs = NSMutableArray(capacity: txs.count)
+        let transformedTxs = NSMutableArray(capacity: txs.count)
         
         let transansformedAddresses = NSMutableArray(capacity: addressArray.count)
         for (var i = txs.count - 1; i >= 0; i--) {
@@ -301,7 +301,7 @@ import Foundation
             }
             let tx = txs.objectAtIndex(i) as! NSDictionary
             let transformedTx = TLInsightAPI.insightTxToBlockchainTx(tx)
-            transansformedTxs.addObject(transformedTx)
+            transformedTxs.addObject(transformedTx)
             
             let blockHeightString = transformedTx.objectForKey("block_height") as? NSString
             var blockHeight:Int64 = 0
@@ -361,7 +361,7 @@ import Foundation
         }
         
         //TODO: need to sort txs because insight does not sort it for you, ask devs to sort array
-        let sortedTransansformedTxs = transansformedTxs.sortedArrayUsingComparator{
+        let sortedtransformedTxs = transformedTxs.sortedArrayUsingComparator{
             (a:AnyObject!, b:AnyObject!) -> NSComparisonResult in
             
             let first = (a as! NSDictionary).objectForKey("time") as! Int
@@ -392,7 +392,7 @@ import Foundation
         }
         
         let transansformedJsonData = NSMutableDictionary()
-        transansformedJsonData.setObject(sortedTransansformedTxs, forKey: "txs")
+        transansformedJsonData.setObject(sortedtransformedTxs, forKey: "txs")
         transansformedJsonData.setObject(transansformedAddresses, forKey: "addresses")
         
         return transansformedJsonData

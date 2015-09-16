@@ -306,7 +306,7 @@ import Foundation
         } else {
             let amountChangeToAccountFromTx = TLCoin.zero()
             txidToAccountAmountDict!.setObject(amountChangeToAccountFromTx, forKey:txObject.getHash()!)
-            txidToAccountAmountTypeDict!.setObject(TLAccountTxType.MoveBetweenWallet.rawValue, forKey:txObject.getHash()!)
+            txidToAccountAmountTypeDict!.setObject(TLAccountTxType.MoveBetweenAccount.rawValue, forKey:txObject.getHash()!)
             receivedAmount = nil
         }
         NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_IMPORTED_ADDRESS_BALANCE_UPDATED()

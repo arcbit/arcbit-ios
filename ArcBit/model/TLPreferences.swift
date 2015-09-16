@@ -104,10 +104,7 @@ import Foundation
     
     class func getAppVersion() -> String {
         let ver = NSUserDefaults.standardUserDefaults().stringForKey(CLASS_STATIC.PREFERENCE_APP_VERSION)
-        if(ver == nil) {
-            return "0"
-        }
-        return ver!
+        return ver != nil ? ver! : "0";
     }
     
     class func setAppVersion(version: String) -> () {

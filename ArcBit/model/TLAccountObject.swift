@@ -546,7 +546,7 @@ import Foundation
         } else {
             let amountChangeToAccountFromTx = TLCoin.zero()
             txidToAccountAmountDict[txObject.getHash()! as String] = amountChangeToAccountFromTx
-            txidToAccountAmountTypeDict[txObject.getHash()! as String] = Int(TLAccountTxType.MoveBetweenWallet.rawValue)
+            txidToAccountAmountTypeDict[txObject.getHash()! as String] = Int(TLAccountTxType.MoveBetweenAccount.rawValue)
             return nil
         }
     }

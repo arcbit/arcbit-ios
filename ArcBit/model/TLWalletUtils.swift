@@ -34,7 +34,7 @@ enum TLSendFromType: Int {
 enum TLAccountTxType: Int {
     case Send = 0
     case Receive = 1
-    case MoveBetweenWallet = 2
+    case MoveBetweenAccount = 2
 }
 
 enum TLAccountType: Int {
