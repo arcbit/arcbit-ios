@@ -42,14 +42,14 @@ import Foundation
     }
         
     class func generatePayloadChecksum(payload: String) -> String {
-        return TLUtils.doubleSHA256HashFor(payload)
+        return TLCrypto.doubleSHA256HashFor(payload)
     }
     
     class func getEncryptedWalletJsonContainer(walletJson: NSDictionary, password: String) -> (String) {
         assert(TLHDWalletWrapper.phraseIsValid(password), "phrase is invalid")
         var str = TLUtils.dictionaryToJSONString(false, dict: walletJson)
         //DLog("getEncryptedWalletJsonContainer str: %@", str)
-        let encryptJSONPassword = TLUtils.doubleSHA256HashFor(password)
+        let encryptJSONPassword = TLCrypto.doubleSHA256HashFor(password)
         str = TLCrypto.encrypt(str, password: encryptJSONPassword)
         let walletJsonEncryptedWrapperDict = ["version":1, "payload":str]
         let walletJsonEncryptedWrapperString = TLUtils.dictionaryToJSONString(true, dict: walletJsonEncryptedWrapperDict)
@@ -117,7 +117,7 @@ import Foundation
             return nil
         }
         assert(TLHDWalletWrapper.phraseIsValid(password!), "phrase is invalid")
-        let encryptJSONPassword = TLUtils.doubleSHA256HashFor(password!)
+        let encryptJSONPassword = TLCrypto.doubleSHA256HashFor(password!)
         let str = TLCrypto.decrypt(encryptedWalletJSONFile!, password: encryptJSONPassword)
         //DLog("getWalletJsonString: %@", str)
         return str

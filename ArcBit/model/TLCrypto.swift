@@ -68,5 +68,36 @@ class TLCrypto {
         return decryptedString as? String
     }
 
+    class func SHA256HashFor(input: NSString) -> String {
+        let str = input.UTF8String
+        
+        let result = [CUnsignedChar](count: Int(CC_SHA256_DIGEST_LENGTH), repeatedValue: 0)
+        let resultBytes: UnsafeMutablePointer<UInt8> = UnsafeMutablePointer(result)
+        
+        CC_SHA256(str, CC_LONG(strlen(str)), resultBytes)
+        
+        let ret = NSMutableString(capacity:Int(CC_SHA256_DIGEST_LENGTH)*2)
+        for(var i = 0; i < Int(CC_SHA256_DIGEST_LENGTH); i++) {
+            ret.appendFormat("%02x",result[i])
+        }
+        return ret as String
+    }
     
+    class func doubleSHA256HashFor(input: NSString) -> String {
+        let str = input.UTF8String
+        let result = [CUnsignedChar](count: Int(CC_SHA256_DIGEST_LENGTH), repeatedValue: 0)
+        let resultBytes: UnsafeMutablePointer<UInt8> = UnsafeMutablePointer(result)
+        
+        CC_SHA256(str, CC_LONG(strlen(str)), resultBytes)
+        let result2 = [CUnsignedChar](count: Int(CC_SHA256_DIGEST_LENGTH), repeatedValue: 0)
+        let result2Bytes: UnsafeMutablePointer<UInt8> = UnsafeMutablePointer(result2)
+        
+        CC_SHA256(result, CC_LONG(CC_SHA256_DIGEST_LENGTH), result2Bytes)
+        
+        let ret = NSMutableString(capacity:Int(CC_SHA256_DIGEST_LENGTH*2))
+        for(var i = 0; i<Int(CC_SHA256_DIGEST_LENGTH); i++) {
+            ret.appendFormat("%02x",result2[i])
+        }
+        return ret as String
+    }
 }
