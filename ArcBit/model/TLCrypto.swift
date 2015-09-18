@@ -35,10 +35,16 @@ class TLCrypto {
         
         let data = plainText.dataUsingEncoding(NSUTF8StringEncoding)
         var error: NSError? = nil
-        var encryptedData = RNEncryptor.encryptData(data, withSettings: settings, password: password, error: &error)
+        var encryptedData: NSData!
+        do {
+            encryptedData = try RNEncryptor.encryptData(data, withSettings: settings, password: password)
+        } catch let error1 as NSError {
+            error = error1
+            encryptedData = nil
+        }
         
         if (error != nil) {
-            DLog("TLCrypto encrypt error: %@", error!.localizedDescription)
+            DLog("TLCrypto encrypt error: %@", function: error!.localizedDescription)
             NSException(name: "Error", reason: "Error encrypting", userInfo: nil).raise()
         }
         
@@ -53,10 +59,15 @@ class TLCrypto {
         
         let encryptedData = NSData(base64EncodedString: cipherText, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
         var error: NSError? = nil
-        let decryptedData = RNDecryptor.decryptData(encryptedData,
-            withSettings: settings,
-            password: password,
-            error: &error)
+        let decryptedData: NSData!
+        do {
+            decryptedData = try RNDecryptor.decryptData(encryptedData,
+                        withSettings: settings,
+                        password: password)
+        } catch let error1 as NSError {
+            error = error1
+            decryptedData = nil
+        }
         
         // Note: there will only be error if password is incorrect, if PBKDF2Iterations dont match then there will be no error, just nil decryptedData
         if (error != nil) {

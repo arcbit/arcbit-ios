@@ -59,7 +59,7 @@ import Foundation
     }
 
     func isWebSocketOpen() -> Bool {
-        return self.webSocket != nil && self.webSocket!.readyState.value == SR_OPEN.value
+        return self.webSocket != nil && self.webSocket!.readyState.rawValue == SR_OPEN.rawValue
     }
     
     func close() -> () {
@@ -82,7 +82,7 @@ import Foundation
     }
     
     func sendMessage(msg: String) -> Bool {
-        DLog("StealthWebSocket sendMessage: %@", msg)
+        DLog("StealthWebSocket sendMessage: %@", function: msg)
         if self.isWebSocketOpen() {
             self.webSocket!.send(msg)
             return true
@@ -111,7 +111,7 @@ import Foundation
     }
     
     func webSocket(webSocket:SRWebSocket, didFailWithError error:NSError) -> () {
-        DLog("StealthWebSocket didFailWithError %@", error.description)
+        DLog("StealthWebSocket didFailWithError %@", function: error.description)
 
         self.webSocket!.delegate = nil
         self.webSocket!.close()
@@ -128,10 +128,10 @@ import Foundation
     
     func webSocket(webSocket: SRWebSocket, didReceiveMessage message: AnyObject) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
-            var data = message.dataUsingEncoding(NSUTF8StringEncoding)
+            let data = message.dataUsingEncoding(NSUTF8StringEncoding)
             
             var error: NSError?
-            var jsonDict = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions(0), error: &error) as! NSDictionary
+            let jsonDict = (try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions(rawValue: 0))) as! NSDictionary
             DLog("StealthWebSocket didReceiveMessage \(jsonDict.description)")
 
             if (jsonDict.objectForKey("op") as! String == "challenge") {

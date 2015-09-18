@@ -23,7 +23,7 @@
 import Foundation
 
 
-@objc class TLInsightAPI {
+class TLInsightAPI {
     var networking:TLNetworking
     var baseURL:String
 
@@ -66,7 +66,7 @@ import Foundation
     }
     
     func getUnspentOutputs(addressArray: Array<String>, success: TLNetworking.SuccessHandler, failure: TLNetworking.FailureHandler) {
-        let endPoint = String(format: "%@%@%@", "api/addrs/", ",".join(addressArray), "/utxo")
+        let endPoint = String(format: "%@%@%@", "api/addrs/", addressArray.joinWithSeparator(","), "/utxo")
         let parameters = [:]
         
         let url = NSURL(string: endPoint, relativeToURL: NSURL(string: self.baseURL))!
@@ -84,7 +84,7 @@ import Foundation
     }
     
     func getAddressesInfoSynchronous(addressArray: Array<String>, txCountFrom: Int=0, allTxs: NSMutableArray=[]) -> NSDictionary {
-        let endPoint = String(format: "%@%@%@", "api/addrs/", ",".join(addressArray), "/txs")
+        let endPoint = String(format: "%@%@%@", "api/addrs/", addressArray.joinWithSeparator(","), "/txs")
         
         let parameters = ["from":txCountFrom]
 
@@ -116,7 +116,7 @@ import Foundation
     }
     
     func getAddressesInfo(addressArray: Array<String>, txCountFrom: Int=0, allTxs: NSMutableArray=[], success: TLNetworking.SuccessHandler, failure: TLNetworking.FailureHandler) {
-        let endPoint = String(format: "%@%@%@", "api/addrs/", ",".join(addressArray), "/txs")
+        let endPoint = String(format: "%@%@%@", "api/addrs/", addressArray.joinWithSeparator(","), "/txs")
         let parameters = ["from":txCountFrom]
 
         let url = NSURL(string: endPoint, relativeToURL: NSURL(string: self.baseURL))!
@@ -213,7 +213,7 @@ import Foundation
         if unspentOutputDict.objectForKey("scriptPubKey") == nil {
             // got following so far
             // insight bug for txid 1cf031f8ac2896994e57c299e23b4ed35e2d218a7c6877302da0e3292337f530 when tried to do f5b0e820f23a6724f669463a6bf2e03806169b3d7fee7b6d27a642840109823d
-            DLog("no scriptPubKey, insight bug? txid %@", unspentOutputDict.objectForKey("txid") as! String)
+            DLog("no scriptPubKey, insight bug? txid %@", function: unspentOutputDict.objectForKey("txid") as! String)
             return nil
         }
         

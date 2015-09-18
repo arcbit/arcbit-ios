@@ -26,6 +26,6 @@ import UIKit
 
 extension UIViewController {
     public func showSendView() -> () {
-        slidingViewController().topViewController = storyboard!.instantiateViewControllerWithIdentifier("SendNav") as! UIViewController
+        slidingViewController().topViewController = storyboard!.instantiateViewControllerWithIdentifier("SendNav") 
     }
 }

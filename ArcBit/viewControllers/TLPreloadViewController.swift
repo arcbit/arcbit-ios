@@ -26,7 +26,7 @@ import UIKit
 
 @objc(TLPreloadViewController) class TLPreloadViewController: UIViewController, UIAlertViewDelegate {
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -43,7 +43,7 @@ import UIKit
         self.navigationController!.navigationBar.hidden = true
         UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.None)
         
-        var passphrase = TLWalletPassphrase.getDecryptedWalletPassphrase()
+        let passphrase = TLWalletPassphrase.getDecryptedWalletPassphrase()
         if (TLPreferences.canRestoreDeletedApp() && !TLPreferences.hasSetupHDWallet() && passphrase != nil) {
             // is fresh app but not first time installing
             UIAlertController.showAlertInViewController(self,
@@ -69,7 +69,7 @@ import UIKit
                                 TLTransactionListener.instance().reconnect()
                                 TLStealthWebSocket.instance().reconnect()
                                 TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                                self.slidingViewController()!.topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("SendNav") as! UIViewController
+                                self.slidingViewController()!.topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("SendNav") 
                             }
                         }
                     }
@@ -82,7 +82,7 @@ import UIKit
     
     private func checkToLoadFromLocal() -> () {
         if (TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase() != nil) {
-            var localWalletPayload = AppDelegate.instance().getLocalWalletJsonDict()
+            let localWalletPayload = AppDelegate.instance().getLocalWalletJsonDict()
             self.initializeWalletAppAndShowInitialScreenAndGoToMainScreen(localWalletPayload)
         } else {
             self.initializeWalletAppAndShowInitialScreenAndGoToMainScreen(nil)
@@ -115,13 +115,13 @@ import UIKit
                     })
                 } else {
                     if (error == nil) {
-                        var cloudWalletJSONDocumentSavedDate = cloudDocument.fileModificationDate
-                        var localWalletJSONDocumentSavedDate = TLPreferences.getLastSavedEncryptedWalletJSONDate()
-                        var comparisonResult = cloudWalletJSONDocumentSavedDate!.compare(localWalletJSONDocumentSavedDate)
+                        let cloudWalletJSONDocumentSavedDate = cloudDocument.fileModificationDate
+                        let localWalletJSONDocumentSavedDate = TLPreferences.getLastSavedEncryptedWalletJSONDate()
+                        let comparisonResult = cloudWalletJSONDocumentSavedDate!.compare(localWalletJSONDocumentSavedDate)
                         
                         if (comparisonResult == NSComparisonResult.OrderedDescending || comparisonResult == NSComparisonResult.OrderedSame) {
-                            var encryptedWalletJSON = NSString(data: documentData, encoding: NSUTF8StringEncoding)
-                            var passphrase = TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase()
+                            let encryptedWalletJSON = NSString(data: documentData, encoding: NSUTF8StringEncoding)
+                            let passphrase = TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase()
                             walletPayload = TLWalletJson.getWalletJsonDict((encryptedWalletJSON as! String), password: passphrase)
                             if (walletPayload != nil) {
                                 self.initializeWalletAppAndShowInitialScreenAndGoToMainScreen(walletPayload!)
@@ -172,7 +172,7 @@ import UIKit
         TLStealthWebSocket.instance().reconnect()
 
         if self.slidingViewController() != nil {
-            self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("SendNav") as! UIViewController
+            self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("SendNav") 
         } else {
             //is running unit test
         }

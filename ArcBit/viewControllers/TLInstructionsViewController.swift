@@ -25,7 +25,7 @@ import Foundation
 import UIKit
 
 @objc(TLInstructionsViewController) class TLInstructionsViewController : UIViewController, UITableViewDataSource, UITableViewDelegate {
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -60,7 +60,7 @@ import UIKit
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath:NSIndexPath) -> UITableViewCell{
         let MyIdentifier = "InstructionStepCellIdentifier"
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier) as! UITableViewCell?
+        var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier) 
         if (cell == nil) {
             cell = UITableViewCell(style:UITableViewCellStyle.Default,
                 reuseIdentifier:MyIdentifier)

@@ -29,7 +29,7 @@ import UIKit
     @IBOutlet private var addressBookTableView: UITableView?
     private var addressBook: NSArray?
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -153,7 +153,7 @@ import UIKit
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
         let MyIdentifier = "AddressBookCellIdentifier"
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier) as! UITableViewCell?
+        var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier) 
         if (cell == nil) {
             cell = UITableViewCell(style: UITableViewCellStyle.Subtitle,
                 reuseIdentifier: MyIdentifier)
@@ -182,9 +182,9 @@ import UIKit
         return nil
     }
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let moreAction = UITableViewRowAction(style:UITableViewRowActionStyle.Default, title: "Edit", handler: {
-            (action: UITableViewRowAction!, indexPath: NSIndexPath!) in
+            (action: UITableViewRowAction, indexPath: NSIndexPath) in
             tableView.editing = false
             
             TLPrompts.promtForInputText(self, title: "Edit address label".localized, message: "Input label for address".localized, textFieldPlaceholder: "address".localized, success: {
@@ -199,7 +199,7 @@ import UIKit
         moreAction.backgroundColor = UIColor.lightGrayColor()
         
         let deleteAction = UITableViewRowAction(style:UITableViewRowActionStyle.Default, title: "Delete".localized, handler: {
-            (action: UITableViewRowAction!, indexPath: NSIndexPath!) in
+            (action: UITableViewRowAction, indexPath: NSIndexPath) in
             tableView.editing = false
             
             TLPrompts.promtForOKCancel(self, title: "Delete address".localized, message: "Are you sure you want to delete this address?".localized, success: {

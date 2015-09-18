@@ -23,7 +23,7 @@
 import Foundation
 import UIKit
 
-@objc class TLSuggestions {
+class TLSuggestions {
     private var suggestions:NSMutableDictionary?
     let VIEW_RECEIVE_SCREEN_GAP_COUNT_TO_SHOW_SUGGESTION_TO_ENABLE_PIN = 13
     let VIEW_SEND_SCREEN_GAP_COUNT_TO_SHOW_SUGGESTION_TO_BACKUP_WALLET_PASSPHRASE = 3
@@ -92,8 +92,8 @@ import UIKit
     }
     
     func conditionToPromptToSuggestEnablePinSatisfied() -> (Bool) {
-        var userAnalyticsDict = NSMutableDictionary(dictionary:TLPreferences.getAnalyticsDict() ?? NSDictionary())
-        var viewReceiveScreenCount = (userAnalyticsDict.objectForKey(TLNotificationEvents.EVENT_VIEW_RECEIVE_SCREEN()) as! Int? ?? 0)
+        let userAnalyticsDict = NSMutableDictionary(dictionary:TLPreferences.getAnalyticsDict() ?? NSDictionary())
+        let viewReceiveScreenCount = (userAnalyticsDict.objectForKey(TLNotificationEvents.EVENT_VIEW_RECEIVE_SCREEN()) as! Int? ?? 0)
         if (enabledSuggestedEnablePin() &&
             viewReceiveScreenCount > 0 &&
             viewReceiveScreenCount % VIEW_RECEIVE_SCREEN_GAP_COUNT_TO_SHOW_SUGGESTION_TO_ENABLE_PIN == 0) {
@@ -130,8 +130,8 @@ import UIKit
     }
     
     func conditionToPromptToSuggestedBackUpWalletPassphraseSatisfied() -> (Bool) {
-        var userAnalyticsDict = NSMutableDictionary(dictionary:TLPreferences.getAnalyticsDict() ?? NSDictionary())
-        var viewSendScreenCount = userAnalyticsDict.objectForKey(TLNotificationEvents.EVENT_VIEW_SEND_SCREEN()) as! Int? ?? 0
+        let userAnalyticsDict = NSMutableDictionary(dictionary:TLPreferences.getAnalyticsDict() ?? NSDictionary())
+        let viewSendScreenCount = userAnalyticsDict.objectForKey(TLNotificationEvents.EVENT_VIEW_SEND_SCREEN()) as! Int? ?? 0
         if (enabledSuggestedBackUpWalletPassphrase() &&
             viewSendScreenCount > 0 &&
             viewSendScreenCount % VIEW_SEND_SCREEN_GAP_COUNT_TO_SHOW_SUGGESTION_TO_BACKUP_WALLET_PASSPHRASE == 0 &&

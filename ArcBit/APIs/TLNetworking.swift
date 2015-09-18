@@ -28,7 +28,7 @@ enum TLDOMAINREACHABLE:Int {
     case NOTREACHABLE   = 2
 }
 
-@objc class TLNetworking {
+class TLNetworking {
     
     typealias ReachableHandler = (TLDOMAINREACHABLE) -> ()
     typealias SuccessHandler = (AnyObject!) -> ()
@@ -101,9 +101,9 @@ enum TLDOMAINREACHABLE:Int {
     }
     
     class func isReachable(url: NSURL, reachable: ReachableHandler) -> () {
-        var manager = AFHTTPRequestOperationManager(baseURL:url)
+        let manager = AFHTTPRequestOperationManager(baseURL:url)
         
-        var operationQueue = manager.operationQueue
+        let operationQueue = manager.operationQueue
         manager.reachabilityManager.setReachabilityStatusChangeBlock({(status: AFNetworkReachabilityStatus) in
             switch (status) {
             case AFNetworkReachabilityStatus.ReachableViaWWAN:
@@ -131,10 +131,10 @@ enum TLDOMAINREACHABLE:Int {
     
     func httpGETSynchronous(url: NSURL, parameters: NSDictionary) -> AnyObject? {
         var response:AnyObject? = nil
-        var semaphore = dispatch_semaphore_create(0)
+        let semaphore = dispatch_semaphore_create(0)
 
         var success = false
-        DLog("httpGETSynchronous: url %@", url.absoluteString!)
+        DLog("httpGETSynchronous: url %@", function: url.absoluteString)
         var operation = self.getSynchronousManager.GET(url.absoluteString,
             parameters: parameters,
             success:{(operation:AFHTTPRequestOperation!, responseObject:AnyObject!) in
@@ -143,7 +143,7 @@ enum TLDOMAINREACHABLE:Int {
                 success = true
             },
             failure:{(operation:AFHTTPRequestOperation!, error:NSError!) in
-                DLog("httpGETSynchronous: requestFailed url %@", url.absoluteString!)
+                DLog("httpGETSynchronous: requestFailed url %@", function: url.absoluteString)
                 if operation.response != nil {
                     response = [STATIC_MEMBERS.HTTP_ERROR_CODE: operation.response.statusCode, STATIC_MEMBERS.HTTP_ERROR_MSG:operation.responseString]
                 } else {
@@ -160,7 +160,7 @@ enum TLDOMAINREACHABLE:Int {
     func httpGET(url: NSURL, parameters: NSDictionary,
         success: SuccessHandler?, failure: FailureHandler?) -> () {
             
-            DLog("httpGET: url %@", url.absoluteString!)
+            DLog("httpGET: url %@", function: url.absoluteString)
             self.getManager.GET(url.absoluteString,
                 parameters:parameters,
                 success:{(operation:AFHTTPRequestOperation!, responseObject:AnyObject!) in
@@ -169,7 +169,7 @@ enum TLDOMAINREACHABLE:Int {
                     }
                 } ,
                 failure:{(operation:AFHTTPRequestOperation!, error:NSError!) in
-                    DLog("httpGET: requestFailed url %@", url.absoluteString!)
+                    DLog("httpGET: requestFailed url %@", function: url.absoluteString)
                     if (failure != nil) {
                         failure!(operation.response == nil ? 0 : operation.response.statusCode, operation.response == nil ? "" : operation.responseString)
                     }
@@ -179,7 +179,7 @@ enum TLDOMAINREACHABLE:Int {
     func httpGETBackground(url: NSURL, parameters: NSDictionary,
         success: SuccessHandler?, failure: FailureHandler?) -> () {
             
-            DLog("httpGETBackground: url %@", url.absoluteString!)
+            DLog("httpGETBackground: url %@", function: url.absoluteString)
             self.getManagerBackground.GET(url.absoluteString,
                 parameters:parameters,
                 success:{(operation:AFHTTPRequestOperation!, responseObject:AnyObject!) in
@@ -188,7 +188,7 @@ enum TLDOMAINREACHABLE:Int {
                     }
                 } ,
                 failure:{(operation:AFHTTPRequestOperation!, error:NSError!) in
-                    DLog("httpGETBackground: requestFailed url %@", url.absoluteString!)
+                    DLog("httpGETBackground: requestFailed url %@", function: url.absoluteString)
                     if (failure != nil) {
                         failure!(operation.response == nil ? 0 : operation.response.statusCode, operation.response == nil ? "" : operation.responseString)
                     }
@@ -198,7 +198,7 @@ enum TLDOMAINREACHABLE:Int {
     func httpPOST(url: NSURL, parameters: NSDictionary,
         success: SuccessHandler?, failure: FailureHandler?) -> () {
             
-            DLog("httpPOST: url %@", url.absoluteString!)
+            DLog("httpPOST:function:  url %@", function: url.absoluteString)
             self.postManager.POST(url.absoluteString,
                 parameters:parameters,
                 success:{(operation:AFHTTPRequestOperation!, responseObject:AnyObject!) in
@@ -207,7 +207,7 @@ enum TLDOMAINREACHABLE:Int {
                     }
                 },
                 failure:{(operation:AFHTTPRequestOperation!, error:NSError!) in
-                    DLog("httpPOST: requestFailed url %@", url.absoluteString!)
+                    DLog("httpPOST: requestFailed url %@", function: url.absoluteString)
                     if (failure != nil) {
                         failure!(operation.response == nil ? 0 : operation.response.statusCode,  operation.response == nil ? "" : operation.responseString)
                     }
@@ -217,9 +217,9 @@ enum TLDOMAINREACHABLE:Int {
     func httpPOSTSynchronous(url: NSURL, parameters: NSDictionary) -> AnyObject? {
         var response:AnyObject?
         
-        var semaphore = dispatch_semaphore_create(0)
+        let semaphore = dispatch_semaphore_create(0)
         
-        DLog("httpPOSTSynchronous: url %@", url.absoluteString!)
+        DLog("httpPOSTSynchronous: url %@", function: url.absoluteString)
         var operation = self.postSynchronousManager.POST(url.absoluteString,
             parameters: parameters,
             success:{(operation:AFHTTPRequestOperation!, responseObject:AnyObject!) in
@@ -227,7 +227,7 @@ enum TLDOMAINREACHABLE:Int {
                 dispatch_semaphore_signal(semaphore)
             },
             failure:{(operation:AFHTTPRequestOperation!, error:NSError!) in
-                DLog("httpPOSTSynchronous: requestFailed url %@", url.absoluteString!)
+                DLog("httpPOSTSynchronous: requestFailed url %@", function: url.absoluteString)
                 if operation.response != nil {
                     response = [STATIC_MEMBERS.HTTP_ERROR_CODE: operation.response.statusCode, STATIC_MEMBERS.HTTP_ERROR_MSG:operation.responseString]
                 } else {

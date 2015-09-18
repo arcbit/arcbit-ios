@@ -21,7 +21,7 @@
 //   MA 02110-1301  USA
 
 import Foundation
-@objc class TLBlockchainAPI {
+class TLBlockchainAPI {
     
     struct STATIC_MEMBERS {
         static let BLOCKCHAIN_ENDPOINT_ADDRESS = "address/"
@@ -120,7 +120,7 @@ import Foundation
     func getUnspentOutputs(addressArray:Array<String>, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
         let endPoint = "unspent"
         let parameters = [
-            STATIC_MEMBERS.BC_REQ_ACTIVE:"|".join(addressArray)
+            STATIC_MEMBERS.BC_REQ_ACTIVE:addressArray.joinWithSeparator("|")
         ]
         let url = NSURL(string:endPoint, relativeToURL:NSURL(string:self.baseURL))
         self.networking.httpGET(url!, parameters:parameters,
@@ -130,7 +130,7 @@ import Foundation
     func getAddressesInfoSynchronous(addressArray:Array<String>) -> NSDictionary{
         let endPoint = "multiaddr"
         let parameters = [
-            STATIC_MEMBERS.BC_REQ_ACTIVE:"|".join(addressArray),
+            STATIC_MEMBERS.BC_REQ_ACTIVE:addressArray.joinWithSeparator("|"),
             "no_buttons":"true"]
         let url = NSURL(string:endPoint, relativeToURL:NSURL(string:self.baseURL))
         return self.networking.httpGETSynchronous(url!, parameters:parameters) as! NSDictionary
@@ -139,7 +139,7 @@ import Foundation
     func getAddressesInfo(addressArray:Array<String>, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
         let endPoint = "multiaddr"
         let parameters = [
-            STATIC_MEMBERS.BC_REQ_ACTIVE:"|".join(addressArray),
+            STATIC_MEMBERS.BC_REQ_ACTIVE:addressArray.joinWithSeparator("|"),
             "no_buttons":"true"]
         let url = NSURL(string:endPoint, relativeToURL:NSURL(string:self.baseURL))
         self.networking.httpGET(url!, parameters:parameters,

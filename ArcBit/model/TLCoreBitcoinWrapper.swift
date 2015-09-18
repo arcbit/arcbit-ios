@@ -22,7 +22,7 @@
 
 import Foundation
 
-@objc class TLCoreBitcoinWrapper {
+class TLCoreBitcoinWrapper {
     
     // WARNING: returns compressed address only
     class func getAddressFromOutputScript(scriptHex:String, isTestnet:Bool) -> (String?){

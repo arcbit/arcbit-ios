@@ -142,7 +142,7 @@ import Foundation
         for _output in outputAddressToValueArray! {
             let output = _output as! NSDictionary
             let script = output.objectForKey("script") as! String
-            if count(script) == 80 {
+            if script.characters.count == 80 {
                 possibleStealthDataScripts.append(script)
             }
         }

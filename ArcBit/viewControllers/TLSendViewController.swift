@@ -24,7 +24,7 @@ import UIKit
 
 @objc(TLSendViewController) class TLSendViewController: UIViewController, UITextFieldDelegate, UITabBarDelegate {
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -128,7 +128,7 @@ import UIKit
             let keyboardDoneButtonView = UIToolbar()
             keyboardDoneButtonView.sizeToFit()
             let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("dismissKeyboard") )
-            var toolbarButtons = [item]
+            let toolbarButtons = [item]
             keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
             self.amountTextField!.inputAccessoryView = keyboardDoneButtonView
             self.fiatAmountTextField!.inputAccessoryView = keyboardDoneButtonView
@@ -194,7 +194,7 @@ import UIKit
         self.sendViewSetup()
         
         if self.slidingViewController() != nil {
-            self.slidingViewController().topViewAnchoredGesture = .Tapping | .Panning
+            self.slidingViewController().topViewAnchoredGesture = [.Tapping, .Panning]
         }
     }
     
@@ -227,12 +227,12 @@ import UIKit
         if AppDelegate.instance().doHiddenPresentAndDimissTransparentViewController {
             AppDelegate.instance().doHiddenPresentAndDimissTransparentViewController = false
             let transitionController = TransitionDelegate()
-            let vc = self.storyboard!.instantiateViewControllerWithIdentifier("TransparentViewController") as! UIViewController
+            let vc = self.storyboard!.instantiateViewControllerWithIdentifier("TransparentViewController") 
             vc.view.backgroundColor = UIColor.clearColor()
             vc.transitioningDelegate = transitionController
             vc.modalPresentationStyle = .Custom
             
-            (AppDelegate.instance().window!.rootViewController! as! ECSlidingViewController).topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("TransparentViewController") as! UIViewController
+            (AppDelegate.instance().window!.rootViewController! as! ECSlidingViewController).topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("TransparentViewController") 
         }
     }
     
@@ -286,7 +286,7 @@ import UIKit
     }
     
     private func showReceiveView() -> () {
-        self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("ReceiveNav") as! UIViewController
+        self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("ReceiveNav") 
     }
     
     private func updateViewToNewSelectedObject() -> () {
@@ -402,7 +402,7 @@ import UIKit
         if self.isShowingSendHUD == true {
             TLHUDWrapper.hideHUDForView(self.view, animated: true)
             self.isShowingSendHUD = false
-            self.refreshAccountDataAndSetBalanceView(fetchDataAgain: true)
+            self.refreshAccountDataAndSetBalanceView(true)
             AppDelegate.instance().listeningToToAddress = nil
             AppDelegate.instance().inputedToAmount = nil
         }
@@ -491,8 +491,8 @@ import UIKit
             },
             tapBlock: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView.firstOtherButtonIndex) {
-                    let feeAmount = (alertView.textFields![0] as! UITextField).text
-                    let feeAmountCoin = TLWalletUtils.properBitcoinAmountStringToCoin(feeAmount)
+                    let feeAmount = (alertView.textFields![0] ).text
+                    let feeAmountCoin = TLWalletUtils.properBitcoinAmountStringToCoin(feeAmount!)
                     self.showPromptReviewTx(feeAmountCoin)
                 } else if (buttonIndex == alertView.cancelButtonIndex) {
                 }
@@ -504,13 +504,13 @@ import UIKit
         let fiatAmount = self.fiatAmountTextField!.text
         let toAddress = self.toAddressTextField!.text
     
-        if (!TLCoreBitcoinWrapper.isValidAddress(toAddress, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
+        if (!TLCoreBitcoinWrapper.isValidAddress(toAddress!, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
             TLPrompts.promptErrorMessage("Error".localized, message: "You must provide a valid bitcoin address.".localized)
             return
         }
 
-        DLog("showFinalPromptReviewTx bitcoinAmount %@", bitcoinAmount)
-        let inputedAmount = TLWalletUtils.properBitcoinAmountStringToCoin(bitcoinAmount)
+        DLog("showFinalPromptReviewTx bitcoinAmount %@", function: bitcoinAmount!)
+        let inputedAmount = TLWalletUtils.properBitcoinAmountStringToCoin(bitcoinAmount!)
         
         if (inputedAmount.equalTo(TLCoin.zero())) {
             TLPrompts.promptErrorMessage("Error".localized, message: "Amount entered must be greater then zero.".localized)
@@ -530,7 +530,7 @@ import UIKit
         
         let feeAmountDisplay = TLWalletUtils.coinToProperBitcoinAmountString(feeAmount)
         
-        let txSummary = String(format: "To: %@\nAmount:\n%@ %@\n%@ %@\nfee: %@ %@".localized, toAddress, bitcoinAmount, bitcoinDisplay, fiatAmount, currency, feeAmountDisplay, bitcoinDisplay)
+        let txSummary = String(format: "To: %@\nAmount:\n%@ %@\n%@ %@\nfee: %@ %@".localized, toAddress!, bitcoinAmount!, bitcoinDisplay, fiatAmount!, currency, feeAmountDisplay, bitcoinDisplay)
         
         UIAlertController.showAlertInViewController(self,
             withTitle: "Transaction Summary".localized,
@@ -570,8 +570,10 @@ import UIKit
                             return
                         }
                         
-                        let toAddressesAndAmounts = [["address": toAddress, "amount": inputedAmount]]
-                        
+                        let toAddressesAndAmount = NSMutableDictionary()
+                        toAddressesAndAmount.setObject(toAddress!, forKey: "address")
+                        toAddressesAndAmount.setObject(inputedAmount, forKey: "amount")
+                        let toAddressesAndAmounts = NSArray(objects: toAddressesAndAmount)
                         let ret = AppDelegate.instance().godSend!.createSignedSerializedTransactionHex(toAddressesAndAmounts,
                             feeAmount: feeAmount,
                             error: {
@@ -599,10 +601,10 @@ import UIKit
                         let txHash = txHexAndTxHash!.objectForKey("txHash") as? String
                         
                         if(txHex != nil) {
-                            DLog("showPromptReviewTx txHex: %@", txHex!)
+                            DLog("showPromptReviewTx txHex: %@", function: txHex!)
                         }
                         if(txHash != nil) {
-                            DLog("showPromptReviewTx txHash: %@", txHash!)
+                            DLog("showPromptReviewTx txHash: %@", function: txHash!)
                         }
                         
                         if (toAddress == AppDelegate.instance().godSend!.getStealthAddress()) {
@@ -626,15 +628,15 @@ import UIKit
                             NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_SEND_PAYMENT(),
                                 object: nil, userInfo: nil)
                         }
-                        TLPushTxAPI.instance().sendTx(txHex!, txHash: txHash!, toAddress: toAddress, success: {
+                        TLPushTxAPI.instance().sendTx(txHex!, txHash: txHash!, toAddress: toAddress!, success: {
                             (jsonData: AnyObject!) in
-                            DLog("showPromptReviewTx pushTx: success %@", jsonData)
+                            DLog("showPromptReviewTx pushTx: success %@", function: jsonData)
 
-                            if TLStealthAddress.isStealthAddress(toAddress, isTestnet:false) == true {
+                            if TLStealthAddress.isStealthAddress(toAddress!, isTestnet:false) == true {
                                 // doing stealth payment with push tx insight get wrong hash back??
                                 let txid = (jsonData as! NSDictionary).objectForKey("txid") as! String
-                                DLog("showPromptReviewTx pushTx: success txid %@", txid)
-                                DLog("showPromptReviewTx pushTx: success txHash %@", txHash!)
+                                DLog("showPromptReviewTx pushTx: success txid %@", function: txid)
+                                DLog("showPromptReviewTx pushTx: success txHash %@", function: txHash!)
                                 if txid != txHash! {
                                     NSException(name: "API Error", reason:"txid return does not match txid in app", userInfo:nil).raise()
                                 }
@@ -656,7 +658,7 @@ import UIKit
                             () in
                         self._clearSendForm()
                         self.setSendingHUDHidden(true)
-                        self.refreshAccountDataAndSetBalanceView(fetchDataAgain: true)
+                        self.refreshAccountDataAndSetBalanceView(true)
                         TLPrompts.promptErrorMessage("Error".localized, message: "Bitcoins has already been spent.")
                     })
                 } else if (buttonIndex == alertView.cancelButtonIndex) {
@@ -796,7 +798,7 @@ import UIKit
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) -> () {
         if (segue.identifier == "selectAccount") {
-            let vc = segue.destinationViewController as! UIViewController
+            let vc = segue.destinationViewController 
             vc.navigationItem.title = "Select Account".localized
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "onAccountSelected:",
                 name: TLNotificationEvents.EVENT_ACCOUNT_SELECTED(), object: nil)
@@ -805,7 +807,7 @@ import UIKit
     
     @IBAction private func updateFiatAmountTextFieldExchangeRate(sender: AnyObject?) {
         let currency = TLWalletUtils.getFiatCurrency()
-        let amount = TLWalletUtils.properBitcoinAmountStringToCoin(self.amountTextField!.text)
+        let amount = TLWalletUtils.properBitcoinAmountStringToCoin(self.amountTextField!.text!)
 
         if (amount.greater(TLCoin.zero())) {
             self.fiatAmountTextField!.text = TLExchangeRate.instance().fiatAmountStringFromBitcoin(currency,
@@ -820,7 +822,7 @@ import UIKit
         let fiatFormatter = NSNumberFormatter()
         fiatFormatter.numberStyle = .DecimalStyle
         fiatFormatter.maximumFractionDigits = 2
-        let fiatAmount = fiatFormatter.numberFromString(self.fiatAmountTextField!.text)
+        let fiatAmount = fiatFormatter.numberFromString(self.fiatAmountTextField!.text!)
         if fiatAmount != nil && fiatAmount! != 0 {
             let bitcoinAmount = TLExchangeRate.instance().bitcoinAmountFromFiat(currency, fiatAmount: fiatAmount!.doubleValue)
             self.amountTextField!.text = TLWalletUtils.coinToProperBitcoinAmountString(bitcoinAmount)
@@ -833,7 +835,7 @@ import UIKit
         self.dismissKeyboard()
         
         let toAddress = self.toAddressTextField!.text
-        if toAddress != nil && TLStealthAddress.isStealthAddress(toAddress, isTestnet: false) &&
+        if toAddress != nil && TLStealthAddress.isStealthAddress(toAddress!, isTestnet: false) &&
             TLSuggestions.instance().enabledShowStealthPaymentDelayInfo() && TLPreferences.getBlockExplorerAPI() == .Blockchain {
             let msg = "Sending payment to a forward addresses might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For forward address payments to show up faster, configure your app to use the Insight API in advance settings.".localized
             TLPrompts.promtForOK(self, title:"Warning".localized, message:msg, success: {
@@ -857,7 +859,7 @@ import UIKit
     
     @IBAction private func addressBookClicked(sender: AnyObject) {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "onAddressSelected:", name: TLNotificationEvents.EVENT_ADDRESS_SELECTED(), object: nil)
-        let vc = self.storyboard!.instantiateViewControllerWithIdentifier("AddressBook") as! UIViewController
+        let vc = self.storyboard!.instantiateViewControllerWithIdentifier("AddressBook") 
         self.slidingViewController().presentViewController(vc, animated: true, completion: nil)
     }
     
@@ -866,7 +868,7 @@ import UIKit
     }
     
     func textField(textField: UITextField, shouldChangeCharactersInRange range: (NSRange), replacementString string: String) -> Bool {
-        let newString = (textField.text as NSString).stringByReplacingCharactersInRange(range, withString: string)
+        let newString = (textField.text as! NSString).stringByReplacingCharactersInRange(range, withString: string)
         if (textField == self.toAddressTextField) {
             TLSendFormData.instance().setAddress(newString)
         } else if (textField == self.amountTextField) {

@@ -354,7 +354,7 @@ import Foundation
     }
     
     func getTxObjectCount() -> Int {
-        return count(txObjectArray)
+        return txObjectArray.count
     }
     
     func getTxObject(txIdx: Int) -> TLTxObject {
@@ -362,11 +362,11 @@ import Foundation
     }
     
     private func isAddressPartOfAccountActiveChangeAddresses(address: String) -> (Bool) {
-        return find(changeActiveAddresses, address) != nil
+        return changeActiveAddresses.indexOf(address) != nil
     }
     
     private func isAddressPartOfAccountActiveMainAddresses(address: String) -> Bool {
-        return find(mainActiveAddresses, address) != nil
+        return mainActiveAddresses.indexOf(address) != nil
     }
     
     func isActiveAddress(address: String) -> Bool {
@@ -444,7 +444,7 @@ import Foundation
         var currentTxSubtract:UInt64 = 0
         var currentTxAdd:UInt64 = 0
         
-        var address2hasUpdatedNTxCount = NSMutableDictionary()
+        let address2hasUpdatedNTxCount = NSMutableDictionary()
         
         //DLog("processTx: \(self.getAccountID()) \(txObject.getTxid()!)")
     
@@ -552,7 +552,7 @@ import Foundation
     }
     
     func getReceivingAddressesCount() -> Int {
-        return count(receivingAddressesArray)
+        return receivingAddressesArray.count
     }
     
     func getReceivingAddress(idx: Int) -> (String) {
@@ -563,7 +563,7 @@ import Foundation
         receivingAddressesArray = [String]()
         
         var addressIdx = 0
-        for (addressIdx = 0; addressIdx < count(mainActiveAddresses); addressIdx++) {
+        for (addressIdx = 0; addressIdx < mainActiveAddresses.count; addressIdx++) {
             let address = mainActiveAddresses[addressIdx]
             if (getNumberOfTransactionsForAddress(address)! == 0) {
                 break
@@ -585,13 +585,13 @@ import Foundation
                     receivingAddressesStartIdx = addressIdx
                 }
             }
-            if (count(receivingAddressesArray) >= TLAccountObject.MAX_ACCOUNT_WAIT_TO_RECEIVE_ADDRESS() ||
+            if (receivingAddressesArray.count >= TLAccountObject.MAX_ACCOUNT_WAIT_TO_RECEIVE_ADDRESS() ||
                 addressIdx - receivingAddressesStartIdx >= TLAccountObject.MAX_ACCOUNT_WAIT_TO_RECEIVE_ADDRESS()) {
                     break
             }
         }
         
-        while (lookedAtAllAddresses && count(receivingAddressesArray) < TLAccountObject.MAX_ACCOUNT_WAIT_TO_RECEIVE_ADDRESS()) {
+        while (lookedAtAllAddresses && receivingAddressesArray.count < TLAccountObject.MAX_ACCOUNT_WAIT_TO_RECEIVE_ADDRESS()) {
             let address = getNewMainAddress(getMainAddressesCount())
             addressIdx++
             if (addressIdx - receivingAddressesStartIdx < TLAccountObject.MAX_ACCOUNT_WAIT_TO_RECEIVE_ADDRESS()) {
@@ -611,7 +611,7 @@ import Foundation
     
     private func updateChangeAddresses() -> () {
         var addressIdx = 0
-        for (; addressIdx < count(changeActiveAddresses); addressIdx++) {
+        for (; addressIdx < changeActiveAddresses.count; addressIdx++) {
                 let address = changeActiveAddresses[addressIdx]
             if (getNumberOfTransactionsForAddress(address)! == 0) {
                 break
@@ -645,7 +645,7 @@ import Foundation
                     
                     if (TLWalletUtils.STATIC_MEMBERS.SHOULD_SAVE_ARCHIVED_ADDRESSES_IN_JSON) {
                         
-                        assert(addressIdx == count(mainArchivedAddresses), "")
+                        assert(addressIdx == mainArchivedAddresses.count, "")
                         mainArchivedAddresses.append(address)
                     } else {
                         if (accountType == TLAccountType.HDWallet) {
@@ -658,7 +658,7 @@ import Foundation
                     }
                     
                     assert(mainActiveAddresses.first == address, "")
-                    mainActiveAddresses.removeAtIndex(find(mainActiveAddresses, address)!)
+                    mainActiveAddresses.removeAtIndex(mainActiveAddresses.indexOf(address)!)
                     activeAddressesDict.removeValueForKey(address)
                     if (accountType == TLAccountType.HDWallet) {
                         self.appWallet!.updateMainAddressStatusFromHDWallet(accountIdx,
@@ -699,7 +699,7 @@ import Foundation
                     let accountIdx = accountDict!.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_IDX) as! Int
                     
                     if (TLWalletUtils.STATIC_MEMBERS.SHOULD_SAVE_ARCHIVED_ADDRESSES_IN_JSON) {
-                        assert(addressIdx == count(changeArchivedAddresses), "")
+                        assert(addressIdx == changeArchivedAddresses.count, "")
                         changeArchivedAddresses.append(address)
                     } else {
                         if (accountType == TLAccountType.HDWallet) {
@@ -712,7 +712,7 @@ import Foundation
                     }
                     
                     assert(changeActiveAddresses.first == address, "")
-                    changeActiveAddresses.removeAtIndex(find(changeActiveAddresses, address)!)
+                    changeActiveAddresses.removeAtIndex(changeActiveAddresses.indexOf(address)!)
                     activeAddressesDict.removeValueForKey(address)
                     if (accountType == TLAccountType.HDWallet) {
                         self.appWallet!.updateChangeAddressStatusFromHDWallet(accountIdx,
@@ -827,7 +827,7 @@ import Foundation
             removedAddress = self.appWallet!.removeTopMainAddressFromImportedWatchAccount(positionInWalletArray)!
         }
         
-        if (count(mainActiveAddresses) > 0) {
+        if (mainActiveAddresses.count > 0) {
             let address = mainActiveAddresses.last!
             address2HDIndexDict.removeValueForKey(address)
             address2BalanceDict.removeValueForKey(address)
@@ -836,7 +836,7 @@ import Foundation
             activeAddressesDict.removeValueForKey(address)
             return true
         } else if (TLWalletUtils.STATIC_MEMBERS.SHOULD_SAVE_ARCHIVED_ADDRESSES_IN_JSON) {
-            if (count(mainArchivedAddresses) > 0) {
+            if (mainArchivedAddresses.count > 0) {
                 let address = mainArchivedAddresses.last!
                 address2HDIndexDict.removeValueForKey(address)
                 address2BalanceDict.removeValueForKey(address)
@@ -861,7 +861,7 @@ import Foundation
             removedAddress = self.appWallet!.removeTopChangeAddressFromImportedWatchAccount(positionInWalletArray)!
         }
         
-        if (count(changeActiveAddresses) > 0) {
+        if (changeActiveAddresses.count > 0) {
             let address = changeActiveAddresses.last!
             address2HDIndexDict.removeValueForKey(address)
             address2BalanceDict.removeValueForKey(address)
@@ -871,7 +871,7 @@ import Foundation
             
             return true
         } else if (TLWalletUtils.STATIC_MEMBERS.SHOULD_SAVE_ARCHIVED_ADDRESSES_IN_JSON) {
-            if (count(changeArchivedAddresses) > 0) {
+            if (changeArchivedAddresses.count > 0) {
                 let address = changeArchivedAddresses.last!
                 address2HDIndexDict.removeValueForKey(address)
                 address2BalanceDict.removeValueForKey(address)
@@ -905,12 +905,12 @@ import Foundation
     }
     
     func getMainActiveAddressesCount() -> Int {
-        return count(mainActiveAddresses)
+        return mainActiveAddresses.count
     }
     
     func getMainArchivedAddressesCount() -> Int {
         if (TLWalletUtils.STATIC_MEMBERS.SHOULD_SAVE_ARCHIVED_ADDRESSES_IN_JSON) {
-            return count(mainArchivedAddresses)
+            return mainArchivedAddresses.count
         } else {
             if (accountType == TLAccountType.HDWallet) {
                 let accountIdx = accountDict!.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_IDX) as! Int
@@ -928,12 +928,12 @@ import Foundation
     }
     
     func getChangeActiveAddressesCount() -> Int {
-        return count(changeActiveAddresses)
+        return changeActiveAddresses.count
     }
     
     func getChangeArchivedAddressesCount() -> Int {
         if (TLWalletUtils.STATIC_MEMBERS.SHOULD_SAVE_ARCHIVED_ADDRESSES_IN_JSON) {
-            return count(changeArchivedAddresses)
+            return changeArchivedAddresses.count
         } else {
             if (accountType == TLAccountType.HDWallet) {
                 let accountIdx = accountDict!.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_IDX) as! Int
@@ -999,7 +999,7 @@ import Foundation
     func recoverAccountMainAddresses(shouldResetAccountBalance: Bool) -> Int {
         var lookAheadOffset = 0
         var continueLookingAheadAddress = true
-        DLog("recoverAccountMainAddresses: getAccountID: %@", getAccountID())
+        DLog("recoverAccountMainAddresses: getAccountID: %@", function: getAccountID())
         var accountAddressIdx = -1
         
         while (continueLookingAheadAddress) {
@@ -1126,7 +1126,7 @@ import Foundation
         updateReceivingAddresses()
         updateChangeAddresses()
         if recoverStealthPayments && self.stealthWallet != nil {
-            var semaphore = dispatch_semaphore_create(0)
+            let semaphore = dispatch_semaphore_create(0)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
                 self.fetchNewStealthPayments(recoverStealthPayments)
                 dispatch_semaphore_signal(semaphore)
@@ -1242,7 +1242,7 @@ import Foundation
                 
                 let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript, isTestnet: self.appWallet!.walletConfig.isTestnet)
                 if (address == nil) {
-                    DLog("address cannot be decoded. not normal pubkeyhash outputScript: %@", outputScript)
+                    DLog("address cannot be decoded. not normal pubkeyhash outputScript: %@", function: outputScript)
                     continue
                 }
                 if self.stealthWallet != nil && self.stealthWallet!.isPaymentAddress(address!) == true {
@@ -1322,7 +1322,7 @@ import Foundation
             let newStealthPaymentAddresses = ret!.2
             DLog("getAccountData  \(self.getAccountIdxNumber()) newStealthPaymentAddresses \(newStealthPaymentAddresses.description)")
             //TODO: txarray will not be in chronological order because of this, fix this
-            if count(newStealthPaymentAddresses) > 0 {
+            if newStealthPaymentAddresses.count > 0 {
                 self.getAccountDataO(newStealthPaymentAddresses, shouldResetAccountBalance: false)
             }
             if gotOldestPaymentAddresses {

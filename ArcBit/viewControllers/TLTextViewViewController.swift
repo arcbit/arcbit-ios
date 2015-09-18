@@ -27,7 +27,7 @@ import UIKit
     var text:String?
     @IBOutlet private var textView:UITextView?
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -40,7 +40,7 @@ import UIKit
         self.textView!.text = self.text
         self.textView!.textColor = (TLColors.mainAppOppositeColor())
         if(self.textView!.font != nil) {
-            self.textView!.font = (UIFont(name:self.textView!.font.fontName, size:26.0))
+            self.textView!.font = (UIFont(name:self.textView!.font!.fontName, size:26.0))
         }
     }
 }

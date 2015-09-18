@@ -25,7 +25,7 @@ import UIKit
 
 @objc(TLAccountsViewController) class TLAccountsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     

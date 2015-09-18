@@ -37,9 +37,9 @@ class TLPushTxAPI {
     }
     
     func sendTx(txHex:String, txHash:String, toAddress:String, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler)-> () {
-        DLog("TLPushTxAPI pushTx txHex %@ ", txHex)
-        DLog("TLPushTxAPI pushTx txHash %@ ", txHash)
-        DLog("TLPushTxAPI pushTx toAddress %@ ", toAddress)
+        DLog("TLPushTxAPI pushTx txHex %@ ", function: txHex)
+        DLog("TLPushTxAPI pushTx txHash %@ ", function: txHash)
+        DLog("TLPushTxAPI pushTx toAddress %@ ", function: toAddress)
 
         if TLStealthAddress.isStealthAddress(toAddress, isTestnet:false) == false {
             DLog("TLPushTxAPI TLBlockExplorerAPI")
@@ -49,7 +49,7 @@ class TLPushTxAPI {
             //pushTxMethod = TLBlockrAPI().pushTx
 
             pushTxMethod(txHex, success: { (jsonData: AnyObject!) -> () in
-                DLog("TLPushTxAPI pushTxMethod %@", jsonData)
+                DLog("TLPushTxAPI pushTxMethod %@", function: jsonData)
 
                 func getTxidFromInsightPushTx(jsonData:NSDictionary) -> String {
                     return jsonData.objectForKey("txid") as! String
@@ -70,12 +70,12 @@ class TLPushTxAPI {
                 //if txid == nil { return }
                 
                 TLStealthExplorerAPI.instance().lookupTx(toAddress, txid: txid, success: { (jsonData: AnyObject!) -> () in
-                    DLog("TLPushTxAPI TLStealthExplorerAPI success %@", jsonData.description)
+                    DLog("TLPushTxAPI TLStealthExplorerAPI success %@", function: jsonData.description)
                     if let errorCode = (jsonData as! NSDictionary).objectForKey(TLStealthExplorerAPI.STATIC_MEMBERS.SERVER_ERROR_CODE) as? Int {
                         let errorMsg = (jsonData as! NSDictionary).objectForKey(TLStealthExplorerAPI.STATIC_MEMBERS.SERVER_ERROR_MSG) as! String
                         DLog(String(format: "TLPushTxAPI TLStealthExplorerAPI success failure %ld %@", errorCode, errorMsg))
                         if errorCode == TLStealthExplorerAPI.STATIC_MEMBERS.SEND_TX_ERROR {
-                            DLog("TLPushTxAPI TLStealthExplorerAPI SEND_TX_ERROR %@", errorMsg)
+                            DLog("TLPushTxAPI TLStealthExplorerAPI SEND_TX_ERROR %@", function: errorMsg)
                         }
                         failure(errorCode, errorMsg)
                     } else {

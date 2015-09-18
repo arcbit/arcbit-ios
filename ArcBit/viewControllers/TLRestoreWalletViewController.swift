@@ -25,7 +25,7 @@ import Foundation
 import UIKit
 
 @objc(TLRestoreWalletViewController) class TLRestoreWalletViewController: UIViewController, UITextViewDelegate {
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     

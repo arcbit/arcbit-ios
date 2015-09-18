@@ -22,7 +22,7 @@
 
 import Foundation
 
-@objc class TLWalletJson {
+class TLWalletJson {
 
     class func getDecryptedEncryptedWalletJSONPassphrase() -> String? {
         let encryptedWalletPassphraseKey = TLPreferences.getEncryptedWalletPassphraseKey()
@@ -62,7 +62,11 @@ import Foundation
         let filePath = documentsDirectory.stringByAppendingPathComponent(TLWalletJson.getWalletJsonFileName())
         
         var error: NSError? = nil
-        walletfile.writeToFile(filePath, atomically: true, encoding: NSUTF8StringEncoding, error: &error)
+        do {
+            try walletfile.writeToFile(filePath, atomically: true, encoding: NSUTF8StringEncoding)
+        } catch let error1 as NSError {
+            error = error1
+        }
         if (error != nil) {
             return false
         } else {
@@ -89,10 +93,9 @@ import Foundation
         
         let walletJsonData = walletJsonString!.dataUsingEncoding(NSUTF8StringEncoding)
         
-        var error: NSError? = nil
-        let walletDict = NSJSONSerialization.JSONObjectWithData(walletJsonData!,
-            options: NSJSONReadingOptions.MutableContainers,
-            error: &error) as! NSDictionary
+        let error: NSError? = nil
+        let walletDict = (try! NSJSONSerialization.JSONObjectWithData(walletJsonData!,
+            options: NSJSONReadingOptions.MutableContainers)) as! NSDictionary
         assert(error == nil, "Error serializing wallet json string")
         //DLog("getWalletJsonDict: %@", walletDict.description)
         return walletDict
@@ -103,13 +106,18 @@ import Foundation
         let documentsDirectory: AnyObject = paths.objectAtIndex(0)
         let filePath = documentsDirectory.stringByAppendingPathComponent(TLWalletJson.getWalletJsonFileName())
         
-        var error: NSError? = nil
+        let error: NSError? = nil
         if (error != nil) {
-            DLog("TLWalletJson error getWalletJsonString: %@", error!.localizedDescription)
+            DLog("TLWalletJson error getWalletJsonString: %@", function: error!.localizedDescription)
             return nil
         }
         
-        return NSString(contentsOfFile: filePath, encoding: NSUTF8StringEncoding, error: &error) as? String
+        do {
+            let contents = try NSString(contentsOfFile: filePath, encoding: NSUTF8StringEncoding)
+            return contents as? String
+        } catch _ {
+            return nil
+        }
     }
     
     class func decryptWalletJSONFile(encryptedWalletJSONFile: String?, password: String?) -> (String?) {

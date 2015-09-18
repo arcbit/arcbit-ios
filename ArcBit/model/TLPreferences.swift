@@ -21,7 +21,7 @@
 //   MA 02110-1301  USA
 
 import Foundation
-@objc class TLPreferences
+class TLPreferences
 {
     struct CLASS_STATIC {
         static let RESET_CLOUD_BACKUP_WALLET_FILE_NAME = false
@@ -344,7 +344,7 @@ import Foundation
         }
         let cloudBackupWalletFileName = String(format:"%@.%@.%@", TLWalletUtils.STATIC_MEMBERS.WALLET_JSON_CLOUD_BACKUP_FILE_NAME,
             TLStealthAddress.generateEphemeralPrivkey(), TLWalletUtils.STATIC_MEMBERS.WALLET_JSON_CLOUD_BACKUP_FILE_EXTENSION)
-        DLog("cloudBackupWalletFileName %@", cloudBackupWalletFileName)
+        DLog("cloudBackupWalletFileName %@", function: cloudBackupWalletFileName)
         JNKeychain.saveValue(cloudBackupWalletFileName ,forKey:CLASS_STATIC.PREFERENCE_CLOUD_BACKUP_WALLET_FILE_NAME)
     }
     

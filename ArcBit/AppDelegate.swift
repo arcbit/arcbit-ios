@@ -258,7 +258,7 @@ import HockeySDK
             let accountName = String(format:"Account %lu".localized, (accountIdx + 1))
             let accountObject = self.accounts!.createNewAccount(accountName, accountType:.Normal, preloadStartingAddresses:false)
             
-            DLog("recoverHDWalletaccountName %@", accountName)
+            DLog("recoverHDWalletaccountName %@", function: accountName)
             
             let sumMainAndChangeAddressMaxIdx = accountObject.recoverAccount(false)
             DLog(String(format: "accountName %@ sumMainAndChangeAddressMaxIdx: %ld", accountName, sumMainAndChangeAddressMaxIdx))
@@ -340,7 +340,7 @@ import HockeySDK
             TLPreferences.setAppVersion(appVersion)
         } else if appVersion != TLPreferences.getAppVersion() {
             TLUpdateAppData.instance().beforeUpdatedAppVersion = TLPreferences.getAppVersion()
-            DLog("set new appVersion %@", appVersion)
+            DLog("set new appVersion %@", function: appVersion)
             TLPreferences.setAppVersion(appVersion)
         }
         
@@ -350,7 +350,7 @@ import HockeySDK
         
         if (TLPreferences.hasSetupHDWallet() && UIApplication.instancesRespondToSelector("registerUserNotificationSettings"))
         {
-            application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: .Alert | .Badge | .Sound, categories:nil))
+            application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories:nil))
         }
         
         NSNotificationCenter.defaultCenter().addObserver(self, selector:"checkToShowSendViewWithURL:", name:UIApplicationDidBecomeActiveNotification, object:nil)
@@ -506,7 +506,7 @@ import HockeySDK
             let inputAddresses = txObject.getInputAddressArray()
             let outputAddresses = txObject.getOutputAddressArray()
             
-            if find(outputAddresses, paymentAddress) == nil {
+            if outputAddresses.indexOf(paymentAddress) == nil {
                 return
             }
 
@@ -577,7 +577,7 @@ import HockeySDK
         let txid = responseDict.objectForKey("txid") as! String
         let paymentAddress = responseDict.objectForKey("addr") as! String
         let txTime = UInt64((responseDict.objectForKey("time") as! NSNumber).unsignedLongLongValue)
-        DLog("respondToStealthPayment stealthAddress: %@", stealthAddress)
+        DLog("respondToStealthPayment stealthAddress: %@", function: stealthAddress)
         DLog("respondToStealthPayment respondToStealthPaymentGetTxTries: \(self.respondToStealthPaymentGetTxTries)")
 
         if self.respondToStealthPaymentGetTxTries < self.RESPOND_TO_STEALTH_PAYMENT_GET_TX_TRIES_MAX_TRIES {
@@ -588,7 +588,7 @@ import HockeySDK
                 
                     self.respondToStealthPaymentGetTxTries = 0
                 }, failure: { (code: NSInteger, status: String!) -> () in
-                    DLog("respondToStealthPayment getTx fail %@", txid)
+                    DLog("respondToStealthPayment getTx fail %@", function: txid)
                     self.respondToStealthPayment(note)
                     self.respondToStealthPaymentGetTxTries++
             })
@@ -627,7 +627,7 @@ import HockeySDK
     
     func updateModelWithNewTransaction(note: NSNotification) {
         let txDict = note.object as! NSDictionary
-        DLog("updateModelWithNewTransaction txDict: %@", txDict.debugDescription)
+        DLog("updateModelWithNewTransaction txDict: %@", function: txDict.debugDescription)
         
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
             let txObject = TLTxObject(dict:txDict)
@@ -650,7 +650,7 @@ import HockeySDK
                 }
                 for address in addressesInTx {
                     if (accountObject.isAddressPartOfAccount(address )) {
-                        DLog("updateModelWithNewTransaction accounts %@", accountObject.getAccountID())
+                        DLog("updateModelWithNewTransaction accounts %@", function: accountObject.getAccountID())
                         self.handleNewTxForAccount(accountObject, txObject: txObject)
                     }
                 }
@@ -663,7 +663,7 @@ import HockeySDK
                 }
                 for address in addressesInTx {
                     if (accountObject.isAddressPartOfAccount(address)) {
-                        DLog("updateModelWithNewTransaction importedAccounts %@", accountObject.getAccountID())
+                        DLog("updateModelWithNewTransaction importedAccounts %@", function: accountObject.getAccountID())
                         self.handleNewTxForAccount(accountObject, txObject: txObject)
                     }
                 }
@@ -676,7 +676,7 @@ import HockeySDK
                 }
                 for address in addressesInTx {
                     if (accountObject.isAddressPartOfAccount(address)) {
-                        DLog("updateModelWithNewTransaction importedWatchAccounts %@", accountObject.getAccountID())
+                        DLog("updateModelWithNewTransaction importedWatchAccounts %@", function: accountObject.getAccountID())
                         self.handleNewTxForAccount(accountObject, txObject: txObject)
                     }
                 }
@@ -690,7 +690,7 @@ import HockeySDK
                 let address = importedAddress.getAddress()
                 for addr in addressesInTx {
                     if (addr == address) {
-                        DLog("updateModelWithNewTransaction importedAddresses %@", address)
+                        DLog("updateModelWithNewTransaction importedAddresses %@", function: address)
                         self.handleNewTxForImportedAddress(importedAddress, txObject: txObject)
                     }
                 }
@@ -704,7 +704,7 @@ import HockeySDK
                 let address = importedAddress.getAddress()
                 for addr in addressesInTx {
                     if (addr == address) {
-                        DLog("updateModelWithNewTransaction importedWatchAddresses %@", address)
+                        DLog("updateModelWithNewTransaction importedWatchAddresses %@", function: address)
                         self.handleNewTxForImportedAddress(importedAddress, txObject: txObject)
                     }
                 }
@@ -721,7 +721,7 @@ import HockeySDK
     }
     
     func handleNewTxForImportedAddress(importedAddress: TLImportedAddress, txObject: TLTxObject) {
-        var receivedAmount = importedAddress.processNewTx(txObject)
+        let receivedAmount = importedAddress.processNewTx(txObject)
         let receivedTo = importedAddress.getLabel()
         //AppDelegate.instance().pendingOperations.addSetUpImportedAddressOperation(importedAddress, fetchDataAgain: true, success: {
             self.updateUIForNewTx(txObject.getHash() as! String, receivedAmount: receivedAmount, receivedTo: receivedTo)
@@ -759,7 +759,7 @@ import HockeySDK
     func updateModelWithNewBlock(note: NSNotification) {
         let jsonData = note.object as! NSDictionary
         let blockHeight = jsonData.objectForKey("height") as! NSNumber
-        DLog("updateModelWithNewBlock: %llu", blockHeight)
+        DLog("updateModelWithNewBlock: %llu", function: blockHeight)
         TLBlockchainStatus.instance().blockHeight = blockHeight.unsignedLongLongValue
         
         NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_BLOCK(), object:nil, userInfo:nil)
@@ -875,7 +875,7 @@ import HockeySDK
         
         TLBlockExplorerAPI.instance().getBlockHeight({(jsonData:AnyObject!) in
             let blockHeight = (jsonData.objectForKey("height") as! NSNumber).unsignedLongLongValue
-            DLog("setBlockHeight: %llu", (jsonData.objectForKey("height") as! NSNumber))
+            DLog("setBlockHeight: %llu", function: (jsonData.objectForKey("height") as! NSNumber))
             TLBlockchainStatus.instance().blockHeight = blockHeight
             }, failure:{(code:NSInteger, status:String!) in
                 DLog("Error getting block height.")
@@ -934,7 +934,7 @@ import HockeySDK
     
     private func setUpLocalNotification() {
         if (TLUtils.getiOSVersion() >= 8) {
-            let types = UIUserNotificationType.Badge | UIUserNotificationType.Sound | UIUserNotificationType.Alert
+            let types: UIUserNotificationType = [UIUserNotificationType.Badge, UIUserNotificationType.Sound, UIUserNotificationType.Alert]
             let mySettings =
             UIUserNotificationSettings(forTypes: types, categories:nil)
             UIApplication.sharedApplication().registerUserNotificationSettings(mySettings)
@@ -942,7 +942,7 @@ import HockeySDK
     }
     
     func application(applcation: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
-        DLog("didReceiveLocalNotification: %@", notification.alertBody!)
+        DLog("didReceiveLocalNotification: %@", function: notification.alertBody!)
         let av = UIAlertView(title:notification.alertBody!,
             message:""                                       ,
             delegate:nil                                       ,
@@ -955,7 +955,7 @@ import HockeySDK
     }
     
     private func showLocalNotification(message: String) {
-        DLog("showLocalNotification: %@", message)
+        DLog("showLocalNotification: %@", function: message)
         let localNotification = UILocalNotification()
         localNotification.soundName = UILocalNotificationDefaultSoundName
         localNotification.fireDate = NSDate(timeIntervalSinceNow:1)
@@ -1140,8 +1140,8 @@ import HockeySDK
         
     }
     
-    func application(application: (UIApplication), openURL url: (NSURL), sourceApplication: (String)?, annotation:(AnyObject)?) -> Bool {
-        self.bitcoinURIOptionsDict = TLWalletUtils.parseBitcoinURI(url.absoluteString!)        
+    func application(application: (UIApplication), openURL url: (NSURL), sourceApplication: (String)?, annotation:(AnyObject)) -> Bool {
+        self.bitcoinURIOptionsDict = TLWalletUtils.parseBitcoinURI(url.absoluteString)        
         return true
     }
     
@@ -1207,7 +1207,7 @@ import HockeySDK
                             self.saveWalletJson(encryptedWalletJson, date:cloudDocument.fileModificationDate!)
                             DLog("saveFileToCloud done")
                         } else {
-                            DLog("saveFileToCloud error %@", error!.description)
+                            DLog("saveFileToCloud error %@", function: error!.description)
                         }
                 })
             } else {

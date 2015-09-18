@@ -29,7 +29,7 @@ enum TLBlockExplorer:Int {
     case Blockr     = 3
 }
 
-@objc class TLBlockExplorerAPI {
+class TLBlockExplorerAPI {
     
     struct STATIC_MEMBERS {
         static var blockExplorerAPI:TLBlockExplorer = .Blockchain

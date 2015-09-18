@@ -22,7 +22,7 @@
 
 import Foundation
 
-@objc class TLStealthExplorerAPI {
+class TLStealthExplorerAPI {
     
     struct STATIC_MEMBERS {
         static let UNEXPECTED_ERROR = -1000

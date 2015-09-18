@@ -24,14 +24,14 @@
 import Foundation
 import UIKit
 
-@objc class TLColors {
+class TLColors {
     struct Static {
         static var color:UIColor? = nil
     }
     
     class func mainAppColor() -> UIColor {
         if Static.color == nil {
-            var r = 36.0/255.0
+            let r = 36.0/255.0
             let g = 171/255.0
             let b = 220/255.0
             

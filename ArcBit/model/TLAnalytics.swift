@@ -22,7 +22,7 @@
 
 import Foundation
 
-@objc class TLAnalytics {
+class TLAnalytics: NSObject {
     struct STATIC_MEMBERS {
         static var _instance:TLAnalytics? = nil
     }
@@ -34,7 +34,8 @@ import Foundation
         return STATIC_MEMBERS._instance!
     }
     
-    init() {
+    override init() {
+        super.init()
         observeUserInterfaceInteractions()
     }
     
@@ -126,7 +127,7 @@ import Foundation
             name:TLNotificationEvents.EVENT_VIEW_ACCOUNT_PRIVATE_KEY(), object:nil)
     }
     
-    private func observeUserInterfaceInteractions() -> () {
+    func observeUserInterfaceInteractions() -> () {
         NSNotificationCenter.defaultCenter().addObserver(self
             ,selector:"updateViewSendScreen:",
             name:TLNotificationEvents.EVENT_VIEW_SEND_SCREEN(), object:nil)

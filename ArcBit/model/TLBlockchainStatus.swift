@@ -23,7 +23,7 @@
 import Foundation
 import UIKit
 
-@objc class TLBlockchainStatus {
+class TLBlockchainStatus {
     struct STATIC_MEMBERS{
         static var _instance:TLBlockchainStatus? = nil
     }

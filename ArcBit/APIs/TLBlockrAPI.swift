@@ -22,7 +22,7 @@
 
 import Foundation
 
-@objc class TLBlockrAPI {
+class TLBlockrAPI {
     var networking:TLNetworking
     let baseURL:String = "https://btc.blockr.io/"
     
@@ -41,12 +41,12 @@ import Foundation
     }
     */
     func pushTx(txHex: String, success: TLNetworking.SuccessHandler, failure: TLNetworking.FailureHandler) {
-        var endPoint = "api/v1/tx/push"
-        var parameters = [
+        let endPoint = "api/v1/tx/push"
+        let parameters = [
             "hex": txHex
         ]
         
-        var url = NSURL(string: endPoint, relativeToURL: NSURL(string: self.baseURL))!
+        let url = NSURL(string: endPoint, relativeToURL: NSURL(string: self.baseURL))!
         self.networking.httpPOST(url, parameters: parameters,
             success: success, failure: failure)
     }

@@ -163,7 +163,7 @@ import UIKit
     }
     
     override func showSendView() {
-        self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("SendNav") as! UIViewController
+        self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("SendNav") 
     }
     
     func singleFingerTap() {
@@ -250,7 +250,7 @@ import UIKit
         
         var pageControlBeingUsed = false
         
-        var pageWidth = self.getPageWidth()
+        let pageWidth = self.getPageWidth()
         let pageHeight:CGFloat
         if UIScreen.mainScreen().bounds.size.height > 480.0 {
             pageHeight = pageWidth
@@ -315,7 +315,7 @@ import UIKit
                 addressLabel.textAlignment = .Center
                 addressLabel.font = UIFont.boldSystemFontOfSize(addressLabel.font.pointSize)
                 addressLabel.text = address
-                if count(address) > 35 { // is stealth address
+                if address.characters.count > 35 { // is stealth address
                     addressLabel.numberOfLines = 2
                 } else {
                     addressLabel.numberOfLines = 1
@@ -446,7 +446,7 @@ import UIKit
 
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) -> () {
         if(segue.identifier == "selectAccount") {
-            let vc = segue.destinationViewController as! UIViewController
+            let vc = segue.destinationViewController 
             vc.navigationItem.title = "Select Account".localized
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "onAccountSelected:", name: TLNotificationEvents.EVENT_ACCOUNT_SELECTED(), object: nil)
         }

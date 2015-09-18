@@ -25,7 +25,7 @@ import UIKit
 
 @objc(TLManageAccountsViewController) class TLManageAccountsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomIOS7AlertViewDelegate {
 
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
 
@@ -430,7 +430,7 @@ import UIKit
             tapBlock: {(alertView, action, buttonIndex) in
             if (buttonIndex == alertView.firstOtherButtonIndex) {
                 if(alertView.textFields != nil) {
-                    let label = (alertView.textFields![0] as! UITextField).text
+                    let label = (alertView.textFields![0] ).text
                     success(label)
                 }
             } else if (buttonIndex == alertView.cancelButtonIndex) {
@@ -456,9 +456,9 @@ import UIKit
             },
             tapBlock: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView.firstOtherButtonIndex) {
-                    let accountName = (alertView.textFields![0] as! UITextField).text//alertView.textFieldAtIndex(0)!.text
+                    let accountName = (alertView.textFields![0] ).text//alertView.textFieldAtIndex(0)!.text
                     
-                    if (AppDelegate.instance().accounts!.accountNameExist(accountName) == true) {
+                    if (AppDelegate.instance().accounts!.accountNameExist(accountName!) == true) {
                         UIAlertController.showAlertInViewController(self,
                             withTitle: "Account name is taken".localized,
                             message: "",
@@ -1032,7 +1032,7 @@ import UIKit
             otherButtonTitles: otherButtonTitles as [AnyObject],
             
             tapBlock: {(actionSheet, action, buttonIndex) in
-                var VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = actionSheet.firstOtherButtonIndex + 0
+                let VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = actionSheet.firstOtherButtonIndex + 0
                 var VIEW_EXTENDED_PRIVATE_KEY_BUTTON_IDX = actionSheet.firstOtherButtonIndex + 1
                 var VIEW_ADDRESSES_BUTTON_IDX = actionSheet.firstOtherButtonIndex + 2
                 var RENAME_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex + 3
@@ -1185,8 +1185,8 @@ import UIKit
             ,
             tapBlock: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView.firstOtherButtonIndex) {
-                    let txid = (alertView.textFields![0] as! UITextField).text
-                    self.manuallyScanForStealthTransactionAccount(accountObject, txid: txid)
+                    let txid = (alertView.textFields![0] ).text
+                    self.manuallyScanForStealthTransactionAccount(accountObject, txid: txid!)
                 } else if (buttonIndex == alertView.cancelButtonIndex) {
                     
                 }
@@ -1200,7 +1200,7 @@ import UIKit
             return
         }
         
-        if count(txid) != 64 || TLWalletUtils.hexStringToData(txid) == nil {
+        if txid.characters.count != 64 || TLWalletUtils.hexStringToData(txid) == nil {
             TLPrompts.promptErrorMessage("Inputed Txid is invalid".localized, message: "Txid must be a 64 character hex string.".localized)
             return
         }
@@ -1221,7 +1221,7 @@ import UIKit
             let stealthDataScript = stealthDataScriptAndOutputAddresses!.stealthDataScript!
             if let secret = TLStealthAddress.getPaymentAddressPrivateKeySecretFromScript(stealthDataScript, scanPrivateKey: scanPriv, spendPrivateKey: spendPriv) {
                 let paymentAddress = TLCoreBitcoinWrapper.getAddressFromSecret(secret, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)
-                if find(stealthDataScriptAndOutputAddresses!.outputAddresses, paymentAddress!) != nil {
+                if (stealthDataScriptAndOutputAddresses!.outputAddresses).indexOf((paymentAddress!)) != nil {
                     
                     TLBlockExplorerAPI.instance().getUnspentOutputs([paymentAddress!], success: {
                         (jsonData: AnyObject!) in
@@ -1445,8 +1445,8 @@ import UIKit
                     //*
                     self.accountsTableView!.beginUpdates()
                     let index = NSIndexPath(indexes:[self.archivedImportedWatchAccountSection, indexPath.row], length:2)
-                    let deleteIndexPaths = NSArray(objects: index)
-                    self.accountsTableView!.deleteRowsAtIndexPaths(deleteIndexPaths as [AnyObject], withRowAnimation: .Fade)
+                    let deleteIndexPaths = [index]
+                    self.accountsTableView!.deleteRowsAtIndexPaths(deleteIndexPaths, withRowAnimation: .Fade)
                     self.accountsTableView!.endUpdates()
                     //*/
                     self._accountsTableViewReloadDataWrapper()
@@ -1524,7 +1524,7 @@ import UIKit
             let accountObject = AppDelegate.instance().importedAccounts!.addAccountWithExtendedKey(extendedPrivateKey)
             TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: "Importing Account".localized, animated: true)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
-                SwiftTryCatch.try({
+                SwiftTryCatch.`try`({
                     () -> () in
                     accountObject.recoverAccount(false, recoverStealthPayments: true)
                     AppDelegate.instance().saveWalletJSONEnabled = true
@@ -1561,7 +1561,7 @@ import UIKit
                         self.refreshWalletAccounts(false)
                         handleImportAccountSuccess()
                     })
-                }, catch: {
+                }, `catch`: {
                         (e: NSException!) -> Void in
                     handleImportAccountFail()
                     
@@ -1589,7 +1589,7 @@ import UIKit
             
             TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: "Importing Watch Account".localized, animated: true)
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
-                SwiftTryCatch.try({
+                SwiftTryCatch.`try`({
                     () -> () in
                     accountObject.recoverAccount(false, recoverStealthPayments: true)
                     AppDelegate.instance().saveWalletJSONEnabled = true
@@ -1622,7 +1622,7 @@ import UIKit
                                 self.setEditingAndRefreshAccounts()
                         })
                     }
-                }, catch: {
+                }, `catch`: {
                     (exception: NSException!) -> Void in
                     dispatch_async(dispatch_get_main_queue()) {
                         AppDelegate.instance().importedWatchAccounts!.deleteAccount(AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts() - 1)
@@ -2039,7 +2039,7 @@ import UIKit
         if (indexPath.section == accountActionSection) {
             let MyIdentifier = "AccountActionCellIdentifier"
 
-            var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier) as! UITableViewCell?
+            var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier) 
             if (cell == nil) {
                 cell = UITableViewCell(style: UITableViewCellStyle.Default,
                         reuseIdentifier: MyIdentifier)

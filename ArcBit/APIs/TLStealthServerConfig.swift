@@ -22,7 +22,7 @@
 
 import Foundation
 
-@objc class TLStealthServerConfig {
+class TLStealthServerConfig {
     struct STATIC_MEMBERS {
         static var instance:TLStealthServerConfig?
     }

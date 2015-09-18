@@ -33,7 +33,7 @@ import UIKit
     
     @IBOutlet private var addressListTableView: UITableView?
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -239,14 +239,14 @@ import UIKit
                 if (self.accountObject!.getMainActiveAddressesCount() == 0) {
                     address = TL_STRING_NONE_CURRENTLY
                 } else {
-                    var idx = self.accountObject!.getMainActiveAddressesCount() - 1 - indexPath.row
+                    let idx = self.accountObject!.getMainActiveAddressesCount() - 1 - indexPath.row
                     address = self.accountObject!.getMainActiveAddress(idx)
                 }
             } else if (indexPath.section == 3) {
                 if (self.accountObject!.getChangeActiveAddressesCount() == 0) {
                     address = TL_STRING_NONE_CURRENTLY
                 } else {
-                    var idx = self.accountObject!.getChangeActiveAddressesCount() - 1 - indexPath.row
+                    let idx = self.accountObject!.getChangeActiveAddressesCount() - 1 - indexPath.row
                     address = self.accountObject!.getChangeActiveAddress(idx)
                 }
             }
@@ -301,7 +301,7 @@ import UIKit
     
     func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
         var address = ""
-        var cell = tableView.cellForRowAtIndexPath(indexPath) as! TLAddressTableViewCell
+        let cell = tableView.cellForRowAtIndexPath(indexPath) as! TLAddressTableViewCell
         if (indexPath.section == 0 || indexPath.section == 1 || indexPath.section == 3) {
             address = cell.addressLabel!.text!
         } else {

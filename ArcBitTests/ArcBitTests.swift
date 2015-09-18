@@ -174,7 +174,7 @@ class ArcBitTests: XCTestCase {
         
         XCTAssertTrue(!TLHDWalletWrapper.phraseIsValid("report age service frame aspect worry nature toward vendor jungle grit grit"))
         
-        var backupPassphrase = "slogan lottery zone helmet fatigue rebuild solve best hint frown conduct ill"
+        let backupPassphrase = "slogan lottery zone helmet fatigue rebuild solve best hint frown conduct ill"
         let masterHex = TLHDWalletWrapper.getMasterHex(backupPassphrase)
         
         XCTAssertTrue(TLHDWalletWrapper.phraseIsValid(backupPassphrase))
@@ -419,7 +419,7 @@ class ArcBitTests: XCTestCase {
 
                 let transaction = BTCTransaction(hex: txHex)
                 
-                XCTAssertTrue(count(transaction.inputs) == 2)
+                XCTAssertTrue(transaction.inputs.count == 2)
                 let input0 = transaction.inputs[0] as! BTCTransactionInput
                 XCTAssertTrue(input0.previousTransactionID == txid0)
                 XCTAssertTrue(input0.outpoint.index == 0)
@@ -427,7 +427,7 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(input1.previousTransactionID == txid1)
                 XCTAssertTrue(input1.outpoint.index == 1)
                 
-                XCTAssertTrue(count(transaction.outputs) == 2)
+                XCTAssertTrue(transaction.outputs.count == 2)
                 let output0 = transaction.outputs[0] as! BTCTransactionOutput
                 XCTAssertTrue(output0.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
                 XCTAssertTrue(output0.value == 100000000)
@@ -437,8 +437,8 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(output1.value == 2400000000)
                 XCTAssertTrue(output1.script.standardAddress.base58String == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
                 
-                XCTAssertTrue(count(realToAddresses) == 2)
-                XCTAssertTrue(count(stealthPaymentTxidsClaiming) == 0)
+                XCTAssertTrue(realToAddresses.count == 2)
+                XCTAssertTrue(stealthPaymentTxidsClaiming.count == 0)
                 XCTAssertTrue(realToAddresses[0] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
                 XCTAssertTrue(realToAddresses[1] == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
             }
@@ -467,7 +467,7 @@ class ArcBitTests: XCTestCase {
 
                 let transaction = BTCTransaction(hex: txHex)
                 
-                XCTAssertTrue(count(transaction.inputs) == 2)
+                XCTAssertTrue(transaction.inputs.count == 2)
                 let input0 = transaction.inputs[0] as! BTCTransactionInput
                 XCTAssertTrue(input0.previousTransactionID == txid0)
                 XCTAssertTrue(input0.outpoint.index == 0)
@@ -475,7 +475,7 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(input1.previousTransactionID == txid1)
                 XCTAssertTrue(input1.outpoint.index == 1)
                 
-                XCTAssertTrue(count(transaction.outputs) == 2)
+                XCTAssertTrue(transaction.outputs.count == 2)
                 let output0 = transaction.outputs[0] as! BTCTransactionOutput
                 XCTAssertTrue(output0.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
                 XCTAssertTrue(output0.value == 100000000)
@@ -485,8 +485,8 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(output1.value == 2400000000)
                 XCTAssertTrue(output1.script.standardAddress.base58String == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
                 
-                XCTAssertTrue(count(realToAddresses) == 2)
-                XCTAssertTrue(count(stealthPaymentTxidsClaiming) == 0)
+                XCTAssertTrue(realToAddresses.count == 2)
+                XCTAssertTrue(stealthPaymentTxidsClaiming.count == 0)
                 XCTAssertTrue(realToAddresses[0] == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
                 XCTAssertTrue(realToAddresses[1] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
             }
@@ -576,7 +576,7 @@ class ArcBitTests: XCTestCase {
 
                 let transaction = BTCTransaction(hex: txHex)
                 
-                XCTAssertTrue(count(transaction.inputs) == 17)
+                XCTAssertTrue(transaction.inputs.count == 17)
                 let input0 = transaction.inputs[0] as! BTCTransactionInput
                 XCTAssertTrue(input0.previousTransactionID == txid0)
                 XCTAssertTrue(input0.outpoint.index == 0)
@@ -629,7 +629,7 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(input16.previousTransactionID == txid16)
                 XCTAssertTrue(input16.outpoint.index == 0)
                 
-                XCTAssertTrue(count(transaction.outputs) == 2)
+                XCTAssertTrue(transaction.outputs.count == 2)
                 let output0 = transaction.outputs[0] as! BTCTransactionOutput
                 XCTAssertTrue(output0.script.hex == "76a9144a5fba237213a062f6f57978f796390bdcf8d01588ac")
                 XCTAssertTrue(output0.value == 400057456)
@@ -639,8 +639,8 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(output1.value == 40000000000)
                 XCTAssertTrue(output1.script.standardAddress.base58String == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
                 
-                XCTAssertTrue(count(realToAddresses) == 2)
-                XCTAssertTrue(count(stealthPaymentTxidsClaiming) == 0)
+                XCTAssertTrue(realToAddresses.count == 2)
+                XCTAssertTrue(stealthPaymentTxidsClaiming.count == 0)
                 XCTAssertTrue(realToAddresses[0] == "17nFgS1YaDPnXKMPQkZVdNQqZnVqRgBwnZ")
                 XCTAssertTrue(realToAddresses[1] == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
             }
@@ -684,7 +684,7 @@ class ArcBitTests: XCTestCase {
 
                 let transaction = BTCTransaction(hex: txHex)
                 
-                XCTAssertTrue(count(transaction.inputs) == 17)
+                XCTAssertTrue(transaction.inputs.count == 17)
                 let input0 = transaction.inputs[0] as! BTCTransactionInput
                 XCTAssertTrue(input0.previousTransactionID == txid0)
                 XCTAssertTrue(input0.outpoint.index == 0)
@@ -738,7 +738,7 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(input16.outpoint.index == 0)
                 
                 
-                XCTAssertTrue(count(transaction.outputs) == 2)
+                XCTAssertTrue(transaction.outputs.count == 2)
                 let output0 = transaction.outputs[0] as! BTCTransactionOutput
                 XCTAssertTrue(output0.script.hex == "76a9144a5fba237213a062f6f57978f796390bdcf8d01588ac")
                 XCTAssertTrue(output0.value == 400057456)
@@ -748,8 +748,8 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(output1.value == 40000000000)
                 XCTAssertTrue(output1.script.standardAddress.base58String == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
                 
-                XCTAssertTrue(count(realToAddresses) == 2)
-                XCTAssertTrue(count(stealthPaymentTxidsClaiming) == 0)
+                XCTAssertTrue(realToAddresses.count == 2)
+                XCTAssertTrue(stealthPaymentTxidsClaiming.count == 0)
                 XCTAssertTrue(realToAddresses[0] == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
                 XCTAssertTrue(realToAddresses[1] == "17nFgS1YaDPnXKMPQkZVdNQqZnVqRgBwnZ")
             }
@@ -796,7 +796,7 @@ class ArcBitTests: XCTestCase {
 
                 let transaction = BTCTransaction(hex: txHex)
                 
-                XCTAssertTrue(count(transaction.inputs) == 2)
+                XCTAssertTrue(transaction.inputs.count == 2)
                 let input0 = transaction.inputs[0] as! BTCTransactionInput
                 XCTAssertTrue(input0.previousTransactionID == txid0)
                 XCTAssertTrue(input0.outpoint.index == 0)
@@ -804,7 +804,7 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(input1.previousTransactionID == txid1)
                 XCTAssertTrue(input1.outpoint.index == 1)
                 
-                XCTAssertTrue(count(transaction.outputs) == 3)
+                XCTAssertTrue(transaction.outputs.count == 3)
                 let output0 = transaction.outputs[0] as! BTCTransactionOutput
                 XCTAssertTrue(output0.script.hex == "6a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd")
                 XCTAssertTrue(output0.value == 0)
@@ -818,8 +818,8 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(output2.value == 2400000000)
                 XCTAssertTrue(output2.script.standardAddress.base58String == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
                 
-                XCTAssertTrue(count(realToAddresses) == 2)
-                XCTAssertTrue(count(stealthPaymentTxidsClaiming) == 0)
+                XCTAssertTrue(realToAddresses.count == 2)
+                XCTAssertTrue(stealthPaymentTxidsClaiming.count == 0)
                 XCTAssertTrue(realToAddresses[0] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
                 XCTAssertTrue(realToAddresses[1] == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
             }
@@ -848,7 +848,7 @@ class ArcBitTests: XCTestCase {
 
                 let transaction = BTCTransaction(hex: txHex)
                 
-                XCTAssertTrue(count(transaction.inputs) == 2)
+                XCTAssertTrue(transaction.inputs.count == 2)
                 let input0 = transaction.inputs[0] as! BTCTransactionInput
                 XCTAssertTrue(input0.previousTransactionID == txid0)
                 XCTAssertTrue(input0.outpoint.index == 0)
@@ -856,7 +856,7 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(input1.previousTransactionID == txid1)
                 XCTAssertTrue(input1.outpoint.index == 1)
                 
-                XCTAssertTrue(count(transaction.outputs) == 3)
+                XCTAssertTrue(transaction.outputs.count == 3)
                 let output0 = transaction.outputs[0] as! BTCTransactionOutput
                 XCTAssertTrue(output0.script.hex == "6a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd")
                 XCTAssertTrue(output0.value == 0)
@@ -870,8 +870,8 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(output2.value == 2400000000)
                 XCTAssertTrue(output2.script.standardAddress.base58String == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
                 
-                XCTAssertTrue(count(realToAddresses) == 2)
-                XCTAssertTrue(count(stealthPaymentTxidsClaiming) == 0)
+                XCTAssertTrue(realToAddresses.count == 2)
+                XCTAssertTrue(stealthPaymentTxidsClaiming.count == 0)
                 XCTAssertTrue(realToAddresses[0] == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
                 XCTAssertTrue(realToAddresses[1] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
             }
@@ -966,7 +966,7 @@ class ArcBitTests: XCTestCase {
                 
                 let transaction = BTCTransaction(hex: txHex)
                 
-                XCTAssertTrue(count(transaction.inputs) == 17)
+                XCTAssertTrue(transaction.inputs.count == 17)
                 let input0 = transaction.inputs[0] as! BTCTransactionInput
                 XCTAssertTrue(input0.previousTransactionID == txid0)
                 XCTAssertTrue(input0.outpoint.index == 0)
@@ -1019,7 +1019,7 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(input16.previousTransactionID == txid16)
                 XCTAssertTrue(input16.outpoint.index == 0)
                 
-                XCTAssertTrue(count(transaction.outputs) == 3)
+                XCTAssertTrue(transaction.outputs.count == 3)
                 let output0 = transaction.outputs[0] as! BTCTransactionOutput
                 XCTAssertTrue(output0.script.hex == "6a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd")
                 XCTAssertTrue(output0.value == 0)
@@ -1033,8 +1033,8 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(output2.value == 40000000000)
                 XCTAssertTrue(output2.script.standardAddress.base58String == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
                 
-                XCTAssertTrue(count(realToAddresses) == 2)
-                XCTAssertTrue(count(stealthPaymentTxidsClaiming) == 0)
+                XCTAssertTrue(realToAddresses.count == 2)
+                XCTAssertTrue(stealthPaymentTxidsClaiming.count == 0)
                 XCTAssertTrue(realToAddresses[0] == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
                 XCTAssertTrue(realToAddresses[1] == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
             }
@@ -1079,7 +1079,7 @@ class ArcBitTests: XCTestCase {
                 
                 let transaction = BTCTransaction(hex: txHex)
                 
-                XCTAssertTrue(count(transaction.inputs) == 17)
+                XCTAssertTrue(transaction.inputs.count == 17)
                 let input0 = transaction.inputs[0] as! BTCTransactionInput
                 XCTAssertTrue(input0.previousTransactionID == txid0)
                 XCTAssertTrue(input0.outpoint.index == 0)
@@ -1133,7 +1133,7 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(input16.outpoint.index == 0)
                 
                 
-                XCTAssertTrue(count(transaction.outputs) == 3)
+                XCTAssertTrue(transaction.outputs.count == 3)
                 let output0 = transaction.outputs[0] as! BTCTransactionOutput
                 XCTAssertTrue(output0.script.hex == "6a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd")
                 XCTAssertTrue(output0.value == 0)
@@ -1148,8 +1148,8 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(output2.script.standardAddress.base58String == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
                 
                 
-                XCTAssertTrue(count(realToAddresses) == 2)
-                XCTAssertTrue(count(stealthPaymentTxidsClaiming) == 0)
+                XCTAssertTrue(realToAddresses.count == 2)
+                XCTAssertTrue(stealthPaymentTxidsClaiming.count == 0)
                 XCTAssertTrue(realToAddresses[0] == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
                 XCTAssertTrue(realToAddresses[1] == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
             }
@@ -1192,7 +1192,7 @@ class ArcBitTests: XCTestCase {
                 
                 let transaction = BTCTransaction(hex: txHex)
                 
-                XCTAssertTrue(count(transaction.inputs) == 2)
+                XCTAssertTrue(transaction.inputs.count == 2)
                 let input0 = transaction.inputs[0] as! BTCTransactionInput
                 XCTAssertTrue(input0.previousTransactionID == txid0)
                 XCTAssertTrue(input0.outpoint.index == 0)
@@ -1200,7 +1200,7 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(input1.previousTransactionID == txid1)
                 XCTAssertTrue(input1.outpoint.index == 1)
                 
-                XCTAssertTrue(count(transaction.outputs) == 2)
+                XCTAssertTrue(transaction.outputs.count == 2)
                 let output0 = transaction.outputs[0] as! BTCTransactionOutput
                 XCTAssertTrue(output0.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
                 XCTAssertTrue(output0.value == 800000000)
@@ -1210,8 +1210,8 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(output1.value == 900000000)
                 XCTAssertTrue(output1.script.standardAddress.base58String == changeAddress0)
                 
-                XCTAssertTrue(count(realToAddresses) == 1)
-                XCTAssertTrue(count(stealthPaymentTxidsClaiming) == 0)
+                XCTAssertTrue(realToAddresses.count == 1)
+                XCTAssertTrue(stealthPaymentTxidsClaiming.count == 0)
                 XCTAssertTrue(realToAddresses[0] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
             }
             
@@ -1238,12 +1238,12 @@ class ArcBitTests: XCTestCase {
                 
                 let transaction = BTCTransaction(hex: txHex)
                 
-                XCTAssertTrue(count(transaction.inputs) == 1)
+                XCTAssertTrue(transaction.inputs.count == 1)
                 let input0 = transaction.inputs[0] as! BTCTransactionInput
                 XCTAssertTrue(input0.previousTransactionID == txid1)
                 XCTAssertTrue(input0.outpoint.index == 1)
                 
-                XCTAssertTrue(count(transaction.outputs) == 2)
+                XCTAssertTrue(transaction.outputs.count == 2)
                 let output0 = transaction.outputs[0] as! BTCTransactionOutput
                 XCTAssertTrue(output0.script.hex == "76a91482d6e3eb4cb25dfd325b4af06948d3a2e064a5f788ac")
                 XCTAssertTrue(output0.value == 200000000)
@@ -1253,8 +1253,8 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(output1.value == 800000000)
                 XCTAssertTrue(output1.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
                 
-                XCTAssertTrue(count(realToAddresses) == 1)
-                XCTAssertTrue(count(stealthPaymentTxidsClaiming) == 0)
+                XCTAssertTrue(realToAddresses.count == 1)
+                XCTAssertTrue(stealthPaymentTxidsClaiming.count == 0)
                 XCTAssertTrue(realToAddresses[0] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
             }
             
@@ -1297,7 +1297,7 @@ class ArcBitTests: XCTestCase {
                 
                 let transaction = BTCTransaction(hex: txHex)
                 
-                XCTAssertTrue(count(transaction.inputs) == 2)
+                XCTAssertTrue(transaction.inputs.count == 2)
                 let input0 = transaction.inputs[0] as! BTCTransactionInput
                 XCTAssertTrue(input0.previousTransactionID == txid0)
                 XCTAssertTrue(input0.outpoint.index == 0)
@@ -1305,7 +1305,7 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(input1.previousTransactionID == txid1)
                 XCTAssertTrue(input1.outpoint.index == 1)
                 
-                XCTAssertTrue(count(transaction.outputs) == 2)
+                XCTAssertTrue(transaction.outputs.count == 2)
                 let output0 = transaction.outputs[0] as! BTCTransactionOutput
                 XCTAssertTrue(output0.script.hex == "76a91489c55a3ca6676c9f7f260a6439c83249b747380288ac")
                 XCTAssertTrue(output0.value == 100000000)
@@ -1315,8 +1315,8 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(output1.value == 100000000)
                 XCTAssertTrue(output1.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
                 
-                XCTAssertTrue(count(realToAddresses) == 2)
-                XCTAssertTrue(count(stealthPaymentTxidsClaiming) == 0)
+                XCTAssertTrue(realToAddresses.count == 2)
+                XCTAssertTrue(stealthPaymentTxidsClaiming.count == 0)
                 XCTAssertTrue(realToAddresses[0] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
                 XCTAssertTrue(realToAddresses[1] == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
             }

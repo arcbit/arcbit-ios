@@ -24,7 +24,7 @@
 import Foundation
 import UIKit
 
-@objc class TLPrompts {
+class TLPrompts {
     
     typealias EnterPINSuccess = () -> ()
     typealias EnterPINFailure = (Bool) -> ()
@@ -51,7 +51,7 @@ import UIKit
                 ,
                 tapBlock: {(alertView, action, buttonIndex) in
                     if (buttonIndex == alertView.firstOtherButtonIndex) {
-                        let inputedText = (alertView.textFields![0] as! UITextField).text
+                        let inputedText = (alertView.textFields![0] ).text
                         success(inputedText)
                     } else if (buttonIndex == alertView.cancelButtonIndex) {
                         failure(true)
@@ -196,10 +196,10 @@ import UIKit
                 if (buttonIndex == alertView.firstOtherButtonIndex) {
                     TLHUDWrapper.showHUDAddedTo(view, labelText: "Decrypting Private Key".localized, animated: true)
                     
-                    let password = (alertView.textFields![0] as! UITextField).text
+                    let password = (alertView.textFields![0] ).text
                     
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
-                        let privKey = TLCoreBitcoinWrapper.privateKeyFromEncryptedPrivateKey(encryptedPrivKey, password: password, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)
+                        let privKey = TLCoreBitcoinWrapper.privateKeyFromEncryptedPrivateKey(encryptedPrivKey, password: password!, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)
                         dispatch_async(dispatch_get_main_queue()) {
                             TLHUDWrapper.hideHUDForView(view, animated: true)
                             

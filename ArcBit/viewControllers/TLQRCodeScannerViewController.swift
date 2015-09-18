@@ -29,7 +29,7 @@ import AVFoundation
     private let n = 66
     private let DEFAULT_HEADER_HEIGHT = 66
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -52,18 +52,18 @@ import AVFoundation
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        var app = AppDelegate.instance()
+        let app = AppDelegate.instance()
         self.view.frame = CGRectMake(0, 0, app.window!.frame.size.width, app.window!.frame.size.height - CGFloat(DEFAULT_HEADER_HEIGHT))
         
-        var topBarView = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width, CGFloat(DEFAULT_HEADER_HEIGHT)))
+        let topBarView = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width, CGFloat(DEFAULT_HEADER_HEIGHT)))
         topBarView.backgroundColor = TLColors.mainAppColor()
         self.view.addSubview(topBarView)
         
-        var logo = UIImageView(image: UIImage(named: "top_menu_logo.png"))
+        let logo = UIImageView(image: UIImage(named: "top_menu_logo.png"))
         logo.frame = CGRectMake(88, 22, 143, 40)
         topBarView.addSubview(logo)
         
-        var closeButton = UIButton(frame: CGRectMake(self.view.frame.size.width - 70, 15, 80, 51))
+        let closeButton = UIButton(frame: CGRectMake(self.view.frame.size.width - 70, 15, 80, 51))
         closeButton.setTitle("Close".localized, forState: UIControlState.Normal)
         closeButton.setTitleColor(UIColor(white:0.56, alpha: 1.0), forState: UIControlState.Highlighted)
         closeButton.titleLabel!.font = UIFont.systemFontOfSize(15)
@@ -80,34 +80,40 @@ import AVFoundation
     func startReadingQRCode() -> () {
         var error: NSError?
         
-        var captureDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
+        let captureDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
         
-        var input: AnyObject! = AVCaptureDeviceInput.deviceInputWithDevice(captureDevice, error: &error)
+        var input: AnyObject!
+        do {
+            input = try AVCaptureDeviceInput(device: captureDevice) as AVCaptureDeviceInput
+        } catch let error1 as NSError {
+            error = error1
+            input = nil
+        }
         if (input == nil) {
             // This should not happen - all devices we support have cameras
-            DLog("QR code scanner problem: %@", error!.localizedDescription)
+            DLog("QR code scanner problem: %@", function: error!.localizedDescription)
             return
         }
         
         captureSession = AVCaptureSession()
         captureSession!.addInput(input as! AVCaptureInput!)
         
-        var captureMetadataOutput = AVCaptureMetadataOutput()
+        let captureMetadataOutput = AVCaptureMetadataOutput()
         captureSession!.addOutput(captureMetadataOutput)
         
-        var dispatchQueue = dispatch_queue_create("myQueue", nil)
+        let dispatchQueue = dispatch_queue_create("myQueue", nil)
         captureMetadataOutput.setMetadataObjectsDelegate(self, queue: dispatchQueue)
         captureMetadataOutput.metadataObjectTypes = [AVMetadataObjectTypeQRCode]
         
         videoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession)
         videoPreviewLayer?.videoGravity = (AVLayerVideoGravityResizeAspectFill)
         
-        var app = AppDelegate.instance()
-        var frame = CGRectMake(0, CGFloat(DEFAULT_HEADER_HEIGHT), app.window!.frame.size.width, app.window!.frame.size.height - CGFloat(DEFAULT_HEADER_HEIGHT))
+        let app = AppDelegate.instance()
+        let frame = CGRectMake(0, CGFloat(DEFAULT_HEADER_HEIGHT), app.window!.frame.size.width, app.window!.frame.size.height - CGFloat(DEFAULT_HEADER_HEIGHT))
         
         videoPreviewLayer!.frame = frame
         
-        self.view.layer.addSublayer(videoPreviewLayer)
+        self.view.layer.addSublayer(videoPreviewLayer!)
         
         captureSession!.startRunning()
     }
@@ -135,11 +141,11 @@ import AVFoundation
         didOutputMetadataObjects metadataObjects: [AnyObject]!,
         fromConnection connection: AVCaptureConnection!) -> () {
         if (metadataObjects != nil && metadataObjects!.count > 0) {
-            var metadataObj: AnyObject = metadataObjects![0]
+            let metadataObj: AnyObject = metadataObjects![0]
             if (metadataObj.type == AVMetadataObjectTypeQRCode) {
                 // do something useful with results
                 dispatch_sync(dispatch_get_main_queue()) {
-                    var data = metadataObj.stringValue
+                    let data = metadataObj.stringValue
                     
                     if (self.success != nil) {
                         self.success!(data)

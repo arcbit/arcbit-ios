@@ -25,7 +25,7 @@ import CoreData
 
 @objc(TLHistoryViewController) class TLHistoryViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UIAlertViewDelegate {
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -199,7 +199,7 @@ import CoreData
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) -> () {
         if (segue.identifier == "selectAccount") {
-            let vc = segue.destinationViewController as! UIViewController
+            let vc = segue.destinationViewController 
             vc.navigationItem.title = "Select Account".localized
             
             NSNotificationCenter.defaultCenter().addObserver(self
@@ -223,7 +223,7 @@ import CoreData
         
         cell!.amountButton!.titleEdgeInsets = UIEdgeInsetsMake(0.0, 5.0, 0.0, 5.0)
         let txObject = AppDelegate.instance().historySelectedObject!.getTxObject(indexPath.row)
-        DLog("txObject hash: %@", txObject!.getHash()!)
+        DLog("txObject hash: %@", function: txObject!.getHash()!)
         cell!.dateLabel!.text = txObject!.getTime()
         
         let amount = TLWalletUtils.getProperAmount(AppDelegate.instance().historySelectedObject!.getAccountAmountChangeForTx(txObject!.getHash()! as String)!)
@@ -273,7 +273,7 @@ import CoreData
         cell!.amountButton!.setTitle(String(format: "%@%@", amountTypeString, amount), forState: .Normal)
         
         let confirmations = txObject!.getConfirmations()
-        DLog("confirmations %ld", Int(confirmations))
+        DLog("confirmations %ld", function: Int(confirmations))
         
         if (Int(confirmations) > MAX_CONFIRMATIONS_TO_DISPLAY) {
             cell!.confirmationsLabel!.text = String(format: "%llu confirmations".localized, txObject!.getConfirmations()) // label is hidden
@@ -365,9 +365,9 @@ import CoreData
         })
     }
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [AnyObject]? {
+    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
         let moreAction = UITableViewRowAction(style: .Default, title: "More".localized, handler: {
-            (action: UITableViewRowAction!, indexPath: NSIndexPath!) in
+            (action: UITableViewRowAction, indexPath: NSIndexPath) in
             tableView.editing = false
             let txObject = AppDelegate.instance().historySelectedObject!.getTxObject(indexPath.row)
             

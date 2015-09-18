@@ -22,7 +22,7 @@
 
 import Foundation
 
-@objc class TLHDWalletWrapper {
+class TLHDWalletWrapper {
     
     class func getBIP44KeyChain(masterHex:NSString, accountIdx:UInt) -> BTCKeychain{
         let seed = BTCDataWithHexCString(masterHex.UTF8String)
@@ -80,7 +80,7 @@ import Foundation
         let scanPrivSequence = [["idx":100, "hardened":true],
             ["idx":0, "hardened":false]]
         for _idxHardened in scanPrivSequence {
-            var idxHardened = _idxHardened as NSDictionary
+            let idxHardened = _idxHardened as NSDictionary
             scanKeyChain = scanKeyChain.derivedKeychainAtIndex(UInt32(idxHardened.objectForKey("idx") as! Int),
                 hardened:idxHardened.objectForKey("hardened") as! Bool)
         }
@@ -107,32 +107,32 @@ import Foundation
     }
     
     class func getAccountIdxForExtendedKey(extendedKey:String) -> UInt32 {
-        var keyChain = BTCKeychain(extendedKey:extendedKey)
+        let keyChain = BTCKeychain(extendedKey:extendedKey)
         return keyChain.index    }
     
     
     class func isValidExtendedPublicKey(extendedPublicKey:String) -> Bool {
-        var keyChain = BTCKeychain(extendedKey:extendedPublicKey)
+        let keyChain = BTCKeychain(extendedKey:extendedPublicKey)
         return (keyChain != nil && !keyChain.isPrivate)
     }
     
     class func isValidExtendedPrivateKey(extendedPrivateKey:String) -> Bool {
-        var keyChain = BTCKeychain(extendedKey:extendedPrivateKey)
+        let keyChain = BTCKeychain(extendedKey:extendedPrivateKey)
         return (keyChain != nil && keyChain.isPrivate)
     }
     
     class func getExtendPubKey(extendPrivKey:String) -> String{
-        var keyChain = BTCKeychain(extendedKey:extendPrivKey)
+        let keyChain = BTCKeychain(extendedKey:extendPrivKey)
         return keyChain.extendedPublicKey
     }
     
     class func getExtendPubKeyFromMasterHex(masterHex:String, accountIdx:UInt) -> String{
-        var accountKeychain = getBIP44KeyChain(masterHex, accountIdx:accountIdx)
+        let accountKeychain = getBIP44KeyChain(masterHex, accountIdx:accountIdx)
         return accountKeychain.extendedPublicKey
     }
     
     class func getExtendPrivKey(masterHex:String, accountIdx:UInt) -> String{
-        var accountKeychain = getBIP44KeyChain(masterHex, accountIdx:accountIdx)
+        let accountKeychain = getBIP44KeyChain(masterHex, accountIdx:accountIdx)
         
         return accountKeychain.extendedPrivateKey
     }
@@ -141,7 +141,7 @@ import Foundation
         var keyChain = BTCKeychain(extendedKey:extendPubKey)
         
         for _idx in sequence {
-            var idx = _idx as! Int
+            let idx = _idx as! Int
             keyChain = keyChain.derivedKeychainAtIndex(UInt32(idx), hardened:false)
         }
         
@@ -156,7 +156,7 @@ import Foundation
         var keyChain = BTCKeychain(extendedKey:extendPrivKey as String)
         
         for _idx in sequence {
-            var idx = _idx as! Int
+            let idx = _idx as! Int
             keyChain = keyChain.derivedKeychainAtIndex(UInt32(idx), hardened:false)
         }
         

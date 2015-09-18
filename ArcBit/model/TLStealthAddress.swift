@@ -22,7 +22,7 @@
 
 import Foundation
 
-@objc class TLStealthAddress {
+class TLStealthAddress {
     
     struct STATIC_MEMBERS {
         static let STEALTH_ADDRESS_MSG_SIZE: NSInteger = 26
@@ -54,7 +54,7 @@ import Foundation
         }
         let stealthAddressHex = data.hex()
         
-        if (stealthAddressHex != nil && count(stealthAddressHex) != 142) {
+        if (stealthAddressHex != nil && stealthAddressHex.characters.count != 142) {
             return false
         }
         
@@ -126,10 +126,10 @@ import Foundation
     }
     
     class func getEphemeralPublicKeyFromStealthDataScript(scriptHex: String) -> (String?) {
-        if (count(scriptHex) != 80) {
+        if (scriptHex.characters.count != 80) {
             return nil
         }
-        return (scriptHex as NSString).substringWithRange(NSMakeRange(14, count(scriptHex) - 14))
+        return (scriptHex as NSString).substringWithRange(NSMakeRange(14, scriptHex.characters.count - 14))
     }
     
     class func getPaymentAddressPrivateKeySecretFromScript(stealthDataScript: String, scanPrivateKey: String, spendPrivateKey: String) -> (String?) {
@@ -153,7 +153,7 @@ import Foundation
         let data = BTCDataFromBase58Check(stealthAddress)
         let stealthAddressHex = data.hex()
         
-        assert(count(stealthAddressHex) == 142, "stealthAddressHex.length != 142")
+        assert(stealthAddressHex.characters.count == 142, "stealthAddressHex.length != 142")
         var bytes = [UInt8](count: data.length, repeatedValue: 0)
         data.getBytes(&bytes, length: data.length)
         assert(bytes[0] == getMagicByte(isTestnet), "stealth address contains invalid magic byte")
@@ -217,7 +217,7 @@ import Foundation
         let lhsBigNumber = BTCBigNumber(unsignedBigEndian: BTCDataFromHex(lhsPrivateKey))
         let rhsBigNumber = BTCBigNumber(unsignedBigEndian: BTCDataFromHex(rhsPrivateKey))
         var hexString = lhsBigNumber.mutableCopy().add(rhsBigNumber, mod:BTCCurvePoint.curveOrder()).hexString as String
-        while count(hexString) < 64 {
+        while hexString.characters.count < 64 {
             hexString = "0" + hexString
         }
         return hexString

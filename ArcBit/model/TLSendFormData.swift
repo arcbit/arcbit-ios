@@ -28,7 +28,7 @@ enum TLSelectObjectType:Int {
     case Address       = 2
 }
 
-@objc class TLSendFormData {
+class TLSendFormData {
     struct STATIC_MEMBERS{
         static var _instance:TLSendFormData? = nil
     }

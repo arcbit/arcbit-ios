@@ -33,7 +33,7 @@ import Foundation
 import UIKit
 
 @objc(TLHelpViewController) class TLHelpViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -74,7 +74,7 @@ import UIKit
     
     override func prepareForSegue(segue: UIStoryboardSegue, sender:AnyObject!) -> () {
         if (segue.identifier == "SegueAchievements") {
-            let vc = segue.destinationViewController as! UIViewController
+            let vc = segue.destinationViewController 
             vc.navigationItem.title = "Achievements".localized
         } else if (segue.identifier == "SegueText") {
             let vc = segue.destinationViewController as! TLTextViewViewController
@@ -163,7 +163,7 @@ import UIKit
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath:NSIndexPath) -> UITableViewCell{
         let MyIdentifier = "HowToCellIdentifier"
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier) as! UITableViewCell?
+        var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier) 
         if (cell == nil) {
             cell = UITableViewCell(style:UITableViewCellStyle.Default,
                 reuseIdentifier:MyIdentifier)

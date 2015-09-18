@@ -23,7 +23,7 @@
 
 import Foundation
 
-@objc class TLUtils {
+class TLUtils {
 
     class func getiOSVersion() -> Int {
         let versionArray = UIDevice.currentDevice().systemVersion.componentsSeparatedByString(".")
@@ -44,9 +44,14 @@ import Foundation
     
     class func dictionaryToJSONString(prettyPrint: Bool, dict: NSDictionary) -> String {
         var error: NSError? = nil
-        let jsonData = NSJSONSerialization.dataWithJSONObject(dict,
-            options: (prettyPrint ? NSJSONWritingOptions.PrettyPrinted : NSJSONWritingOptions(rawValue: 0)) as NSJSONWritingOptions,
-            error: &error)
+        let jsonData: NSData?
+        do {
+            jsonData = try NSJSONSerialization.dataWithJSONObject(dict,
+                        options: (prettyPrint ? NSJSONWritingOptions.PrettyPrinted : NSJSONWritingOptions(rawValue: 0)) as NSJSONWritingOptions)
+        } catch let error1 as NSError {
+            error = error1
+            jsonData = nil
+        }
         assert(jsonData != nil, "jsonData not valid")
         return NSString(data: jsonData!, encoding: NSUTF8StringEncoding)! as String
     }
@@ -54,9 +59,14 @@ import Foundation
     class func JSONStringToDictionary(jsonString: String) -> NSDictionary {
         var error: NSError? = nil
         let jsonData = jsonString.dataUsingEncoding(NSUTF8StringEncoding)
-        let jsonDict:AnyObject? = NSJSONSerialization.JSONObjectWithData(jsonData!,
-            options: NSJSONReadingOptions.MutableContainers,
-            error: &error)
+        let jsonDict:AnyObject?
+        do {
+            jsonDict = try NSJSONSerialization.JSONObjectWithData(jsonData!,
+                        options: NSJSONReadingOptions.MutableContainers)
+        } catch let error1 as NSError {
+            error = error1
+            jsonDict = nil
+        }
         assert(error == nil, "Invalid JSON string")
         return jsonDict as! NSDictionary
     }

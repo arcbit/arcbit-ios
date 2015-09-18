@@ -45,7 +45,7 @@ enum TLStealthPaymentStatus:Int {
 }
 
 
-@objc class TLWallet {
+class TLWallet {
     
     class func WALLET_PAYLOAD_KEY_LABEL() -> (String)
     {

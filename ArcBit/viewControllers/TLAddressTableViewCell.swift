@@ -24,7 +24,7 @@ import Foundation
 import UIKit
 
 @objc(TLAddressTableViewCell) class TLAddressTableViewCell:UITableViewCell {
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     

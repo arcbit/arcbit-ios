@@ -77,7 +77,7 @@ import UIKit
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath:NSIndexPath) -> UITableViewCell{
         let MyIdentifier = "AchievementCellIdentifier"
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier) as! UITableViewCell?
+        var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier) 
         if (cell == nil) {
             cell = UITableViewCell(style:UITableViewCellStyle.Default,
                 reuseIdentifier:MyIdentifier)
@@ -85,7 +85,7 @@ import UIKit
         cell!.textLabel!.numberOfLines = 0
 
         if(indexPath.section == 0) {
-            var event = eventActionArray!.objectAtIndex(indexPath.row) as! String
+            let event = eventActionArray!.objectAtIndex(indexPath.row) as! String
             if (TLAchievements.instance().hasDoneAction(event)) {
                 cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
             } else {
@@ -93,7 +93,7 @@ import UIKit
             }
             cell!.textLabel!.text = TLHelpDoc.getActionEventToHowToActionTitleDict().objectForKey(event) as? String
         } else {
-            var event = advanceeventActionArray!.objectAtIndex(indexPath.row) as! String
+            let event = advanceeventActionArray!.objectAtIndex(indexPath.row) as! String
             if (TLAchievements.instance().hasDoneAction(event)) {
                 cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
             } else {

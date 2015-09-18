@@ -22,7 +22,7 @@
 
 import Foundation
 
-@objc class TLAchievements {
+class TLAchievements {
     struct STATIC_MEMBERS {
         static var _instance:TLAchievements? = nil
     }

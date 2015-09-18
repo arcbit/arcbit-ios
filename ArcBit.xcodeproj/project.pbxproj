@@ -1297,6 +1297,8 @@
 		C0A18F861ABF51C200BED648 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
+				LastSwiftMigration = 0700;
+				LastSwiftUpdateCheck = 0700;
 				LastUpgradeCheck = 0620;
 				ORGANIZATIONNAME = ArcBit;
 				TargetAttributes = {

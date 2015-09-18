@@ -23,7 +23,7 @@
 import Foundation
 import UIKit
 @objc(TLMenuViewController) class TLMenuViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -68,7 +68,7 @@ import UIKit
     
     func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath:NSIndexPath) -> UITableViewCell{
         let MyIdentifier = "MenuCell"
-        var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier) as! UITableViewCell?
+        var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier) 
         if (cell == nil) {
             cell = UITableViewCell(style:UITableViewCellStyle.Default,
                 reuseIdentifier:MyIdentifier)
@@ -126,17 +126,17 @@ import UIKit
 
     func tableView(tableView:UITableView, didSelectRowAtIndexPath indexPath:NSIndexPath) -> () {
         if (indexPath.row == 0) {
-            self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("SendNav") as! UIViewController
+            self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("SendNav") 
         } else if (indexPath.row == 1) {
-            self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("ReceiveNav")  as! UIViewController
+            self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("ReceiveNav")  
         } else if (indexPath.row == 2) {
-            self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("HistoryNav")  as! UIViewController
+            self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("HistoryNav")  
         } else if (indexPath.row == 3) {
-            self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("ManageAccountNav")  as! UIViewController
+            self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("ManageAccountNav")  
         } else if (indexPath.row == 4) {
-            self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("HelpNav")  as! UIViewController
+            self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("HelpNav")  
         } else {
-            self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("SettingsNav")  as! UIViewController
+            self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("SettingsNav")  
         }
         
         self.slidingViewController().resetTopViewAnimated(true)

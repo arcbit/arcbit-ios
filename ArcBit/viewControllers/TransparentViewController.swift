@@ -25,7 +25,7 @@ import UIKit
 
 @objc(TransparentViewController) class TransparentViewController:UIViewController {
     
-    required init(coder aDecoder: NSCoder) {
+    required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
@@ -34,6 +34,6 @@ import UIKit
     }
     
     override func viewWillAppear(animated: Bool) {
-        self.slidingViewController()!.topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("SendNav") as! UIViewController
+        self.slidingViewController()!.topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("SendNav") 
     }
 }

@@ -23,7 +23,7 @@
 import UIKit
 import AVFoundation
 
-@objc(TLSettingsViewController) class TLSettingsViewController:IASKAppSettingsViewController, UITableViewDataSource, UITableViewDelegate, IASKSettingsDelegate,LTHPasscodeViewControllerDelegate, MFMailComposeViewControllerDelegate {
+@objc(TLSettingsViewController) class TLSettingsViewController:IASKAppSettingsViewController, IASKSettingsDelegate,LTHPasscodeViewControllerDelegate {
     
     override func preferredStatusBarStyle() -> (UIStatusBarStyle) {
         return .LightContent
@@ -125,13 +125,13 @@ import AVFoundation
             ,
             tapBlock: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView.firstOtherButtonIndex) {
-                    let candidate = (alertView.textFields![0] as! UITextField).text
+                    let candidate = (alertView.textFields![0] ).text
                     
-                    let candidateURL = NSURL(string: candidate)
+                    let candidateURL = NSURL(string: candidate!)
                     
-                    if (candidateURL != nil && candidateURL!.scheme != nil && candidateURL!.host != nil) {
-                        TLPreferences.setInAppSettingsKitBlockExplorerURL(candidateURL!.absoluteString!)
-                        TLPreferences.setBlockExplorerURL(TLPreferences.getBlockExplorerAPI(), value: candidateURL!.absoluteString!)
+                    if (candidateURL != nil && candidateURL!.host != nil) {
+                        TLPreferences.setInAppSettingsKitBlockExplorerURL(candidateURL!.absoluteString)
+                        TLPreferences.setBlockExplorerURL(TLPreferences.getBlockExplorerAPI(), value: candidateURL!.absoluteString)
                         TLPrompts.promptSuccessMessage("Notice".localized, message: "You must exit and kill this app in order for this to take effect.".localized)
                     } else {
                         UIAlertController.showAlertInViewController(self,
@@ -172,9 +172,9 @@ import AVFoundation
             ,
             tapBlock: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView.firstOtherButtonIndex) {
-                    let feeAmount = (alertView.textFields![0] as! UITextField).text
+                    let feeAmount = (alertView.textFields![0] ).text
                     
-                    let feeAmountCoin = TLWalletUtils.bitcoinAmountStringToCoin(feeAmount)
+                    let feeAmountCoin = TLWalletUtils.bitcoinAmountStringToCoin(feeAmount!)
                     if (TLWalletUtils.isValidInputTransactionFee(feeAmountCoin)) {
                         TLPreferences.setInAppSettingsKitTransactionFee(feeAmountCoin.bigIntegerToBitcoinAmountString(.Bitcoin))
                         NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_CHANGE_AUTOMATIC_TX_FEE(), object: nil)
@@ -184,7 +184,7 @@ import AVFoundation
                         
                         TLPrompts.promtForOKCancel(self, title: "Non-recommended Amount Transaction Fee".localized, message: msg, success: {
                             () in
-                            let amount = TLWalletUtils.bitcoinAmountStringToCoin(feeAmount)
+                            let amount = TLWalletUtils.bitcoinAmountStringToCoin(feeAmount!)
                             TLPreferences.setInAppSettingsKitTransactionFee(amount.bigIntegerToBitcoinAmountString(.Bitcoin))
                             NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_CHANGE_AUTOMATIC_TX_FEE(), object: nil)
                             
@@ -412,10 +412,10 @@ import AVFoundation
         } else if (specifier.key() == "emailsupport") {
             self.showEmailSupportViewController()
         } else if (specifier.key() == "showpassphrase") {
-            let vc = self.storyboard!.instantiateViewControllerWithIdentifier("Passphrase") as! UIViewController
+            let vc = self.storyboard!.instantiateViewControllerWithIdentifier("Passphrase") 
             self.slidingViewController().presentViewController(vc, animated: true, completion: nil)
         } else if (specifier.key() == "restorewallet") {
-            let vc = self.storyboard!.instantiateViewControllerWithIdentifier("EnterMnemonic") as! UIViewController
+            let vc = self.storyboard!.instantiateViewControllerWithIdentifier("EnterMnemonic") 
             self.slidingViewController().presentViewController(vc, animated: true, completion: nil)
             
         } else if (specifier.key() == "settransactionfee") {

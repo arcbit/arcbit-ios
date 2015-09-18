@@ -106,11 +106,11 @@ import Foundation
     }
     
     func getPaymentAddresses() -> Array<String> {
-        return self.paymentAddress2PrivateKeyDict.keys.array
+        return [String](self.paymentAddress2PrivateKeyDict.keys)
     }
     
     func getUnspentPaymentAddresses() -> Array<String> {
-        return self.unspentPaymentAddress2PaymentTxid.keys.array
+        return [String](self.unspentPaymentAddress2PaymentTxid.keys)
     }
     
     func getStealthAddressspendPublicKey() -> String {
@@ -303,7 +303,7 @@ import Foundation
 
     func addOrSetStealthPaymentsWithStatus(txidArray: [String], addressArray: [String], txTimeArray: [UInt64], isAddingPayments: Bool, waitForCompletion: Bool) -> () {
         var jsonData:AnyObject? = nil
-        if count(txidArray) > 0 {
+        if txidArray.count > 0 {
             jsonData = TLBlockExplorerAPI.instance().getUnspentOutputsSynchronous(addressArray)
             if let HTTPErrorCode: AnyObject = jsonData![TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE] {
                 return
@@ -328,7 +328,7 @@ import Foundation
         let group = dispatch_group_create()
         let nowTime = UInt64(NSDate().timeIntervalSince1970)
 
-        for var i = 0; i < count(txidArray); i++ {
+        for var i = 0; i < txidArray.count; i++ {
             let txid = txidArray[i]
             let paymentAddress = addressArray[i]
             let txTime = txTimeArray[i]
@@ -350,7 +350,7 @@ import Foundation
                         }
                         return
                     }
-                    if find(stealthDataScriptAndOutputAddresses!.1, paymentAddress) != nil {
+                    if (stealthDataScriptAndOutputAddresses!.1).indexOf(paymentAddress) != nil {
                         let txObject = TLTxObject(dict:jsonData as! NSDictionary)
                         
                         //Note: this confirmation count is not the confirmations for the tx that spent the stealth payment
@@ -403,7 +403,7 @@ import Foundation
                             }
                             return
                         }
-                        if find(stealthDataScriptAndOutputAddresses.1, paymentAddress) != nil {
+                        if (stealthDataScriptAndOutputAddresses.1).indexOf(paymentAddress) != nil {
                             if isAddingPayments {
                                 if let privateKey = self.generateAndAddStealthAddressPaymentKey(stealthDataScriptAndOutputAddresses.0!, expectedAddress: paymentAddress,
                                     txid: txid, txTime: txTime, stealthPaymentStatus: TLStealthPaymentStatus.Unspent) {
@@ -471,7 +471,7 @@ import Foundation
             addressArray.append(addr)
             txTimeArray.append(UInt64((payment.objectForKey("time") as! NSNumber).unsignedLongLongValue))
         }
-        if count(txidArray) == 0 {
+        if txidArray.count == 0 {
             return (gotOldestPaymentAddresses, latestTxTime, [])
         }
 
@@ -493,7 +493,7 @@ import Foundation
                     outputAddresses.append(addr)
                 } else {
                     let script = output.objectForKey("script") as! String
-                    if count(script) == 80 {
+                    if script.characters.count == 80 {
                         stealthDataScript = script
                     }
                     
@@ -518,7 +518,7 @@ import Foundation
             self.accountObject!.addStealthAddressPaymentKey(privateKey, address: expectedAddress, txid: txid, txTime: txTime, stealthPaymentStatus: TLStealthPaymentStatus.Unspent)
             return privateKey
         } else {
-            DLog("error key not found for address %@", expectedAddress)
+            DLog("error key not found for address %@", function: expectedAddress)
             return nil
         }
     }

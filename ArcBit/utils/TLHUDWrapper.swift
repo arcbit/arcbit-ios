@@ -23,28 +23,28 @@
 import Foundation
 import UIKit
 
-@objc class TLHUDWrapper {
+class TLHUDWrapper {
     struct STATIC_MEMBERS {
         static var LOADING_BACKGROUND_VIEW_TAG = 618033
         static var BACKGROUND_VIEW_ALPHA = 0.7
     }
     
     class func showHUDAddedTo(view:UIView, labelText:String, animated:Bool) -> () {
-        var subView = UIView(frame: view.frame)
+        let subView = UIView(frame: view.frame)
         subView.backgroundColor = UIColor.blackColor()
         subView.alpha = CGFloat(STATIC_MEMBERS.BACKGROUND_VIEW_ALPHA)
         subView.tag = STATIC_MEMBERS.LOADING_BACKGROUND_VIEW_TAG
         
         AppDelegate.instance().window!.addSubview(subView)
         
-        var hud = MBProgressHUD.showHUDAddedTo(AppDelegate.instance().window, animated:animated)
+        let hud = MBProgressHUD.showHUDAddedTo(AppDelegate.instance().window, animated:animated)
         hud.labelText = labelText
     }
     
     class func hideHUDForView(view:UIView, animated:(Bool)) -> () {
         MBProgressHUD.hideHUDForView(AppDelegate.instance().window, animated:true)
         
-        for subview in AppDelegate.instance().window!.subviews as! [UIView] {
+        for subview in AppDelegate.instance().window!.subviews {
             if (subview.tag == STATIC_MEMBERS.LOADING_BACKGROUND_VIEW_TAG) {
                 subview.removeFromSuperview()
                 break

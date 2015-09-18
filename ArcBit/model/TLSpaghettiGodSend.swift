@@ -217,7 +217,7 @@
                         
                         let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript, isTestnet: self.appWallet.walletConfig.isTestnet)
                         if (address == nil) {
-                            DLog("address cannot be decoded. not normal pubkeyhash outputScript: %@", outputScript)
+                            DLog("address cannot be decoded. not normal pubkeyhash outputScript: %@", function: outputScript)
                             continue
                         }
                         
@@ -231,7 +231,7 @@
                     
                     for _address in address2UnspentOutputs {
                         let address = _address.key as! String
-                        let idx = find(addresses, address)
+                        let idx = addresses.indexOf(address)
                         let importedAddress = self.sendFromAddresses!.objectAtIndex(idx!) as! TLImportedAddress
                         importedAddress.setUnspentOutputs(address2UnspentOutputs.objectForKey(address) as! NSArray)
                     }
@@ -252,10 +252,10 @@
             var outputValueSum = TLCoin.zero()
 
             for _toAddressAndAmount in toAddressesAndAmounts {
-                var amount = (_toAddressAndAmount as! NSDictionary).objectForKey("amount") as! TLCoin
+                let amount = (_toAddressAndAmount as! NSDictionary).objectForKey("amount") as! TLCoin
                 outputValueSum = outputValueSum.add(amount)
             }
-            var valueNeeded = outputValueSum.add(feeAmount)
+            let valueNeeded = outputValueSum.add(feeAmount)
             
             var valueSelected = TLCoin.zero()
             
@@ -284,7 +284,7 @@
                         
                         let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript, isTestnet: self.appWallet.walletConfig.isTestnet)
                         if (address == nil) {
-                            DLog("address cannot be decoded. not normal pubkeyhash outputScript: %@", outputScript)
+                            DLog("address cannot be decoded. not normal pubkeyhash outputScript: %@", function: outputScript)
                             continue
                         }
                         assert(address == changeAddress, "! address == changeAddress")
@@ -332,11 +332,11 @@
                             
                             valueSelected = valueSelected.add(TLCoin(uint64:amount))
                             let outputScript = unspentOutput.objectForKey("script") as! String
-                            DLog("createSignedSerializedTransactionHex outputScript: %@", outputScript)
+                            DLog("createSignedSerializedTransactionHex outputScript: %@", function: outputScript)
                             
                             let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript, isTestnet: self.appWallet.walletConfig.isTestnet)
                             if (address == nil) {
-                                DLog("address cannot be decoded. not normal pubkeyhash outputScript: %@", outputScript)
+                                DLog("address cannot be decoded. not normal pubkeyhash outputScript: %@", function: outputScript)
                                 continue
                             }
                             
@@ -374,11 +374,11 @@
                             valueSelected = valueSelected.add(TLCoin(uint64:amount))
                             
                             let outputScript = unspentOutput.objectForKey("script") as! String
-                            DLog("createSignedSerializedTransactionHex outputScript: %@", outputScript)
+                            DLog("createSignedSerializedTransactionHex outputScript: %@", function: outputScript)
                             
                             let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript, isTestnet: self.appWallet.walletConfig.isTestnet)
                             if (address == nil) {
-                                DLog("address cannot be decoded. not normal pubkeyhash outputScript: %@", outputScript)
+                                DLog("address cannot be decoded. not normal pubkeyhash outputScript: %@", function: outputScript)
                                 continue
                             }
                             
@@ -397,15 +397,15 @@
                 }
             }
             
-            DLog("createSignedSerializedTransactionHex valueSelected %@", valueSelected.toString())
-            DLog("createSignedSerializedTransactionHex valueNeeded %@", valueNeeded.toString())
+            DLog("createSignedSerializedTransactionHex valueSelected %@", function: valueSelected.toString())
+            DLog("createSignedSerializedTransactionHex valueNeeded %@", function: valueNeeded.toString())
             var realToAddresses = [String]()
             if (valueSelected.less(valueNeeded)) {
                 if (dustAmount > 0) {
                     let dustCoinAmount = TLCoin(uint64:dustAmount)
-                    DLog("createSignedSerializedTransactionHex dustAmount %llu", Int(dustAmount))
-                    DLog("createSignedSerializedTransactionHex dustCoinAmount %@", dustCoinAmount.toString())
-                    DLog("createSignedSerializedTransactionHex valueNeeded %@", valueNeeded.toString())
+                    DLog("createSignedSerializedTransactionHex dustAmount %llu", function: Int(dustAmount))
+                    DLog("createSignedSerializedTransactionHex dustCoinAmount %@", function: dustCoinAmount.toString())
+                    DLog("createSignedSerializedTransactionHex valueNeeded %@", function: valueNeeded.toString())
                     let amountCanSendString = TLWalletUtils.coinToProperBitcoinAmountString(valueNeeded.subtract(dustCoinAmount))
                     error(String(format: "Insufficient Funds. Account contains bitcoin dust. You can only send up to %@ %@ for now.".localized, amountCanSendString, TLWalletUtils.getBitcoinDisplay()))
                     return (nil, stealthPaymentTxidsClaiming, realToAddresses)
@@ -438,8 +438,8 @@
                     let stealthDataScriptAndPaymentAddress = TLStealthAddress.createDataScriptAndPaymentAddress(toAddress,
                         ephemeralPrivateKey: ephemeralPrivateKey, nonce: stealthDataScriptNonce, isTestnet: self.appWallet.walletConfig.isTestnet)
                     
-                    DLog("createSignedSerializedTransactionHex stealthDataScript: %@", stealthDataScriptAndPaymentAddress.0)
-                    DLog("createSignedSerializedTransactionHex paymentAddress: %@", stealthDataScriptAndPaymentAddress.1)
+                    DLog("createSignedSerializedTransactionHex stealthDataScript: %@", function: stealthDataScriptAndPaymentAddress.0)
+                    DLog("createSignedSerializedTransactionHex paymentAddress: %@", function: stealthDataScriptAndPaymentAddress.1)
                     stealthOutputScripts!.addObject(stealthDataScriptAndPaymentAddress.0)
                     let paymentAddress = stealthDataScriptAndPaymentAddress.1
                     realToAddresses.append(paymentAddress)
@@ -459,10 +459,10 @@
                 }
             }
             
-            DLog("createSignedSerializedTransactionHex changeAmount : %@", changeAmount.toString())
-            DLog("createSignedSerializedTransactionHex feeAmount: %@", feeAmount.toString())
-            DLog("createSignedSerializedTransactionHex valueSelected: %@", valueSelected.toString())
-            DLog("createSignedSerializedTransactionHex valueNeeded: %@", valueNeeded.toString())
+            DLog("createSignedSerializedTransactionHex changeAmount : %@", function: changeAmount.toString())
+            DLog("createSignedSerializedTransactionHex feeAmount: %@", function: feeAmount.toString())
+            DLog("createSignedSerializedTransactionHex valueSelected: %@", function: valueSelected.toString())
+            DLog("createSignedSerializedTransactionHex valueNeeded: %@", function: valueNeeded.toString())
             
             if valueNeeded.greater(valueSelected) {
                 NSException(name:"Send Error", reason:"not enough unspent outputs", userInfo:nil).raise()
@@ -506,10 +506,10 @@
                 return NSComparisonResult.OrderedSame
             }
             
-            var hashes = NSMutableArray()
-            var inputIndexes = NSMutableArray()
-            var inputScripts = NSMutableArray()
-            var privateKeys = NSMutableArray()
+            let hashes = NSMutableArray()
+            let inputIndexes = NSMutableArray()
+            let inputScripts = NSMutableArray()
+            let privateKeys = NSMutableArray()
             for _sortedInput in sortedInputs {
                 let sortedInput = _sortedInput as! NSDictionary
                 hashes.addObject(sortedInput.objectForKey("tx_hash")!)
@@ -540,7 +540,7 @@
                     let firstScriptBytes = UnsafePointer<UInt8>(firstScriptData.bytes)
                     let secondScriptBytes = UnsafePointer<UInt8>(secondScriptData.bytes)
 
-                    for (var i = 0; i < count(firstScript)/2; i++) {
+                    for (var i = 0; i < firstScript.characters.count/2; i++) {
                         if firstScriptBytes[i] < secondScriptBytes[i] {
                             return NSComparisonResult.OrderedAscending
                         } else if firstScriptBytes[i] > secondScriptBytes[i] {
@@ -552,8 +552,8 @@
                 }
             }
             
-            var outputAmounts = NSMutableArray()
-            var outputAddresses = NSMutableArray()
+            let outputAmounts = NSMutableArray()
+            let outputAddresses = NSMutableArray()
             for _sortedOutput in sortedOutputs {
                 let sortedOutput = _sortedOutput as! NSDictionary
                 outputAddresses.addObject(sortedOutput.objectForKey("to_address")!)
@@ -561,17 +561,17 @@
             }
             
             
-            DLog("createSignedSerializedTransactionHex hashes: %@", hashes.debugDescription)
-            DLog("createSignedSerializedTransactionHex inputIndexes: %@", inputIndexes.debugDescription)
-            DLog("createSignedSerializedTransactionHex inputScripts: %@", inputScripts.debugDescription)
-            DLog("createSignedSerializedTransactionHex outputAddresses: %@", outputAddresses.debugDescription)
-            DLog("createSignedSerializedTransactionHex outputAmounts: %@", outputAmounts.debugDescription)
-            DLog("createSignedSerializedTransactionHex privateKeys: %@", privateKeys.debugDescription)
+            DLog("createSignedSerializedTransactionHex hashes: %@", function: hashes.debugDescription)
+            DLog("createSignedSerializedTransactionHex inputIndexes: %@", function: inputIndexes.debugDescription)
+            DLog("createSignedSerializedTransactionHex inputScripts: %@", function: inputScripts.debugDescription)
+            DLog("createSignedSerializedTransactionHex outputAddresses: %@", function: outputAddresses.debugDescription)
+            DLog("createSignedSerializedTransactionHex outputAmounts: %@", function: outputAmounts.debugDescription)
+            DLog("createSignedSerializedTransactionHex privateKeys: %@", function: privateKeys.debugDescription)
             for i in 0...3 {
                 let txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(hashes, inputIndexes:inputIndexes, inputScripts:inputScripts,
                     outputAddresses:outputAddresses, outputAmounts:outputAmounts, privateKeys:privateKeys,
                     outputScripts:stealthOutputScripts, isTestnet: self.appWallet.walletConfig.isTestnet)
-                DLog("createSignedSerializedTransactionHex txHexAndTxHash: %@", txHexAndTxHash.debugDescription)
+                DLog("createSignedSerializedTransactionHex txHexAndTxHash: %@", function: txHexAndTxHash.debugDescription)
                 if txHexAndTxHash != nil {
                     return (txHexAndTxHash!, stealthPaymentTxidsClaiming, realToAddresses)
                 }

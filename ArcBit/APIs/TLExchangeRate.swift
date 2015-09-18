@@ -22,7 +22,7 @@
 
 import Foundation
 
-@objc class TLExchangeRate {
+class TLExchangeRate {
     struct STATIC_MEMBERS {
         static var instance:TLExchangeRate?
     }

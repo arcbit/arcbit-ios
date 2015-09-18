@@ -50,7 +50,7 @@ enum TLAccountAddressType: Int {
 }
 
 
-@objc class TLWalletUtils {
+class TLWalletUtils {
     typealias Error = () -> ()
     typealias Success = () -> ()
     
@@ -181,7 +181,7 @@ enum TLAccountAddressType: Int {
         bitcoinFormatter.locale = locale
         let amountNumber = bitcoinFormatter.numberFromString(amount)
         
-        if count(amount) != 0 {
+        if amount.characters.count != 0 {
             if let range = amount.rangeOfCharacterFromSet(NSCharacterSet(charactersInString: "0123456789.,").invertedSet) {
                 return TLCoin.zero()
             } else {
@@ -279,16 +279,16 @@ enum TLAccountAddressType: Int {
     }
     
     class func getCurrencySymbol() -> String {
-        return getCurrencySymbolArray().objectAtIndex(TLPreferences.getCurrencyIdx()!.toInt()!) as! String
+        return getCurrencySymbolArray().objectAtIndex(Int(TLPreferences.getCurrencyIdx()!)!) as! String
     }
     
     class func getFiatCurrency() -> String {
-        return getCurrencyArray().objectAtIndex(TLPreferences.getCurrencyIdx()!.toInt()!) as! String
+        return getCurrencyArray().objectAtIndex(Int(TLPreferences.getCurrencyIdx()!)!) as! String
     }
     
     class func getProperCurrency() -> String {
         if (TLPreferences.isDisplayLocalCurrency()) {
-            return getCurrencyArray().objectAtIndex(TLPreferences.getCurrencyIdx()!.toInt()!) as! String
+            return getCurrencyArray().objectAtIndex(Int(TLPreferences.getCurrencyIdx()!)!) as! String
         } else {
             return getBitcoinDisplay()
         }

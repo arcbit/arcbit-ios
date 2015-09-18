@@ -89,7 +89,7 @@ import Foundation
                 
                 self.socket!.onError = {
                     (data: [NSObject:AnyObject]!) in
-                    DLog("socketio error: %@", data)
+                    DLog("socketio error: %@", function: data)
                 }
                 
                 self.socket!.onReconnectionAttempt = {
@@ -99,7 +99,7 @@ import Foundation
                 
                 self.socket!.onReconnectionError = {
                     (data: [NSObject:AnyObject]!) in
-                    DLog("socketio reconnection error: %@", data)
+                    DLog("socketio reconnection error: %@", function: data)
                 }
                 
                 self.socket!.on("block", callback: {
@@ -108,7 +108,7 @@ import Foundation
                     let data: AnyObject? = args.firstObject
                     // data!.debugDescription is lastest block hash
                     // can't use this to update confirmations on transactions because insight tx does not contain blockheight field
-                    DLog("socketio received lastest block hash: %@", data!.debugDescription ?? "")
+                    DLog("socketio received lastest block hash: %@", function: data!.debugDescription ?? "")
                 })
             })
         }
@@ -116,14 +116,14 @@ import Foundation
     
     func isWebSocketOpen() -> Bool {
         if (blockExplorerAPI == TLBlockExplorer.Blockchain) {
-            return self.webSocket != nil && self.webSocket!.readyState.value == SR_OPEN.value
+            return self.webSocket != nil && self.webSocket!.readyState.rawValue == SR_OPEN.rawValue
         } else {
             return self.socketIsConnected
         }
     }
     
     private func sendWebSocketMessage(msg: String) -> Bool {
-        DLog("sendWebSocketMessage msg: %@", msg)
+        DLog("sendWebSocketMessage msg: %@", function: msg)
         if self.isWebSocketOpen() {
             self.webSocket!.send(msg)
             return true
@@ -159,8 +159,8 @@ import Foundation
                         let data: AnyObject? = args.firstObject
                         
                         let txHash = data!.debugDescription ?? ""
-                        DLog("socketio on address: %@", address)
-                        DLog("socketio transaction: %@", txHash)
+                        DLog("socketio on address: %@", function: address)
+                        DLog("socketio transaction: %@", function: txHash)
                         
                         //TODO: temp solution, ask Insight devs to get all tx data in websockets API
                         TLBlockExplorerAPI.instance().getTx(txHash, success: {
@@ -220,7 +220,7 @@ import Foundation
     }
     
     func webSocket(webSocket:SRWebSocket, didFailWithError error:NSError) -> () {
-        DLog("blockchain.info Websocket didFailWithError %@", error.description)
+        DLog("blockchain.info Websocket didFailWithError %@", function: error.description)
         
         self.webSocket!.delegate = nil
         self.webSocket!.close()
@@ -232,10 +232,10 @@ import Foundation
     
     func webSocket(webSocket: SRWebSocket, didReceiveMessage message: AnyObject) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
-            var data = message.dataUsingEncoding(NSUTF8StringEncoding)
+            let data = message.dataUsingEncoding(NSUTF8StringEncoding)
             
             var error: NSError?
-            var jsonDict = NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions(0), error: &error) as! NSDictionary
+            let jsonDict = (try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions(rawValue: 0))) as! NSDictionary
             DLog("blockchain.info didReceiveMessage \(jsonDict.description)")
 
             if (jsonDict.objectForKey("op") as! String == "utx") {

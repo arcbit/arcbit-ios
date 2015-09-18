@@ -23,7 +23,7 @@
 
 import Foundation
 
-@objc class TLNotificationEvents {
+class TLNotificationEvents {
     class func EVENT_ACCOUNT_SELECTED() -> String { return "event.account.selected"}
     class func EVENT_ADDRESS_SELECTED() -> String { return "event.address.selected"}
     class func EVENT_PREFERENCES_FIAT_DISPLAY_CHANGED() -> String { return "pref.fiatcurrencychanged"}

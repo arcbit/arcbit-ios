@@ -93,7 +93,7 @@ import UIKit
     }
     
     func dismissDialog(notification: NSNotification) -> () {
-        for subview in alertView.dialogView.subviews as! [UIView] {
+        for subview in alertView.dialogView.subviews {
             if (subview is UIButton) {
                 let button = subview as! UIButton
                 if (button.titleLabel!.text == STATIC_MEMBERS.DISMISS_TEXT) {
