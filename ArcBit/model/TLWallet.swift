@@ -176,7 +176,6 @@ class TLWallet {
         static let WALLET_PAYLOAD_KEY_ADDRESS_BOOK = "address_book"
         static let WALLET_PAYLOAD_KEY_TRANSACTION_TAGS = "tx_tags"
         
-        static let STEALTH_ADDRESS_ADDRESSES_MAX = 100
         static var _instance: TLWallet? = nil
     }
     
@@ -185,17 +184,6 @@ class TLWallet {
     private var rootDict: NSMutableDictionary?
     private var currentHDWalletIdx: Int?
     private var masterHex: String?
-    
-    class func createAddressKey(changeIdx: Int, addressIdx: Int) -> String {
-        return String(format: "%lu,%lu", changeIdx, addressIdx)
-    }
-    
-    private func createAccountDict(accountName: String, extendedKey: String,
-        isPrivateExtendedKey: Bool, accountIdx: Int) -> (NSMutableDictionary) {
-            return createAccountDictWithPreload(accountName, extendedKey: extendedKey, isPrivateExtendedKey: isPrivateExtendedKey,
-                accountIdx: accountIdx, preloadStartingAddresses: true)
-    }
-    
     
     init(walletName: String, walletConfig: TLWalletConfig) {
         self.walletName = walletName
@@ -859,12 +847,6 @@ class TLWallet {
         return accountObjectArray
     }
     
-    func getImportedAddressObjectAtIdx(idx: Int) -> (TLImportedAddress) {
-        let importedKeysDict = getImportedKeysDict()
-        let importedAddress = importedKeysDict.objectForKey(STATIC_MEMBERS.WALLET_PAYLOAD_IMPORTED_ACCOUNTS) as! NSDictionary
-        return TLImportedAddress(appWallet: self, dict: importedAddress)
-    }
-    
     func addImportedPrivateKey(privateKey: String, encryptedPrivateKey: String?) -> (NSDictionary) {
         let importedKeysDict = getImportedKeysDict()
         let importedPrivateKeyArray = importedKeysDict.objectForKey(STATIC_MEMBERS.WALLET_PAYLOAD_IMPORTED_PRIVATE_KEYS) as! NSMutableArray
@@ -930,12 +912,6 @@ class TLWallet {
             importedAddressesObjectArray.addObject(importedAddressObject)
         }
         return importedAddressesObjectArray
-    }
-    
-    func getImportedWatchAddressObjectAtIdx(idx: Int) -> (TLImportedAddress) {
-        let importedKeysDict = getImportedKeysDict()
-        let importedAddress = importedKeysDict.objectForKey(STATIC_MEMBERS.WALLET_PAYLOAD_IMPORTED_PRIVATE_KEYS) as! NSDictionary
-        return TLImportedAddress(appWallet: self, dict: importedAddress)
     }
     
     func addWatchOnlyAddress(address: NSString) -> (NSDictionary) {
