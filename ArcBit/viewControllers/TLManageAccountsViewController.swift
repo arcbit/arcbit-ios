@@ -691,7 +691,7 @@ import UIKit
                     
                     self.promtForNameAccount({
                         (accountName: String!) in
-                        AppDelegate.instance().importedAccounts!.editLabel(accountName, accountIdx: accountObject.getAccountIdx())
+                        AppDelegate.instance().importedAccounts!.editLabel(accountName, accountIdx: accountObject.getAccountIdxNumber())
                         NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_EDIT_ACCOUNT_NAME(), object: nil, userInfo: nil)
                         self._accountsTableViewReloadDataWrapper()
                         }
@@ -762,7 +762,7 @@ import UIKit
             } else if (buttonIndex == RENAME_ACCOUNT_BUTTON_IDX) {
                 self.promtForNameAccount({
                     (accountName: String!) in
-                    AppDelegate.instance().importedWatchAccounts!.editLabel(accountName, accountIdx: accountObject.getAccountIdx())
+                    AppDelegate.instance().importedWatchAccounts!.editLabel(accountName, accountIdx: accountObject.getAccountIdxNumber())
                     self._accountsTableViewReloadDataWrapper()
                 }, failure: {
                     (isCancelled: Bool) in
@@ -1330,7 +1330,7 @@ import UIKit
     }
 
     private func promptToArchiveAccountHDWalletAccount(accountObject: TLAccountObject) -> () {
-        if (accountObject.getAccountIdx() == 0) {
+        if (accountObject.getAccountIdxNumber() == 0) {
             let av = UIAlertView(title: "Cannot archive your default account".localized,
                     message: "",
                     delegate: nil,
@@ -1539,7 +1539,7 @@ import UIKit
                                 if (accountName == nil || accountName == "") {
                                     accountName = accountObject.getDefaultNameAccount()
                                 }
-                                AppDelegate.instance().importedAccounts!.editLabel(accountName!, accountIdx: accountObject.getAccountIdx())
+                                AppDelegate.instance().importedAccounts!.editLabel(accountName!, accountIdx: accountObject.getAccountIdxNumber())
                                 let av = UIAlertView(title: String(format: "Account %@ imported".localized, accountName!),
                                     message: nil,
                                     delegate: nil,
@@ -1606,7 +1606,7 @@ import UIKit
                                 if (accountName == nil || accountName == "") {
                                     accountName = accountObject.getDefaultNameAccount()
                                 }
-                                AppDelegate.instance().importedWatchAccounts!.editLabel(accountName!, accountIdx: Int(accountObject.getAccountIdx()))
+                                AppDelegate.instance().importedWatchAccounts!.editLabel(accountName!, accountIdx: Int(accountObject.getAccountIdxNumber()))
                             
                                 let titleStr = String(format: "Account %@ imported".localized, accountName!)
                                 let av = UIAlertView(title: titleStr,

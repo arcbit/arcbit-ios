@@ -188,7 +188,7 @@ import Foundation
 
         
         if (accountType == TLAccountType.HDWallet) {
-            positionInWalletArray = getAccountIdx()
+            positionInWalletArray = getAccountIdxNumber()
         } else if (accountType == TLAccountType.Imported) {
             //set later in accounts
         } else if (accountType == TLAccountType.ImportedWatch) {
@@ -271,15 +271,11 @@ import Foundation
     }
     
     func getAccountID() -> (String) {
-        let accountidx = accountDict!.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_IDX) as! Int
-        return String(accountidx)
+        let accountIdx = accountDict!.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_IDX) as! Int
+        return String(accountIdx)
     }
     
     func getAccountIdxNumber() -> (Int) {
-        return accountDict!.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_IDX) as! Int
-    }
-    
-    func getAccountIdx() -> Int {
         return accountDict!.objectForKey(TLWallet.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_IDX) as! Int
     }
     
