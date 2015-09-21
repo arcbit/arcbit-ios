@@ -135,6 +135,13 @@ class TLCoreBitcoinWrapper {
         return (privateKey as NSString).substringWithRange(NSMakeRange(0, 2)) == "6P"
     }
     
+    class func getSignature(privateKey:String, message:String) -> String {
+        let key = BTCKey(privateKey: BTCDataFromHex(privateKey))
+        let signature = key.signatureForMessage(message)
+        assert(key.isValidSignature(signature, forMessage: message), "")
+        return signature.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength);
+    }
+    
     class func createSignedSerializedTransactionHex(hashes:NSArray, inputIndexes indexes:NSArray, inputScripts scripts:NSArray,
         outputAddresses:NSArray, outputAmounts amounts:NSArray, privateKeys:NSArray,
         outputScripts:NSArray?, isTestnet:Bool) -> NSDictionary? {

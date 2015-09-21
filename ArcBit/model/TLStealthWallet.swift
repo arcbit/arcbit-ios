@@ -273,11 +273,9 @@ import Foundation
 
     func getStealthAddressAndSignatureFromChallenge(challenge: String) -> (String, String) {
         let privKey = self.getStealthAddressScanKey()
-        let key = BTCKey(privateKey: BTCDataFromHex(privKey))
-        let signature = key.signatureForMessage(challenge)
-        assert(key.isValidSignature(signature, forMessage: challenge), "")
+        let signature = TLCoreBitcoinWrapper.getSignature(privKey, message: challenge);
         let stealthAddress = self.getStealthAddress()
-        return (stealthAddress, signature.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength))
+        return (stealthAddress, signature);
     }
     
     class func getChallengeAndSign(stealthAddress: String, privKey: String, pubKey: String) -> String? {
@@ -293,12 +291,8 @@ import Foundation
         
         let challenge = TLStealthWallet.Challenge.challenge
         
-        let key = BTCKey(privateKey: BTCDataFromHex(privKey))
         DLog("getChallengeAndSign \(challenge)")
-        let signature = key.signatureForMessage(challenge)
-        assert(key.isValidSignature(signature, forMessage: challenge), "")
-        
-        return signature.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
+        return TLCoreBitcoinWrapper.getSignature(privKey, message: challenge);
     }
 
     func addOrSetStealthPaymentsWithStatus(txidArray: [String], addressArray: [String], txTimeArray: [UInt64], isAddingPayments: Bool, waitForCompletion: Bool) -> () {
