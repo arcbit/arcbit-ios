@@ -1286,9 +1286,9 @@ import UIKit
                     if (accountObject.getAccountType() == .HDWallet) {
                         AppDelegate.instance().accounts!.unarchiveAccount(accountObject.getAccountIdxNumber())
                     } else if (accountObject.getAccountType() == .Imported) {
-                        AppDelegate.instance().importedAccounts!.unarchiveAccount(accountObject.getPositionInWalletArrayNumber())
+                        AppDelegate.instance().importedAccounts!.unarchiveAccount(accountObject.getPositionInWalletArray())
                     } else if (accountObject.getAccountType() == .ImportedWatch) {
-                        AppDelegate.instance().importedWatchAccounts!.unarchiveAccount(accountObject.getPositionInWalletArrayNumber())
+                        AppDelegate.instance().importedWatchAccounts!.unarchiveAccount(accountObject.getPositionInWalletArray())
                     }
                     
                     if !accountObject.isWatchOnly() && !accountObject.stealthWallet!.hasUpdateStealthPaymentStatuses {
@@ -1317,9 +1317,9 @@ import UIKit
                     if (accountObject.getAccountType() == .HDWallet) {
                         AppDelegate.instance().accounts!.archiveAccount(accountObject.getAccountIdxNumber())
                     } else if (accountObject.getAccountType() == .Imported) {
-                        AppDelegate.instance().importedAccounts!.archiveAccount(accountObject.getPositionInWalletArrayNumber())
+                        AppDelegate.instance().importedAccounts!.archiveAccount(accountObject.getPositionInWalletArray())
                     } else if (accountObject.getAccountType() == .ImportedWatch) {
-                        AppDelegate.instance().importedWatchAccounts!.archiveAccount(accountObject.getPositionInWalletArrayNumber())
+                        AppDelegate.instance().importedWatchAccounts!.archiveAccount(accountObject.getPositionInWalletArray())
                     }
                     self._accountsTableViewReloadDataWrapper()
                     NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_ARCHIVE_ACCOUNT(), object: nil, userInfo: nil)

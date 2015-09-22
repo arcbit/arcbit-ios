@@ -61,7 +61,7 @@ import Foundation
         self.accountsArray.addObject(accountObject)
         let positionInWalletArray = self.getNumberOfAccounts()+getNumberOfArchivedAccounts()-1
         accountObject.setPositionInWalletArray(positionInWalletArray)
-        self.accountsDict!.setObject(accountObject, forKey:accountObject.getPositionInWalletArrayNumber())
+        self.accountsDict!.setObject(accountObject, forKey:accountObject.getPositionInWalletArray())
         
         editLabel(accountObject.getDefaultNameAccount(), accountIdx:positionInWalletArray)
         
@@ -225,14 +225,14 @@ import Foundation
             self.appWallet!.deleteWatchOnlyAccount(accountObject.getPositionInWalletArray())
         }
         
-        self.accountsDict!.removeObjectForKey(accountObject.getPositionInWalletArrayNumber())
+        self.accountsDict!.removeObjectForKey(accountObject.getPositionInWalletArray())
         
         let tmpDict = self.accountsDict!.copy() as! NSDictionary
         for (key, value) in tmpDict {
             let ao = self.accountsDict!.objectForKey(key) as! TLAccountObject
             if (ao.getPositionInWalletArray() > accountObject.getPositionInWalletArray()) {
                 ao.setPositionInWalletArray(ao.getPositionInWalletArray()-1)
-                self.accountsDict!.setObject(ao, forKey:ao.getPositionInWalletArrayNumber())
+                self.accountsDict!.setObject(ao, forKey:ao.getPositionInWalletArray())
             }
         }
         

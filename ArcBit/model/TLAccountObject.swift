@@ -752,10 +752,6 @@ import Foundation
         return positionInWalletArray
     }
     
-    func getPositionInWalletArrayNumber() -> Int {
-        return positionInWalletArray
-    }
-    
     func setPositionInWalletArray(idx: Int) -> () {
         positionInWalletArray = idx
     }
