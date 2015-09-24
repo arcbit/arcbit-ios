@@ -56,24 +56,6 @@ class TLWalletJson {
         return walletJsonEncryptedWrapperString
     }
     
-    class func saveWalletJson(walletfile: String, date: NSDate) -> (Bool) {
-        let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true) as NSArray
-        let documentsDirectory: AnyObject = paths.objectAtIndex(0)
-        let filePath = documentsDirectory.stringByAppendingPathComponent(TLWalletJson.getWalletJsonFileName())
-        
-        var error: NSError? = nil
-        do {
-            try walletfile.writeToFile(filePath, atomically: true, encoding: NSUTF8StringEncoding)
-        } catch let error1 as NSError {
-            error = error1
-        }
-        if (error != nil) {
-            return false
-        } else {
-            return true
-        }
-    }
-    
     class func getWalletJsonDict(encryptedWalletJSONFileContent: String?, password: String?) -> (NSDictionary?) {
         if encryptedWalletJSONFileContent == nil {
             return nil
@@ -101,6 +83,35 @@ class TLWalletJson {
         return walletDict
     }
     
+    class func decryptWalletJSONFile(encryptedWalletJSONFile: String?, password: String?) -> (String?) {
+        if (encryptedWalletJSONFile == nil || password == nil) {
+            return nil
+        }
+        assert(TLHDWalletWrapper.phraseIsValid(password!), "phrase is invalid")
+        let encryptJSONPassword = TLCrypto.doubleSHA256HashFor(password!)
+        let str = TLCrypto.decrypt(encryptedWalletJSONFile!, password: encryptJSONPassword)
+        //DLog("getWalletJsonString: %@", str)
+        return str
+    }
+    
+    class func saveWalletJson(walletfile: String, date: NSDate) -> (Bool) {
+        let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true) as NSArray
+        let documentsDirectory: AnyObject = paths.objectAtIndex(0)
+        let filePath = documentsDirectory.stringByAppendingPathComponent(TLWalletJson.getWalletJsonFileName())
+        
+        var error: NSError? = nil
+        do {
+            try walletfile.writeToFile(filePath, atomically: true, encoding: NSUTF8StringEncoding)
+        } catch let error1 as NSError {
+            error = error1
+        }
+        if (error != nil) {
+            return false
+        } else {
+            return true
+        }
+    }
+    
     class func getLocalWalletJSONFile() -> (String?) {
         let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true) as NSArray
         let documentsDirectory: AnyObject = paths.objectAtIndex(0)
@@ -118,16 +129,5 @@ class TLWalletJson {
         } catch _ {
             return nil
         }
-    }
-    
-    class func decryptWalletJSONFile(encryptedWalletJSONFile: String?, password: String?) -> (String?) {
-        if (encryptedWalletJSONFile == nil || password == nil) {
-            return nil
-        }
-        assert(TLHDWalletWrapper.phraseIsValid(password!), "phrase is invalid")
-        let encryptJSONPassword = TLCrypto.doubleSHA256HashFor(password!)
-        let str = TLCrypto.decrypt(encryptedWalletJSONFile!, password: encryptJSONPassword)
-        //DLog("getWalletJsonString: %@", str)
-        return str
     }
 }
