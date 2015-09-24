@@ -46,16 +46,16 @@ import Foundation
         super.init()
         self.appWallet = appWallet
         addressDict = NSMutableDictionary(dictionary:dict)
-        importedAddress = addressDict!.objectForKey(TLWallet.WALLET_PAYLOAD_KEY_ADDRESS()) as! String?
+        importedAddress = addressDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String?
         unspentOutputs = NSMutableArray()
         processedTxDict = NSMutableDictionary()
-        if (addressDict!.objectForKey(TLWallet.WALLET_PAYLOAD_KEY_KEY()) != nil) {
+        if (addressDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_KEY) != nil) {
             self.watchOnly = false
         } else {
             self.watchOnly = true
         }
         
-        self.archived = addressDict!.objectForKey(TLWallet.WALLET_PAYLOAD_KEY_STATUS()) as! Int == TLAddressStatus.Archived.rawValue
+        self.archived = addressDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS) as! Int == TLAddressStatus.Archived.rawValue
         resetAccountBalances()
     }
     
@@ -163,7 +163,7 @@ import Foundation
     }
     
     func getAddress() -> String {
-        return addressDict!.objectForKey(TLWallet.WALLET_PAYLOAD_KEY_ADDRESS()) as! String
+        return addressDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String
     }
     
     func getEitherPrivateKeyOrEncryptedPrivateKey() -> String? {
@@ -199,14 +199,14 @@ import Foundation
     }
     
     func getLabel() -> (String) {
-        if (addressDict!.objectForKey(TLWallet.WALLET_PAYLOAD_KEY_LABEL()) as? String == nil ||
-            addressDict!.objectForKey(TLWallet.WALLET_PAYLOAD_KEY_LABEL()) as! String == "")
+        if (addressDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL) as? String == nil ||
+            addressDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL) as! String == "")
         {
-            return addressDict!.objectForKey(TLWallet.WALLET_PAYLOAD_KEY_ADDRESS()) as! String
+            return addressDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String
         }
         else
         {
-            return addressDict!.objectForKey(TLWallet.WALLET_PAYLOAD_KEY_LABEL()) as! String
+            return addressDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL) as! String
         }
     }
     
@@ -363,7 +363,7 @@ import Foundation
     }
     
     func setLabel(label:NSString) -> (){
-        addressDict!.setObject(label, forKey:TLWallet.WALLET_PAYLOAD_KEY_LABEL())
+        addressDict!.setObject(label, forKey:TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL)
     }
     
     private func resetAccountBalances() -> () {

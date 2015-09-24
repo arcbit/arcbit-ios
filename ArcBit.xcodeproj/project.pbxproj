@@ -381,6 +381,9 @@
 		F3BC36111B8681FF00CBB3F7 /* TLUpdateAppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BC36101B8681FF00CBB3F7 /* TLUpdateAppData.swift */; };
 		F3BC36121B8681FF00CBB3F7 /* TLUpdateAppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BC36101B8681FF00CBB3F7 /* TLUpdateAppData.swift */; };
 		F3BC36131B8681FF00CBB3F7 /* TLUpdateAppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BC36101B8681FF00CBB3F7 /* TLUpdateAppData.swift */; };
+		F3DAAD661BB1D9EC000488F0 /* TLWalletJSONKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DAAD651BB1D9EC000488F0 /* TLWalletJSONKeys.swift */; settings = {ASSET_TAGS = (); }; };
+		F3F1651A1BB1DB7E00F1293A /* TLWalletJSONKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DAAD651BB1D9EC000488F0 /* TLWalletJSONKeys.swift */; settings = {ASSET_TAGS = (); }; };
+		F3F1651B1BB1DB7F00F1293A /* TLWalletJSONKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DAAD651BB1D9EC000488F0 /* TLWalletJSONKeys.swift */; settings = {ASSET_TAGS = (); }; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -627,6 +630,7 @@
 		F338F9571B79718900C02F74 /* TLCrypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLCrypto.swift; sourceTree = "<group>"; };
 		F37072451B8F570D0026505D /* TLWalletConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLWalletConfig.swift; sourceTree = "<group>"; };
 		F3BC36101B8681FF00CBB3F7 /* TLUpdateAppData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLUpdateAppData.swift; sourceTree = "<group>"; };
+		F3DAAD651BB1D9EC000488F0 /* TLWalletJSONKeys.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLWalletJSONKeys.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1129,6 +1133,7 @@
 				C0A190681ABF53A100BED648 /* TLWallet.swift */,
 				C0C3BDEB1AC0F7AA001AC6CD /* TLWallet+Stealth.swift */,
 				C0A190691ABF53A100BED648 /* TLWalletJson.swift */,
+				F3DAAD651BB1D9EC000488F0 /* TLWalletJSONKeys.swift */,
 				C0A1906A1ABF53A100BED648 /* TLWalletUtils.swift */,
 				C0E5393C1AD454FD00651FE4 /* TLHelpDoc.swift */,
 				F338F9551B794D1D00C02F74 /* TLWalletPassphrase.swift */,
@@ -1679,6 +1684,7 @@
 				C02D3AD31B4A45F500B3B7F0 /* TLStealthServerConfig.swift in Sources */,
 				C02D3AD41B4A45F500B3B7F0 /* LTHKeychainUtils.m in Sources */,
 				C02D3AD51B4A45F500B3B7F0 /* TLSuggestions.swift in Sources */,
+				F3F1651A1BB1DB7E00F1293A /* TLWalletJSONKeys.swift in Sources */,
 				C02D3AD61B4A45F500B3B7F0 /* TLSendFormData.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1793,6 +1799,7 @@
 				C0A191291ABF53A100BED648 /* TLReceiveViewController.swift in Sources */,
 				C0C61C5E1AF15E6100F9F71F /* TransparentViewController.swift in Sources */,
 				C0A192FB1ABF744300BED648 /* TLNotificationEvents.swift in Sources */,
+				F3DAAD661BB1D9EC000488F0 /* TLWalletJSONKeys.swift in Sources */,
 				C0A190D71ABF53A100BED648 /* IASKPSTitleValueSpecifierViewCell.m in Sources */,
 				C0A1911E1ABF53A100BED648 /* TLAddressBookViewController.swift in Sources */,
 				C0A190F51ABF53A100BED648 /* TLImportedAddresses.swift in Sources */,
@@ -1819,6 +1826,7 @@
 				C0A1932A1ABF82AC00BED648 /* TLImportedAddresses.swift in Sources */,
 				F34D5C601B7A2C0100DF37DC /* TLCrypto.swift in Sources */,
 				C0A193331ABF82E400BED648 /* TLBlockchainAPI.swift in Sources */,
+				F3F1651B1BB1DB7F00F1293A /* TLWalletJSONKeys.swift in Sources */,
 				C03ECBF71B54A104005D4B0F /* TLStringLocalized.swift in Sources */,
 				C0A1932B1ABF82AF00BED648 /* TLSelectedObject.swift in Sources */,
 				C0A1932D1ABF82B300BED648 /* TLSpaghettiGodSend.swift in Sources */,

@@ -159,8 +159,8 @@ import UIKit
                 reuseIdentifier: MyIdentifier)
         }
         
-        cell!.textLabel!.text = (addressBook!.objectAtIndex(indexPath.row) as! NSDictionary).objectForKey(TLWallet.WALLET_PAYLOAD_KEY_LABEL()) as? String
-        cell!.detailTextLabel!.text = (addressBook!.objectAtIndex(indexPath.row) as! NSDictionary).objectForKey(TLWallet.WALLET_PAYLOAD_KEY_ADDRESS()) as? String
+        cell!.textLabel!.text = (addressBook!.objectAtIndex(indexPath.row) as! NSDictionary).objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL) as? String
+        cell!.detailTextLabel!.text = (addressBook!.objectAtIndex(indexPath.row) as! NSDictionary).objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as? String
         cell!.detailTextLabel!.numberOfLines = 0
         
         if (indexPath.row % 2 == 0) {
