@@ -113,7 +113,7 @@ import Foundation
         return [String](self.unspentPaymentAddress2PaymentTxid.keys)
     }
     
-    func getStealthAddressspendPublicKey() -> String {
+    func getStealthAddressSpendPublicKey() -> String {
         if spendPublicKey == nil {
             let publicKeys = TLStealthAddress.getScanPublicKeyAndSpendPublicKey(self.getStealthAddress(), isTestnet: self.accountObject!.appWallet!.walletConfig.isTestnet)
             scanPublicKey = publicKeys.0
@@ -122,7 +122,7 @@ import Foundation
         return spendPublicKey!
     }
     
-    func getStealthAddressscanPublicKey() -> String {
+    func getStealthAddressScanPublicKey() -> String {
         if scanPublicKey == nil {
             let publicKeys = TLStealthAddress.getScanPublicKeyAndSpendPublicKey(self.getStealthAddress(), isTestnet: self.accountObject!.appWallet!.walletConfig.isTestnet)
             scanPublicKey = publicKeys.0
@@ -241,7 +241,7 @@ import Foundation
         let stealthAddress = self.getStealthAddress()
         let scanKey = self.getStealthAddressScanKey()
         let spendKey = self.getStealthAddressSpendKey()
-        let scanPublicKey = self.getStealthAddressscanPublicKey()
+        let scanPublicKey = self.getStealthAddressScanPublicKey()
         let success = TLStealthWallet.watchStealthAddress(stealthAddress, scanPriv: scanKey, spendPriv: spendKey, scanPublicKey: scanPublicKey)
         if success {
             let gotOldestPaymentAddressesAndPayments = self.getStealthPayments(stealthAddress,
@@ -260,7 +260,7 @@ import Foundation
         if self.isCurrentServerWatching() != true {
             let scanKey = self.getStealthAddressScanKey()
             let spendKey = self.getStealthAddressSpendKey()
-            let scanPublicKey = self.getStealthAddressscanPublicKey()
+            let scanPublicKey = self.getStealthAddressScanPublicKey()
             let success = TLStealthWallet.watchStealthAddress(stealthAddress, scanPriv: scanKey, spendPriv: spendKey, scanPublicKey: scanPublicKey)
             if success {
                 let stealthAddressServersDict = self.getStealthAddressServers()
@@ -433,7 +433,7 @@ import Foundation
         let stealthAddress = self.getStealthAddress()
         let scanKey = self.getStealthAddressScanKey()
         let spendKey = self.getStealthAddressSpendKey()
-        let scanPublicKey = self.getStealthAddressscanPublicKey()
+        let scanPublicKey = self.getStealthAddressScanPublicKey()
         
         let ret = self.getStealthPayments(stealthAddress, scanPriv: scanKey, spendPriv: spendKey,
             scanPublicKey: scanPublicKey, offset: offset)

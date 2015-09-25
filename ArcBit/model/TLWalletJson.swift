@@ -94,14 +94,14 @@ class TLWalletJson {
         return str
     }
     
-    class func saveWalletJson(walletfile: String, date: NSDate) -> (Bool) {
+    class func saveWalletJson(walletFile: String, date: NSDate) -> (Bool) {
         let paths = NSSearchPathForDirectoriesInDomains(NSSearchPathDirectory.DocumentDirectory, NSSearchPathDomainMask.UserDomainMask, true) as NSArray
         let documentsDirectory: AnyObject = paths.objectAtIndex(0)
         let filePath = documentsDirectory.stringByAppendingPathComponent(TLWalletJson.getWalletJsonFileName())
         
         var error: NSError? = nil
         do {
-            try walletfile.writeToFile(filePath, atomically: true, encoding: NSUTF8StringEncoding)
+            try walletFile.writeToFile(filePath, atomically: true, encoding: NSUTF8StringEncoding)
         } catch let error1 as NSError {
             error = error1
         }
