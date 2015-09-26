@@ -43,13 +43,11 @@ class TLUtils {
     }
     
     class func dictionaryToJSONString(prettyPrint: Bool, dict: NSDictionary) -> String {
-        var error: NSError? = nil
         let jsonData: NSData?
         do {
             jsonData = try NSJSONSerialization.dataWithJSONObject(dict,
                         options: (prettyPrint ? NSJSONWritingOptions.PrettyPrinted : NSJSONWritingOptions(rawValue: 0)) as NSJSONWritingOptions)
-        } catch let error1 as NSError {
-            error = error1
+        } catch _ as NSError {
             jsonData = nil
         }
         assert(jsonData != nil, "jsonData not valid")

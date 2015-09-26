@@ -809,14 +809,13 @@ import Foundation
     }
     
     private func removeTopMainAddress() -> (Bool) {
-        var removedAddress = ""
         if (accountType == TLAccountType.HDWallet) {
             let accountIdx = accountDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_IDX) as! Int
-            removedAddress = self.appWallet!.removeTopMainAddressFromHDWallet(accountIdx)!
+            self.appWallet!.removeTopMainAddressFromHDWallet(accountIdx)!
         } else if (accountType == TLAccountType.Imported) {
-            removedAddress = self.appWallet!.removeTopMainAddressFromImportedAccount(positionInWalletArray)!
+            self.appWallet!.removeTopMainAddressFromImportedAccount(positionInWalletArray)!
         } else if (accountType == TLAccountType.ImportedWatch) {
-            removedAddress = self.appWallet!.removeTopMainAddressFromImportedWatchAccount(positionInWalletArray)!
+            self.appWallet!.removeTopMainAddressFromImportedWatchAccount(positionInWalletArray)!
         }
         
         if (mainActiveAddresses.count > 0) {
@@ -843,14 +842,13 @@ import Foundation
     }
     
     private func removeTopChangeAddress() -> (Bool) {
-        var removedAddress = ""
         if (accountType == TLAccountType.HDWallet) {
             let accountIdx = accountDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_IDX) as! Int
-            removedAddress = self.appWallet!.removeTopChangeAddressFromHDWallet(accountIdx)!
+            self.appWallet!.removeTopChangeAddressFromHDWallet(accountIdx)!
         } else if (accountType == TLAccountType.Imported) {
-            removedAddress = self.appWallet!.removeTopChangeAddressFromImportedAccount(positionInWalletArray)!
+            self.appWallet!.removeTopChangeAddressFromImportedAccount(positionInWalletArray)!
         } else if (accountType == TLAccountType.ImportedWatch) {
-            removedAddress = self.appWallet!.removeTopChangeAddressFromImportedWatchAccount(positionInWalletArray)!
+            self.appWallet!.removeTopChangeAddressFromImportedWatchAccount(positionInWalletArray)!
         }
         
         if (changeActiveAddresses.count > 0) {

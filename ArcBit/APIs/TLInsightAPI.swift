@@ -302,17 +302,6 @@ class TLInsightAPI {
             let tx = txs.objectAtIndex(i) as! NSDictionary
             let transformedTx = TLInsightAPI.insightTxToBlockchainTx(tx)
             transformedTxs.addObject(transformedTx)
-            
-            let blockHeightString = transformedTx.objectForKey("block_height") as? NSString
-            var blockHeight:Int64 = 0
-            if (blockHeightString != nil) {
-                blockHeight = (blockHeightString!).longLongValue
-            }
-            let timeString = transformedTx.objectForKey("time") as? NSString
-            var time:Int64 = 0
-            if (timeString != nil) {
-                time = (timeString!).longLongValue
-            }
         
             let inputsArray = transformedTx.objectForKey("inputs") as? NSArray
             

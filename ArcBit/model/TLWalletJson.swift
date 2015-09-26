@@ -125,7 +125,7 @@ class TLWalletJson {
         
         do {
             let contents = try NSString(contentsOfFile: filePath, encoding: NSUTF8StringEncoding)
-            return contents as? String
+            return contents as String
         } catch _ {
             return nil
         }

@@ -248,8 +248,6 @@ import UIKit
             numPages = 1
         }
         
-        var pageControlBeingUsed = false
-        
         let pageWidth = self.getPageWidth()
         let pageHeight:CGFloat
         if UIScreen.mainScreen().bounds.size.height > 480.0 {
@@ -395,7 +393,6 @@ import UIKit
     }
 
     func updateViewToNewSelectedObjectAndAlertNewText() {
-        let oldBalance = self.accountBalanceLabel!.text
         updateViewToNewSelectedObject()
     }
     
@@ -407,7 +404,6 @@ import UIKit
             // EVENT_UPDATED_RECEIVING_ADDRESSES will fire and this method be called
             return
         }
-        let address = AppDelegate.instance().receiveSelectedObject!.getReceivingAddressForSelectedObject(0)
         let label = AppDelegate.instance().receiveSelectedObject!.getLabelForSelectedObject()
         self.accountNameLabel!.text = label
         self.updateReceiveAddressArray()

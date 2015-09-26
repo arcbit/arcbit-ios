@@ -276,7 +276,7 @@ import HockeySDK
         
         DLog("recoverHDWallet getNumberOfAccounts: \(self.accounts!.getNumberOfAccounts())")
         if (self.accounts!.getNumberOfAccounts() == 0) {
-            let accountObject = self.accounts!.createNewAccount("Account 1".localized, accountType:.Normal)
+            self.accounts!.createNewAccount("Account 1".localized, accountType:.Normal)
         } else if (self.accounts!.getNumberOfAccounts() > 1) {
             while (self.accounts!.getNumberOfAccounts() > 1 && consecutiveUnusedAccountCount > 0) {
                 self.accounts!.popTopAccount()

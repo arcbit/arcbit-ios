@@ -281,7 +281,7 @@ import Foundation
     class func getChallengeAndSign(stealthAddress: String, privKey: String, pubKey: String) -> String? {
         if TLStealthWallet.Challenge.needsRefreshing == true {
             let jsonData = TLStealthExplorerAPI.instance().getChallenge()
-            if let HTTPErrorCode: AnyObject = jsonData[TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE] {
+            if let _: AnyObject = jsonData[TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE] {
                 return nil
             }
             
@@ -299,7 +299,7 @@ import Foundation
         var jsonData:AnyObject? = nil
         if txidArray.count > 0 {
             jsonData = TLBlockExplorerAPI.instance().getUnspentOutputsSynchronous(addressArray)
-            if let HTTPErrorCode: AnyObject = jsonData![TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE] {
+            if let _: AnyObject = jsonData![TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE] {
                 return
             }
         }
@@ -532,15 +532,13 @@ import Foundation
             if signature == nil {
                 return nil
             }
-            
-            let currentServerURL = TLPreferences.getStealthExplorerURL()!
-            
+                        
             var gotOldestPaymentAddresses = false
             
             var jsonData:NSDictionary? = nil
-            for i in 0...STATIC_MEMBERS.MAX_CONSECUTIVE_INVALID_SIGNATURES {
+            for _ in 0...STATIC_MEMBERS.MAX_CONSECUTIVE_INVALID_SIGNATURES {
                 jsonData = TLStealthExplorerAPI.instance().getStealthPaymentsSynchronous(stealthAddress, signature: signature!, offset: offset)
-                if let HTTPErrorCode: AnyObject = jsonData![TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE] {
+                if let _: AnyObject = jsonData![TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE] {
                     return nil
                 }
                 
@@ -586,7 +584,7 @@ import Foundation
         while true {
             let jsonData = TLStealthExplorerAPI.instance().watchStealthAddressSynchronous(stealthAddress, scanPriv: scanPriv, signature: signature!)
             
-            if let HTTPErrorCode: AnyObject = jsonData[TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE] {
+            if let _: AnyObject = jsonData[TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE] {
                 return false
             }
             

@@ -317,16 +317,12 @@ import CoreData
     }
     
     private func promptTransactionActionSheet(txHash: NSString) {
-        var VIEW_IN_WEB_BUTTON_IDX = 0
-        var LABEL_TRANSACTION_BUTTON_IDX = 1
-        var COPY_TO_CLIPBOARD_BUTTON_IDX = 2
         var otherButtonTitles = []
         
         if (TLPreferences.enabledAdvanceMode()) {
             otherButtonTitles = ["View in web".localized, "Label Transaction".localized, "Copy Transaction ID to Clipboard".localized]
             
         } else {
-            COPY_TO_CLIPBOARD_BUTTON_IDX = -1
             otherButtonTitles = ["View in web".localized, "Label Transaction".localized]
         }
         

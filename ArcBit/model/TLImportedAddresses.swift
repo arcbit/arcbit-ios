@@ -313,7 +313,7 @@ import Foundation
         
         self.addressToPositionInWalletArrayDict.removeObjectForKey(importedAddressObject.getPositionInWalletArrayNumber())
         let tmpDict = self.addressToPositionInWalletArrayDict.copy() as! NSDictionary
-        for (key, value) in tmpDict {
+        for (key, _) in tmpDict {
             let ia = self.addressToPositionInWalletArrayDict.objectForKey(key as! NSNumber) as! TLImportedAddress
             if (ia.getPositionInWalletArray() > importedAddressObject.getPositionInWalletArray()) {
                 ia.setPositionInWalletArray(ia.getPositionInWalletArray()-1)

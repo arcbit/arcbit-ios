@@ -228,7 +228,7 @@ import Foundation
         self.accountsDict!.removeObjectForKey(accountObject.getPositionInWalletArray())
         
         let tmpDict = self.accountsDict!.copy() as! NSDictionary
-        for (key, value) in tmpDict {
+        for (key, _) in tmpDict {
             let ao = self.accountsDict!.objectForKey(key) as! TLAccountObject
             if (ao.getPositionInWalletArray() > accountObject.getPositionInWalletArray()) {
                 ao.setPositionInWalletArray(ao.getPositionInWalletArray()-1)

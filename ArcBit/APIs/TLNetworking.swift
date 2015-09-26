@@ -133,14 +133,12 @@ class TLNetworking {
         var response:AnyObject? = nil
         let semaphore = dispatch_semaphore_create(0)
 
-        var success = false
         DLog("httpGETSynchronous: url %@", function: url.absoluteString)
-        var operation = self.getSynchronousManager.GET(url.absoluteString,
+        _ = self.getSynchronousManager.GET(url.absoluteString,
             parameters: parameters,
             success:{(operation:AFHTTPRequestOperation!, responseObject:AnyObject!) in
                 response = responseObject
                 dispatch_semaphore_signal(semaphore)
-                success = true
             },
             failure:{(operation:AFHTTPRequestOperation!, error:NSError!) in
                 DLog("httpGETSynchronous: requestFailed url %@", function: url.absoluteString)
@@ -220,7 +218,7 @@ class TLNetworking {
         let semaphore = dispatch_semaphore_create(0)
         
         DLog("httpPOSTSynchronous: url %@", function: url.absoluteString)
-        var operation = self.postSynchronousManager.POST(url.absoluteString,
+        _ = self.postSynchronousManager.POST(url.absoluteString,
             parameters: parameters,
             success:{(operation:AFHTTPRequestOperation!, responseObject:AnyObject!) in
                 response = responseObject

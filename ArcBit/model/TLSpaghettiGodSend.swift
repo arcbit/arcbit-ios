@@ -567,7 +567,7 @@
             DLog("createSignedSerializedTransactionHex outputAddresses: %@", function: outputAddresses.debugDescription)
             DLog("createSignedSerializedTransactionHex outputAmounts: %@", function: outputAmounts.debugDescription)
             DLog("createSignedSerializedTransactionHex privateKeys: %@", function: privateKeys.debugDescription)
-            for i in 0...3 {
+            for _ in 0...3 {
                 let txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(hashes, inputIndexes:inputIndexes, inputScripts:inputScripts,
                     outputAddresses:outputAddresses, outputAmounts:outputAmounts, privateKeys:privateKeys,
                     outputScripts:stealthOutputScripts, isTestnet: self.appWallet.walletConfig.isTestnet)

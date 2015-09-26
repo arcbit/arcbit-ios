@@ -319,7 +319,6 @@ import Foundation
         TLBlockExplorerAPI.instance().getAddressesInfo([importedAddress!], success:{(jsonData:AnyObject!) in
             
             let addressesArray = jsonData.objectForKey("addresses") as! NSArray
-            let txArray = jsonData.objectForKey("txs") as! NSArray
             for addressDict in addressesArray {
                 let addressBalance = (addressDict.objectForKey("final_balance") as! NSNumber).unsignedLongLongValue
                 self.balance = TLCoin(uint64: addressBalance)
@@ -347,7 +346,6 @@ import Foundation
         
         let jsonData = TLBlockExplorerAPI.instance().getAddressesInfoSynchronous([importedAddress!])
         let addressesArray = jsonData.objectForKey("addresses") as! NSArray
-        let txArray = jsonData.objectForKey("txs") as! NSArray
         for addressDict in addressesArray {
             let addressBalance = (addressDict.objectForKey("final_balance") as! NSNumber).unsignedLongLongValue
             self.balance = TLCoin(uint64: addressBalance)

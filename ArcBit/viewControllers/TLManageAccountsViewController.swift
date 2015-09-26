@@ -332,7 +332,7 @@ import UIKit
             (cell.accessoryView! as! UIActivityIndicatorView).hidden = true
             (cell.accessoryView! as! UIActivityIndicatorView).stopAnimating()
             let balance = TLWalletUtils.getProperAmount(accountObject.getBalance())
-            cell.accountBalanceButton!.setTitle(balance as? String, forState: UIControlState.Normal)
+            cell.accountBalanceButton!.setTitle(balance as String, forState: UIControlState.Normal)
             cell.accountBalanceButton!.hidden = false
         } else {
             (cell.accessoryView! as! UIActivityIndicatorView).hidden = false
@@ -865,18 +865,11 @@ import UIKit
     private func promptImportedWatchAddressActionSheet(importedAddressIdx: Int) -> () {
         let importAddressObject = AppDelegate.instance().importedWatchAddresses!.getAddressObjectAtIdx(importedAddressIdx)
         var addClearPrivateKeyButton = false
-        var CLEAR_PRIVATE_KEY_BUTTON_IDX = 0
-        var VIEW_ADDRESS_BUTTON_IDX = 0
-        var VIEW_ADDRESS_IN_WEB_BUTTON_IDX = 1
-        var RENAME_ADDRESS_BUTTON_IDX = 2
-        var ARCHIVE_ADDRESS_BUTTON_IDX = 3
+
         let otherButtonTitles:[String]
         if (importAddressObject.hasSetPrivateKeyInMemory()) {
             addClearPrivateKeyButton = true
-            VIEW_ADDRESS_BUTTON_IDX = 1
-            VIEW_ADDRESS_IN_WEB_BUTTON_IDX = 2
-            RENAME_ADDRESS_BUTTON_IDX = 3
-            ARCHIVE_ADDRESS_BUTTON_IDX = 4
+
             otherButtonTitles = ["Clear private key from memory".localized, "View address QR code".localized, "View address in web".localized, "Edit Label".localized, "Archive address".localized]
         } else {
             otherButtonTitles = ["View address QR code".localized, "View address in web".localized, "Edit Label".localized, "Archive address".localized]
@@ -1119,7 +1112,6 @@ import UIKit
                 var VIEW_ADDRESSES_BUTTON_IDX = actionSheet.firstOtherButtonIndex + 2
                 var RENAME_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex + 3
                 var UNARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex + 4
-                var otherButtonTitles = []
                 if (!TLPreferences.enabledAdvanceMode()) {
                     VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = -1
                     VIEW_EXTENDED_PRIVATE_KEY_BUTTON_IDX = -1

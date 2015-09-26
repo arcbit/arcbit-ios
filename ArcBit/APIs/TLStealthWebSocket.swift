@@ -130,7 +130,6 @@ import Foundation
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
             let data = message.dataUsingEncoding(NSUTF8StringEncoding)
             
-            var error: NSError?
             let jsonDict = (try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions(rawValue: 0))) as! NSDictionary
             DLog("StealthWebSocket didReceiveMessage \(jsonDict.description)")
 

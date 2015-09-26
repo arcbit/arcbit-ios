@@ -38,17 +38,6 @@ import Foundation
     }
     
     private func buildTxObject(tx: NSDictionary) -> (){
-        let blockHeightString = tx.objectForKey("block_height") as? NSNumber
-        var blockHeight:Int64 = 0
-        if (blockHeightString != nil) {
-            blockHeight = blockHeightString!.longLongValue
-        }
-        let timeString = tx.objectForKey("time") as? NSNumber
-        var time:Int64 = 0
-        if (timeString != nil) {
-            time = timeString!.longLongValue
-        }
-        
         inputAddressToValueArray = NSMutableArray()
         let inputsArray = tx.objectForKey("inputs") as? NSArray
         if (inputsArray != nil) {

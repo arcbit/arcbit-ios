@@ -179,10 +179,9 @@ class TLWalletUtils {
         bitcoinFormatter.numberStyle = .DecimalStyle
         bitcoinFormatter.maximumFractionDigits = 8
         bitcoinFormatter.locale = locale
-        let amountNumber = bitcoinFormatter.numberFromString(amount)
         
         if amount.characters.count != 0 {
-            if let range = amount.rangeOfCharacterFromSet(NSCharacterSet(charactersInString: "0123456789.,").invertedSet) {
+            if let _ = amount.rangeOfCharacterFromSet(NSCharacterSet(charactersInString: "0123456789.,").invertedSet) {
                 return TLCoin.zero()
             } else {
                 return TLCoin(bitcoinAmount: amount, bitcoinDenomination: bitcoinDenomination, locale: locale)

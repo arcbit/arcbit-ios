@@ -67,14 +67,10 @@ import UIKit
         title: String,
         addressNtxs: Int) -> () {
             let otherButtonTitles:[String]
-            let VIEW_IN_WEB_BUTTON_IDX = 0
-            let VIEW_ADDRESSES_BUTTON_IDX = 1
-            var VIEW_PRIVATE_KEY_BUTTON_IDX = 2
             if (TLPreferences.enabledAdvanceMode()) {
                 otherButtonTitles = ["View in web".localized, "View address QR code".localized, "View private key QR code".localized]
             } else {
                 otherButtonTitles = ["View in web".localized, "View address QR code".localized]
-                VIEW_PRIVATE_KEY_BUTTON_IDX = -1
             }
             
             UIAlertController.showAlertInViewController(self,
@@ -219,7 +215,6 @@ import UIKit
             
             var address = ""
             var balance = ""
-            var numberOfTransactions = 0
             if (indexPath.section == 0) {
                 if self.accountObject!.getAccountType() != .ImportedWatch {
                     if (self.accountObject!.stealthWallet!.getStealthAddressPaymentsCount() == 0) {
@@ -258,9 +253,6 @@ import UIKit
                     cell!.amountButton!.hidden = false
                     balance = TLWalletUtils.getProperAmount(self.accountObject!.getAddressBalance(address)) as String
                     cell!.amountButton!.setTitle(balance, forState: UIControlState.Normal)
-                    if indexPath.section != 0 {
-                        numberOfTransactions = self.accountObject!.getNumberOfTransactionsForAddress(address)!
-                    }
             } else {
                 cell!.amountButton!.hidden = true
             }            
