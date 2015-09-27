@@ -138,7 +138,6 @@
 		C02D3AE91B4A45F500B3B7F0 /* data@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FC01ABF53A100BED648 /* data@2x.png */; };
 		C02D3AEA1B4A45F500B3B7F0 /* newspaper-alt.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FC81ABF53A100BED648 /* newspaper-alt.png */; };
 		C02D3AEB1B4A45F500B3B7F0 /* book.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FBC1ABF53A100BED648 /* book.png */; };
-		C02D3AEC1B4A45F500B3B7F0 /* HockeySDK.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C0378C9B1AF4A1B10083206F /* HockeySDK.xcconfig */; };
 		C02D3AED1B4A45F500B3B7F0 /* 1200X1200logo.png in Resources */ = {isa = PBXBuildFile; fileRef = C0EE6D691B1B7E6000982692 /* 1200X1200logo.png */; };
 		C02D3AEE1B4A45F500B3B7F0 /* download@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FC31ABF53A100BED648 /* download@2x.png */; };
 		C02D3AEF1B4A45F500B3B7F0 /* newspaper-alt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FC91ABF53A100BED648 /* newspaper-alt@2x.png */; };
@@ -173,7 +172,6 @@
 		C0378C951AF4A18A0083206F /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0378C941AF4A18A0083206F /* CoreText.framework */; };
 		C0378C971AF4A18F0083206F /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0378C961AF4A18F0083206F /* QuickLook.framework */; };
 		C0378C9D1AF4A1B10083206F /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0378C991AF4A1B10083206F /* HockeySDK.framework */; };
-		C0378C9E1AF4A1B10083206F /* HockeySDK.xcconfig in Resources */ = {isa = PBXBuildFile; fileRef = C0378C9B1AF4A1B10083206F /* HockeySDK.xcconfig */; };
 		C0378C9F1AF4A1B10083206F /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C0378C9C1AF4A1B10083206F /* HockeySDKResources.bundle */; };
 		C03ECBF71B54A104005D4B0F /* TLStringLocalized.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD70051B4E2C4F00A5788D /* TLStringLocalized.swift */; };
 		C05C398B1AD0710B00AADE55 /* TLCloudDocumentSyncWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C05C398A1AD0710B00AADE55 /* TLCloudDocumentSyncWrapper.m */; };
@@ -1304,7 +1302,7 @@
 			attributes = {
 				LastSwiftMigration = 0700;
 				LastSwiftUpdateCheck = 0700;
-				LastUpgradeCheck = 0620;
+				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = ArcBit;
 				TargetAttributes = {
 					C02D3A681B4A45F500B3B7F0 = {
@@ -1361,7 +1359,6 @@
 				C02D3AE91B4A45F500B3B7F0 /* data@2x.png in Resources */,
 				C02D3AEA1B4A45F500B3B7F0 /* newspaper-alt.png in Resources */,
 				C02D3AEB1B4A45F500B3B7F0 /* book.png in Resources */,
-				C02D3AEC1B4A45F500B3B7F0 /* HockeySDK.xcconfig in Resources */,
 				C02D3AED1B4A45F500B3B7F0 /* 1200X1200logo.png in Resources */,
 				C02D3AEE1B4A45F500B3B7F0 /* download@2x.png in Resources */,
 				C02D3AEF1B4A45F500B3B7F0 /* newspaper-alt@2x.png in Resources */,
@@ -1404,7 +1401,6 @@
 				C0A190A51ABF53A100BED648 /* data@2x.png in Resources */,
 				C0A190AD1ABF53A100BED648 /* newspaper-alt.png in Resources */,
 				C0A190A11ABF53A100BED648 /* book.png in Resources */,
-				C0378C9E1AF4A1B10083206F /* HockeySDK.xcconfig in Resources */,
 				C0EE6D6B1B1B7E6000982692 /* 1200X1200logo.png in Resources */,
 				C0A190A81ABF53A100BED648 /* download@2x.png in Resources */,
 				C0A190AE1ABF53A100BED648 /* newspaper-alt@2x.png in Resources */,
@@ -1933,6 +1929,7 @@
 				INFOPLIST_FILE = "ArcBit copy-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.$(PRODUCT_NAME:rfc1034identifier).app";
 				PRODUCT_NAME = ArcBitBeta;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "ArcBit/ArcBit-Bridging-Header.h";
@@ -1954,6 +1951,7 @@
 				INFOPLIST_FILE = "ArcBit copy-Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.$(PRODUCT_NAME:rfc1034identifier).app";
 				PRODUCT_NAME = ArcBitBeta;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "ArcBit/ArcBit-Bridging-Header.h";
@@ -1980,6 +1978,7 @@
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
 				GCC_C_LANGUAGE_STANDARD = gnu99;
 				GCC_DYNAMIC_NO_PIC = NO;
 				GCC_OPTIMIZATION_LEVEL = 0;
@@ -2052,6 +2051,7 @@
 				INFOPLIST_FILE = ArcBit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "-D DEBUG";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.$(PRODUCT_NAME:rfc1034identifier).app";
 				PRODUCT_NAME = ArcBit;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "ArcBit/ArcBit-Bridging-Header.h";
@@ -2073,6 +2073,7 @@
 				INFOPLIST_FILE = ArcBit/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				OTHER_SWIFT_FLAGS = "";
+				PRODUCT_BUNDLE_IDENTIFIER = "com.$(PRODUCT_NAME:rfc1034identifier).app";
 				PRODUCT_NAME = ArcBit;
 				PROVISIONING_PROFILE = "";
 				SWIFT_OBJC_BRIDGING_HEADER = "ArcBit/ArcBit-Bridging-Header.h";
@@ -2095,6 +2096,7 @@
 				);
 				INFOPLIST_FILE = ArcBitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "ArcBit.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = ArcBitTests;
 				SWIFT_OBJC_BRIDGING_HEADER = "ArcBitTests/ArcBitTests-Bridging-Header.h";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -2114,6 +2116,7 @@
 				);
 				INFOPLIST_FILE = ArcBitTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
+				PRODUCT_BUNDLE_IDENTIFIER = "ArcBit.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = ArcBitTests;
 				SWIFT_OBJC_BRIDGING_HEADER = "ArcBitTests/ArcBitTests-Bridging-Header.h";
 				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/ArcBit.app/ArcBit";
