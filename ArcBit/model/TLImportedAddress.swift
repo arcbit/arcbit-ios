@@ -31,8 +31,8 @@ import Foundation
     var balance = TLCoin.zero()
     private var fetchedAccountData = false
     var listeningToIncomingTransactions = false
-    private var watchOnly:Bool?
-    private var archived:Bool?
+    private var watchOnly = false
+    private var archived = false
     private var positionInWalletArray:Int?
     private var txObjectArray:NSMutableArray?
     private var txidToAccountAmountDict:NSMutableDictionary?
@@ -128,7 +128,7 @@ import Foundation
     }
     
     func isWatchOnly() -> (Bool) {
-        return self.watchOnly ?? false
+        return self.watchOnly
     }
     
     func setArchived(archived:Bool) -> () {
@@ -136,7 +136,7 @@ import Foundation
     }
     
     func isArchived() -> (Bool) {
-        return self.archived ?? false
+        return self.archived
     }
     
     func getPositionInWalletArray() -> Int {
@@ -153,7 +153,7 @@ import Foundation
     }
     
     func isPrivateKeyEncrypted() -> (Bool) {
-        if (self.watchOnly ?? false) {
+        if (self.watchOnly) {
             return false
         }
         if (TLCoreBitcoinWrapper.isBIP38EncryptedKey(addressDict!.objectForKey("key") as! String, isTestnet: self.appWallet!.walletConfig.isTestnet)) {
@@ -167,32 +167,28 @@ import Foundation
     }
     
     func getEitherPrivateKeyOrEncryptedPrivateKey() -> String? {
-        if (self.watchOnly ?? false) {
+        if (self.watchOnly) {
             return privateKey
-        }
-        else if (isPrivateKeyEncrypted()) {
-            return addressDict!.objectForKey("key") as? String
-        }
-        else {
-            return addressDict!.objectForKey("key") as? String
+        } else {
+            return addressDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_KEY) as? String
         }
     }
     
     func getPrivateKey() -> (String?) {
-        if (self.watchOnly ?? false) {
+        if (self.watchOnly) {
             return privateKey
         }
         else if (isPrivateKeyEncrypted()) {
             return privateKey
         }
         else {
-            return addressDict!.objectForKey("key") as? String
+            return addressDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_KEY) as? String
         }
     }
     
     func getEncryptedPrivateKey() -> (String?) {
         if (isPrivateKeyEncrypted()) {
-            return addressDict!.objectForKey("key") as? String
+            return addressDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_KEY) as? String
         } else {
             return nil
         }
@@ -200,12 +196,10 @@ import Foundation
     
     func getLabel() -> (String) {
         if (addressDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL) as? String == nil ||
-            addressDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL) as! String == "")
-        {
+            addressDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL) as! String == "") {
             return addressDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String
         }
-        else
-        {
+        else {
             return addressDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL) as! String
         }
     }

@@ -288,14 +288,13 @@
                             continue
                         }
                         assert(address == changeAddress, "! address == changeAddress")
-                        let privateKey = importedAddress.getPrivateKey()
                         
                         inputsData.addObject([
                             "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash") as! String)!,
                             "txid": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash_big_endian") as! String)!,
                             "tx_output_n": unspentOutput.objectForKey("tx_output_n")!,
                             "script": TLWalletUtils.hexStringToData(outputScript)!,
-                            "private_key": privateKey!])
+                            "private_key": importedAddress.getPrivateKey()!])
                         
                         if (valueSelected.greaterOrEqual(valueNeeded)) {
                             break

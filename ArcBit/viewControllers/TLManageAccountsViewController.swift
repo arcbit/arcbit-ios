@@ -313,7 +313,7 @@ import UIKit
     private func refreshWalletAccounts(fetchDataAgain: Bool) -> () {
         self._accountsTableViewReloadDataWrapper()
         self.refreshAccountBalances(fetchDataAgain)
-        if (TLPreferences.enabledAdvanceMode()) {
+        if (TLPreferences.enabledAdvancedMode()) {
             self.refreshImportedAccounts(fetchDataAgain)
             self.refreshImportedWatchAccounts(fetchDataAgain)
             self.refreshImportedAddressBalances(fetchDataAgain)
@@ -487,7 +487,7 @@ import UIKit
         numberOfSections = 2
         
         var sectionCounter = 1
-        if (TLPreferences.enabledAdvanceMode()) {
+        if (TLPreferences.enabledAdvancedMode()) {
             if (AppDelegate.instance().importedAccounts!.getNumberOfAccounts() > 0) {
                 importedAccountSection = sectionCounter
                 sectionCounter++
@@ -535,7 +535,7 @@ import UIKit
         }
         
         
-        if (TLPreferences.enabledAdvanceMode()) {
+        if (TLPreferences.enabledAdvancedMode()) {
             if (AppDelegate.instance().importedAccounts!.getNumberOfArchivedAccounts() > 0) {
                 archivedImportedAccountSection = sectionCounter
                 sectionCounter++
@@ -587,7 +587,7 @@ import UIKit
         let title = String(format: "Account ID: %u".localized, accountHDIndex)
         
         let otherButtonTitles:[String]
-        if (TLPreferences.enabledAdvanceMode()) {
+        if (TLPreferences.enabledAdvancedMode()) {
             otherButtonTitles = ["View account public key QR code".localized, "View account private key QR code".localized, "View Addresses".localized, "Scan For Forward Address Payment".localized, "Edit Account Name".localized, "Archive Account".localized]
         } else {
             otherButtonTitles = ["View Addresses".localized, "Edit Account Name".localized, "Archive Account".localized]
@@ -607,7 +607,7 @@ import UIKit
                 var MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX = actionSheet.firstOtherButtonIndex+3
                 var RENAME_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex+4
                 var ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex+5
-                if (!TLPreferences.enabledAdvanceMode()) {
+                if (!TLPreferences.enabledAdvancedMode()) {
                     VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = -1
                     VIEW_EXTENDED_PRIVATE_KEY_BUTTON_IDX = -1
                     MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX = -1
@@ -1093,7 +1093,7 @@ import UIKit
         let accountHDIndex = accountObject.getAccountHDIndex()
         let title = String(format: "Account ID: %u".localized, accountHDIndex)
         let otherButtonTitles:[String]
-        if (TLPreferences.enabledAdvanceMode()) {
+        if (TLPreferences.enabledAdvancedMode()) {
             otherButtonTitles = ["View account public key QR code".localized, "View account private key QR code".localized, "View Addresses".localized, "Edit Account Name".localized, "Unarchive Account".localized]
         } else {
             otherButtonTitles = ["View Addresses".localized, "Edit Account Name".localized, "Unarchive Account".localized]
@@ -1112,7 +1112,7 @@ import UIKit
                 var VIEW_ADDRESSES_BUTTON_IDX = actionSheet.firstOtherButtonIndex + 2
                 var RENAME_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex + 3
                 var UNARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex + 4
-                if (!TLPreferences.enabledAdvanceMode()) {
+                if (!TLPreferences.enabledAdvancedMode()) {
                     VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = -1
                     VIEW_EXTENDED_PRIVATE_KEY_BUTTON_IDX = -1
                     VIEW_ADDRESSES_BUTTON_IDX = actionSheet.firstOtherButtonIndex + 0
@@ -1950,7 +1950,7 @@ import UIKit
     }
 
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if (TLPreferences.enabledAdvanceMode()) {
+        if (TLPreferences.enabledAdvancedMode()) {
             if (section == accountListSection) {
                 return "Accounts".localized
             } else if (section == importedAccountSection) {
@@ -1985,7 +1985,7 @@ import UIKit
     }
 
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (TLPreferences.enabledAdvanceMode()) {
+        if (TLPreferences.enabledAdvancedMode()) {
             if (section == accountListSection) {
                 return AppDelegate.instance().accounts!.getNumberOfAccounts()
             } else if (section == importedAccountSection) {
@@ -2061,7 +2061,7 @@ import UIKit
             let activityView = UIActivityIndicatorView(activityIndicatorStyle: .Gray)
             cell!.accessoryView = activityView
 
-            if (TLPreferences.enabledAdvanceMode()) {
+            if (TLPreferences.enabledAdvancedMode()) {
                 if (indexPath.section == accountListSection) {
                     let accountObject = AppDelegate.instance().accounts!.getAccountObjectForIdx(indexPath.row)
                     self.setUpCellAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
@@ -2118,7 +2118,7 @@ import UIKit
     }
 
     func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        if (TLPreferences.enabledAdvanceMode()) {
+        if (TLPreferences.enabledAdvancedMode()) {
             if (indexPath.section == accountListSection) {
                 self.promptAccountsActionSheet(indexPath.row)
                 return nil

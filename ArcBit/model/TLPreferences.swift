@@ -472,11 +472,11 @@ class TLPreferences
         NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED(), object:nil)
     }
     
-    class func enabledAdvanceMode() -> (Bool) {
+    class func enabledAdvancedMode() -> (Bool) {
         return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.PREFERENCE_WALLET_ADVANCE_MODE)
     }
     
-    class func setAdvanceMode(enabled:Bool) -> () {
+    class func setAdvancedMode(enabled:Bool) -> () {
         NSUserDefaults.standardUserDefaults().setBool(enabled ,forKey:CLASS_STATIC.PREFERENCE_WALLET_ADVANCE_MODE)
         NSUserDefaults.standardUserDefaults().synchronize()
         NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_ADVANCE_MODE_TOGGLED(), object:enabled)

@@ -93,7 +93,7 @@ import UIKit
     }
     
     func numberOfSectionsInTableView(tableView:UITableView) -> Int {
-        if (TLPreferences.enabledAdvanceMode()) {
+        if (TLPreferences.enabledAdvancedMode()) {
             return 5
         } else {
             return 3
@@ -101,7 +101,7 @@ import UIKit
     }
     
     func tableView(tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
-        if (TLPreferences.enabledAdvanceMode()) {
+        if (TLPreferences.enabledAdvancedMode()) {
             if(section == 0) {
                 return "Achievements".localized
             }
@@ -131,7 +131,7 @@ import UIKit
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section:Int) -> Int {
-        if (TLPreferences.enabledAdvanceMode()) {
+        if (TLPreferences.enabledAdvancedMode()) {
             if(section == 0) {
                 return 1
             }
@@ -170,7 +170,7 @@ import UIKit
         }
         cell!.textLabel!.numberOfLines = 0
         
-        if (TLPreferences.enabledAdvanceMode()) {
+        if (TLPreferences.enabledAdvancedMode()) {
             if(indexPath.section == 0) {
                 cell!.textLabel!.text = "View Achievements".localized
             }
@@ -209,7 +209,7 @@ import UIKit
     }
     
     func tableView(tableView:UITableView, willSelectRowAtIndexPath indexPath:NSIndexPath) -> NSIndexPath? {
-        if (TLPreferences.enabledAdvanceMode()) {
+        if (TLPreferences.enabledAdvancedMode()) {
             if(indexPath.section == 0) {
                 performSegueWithIdentifier("SegueAchievements", sender:self)
             } else if(indexPath.section == 1) {

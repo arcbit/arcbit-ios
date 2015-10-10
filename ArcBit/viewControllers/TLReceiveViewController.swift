@@ -433,7 +433,7 @@ import UIKit
     }
 
     func updateReceiveViewController(notification: NSNotification) {
-        if (TLPreferences.enabledAdvanceMode()) {
+        if (TLPreferences.enabledAdvancedMode()) {
             //self.addressLabel!.hidden = false
         } else {
             //self.addressLabel!.hidden = true

@@ -148,7 +148,7 @@ import Foundation
     
     func getTxid() -> (String?) {
         if (txid == nil) {
-            txid = TLWalletUtils.reverseTxidHexString(txDict.objectForKey("hash") as! String)
+            txid = TLWalletUtils.reverseHexString(txDict.objectForKey("hash") as! String)
         }
         return txid
     }

@@ -149,7 +149,7 @@ class TLWalletUtils {
         return BTCDataFromHex(hexString)
     }
     
-    class func reverseTxidHexString(txHashHex: String) -> String {
+    class func reverseHexString(txHashHex: String) -> String {
         return dataToHexString(hexStringToData(txHashHex)!.reverse())
     }
     

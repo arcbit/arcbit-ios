@@ -48,7 +48,7 @@ import UIKit
     }
     
     func numberOfSectionsInTableView(tableView:UITableView) -> Int {
-        if (TLPreferences.enabledAdvanceMode()) {
+        if (TLPreferences.enabledAdvancedMode()) {
             return 2
         } else {
             return 1

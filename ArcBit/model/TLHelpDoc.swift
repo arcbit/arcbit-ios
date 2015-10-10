@@ -338,7 +338,7 @@ class TLHelpDoc {
     }
     
     class func getAccountActionsArray() -> NSArray {
-        if (TLPreferences.enabledAdvanceMode()) {
+        if (TLPreferences.enabledAdvancedMode()) {
             return getAdvanceAccountActionsArray()
         } else {
             return getBasicAccountActionsArray()

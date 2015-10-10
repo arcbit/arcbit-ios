@@ -362,11 +362,11 @@ class TLWallet {
         
         let mainAddressIdx:Int
         if (TLWalletUtils.STATIC_MEMBERS.SHOULD_SAVE_ARCHIVED_ADDRESSES_IN_JSON) {
-            assert(expectedAddressIndex == mainAddressesArray.count, "expectedAddressIndex != _mainAddressesArray_count")
+            assert(expectedAddressIndex == mainAddressesArray.count, "expectedAddressIndex != mainAddressesArray.count")
             mainAddressIdx = (expectedAddressIndex)
         } else {
             let minMainAddressIdx = accountDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MIN_MAIN_ADDRESS_IDX) as! Int
-            assert(expectedAddressIndex == mainAddressesArray.count + minMainAddressIdx, "expectedAddressIndex != _mainAddressesArray_count + minMainAddressIdx")
+            assert(expectedAddressIndex == mainAddressesArray.count + minMainAddressIdx, "expectedAddressIndex != mainAddressesArray.count + minMainAddressIdx")
             mainAddressIdx = (expectedAddressIndex)
         }
         
@@ -417,11 +417,11 @@ class TLWallet {
         
         let changeAddressIdx:Int
         if (TLWalletUtils.STATIC_MEMBERS.SHOULD_SAVE_ARCHIVED_ADDRESSES_IN_JSON) {
-            assert(expectedAddressIndex == changeAddressesArray.count, "expectedAddressIndex != [changeAddressesArray count]")
+            assert(expectedAddressIndex == changeAddressesArray.count, "expectedAddressIndex != changeAddressesArray.count")
             changeAddressIdx = (changeAddressesArray.count)
         } else {
             let minChangeAddressIdx = accountDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MIN_CHANGE_ADDRESS_IDX) as! Int
-            assert(expectedAddressIndex == changeAddressesArray.count + minChangeAddressIdx, "expectedAddressIndex != _mainAddressesArray_count + minChangeAddressIdx")
+            assert(expectedAddressIndex == changeAddressesArray.count + minChangeAddressIdx, "expectedAddressIndex != changeAddressesArray.count + minChangeAddressIdx")
             changeAddressIdx = (expectedAddressIndex)
         }
         

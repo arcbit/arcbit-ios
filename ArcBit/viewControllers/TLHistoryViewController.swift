@@ -319,7 +319,7 @@ import CoreData
     private func promptTransactionActionSheet(txHash: NSString) {
         var otherButtonTitles = []
         
-        if (TLPreferences.enabledAdvanceMode()) {
+        if (TLPreferences.enabledAdvancedMode()) {
             otherButtonTitles = ["View in web".localized, "Label Transaction".localized, "Copy Transaction ID to Clipboard".localized]
             
         } else {

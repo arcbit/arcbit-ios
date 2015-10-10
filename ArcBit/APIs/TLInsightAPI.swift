@@ -159,8 +159,7 @@ class TLInsightAPI {
                 let txs = (jsonData as! NSDictionary!).objectForKey("txs") as! NSArray
                 let transformedTxs = NSMutableArray(capacity:txs.count)
                 
-                for tx in txs as! [NSDictionary]
-                {
+                for tx in txs as! [NSDictionary] {
                     transformedTxs.addObject(TLInsightAPI.insightTxToBlockchainTx(tx))
                 }
                 
@@ -219,7 +218,7 @@ class TLInsightAPI {
         
         let blockchainUnspentOutputDict = NSMutableDictionary()
         let txid = unspentOutputDict.objectForKey("txid") as! String
-        let txHash = TLWalletUtils.reverseTxidHexString(txid)
+        let txHash = TLWalletUtils.reverseHexString(txid)
         blockchainUnspentOutputDict.setObject(txHash, forKey: "tx_hash")
         blockchainUnspentOutputDict.setObject(txid, forKey: "tx_hash_big_endian")
         blockchainUnspentOutputDict.setObject(unspentOutputDict.objectForKey("vout")!, forKey: "tx_output_n")

@@ -236,7 +236,7 @@ class ArcBitTests: XCTestCase {
         
         let txid = "2c441ba4920f03f37866edb5647f2626b64f57ad98b0a8e011af07da0aefcec3"
         
-        let txHash = TLWalletUtils.reverseTxidHexString(txid)
+        let txHash = TLWalletUtils.reverseHexString(txid)
         NSLog("txHash: %@", txHash)
         XCTAssertTrue(txHash == "c3ceef0ada07af11e0a8b098ad574fb626267f64b5ed6678f3030f92a41b442c")
         
@@ -248,7 +248,7 @@ class ArcBitTests: XCTestCase {
     func testCreateSignedSerializeTransactionHex() {
         NSLog("testCreateSignedSerializeTransactionHex")
         
-        let hash = TLWalletUtils.reverseTxidHexString("935c6975aa65f95cb55616ace8c8bede83b010f7191c0a6d385be1c95992870d").hexToData()
+        let hash = TLWalletUtils.reverseHexString("935c6975aa65f95cb55616ace8c8bede83b010f7191c0a6d385be1c95992870d").hexToData()
         let script = "76a9149a1c78a507689f6f54b847ad1cef1e614ee23f1e88ac".hexToData()
         let address = "1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV"
         let privateKey = "L4rK1yDtCWekvXuE6oXD9jCYfFNV2cWRpVuPLBcCU2z8TrisoyY1"
@@ -375,7 +375,7 @@ class ArcBitTests: XCTestCase {
         
         let mockUnspentOutput = { (txid: String, value: UInt64, txOutputN: Int) -> NSDictionary in
             var unspentOutput = NSMutableDictionary()
-            unspentOutput.setObject(TLWalletUtils.reverseTxidHexString(txid), forKey: "tx_hash")
+            unspentOutput.setObject(TLWalletUtils.reverseHexString(txid), forKey: "tx_hash")
             unspentOutput.setObject(txid, forKey: "tx_hash_big_endian")
             unspentOutput.setObject(txOutputN, forKey: "tx_output_n")
             unspentOutput.setObject(BTCScript(address: fromAddress).hex, forKey: "script")

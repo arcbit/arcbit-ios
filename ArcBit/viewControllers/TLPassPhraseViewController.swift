@@ -57,7 +57,7 @@ import UIKit
         
         let passphrase = TLWalletPassphrase.getDecryptedWalletPassphrase()
         self.passPhraseTextView!.text = (passphrase)
-        if (!TLPreferences.enabledAdvanceMode()) {
+        if (!TLPreferences.enabledAdvancedMode()) {
             self.backupPassphraseExplanation!.text = "Write down the 12 word passphrase below and keep it safe. You can restore your entire wallets' bitcoins with this single passphrase.".localized
             self.masterSeedHexTitleLabel!.hidden = true
             self.masterSeedHexTitleExplanation!.hidden = true

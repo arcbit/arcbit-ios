@@ -281,7 +281,7 @@ import UIKit
     private func refreshWalletAccounts(fetchDataAgain: Bool) {
         self._accountsTableViewReloadDataWrapper()
         self.refreshAccountBalances(fetchDataAgain)
-        if (TLPreferences.enabledAdvanceMode()) {
+        if (TLPreferences.enabledAdvancedMode()) {
             self.refreshImportedAccounts(fetchDataAgain)
             self.refreshImportedWatchAccounts(fetchDataAgain)
             self.refreshImportedAddressBalances(fetchDataAgain)
@@ -330,7 +330,7 @@ import UIKit
         
         var sectionCounter = 1
         
-        if (TLPreferences.enabledAdvanceMode()) {
+        if (TLPreferences.enabledAdvancedMode()) {
             if (AppDelegate.instance().importedAccounts!.getNumberOfAccounts() > 0) {
                 importedAccountSection = sectionCounter
                 sectionCounter++
@@ -392,7 +392,7 @@ import UIKit
     }
     
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if (TLPreferences.enabledAdvanceMode()) {
+        if (TLPreferences.enabledAdvancedMode()) {
             if (section == accountListSection) {
                 return "Accounts".localized
             } else if (section == importedAccountSection) {
@@ -416,7 +416,7 @@ import UIKit
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if (TLPreferences.enabledAdvanceMode()) {
+        if (TLPreferences.enabledAdvancedMode()) {
             if (section == accountListSection) {
                 return AppDelegate.instance().accounts!.getNumberOfAccounts()
             } else if (section == importedAccountSection) {
@@ -454,7 +454,7 @@ import UIKit
         
         cell!.accountBalanceButton!.titleLabel!.adjustsFontSizeToFitWidth = true
         
-        if (TLPreferences.enabledAdvanceMode()) {
+        if (TLPreferences.enabledAdvancedMode()) {
             if (indexPath.section == accountListSection) {
                 let accountObject = AppDelegate.instance().accounts!.getAccountObjectForIdx(indexPath.row)
                 self.setUpCellAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
@@ -494,7 +494,7 @@ import UIKit
     }
     
     func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        if (TLPreferences.enabledAdvanceMode()) {
+        if (TLPreferences.enabledAdvancedMode()) {
             if (indexPath.section == accountListSection) {
                 let accountObject = AppDelegate.instance().accounts!.getAccountObjectForIdx(indexPath.row)
                 if (accountObject.hasFetchedAccountData()) {

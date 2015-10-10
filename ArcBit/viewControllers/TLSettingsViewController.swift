@@ -296,7 +296,7 @@ import AVFoundation
         let userInfo = info.userInfo! as NSDictionary
         if ((info.object as! String) == "enableadvancemode") {
             let enabled = (userInfo.objectForKey("enableadvancemode")) as! Int == 1
-            TLPreferences.setAdvanceMode(enabled)
+            TLPreferences.setAdvancedMode(enabled)
         } else if ((info.object as! String) == "canrestoredeletedapp") {
             let enabled = (userInfo.objectForKey("canrestoredeletedapp")) as! Int == 1
             

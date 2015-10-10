@@ -67,7 +67,7 @@ import UIKit
         title: String,
         addressNtxs: Int) -> () {
             let otherButtonTitles:[String]
-            if (TLPreferences.enabledAdvanceMode()) {
+            if (TLPreferences.enabledAdvancedMode()) {
                 otherButtonTitles = ["View in web".localized, "View address QR code".localized, "View private key QR code".localized]
             } else {
                 otherButtonTitles = ["View in web".localized, "View address QR code".localized]

@@ -1152,7 +1152,7 @@ import HockeySDK
     }
     
     func applicationWillEnterForeground(application: UIApplication) {
-    }
+    }   
     
     func applicationDidBecomeActive(application: UIApplication) {
     }
