@@ -634,7 +634,7 @@ import AVFoundation
                 // Let stealth websocket handle it
                 // Need this cause, must generate private key and add address to account so that the bitcoins can be accounted for.
                 if txObject.getHash() == self.pendingSelfStealthPaymentTxid {
-                    self.pendingSelfStealthPaymentTxid = nil
+                    //self.pendingSelfStealthPaymentTxid = nil
                     return
                 }
             }
