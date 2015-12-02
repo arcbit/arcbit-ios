@@ -1516,9 +1516,6 @@ import Foundation
         
         if self.stealthWallet != nil {
             activeAddresses += self.stealthWallet!.getPaymentAddresses()
-        }
-
-        if self.stealthWallet != nil {
             dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
                 self.fetchNewStealthPayments(false)
             }
