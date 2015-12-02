@@ -1325,7 +1325,6 @@ import Foundation
         
         if isRestoringAccount {
             self.stealthWallet!.setUpStealthPaymentAddresses(true, isSetup: true, async: false)
-            self.stealthWallet!.setUpStealthPaymentAddresses(true, isSetup: true, async: false)
         }
     }
     
