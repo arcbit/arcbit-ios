@@ -515,7 +515,7 @@ import Foundation
             self.paymentTxid2PaymentAddressDict[txid] = expectedAddress
             self.setPaymentAddressPrivateKey(expectedAddress, privateKey: privateKey)
 
-            self.accountObject!.addStealthAddressPaymentKey(privateKey, address: expectedAddress, txid: txid, txTime: txTime, stealthPaymentStatus: TLStealthPaymentStatus.Unspent)
+            self.accountObject!.addStealthAddressPaymentKey(privateKey, address: expectedAddress, txid: txid, txTime: txTime, stealthPaymentStatus: stealthPaymentStatus)
             return privateKey
         } else {
             DLog("error key not found for address %@", function: expectedAddress)
@@ -527,7 +527,7 @@ import Foundation
         self.unspentPaymentAddress2PaymentTxid[paymentAddress] = txid
         self.paymentTxid2PaymentAddressDict[txid] = paymentAddress
         self.setPaymentAddressPrivateKey(paymentAddress, privateKey: privateKey)
-        self.accountObject!.addStealthAddressPaymentKey(privateKey, address: paymentAddress, txid: txid, txTime: txTime, stealthPaymentStatus: TLStealthPaymentStatus.Unspent)
+        self.accountObject!.addStealthAddressPaymentKey(privateKey, address: paymentAddress, txid: txid, txTime: txTime, stealthPaymentStatus: stealthPaymentStatus)
         return true
     }
     
