@@ -133,7 +133,7 @@ import Foundation
         
         let jsonData = TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(addresses.allObjects as! [String])
         if (jsonData.objectForKey(TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) != nil) {
-            self.downloadState != .Failed
+            self.downloadState = .Failed
             return
         }
 

@@ -85,7 +85,7 @@ import Foundation
             self.downloadState = .Downloaded
         }
         if self.fetchedAccountData == true && self.listeningToIncomingTransactions == false {
-            self.listeningToIncomingTransactions == true
+            self.listeningToIncomingTransactions = true
             let address = self.getAddress()
             TLTransactionListener.instance().listenToIncomingTransactionForAddress(address)
         }

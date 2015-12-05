@@ -512,7 +512,7 @@ import HockeySDK
 
             let possibleStealthDataScripts = txObject.getPossibleStealthDataScripts()
             
-            func proccessStealthPayment(accountObject: TLAccountObject) {
+            func processStealthPayment(accountObject: TLAccountObject) {
                 if accountObject.stealthWallet!.getStealthAddress() == stealthAddress {
                     if accountObject.hasFetchedAccountData() {
                         for stealthDataScript in possibleStealthDataScripts {
@@ -537,12 +537,12 @@ import HockeySDK
 
             for (var i = 0; i < self.accounts!.getNumberOfAccounts();  i++) {
                 let accountObject = self.accounts!.getAccountObjectForIdx(i)
-                proccessStealthPayment(accountObject)
+                processStealthPayment(accountObject)
             }
             
             for (var i = 0; i < self.importedAccounts!.getNumberOfAccounts();  i++) {
                 let accountObject = self.importedAccounts!.getAccountObjectForIdx(i)
-                proccessStealthPayment(accountObject)
+                processStealthPayment(accountObject)
             }
             
             for (var i = 0; i < self.importedWatchAccounts!.getNumberOfAccounts();  i++) {

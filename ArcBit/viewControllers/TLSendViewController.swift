@@ -510,14 +510,14 @@ import UIKit
         }
 
         DLog("showFinalPromptReviewTx bitcoinAmount %@", function: bitcoinAmount!)
-        let inputedAmount = TLWalletUtils.properBitcoinAmountStringToCoin(bitcoinAmount!)
+        let inputtedAmount = TLWalletUtils.properBitcoinAmountStringToCoin(bitcoinAmount!)
         
-        if (inputedAmount.equalTo(TLCoin.zero())) {
+        if (inputtedAmount.equalTo(TLCoin.zero())) {
             TLPrompts.promptErrorMessage("Error".localized, message: "Amount entered must be greater then zero.".localized)
             return
         }
         
-        let amountNeeded = inputedAmount.add(feeAmount)
+        let amountNeeded = inputtedAmount.add(feeAmount)
         let sendFromBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
         if (amountNeeded.greater(sendFromBalance)) {
             let msg = String(format: "You have %@ %@, but %@ is needed. (This includes the transactions fee)".localized, TLWalletUtils.coinToProperBitcoinAmountString(sendFromBalance), TLWalletUtils.getBitcoinDisplay(), TLWalletUtils.coinToProperBitcoinAmountString(amountNeeded))
@@ -562,7 +562,7 @@ import UIKit
                         
                         
                         let unspentOutputsSum = AppDelegate.instance().godSend!.getCurrentFromUnspentOutputsSum()
-                        if (unspentOutputsSum.less(inputedAmount)) {
+                        if (unspentOutputsSum.less(inputtedAmount)) {
                             // can only happen if unspentOutputsSum is for some reason less then the balance computed from the transactions, which it shouldn't
                             self.setSendingHUDHidden(true)
                             let unspentOutputsSumString = TLWalletUtils.coinToProperBitcoinAmountString(unspentOutputsSum)
@@ -572,7 +572,7 @@ import UIKit
                         
                         let toAddressesAndAmount = NSMutableDictionary()
                         toAddressesAndAmount.setObject(toAddress!, forKey: "address")
-                        toAddressesAndAmount.setObject(inputedAmount, forKey: "amount")
+                        toAddressesAndAmount.setObject(inputtedAmount, forKey: "amount")
                         let toAddressesAndAmounts = NSArray(objects: toAddressesAndAmount)
                         let ret = AppDelegate.instance().godSend!.createSignedSerializedTransactionHex(toAddressesAndAmounts,
                             feeAmount: feeAmount,
@@ -618,7 +618,7 @@ import UIKit
                         
                         self.beforeSendBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
                         AppDelegate.instance().inputedToAddress = toAddress
-                        AppDelegate.instance().inputedToAmount = inputedAmount
+                        AppDelegate.instance().inputedToAmount = inputtedAmount
                         
                         let handlePushTxSuccess = { () -> () in
                             AppDelegate.instance().doHiddenPresentAndDimissTransparentViewController = true
@@ -837,7 +837,7 @@ import UIKit
         let toAddress = self.toAddressTextField!.text
         if toAddress != nil && TLStealthAddress.isStealthAddress(toAddress!, isTestnet: false) &&
             TLSuggestions.instance().enabledShowStealthPaymentDelayInfo() && TLPreferences.getBlockExplorerAPI() == .Blockchain {
-            let msg = "Sending payment to a forward addresses might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For forward address payments to show up faster, configure your app to use the Insight API in advance settings.".localized
+            let msg = "Sending payment to a forward address might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For forward address payments to show up faster, configure your app to use the Insight API in advance settings.".localized
             TLPrompts.promtForOK(self, title:"Warning".localized, message:msg, success: {
                 () in
                 self._reviewPaymentClicked()
