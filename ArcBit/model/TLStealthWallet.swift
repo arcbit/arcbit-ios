@@ -296,11 +296,17 @@ import Foundation
     }
 
     func addOrSetStealthPaymentsWithStatus(txidArray: [String], addressArray: [String], txTimeArray: [UInt64], isAddingPayments: Bool, waitForCompletion: Bool) -> () {
-        var jsonData:AnyObject? = nil
+        var jsonData:NSDictionary? = nil
         if txidArray.count > 0 {
             jsonData = TLBlockExplorerAPI.instance().getUnspentOutputsSynchronous(addressArray)
             if let _: AnyObject = jsonData![TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE] {
-                return
+                let msg = jsonData![TLNetworking.STATIC_MEMBERS.HTTP_ERROR_MSG] as? String
+                if msg != "No free outputs to spend" {
+                    
+                    return
+                } else {
+                    jsonData = ["unspent_outputs":[]];
+                }
             }
         }
         
@@ -310,7 +316,7 @@ import Foundation
         }
 
         if jsonData != nil {
-            let unspentOutputs = (jsonData as! NSDictionary).objectForKey("unspent_outputs") as! NSArray
+            let unspentOutputs = jsonData!.objectForKey("unspent_outputs") as! NSArray
             
             for _unspentOutput in unspentOutputs {
                 let unspentOutput = _unspentOutput as! NSDictionary
