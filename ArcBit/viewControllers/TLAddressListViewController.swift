@@ -319,7 +319,7 @@ import UIKit
         
         var nTxs = 0
         if (indexPath.section == 1 || indexPath.section == 3) {
-            nTxs = self.accountObject!.getNumberOfTransactionsForAddress(address)!
+            nTxs = self.accountObject!.getNumberOfTransactionsForAddress(address)
         }
         
         promptAddressActionSheet(address, addressType: addressType, title: title,

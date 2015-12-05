@@ -306,9 +306,12 @@ import Foundation
         }
     }
     
-    func getNumberOfTransactionsForAddress(address: String) -> Int? {
+    func getNumberOfTransactionsForAddress(address: String) -> Int {
         assert(self.isHDWalletAddress(address))
-        return address2NumberOfTransactions[address]
+        if address2NumberOfTransactions[address] == nil {
+            return 0;
+        }
+        return address2NumberOfTransactions[address]!
     }
     
     func getAddressHDIndex(address: String) -> Int {
@@ -471,7 +474,7 @@ import Foundation
                             
                             address2hasUpdatedNTxCount.setObject("", forKey: address)
                             
-                            let ntxs = getNumberOfTransactionsForAddress(address)!
+                            let ntxs = getNumberOfTransactionsForAddress(address)
                             address2NumberOfTransactions[address] = ntxs + 1
                     }
                 } else if self.stealthWallet != nil && self.stealthWallet!.isPaymentAddress(address) {
@@ -510,7 +513,7 @@ import Foundation
                         address2hasUpdatedNTxCount.objectForKey(address) == nil) {
                             
                             address2hasUpdatedNTxCount.setObject("", forKey: address)
-                            let ntxs = getNumberOfTransactionsForAddress(address)!
+                            let ntxs = getNumberOfTransactionsForAddress(address)
                             address2NumberOfTransactions[address] = ntxs + 1
                     }
                 } else if self.stealthWallet != nil && self.stealthWallet!.isPaymentAddress(address) {
@@ -561,7 +564,7 @@ import Foundation
         var addressIdx = 0
         for (addressIdx = 0; addressIdx < mainActiveAddresses.count; addressIdx++) {
             let address = mainActiveAddresses[addressIdx]
-            if (getNumberOfTransactionsForAddress(address)! == 0) {
+            if (getNumberOfTransactionsForAddress(address) == 0) {
                 break
             }
         }
@@ -575,7 +578,7 @@ import Foundation
             }
             
             let address = mainActiveAddresses[addressIdx]
-            if (getNumberOfTransactionsForAddress(address)! == 0) {
+            if (getNumberOfTransactionsForAddress(address) == 0) {
                 receivingAddressesArray.append(address)
                 if receivingAddressesStartIdx == -1 {
                     receivingAddressesStartIdx = addressIdx
@@ -609,7 +612,7 @@ import Foundation
         var addressIdx = 0
         for (; addressIdx < changeActiveAddresses.count; addressIdx++) {
                 let address = changeActiveAddresses[addressIdx]
-            if (getNumberOfTransactionsForAddress(address)! == 0) {
+            if (getNumberOfTransactionsForAddress(address) == 0) {
                 break
             }
         }
@@ -634,7 +637,7 @@ import Foundation
         for _address in activeMainAddresses {
             let address = _address as! String
             if (getAddressBalance(address).lessOrEqual(TLCoin.zero()) &&
-                getNumberOfTransactionsForAddress(address)! > 0) {
+                getNumberOfTransactionsForAddress(address) > 0) {
 
                     let addressIdx = address2HDIndexDict[address]!
                     let accountIdx = accountDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_IDX) as! Int
@@ -689,7 +692,7 @@ import Foundation
             let address = _address as! String
             
             if (getAddressBalance(address).lessOrEqual(TLCoin.zero()) &&
-                getNumberOfTransactionsForAddress(address)! > 0) {
+                getNumberOfTransactionsForAddress(address) > 0) {
                     
                     let addressIdx = address2HDIndexDict[address]!
                     let accountIdx = accountDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_IDX) as! Int
@@ -878,7 +881,7 @@ import Foundation
     
     func getCurrentChangeAddress() -> String {
         for address in changeActiveAddresses {
-            if getNumberOfTransactionsForAddress(address)! == 0 && self.getAddressBalance(address).equalTo(TLCoin.zero()) {
+            if getNumberOfTransactionsForAddress(address) == 0 && self.getAddressBalance(address).equalTo(TLCoin.zero()) {
                 return address
             }
         }
