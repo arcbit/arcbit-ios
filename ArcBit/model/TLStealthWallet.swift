@@ -542,7 +542,9 @@ import Foundation
             var gotOldestPaymentAddresses = false
             
             var jsonData:NSDictionary? = nil
-            for _ in 0...STATIC_MEMBERS.MAX_CONSECUTIVE_INVALID_SIGNATURES {
+            var consecutiveInvalidSignatures = 0
+            
+            while true {
                 jsonData = TLStealthExplorerAPI.instance().getStealthPaymentsSynchronous(stealthAddress, signature: signature!, offset: offset)
                 if let _: AnyObject = jsonData![TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE] {
                     return nil
@@ -550,14 +552,17 @@ import Foundation
                 
                 if let errorCode = jsonData!.objectForKey(TLStealthExplorerAPI.STATIC_MEMBERS.SERVER_ERROR_CODE) as? Int {
                     if errorCode == TLStealthExplorerAPI.STATIC_MEMBERS.INVALID_SIGNATURE_ERROR {
+                        consecutiveInvalidSignatures += 1
+                        if (consecutiveInvalidSignatures > STATIC_MEMBERS.MAX_CONSECUTIVE_INVALID_SIGNATURES) {
+                            return nil
+                        }
                         TLStealthWallet.Challenge.needsRefreshing = true
                         signature = TLStealthWallet.getChallengeAndSign(stealthAddress, privKey: scanPriv, pubKey: scanPublicKey)
                         if signature == nil {
                             return nil
                         }
-                        
-                        continue
                     }
+                    continue
                 }
                 break
             }
