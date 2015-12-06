@@ -84,13 +84,11 @@ import Foundation
             accountObject.renameAccount(accountName)
             self.appWallet!.renameAccount(accountObject.getAccountIdxNumber(), accountName:accountName)
         } else  {
+            let accountObject = self.getAccountObjectForAccountIdxNumber(accountIdxNumber)
+            accountObject.renameAccount(accountName)
             if (accountType == TLAccountType.Imported) {
-                let accountObject = self.getAccountObjectForAccountIdxNumber(accountIdxNumber)
-                accountObject.renameAccount(accountName)
                 self.appWallet!.setImportedAccountName(accountName, idx:accountIdxNumber)
             } else if (accountType == TLAccountType.ImportedWatch) {
-                let accountObject = self.getAccountObjectForAccountIdxNumber(accountIdxNumber)
-                accountObject.renameAccount(accountName)
                 self.appWallet!.setWatchOnlyAccountName(accountName, idx:accountIdxNumber)
             }
         }
