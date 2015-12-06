@@ -23,6 +23,8 @@ https://itunes.apple.com/app/arcbit-bitcoin-wallet/id999487888
 - Automatic cycling of addresses to prevent address reuse
 - Open source
 - Your wallet is encrypted with AES-256 and 10k rounds of PBKDF2 password stretching
+- xpub keys stored client side unlike many other wallets, which offers better privacy
+- Can access private keys without an internet connection
 - Advance mode for Bitcoin experts
 - First bitcoin wallet written in Swift
 
