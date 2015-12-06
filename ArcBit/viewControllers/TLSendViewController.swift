@@ -834,14 +834,31 @@ import UIKit
         self.dismissKeyboard()
         
         let toAddress = self.toAddressTextField!.text
-        if toAddress != nil && TLStealthAddress.isStealthAddress(toAddress!, isTestnet: false) &&
-            TLSuggestions.instance().enabledShowStealthPaymentDelayInfo() && TLPreferences.getBlockExplorerAPI() == .Blockchain {
-            let msg = "Sending payment to a forward address might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For forward address payments to show up faster, configure your app to use the Insight API in advance settings.".localized
-            TLPrompts.promtForOK(self, title:"Warning".localized, message:msg, success: {
-                () in
-                self._reviewPaymentClicked()
-                TLSuggestions.instance().setEnableShowStealthPaymentDelayInfo(false)
-            })
+        if toAddress != nil && TLStealthAddress.isStealthAddress(toAddress!, isTestnet: false) {
+            func checkToShowStealthPaymentDelayInfo() {
+                if TLSuggestions.instance().enabledShowStealthPaymentDelayInfo() && TLBlockExplorerAPI.STATIC_MEMBERS.blockExplorerAPI == .Blockchain {
+                    let msg = "Sending payment to a forward address might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For forward address payments to show up faster, configure your app to use the Insight API in advance settings.".localized
+                    TLPrompts.promtForOK(self, title:"Warning".localized, message:msg, success: {
+                        () in
+                        TLSuggestions.instance().setEnableShowStealthPaymentDelayInfo(false)
+                    })
+                } else {
+                    self._reviewPaymentClicked()
+                }
+            }
+            
+            if TLSuggestions.instance().enabledShowStealthPaymentNote() {
+                let msg = "You are making a payment to a reusable address. Make sure that the receiver can see the payment made to them. (All ArcBit reusable addresses are compatible with other ArcBit wallets)".localized
+                TLPrompts.promtForOK(self, title:"Note".localized, message:msg, success: {
+                    () in
+                    self._reviewPaymentClicked()
+                    TLSuggestions.instance().setEnableShowStealthPaymentNote(false)
+                    checkToShowStealthPaymentDelayInfo()
+                })
+            } else {
+                checkToShowStealthPaymentDelayInfo();
+            }
+            
         } else {
             self._reviewPaymentClicked()
         }

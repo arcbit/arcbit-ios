@@ -35,6 +35,7 @@ class TLSuggestions {
     let ENABLE_SUGGESTED_DONT_ADD_falseRMAL_ADDRESS_TO_ADDRESS_BOOK  = "enableSuggestDontAddNormalAddressToAddressBook"
     let ENABLE_SHOW_MANUALLY_SCAN_TRANSACTION_FOR_STEALTH_TX_INFO  = "enableShowManuallyScanTransactionForStealthTxInfo"
     let ENABLE_SHOW_STEALTH_PAYMENT_DELAY_INFO  = "enableShowStealthPaymentDelayInfo"
+    let ENABLE_SHOW_STEALTH_PAYMENT_NOTE  = "enableShowStealthPaymentNote"
 
     struct STATIC_MEMBERS {
         static var instance:TLSuggestions?
@@ -61,6 +62,19 @@ class TLSuggestions {
             ENABLE_SHOW_MANUALLY_SCAN_TRANSACTION_FOR_STEALTH_TX_INFO : true,
             ENABLE_SHOW_STEALTH_PAYMENT_DELAY_INFO : true,
             ])
+        TLPreferences.setSuggestionsDict(suggestions!)
+    }
+
+    //should have done negation of enabled as default for suggestions when first built app, instead now have to return true for any new suggestions
+    func enabledShowStealthPaymentNote() -> (Bool) {
+        if (suggestions!.objectForKey(ENABLE_SHOW_STEALTH_PAYMENT_NOTE) == nil) {
+            return true;
+        }
+        return suggestions!.objectForKey(ENABLE_SHOW_STEALTH_PAYMENT_NOTE) as! Bool
+    }
+    
+    func setEnableShowStealthPaymentNote(enabled:Bool) -> (){
+        suggestions!.setObject(enabled, forKey:ENABLE_SHOW_STEALTH_PAYMENT_NOTE)
         TLPreferences.setSuggestionsDict(suggestions!)
     }
     
