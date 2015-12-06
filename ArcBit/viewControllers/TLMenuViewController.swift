@@ -108,7 +108,7 @@ import UIKit
             break
         case 5:
             imageName = TLWalletUtils.LINK_ICON_IMAGE_NAME()
-            name = "Links".localized
+            name = "More".localized
             break
         default:
             imageName = TLWalletUtils.SETTINGS_ICON_IMAGE_NAME()
