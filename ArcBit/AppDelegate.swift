@@ -777,7 +777,7 @@ import HockeySDK
         
         NSNotificationCenter.defaultCenter().addObserver(self
             ,selector:"saveWalletPayloadDelay:",
-            name:TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object:nil)
+            name:TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self
             ,selector:"updateModelWithNewTransaction:",
             name:TLNotificationEvents.EVENT_NEW_UNCONFIRMED_TRANSACTION(), object:nil)

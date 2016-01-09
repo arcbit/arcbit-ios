@@ -38,7 +38,7 @@ extension TLWallet {
             stealthAddressServersDict.setObject(serverAttributesDict, forKey: serverURL)
         }
         
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func setStealthAddressServerStatusHDWallet(accountIdx: Int, serverURL: String, isWatching: Bool) -> () {
@@ -61,7 +61,7 @@ extension TLWallet {
         let stealthAddressArray = accountDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESSES) as! NSMutableArray
         let stealthAddressDict = (stealthAddressArray.objectAtIndex(0) as! NSMutableDictionary)
         stealthAddressDict.setObject(NSNumber(unsignedLongLong: lastTxTime), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LAST_TX_TIME)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func setStealthAddressLastTxTimeHDWallet(accountIdx: Int, serverURL: String, lastTxTime: UInt64) -> () {
@@ -108,7 +108,7 @@ extension TLWallet {
         lock.unlock()
             
         dispatch_async(dispatch_get_main_queue()) {
-            NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
         }
     }
     
@@ -145,7 +145,7 @@ extension TLWallet {
                 break
             }
         }
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func setStealthPaymentLastCheckTimeHDWallet(accountIdx: Int, txid: String, lastCheckTime: UInt64) -> () {
@@ -177,7 +177,7 @@ extension TLWallet {
             }
         }
         dispatch_async(dispatch_get_main_queue()) {
-            NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
         }
     }
     
@@ -215,7 +215,7 @@ extension TLWallet {
 
         if startCount != stealthAddressPaymentsArrayCount {
             dispatch_async(dispatch_get_main_queue()) {
-                NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+                NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
             }
         }
     }
@@ -240,7 +240,7 @@ extension TLWallet {
         let stealthAddressArray = accountDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESSES) as! NSMutableArray
         let stealthAddressDict = stealthAddressArray.objectAtIndex(0) as! NSMutableDictionary
         stealthAddressDict.setObject(NSMutableArray(), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_PAYMENTS)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func clearAllStealthPaymentsFromHDWallet(accountIdx: Int) -> () {

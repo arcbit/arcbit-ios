@@ -24,6 +24,7 @@
 import Foundation
 
 class TLNotificationEvents {
+    class func EVENT_WALLET_PAYLOAD_UPDATED() -> String { return "event.wallet.payload.updated"}
     class func EVENT_ACCOUNT_SELECTED() -> String { return "event.account.selected"}
     class func EVENT_ADDRESS_SELECTED() -> String { return "event.address.selected"}
     class func EVENT_PREFERENCES_FIAT_DISPLAY_CHANGED() -> String { return "pref.fiatcurrencychanged"}

@@ -160,7 +160,7 @@ class TLWallet {
         accountDict.setObject(0, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MIN_MAIN_ADDRESS_IDX)
         accountDict.setObject(0, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MIN_CHANGE_ADDRESS_IDX)
         
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func clearAllAddressesFromImportedAccount(idx: Int) -> () {
@@ -171,7 +171,7 @@ class TLWallet {
         accountDict.setObject(changeAddressesArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_CHANGE_ADDRESSES)
         accountDict.setObject(0, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MIN_MAIN_ADDRESS_IDX)
         accountDict.setObject(0, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MIN_CHANGE_ADDRESS_IDX)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func clearAllAddressesFromImportedWatchAccount(idx: Int) -> () {
@@ -182,26 +182,26 @@ class TLWallet {
         accountDict.setObject(changeAddressesArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_CHANGE_ADDRESSES)
         accountDict.setObject(0, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MIN_MAIN_ADDRESS_IDX)
         accountDict.setObject(0, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MIN_CHANGE_ADDRESS_IDX)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     //----------------------------------------------------------------------------------------------------------------
     func updateAccountNeedsRecoveringFromHDWallet(accountIdx: Int, accountNeedsRecovering: Bool) -> () {
         let accountDict = getAccountDict(accountIdx)
         accountDict.setObject(accountNeedsRecovering, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_NEEDS_RECOVERING)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func updateAccountNeedsRecoveringFromImportedAccount(idx: Int, accountNeedsRecovering: Bool) -> () {
         let accountDict = getImportedAccountAtIndex(idx)
         accountDict.setObject(accountNeedsRecovering, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_NEEDS_RECOVERING)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func updateAccountNeedsRecoveringFromImportedWatchAccount(idx: Int, accountNeedsRecovering: Bool) -> () {
         let accountDict = getImportedWatchOnlyAccountAtIndex(idx)
         accountDict.setObject(accountNeedsRecovering, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_NEEDS_RECOVERING)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     //----------------------------------------------------------------------------------------------------------------
     
@@ -250,7 +250,7 @@ class TLWallet {
                 mainAddressDict.setObject(addressStatus.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS)
             }
             
-            NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func updateChangeAddressStatusFromHDWallet(accountIdx: Int, addressIdx: Int,
@@ -297,7 +297,7 @@ class TLWallet {
                 changeAddressDict.setObject(addressStatus.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS)
             }
             
-            NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     //----------------------------------------------------------------------------------------------------------------
     func getMinMainAddressIdxFromHDWallet(accountIdx: Int) -> Int {
@@ -388,7 +388,7 @@ class TLWallet {
         mainAddressesArray.addObject(mainAddressDict)
         
         dispatch_async(dispatch_get_main_queue()) {
-            NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
         }
         
         return mainAddressDict
@@ -441,7 +441,7 @@ class TLWallet {
         changeAddressesArray.addObject(changeAddressDict)
         
         dispatch_async(dispatch_get_main_queue()) {
-            NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
         }
         
         return changeAddressDict
@@ -468,7 +468,7 @@ class TLWallet {
         if (mainAddressesArray.count > 0) {
             let mainAddressDict = mainAddressesArray.lastObject as! NSDictionary
             mainAddressesArray.removeLastObject()
-            NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
             return mainAddressDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as? String
         }
         
@@ -497,7 +497,7 @@ class TLWallet {
         if (changeAddressesArray.count > 0) {
             let changeAddressDict = changeAddressesArray.lastObject as! NSDictionary
             changeAddressesArray.removeLastObject()
-            NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
             return changeAddressDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as? String
         }
         return nil
@@ -511,21 +511,21 @@ class TLWallet {
         let accountDict = accountsArray.objectAtIndex(accountIdx) as! NSDictionary
         let status = enabled ? TLAddressStatus.Archived : TLAddressStatus.Active
         accountDict.setValue(status.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func archiveAccountImportedAccount(idx: Int, enabled: Bool) -> () {
         let accountDict = getImportedAccountAtIndex(idx)
         let status = enabled ? TLAddressStatus.Archived : TLAddressStatus.Active
         accountDict.setValue(status.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func archiveAccountImportedWatchAccount(idx: Int, enabled: Bool) -> () {
         let accountDict = getImportedWatchOnlyAccountAtIndex(idx)
         let status = enabled ? TLAddressStatus.Archived : TLAddressStatus.Active
         accountDict.setValue(status.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
 
     //----------------------------------------------------------------------------------------------------------------
@@ -543,7 +543,7 @@ class TLWallet {
             let hdWalletDict = getHDWallet()
             let maxAccountIDCreated = hdWalletDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MAX_ACCOUNTS_CREATED) as! Int
             hdWalletDict.setObject((maxAccountIDCreated - 1), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MAX_ACCOUNTS_CREATED)
-            NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
             return true
         }
         
@@ -565,7 +565,7 @@ class TLWallet {
             accountsArray.addObject(accountDict)
             hdWalletDict.setObject((maxAccountIDCreated + 1), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MAX_ACCOUNTS_CREATED)
         
-            NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
         
             if (getCurrentAccountID() == nil) {
                 setCurrentAccountID("0")
@@ -639,7 +639,7 @@ class TLWallet {
         let accountIdx = importedAccountsArray.count // "accountIdx" key is different for ImportedAccount then hdwallet account
         let accountDict = createAccountDictWithPreload("", extendedKey: extendedPrivateKey, isPrivateExtendedKey: true, accountIdx: accountIdx, preloadStartingAddresses: false)
         importedAccountsArray.addObject(accountDict)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
         
         return TLAccountObject(appWallet: self, dict: accountDict, accountType: .Imported)
     }
@@ -649,13 +649,13 @@ class TLWallet {
         let importedAccountsArray = importedKeysDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_IMPORTED_ACCOUNTS) as! NSMutableArray
         
         importedAccountsArray.removeObjectAtIndex(idx)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func setImportedAccountLabel(label: String, idx: Int) -> () {
         let accountDict = getImportedAccountAtIndex(idx)
         accountDict.setObject(label, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_NAME)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func getImportedAccountArray() -> (NSArray) {
@@ -680,7 +680,7 @@ class TLWallet {
         let accountIdx = watchOnlyAccountsArray.count // "accountIdx" key is different for ImportedAccount then hdwallet account
         let watchOnlyAccountDict = createAccountDictWithPreload("", extendedKey: extendedPublicKey, isPrivateExtendedKey: false, accountIdx: accountIdx, preloadStartingAddresses: false)
         watchOnlyAccountsArray.addObject(watchOnlyAccountDict)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
         return TLAccountObject(appWallet: self, dict: watchOnlyAccountDict, accountType: .ImportedWatch)
     }
     
@@ -689,7 +689,7 @@ class TLWallet {
         let watchOnlyAccountsArray = importedKeysDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_WATCH_ONLY_ACCOUNTS) as! NSMutableArray
         
         watchOnlyAccountsArray.removeObjectAtIndex(idx)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func setWatchOnlyAccountLabel(label: String, idx: Int) -> () {
@@ -698,7 +698,7 @@ class TLWallet {
         
         let accountDict = watchOnlyAccountsArray.objectAtIndex(idx) as! NSMutableDictionary
         accountDict.setObject(label, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_NAME)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func getWatchOnlyAccountArray() -> (NSArray) {
@@ -737,7 +737,7 @@ class TLWallet {
         
         let importedPrivateKeyDict = NSMutableDictionary(dictionary: importedPrivateKey)
         importedPrivateKeyArray.addObject(importedPrivateKeyDict)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
         return importedPrivateKey
     }
     
@@ -746,7 +746,7 @@ class TLWallet {
         let importedPrivateKeyArray = importedKeysDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_IMPORTED_PRIVATE_KEYS) as! NSMutableArray
         
         importedPrivateKeyArray.removeObjectAtIndex(idx)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func setImportedPrivateKeyLabel(label: String, idx: Int) -> () {
@@ -755,7 +755,7 @@ class TLWallet {
         
         let privateKeyDict = importedPrivateKeyArray.objectAtIndex(idx) as! NSMutableDictionary
         privateKeyDict.setObject(label, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func setImportedPrivateKeyArchive(archive: Bool, idx: Int) -> () {
@@ -765,7 +765,7 @@ class TLWallet {
         
         let status = archive ? TLAddressStatus.Archived : TLAddressStatus.Active
         privateKeyDict.setObject(status.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func getImportedPrivateKeyArray() -> (NSArray) {
@@ -793,7 +793,7 @@ class TLWallet {
         
         let watchOnlyAddressDict = NSMutableDictionary(dictionary: watchOnlyAddress)
         watchOnlyAddressArray.addObject(watchOnlyAddressDict)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
         return watchOnlyAddress
     }
     
@@ -802,7 +802,7 @@ class TLWallet {
         let watchOnlyAddressArray = importedKeysDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_WATCH_ONLY_ADDRESSES) as! NSMutableArray
         
         watchOnlyAddressArray.removeObjectAtIndex(idx)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     
@@ -811,7 +811,7 @@ class TLWallet {
         let watchOnlyAddressArray = importedKeysDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_WATCH_ONLY_ADDRESSES) as! NSArray
         let addressDict = watchOnlyAddressArray.objectAtIndex(idx) as! NSMutableDictionary
         addressDict.setObject(label, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func setWatchOnlyAddressArchive(archive: Bool, idx: Int) -> () {
@@ -821,7 +821,7 @@ class TLWallet {
         
         let status = archive ? TLAddressStatus.Archived : TLAddressStatus.Active
         addressDict.setObject(status.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     
@@ -850,32 +850,32 @@ class TLWallet {
     func addAddressBookEntry(address: String, label: String) -> () {
         let addressBookArray = getCurrentWallet().objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS_BOOK) as! NSMutableArray
         addressBookArray.addObject([TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS: address, TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL: label])
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func editAddressBookEntry(index: Int, label: String) -> () {
         let addressBookArray = getCurrentWallet().objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS_BOOK) as! NSMutableArray
         let oldEntry = addressBookArray.objectAtIndex(index) as! NSDictionary
         addressBookArray.replaceObjectAtIndex(index, withObject: [TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS: oldEntry.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String, TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL: label])
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func deleteAddressBookEntry(idx: Int) -> () {
         let addressBookArray = getCurrentWallet().objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS_BOOK) as! NSMutableArray
         addressBookArray.removeObjectAtIndex(idx)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func setTransactionTag(txid: String, tag: String) -> () {
         let transactionLabelDict = getCurrentWallet().objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_TRANSACTION_TAGS) as! NSMutableDictionary
         transactionLabelDict.setObject(tag, forKey: txid)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func deleteTransactionTag(txid: String) -> () {
         let transactionLabelDict = getCurrentWallet().objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_TRANSACTION_TAGS) as! NSMutableDictionary
         transactionLabelDict.removeObjectForKey(txid)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func getTransactionTag(txid: String) -> String? {
@@ -906,7 +906,7 @@ class TLWallet {
         
         payload.setValue(walletsArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_WALLETS)
         createNewWallet(passphrase, masterHex: masterHex, walletName: "default")
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
     func loadWalletPayload(walletPayload: NSDictionary, masterHex: NSString) -> () {
@@ -974,7 +974,7 @@ class TLWallet {
         let accountsArray = getAccountsArray()
         let accountDict = accountsArray.objectAtIndex(accountIdxNumber) as! NSMutableDictionary
         accountDict.setObject(accountName, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_NAME)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLWalletJSONKeys.STATIC_MEMBERS.EVENT_WALLET_PAYLOAD_UPDATED, object: nil, userInfo: nil)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
         
         return true
     }

@@ -13,9 +13,7 @@ class TLWalletJSONKeys {
     
     struct STATIC_MEMBERS {
         static let STEALTH_PAYMENTS_FETCH_COUNT = 50
-        
-        static let EVENT_WALLET_PAYLOAD_UPDATED = "event.wallet.payload.updated"
-        
+                
         static let WALLET_PAYLOAD_VERSION = "1"
         static let WALLET_PAYLOAD_KEY_VERSION = "version"
         static let WALLET_PAYLOAD_KEY_PAYLOAD = "payload"
