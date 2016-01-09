@@ -1200,7 +1200,7 @@ import UIKit
         TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: "Checking Transaction".localized, animated: true)
 
         TLBlockExplorerAPI.instance().getTx(txid, success: {
-            (jsonData: AnyObject!) in
+            (jsonData: AnyObject?) in
             let stealthDataScriptAndOutputAddresses = TLStealthWallet.getStealthDataScriptAndOutputAddresses(jsonData as! NSDictionary)
             if stealthDataScriptAndOutputAddresses == nil || stealthDataScriptAndOutputAddresses!.stealthDataScript == nil {
                 TLHUDWrapper.hideHUDForView(self.view, animated: true)
@@ -1216,8 +1216,9 @@ import UIKit
                 if (stealthDataScriptAndOutputAddresses!.outputAddresses).indexOf((paymentAddress!)) != nil {
                     
                     TLBlockExplorerAPI.instance().getUnspentOutputs([paymentAddress!], success: {
-                        (jsonData: AnyObject!) in
-                        if ((jsonData as! NSDictionary).count > 0) {
+                        (jsonData2: AnyObject!) in
+                        let unspentOutputs = (jsonData2 as! NSDictionary).objectForKey("unspent_outputs") as! NSArray!
+                        if (unspentOutputs.count > 0) {
                             let privateKey = TLCoreBitcoinWrapper.privateKeyFromSecret(secret, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)
                             let txObject = TLTxObject(dict:jsonData as! NSDictionary)
                             let txTime = txObject.getTxUnixTime()

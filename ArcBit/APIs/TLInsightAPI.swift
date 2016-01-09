@@ -160,7 +160,9 @@ class TLInsightAPI {
                 let transformedTxs = NSMutableArray(capacity:txs.count)
                 
                 for tx in txs as! [NSDictionary] {
-                    transformedTxs.addObject(TLInsightAPI.insightTxToBlockchainTx(tx))
+                    if let transformedTx = TLInsightAPI.insightTxToBlockchainTx(tx) {
+                        transformedTxs.addObject(transformedTx)
+                    }
                 }
                 
                 let transansformedJsonData = NSMutableDictionary()
@@ -181,7 +183,9 @@ class TLInsightAPI {
         let transformedTxs = NSMutableArray(capacity:txs.count)
         
         for tx in txs as! [NSDictionary] {
-            transformedTxs.addObject(TLInsightAPI.insightTxToBlockchainTx(tx))
+            if let transformedTx = TLInsightAPI.insightTxToBlockchainTx(tx) {
+                transformedTxs.addObject(transformedTx)
+            }
         }
         
         let transansformedJsonData = NSMutableDictionary()
@@ -300,9 +304,12 @@ class TLInsightAPI {
             }
             let tx = txs.objectAtIndex(i) as! NSDictionary
             let transformedTx = TLInsightAPI.insightTxToBlockchainTx(tx)
-            transformedTxs.addObject(transformedTx)
+            if (transformedTx == nil) {
+                continue;
+            }
+            transformedTxs.addObject(transformedTx!)
         
-            let inputsArray = transformedTx.objectForKey("inputs") as? NSArray
+            let inputsArray = transformedTx!.objectForKey("inputs") as? NSArray
             
             if (inputsArray != nil) {
                 for _input in inputsArray! {
@@ -327,7 +334,7 @@ class TLInsightAPI {
                 }
             }
             
-            let outsArray = transformedTx.objectForKey("out") as? NSArray
+            let outsArray = transformedTx!.objectForKey("out") as? NSArray
             
             if (outsArray != nil) {
                 for _output in outsArray! {
@@ -386,12 +393,25 @@ class TLInsightAPI {
         return transansformedJsonData
     }
     
-    class func insightTxToBlockchainTx(txDict: NSDictionary) -> NSDictionary {
+    class func insightTxToBlockchainTx(txDict: NSDictionary) -> NSDictionary? {
         let blockchainTxDict = NSMutableDictionary()
         
-        blockchainTxDict.setObject(txDict.objectForKey("txid")!, forKey: "hash")
-        blockchainTxDict.setObject(txDict.objectForKey("version")!, forKey: "ver")
-        blockchainTxDict.setObject(txDict.objectForKey("size")!, forKey: "size")
+        let vins = txDict.objectForKey("vin") as? NSArray
+        let vouts = txDict.objectForKey("vout") as? NSArray
+        //if (vins == nil && vouts == nil && txDict.objectForKey("possibleDoubleSpend") != nil) {
+        if (vins == nil && vouts == nil) {
+            return nil;
+        }
+        
+        if let txid = txDict.objectForKey("txid") {
+            blockchainTxDict.setObject(txid, forKey: "hash")
+        }
+        if let version = txDict.objectForKey("version") {
+            blockchainTxDict.setObject(version, forKey: "ver")
+        }
+        if let size = txDict.objectForKey("size") {
+            blockchainTxDict.setObject(size, forKey: "size")
+        }
         //WARNING: time dont match on different blockexplorers, and field does not exist if unconfirmed
         let time: AnyObject? = txDict.objectForKey("time")
         if (time != nil) {
@@ -409,54 +429,66 @@ class TLInsightAPI {
             blockchainTxDict.setObject(0, forKey: "confirmations")
         }
         
-        let vins = txDict.objectForKey("vin") as! NSArray
-        let inputs = NSMutableArray()
-        for _vin in vins {
-            let vin = _vin as! NSDictionary
-            let input = NSMutableDictionary()
-            
-            input.setObject(vin.objectForKey("sequence")!, forKey: "sequence")
-            
-            let prev_out = NSMutableDictionary()
-            
-            let addr = vin.objectForKey("addr") as? String
-            if (addr != nil) {
-                prev_out.setObject(addr!, forKey: "addr")
-            } else {
-                //can be nil, for example, mined coins on tx 32ee55597c590bb104c524298b14fd1c0ac96a230810bd1e68d109df532a46a0
-            }
-            
-            prev_out.setObject(vin.objectForKey("valueSat")!, forKey: "value")
-            prev_out.setObject(vin.objectForKey("n")!, forKey: "n")
-            
-            input.setObject(prev_out, forKey: "prev_out")
-            
-            inputs.addObject(input)
-        }
-        blockchainTxDict.setObject(inputs, forKey: "inputs")
-        
-        
-        let vouts = txDict.objectForKey("vout") as! NSArray
-        let outs = NSMutableArray()
-        for _vout in vouts {
-            let vout = _vout as! NSDictionary
-            let aOut = NSMutableDictionary()
-            aOut.setObject(vout.objectForKey("n")!, forKey: "n")
-            aOut.setObject((vout.objectForKey("scriptPubKey") as! NSDictionary).objectForKey("hex")!, forKey: "script")
-            let addresses = ((vout.objectForKey("scriptPubKey") as! NSDictionary).objectForKey("addresses")) as? NSArray
-            if (addresses != nil) {
-                if (addresses!.count == 1) {
-                    aOut.setObject(addresses!.objectAtIndex(0), forKey: "addr")
+        if vins != nil {
+            let inputs = NSMutableArray()
+            for _vin in vins! {
+                let vin = _vin as! NSDictionary
+                let input = NSMutableDictionary()
+                if let sequence = vin.objectForKey("sequence") {
+                    input.setObject(sequence, forKey: "sequence")
                 }
+                
+                let prev_out = NSMutableDictionary()
+                
+                let addr = vin.objectForKey("addr") as? String
+                if (addr != nil) {
+                    prev_out.setObject(addr!, forKey: "addr")
+                } else {
+                    //can be nil, for example, mined coins on tx 32ee55597c590bb104c524298b14fd1c0ac96a230810bd1e68d109df532a46a0
+                }
+                if let valueSat = vin.objectForKey("valueSat") {
+                    prev_out.setObject(valueSat, forKey: "value")
+                }
+                if let n = vin.objectForKey("n") {
+                    prev_out.setObject(n, forKey: "n")
+                }
+                input.setObject(prev_out, forKey: "prev_out")
+                
+                inputs.addObject(input)
             }
-            
-            let value = vout.objectForKey("value") as! String
-            let coinValue = TLCoin(bitcoinAmount: value, bitcoinDenomination: .Bitcoin, locale: NSLocale(localeIdentifier: "en_US"))
-            aOut.setObject(Int(coinValue.toUInt64()), forKey: "value")
-            
-            outs.addObject(aOut)
+            blockchainTxDict.setObject(inputs, forKey: "inputs")
         }
-        blockchainTxDict.setObject(outs, forKey: "out")
+    
+        if vouts != nil {
+            let outs = NSMutableArray()
+            for _vout in vouts! {
+                let vout = _vout as! NSDictionary
+                let aOut = NSMutableDictionary()
+                if let n = vout.objectForKey("n") {
+                    aOut.setObject(n, forKey: "n")
+                }
+                
+                if let scriptPubKey = (vout.objectForKey("scriptPubKey") as? NSDictionary) {
+                    let addresses = scriptPubKey.objectForKey("addresses") as? NSArray
+                    if (addresses != nil) {
+                        if (addresses!.count == 1) {
+                            aOut.setObject(addresses!.objectAtIndex(0), forKey: "addr")
+                        }
+                    }
+                    if let hex = scriptPubKey.objectForKey("hex") {
+                        aOut.setObject(hex, forKey: "script")
+                    }
+                }
+
+                if let value = vout.objectForKey("value") as? String {
+                    let coinValue = TLCoin(bitcoinAmount: value, bitcoinDenomination: .Bitcoin, locale: NSLocale(localeIdentifier: "en_US"))
+                    aOut.setObject(Int(coinValue.toUInt64()), forKey: "value")
+
+                }
+                outs.addObject(aOut)
+            }
+            blockchainTxDict.setObject(outs, forKey: "out")
+        }
         
         return blockchainTxDict
     }

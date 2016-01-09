@@ -581,7 +581,10 @@ import HockeySDK
         DLog("respondToStealthPayment respondToStealthPaymentGetTxTries: \(self.respondToStealthPaymentGetTxTries)")
 
         if self.respondToStealthPaymentGetTxTries < self.RESPOND_TO_STEALTH_PAYMENT_GET_TX_TRIES_MAX_TRIES {
-            TLBlockExplorerAPI.instance().getTx(txid, success: { (jsonData:AnyObject!) -> () in
+            TLBlockExplorerAPI.instance().getTx(txid, success: { (jsonData:AnyObject?) -> () in
+                if jsonData == nil {
+                    return;
+                }
                 let txObject = TLTxObject(dict:jsonData as! NSDictionary)
                 self.handleGetTxSuccessForRespondToStealthPayment(stealthAddress,
                     paymentAddress: paymentAddress, txid: txid, txTime: txTime, txObject: txObject)

@@ -164,9 +164,10 @@ import Foundation
                         
                         //TODO: temp solution, ask Insight devs to get all tx data in websockets API
                         TLBlockExplorerAPI.instance().getTx(txHash, success: {
-                            (txDict: AnyObject!) in
-                            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_NEW_UNCONFIRMED_TRANSACTION(), object: txDict, userInfo: nil)
-                            
+                            (txDict: AnyObject?) in
+                            if txDict != nil {
+                                NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_NEW_UNCONFIRMED_TRANSACTION(), object: txDict!, userInfo: nil)
+                            }
                             }, failure: {
                                 (code: NSInteger, status: String!) in
                         })

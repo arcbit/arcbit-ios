@@ -341,8 +341,14 @@ import Foundation
                 }
                 // cant figure out whether stealth payments has been spent by getting unspent outputs because
                 // blockexplorer api might receive tx yet, if we are pushing tx from a source that is not the blockexplorer api
-                TLBlockExplorerAPI.instance().getTxBackground(txid, success: { (jsonData:AnyObject!) -> () in
-                    let stealthDataScriptAndOutputAddresses = TLStealthWallet.getStealthDataScriptAndOutputAddresses(jsonData as! NSDictionary)
+                TLBlockExplorerAPI.instance().getTxBackground(txid, success: { (jsonData:AnyObject?) -> () in
+                    if (jsonData == nil) {
+                        if waitForCompletion {
+                            dispatch_group_leave(group)
+                        }
+                        return
+                    }
+                    let stealthDataScriptAndOutputAddresses = TLStealthWallet.getStealthDataScriptAndOutputAddresses((jsonData as? NSDictionary)!)
                     
                     if stealthDataScriptAndOutputAddresses == nil || stealthDataScriptAndOutputAddresses!.0 == nil {
                         if waitForCompletion {
@@ -395,8 +401,14 @@ import Foundation
                 if waitForCompletion {
                     dispatch_group_enter(group)
                 }
-                TLBlockExplorerAPI.instance().getTxBackground(txid, success: { (jsonData:AnyObject!) -> () in
-                    if let stealthDataScriptAndOutputAddresses = TLStealthWallet.getStealthDataScriptAndOutputAddresses(jsonData as! NSDictionary) {
+                TLBlockExplorerAPI.instance().getTxBackground(txid, success: { (jsonData:AnyObject?) -> () in
+                    if (jsonData == nil) {
+                        if waitForCompletion {
+                            dispatch_group_leave(group)
+                        }
+                        return
+                    }
+                    if let stealthDataScriptAndOutputAddresses = TLStealthWallet.getStealthDataScriptAndOutputAddresses((jsonData as? NSDictionary)!) {
                         if stealthDataScriptAndOutputAddresses.0 == nil {
                             if waitForCompletion {
                                 dispatch_group_leave(group)
