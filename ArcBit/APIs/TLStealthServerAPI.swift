@@ -25,6 +25,8 @@ import Foundation
 class TLStealthExplorerAPI {
     
     struct STATIC_MEMBERS {
+        static let STEALTH_PAYMENTS_FETCH_COUNT = 50
+
         static let UNEXPECTED_ERROR = -1000
         static let DATABASE_ERROR = -1001
         static let INVALID_STEALTH_ADDRESS_ERROR = -1002

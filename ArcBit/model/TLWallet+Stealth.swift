@@ -203,7 +203,7 @@ extension TLWallet {
 
         let startCount = stealthAddressPaymentsArray.count
         var stealthAddressPaymentsArrayCount = stealthAddressPaymentsArray.count
-        while (stealthAddressPaymentsArray.count > TLWalletJSONKeys.STATIC_MEMBERS.STEALTH_PAYMENTS_FETCH_COUNT) {
+        while (stealthAddressPaymentsArray.count > TLStealthExplorerAPI.STATIC_MEMBERS.STEALTH_PAYMENTS_FETCH_COUNT) {
             let stealthAddressPaymentDict = stealthAddressPaymentsArray.objectAtIndex(0) as! NSDictionary
             if (stealthAddressPaymentDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS) as! Int == TLStealthPaymentStatus.Spent.rawValue) {
                 stealthAddressPaymentsArray.removeObjectAtIndex(0)

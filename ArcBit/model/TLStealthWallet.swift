@@ -173,7 +173,7 @@ import Foundation
             }
             
             // dont check to remove last STEALTH_PAYMENTS_FETCH_COUNT payment addresses
-            if i >= paymentsArray.count - Int(TLWalletJSONKeys.STATIC_MEMBERS.STEALTH_PAYMENTS_FETCH_COUNT) {
+            if i >= paymentsArray.count - Int(TLStealthExplorerAPI.STATIC_MEMBERS.STEALTH_PAYMENTS_FETCH_COUNT) {
                 continue
             }
             
@@ -588,7 +588,7 @@ import Foundation
             
             let txTimeLowerBound = self.getStealthAddressLastTxTime()
             let olderTxTime = ((stealthPayments.lastObject as! NSDictionary)["time"] as! NSNumber).unsignedLongLongValue
-            if olderTxTime < txTimeLowerBound || stealthPayments.count < TLWalletJSONKeys.STATIC_MEMBERS.STEALTH_PAYMENTS_FETCH_COUNT {
+            if olderTxTime < txTimeLowerBound || stealthPayments.count < TLStealthExplorerAPI.STATIC_MEMBERS.STEALTH_PAYMENTS_FETCH_COUNT {
                 gotOldestPaymentAddresses = true
             }
             

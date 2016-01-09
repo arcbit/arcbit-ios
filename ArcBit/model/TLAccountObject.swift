@@ -1321,7 +1321,7 @@ import Foundation
             if gotOldestPaymentAddresses {
                 break
             }
-            offset += TLWalletJSONKeys.STATIC_MEMBERS.STEALTH_PAYMENTS_FETCH_COUNT
+            offset += TLStealthExplorerAPI.STATIC_MEMBERS.STEALTH_PAYMENTS_FETCH_COUNT
         }
         
         self.setStealthAddressLastTxTime(TLPreferences.getStealthExplorerURL()!, lastTxTime: currentLatestTxTime)
