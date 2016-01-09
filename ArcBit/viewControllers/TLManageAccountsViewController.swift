@@ -713,9 +713,9 @@ import UIKit
         let otherButtons:[String]
         if (accountObject.hasSetExtendedPrivateKeyInMemory()) {
             addClearPrivateKeyButton = true
-            otherButtons = ["Clear account private key from memory".localized, "View account public key QR code".localized, "View Addresses".localized, "Manually Scan For Forward Transaction".localized,  "Edit Account Name".localized, "Archive Account".localized]
+            otherButtons = ["Clear account private key from memory".localized, "View account public key QR code".localized, "View Addresses".localized,  "Edit Account Name".localized, "Archive Account".localized]
         } else {
-            otherButtons = ["View account public key QR code".localized, "View Addresses".localized, "Manually Scan For Forward Transaction".localized, "Edit Account Name".localized, "Archive Account".localized]
+            otherButtons = ["View account public key QR code".localized, "View Addresses".localized, "Edit Account Name".localized, "Archive Account".localized]
         }
         
         UIAlertController.showAlertInViewController(self,
@@ -729,17 +729,15 @@ import UIKit
                 var CLEAR_ACCOUNT_PRIVATE_KEY_BUTTON_IDX = -1
                 var VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = actionSheet.firstOtherButtonIndex
                 var VIEW_ADDRESSES_BUTTON_IDX = actionSheet.firstOtherButtonIndex+1
-                var MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX = actionSheet.firstOtherButtonIndex+2
-                var RENAME_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex+3
-                var ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex+4
+                var RENAME_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex+2
+                var ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex+3
 
                 if (accountObject.hasSetExtendedPrivateKeyInMemory()) {
                     CLEAR_ACCOUNT_PRIVATE_KEY_BUTTON_IDX = actionSheet.firstOtherButtonIndex
                     VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = actionSheet.firstOtherButtonIndex+1
                     VIEW_ADDRESSES_BUTTON_IDX = actionSheet.firstOtherButtonIndex+2
-                    MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX = actionSheet.firstOtherButtonIndex+3
-                    RENAME_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex+4
-                    ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex+5
+                    RENAME_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex+3
+                    ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex+4
                 }
 
                 if (addClearPrivateKeyButton && buttonIndex == CLEAR_ACCOUNT_PRIVATE_KEY_BUTTON_IDX) {
@@ -755,9 +753,6 @@ import UIKit
                 self.showAddressListAccountObject = accountObject
                 self.showAddressListShowBalances = true
                 self.performSegueWithIdentifier("SegueAddressList", sender: self)
-
-            } else if (buttonIndex == MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX) {
-                self.promptInfoAndToManuallyScanForStealthTransactionAccount(accountObject)
 
             } else if (buttonIndex == RENAME_ACCOUNT_BUTTON_IDX) {
                 self.promtForNameAccount({
