@@ -34,6 +34,7 @@ class TLPreferences
         static let INAPPSETTINGS_KIT_BLOCKEXPLORER_API = "blockexplorerapi"
         static let INAPPSETTINGS_KIT_STEALTH_EXPLORER_URL = "stealthexplorerurl"
         static let INAPPSETTINGS_KIT_STEALTH_WEB_SOCKET_URL = "stealthwebsocketurl"
+        static let INAPPSETTINGS_KIT_STEALTH_SERVER_PORT = "stealthwebserverport"
         static let INAPPSETTINGS_KIT_STEALTH_WEB_SOCKET_PORT = "stealthwebsocketport"
         static let INAPPSETTINGS_KIT_RECEIVING_CURRENCY = "currency"
         static let INAPPSETTINGS_KIT_DISPLAY_LOCAL_CURRENCY = "displaylocalcurrency"
@@ -204,11 +205,11 @@ class TLPreferences
     }
     
     class func getStealthServerPort() -> (Int?) {
-        return NSUserDefaults.standardUserDefaults().integerForKey(CLASS_STATIC.INAPPSETTINGS_KIT_STEALTH_WEB_SOCKET_PORT)
+        return NSUserDefaults.standardUserDefaults().integerForKey(CLASS_STATIC.INAPPSETTINGS_KIT_STEALTH_SERVER_PORT)
     }
     
     class func setStealthServerPort(value:(Int)) -> () {
-        NSUserDefaults.standardUserDefaults().setObject(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_STEALTH_WEB_SOCKET_PORT)
+        NSUserDefaults.standardUserDefaults().setObject(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_STEALTH_SERVER_PORT)
         NSUserDefaults.standardUserDefaults().synchronize()
     }
     
