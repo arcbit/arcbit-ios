@@ -47,8 +47,6 @@ class TLPreferences
         static let PREFERENCE_BLOCKEXPLORER_API = "pref-blockexplorer-api"
         static let PREFERENCE_BLOCKEXPLORER_API_URL_DICT = "pref-blockexplorer-api-url"
         static let PREFERENCE_BTC_SYMBOL_TOGGLED = "pref-btc-symbol-toggled"
-        static let PREFERENCE_RECEIVING_ADDRESS = "pref-receiving-address"
-        static let PREFERENCE_RECEIVING_NAME = "pref-receiving-name"
         static let PREFERENCE_ENABLE_BACKUP_WITH_ICLOUD = "pref-enable-backup-with-icloud"
         static let INAPPSETTINGS_KIT_ENABLE_BACKUP_WITH_ICLOUD = "enablebackupwithicloud"
         static let INAPPSETTINGS_KIT_ENABLE_PIN_CODE = "enablepincode"
@@ -61,7 +59,6 @@ class TLPreferences
         static let PREFERENCE_ENCRYPTED_WALLET_JSON_CHECKSUM = "pref-encrypted-wallet-json-checksum"
         static let PREFERENCE_LAST_SAVED_ENCRYPTED_WALLET_JSON_DATE = "pref-last-saved-encrypted-wallet-json-date"
         static let PREFERENCE_ENABLE_PIN_CODE = "pref-enable-pin-code"
-        static let PREFERENCE_WALLET_PAYLOAD = "pref-wallet-payload"
         static let PREFERENCE_WALLET_ADVANCE_MODE = "pref-advance-mode"
         static let PREFERENCE_DISPLAY_LOCAL_CURRENCY = "pref-display-local-currency"
         static let PREFERENCE_AUTOMATIC_FEE = "pref-automatic-fee"
@@ -267,15 +264,6 @@ class TLPreferences
     
     class func setInAppSettingsKitDisplayLocalCurrency(enabled:Bool) -> () {
         NSUserDefaults.standardUserDefaults().setBool(enabled ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_DISPLAY_LOCAL_CURRENCY)
-        NSUserDefaults.standardUserDefaults().synchronize()
-    }
-    
-    class func isBTCSymbolToggled() -> (Bool) {
-        return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.PREFERENCE_BTC_SYMBOL_TOGGLED)
-    }
-    
-    class func setBTCSymbolToggled(enabled:Bool) -> () {
-        NSUserDefaults.standardUserDefaults().setBool(enabled ,forKey:CLASS_STATIC.PREFERENCE_BTC_SYMBOL_TOGGLED)
         NSUserDefaults.standardUserDefaults().synchronize()
     }
     
