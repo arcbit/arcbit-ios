@@ -978,8 +978,8 @@ import Foundation
             var address = HDIndexToArchivedChangeAddress[HDIndex]
             if (address == nil) {
                 let extendedPublicKey = accountDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PUBLIC_KEY) as! String
-                let mainAddressSequence = [Int(TLAddressType.Main.rawValue), idx]
-                address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: mainAddressSequence, isTestnet: self.appWallet!.walletConfig.isTestnet)
+                let changeAddressSequence = [Int(TLAddressType.Change.rawValue), idx]
+                address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: changeAddressSequence, isTestnet: self.appWallet!.walletConfig.isTestnet)
                 HDIndexToArchivedChangeAddress[HDIndex] = address!
                 
                 address2HDIndexDict[address!] = HDIndex
