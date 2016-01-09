@@ -11,163 +11,6 @@
 		BC9C17E6AE67D52D3CC8430C /* libPods-ArcBit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22B2AE80D0E32756BF5F5767 /* libPods-ArcBit.a */; };
 		C004134A1ACEFAF200505F31 /* TLOperationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00413491ACEFAF200505F31 /* TLOperationsManager.swift */; };
 		C004134B1ACEFCB700505F31 /* TLOperationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00413491ACEFAF200505F31 /* TLOperationsManager.swift */; };
-		C02D3A6B1B4A45F500B3B7F0 /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = C0C1BE711AF92CB500B705C4 /* base64.c */; };
-		C02D3A6C1B4A45F500B3B7F0 /* TLSpaghettiGodSend.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190631ABF53A100BED648 /* TLSpaghettiGodSend.swift */; };
-		C02D3A6D1B4A45F500B3B7F0 /* IASKSettingsStore.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A1900C1ABF53A100BED648 /* IASKSettingsStore.m */; };
-		C02D3A6E1B4A45F500B3B7F0 /* TLAnalytics.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A192EA1ABF742D00BED648 /* TLAnalytics.swift */; };
-		C02D3A6F1B4A45F500B3B7F0 /* IASKSettingsStoreUserDefaults.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A190101ABF53A100BED648 /* IASKSettingsStoreUserDefaults.m */; };
-		C02D3A701B4A45F500B3B7F0 /* TLMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190941ABF53A100BED648 /* TLMenuViewController.swift */; };
-		C02D3A711B4A45F500B3B7F0 /* TLCloudDocumentSyncWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C05C398A1AD0710B00AADE55 /* TLCloudDocumentSyncWrapper.m */; };
-		C02D3A721B4A45F500B3B7F0 /* TLWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190681ABF53A100BED648 /* TLWallet.swift */; };
-		C02D3A731B4A45F500B3B7F0 /* iToast.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A190221ABF53A100BED648 /* iToast.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		C02D3A741B4A45F500B3B7F0 /* TLHelpDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E5393C1AD454FD00651FE4 /* TLHelpDoc.swift */; };
-		C02D3A751B4A45F500B3B7F0 /* TLImportedAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A1905F1ABF53A100BED648 /* TLImportedAddress.swift */; };
-		C02D3A761B4A45F500B3B7F0 /* TLExchangeRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193041ABF744E00BED648 /* TLExchangeRate.swift */; };
-		C02D3A771B4A45F500B3B7F0 /* TLMacros.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A192EF1ABF744300BED648 /* TLMacros.swift */; };
-		C02D3A781B4A45F500B3B7F0 /* QRCodeEncoderDemoViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = C0A190411ABF53A100BED648 /* QRCodeEncoderDemoViewController.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		C02D3A791B4A45F500B3B7F0 /* DataMatrix.mm in Sources */ = {isa = PBXBuildFile; fileRef = C0A1903D1ABF53A100BED648 /* DataMatrix.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		C02D3A7A1B4A45F500B3B7F0 /* TLStealthWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190651ABF53A100BED648 /* TLStealthWallet.swift */; };
-		C02D3A7B1B4A45F500B3B7F0 /* TransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C61C591AF15BEF00F9F71F /* TransitionDelegate.swift */; };
-		C02D3A7C1B4A45F500B3B7F0 /* TLWallet+Stealth.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C3BDEB1AC0F7AA001AC6CD /* TLWallet+Stealth.swift */; };
-		C02D3A7D1B4A45F500B3B7F0 /* TLSelectedObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190611ABF53A100BED648 /* TLSelectedObject.swift */; };
-		C02D3A7E1B4A45F500B3B7F0 /* TLTxObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190671ABF53A100BED648 /* TLTxObject.swift */; };
-		C02D3A7F1B4A45F500B3B7F0 /* TLPrompts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A192F51ABF744300BED648 /* TLPrompts.swift */; };
-		C02D3A801B4A45F500B3B7F0 /* BRTransaction.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A18FE91ABF53A100BED648 /* BRTransaction.m */; };
-		C02D3A811B4A45F500B3B7F0 /* TLHistoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190911ABF53A100BED648 /* TLHistoryViewController.swift */; };
-		C02D3A821B4A45F500B3B7F0 /* IASKAppSettingsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A190021ABF53A100BED648 /* IASKAppSettingsViewController.m */; };
-		C02D3A831B4A45F500B3B7F0 /* IASKSpecifier.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A190121ABF53A100BED648 /* IASKSpecifier.m */; };
-		C02D3A841B4A45F500B3B7F0 /* TLWalletUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A1906A1ABF53A100BED648 /* TLWalletUtils.swift */; };
-		C02D3A851B4A45F500B3B7F0 /* TLNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193061ABF744E00BED648 /* TLNetworking.swift */; };
-		C02D3A861B4A45F500B3B7F0 /* TLWalletJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190691ABF53A100BED648 /* TLWalletJson.swift */; };
-		C02D3A871B4A45F500B3B7F0 /* TLPushTxAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AB0A321AC52A8400B456DB /* TLPushTxAPI.swift */; };
-		C02D3A881B4A45F500B3B7F0 /* NSData+Bitcoin.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A18FEC1ABF53A100BED648 /* NSData+Bitcoin.m */; };
-		C02D3A891B4A45F500B3B7F0 /* TLRestoreWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A1908F1ABF53A100BED648 /* TLRestoreWalletViewController.swift */; };
-		C02D3A8A1B4A45F500B3B7F0 /* TLHDWalletWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A1905E1ABF53A100BED648 /* TLHDWalletWrapper.swift */; };
-		C02D3A8B1B4A45F500B3B7F0 /* IASKSettingsStoreFile.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A1900E1ABF53A100BED648 /* IASKSettingsStoreFile.m */; };
-		C02D3A8C1B4A45F500B3B7F0 /* IASKTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A1901F1ABF53A100BED648 /* IASKTextField.m */; };
-		C02D3A8D1B4A45F500B3B7F0 /* TLBlockchainAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193011ABF744E00BED648 /* TLBlockchainAPI.swift */; };
-		C02D3A8E1B4A45F500B3B7F0 /* JNKeychain.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A190251ABF53A100BED648 /* JNKeychain.m */; };
-		C02D3A8F1B4A45F500B3B7F0 /* NSDate-Utilities.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A1903A1ABF53A100BED648 /* NSDate-Utilities.m */; };
-		C02D3A901B4A45F500B3B7F0 /* TLUtils.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A192F01ABF744300BED648 /* TLUtils.swift */; };
-		C02D3A911B4A45F500B3B7F0 /* KeychainItemWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A190281ABF53A100BED648 /* KeychainItemWrapper.m */; };
-		C02D3A921B4A45F500B3B7F0 /* TLQRImageModal.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A192F61ABF744300BED648 /* TLQRImageModal.swift */; };
-		C02D3A931B4A45F500B3B7F0 /* TLAddressListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A1908E1ABF53A100BED648 /* TLAddressListViewController.swift */; };
-		C02D3A941B4A45F500B3B7F0 /* IASKSlider.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A1901B1ABF53A100BED648 /* IASKSlider.m */; };
-		C02D3A951B4A45F500B3B7F0 /* TLAccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A1908B1ABF53A100BED648 /* TLAccountsViewController.swift */; };
-		C02D3A961B4A45F500B3B7F0 /* UIViewController+Extras.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190881ABF53A100BED648 /* UIViewController+Extras.swift */; };
-		C02D3A971B4A45F500B3B7F0 /* UIView+FormScroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190871ABF53A100BED648 /* UIView+FormScroll.swift */; };
-		C02D3A981B4A45F500B3B7F0 /* NSData+Hash.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A18FEE1ABF53A100BED648 /* NSData+Hash.m */; };
-		C02D3A991B4A45F500B3B7F0 /* NSString+Base58.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A18FF21ABF53A100BED648 /* NSString+Base58.m */; };
-		C02D3A9A1B4A45F500B3B7F0 /* TLSettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A1909A1ABF53A100BED648 /* TLSettingsViewController.swift */; };
-		C02D3A9B1B4A45F500B3B7F0 /* NSData+SRB64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C1BE741AF92CB500B705C4 /* NSData+SRB64Additions.m */; };
-		C02D3A9C1B4A45F500B3B7F0 /* TLSendViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190991ABF53A100BED648 /* TLSendViewController.swift */; };
-		C02D3A9D1B4A45F500B3B7F0 /* TLBlockExplorerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193021ABF744E00BED648 /* TLBlockExplorerAPI.swift */; };
-		C02D3A9E1B4A45F500B3B7F0 /* IASKPSTextFieldSpecifierViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A190171ABF53A100BED648 /* IASKPSTextFieldSpecifierViewCell.m */; };
-		C02D3A9F1B4A45F500B3B7F0 /* TLBlockchainStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A1905B1ABF53A100BED648 /* TLBlockchainStatus.swift */; };
-		C02D3AA01B4A45F500B3B7F0 /* LTHPasscodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A190371ABF53A100BED648 /* LTHPasscodeViewController.m */; };
-		C02D3AA11B4A45F500B3B7F0 /* NSMutableData+Bitcoin.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A18FF01ABF53A100BED648 /* NSMutableData+Bitcoin.m */; };
-		C02D3AA21B4A45F500B3B7F0 /* TLTransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193141ABF74A700BED648 /* TLTransactionTableViewCell.swift */; };
-		C02D3AA31B4A45F500B3B7F0 /* TLCoin.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A1905C1ABF53A100BED648 /* TLCoin.swift */; };
-		C02D3AA41B4A45F500B3B7F0 /* UIViewController+Style.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190891ABF53A100BED648 /* UIViewController+Style.swift */; };
-		C02D3AA51B4A45F500B3B7F0 /* IASKPSSliderSpecifierViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A190151ABF53A100BED648 /* IASKPSSliderSpecifierViewCell.m */; };
-		C02D3AA61B4A45F500B3B7F0 /* IASKSpecifierValuesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A190061ABF53A100BED648 /* IASKSpecifierValuesViewController.m */; };
-		C02D3AA71B4A45F500B3B7F0 /* TLBlockrAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AD2C581AC3DE3200FEF982 /* TLBlockrAPI.swift */; };
-		C02D3AA81B4A45F500B3B7F0 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A18F931ABF51C200BED648 /* AppDelegate.swift */; };
-		C02D3AA91B4A45F500B3B7F0 /* TLOperationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00413491ACEFAF200505F31 /* TLOperationsManager.swift */; };
-		C02D3AAA1B4A45F500B3B7F0 /* BRKey+BIP38.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A18FE41ABF53A100BED648 /* BRKey+BIP38.m */; };
-		C02D3AAB1B4A45F500B3B7F0 /* TLPassPhraseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190951ABF53A100BED648 /* TLPassPhraseViewController.swift */; };
-		C02D3AAC1B4A45F500B3B7F0 /* TLBitcoinListener.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193001ABF744E00BED648 /* TLBitcoinListener.swift */; };
-		C02D3AAD1B4A45F500B3B7F0 /* TLColors.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A192F11ABF744300BED648 /* TLColors.swift */; };
-		C02D3AAE1B4A45F500B3B7F0 /* QR_Encode.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C0A1903E1ABF53A100BED648 /* QR_Encode.cpp */; };
-		C02D3AAF1B4A45F500B3B7F0 /* IASKAppSettingsWebViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A190041ABF53A100BED648 /* IASKAppSettingsWebViewController.m */; };
-		C02D3AB01B4A45F500B3B7F0 /* TLAddressTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193131ABF74A700BED648 /* TLAddressTableViewCell.swift */; };
-		C02D3AB11B4A45F500B3B7F0 /* QREncoder.mm in Sources */ = {isa = PBXBuildFile; fileRef = C0A190451ABF53A100BED648 /* QREncoder.mm */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
-		C02D3AB21B4A45F500B3B7F0 /* TLQRCodeScannerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190971ABF53A100BED648 /* TLQRCodeScannerViewController.swift */; };
-		C02D3AB31B4A45F500B3B7F0 /* IASKSettingsReader.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A1900A1ABF53A100BED648 /* IASKSettingsReader.m */; };
-		C02D3AB41B4A45F500B3B7F0 /* TLAchievements.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A192E91ABF742D00BED648 /* TLAchievements.swift */; };
-		C02D3AB51B4A45F500B3B7F0 /* TLHelpViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190901ABF53A100BED648 /* TLHelpViewController.swift */; };
-		C02D3AB61B4A45F500B3B7F0 /* TLAccounts.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A1905A1ABF53A100BED648 /* TLAccounts.swift */; };
-		C02D3AB71B4A45F500B3B7F0 /* TLCoreBitcoinWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A1905D1ABF53A100BED648 /* TLCoreBitcoinWrapper.swift */; };
-		C02D3AB81B4A45F500B3B7F0 /* UINavigationBar+FixedHeightWhenStatusBarHidden.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A190541ABF53A100BED648 /* UINavigationBar+FixedHeightWhenStatusBarHidden.m */; };
-		C02D3AB91B4A45F500B3B7F0 /* TLStealthWebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193081ABF744E00BED648 /* TLStealthWebSocket.swift */; };
-		C02D3ABA1B4A45F500B3B7F0 /* TLInsightAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193051ABF744E00BED648 /* TLInsightAPI.swift */; };
-		C02D3ABB1B4A45F500B3B7F0 /* UINavigationController+StatusBarStyle.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190861ABF53A100BED648 /* UINavigationController+StatusBarStyle.swift */; };
-		C02D3ABC1B4A45F500B3B7F0 /* CustomIOS7AlertView.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A18FF51ABF53A100BED648 /* CustomIOS7AlertView.m */; };
-		C02D3ABD1B4A45F500B3B7F0 /* TLTextViewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A1909B1ABF53A100BED648 /* TLTextViewViewController.swift */; };
-		C02D3ABE1B4A45F500B3B7F0 /* TLAchievementsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A1908C1ABF53A100BED648 /* TLAchievementsViewController.swift */; };
-		C02D3ABF1B4A45F500B3B7F0 /* TLHUDWrapper.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A192F21ABF744300BED648 /* TLHUDWrapper.swift */; };
-		C02D3AC01B4A45F500B3B7F0 /* TLPreferences.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A192EB1ABF742D00BED648 /* TLPreferences.swift */; };
-		C02D3AC11B4A45F500B3B7F0 /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C1BE771AF92CB500B705C4 /* SRWebSocket.m */; };
-		C02D3AC21B4A45F500B3B7F0 /* IASKSwitch.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A1901D1ABF53A100BED648 /* IASKSwitch.m */; };
-		C02D3AC31B4A45F500B3B7F0 /* TLInstructionsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190921ABF53A100BED648 /* TLInstructionsViewController.swift */; };
-		C02D3AC41B4A45F500B3B7F0 /* TLPreloadViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190961ABF53A100BED648 /* TLPreloadViewController.swift */; };
-		C02D3AC51B4A45F500B3B7F0 /* TLStealthAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190641ABF53A100BED648 /* TLStealthAddress.swift */; };
-		C02D3AC61B4A45F500B3B7F0 /* TLStealthServerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193071ABF744E00BED648 /* TLStealthServerAPI.swift */; };
-		C02D3AC71B4A45F500B3B7F0 /* SRWebSocket+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = C0B4E7881AFAAEA200DC9B65 /* SRWebSocket+Helpers.m */; };
-		C02D3AC81B4A45F500B3B7F0 /* BRKey.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A18FE61ABF53A100BED648 /* BRKey.m */; };
-		C02D3AC91B4A45F500B3B7F0 /* TLAccountObject.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190591ABF53A100BED648 /* TLAccountObject.swift */; };
-		C02D3ACA1B4A45F500B3B7F0 /* TLManageAccountsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190931ABF53A100BED648 /* TLManageAccountsViewController.swift */; };
-		C02D3ACB1B4A45F500B3B7F0 /* TLAccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193121ABF74A700BED648 /* TLAccountTableViewCell.swift */; };
-		C02D3ACC1B4A45F500B3B7F0 /* UIAlertConrtoller+Blocks.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A190501ABF53A100BED648 /* UIAlertConrtoller+Blocks.m */; };
-		C02D3ACD1B4A45F500B3B7F0 /* TLReceiveViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190981ABF53A100BED648 /* TLReceiveViewController.swift */; };
-		C02D3ACE1B4A45F500B3B7F0 /* TransparentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C61C5D1AF15E6100F9F71F /* TransparentViewController.swift */; };
-		C02D3ACF1B4A45F500B3B7F0 /* TLNotificationEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A192F31ABF744300BED648 /* TLNotificationEvents.swift */; };
-		C02D3AD01B4A45F500B3B7F0 /* IASKPSTitleValueSpecifierViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A190191ABF53A100BED648 /* IASKPSTitleValueSpecifierViewCell.m */; };
-		C02D3AD11B4A45F500B3B7F0 /* TLAddressBookViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A1908D1ABF53A100BED648 /* TLAddressBookViewController.swift */; };
-		C02D3AD21B4A45F500B3B7F0 /* TLImportedAddresses.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190601ABF53A100BED648 /* TLImportedAddresses.swift */; };
-		C02D3AD31B4A45F500B3B7F0 /* TLStealthServerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0607FCC1AEEB3CD007203F8 /* TLStealthServerConfig.swift */; };
-		C02D3AD41B4A45F500B3B7F0 /* LTHKeychainUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A190351ABF53A100BED648 /* LTHKeychainUtils.m */; };
-		C02D3AD51B4A45F500B3B7F0 /* TLSuggestions.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190661ABF53A100BED648 /* TLSuggestions.swift */; };
-		C02D3AD61B4A45F500B3B7F0 /* TLSendFormData.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190621ABF53A100BED648 /* TLSendFormData.swift */; };
-		C02D3AD81B4A45F500B3B7F0 /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0378C961AF4A18F0083206F /* QuickLook.framework */; };
-		C02D3AD91B4A45F500B3B7F0 /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0378C941AF4A18A0083206F /* CoreText.framework */; };
-		C02D3ADA1B4A45F500B3B7F0 /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0378C921AF4A1850083206F /* AssetsLibrary.framework */; };
-		C02D3ADB1B4A45F500B3B7F0 /* libicucore.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A192E41ABF6F0500BED648 /* libicucore.dylib */; };
-		C02D3ADC1B4A45F500B3B7F0 /* MessageUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A192E21ABF6EF500BED648 /* MessageUI.framework */; };
-		C02D3ADD1B4A45F500B3B7F0 /* Security.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A192E01ABF6EEE00BED648 /* Security.framework */; };
-		C02D3ADE1B4A45F500B3B7F0 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A192DE1ABF6EE800BED648 /* SystemConfiguration.framework */; };
-		C02D3ADF1B4A45F500B3B7F0 /* MobileCoreServices.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A192DC1ABF6EDC00BED648 /* MobileCoreServices.framework */; };
-		C02D3AE01B4A45F500B3B7F0 /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0378C991AF4A1B10083206F /* HockeySDK.framework */; };
-		C02D3AE11B4A45F500B3B7F0 /* CFNetwork.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A192DA1ABF6ED500BED648 /* CFNetwork.framework */; };
-		C02D3AE21B4A45F500B3B7F0 /* CoreMedia.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A192D81ABF6EC900BED648 /* CoreMedia.framework */; };
-		C02D3AE31B4A45F500B3B7F0 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A192D61ABF6EC200BED648 /* AVFoundation.framework */; };
-		C02D3AE41B4A45F500B3B7F0 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A192D41ABF6EB900BED648 /* QuartzCore.framework */; };
-		C02D3AE51B4A45F500B3B7F0 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0A192D21ABF6EB200BED648 /* CoreGraphics.framework */; };
-		C02D3AE61B4A45F500B3B7F0 /* libPods-ArcBit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22B2AE80D0E32756BF5F5767 /* libPods-ArcBit.a */; };
-		C02D3AE81B4A45F500B3B7F0 /* settings.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FCB1ABF53A100BED648 /* settings.png */; };
-		C02D3AE91B4A45F500B3B7F0 /* data@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FC01ABF53A100BED648 /* data@2x.png */; };
-		C02D3AEA1B4A45F500B3B7F0 /* newspaper-alt.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FC81ABF53A100BED648 /* newspaper-alt.png */; };
-		C02D3AEB1B4A45F500B3B7F0 /* book.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FBC1ABF53A100BED648 /* book.png */; };
-		C02D3AED1B4A45F500B3B7F0 /* 1200X1200logo.png in Resources */ = {isa = PBXBuildFile; fileRef = C0EE6D691B1B7E6000982692 /* 1200X1200logo.png */; };
-		C02D3AEE1B4A45F500B3B7F0 /* download@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FC31ABF53A100BED648 /* download@2x.png */; };
-		C02D3AEF1B4A45F500B3B7F0 /* newspaper-alt@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FC91ABF53A100BED648 /* newspaper-alt@2x.png */; };
-		C02D3AF01B4A45F500B3B7F0 /* 360X80logo.png in Resources */ = {isa = PBXBuildFile; fileRef = C0EE6D681B1B7E6000982692 /* 360X80logo.png */; };
-		C02D3AF11B4A45F500B3B7F0 /* LTHPasscodeViewController.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0A1902A1ABF53A100BED648 /* LTHPasscodeViewController.strings */; };
-		C02D3AF21B4A45F500B3B7F0 /* download2.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FBA1ABF53A100BED648 /* download2.png */; };
-		C02D3AF31B4A45F500B3B7F0 /* download@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FC41ABF53A100BED648 /* download@3x.png */; };
-		C02D3AF41B4A45F500B3B7F0 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = C0A18F9C1ABF51C200BED648 /* LaunchScreen.xib */; };
-		C02D3AF51B4A45F500B3B7F0 /* upload@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FCF1ABF53A100BED648 /* upload@2x.png */; };
-		C02D3AF61B4A45F500B3B7F0 /* data.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FBF1ABF53A100BED648 /* data.png */; };
-		C02D3AF71B4A45F500B3B7F0 /* live.cer in Resources */ = {isa = PBXBuildFile; fileRef = C0D7B2DA1B16FDA10096E599 /* live.cer */; };
-		C02D3AF81B4A45F500B3B7F0 /* list@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FC71ABF53A100BED648 /* list@3x.png */; };
-		C02D3AF91B4A45F500B3B7F0 /* data@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FC11ABF53A100BED648 /* data@3x.png */; };
-		C02D3AFA1B4A45F500B3B7F0 /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C0378C9C1AF4A1B10083206F /* HockeySDKResources.bundle */; };
-		C02D3AFB1B4A45F500B3B7F0 /* upload2.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FD11ABF53A100BED648 /* upload2.png */; };
-		C02D3AFC1B4A45F500B3B7F0 /* upload@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FD01ABF53A100BED648 /* upload@3x.png */; };
-		C02D3AFD1B4A45F500B3B7F0 /* arrow-right7.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FB91ABF53A100BED648 /* arrow-right7.png */; };
-		C02D3AFE1B4A45F500B3B7F0 /* upload.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FCE1ABF53A100BED648 /* upload.png */; };
-		C02D3AFF1B4A45F500B3B7F0 /* list.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FC51ABF53A100BED648 /* list.png */; };
-		C02D3B001B4A45F500B3B7F0 /* book@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FBE1ABF53A100BED648 /* book@3x.png */; };
-		C02D3B011B4A45F500B3B7F0 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0A18F9A1ABF51C200BED648 /* Images.xcassets */; };
-		C02D3B021B4A45F500B3B7F0 /* download.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FC21ABF53A100BED648 /* download.png */; };
-		C02D3B031B4A45F500B3B7F0 /* newspaper-alt@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FCA1ABF53A100BED648 /* newspaper-alt@3x.png */; };
-		C02D3B041B4A45F500B3B7F0 /* InAppSettings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C0A190561ABF53A100BED648 /* InAppSettings.bundle */; };
-		C02D3B051B4A45F500B3B7F0 /* settings@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FCC1ABF53A100BED648 /* settings@2x.png */; };
-		C02D3B061B4A45F500B3B7F0 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = C0A192E61ABF707400BED648 /* Main.storyboard */; };
-		C02D3B071B4A45F500B3B7F0 /* list@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FC61ABF53A100BED648 /* list@2x.png */; };
-		C02D3B081B4A45F500B3B7F0 /* arrow-right7-original.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FB81ABF53A100BED648 /* arrow-right7-original.png */; };
-		C02D3B091B4A45F500B3B7F0 /* settings@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FCD1ABF53A100BED648 /* settings@3x.png */; };
-		C02D3B0A1B4A45F500B3B7F0 /* book@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = C0A18FBD1ABF53A100BED648 /* book@2x.png */; };
 		C0378C931AF4A1850083206F /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0378C921AF4A1850083206F /* AssetsLibrary.framework */; };
 		C0378C951AF4A18A0083206F /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0378C941AF4A18A0083206F /* CoreText.framework */; };
 		C0378C971AF4A18F0083206F /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0378C961AF4A18F0083206F /* QuickLook.framework */; };
@@ -353,8 +196,6 @@
 		C0B4E7891AFAAEA200DC9B65 /* SRWebSocket+Helpers.m in Sources */ = {isa = PBXBuildFile; fileRef = C0B4E7881AFAAEA200DC9B65 /* SRWebSocket+Helpers.m */; };
 		C0BD70011B4E2BE300A5788D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0BD70031B4E2BE300A5788D /* Localizable.strings */; };
 		C0BD70061B4E2C4F00A5788D /* TLStringLocalized.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD70051B4E2C4F00A5788D /* TLStringLocalized.swift */; };
-		C0BD70071B4E2C9200A5788D /* TLStringLocalized.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD70051B4E2C4F00A5788D /* TLStringLocalized.swift */; };
-		C0BD70081B4E2DDA00A5788D /* Localizable.strings in Resources */ = {isa = PBXBuildFile; fileRef = C0BD70031B4E2BE300A5788D /* Localizable.strings */; };
 		C0C1BE781AF92CB500B705C4 /* base64.c in Sources */ = {isa = PBXBuildFile; fileRef = C0C1BE711AF92CB500B705C4 /* base64.c */; };
 		C0C1BE791AF92CB500B705C4 /* NSData+SRB64Additions.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C1BE741AF92CB500B705C4 /* NSData+SRB64Additions.m */; };
 		C0C1BE7A1AF92CB500B705C4 /* SRWebSocket.m in Sources */ = {isa = PBXBuildFile; fileRef = C0C1BE771AF92CB500B705C4 /* SRWebSocket.m */; };
@@ -370,18 +211,13 @@
 		F338F9561B794D1D00C02F74 /* TLWalletPassphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F338F9551B794D1D00C02F74 /* TLWalletPassphrase.swift */; };
 		F338F9581B79718900C02F74 /* TLCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F338F9571B79718900C02F74 /* TLCrypto.swift */; };
 		F34D5C601B7A2C0100DF37DC /* TLCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F338F9571B79718900C02F74 /* TLCrypto.swift */; };
-		F34D5C611B7A2C0100DF37DC /* TLCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F338F9571B79718900C02F74 /* TLCrypto.swift */; };
-		F34D5C631B7A3B4A00DF37DC /* TLWalletPassphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F338F9551B794D1D00C02F74 /* TLWalletPassphrase.swift */; };
 		F37072461B8F570D0026505D /* TLWalletConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37072451B8F570D0026505D /* TLWalletConfig.swift */; };
-		F37072471B8F57810026505D /* TLWalletConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37072451B8F570D0026505D /* TLWalletConfig.swift */; };
 		F37072481B8F57810026505D /* TLWalletConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = F37072451B8F570D0026505D /* TLWalletConfig.swift */; };
 		F3BC360F1B8681A300CBB3F7 /* TLWalletPassphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F338F9551B794D1D00C02F74 /* TLWalletPassphrase.swift */; };
 		F3BC36111B8681FF00CBB3F7 /* TLUpdateAppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BC36101B8681FF00CBB3F7 /* TLUpdateAppData.swift */; };
 		F3BC36121B8681FF00CBB3F7 /* TLUpdateAppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BC36101B8681FF00CBB3F7 /* TLUpdateAppData.swift */; };
-		F3BC36131B8681FF00CBB3F7 /* TLUpdateAppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BC36101B8681FF00CBB3F7 /* TLUpdateAppData.swift */; };
-		F3DAAD661BB1D9EC000488F0 /* TLWalletJSONKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DAAD651BB1D9EC000488F0 /* TLWalletJSONKeys.swift */; settings = {ASSET_TAGS = (); }; };
-		F3F1651A1BB1DB7E00F1293A /* TLWalletJSONKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DAAD651BB1D9EC000488F0 /* TLWalletJSONKeys.swift */; settings = {ASSET_TAGS = (); }; };
-		F3F1651B1BB1DB7F00F1293A /* TLWalletJSONKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DAAD651BB1D9EC000488F0 /* TLWalletJSONKeys.swift */; settings = {ASSET_TAGS = (); }; };
+		F3DAAD661BB1D9EC000488F0 /* TLWalletJSONKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DAAD651BB1D9EC000488F0 /* TLWalletJSONKeys.swift */; };
+		F3F1651B1BB1DB7F00F1293A /* TLWalletJSONKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DAAD651BB1D9EC000488F0 /* TLWalletJSONKeys.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -402,7 +238,6 @@
 		7817897D0741470B5FDCA66C /* Pods-ArcBit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArcBit.release.xcconfig"; path = "Pods/Target Support Files/Pods-ArcBit/Pods-ArcBit.release.xcconfig"; sourceTree = "<group>"; };
 		C00413491ACEFAF200505F31 /* TLOperationsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLOperationsManager.swift; sourceTree = "<group>"; };
 		C01A489E1B4F9E6E004D7FA0 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
-		C02D3B101B4A45F500B3B7F0 /* ArcBitBeta.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ArcBitBeta.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C02D3B111B4A45F500B3B7F0 /* ArcBit copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "ArcBit copy-Info.plist"; path = "/Users/timothylee/git/arcbit-ios/ArcBit copy-Info.plist"; sourceTree = "<absolute>"; };
 		C0378C921AF4A1850083206F /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		C0378C941AF4A18A0083206F /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
@@ -632,28 +467,6 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
-		C02D3AD71B4A45F500B3B7F0 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C02D3AD81B4A45F500B3B7F0 /* QuickLook.framework in Frameworks */,
-				C02D3AD91B4A45F500B3B7F0 /* CoreText.framework in Frameworks */,
-				C02D3ADA1B4A45F500B3B7F0 /* AssetsLibrary.framework in Frameworks */,
-				C02D3ADB1B4A45F500B3B7F0 /* libicucore.dylib in Frameworks */,
-				C02D3ADC1B4A45F500B3B7F0 /* MessageUI.framework in Frameworks */,
-				C02D3ADD1B4A45F500B3B7F0 /* Security.framework in Frameworks */,
-				C02D3ADE1B4A45F500B3B7F0 /* SystemConfiguration.framework in Frameworks */,
-				C02D3ADF1B4A45F500B3B7F0 /* MobileCoreServices.framework in Frameworks */,
-				C02D3AE01B4A45F500B3B7F0 /* HockeySDK.framework in Frameworks */,
-				C02D3AE11B4A45F500B3B7F0 /* CFNetwork.framework in Frameworks */,
-				C02D3AE21B4A45F500B3B7F0 /* CoreMedia.framework in Frameworks */,
-				C02D3AE31B4A45F500B3B7F0 /* AVFoundation.framework in Frameworks */,
-				C02D3AE41B4A45F500B3B7F0 /* QuartzCore.framework in Frameworks */,
-				C02D3AE51B4A45F500B3B7F0 /* CoreGraphics.framework in Frameworks */,
-				C02D3AE61B4A45F500B3B7F0 /* libPods-ArcBit.a in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C0A18F8B1ABF51C200BED648 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -773,7 +586,6 @@
 			children = (
 				C0A18F8E1ABF51C200BED648 /* ArcBit.app */,
 				C0A18FA31ABF51C200BED648 /* ArcBitTests.xctest */,
-				C02D3B101B4A45F500B3B7F0 /* ArcBitBeta.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -1234,26 +1046,6 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		C02D3A681B4A45F500B3B7F0 /* ArcBitBeta */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = C02D3B0D1B4A45F500B3B7F0 /* Build configuration list for PBXNativeTarget "ArcBitBeta" */;
-			buildPhases = (
-				C02D3A691B4A45F500B3B7F0 /* Check Pods Manifest.lock */,
-				C02D3A6A1B4A45F500B3B7F0 /* Sources */,
-				C02D3AD71B4A45F500B3B7F0 /* Frameworks */,
-				C02D3AE71B4A45F500B3B7F0 /* Resources */,
-				C02D3B0B1B4A45F500B3B7F0 /* Copy Pods Resources */,
-				C02D3B0C1B4A45F500B3B7F0 /* ShellScript */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = ArcBitBeta;
-			productName = ArcBit;
-			productReference = C02D3B101B4A45F500B3B7F0 /* ArcBitBeta.app */;
-			productType = "com.apple.product-type.application";
-		};
 		C0A18F8D1ABF51C200BED648 /* ArcBit */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = C0A18FAD1ABF51C200BED648 /* Build configuration list for PBXNativeTarget "ArcBit" */;
@@ -1305,9 +1097,6 @@
 				LastUpgradeCheck = 0700;
 				ORGANIZATIONNAME = ArcBit;
 				TargetAttributes = {
-					C02D3A681B4A45F500B3B7F0 = {
-						DevelopmentTeam = 2VMT9RED95;
-					};
 					C0A18F8D1ABF51C200BED648 = {
 						CreatedOnToolsVersion = 6.2;
 						DevelopmentTeam = 2VMT9RED95;
@@ -1345,54 +1134,11 @@
 			targets = (
 				C0A18F8D1ABF51C200BED648 /* ArcBit */,
 				C0A18FA21ABF51C200BED648 /* ArcBitTests */,
-				C02D3A681B4A45F500B3B7F0 /* ArcBitBeta */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
-		C02D3AE71B4A45F500B3B7F0 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C02D3AE81B4A45F500B3B7F0 /* settings.png in Resources */,
-				C02D3AE91B4A45F500B3B7F0 /* data@2x.png in Resources */,
-				C02D3AEA1B4A45F500B3B7F0 /* newspaper-alt.png in Resources */,
-				C02D3AEB1B4A45F500B3B7F0 /* book.png in Resources */,
-				C02D3AED1B4A45F500B3B7F0 /* 1200X1200logo.png in Resources */,
-				C02D3AEE1B4A45F500B3B7F0 /* download@2x.png in Resources */,
-				C02D3AEF1B4A45F500B3B7F0 /* newspaper-alt@2x.png in Resources */,
-				C02D3AF01B4A45F500B3B7F0 /* 360X80logo.png in Resources */,
-				C02D3AF11B4A45F500B3B7F0 /* LTHPasscodeViewController.strings in Resources */,
-				C02D3AF21B4A45F500B3B7F0 /* download2.png in Resources */,
-				C02D3AF31B4A45F500B3B7F0 /* download@3x.png in Resources */,
-				C02D3AF41B4A45F500B3B7F0 /* LaunchScreen.xib in Resources */,
-				C0BD70081B4E2DDA00A5788D /* Localizable.strings in Resources */,
-				C02D3AF51B4A45F500B3B7F0 /* upload@2x.png in Resources */,
-				C02D3AF61B4A45F500B3B7F0 /* data.png in Resources */,
-				C02D3AF71B4A45F500B3B7F0 /* live.cer in Resources */,
-				C02D3AF81B4A45F500B3B7F0 /* list@3x.png in Resources */,
-				C02D3AF91B4A45F500B3B7F0 /* data@3x.png in Resources */,
-				C02D3AFA1B4A45F500B3B7F0 /* HockeySDKResources.bundle in Resources */,
-				C02D3AFB1B4A45F500B3B7F0 /* upload2.png in Resources */,
-				C02D3AFC1B4A45F500B3B7F0 /* upload@3x.png in Resources */,
-				C02D3AFD1B4A45F500B3B7F0 /* arrow-right7.png in Resources */,
-				C02D3AFE1B4A45F500B3B7F0 /* upload.png in Resources */,
-				C02D3AFF1B4A45F500B3B7F0 /* list.png in Resources */,
-				C02D3B001B4A45F500B3B7F0 /* book@3x.png in Resources */,
-				C02D3B011B4A45F500B3B7F0 /* Images.xcassets in Resources */,
-				C02D3B021B4A45F500B3B7F0 /* download.png in Resources */,
-				C02D3B031B4A45F500B3B7F0 /* newspaper-alt@3x.png in Resources */,
-				C02D3B041B4A45F500B3B7F0 /* InAppSettings.bundle in Resources */,
-				C02D3B051B4A45F500B3B7F0 /* settings@2x.png in Resources */,
-				C02D3B061B4A45F500B3B7F0 /* Main.storyboard in Resources */,
-				C02D3B071B4A45F500B3B7F0 /* list@2x.png in Resources */,
-				C02D3B081B4A45F500B3B7F0 /* arrow-right7-original.png in Resources */,
-				C02D3B091B4A45F500B3B7F0 /* settings@3x.png in Resources */,
-				C02D3B0A1B4A45F500B3B7F0 /* book@2x.png in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C0A18F8C1ABF51C200BED648 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1490,49 +1236,6 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		C02D3A691B4A45F500B3B7F0 /* Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Check Pods Manifest.lock";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		C02D3B0B1B4A45F500B3B7F0 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ArcBit/Pods-ArcBit-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		C02D3B0C1B4A45F500B3B7F0 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "FILE=\"${SRCROOT}/HockeySDK-iOS/BuildAgent\"\nif [ -f \"$FILE\" ]; then\n\"$FILE\"\nfi";
-		};
 		C0878BE81AF4A11B002A4F5A /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -1564,127 +1267,6 @@
 /* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
-		C02D3A6A1B4A45F500B3B7F0 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				C02D3A6B1B4A45F500B3B7F0 /* base64.c in Sources */,
-				C02D3A6C1B4A45F500B3B7F0 /* TLSpaghettiGodSend.swift in Sources */,
-				C02D3A6D1B4A45F500B3B7F0 /* IASKSettingsStore.m in Sources */,
-				C0BD70071B4E2C9200A5788D /* TLStringLocalized.swift in Sources */,
-				C02D3A6E1B4A45F500B3B7F0 /* TLAnalytics.swift in Sources */,
-				C02D3A6F1B4A45F500B3B7F0 /* IASKSettingsStoreUserDefaults.m in Sources */,
-				F37072471B8F57810026505D /* TLWalletConfig.swift in Sources */,
-				C02D3A701B4A45F500B3B7F0 /* TLMenuViewController.swift in Sources */,
-				C02D3A711B4A45F500B3B7F0 /* TLCloudDocumentSyncWrapper.m in Sources */,
-				C02D3A721B4A45F500B3B7F0 /* TLWallet.swift in Sources */,
-				C02D3A731B4A45F500B3B7F0 /* iToast.m in Sources */,
-				C02D3A741B4A45F500B3B7F0 /* TLHelpDoc.swift in Sources */,
-				C02D3A751B4A45F500B3B7F0 /* TLImportedAddress.swift in Sources */,
-				C02D3A761B4A45F500B3B7F0 /* TLExchangeRate.swift in Sources */,
-				C02D3A771B4A45F500B3B7F0 /* TLMacros.swift in Sources */,
-				C02D3A781B4A45F500B3B7F0 /* QRCodeEncoderDemoViewController.mm in Sources */,
-				C02D3A791B4A45F500B3B7F0 /* DataMatrix.mm in Sources */,
-				C02D3A7A1B4A45F500B3B7F0 /* TLStealthWallet.swift in Sources */,
-				F34D5C631B7A3B4A00DF37DC /* TLWalletPassphrase.swift in Sources */,
-				C02D3A7B1B4A45F500B3B7F0 /* TransitionDelegate.swift in Sources */,
-				C02D3A7C1B4A45F500B3B7F0 /* TLWallet+Stealth.swift in Sources */,
-				C02D3A7D1B4A45F500B3B7F0 /* TLSelectedObject.swift in Sources */,
-				C02D3A7E1B4A45F500B3B7F0 /* TLTxObject.swift in Sources */,
-				C02D3A7F1B4A45F500B3B7F0 /* TLPrompts.swift in Sources */,
-				C02D3A801B4A45F500B3B7F0 /* BRTransaction.m in Sources */,
-				C02D3A811B4A45F500B3B7F0 /* TLHistoryViewController.swift in Sources */,
-				C02D3A821B4A45F500B3B7F0 /* IASKAppSettingsViewController.m in Sources */,
-				C02D3A831B4A45F500B3B7F0 /* IASKSpecifier.m in Sources */,
-				C02D3A841B4A45F500B3B7F0 /* TLWalletUtils.swift in Sources */,
-				C02D3A851B4A45F500B3B7F0 /* TLNetworking.swift in Sources */,
-				C02D3A861B4A45F500B3B7F0 /* TLWalletJson.swift in Sources */,
-				C02D3A871B4A45F500B3B7F0 /* TLPushTxAPI.swift in Sources */,
-				C02D3A881B4A45F500B3B7F0 /* NSData+Bitcoin.m in Sources */,
-				C02D3A891B4A45F500B3B7F0 /* TLRestoreWalletViewController.swift in Sources */,
-				C02D3A8A1B4A45F500B3B7F0 /* TLHDWalletWrapper.swift in Sources */,
-				C02D3A8B1B4A45F500B3B7F0 /* IASKSettingsStoreFile.m in Sources */,
-				C02D3A8C1B4A45F500B3B7F0 /* IASKTextField.m in Sources */,
-				C02D3A8D1B4A45F500B3B7F0 /* TLBlockchainAPI.swift in Sources */,
-				C02D3A8E1B4A45F500B3B7F0 /* JNKeychain.m in Sources */,
-				C02D3A8F1B4A45F500B3B7F0 /* NSDate-Utilities.m in Sources */,
-				C02D3A901B4A45F500B3B7F0 /* TLUtils.swift in Sources */,
-				C02D3A911B4A45F500B3B7F0 /* KeychainItemWrapper.m in Sources */,
-				C02D3A921B4A45F500B3B7F0 /* TLQRImageModal.swift in Sources */,
-				C02D3A931B4A45F500B3B7F0 /* TLAddressListViewController.swift in Sources */,
-				C02D3A941B4A45F500B3B7F0 /* IASKSlider.m in Sources */,
-				C02D3A951B4A45F500B3B7F0 /* TLAccountsViewController.swift in Sources */,
-				C02D3A961B4A45F500B3B7F0 /* UIViewController+Extras.swift in Sources */,
-				C02D3A971B4A45F500B3B7F0 /* UIView+FormScroll.swift in Sources */,
-				C02D3A981B4A45F500B3B7F0 /* NSData+Hash.m in Sources */,
-				C02D3A991B4A45F500B3B7F0 /* NSString+Base58.m in Sources */,
-				C02D3A9A1B4A45F500B3B7F0 /* TLSettingsViewController.swift in Sources */,
-				C02D3A9B1B4A45F500B3B7F0 /* NSData+SRB64Additions.m in Sources */,
-				C02D3A9C1B4A45F500B3B7F0 /* TLSendViewController.swift in Sources */,
-				C02D3A9D1B4A45F500B3B7F0 /* TLBlockExplorerAPI.swift in Sources */,
-				C02D3A9E1B4A45F500B3B7F0 /* IASKPSTextFieldSpecifierViewCell.m in Sources */,
-				C02D3A9F1B4A45F500B3B7F0 /* TLBlockchainStatus.swift in Sources */,
-				C02D3AA01B4A45F500B3B7F0 /* LTHPasscodeViewController.m in Sources */,
-				C02D3AA11B4A45F500B3B7F0 /* NSMutableData+Bitcoin.m in Sources */,
-				C02D3AA21B4A45F500B3B7F0 /* TLTransactionTableViewCell.swift in Sources */,
-				C02D3AA31B4A45F500B3B7F0 /* TLCoin.swift in Sources */,
-				C02D3AA41B4A45F500B3B7F0 /* UIViewController+Style.swift in Sources */,
-				C02D3AA51B4A45F500B3B7F0 /* IASKPSSliderSpecifierViewCell.m in Sources */,
-				C02D3AA61B4A45F500B3B7F0 /* IASKSpecifierValuesViewController.m in Sources */,
-				F3BC36131B8681FF00CBB3F7 /* TLUpdateAppData.swift in Sources */,
-				C02D3AA71B4A45F500B3B7F0 /* TLBlockrAPI.swift in Sources */,
-				C02D3AA81B4A45F500B3B7F0 /* AppDelegate.swift in Sources */,
-				C02D3AA91B4A45F500B3B7F0 /* TLOperationsManager.swift in Sources */,
-				C02D3AAA1B4A45F500B3B7F0 /* BRKey+BIP38.m in Sources */,
-				C02D3AAB1B4A45F500B3B7F0 /* TLPassPhraseViewController.swift in Sources */,
-				C02D3AAC1B4A45F500B3B7F0 /* TLBitcoinListener.swift in Sources */,
-				C02D3AAD1B4A45F500B3B7F0 /* TLColors.swift in Sources */,
-				C02D3AAE1B4A45F500B3B7F0 /* QR_Encode.cpp in Sources */,
-				C02D3AAF1B4A45F500B3B7F0 /* IASKAppSettingsWebViewController.m in Sources */,
-				C02D3AB01B4A45F500B3B7F0 /* TLAddressTableViewCell.swift in Sources */,
-				C02D3AB11B4A45F500B3B7F0 /* QREncoder.mm in Sources */,
-				C02D3AB21B4A45F500B3B7F0 /* TLQRCodeScannerViewController.swift in Sources */,
-				C02D3AB31B4A45F500B3B7F0 /* IASKSettingsReader.m in Sources */,
-				C02D3AB41B4A45F500B3B7F0 /* TLAchievements.swift in Sources */,
-				C02D3AB51B4A45F500B3B7F0 /* TLHelpViewController.swift in Sources */,
-				C02D3AB61B4A45F500B3B7F0 /* TLAccounts.swift in Sources */,
-				C02D3AB71B4A45F500B3B7F0 /* TLCoreBitcoinWrapper.swift in Sources */,
-				C02D3AB81B4A45F500B3B7F0 /* UINavigationBar+FixedHeightWhenStatusBarHidden.m in Sources */,
-				C02D3AB91B4A45F500B3B7F0 /* TLStealthWebSocket.swift in Sources */,
-				C02D3ABA1B4A45F500B3B7F0 /* TLInsightAPI.swift in Sources */,
-				C02D3ABB1B4A45F500B3B7F0 /* UINavigationController+StatusBarStyle.swift in Sources */,
-				C02D3ABC1B4A45F500B3B7F0 /* CustomIOS7AlertView.m in Sources */,
-				C02D3ABD1B4A45F500B3B7F0 /* TLTextViewViewController.swift in Sources */,
-				C02D3ABE1B4A45F500B3B7F0 /* TLAchievementsViewController.swift in Sources */,
-				C02D3ABF1B4A45F500B3B7F0 /* TLHUDWrapper.swift in Sources */,
-				C02D3AC01B4A45F500B3B7F0 /* TLPreferences.swift in Sources */,
-				C02D3AC11B4A45F500B3B7F0 /* SRWebSocket.m in Sources */,
-				C02D3AC21B4A45F500B3B7F0 /* IASKSwitch.m in Sources */,
-				C02D3AC31B4A45F500B3B7F0 /* TLInstructionsViewController.swift in Sources */,
-				C02D3AC41B4A45F500B3B7F0 /* TLPreloadViewController.swift in Sources */,
-				C02D3AC51B4A45F500B3B7F0 /* TLStealthAddress.swift in Sources */,
-				C02D3AC61B4A45F500B3B7F0 /* TLStealthServerAPI.swift in Sources */,
-				C02D3AC71B4A45F500B3B7F0 /* SRWebSocket+Helpers.m in Sources */,
-				C02D3AC81B4A45F500B3B7F0 /* BRKey.m in Sources */,
-				C02D3AC91B4A45F500B3B7F0 /* TLAccountObject.swift in Sources */,
-				C02D3ACA1B4A45F500B3B7F0 /* TLManageAccountsViewController.swift in Sources */,
-				C02D3ACB1B4A45F500B3B7F0 /* TLAccountTableViewCell.swift in Sources */,
-				C02D3ACC1B4A45F500B3B7F0 /* UIAlertConrtoller+Blocks.m in Sources */,
-				C02D3ACD1B4A45F500B3B7F0 /* TLReceiveViewController.swift in Sources */,
-				C02D3ACE1B4A45F500B3B7F0 /* TransparentViewController.swift in Sources */,
-				C02D3ACF1B4A45F500B3B7F0 /* TLNotificationEvents.swift in Sources */,
-				F34D5C611B7A2C0100DF37DC /* TLCrypto.swift in Sources */,
-				C02D3AD01B4A45F500B3B7F0 /* IASKPSTitleValueSpecifierViewCell.m in Sources */,
-				C02D3AD11B4A45F500B3B7F0 /* TLAddressBookViewController.swift in Sources */,
-				C02D3AD21B4A45F500B3B7F0 /* TLImportedAddresses.swift in Sources */,
-				C02D3AD31B4A45F500B3B7F0 /* TLStealthServerConfig.swift in Sources */,
-				C02D3AD41B4A45F500B3B7F0 /* LTHKeychainUtils.m in Sources */,
-				C02D3AD51B4A45F500B3B7F0 /* TLSuggestions.swift in Sources */,
-				F3F1651A1BB1DB7E00F1293A /* TLWalletJSONKeys.swift in Sources */,
-				C02D3AD61B4A45F500B3B7F0 /* TLSendFormData.swift in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
 		C0A18F8A1ABF51C200BED648 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -1914,50 +1496,6 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
-		C02D3B0E1B4A45F500B3B7F0 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = CB2193BFA5ADE6BF5F8EC097 /* Pods-ArcBit.debug.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = ArcBit/ArcBit.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/HockeySDK-iOS/HockeySDK.embeddedframework",
-				);
-				INFOPLIST_FILE = "ArcBit copy-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_SWIFT_FLAGS = "-D DEBUG";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.$(PRODUCT_NAME:rfc1034identifier).app";
-				PRODUCT_NAME = ArcBitBeta;
-				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "ArcBit/ArcBit-Bridging-Header.h";
-			};
-			name = Debug;
-		};
-		C02D3B0F1B4A45F500B3B7F0 /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7817897D0741470B5FDCA66C /* Pods-ArcBit.release.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = ArcBit/ArcBit.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Developer";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
-				FRAMEWORK_SEARCH_PATHS = (
-					"$(inherited)",
-					"$(PROJECT_DIR)/HockeySDK-iOS/HockeySDK.embeddedframework",
-				);
-				INFOPLIST_FILE = "ArcBit copy-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				OTHER_SWIFT_FLAGS = "";
-				PRODUCT_BUNDLE_IDENTIFIER = "com.$(PRODUCT_NAME:rfc1034identifier).app";
-				PRODUCT_NAME = ArcBitBeta;
-				PROVISIONING_PROFILE = "";
-				SWIFT_OBJC_BRIDGING_HEADER = "ArcBit/ArcBit-Bridging-Header.h";
-			};
-			name = Release;
-		};
 		C0A18FAB1ABF51C200BED648 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -2126,15 +1664,6 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		C02D3B0D1B4A45F500B3B7F0 /* Build configuration list for PBXNativeTarget "ArcBitBeta" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				C02D3B0E1B4A45F500B3B7F0 /* Debug */,
-				C02D3B0F1B4A45F500B3B7F0 /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
 		C0A18F891ABF51C200BED648 /* Build configuration list for PBXProject "ArcBit" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
