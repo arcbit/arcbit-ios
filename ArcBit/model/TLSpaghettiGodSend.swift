@@ -246,7 +246,7 @@
     }
     
     func createSignedSerializedTransactionHex(toAddressesAndAmounts:NSArray,
-        feeAmount:TLCoin, nonce: UInt32? = nil, ephemeralPrivateKeyHex: String? = nil, error:TLWalletUtils.ErrorWithString) -> (NSDictionary?, Array<String>, Array<String>) {
+        feeAmount:TLCoin, nonce: UInt32? = nil, ephemeralPrivateKeyHex: String? = nil, error:TLWalletUtils.ErrorWithString) -> (NSDictionary?, Array<String>) {
             let inputsData = NSMutableArray()
             let outputsData = NSMutableArray()
             var outputValueSum = TLCoin.zero()
@@ -302,7 +302,6 @@
                     }
                 }
             }
-            var stealthPaymentTxidsClaiming = [String]()
             if (valueSelected.less(valueNeeded)) {
                 changeAddress = nil
                 if sendFromAccounts != nil {
@@ -347,7 +346,6 @@
                                 "private_key": accountObject.stealthWallet!.getPaymentAddressPrivateKey(address!)!])
                             
                             let txid = unspentOutput.objectForKey("tx_hash_big_endian") as! String
-                            stealthPaymentTxidsClaiming.append(txid)
 
                             unspentOutputsUsingCount++
                             if (valueSelected.greaterOrEqual(valueNeeded) && unspentOutputsUsingCount > 12) {
@@ -407,12 +405,12 @@
                     DLog("createSignedSerializedTransactionHex valueNeeded %@", function: valueNeeded.toString())
                     let amountCanSendString = TLWalletUtils.coinToProperBitcoinAmountString(valueNeeded.subtract(dustCoinAmount))
                     error(String(format: "Insufficient Funds. Account contains bitcoin dust. You can only send up to %@ %@ for now.".localized, amountCanSendString, TLWalletUtils.getBitcoinDisplay()))
-                    return (nil, stealthPaymentTxidsClaiming, realToAddresses)
+                    return (nil, realToAddresses)
                 }
                 let valueSelectedString = TLWalletUtils.coinToProperBitcoinAmountString(valueSelected)
                 let valueNeededString = TLWalletUtils.coinToProperBitcoinAmountString(valueNeeded)
                 error(String(format: "Insufficient Funds. Account balance is %@ %@ when %@ %@ is required.".localized, valueSelectedString, TLWalletUtils.getBitcoinDisplay(), valueNeededString, TLWalletUtils.getBitcoinDisplay()))
-                return (nil, stealthPaymentTxidsClaiming, realToAddresses)
+                return (nil, realToAddresses)
             }
             
             var stealthOutputScripts:NSMutableArray? = nil
@@ -472,7 +470,7 @@
                 if outputAmount <= DUST_AMOUNT {
                     let dustAmountBitcoins = TLCoin(uint64: DUST_AMOUNT).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.Bitcoin)
                     error(String(format: "Cannot create transactions with outputs less then %@ bitcoins.".localized, dustAmountBitcoins))
-                    return (nil, stealthPaymentTxidsClaiming, realToAddresses)
+                    return (nil, realToAddresses)
                 }
             }
             
@@ -572,12 +570,12 @@
                     outputScripts:stealthOutputScripts, isTestnet: self.appWallet.walletConfig.isTestnet)
                 DLog("createSignedSerializedTransactionHex txHexAndTxHash: %@", function: txHexAndTxHash.debugDescription)
                 if txHexAndTxHash != nil {
-                    return (txHexAndTxHash!, stealthPaymentTxidsClaiming, realToAddresses)
+                    return (txHexAndTxHash!, realToAddresses)
                 }
             }
             
             error("Encountered error creating transaction. Please try again.".localized)
-            return (nil, stealthPaymentTxidsClaiming, realToAddresses)
+            return (nil, realToAddresses)
     }
 }
 

@@ -410,8 +410,7 @@ class ArcBitTests: XCTestCase {
                 })
                 
                 let txHexAndTxHash = ret.0
-                let stealthPaymentTxidsClaiming = ret.1
-                let realToAddresses = ret.2
+                let realToAddresses = ret.1
                 let txHex = txHexAndTxHash!.objectForKey("txHex") as! String
                 let txHash = txHexAndTxHash!.objectForKey("txHash") as! String
                 XCTAssertTrue(txHash == "fbacfede55dc6a779782ba8fa22813860b7ef07d82c3abebb8f290b3141bf965")
@@ -438,7 +437,6 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(output1.script.standardAddress.base58String == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
                 
                 XCTAssertTrue(realToAddresses.count == 2)
-                XCTAssertTrue(stealthPaymentTxidsClaiming.count == 0)
                 XCTAssertTrue(realToAddresses[0] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
                 XCTAssertTrue(realToAddresses[1] == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
             }
@@ -456,8 +454,7 @@ class ArcBitTests: XCTestCase {
                 })
                 
                 let txHexAndTxHash = ret.0
-                let stealthPaymentTxidsClaiming = ret.1
-                let realToAddresses = ret.2
+                let realToAddresses = ret.1
                 let txHex = txHexAndTxHash!.objectForKey("txHex") as! String
                 let txHash = txHexAndTxHash!.objectForKey("txHash") as! String
                 NSLog("txHashtxHash \(txHash)")
@@ -486,7 +483,6 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(output1.script.standardAddress.base58String == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
                 
                 XCTAssertTrue(realToAddresses.count == 2)
-                XCTAssertTrue(stealthPaymentTxidsClaiming.count == 0)
                 XCTAssertTrue(realToAddresses[0] == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
                 XCTAssertTrue(realToAddresses[1] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
             }
@@ -567,8 +563,7 @@ class ArcBitTests: XCTestCase {
                 })
                 
                 let txHexAndTxHash = ret.0
-                let stealthPaymentTxidsClaiming = ret.1
-                let realToAddresses = ret.2
+                let realToAddresses = ret.1
                 let txHex = txHexAndTxHash!.objectForKey("txHex") as! String
                 let txHash = txHexAndTxHash!.objectForKey("txHash") as! String
                 XCTAssertTrue(txHash == "0656add012962ef3bdd11eaf88347b78a2c4adb08fe8b95f79a8b8a4fe862132")
@@ -640,7 +635,6 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(output1.script.standardAddress.base58String == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
                 
                 XCTAssertTrue(realToAddresses.count == 2)
-                XCTAssertTrue(stealthPaymentTxidsClaiming.count == 0)
                 XCTAssertTrue(realToAddresses[0] == "17nFgS1YaDPnXKMPQkZVdNQqZnVqRgBwnZ")
                 XCTAssertTrue(realToAddresses[1] == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
             }
@@ -674,8 +668,7 @@ class ArcBitTests: XCTestCase {
                 })
                 
                 let txHexAndTxHash = ret.0
-                let stealthPaymentTxidsClaiming = ret.1
-                let realToAddresses = ret.2
+                let realToAddresses = ret.1
                 let txHex = txHexAndTxHash!.objectForKey("txHex") as! String
                 let txHash = txHexAndTxHash!.objectForKey("txHash") as! String
 
@@ -749,7 +742,6 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(output1.script.standardAddress.base58String == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
                 
                 XCTAssertTrue(realToAddresses.count == 2)
-                XCTAssertTrue(stealthPaymentTxidsClaiming.count == 0)
                 XCTAssertTrue(realToAddresses[0] == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
                 XCTAssertTrue(realToAddresses[1] == "17nFgS1YaDPnXKMPQkZVdNQqZnVqRgBwnZ")
             }
@@ -787,8 +779,7 @@ class ArcBitTests: XCTestCase {
                 })
                 
                 let txHexAndTxHash = ret.0
-                let stealthPaymentTxidsClaiming = ret.1
-                let realToAddresses = ret.2
+                let realToAddresses = ret.1
                 let txHex = txHexAndTxHash!.objectForKey("txHex") as! String
                 let txHash = txHexAndTxHash!.objectForKey("txHash") as! String
                 XCTAssertTrue(txHash == "9debd8fa98772ef4110fc3eb07a0a172e7704a148708ada788b2b5560efd445f")
@@ -819,7 +810,6 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(output2.script.standardAddress.base58String == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
                 
                 XCTAssertTrue(realToAddresses.count == 2)
-                XCTAssertTrue(stealthPaymentTxidsClaiming.count == 0)
                 XCTAssertTrue(realToAddresses[0] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
                 XCTAssertTrue(realToAddresses[1] == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
             }
@@ -838,8 +828,7 @@ class ArcBitTests: XCTestCase {
                 })
                 
                 let txHexAndTxHash = ret.0
-                let stealthPaymentTxidsClaiming = ret.1
-                let realToAddresses = ret.2
+                let realToAddresses = ret.1
                 let txHex = txHexAndTxHash!.objectForKey("txHex") as! String
                 let txHash = txHexAndTxHash!.objectForKey("txHash") as! String
 
@@ -871,7 +860,6 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(output2.script.standardAddress.base58String == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
                 
                 XCTAssertTrue(realToAddresses.count == 2)
-                XCTAssertTrue(stealthPaymentTxidsClaiming.count == 0)
                 XCTAssertTrue(realToAddresses[0] == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
                 XCTAssertTrue(realToAddresses[1] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
             }
@@ -956,8 +944,7 @@ class ArcBitTests: XCTestCase {
                 })
                 
                 let txHexAndTxHash = ret.0
-                let stealthPaymentTxidsClaiming = ret.1
-                let realToAddresses = ret.2
+                let realToAddresses = ret.1
                 let txHex = txHexAndTxHash!.objectForKey("txHex") as! String
                 let txHash = txHexAndTxHash!.objectForKey("txHash") as! String
 
@@ -1034,7 +1021,6 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(output2.script.standardAddress.base58String == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
                 
                 XCTAssertTrue(realToAddresses.count == 2)
-                XCTAssertTrue(stealthPaymentTxidsClaiming.count == 0)
                 XCTAssertTrue(realToAddresses[0] == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
                 XCTAssertTrue(realToAddresses[1] == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
             }
@@ -1069,8 +1055,7 @@ class ArcBitTests: XCTestCase {
                 })
                 
                 let txHexAndTxHash = ret.0
-                let stealthPaymentTxidsClaiming = ret.1
-                let realToAddresses = ret.2
+                let realToAddresses = ret.1
                 let txHex = txHexAndTxHash!.objectForKey("txHex") as! String
                 let txHash = txHexAndTxHash!.objectForKey("txHash") as! String
 
@@ -1149,7 +1134,6 @@ class ArcBitTests: XCTestCase {
                 
                 
                 XCTAssertTrue(realToAddresses.count == 2)
-                XCTAssertTrue(stealthPaymentTxidsClaiming.count == 0)
                 XCTAssertTrue(realToAddresses[0] == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
                 XCTAssertTrue(realToAddresses[1] == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
             }
@@ -1182,8 +1166,7 @@ class ArcBitTests: XCTestCase {
                 })
                 
                 let txHexAndTxHash = ret.0
-                let stealthPaymentTxidsClaiming = ret.1
-                let realToAddresses = ret.2
+                let realToAddresses = ret.1
                 let txHex = txHexAndTxHash!.objectForKey("txHex") as! String
                 let txHash = txHexAndTxHash!.objectForKey("txHash") as! String
 
@@ -1211,7 +1194,6 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(output1.script.standardAddress.base58String == changeAddress0)
                 
                 XCTAssertTrue(realToAddresses.count == 1)
-                XCTAssertTrue(stealthPaymentTxidsClaiming.count == 0)
                 XCTAssertTrue(realToAddresses[0] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
             }
             
@@ -1228,8 +1210,7 @@ class ArcBitTests: XCTestCase {
                 })
                 
                 let txHexAndTxHash = ret.0
-                let stealthPaymentTxidsClaiming = ret.1
-                let realToAddresses = ret.2
+                let realToAddresses = ret.1
                 let txHex = txHexAndTxHash!.objectForKey("txHex") as! String
                 let txHash = txHexAndTxHash!.objectForKey("txHash") as! String
 
@@ -1254,7 +1235,6 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(output1.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
                 
                 XCTAssertTrue(realToAddresses.count == 1)
-                XCTAssertTrue(stealthPaymentTxidsClaiming.count == 0)
                 XCTAssertTrue(realToAddresses[0] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
             }
             
@@ -1288,8 +1268,7 @@ class ArcBitTests: XCTestCase {
                 })
                 
                 let txHexAndTxHash = ret.0
-                let stealthPaymentTxidsClaiming = ret.1
-                let realToAddresses = ret.2
+                let realToAddresses = ret.1
                 let txHex = txHexAndTxHash!.objectForKey("txHex") as! String
                 let txHash = txHexAndTxHash!.objectForKey("txHash") as! String
                 XCTAssertTrue(txHash == "1b27e859e51c272c6fa539e8579649cf0ba3d6ac560c38e3d93d83edd85adedc")
@@ -1316,7 +1295,6 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(output1.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
                 
                 XCTAssertTrue(realToAddresses.count == 2)
-                XCTAssertTrue(stealthPaymentTxidsClaiming.count == 0)
                 XCTAssertTrue(realToAddresses[0] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
                 XCTAssertTrue(realToAddresses[1] == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
             }

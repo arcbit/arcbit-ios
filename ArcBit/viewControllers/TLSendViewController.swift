@@ -583,8 +583,7 @@ import UIKit
                         })
 
                         let txHexAndTxHash = ret.0
-                        let stealthPaymentTxidsClaiming = ret.1
-                        let realToAddress = ret.2
+                        let realToAddress = ret.1
 
                         if txHexAndTxHash == nil {
                             return
