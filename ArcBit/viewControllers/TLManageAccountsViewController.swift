@@ -1061,9 +1061,9 @@ import UIKit
                     self.promtForNameAccount({
                         (accountName: String!) in
                         if (accountType == .Imported) {
-                            AppDelegate.instance().importedAccounts!.renameAccount(accountObject!.getAccountIdxNumber(), accountName: accountName)
+                            AppDelegate.instance().importedAccounts!.editLabel(accountName, accountIdx: accountObject!.getAccountIdxNumber())
                         } else if (accountType == .ImportedWatch) {
-                            AppDelegate.instance().importedWatchAccounts!.renameAccount(accountObject!.getAccountIdxNumber(), accountName: accountName)
+                            AppDelegate.instance().importedWatchAccounts!.editLabel(accountName, accountIdx: accountObject!.getAccountIdxNumber())
                         }
                         self._accountsTableViewReloadDataWrapper()
                         }, failure: ({
