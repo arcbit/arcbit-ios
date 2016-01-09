@@ -657,7 +657,7 @@ import Foundation
                     }
                     
                     assert(mainActiveAddresses.first == address, "")
-                    mainActiveAddresses.removeAtIndex(mainActiveAddresses.indexOf(address)!)
+                    mainActiveAddresses.removeAtIndex(0)
                     activeAddressesDict.removeValueForKey(address)
                     if (accountType == TLAccountType.HDWallet) {
                         self.appWallet!.updateMainAddressStatusFromHDWallet(accountIdx,
@@ -711,7 +711,7 @@ import Foundation
                     }
                     
                     assert(changeActiveAddresses.first == address, "")
-                    changeActiveAddresses.removeAtIndex(changeActiveAddresses.indexOf(address)!)
+                    changeActiveAddresses.removeAtIndex(0)
                     activeAddressesDict.removeValueForKey(address)
                     if (accountType == TLAccountType.HDWallet) {
                         self.appWallet!.updateChangeAddressStatusFromHDWallet(accountIdx,
