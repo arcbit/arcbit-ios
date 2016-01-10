@@ -31,6 +31,25 @@ class TLPrompts {
     typealias Failure = (Bool) -> ()
     typealias UserInputCallback = (String!) -> ()
     
+    class func promptAlertController(vc: UIViewController, title: String, message: String, okText: String, cancelTx: String,
+        success: TLWalletUtils.Success
+        , failure: Failure) -> () {
+            UIAlertController.showAlertInViewController(vc,
+                withTitle: title,
+                message: message,
+                cancelButtonTitle: cancelTx,
+                destructiveButtonTitle: nil,
+                otherButtonTitles: [okText],
+                
+                tapBlock: {(alertView, action, buttonIndex) in
+                    if (buttonIndex == alertView.firstOtherButtonIndex) {
+                        success()
+                    } else if (buttonIndex == alertView.cancelButtonIndex) {
+                        failure(true)
+                    }
+            })
+    }
+    
     class func promtForInputText(vc:UIViewController, title: String, message: String,
         textFieldPlaceholder: String?,
         success: UserInputCallback

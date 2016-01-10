@@ -26,8 +26,12 @@ import UIKit
 class TLSuggestions {
     private var suggestions:NSMutableDictionary?
     let VIEW_RECEIVE_SCREEN_GAP_COUNT_TO_SHOW_SUGGESTION_TO_ENABLE_PIN = 13
-    let VIEW_SEND_SCREEN_GAP_COUNT_TO_SHOW_SUGGESTION_TO_BACKUP_WALLET_PASSPHRASE = 3
     
+    // use prime numbers to avoid multiple prompts to be displayed at once
+    let VIEW_SEND_SCREEN_GAP_COUNT_TO_SHOW_SUGGESTION_TO_BACKUP_WALLET_PASSPHRASE = 3
+    let VIEW_SEND_SCREEN_GAP_COUNT_TO_SHOW_RATE_APP_ONCE = 47
+    let VIEW_SEND_SCREEN_GAP_COUNT_TO_SHOW_RATE_APP = 89
+
     let ENABLE_SUGGESTED_ENABLE_PIN  = "enableSuggestedEnablePin"
     let ENABLE_SUGGESTED_BACKUP_WALLET_PASSPHRASE = "enableSuggestBackUpWalletPassphrase"
     let ENABLE_SUGGESTED_DONT_MANAGE_INDIVIDUAL_ACCOUNT_ADDRESSES  = "enableSuggestDontManageIndividualAccountAddresses"
@@ -94,6 +98,19 @@ class TLSuggestions {
     func setEnabledShowManuallyScanTransactionForStealthTxInfo(enabled:Bool) -> (){
         suggestions!.setObject(enabled, forKey:ENABLE_SHOW_MANUALLY_SCAN_TRANSACTION_FOR_STEALTH_TX_INFO)
         TLPreferences.setSuggestionsDict(suggestions!)
+    }
+    
+    func conditionToPromptRateAppSatisfied() -> (Bool) {
+        let userAnalyticsDict = NSMutableDictionary(dictionary:TLPreferences.getAnalyticsDict() ?? NSDictionary())
+        let viewSendScreenCount = userAnalyticsDict.objectForKey(TLNotificationEvents.EVENT_VIEW_SEND_SCREEN()) as! Int? ?? 0
+        if !TLPreferences.disabledPromptRateApp() &&
+            viewSendScreenCount > 0 &&
+            ((!TLPreferences.hasRatedOnce() && viewSendScreenCount % VIEW_SEND_SCREEN_GAP_COUNT_TO_SHOW_RATE_APP_ONCE == 0) ||
+            (TLPreferences.hasRatedOnce() && viewSendScreenCount % VIEW_SEND_SCREEN_GAP_COUNT_TO_SHOW_RATE_APP == 0)) {
+                return true
+        } else {
+            return false
+        }
     }
     
     private func setEnabledSuggestedEnablePin(enabled:Bool) -> (){

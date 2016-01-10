@@ -342,6 +342,7 @@ import HockeySDK
             TLUpdateAppData.instance().beforeUpdatedAppVersion = TLPreferences.getAppVersion()
             DLog("set new appVersion %@", function: appVersion)
             TLPreferences.setAppVersion(appVersion)
+            TLPreferences.setDisabledPromptRateApp(false)
         }
         
         self.setupPasscodeViewColors()

@@ -333,6 +333,20 @@ import UIKit
         
         if (!TLPreferences.getInAppSettingsKitEnablePinCode() && TLSuggestions.instance().conditionToPromptToSuggestEnablePinSatisfied()) {
             TLSuggestions.instance().promptToSuggestEnablePin(self)
+        } else if TLSuggestions.instance().conditionToPromptRateAppSatisfied() {
+            TLPrompts.promptAlertController(self, title: "Like using ArcBit?".localized,
+                message: "Rate us in the App Store!".localized, okText: "Rate Now".localized, cancelTx: "Not now".localized,
+                success: { () -> () in
+                    let url = NSURL(string: "https://itunes.apple.com/app/id999487888");
+                    if (UIApplication.sharedApplication().canOpenURL(url!)) {
+                        UIApplication.sharedApplication().openURL(url!);
+                    }
+                    TLPreferences.setDisabledPromptRateApp(true)
+                    if !TLPreferences.hasRatedOnce() {
+                        TLPreferences.setHasRatedOnce()
+                    }
+                }, failure: { (Bool) -> () in
+            })
         }
         self.navigationController!.view.addGestureRecognizer(self.slidingViewController().panGesture)
     }

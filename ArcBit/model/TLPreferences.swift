@@ -71,6 +71,8 @@ class TLPreferences
         static let PREFERENCE_ENABLE_STEALTH_ADDRESS_DEFAULT = "pref-enable-stealth-address-default"
         static let PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE = "pref-encrypted-backup-passphrase"
         static let PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE_KEY = "pref-encrypted-backup-passphrase-key"
+        static let PREFERENCE_ENABLED_PROMPT_RATE_APP = "pref-enabled-prompt-rate-app"
+        static let PREFERENCE_RATED_ONCE = "pref-rated-once"
     }
     
     class func setHasSetupHDWallet(enabled:Bool) -> () {
@@ -513,6 +515,24 @@ class TLPreferences
     
     class func setEnabledStealthAddressDefault(enabled:Bool) -> () {
         NSUserDefaults.standardUserDefaults().setBool(enabled ,forKey:CLASS_STATIC.PREFERENCE_ENABLE_STEALTH_ADDRESS_DEFAULT)
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+    
+    class func disabledPromptRateApp() -> (Bool) {
+        return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.PREFERENCE_ENABLED_PROMPT_RATE_APP)
+    }
+    
+    class func setDisabledPromptRateApp(disabled:Bool) -> () {
+        NSUserDefaults.standardUserDefaults().setBool(disabled ,forKey:CLASS_STATIC.PREFERENCE_ENABLED_PROMPT_RATE_APP)
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+    
+    class func hasRatedOnce() -> (Bool) {
+        return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.PREFERENCE_RATED_ONCE)
+    }
+    
+    class func setHasRatedOnce() -> () {
+        NSUserDefaults.standardUserDefaults().setBool(true ,forKey:CLASS_STATIC.PREFERENCE_RATED_ONCE)
         NSUserDefaults.standardUserDefaults().synchronize()
     }
 }
