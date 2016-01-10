@@ -114,7 +114,7 @@ import UIKit
                             (cell!.accessoryView as! UIActivityIndicatorView).hidden = true
                             cell!.accountBalanceButton!.hidden = false
                             if accountObject.downloadState == .Downloaded {
-                                let balance = TLWalletUtils.getProperAmount(accountObject.getBalance())
+                                let balance = TLCurrencyFormat.getProperAmount(accountObject.getBalance())
                                 cell!.accountBalanceButton!.setTitle(balance as String, forState: .Normal)
                             }
                             cell!.accountBalanceButton!.hidden = false
@@ -123,7 +123,7 @@ import UIKit
             } else {
                 if let cell = self.accountsTableView!.cellForRowAtIndexPath(indexPath) as? TLAccountTableViewCell {
                     cell.accountNameLabel!.text = accountObject.getAccountName()
-                    let balance = TLWalletUtils.getProperAmount(accountObject.getBalance())
+                    let balance = TLCurrencyFormat.getProperAmount(accountObject.getBalance())
                     cell.accountBalanceButton!.setTitle(balance as String, forState: .Normal)
                 }
             }
@@ -148,7 +148,7 @@ import UIKit
                             (cell!.accessoryView as! UIActivityIndicatorView).hidden = true
                             cell!.accountBalanceButton!.hidden = false
                             if accountObject.downloadState == .Downloaded {
-                                let balance = TLWalletUtils.getProperAmount(accountObject.getBalance())
+                                let balance = TLCurrencyFormat.getProperAmount(accountObject.getBalance())
                                 cell!.accountBalanceButton!.setTitle(balance as String, forState: .Normal)
                             }
                             cell!.accountBalanceButton!.hidden = false
@@ -157,7 +157,7 @@ import UIKit
             } else {
                 if let cell = self.accountsTableView!.cellForRowAtIndexPath(indexPath) as? TLAccountTableViewCell {
                     cell.accountNameLabel!.text = accountObject.getAccountName()
-                    let balance = TLWalletUtils.getProperAmount(accountObject.getBalance())
+                    let balance = TLCurrencyFormat.getProperAmount(accountObject.getBalance())
                     cell.accountBalanceButton!.setTitle(balance as String, forState: .Normal)
                 }
             }
@@ -184,7 +184,7 @@ import UIKit
                             (cell.accessoryView as! UIActivityIndicatorView).hidden = true
                             if AppDelegate.instance().importedAddresses!.downloadState == .Downloaded {
                                 let importAddressObject = AppDelegate.instance().importedAddresses!.getAddressObjectAtIdx(i)
-                                let balance = TLWalletUtils.getProperAmount(importAddressObject.getBalance()!)
+                                let balance = TLCurrencyFormat.getProperAmount(importAddressObject.getBalance()!)
                                 cell.accountBalanceButton!.setTitle(balance as String, forState: .Normal)
                             }
                             cell.accountBalanceButton!.hidden = false
@@ -214,7 +214,7 @@ import UIKit
                         
                         if AppDelegate.instance().importedWatchAddresses!.downloadState == .Downloaded {
                             let importAddressObject = AppDelegate.instance().importedWatchAddresses!.getAddressObjectAtIdx(i)
-                            let balance = TLWalletUtils.getProperAmount(importAddressObject.getBalance()!)
+                            let balance = TLCurrencyFormat.getProperAmount(importAddressObject.getBalance()!)
                             cell.accountBalanceButton!.setTitle(balance as String, forState: .Normal)
                         }
                         cell.accountBalanceButton!.hidden = false
@@ -242,7 +242,7 @@ import UIKit
                         (cell!.accessoryView as! UIActivityIndicatorView).hidden = true
                         cell!.accountBalanceButton!.hidden = false
                         if accountObject.downloadState == .Downloaded {
-                            let balance = TLWalletUtils.getProperAmount(accountObject.getBalance())
+                            let balance = TLCurrencyFormat.getProperAmount(accountObject.getBalance())
                             cell!.accountBalanceButton!.setTitle(balance as String, forState: .Normal)
                         }
                         cell!.accountBalanceButton!.hidden = false
@@ -251,7 +251,7 @@ import UIKit
             } else {
                 if let cell = self.accountsTableView!.cellForRowAtIndexPath(indexPath) as? TLAccountTableViewCell {
                     cell.accountNameLabel!.text = accountObject.getAccountName()
-                    let balance = TLWalletUtils.getProperAmount(accountObject.getBalance())
+                    let balance = TLCurrencyFormat.getProperAmount(accountObject.getBalance())
                     cell.accountBalanceButton!.setTitle(balance as String, forState: .Normal)
                 }
             }
@@ -264,7 +264,7 @@ import UIKit
         let indexPath = NSIndexPath(forRow: accountIdx, inSection: accountListSection)
         
         if let cell = self.accountsTableView!.cellForRowAtIndexPath(indexPath) as? TLAccountTableViewCell {
-            let balance = TLWalletUtils.getProperAmount(accountObject.getBalance())
+            let balance = TLCurrencyFormat.getProperAmount(accountObject.getBalance())
             cell.accountBalanceButton!.setTitle(balance as String, forState: .Normal)
             cell.accountNameLabel!.text = (accountObject.getAccountName())
         }
@@ -294,7 +294,7 @@ import UIKit
         if (accountObject.hasFetchedAccountData()) {
             (cell.accessoryView as! UIActivityIndicatorView).hidden = true
             (cell.accessoryView as! UIActivityIndicatorView).stopAnimating()
-            let balance = TLWalletUtils.getProperAmount(accountObject.getBalance())
+            let balance = TLCurrencyFormat.getProperAmount(accountObject.getBalance())
             cell.accountBalanceButton!.setTitle(balance as String, forState: .Normal)
             cell.accountBalanceButton!.hidden = false
         } else {
@@ -304,7 +304,7 @@ import UIKit
                 (cell.accessoryView as! UIActivityIndicatorView).stopAnimating()
                 (cell.accessoryView as! UIActivityIndicatorView).hidden = true
                 if accountObject.downloadState == .Downloaded {
-                    let balance = TLWalletUtils.getProperAmount(accountObject.getBalance())
+                    let balance = TLCurrencyFormat.getProperAmount(accountObject.getBalance())
                     cell.accountBalanceButton!.setTitle(balance as String, forState: .Normal)
                     cell.accountBalanceButton!.hidden = false
                 }
@@ -319,7 +319,7 @@ import UIKit
         if (importedAddressObject.hasFetchedAccountData()) {
             (cell.accessoryView as! UIActivityIndicatorView).hidden = true
             (cell.accessoryView as! UIActivityIndicatorView).stopAnimating()
-            let balance = TLWalletUtils.getProperAmount(importedAddressObject.getBalance()!)
+            let balance = TLCurrencyFormat.getProperAmount(importedAddressObject.getBalance()!)
             cell.accountBalanceButton!.setTitle(balance as String, forState: .Normal)
             cell.accountBalanceButton!.hidden = false
         }

@@ -403,13 +403,13 @@
                     DLog("createSignedSerializedTransactionHex dustAmount %llu", function: Int(dustAmount))
                     DLog("createSignedSerializedTransactionHex dustCoinAmount %@", function: dustCoinAmount.toString())
                     DLog("createSignedSerializedTransactionHex valueNeeded %@", function: valueNeeded.toString())
-                    let amountCanSendString = TLWalletUtils.coinToProperBitcoinAmountString(valueNeeded.subtract(dustCoinAmount))
-                    error(String(format: "Insufficient Funds. Account contains bitcoin dust. You can only send up to %@ %@ for now.".localized, amountCanSendString, TLWalletUtils.getBitcoinDisplay()))
+                    let amountCanSendString = TLCurrencyFormat.coinToProperBitcoinAmountString(valueNeeded.subtract(dustCoinAmount))
+                    error(String(format: "Insufficient Funds. Account contains bitcoin dust. You can only send up to %@ %@ for now.".localized, amountCanSendString, TLCurrencyFormat.getBitcoinDisplay()))
                     return (nil, realToAddresses)
                 }
-                let valueSelectedString = TLWalletUtils.coinToProperBitcoinAmountString(valueSelected)
-                let valueNeededString = TLWalletUtils.coinToProperBitcoinAmountString(valueNeeded)
-                error(String(format: "Insufficient Funds. Account balance is %@ %@ when %@ %@ is required.".localized, valueSelectedString, TLWalletUtils.getBitcoinDisplay(), valueNeededString, TLWalletUtils.getBitcoinDisplay()))
+                let valueSelectedString = TLCurrencyFormat.coinToProperBitcoinAmountString(valueSelected)
+                let valueNeededString = TLCurrencyFormat.coinToProperBitcoinAmountString(valueNeeded)
+                error(String(format: "Insufficient Funds. Account balance is %@ %@ when %@ %@ is required.".localized, valueSelectedString, TLCurrencyFormat.getBitcoinDisplay(), valueNeededString, TLCurrencyFormat.getBitcoinDisplay()))
                 return (nil, realToAddresses)
             }
             

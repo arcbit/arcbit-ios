@@ -751,7 +751,7 @@ import HockeySDK
     }
     
     func promptReceivedPayment(receivedTo:String, receivedAmount:TLCoin) {
-        let msg = "\(receivedTo) received \(TLWalletUtils.getProperAmount(receivedAmount))"
+        let msg = "\(receivedTo) received \(TLCurrencyFormat.getProperAmount(receivedAmount))"
         TLPrompts.promptSuccessMessage(msg, message: "")
         AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
         if (TLPreferences.getEnableSoundNotification()) {
@@ -928,7 +928,7 @@ import HockeySDK
     func showLocalNotificationForCoinsSent(txHash: String, address: String, amount: TLCoin) {
         if sentPaymentHashes[txHash] == nil {
             sentPaymentHashes[txHash] = ""
-            let msg = String(format:"Sent %@ to %@".localized, TLWalletUtils.getProperAmount(amount), address)
+            let msg = String(format:"Sent %@ to %@".localized, TLCurrencyFormat.getProperAmount(amount), address)
             TLPrompts.promptSuccessMessage(msg, message: "")
             //self.showLocalNotification(msg)
         }

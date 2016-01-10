@@ -145,7 +145,7 @@ import CoreData
                 })
             }
         } else {
-            let balance = TLWalletUtils.getProperAmount(AppDelegate.instance().historySelectedObject!.getBalanceForSelectedObject()!)
+            let balance = TLCurrencyFormat.getProperAmount(AppDelegate.instance().historySelectedObject!.getBalanceForSelectedObject()!)
             accountBalanceLabel!.text = balance as String
             self.balanceActivityIndicatorView!.hidden = true
         }
@@ -177,7 +177,7 @@ import CoreData
     
     private func updateAccountBalance() {
         let balance = AppDelegate.instance().historySelectedObject!.getBalanceForSelectedObject()
-        let balanceString = TLWalletUtils.getProperAmount(balance!)
+        let balanceString = TLCurrencyFormat.getProperAmount(balance!)
     
         self.balanceActivityIndicatorView!.stopAnimating()
         self.balanceActivityIndicatorView!.hidden = true
@@ -226,7 +226,7 @@ import CoreData
         DLog("txObject hash: %@", function: txObject!.getHash()!)
         cell!.dateLabel!.text = txObject!.getTime()
         
-        let amount = TLWalletUtils.getProperAmount(AppDelegate.instance().historySelectedObject!.getAccountAmountChangeForTx(txObject!.getHash()! as String)!)
+        let amount = TLCurrencyFormat.getProperAmount(AppDelegate.instance().historySelectedObject!.getAccountAmountChangeForTx(txObject!.getHash()! as String)!)
         let amountType = AppDelegate.instance().historySelectedObject!.getAccountAmountChangeTypeForTx(txObject!.getHash()! as String)
         var amountTypeString = ""
         let txTag = AppDelegate.instance().appWallet.getTransactionTag(txObject!.getHash()! as String)

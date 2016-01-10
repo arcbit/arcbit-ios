@@ -251,7 +251,7 @@ import UIKit
                 (indexPath.section == 0 || indexPath.section == 1 || indexPath.section == 3)) {
                     // only show balances of active addresses
                     cell!.amountButton!.hidden = false
-                    balance = TLWalletUtils.getProperAmount(self.accountObject!.getAddressBalance(address)) as String
+                    balance = TLCurrencyFormat.getProperAmount(self.accountObject!.getAddressBalance(address)) as String
                     cell!.amountButton!.setTitle(balance, forState: UIControlState.Normal)
             } else {
                 cell!.amountButton!.hidden = true

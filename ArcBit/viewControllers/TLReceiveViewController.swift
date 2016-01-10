@@ -156,7 +156,7 @@ import UIKit
                 })
             }
         } else {
-            let balance = TLWalletUtils.getProperAmount(AppDelegate.instance().historySelectedObject!.getBalanceForSelectedObject()!)
+            let balance = TLCurrencyFormat.getProperAmount(AppDelegate.instance().historySelectedObject!.getBalanceForSelectedObject()!)
             accountBalanceLabel!.text = balance as String
             self.balanceActivityIndicatorView!.hidden = true
         }
@@ -413,7 +413,7 @@ import UIKit
 
     private func updateAccountBalance() {
         let balance = AppDelegate.instance().receiveSelectedObject!.getBalanceForSelectedObject()
-        let balanceString = TLWalletUtils.getProperAmount(balance!)
+        let balanceString = TLCurrencyFormat.getProperAmount(balance!)
         
         if AppDelegate.instance().receiveSelectedObject!.getDownloadState() == .Downloaded {
             self.balanceActivityIndicatorView!.stopAnimating()

@@ -1313,126 +1313,126 @@ class ArcBitTests: XCTestCase {
         
         var coin:TLCoin
 
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("0.0")
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0.0")
         XCTAssertTrue(coin.toUInt64() == 0)
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("0")
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0")
         XCTAssertTrue(coin.toUInt64() == 0)
 
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("0.00000001")
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0.00000001")
         XCTAssertTrue(coin.toUInt64() == 1)
-        //coin = TLWalletUtils.bitcoinAmountStringToCoin("0.000000011")
+        //coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0.000000011")
         //XCTAssertTrue(coin.toUInt64() == 1)
-        //coin = TLWalletUtils.bitcoinAmountStringToCoin("0.000000015")
+        //coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0.000000015")
         //XCTAssertTrue(coin.toUInt64() == 2)
-        //coin = TLWalletUtils.bitcoinAmountStringToCoin("0.000000019")
+        //coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0.000000019")
         //XCTAssertTrue(coin.toUInt64() == 2)
 
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("0.1")
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0.1")
         XCTAssertTrue(coin.toUInt64() == 10000000)
 
-        coin = TLWalletUtils.bitcoinAmountStringToCoin(".99999998")
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin(".99999998")
         XCTAssertTrue(coin.toUInt64() == 99999998)
-        //coin = TLWalletUtils.bitcoinAmountStringToCoin(".999999985")
+        //coin = TLCurrencyFormat.bitcoinAmountStringToCoin(".999999985")
         //XCTAssertTrue(coin.toUInt64() == 99999998)
-        //coin = TLWalletUtils.bitcoinAmountStringToCoin(".999999986")
+        //coin = TLCurrencyFormat.bitcoinAmountStringToCoin(".999999986")
         //XCTAssertTrue(coin.toUInt64() == 99999999)
-        //coin = TLWalletUtils.bitcoinAmountStringToCoin(".999999989")
+        //coin = TLCurrencyFormat.bitcoinAmountStringToCoin(".999999989")
         //XCTAssertTrue(coin.toUInt64() == 99999999)
 
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("0.99999999")
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0.99999999")
         XCTAssertTrue(coin.toUInt64() == 99999999)
-        coin = TLWalletUtils.bitcoinAmountStringToCoin(".99999999")
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin(".99999999")
         XCTAssertTrue(coin.toUInt64() == 99999999)
 
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("1.00000000")
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("1.00000000")
         XCTAssertTrue(coin.toUInt64() == 100000000)
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("1")
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("1")
         XCTAssertTrue(coin.toUInt64() == 100000000)
 
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("1.00000001")
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("1.00000001")
         XCTAssertTrue(coin.toUInt64() == 100000001)
 
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("1.99999998")
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("1.99999998")
         XCTAssertTrue(coin.toUInt64() == 199999998)
         
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("1.99999999")
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("1.99999999")
         XCTAssertTrue(coin.toUInt64() == 199999999)
 
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("2.0")
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("2.0")
         XCTAssertTrue(coin.toUInt64() == 200000000)
 
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("2.00000001")
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("2.00000001")
         XCTAssertTrue(coin.toUInt64() == 200000001)
 
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("31,821.95320551")
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("31,821.95320551")
         XCTAssertTrue(coin.toUInt64() == 3182195320551)
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("31821.95320551")
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("31821.95320551")
         XCTAssertTrue(coin.toUInt64() == 3182195320551)
 
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("21,000,000")
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("21,000,000")
         XCTAssertTrue(coin.toUInt64() == 2100000000000000)
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("21000000")
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("21000000")
         XCTAssertTrue(coin.toUInt64() == 2100000000000000)
         
         
         let spainLocale = NSLocale(localeIdentifier: "es_ES")
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("0,0", locale: spainLocale)
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0,0", locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 0)
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("0", locale: spainLocale)
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0", locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 0)
         
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("0,00000001", locale: spainLocale)
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0,00000001", locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 1)
         
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("0,1", locale: spainLocale)
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0,1", locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 10000000)
         
-        coin = TLWalletUtils.bitcoinAmountStringToCoin(",99999998", locale: spainLocale)
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin(",99999998", locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 99999998)
         
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("0,99999999", locale: spainLocale)
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0,99999999", locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 99999999)
-        coin = TLWalletUtils.bitcoinAmountStringToCoin(",99999999", locale: spainLocale)
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin(",99999999", locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 99999999)
         
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("1,00000000", locale: spainLocale)
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("1,00000000", locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 100000000)
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("1", locale: spainLocale)
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("1", locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 100000000)
         
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("1,00000001", locale: spainLocale)
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("1,00000001", locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 100000001)
         
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("1,99999998", locale: spainLocale)
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("1,99999998", locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 199999998)
         
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("1,99999999", locale: spainLocale)
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("1,99999999", locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 199999999)
         
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("2,0", locale: spainLocale)
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("2,0", locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 200000000)
         
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("2,00000001", locale: spainLocale)
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("2,00000001", locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 200000001)
         
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("31.821,95320551", locale: spainLocale)
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("31.821,95320551", locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 3182195320551)
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("31821,95320551", locale: spainLocale)
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("31821,95320551", locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 3182195320551)
         
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("21.000.000", locale: spainLocale)
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("21.000.000", locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 2100000000000000)
-        coin = TLWalletUtils.bitcoinAmountStringToCoin("21000000", locale: spainLocale)
+        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("21000000", locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 2100000000000000)
         
         
                 
         TLPreferences.setBitcoinDisplay("1")
-        coin = TLWalletUtils.properBitcoinAmountStringToCoin("1000")
+        coin = TLCurrencyFormat.properBitcoinAmountStringToCoin("1000")
         XCTAssertTrue(coin.toUInt64() == 100000000)
 
         TLPreferences.setBitcoinDisplay("2")
-        coin = TLWalletUtils.properBitcoinAmountStringToCoin("1000000")
+        coin = TLCurrencyFormat.properBitcoinAmountStringToCoin("1000000")
         XCTAssertTrue(coin.toUInt64() == 100000000)
 
         TLPreferences.setBitcoinDisplay("0")

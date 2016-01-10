@@ -57,14 +57,14 @@ import UIKit
             let addr = dict!.objectForKey("address") as! String
             let amount = dict!.objectForKey("amount") as! String
             
-            self.setAmountFromUrlHandler(TLWalletUtils.bitcoinAmountStringToCoin(amount), address: addr)
+            self.setAmountFromUrlHandler(TLCurrencyFormat.bitcoinAmountStringToCoin(amount), address: addr)
             AppDelegate.instance().bitcoinURIOptionsDict = nil
         }
     }
     
     private func setAmountFromUrlHandler(amount: TLCoin, address: String) {
         self.toAddressTextField!.text = address
-        let amountString = TLWalletUtils.coinToProperBitcoinAmountString(amount)
+        let amountString = TLCurrencyFormat.coinToProperBitcoinAmountString(amount)
         self.amountTextField!.text = amountString
         
         TLSendFormData.instance().setAddress(address)
@@ -87,16 +87,16 @@ import UIKit
         let accountBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
         let fee:TLCoin
         if (!TLPreferences.isAutomaticFee()) {
-            fee = TLWalletUtils.bitcoinAmountStringToCoin(TLWalletUtils.DEFAULT_FEE_AMOUNT_IN_BITCOINS())
+            fee = TLCurrencyFormat.bitcoinAmountStringToCoin(TLWalletUtils.DEFAULT_FEE_AMOUNT_IN_BITCOINS())
         } else {
             let feeAmount = TLPreferences.getInAppSettingsKitTransactionFee()
-            fee = TLWalletUtils.bitcoinAmountStringToCoin(feeAmount!)
+            fee = TLCurrencyFormat.bitcoinAmountStringToCoin(feeAmount!)
         }
 
         let sendAmount = accountBalance.subtract(fee)
 
         if sendAmount.greater(TLCoin.zero()) {
-            TLSendFormData.instance().setAmount(TLWalletUtils.coinToProperBitcoinAmountString(sendAmount))
+            TLSendFormData.instance().setAmount(TLCurrencyFormat.coinToProperBitcoinAmountString(sendAmount))
         } else {
             TLSendFormData.instance().setAmount("0")
         }
@@ -210,7 +210,7 @@ import UIKit
         
         if (AppDelegate.instance().godSend!.hasFetchedCurrentFromData()) {
             let balance = AppDelegate.instance().godSend!.getCurrentFromBalance()
-            let balanceString = TLWalletUtils.getProperAmount(balance)
+            let balanceString = TLCurrencyFormat.getProperAmount(balance)
             self.accountBalanceLabel!.text = balanceString as String
             self.accountBalanceLabel!.hidden = false
             self.balanceActivityIndicatorView!.stopAnimating()
@@ -362,7 +362,7 @@ import UIKit
     }
     
     func _updateCurrencyView() {
-        let currency = TLWalletUtils.getFiatCurrency()
+        let currency = TLCurrencyFormat.getFiatCurrency()
         self.fiatCurrencyDisplayLabel!.text = currency
         
         self.updateSendForm()
@@ -375,7 +375,7 @@ import UIKit
     }
     
     func _updateBitcoinDisplayView() {
-        let bitcoinDisplay = TLWalletUtils.getBitcoinDisplay()
+        let bitcoinDisplay = TLCurrencyFormat.getBitcoinDisplay()
         self.bitcoinDisplayLabel!.text = bitcoinDisplay
         
         self.updateSendForm()
@@ -436,7 +436,7 @@ import UIKit
     
     func _updateAccountBalanceView() {
         let balance = AppDelegate.instance().godSend!.getCurrentFromBalance()
-        let balanceString = TLWalletUtils.getProperAmount(balance)
+        let balanceString = TLCurrencyFormat.getProperAmount(balance)
         self.accountBalanceLabel!.text = balanceString as String
     }
     
@@ -481,7 +481,7 @@ import UIKit
         
         UIAlertController.showAlertInViewController(self,
             withTitle: "Transaction Fee".localized,
-            message: String(format: "Input desired transaction fee in %@ %@".localized, TLWalletUtils.getBitcoinDisplayWord(), TLWalletUtils.getBitcoinDisplay()),
+            message: String(format: "Input desired transaction fee in %@ %@".localized, TLCurrencyFormat.getBitcoinDisplayWord(), TLCurrencyFormat.getBitcoinDisplay()),
             preferredStyle: .Alert,
             cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
@@ -492,7 +492,7 @@ import UIKit
             tapBlock: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView.firstOtherButtonIndex) {
                     let feeAmount = (alertView.textFields![0] ).text
-                    let feeAmountCoin = TLWalletUtils.properBitcoinAmountStringToCoin(feeAmount!)
+                    let feeAmountCoin = TLCurrencyFormat.properBitcoinAmountStringToCoin(feeAmount!)
                     self.showPromptReviewTx(feeAmountCoin)
                 } else if (buttonIndex == alertView.cancelButtonIndex) {
                 }
@@ -510,7 +510,7 @@ import UIKit
         }
 
         DLog("showFinalPromptReviewTx bitcoinAmount %@", function: bitcoinAmount!)
-        let inputtedAmount = TLWalletUtils.properBitcoinAmountStringToCoin(bitcoinAmount!)
+        let inputtedAmount = TLCurrencyFormat.properBitcoinAmountStringToCoin(bitcoinAmount!)
         
         if (inputtedAmount.equalTo(TLCoin.zero())) {
             TLPrompts.promptErrorMessage("Error".localized, message: "Amount entered must be greater then zero.".localized)
@@ -520,15 +520,15 @@ import UIKit
         let amountNeeded = inputtedAmount.add(feeAmount)
         let sendFromBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
         if (amountNeeded.greater(sendFromBalance)) {
-            let msg = String(format: "You have %@ %@, but %@ is needed. (This includes the transactions fee)".localized, TLWalletUtils.coinToProperBitcoinAmountString(sendFromBalance), TLWalletUtils.getBitcoinDisplay(), TLWalletUtils.coinToProperBitcoinAmountString(amountNeeded))
+            let msg = String(format: "You have %@ %@, but %@ is needed. (This includes the transactions fee)".localized, TLCurrencyFormat.coinToProperBitcoinAmountString(sendFromBalance), TLCurrencyFormat.getBitcoinDisplay(), TLCurrencyFormat.coinToProperBitcoinAmountString(amountNeeded))
             TLPrompts.promptErrorMessage("Insufficient Balance".localized, message: msg)
             return
         }
         
-        let bitcoinDisplay = TLWalletUtils.getBitcoinDisplay()
-        let currency = TLWalletUtils.getFiatCurrency()
+        let bitcoinDisplay = TLCurrencyFormat.getBitcoinDisplay()
+        let currency = TLCurrencyFormat.getFiatCurrency()
         
-        let feeAmountDisplay = TLWalletUtils.coinToProperBitcoinAmountString(feeAmount)
+        let feeAmountDisplay = TLCurrencyFormat.coinToProperBitcoinAmountString(feeAmount)
         
         let txSummary = String(format: "To: %@\nAmount:\n%@ %@\n%@ %@\nfee: %@ %@".localized, toAddress!, bitcoinAmount!, bitcoinDisplay, fiatAmount!, currency, feeAmountDisplay, bitcoinDisplay)
         
@@ -565,8 +565,8 @@ import UIKit
                         if (unspentOutputsSum.less(inputtedAmount)) {
                             // can only happen if unspentOutputsSum is for some reason less then the balance computed from the transactions, which it shouldn't
                             self.setSendingHUDHidden(true)
-                            let unspentOutputsSumString = TLWalletUtils.coinToProperBitcoinAmountString(unspentOutputsSum)
-                            TLPrompts.promptErrorMessage("Error: Insufficient Funds".localized, message: String(format: "Account only has a balance of %@ %@".localized, unspentOutputsSumString, TLWalletUtils.getBitcoinDisplay()))
+                            let unspentOutputsSumString = TLCurrencyFormat.coinToProperBitcoinAmountString(unspentOutputsSum)
+                            TLPrompts.promptErrorMessage("Error: Insufficient Funds".localized, message: String(format: "Account only has a balance of %@ %@".localized, unspentOutputsSumString, TLCurrencyFormat.getBitcoinDisplay()))
                             return
                         }
                         
@@ -761,7 +761,7 @@ import UIKit
             self.showPromptForTxFee()
         } else {
             let feeAmount = TLPreferences.getInAppSettingsKitTransactionFee()
-            self.showPromptReviewTx(TLWalletUtils.bitcoinAmountStringToCoin(feeAmount!))
+            self.showPromptReviewTx(TLCurrencyFormat.bitcoinAmountStringToCoin(feeAmount!))
         }
     }
     
@@ -783,7 +783,7 @@ import UIKit
                 let parsedBitcoinURIAmount = parsedBitcoinURI!.objectForKey("amount") as! String?
                 if (parsedBitcoinURIAmount != nil) {
                     let coinAmount = TLCoin(bitcoinAmount: parsedBitcoinURIAmount!, bitcoinDenomination: TLBitcoinDenomination.Bitcoin)
-                    let amountString = TLWalletUtils.coinToProperBitcoinAmountString(coinAmount)
+                    let amountString = TLCurrencyFormat.coinToProperBitcoinAmountString(coinAmount)
                     self.amountTextField!.text = amountString
                     self.updateFiatAmountTextFieldExchangeRate(nil)
                     TLSendFormData.instance().setAmount(amountString)
@@ -805,8 +805,8 @@ import UIKit
     }
     
     @IBAction private func updateFiatAmountTextFieldExchangeRate(sender: AnyObject?) {
-        let currency = TLWalletUtils.getFiatCurrency()
-        let amount = TLWalletUtils.properBitcoinAmountStringToCoin(self.amountTextField!.text!)
+        let currency = TLCurrencyFormat.getFiatCurrency()
+        let amount = TLCurrencyFormat.properBitcoinAmountStringToCoin(self.amountTextField!.text!)
 
         if (amount.greater(TLCoin.zero())) {
             self.fiatAmountTextField!.text = TLExchangeRate.instance().fiatAmountStringFromBitcoin(currency,
@@ -817,14 +817,14 @@ import UIKit
     }
     
     @IBAction private func updateAmountTextFieldExchangeRate(sender: AnyObject?) {
-        let currency = TLWalletUtils.getFiatCurrency()
+        let currency = TLCurrencyFormat.getFiatCurrency()
         let fiatFormatter = NSNumberFormatter()
         fiatFormatter.numberStyle = .DecimalStyle
         fiatFormatter.maximumFractionDigits = 2
         let fiatAmount = fiatFormatter.numberFromString(self.fiatAmountTextField!.text!)
         if fiatAmount != nil && fiatAmount! != 0 {
             let bitcoinAmount = TLExchangeRate.instance().bitcoinAmountFromFiat(currency, fiatAmount: fiatAmount!.doubleValue)
-            self.amountTextField!.text = TLWalletUtils.coinToProperBitcoinAmountString(bitcoinAmount)
+            self.amountTextField!.text = TLCurrencyFormat.coinToProperBitcoinAmountString(bitcoinAmount)
         } else {
             self.amountTextField!.text = "0"
         }

@@ -208,6 +208,8 @@
 		C0E5393E1AD4555C00651FE4 /* TLHelpDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E5393C1AD454FD00651FE4 /* TLHelpDoc.swift */; };
 		C0EE6D6A1B1B7E6000982692 /* 360X80logo.png in Resources */ = {isa = PBXBuildFile; fileRef = C0EE6D681B1B7E6000982692 /* 360X80logo.png */; };
 		C0EE6D6B1B1B7E6000982692 /* 1200X1200logo.png in Resources */ = {isa = PBXBuildFile; fileRef = C0EE6D691B1B7E6000982692 /* 1200X1200logo.png */; };
+		C0F278C81C41EA1A0013DC1A /* TLCurrencyFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F278C71C41EA1A0013DC1A /* TLCurrencyFormat.swift */; };
+		C0F278C91C41EAF90013DC1A /* TLCurrencyFormat.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0F278C71C41EA1A0013DC1A /* TLCurrencyFormat.swift */; };
 		F338F9561B794D1D00C02F74 /* TLWalletPassphrase.swift in Sources */ = {isa = PBXBuildFile; fileRef = F338F9551B794D1D00C02F74 /* TLWalletPassphrase.swift */; };
 		F338F9581B79718900C02F74 /* TLCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F338F9571B79718900C02F74 /* TLCrypto.swift */; };
 		F34D5C601B7A2C0100DF37DC /* TLCrypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = F338F9571B79718900C02F74 /* TLCrypto.swift */; };
@@ -458,6 +460,7 @@
 		C0E5393C1AD454FD00651FE4 /* TLHelpDoc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLHelpDoc.swift; sourceTree = "<group>"; };
 		C0EE6D681B1B7E6000982692 /* 360X80logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 360X80logo.png; sourceTree = "<group>"; };
 		C0EE6D691B1B7E6000982692 /* 1200X1200logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1200X1200logo.png; sourceTree = "<group>"; };
+		C0F278C71C41EA1A0013DC1A /* TLCurrencyFormat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLCurrencyFormat.swift; sourceTree = "<group>"; };
 		CB2193BFA5ADE6BF5F8EC097 /* Pods-ArcBit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArcBit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ArcBit/Pods-ArcBit.debug.xcconfig"; sourceTree = "<group>"; };
 		F338F9551B794D1D00C02F74 /* TLWalletPassphrase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLWalletPassphrase.swift; sourceTree = "<group>"; };
 		F338F9571B79718900C02F74 /* TLCrypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLCrypto.swift; sourceTree = "<group>"; };
@@ -945,6 +948,7 @@
 				C0A190691ABF53A100BED648 /* TLWalletJson.swift */,
 				F3DAAD651BB1D9EC000488F0 /* TLWalletJSONKeys.swift */,
 				C0A1906A1ABF53A100BED648 /* TLWalletUtils.swift */,
+				C0F278C71C41EA1A0013DC1A /* TLCurrencyFormat.swift */,
 				C0E5393C1AD454FD00651FE4 /* TLHelpDoc.swift */,
 				F338F9551B794D1D00C02F74 /* TLWalletPassphrase.swift */,
 				F338F9571B79718900C02F74 /* TLCrypto.swift */,
@@ -1350,6 +1354,7 @@
 				C0A190D01ABF53A100BED648 /* IASKSettingsReader.m in Sources */,
 				C0A192EC1ABF742D00BED648 /* TLAchievements.swift in Sources */,
 				C0A191211ABF53A100BED648 /* TLHelpViewController.swift in Sources */,
+				C0F278C81C41EA1A0013DC1A /* TLCurrencyFormat.swift in Sources */,
 				C0A190EF1ABF53A100BED648 /* TLAccounts.swift in Sources */,
 				C0A190F21ABF53A100BED648 /* TLCoreBitcoinWrapper.swift in Sources */,
 				C0A190EA1ABF53A100BED648 /* UINavigationBar+FixedHeightWhenStatusBarHidden.m in Sources */,
@@ -1408,6 +1413,7 @@
 				C03ECBF71B54A104005D4B0F /* TLStringLocalized.swift in Sources */,
 				C0A1932B1ABF82AF00BED648 /* TLSelectedObject.swift in Sources */,
 				C0A1932D1ABF82B300BED648 /* TLSpaghettiGodSend.swift in Sources */,
+				C0F278C91C41EAF90013DC1A /* TLCurrencyFormat.swift in Sources */,
 				C0A1933A1ABF82F300BED648 /* TLStealthServerAPI.swift in Sources */,
 				C0A193251ABF829E00BED648 /* TLAccountObject.swift in Sources */,
 				C0607FCE1AEEB716007203F8 /* TLStealthServerConfig.swift in Sources */,
