@@ -8,8 +8,29 @@
 
 import Foundation
 
-class TLWalletJSONKeys {
+enum TLAccount:Int {
+    case Normal       = 0
+    case Multisig     = 1
+}
 
+enum TLAddressStatus:Int {
+    case Archived = 0 //archived: passed window
+    case Active = 1
+}
+
+enum TLAddressType:Int {
+    case Main = 0
+    case Change = 1
+    case Stealth = 2
+}
+
+enum TLStealthPaymentStatus:Int {
+    case Unspent = 0 // >=0 confirmations for payment tx
+    case Claimed = 1 // 0-5 confirmations for payment tx and >=0 confirm for claimed tx
+    case Spent = 2 // > 6 confirmations for payment tx and >=0 confirm for claimed tx
+}
+
+class TLWalletJSONKeys {
     
     struct STATIC_MEMBERS {
         static let WALLET_PAYLOAD_VERSION = "1"
