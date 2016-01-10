@@ -25,7 +25,7 @@ import Foundation
 class TLStealthAddress {
     
     struct STATIC_MEMBERS {
-        static let STEALTH_ADDRESS_MSG_SIZE: NSInteger = 26
+        static let STEALTH_ADDRESS_MSG_SIZE: UInt8 = 0x26
         static let STEALTH_ADDRESS_TRANSACTION_VERSION: UInt8 = 0x06
         static let BTC_MAGIC_BYTE: UInt8 = 0x2a
         static let BTC_TESTNET_MAGIC_BYTE: UInt8 = 0x2b
@@ -43,7 +43,7 @@ class TLStealthAddress {
         }
     }
     
-    class func getStealthAddressMsgSize() -> NSInteger {
+    class func getStealthAddressMsgSize() -> UInt8 {
         return STATIC_MEMBERS.STEALTH_ADDRESS_MSG_SIZE
     }
     
@@ -105,7 +105,7 @@ class TLStealthAddress {
         
         let ephemeralPublicKey = key.compressedPublicKey.hex()
         
-        let stealthDataScript = NSString(format: "%02x%lu%02x%08x%@",
+        let stealthDataScript = NSString(format: "%02x%02x%02x%08x%@",
             BTCOpcode.OP_RETURN.rawValue,
             getStealthAddressMsgSize(),
             getStealthAddressTransacionVersion(),

@@ -69,7 +69,7 @@ class ArcBitTests: XCTestCase {
         
         let stealthDataScriptAndPaymentAddress = TLStealthAddress.createDataScriptAndPaymentAddress(stealthAddress,
             ephemeralPrivateKey:ephemeralPrivateKey, nonce:nonce, isTestnet:isTestNet)
-        let expectedStealthDataScript = String(format:"%02x%lu%02x%x%@",
+        let expectedStealthDataScript = String(format:"%02x%02x%02x%x%@",
             BTCOpcode.OP_RETURN.rawValue,
             TLStealthAddress.getStealthAddressMsgSize(),
             TLStealthAddress.getStealthAddressTransacionVersion(),
