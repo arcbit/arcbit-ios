@@ -104,7 +104,6 @@ import Foundation
     
     func webSocketDidOpen(webSocket: SRWebSocket) -> () {
         DLog("StealthWebSocket webSocketDidOpen")
-        consecutiveFailedConnections = 0
         self.sendMessageGetChallenge()
         NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_STEALTH_PAYMENT_LISTENER_OPEN(), object: nil, userInfo: nil)
         self.periodicPing()
@@ -128,8 +127,9 @@ import Foundation
     
     func webSocket(webSocket: SRWebSocket, didReceiveMessage message: AnyObject) {
         dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
+            self.consecutiveFailedConnections = 0
             let data = message.dataUsingEncoding(NSUTF8StringEncoding)
-            
+
             let jsonDict = (try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions(rawValue: 0))) as! NSDictionary
             DLog("StealthWebSocket didReceiveMessage \(jsonDict.description)")
 
