@@ -347,6 +347,17 @@ import UIKit
                     }
                 }, failure: { (Bool) -> () in
             })
+        } else if TLSuggestions.instance().conditionToPromptShowWebWallet() {
+            TLPrompts.promptAlertController(self, title: "Check out the ArcBit Web Wallet!".localized,
+                message: "Use ArcBit on your browser to complement the mobile app. The web wallet has all the features that the mobile wallet has plus more! Including a new easy way to store and spend Bitcoins from cold storage!".localized, okText: "Go".localized, cancelTx: "Not now".localized,
+                success: { () -> () in
+                    let url = NSURL(string: "https://chrome.google.com/webstore/detail/walmart/bmelcnhnemihidpaehodijpamdaeeglh"); //TODO
+                    if (UIApplication.sharedApplication().canOpenURL(url!)) {
+                        UIApplication.sharedApplication().openURL(url!);
+                    }
+                    TLPreferences.setDisabledPromptShowWebWallet(true)
+                }, failure: { (Bool) -> () in
+            })
         }
         self.navigationController!.view.addGestureRecognizer(self.slidingViewController().panGesture)
     }

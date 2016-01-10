@@ -71,6 +71,7 @@ class TLPreferences
         static let PREFERENCE_ENABLE_STEALTH_ADDRESS_DEFAULT = "pref-enable-stealth-address-default"
         static let PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE = "pref-encrypted-backup-passphrase"
         static let PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE_KEY = "pref-encrypted-backup-passphrase-key"
+        static let PREFERENCE_ENABLED_PROMPT_SHOW_WEB_WALLET = "pref-enabled-prompt-show-web-wallet"
         static let PREFERENCE_ENABLED_PROMPT_RATE_APP = "pref-enabled-prompt-rate-app"
         static let PREFERENCE_RATED_ONCE = "pref-rated-once"
     }
@@ -515,6 +516,15 @@ class TLPreferences
     
     class func setEnabledStealthAddressDefault(enabled:Bool) -> () {
         NSUserDefaults.standardUserDefaults().setBool(enabled ,forKey:CLASS_STATIC.PREFERENCE_ENABLE_STEALTH_ADDRESS_DEFAULT)
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+    
+    class func disabledPromptShowWebWallet() -> (Bool) {
+        return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.PREFERENCE_ENABLED_PROMPT_SHOW_WEB_WALLET)
+    }
+    
+    class func setDisabledPromptShowWebWallet(disabled:Bool) -> () {
+        NSUserDefaults.standardUserDefaults().setBool(disabled ,forKey:CLASS_STATIC.PREFERENCE_ENABLED_PROMPT_SHOW_WEB_WALLET)
         NSUserDefaults.standardUserDefaults().synchronize()
     }
     
