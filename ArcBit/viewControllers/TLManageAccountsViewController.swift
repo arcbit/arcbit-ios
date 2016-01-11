@@ -588,7 +588,7 @@ import UIKit
         
         let otherButtonTitles:[String]
         if (TLPreferences.enabledAdvancedMode()) {
-            otherButtonTitles = ["View account public key QR code".localized, "View account private key QR code".localized, "View Addresses".localized, "Scan For Forward Address Payment".localized, "Edit Account Name".localized, "Archive Account".localized]
+            otherButtonTitles = ["View account public key QR code".localized, "View account private key QR code".localized, "View Addresses".localized, "Scan For Reusable Address Payment".localized, "Edit Account Name".localized, "Archive Account".localized]
         } else {
             otherButtonTitles = ["View Addresses".localized, "Edit Account Name".localized, "Archive Account".localized]
         }
@@ -1159,7 +1159,7 @@ import UIKit
         }
         
         UIAlertController.showAlertInViewController(self,
-            withTitle: "Scan for forward address transaction".localized,
+            withTitle: "Scan for reusable address transaction".localized,
             message: "",
             preferredStyle: .Alert,
             cancelButtonTitle: "Cancel".localized,
@@ -1199,7 +1199,7 @@ import UIKit
             let stealthDataScriptAndOutputAddresses = TLStealthWallet.getStealthDataScriptAndOutputAddresses(jsonData as! NSDictionary)
             if stealthDataScriptAndOutputAddresses == nil || stealthDataScriptAndOutputAddresses!.stealthDataScript == nil {
                 TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                TLPrompts.promptSuccessMessage("", message: "Txid is not a forward address transaction.".localized)
+                TLPrompts.promptSuccessMessage("", message: "Txid is not a reusable address transaction.".localized)
                 return
             }
             
@@ -1252,7 +1252,7 @@ import UIKit
     
     private func promptInfoAndToManuallyScanForStealthTransactionAccount(accountObject: TLAccountObject) -> () {
         if (TLSuggestions.instance().enabledShowManuallyScanTransactionForStealthTxInfo()) {
-            TLPrompts.promtForOK(self, title:"", message: "This feature allows you to manually input a transaction id and see if the corresponding transaction contains a forwarding payment to your forward address. If so, then the funds will be added to your wallet. Normally the app will discover forwarding payments automatically for you, but if you believe a payment is missing you can use this feature.".localized, success: {
+            TLPrompts.promtForOK(self, title:"", message: "This feature allows you to manually input a transaction id and see if the corresponding transaction contains a forwarding payment to your reusable address. If so, then the funds will be added to your wallet. Normally the app will discover forwarding payments automatically for you, but if you believe a payment is missing you can use this feature.".localized, success: {
                 () in
                 self.promptToManuallyScanForStealthTransactionAccount(accountObject)
                 TLSuggestions.instance().setEnabledShowManuallyScanTransactionForStealthTxInfo(false)
@@ -1715,7 +1715,7 @@ import UIKit
     private func checkAndImportWatchAddress(address: String) -> (Bool) {
         if (TLCoreBitcoinWrapper.isValidAddress(address, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
             if (TLStealthAddress.isStealthAddress(address, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
-                TLPrompts.promptErrorMessage("Error".localized, message: "Cannot import forward address".localized)
+                TLPrompts.promptErrorMessage("Error".localized, message: "Cannot import reusable address".localized)
                 return false
             }
             

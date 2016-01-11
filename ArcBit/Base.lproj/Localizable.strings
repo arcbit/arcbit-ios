@@ -20,7 +20,7 @@
 //   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 //   MA 02110-1301  USA
 
-"Forward Address Payment Addresses" = "Forward Address Payment Addresses";
+"Reusable Address Payment Addresses" = "Reusable Address Payment Addresses";
 
 "Active Main Addresses" = "Active Main Addresses";
 
@@ -30,7 +30,7 @@
 
 "Archived Change Addresses" = "Archived Change Addresses";
 
-"Imported Watch Only Accounts can't see forward address payments" = "Imported Watch Only Accounts can't see forward address payments";
+"Imported Watch Only Accounts can't see reusable address payments" = "Imported Watch Only Accounts can't see reusable address payments";
 
 "None currently" = "None currently";
 
@@ -84,7 +84,7 @@
 
 "Add via Text Input" = "Add via Text Input";
 
-"It is not recommended that you use a regular bitcoin address for multiple payments, but instead you should import a forward address. Add address anyways?" = "It is not recommended that you use a regular bitcoin address for multiple payments, but instead you should import a forward address. Add address anyways?";
+"It is not recommended that you use a regular bitcoin address for multiple payments, but instead you should import a reusable address. Add address anyways?" = "It is not recommended that you use a regular bitcoin address for multiple payments, but instead you should import a reusable address. Add address anyways?";
 
 "Invalid Address" = "Invalid Address";
 
@@ -186,7 +186,7 @@
 
 "View Addresses" = "View Addresses";
 
-"Scan For Forward Address Payment" = "Scan For Forward Address Payment";
+"Scan For Reusable Address Payment" = "Scan For Reusable Address Payment";
 
 "Edit Account Name" = "Edit Account Name";
 
@@ -218,7 +218,7 @@
 
 "Transaction ID" = "Transaction ID";
 
-"Scan for forward address transaction" = "Scan for forward address transaction";
+"Scan for reusable address transaction" = "Scan for reusable address transaction";
 
 "Yes" = "Yes";
 
@@ -230,7 +230,7 @@
 
 "Checking Transaction" = "Checking Transaction";
 
-"Txid is not a forward address transaction." = "Txid is not a forward address transaction.";
+"Txid is not a reusable address transaction." = "Txid is not a reusable address transaction.";
 
 "Transaction %@ belongs to this account. Funds imported" = "Transaction %@ belongs to this account. Funds imported";
 
@@ -240,7 +240,7 @@
 
 "Error fetching Transaction." = "Error fetching Transaction.";
 
-"This feature allows you to manually input a transaction id and see if the corresponding transaction contains a forwarding payment to your forward address. If so, then the funds will be added to your wallet. Normally the app will discover forwarding payments automatically for you, but if you believe a payment is missing you can use this feature." = "This feature allows you to manually input a transaction id and see if the corresponding transaction contains a forwarding payment to your forward address. If so, then the funds will be added to your wallet. Normally the app will discover forwarding payments automatically for you, but if you believe a payment is missing you can use this feature.";
+"This feature allows you to manually input a transaction id and see if the corresponding transaction contains a forwarding payment to your reusable address. If so, then the funds will be added to your wallet. Normally the app will discover forwarding payments automatically for you, but if you believe a payment is missing you can use this feature." = "This feature allows you to manually input a transaction id and see if the corresponding transaction contains a forwarding payment to your reusable address. If so, then the funds will be added to your wallet. Normally the app will discover forwarding payments automatically for you, but if you believe a payment is missing you can use this feature.";
 
 "Are you sure you want to unarchive account %@" = "Are you sure you want to unarchive account %@";
 
@@ -293,7 +293,7 @@
 
 "Address %@ imported" = "Address %@ imported";
 
-"Cannot import forward address" = "Cannot import forward address";
+"Cannot import reusable address" = "Cannot import reusable address";
 
 "Import Account" = "Import Account";
 
@@ -379,13 +379,13 @@
 
 "New addresses will be automatically generated and cycled for you as you use your current available addresses." = "New addresses will be automatically generated and cycled for you as you use your current available addresses.";
 
-"Imported Watch Only Accounts can't see forward address payments, thus this accounts' forward address is not available. If you want see the forward address for this account import the account private key that corresponds to this accounts public key." = "Imported Watch Only Accounts can't see forward address payments, thus this accounts' forward address is not available. If you want see the forward address for this account import the account private key that corresponds to this accounts public key.";
+"Imported Watch Only Accounts can't see reusable address payments, thus this accounts' reusable address is not available. If you want see the reusable address for this account import the account private key that corresponds to this accounts public key." = "Imported Watch Only Accounts can't see reusable address payments, thus this accounts' reusable address is not available. If you want see the reusable address for this account import the account private key that corresponds to this accounts public key.";
 
 "Welcome!" = "Welcome!";
 
 "Start using the app now by depositing your Bitcoins here." = "Start using the app now by depositing your Bitcoins here.";
 
-"Forward Address:" = "Forward Address:";
+"Reusable Address:" = "Reusable Address:";
 
 "Use all funds" = "Use all funds";
 
@@ -419,7 +419,7 @@
 
 "URL does not contain an address." = "URL does not contain an address.";
 
-"Sending payment to a forward addresses might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For forward address payments to show up faster, configure your app to use the Insight API in advance settings." = "Sending payment to a forward addresses might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For forward address payments to show up faster, configure your app to use the Insight API in advance settings.";
+"Sending payment to a reusable addresses might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For reusable address payments to show up faster, configure your app to use the Insight API in advance settings." = "Sending payment to a reusable addresses might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For reusable address payments to show up faster, configure your app to use the Insight API in advance settings.";
 
 "Notice" = "Notice";
 
@@ -541,7 +541,7 @@
 
 "Receive Payment" = "Receive Payment";
 
-"Receive Payment From Forward Address" = "Receive Payment From Forward Address";
+"Receive Payment From Reusable Address" = "Receive Payment From Reusable Address";
 
 "View History" = "View History";
 
@@ -605,7 +605,7 @@
 
 "Have sender send you payment" = "Have sender send you payment";
 
-"Swipe to the right on the QR Code Image until you see the forward address" = "Swipe to the right on the QR Code Image until you see the forward address";
+"Swipe to the right on the QR Code Image until you see the reusable address" = "Swipe to the right on the QR Code Image until you see the reusable address";
 
 "Click ‘History’" = "Click ‘History’";
 
@@ -723,7 +723,7 @@
 
 "What are accounts?" = "What are accounts?";
 
-"What are stealth/forward addresses?" = "What are stealth/forward addresses?";
+"What are stealth/reusable addresses?" = "What are stealth/reusable addresses?";
 
 "Bitcoin, uppercase 'B', is an online payment system invented in 2008, and released as open-source software in 2009 by a programmer name Satoshi Nakamoto. The system is decentralized and peer-to-peer, users can transact directly without needing an intermediary.\nBitcoin is also a platform where other decentralized applications can be built on top of. Bitcoin, lowercase 'b' is the currency unit that Bitcoin uses." = "Bitcoin, uppercase 'B', is an online payment system invented in 2008, and released as open-source software in 2009 by a programmer name Satoshi Nakamoto. The system is decentralized and peer-to-peer, users can transact directly without needing an intermediary.\nBitcoin is also a platform where other decentralized applications can be built on top of. Bitcoin, lowercase 'b' is the currency unit that Bitcoin uses.";
 
@@ -739,9 +739,9 @@
 
 "After a transaction is broadcast to the Bitcoin network, it may be included in a block that is published to the network. When that happens it is said that the transaction has been mined at a depth of 1 block. With each subsequent block that is found, the number of blocks deep is increased by one. To be secure against double spending, a transaction should not be considered as confirmed until it is a certain number of blocks deep.\nA good rule of thumb is that 1 confirmations is good for small value amounts of bitcoins, and a user should wait for more confirmations for larger value amounts.\nArcBit will display the confirmation number up until the 6th confirmation." = "After a transaction is broadcast to the Bitcoin network, it may be included in a block that is published to the network. When that happens it is said that the transaction has been mined at a depth of 1 block. With each subsequent block that is found, the number of blocks deep is increased by one. To be secure against double spending, a transaction should not be considered as confirmed until it is a certain number of blocks deep.\nA good rule of thumb is that 1 confirmations is good for small value amounts of bitcoins, and a user should wait for more confirmations for larger value amounts.\nArcBit will display the confirmation number up until the 6th confirmation.";
 
-"An account is a collection of bitcoin addresses. With accounts, you will no longer have to manage bitcoin addresses directly anymore. Since address reuse results in a loss of privacy for people using Bitcoin, ArcBit’s HD wallet account system will automatically handle the cycling of bitcoin addresses for you, so that you don’t use the same bitcoin address more then once.\nEach account also has a forward address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a forward address.\nYou can create an unlimited amount of accounts with ArcBit. See the help section on how to create a new account in ArcBit." = "An account is a collection of bitcoin addresses. With accounts, you will no longer have to manage bitcoin addresses directly anymore. Since address reuse results in a loss of privacy for people using Bitcoin, ArcBit’s HD wallet account system will automatically handle the cycling of bitcoin addresses for you, so that you don’t use the same bitcoin address more then once.\nEach account also has a forward address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a forward address.\nYou can create an unlimited amount of accounts with ArcBit. See the help section on how to create a new account in ArcBit.";
+"An account is a collection of bitcoin addresses. With accounts, you will no longer have to manage bitcoin addresses directly anymore. Since address reuse results in a loss of privacy for people using Bitcoin, ArcBit’s HD wallet account system will automatically handle the cycling of bitcoin addresses for you, so that you don’t use the same bitcoin address more then once.\nEach account also has a reusable address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a reusable address.\nYou can create an unlimited amount of accounts with ArcBit. See the help section on how to create a new account in ArcBit." = "An account is a collection of bitcoin addresses. With accounts, you will no longer have to manage bitcoin addresses directly anymore. Since address reuse results in a loss of privacy for people using Bitcoin, ArcBit’s HD wallet account system will automatically handle the cycling of bitcoin addresses for you, so that you don’t use the same bitcoin address more then once.\nEach account also has a reusable address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a reusable address.\nYou can create an unlimited amount of accounts with ArcBit. See the help section on how to create a new account in ArcBit.";
 
-"Some people has compared bitcoin addresses to a bank routing number. It is a good analogy, however bitcoin addresses are public. So if you reuse the same bitcoin address for multiple payments like you would a routing number, people will be able to figure out how much bitcoins you have. Thus it is recommended that you only use one address per payment.\nThis causes usability issues because making the user use a new address whenever receiving a payment is cumbersome.\nStealth/forward addresses provides a better solution. When you give a sender a forward address, the sender will derive a one time regular bitcoin address from the forward address. Then the sender will send a payment to that regular bitcoin address. Now you can give many people just one forward address and have them all send you payments without letting other people know how much bitcoins you have.\nA forward address looks sometime like this vJmxthatTBXibYe9aZavx18iAT9gyiJETGkhwPX2WbHQGuzX83YvQXynD2t8yHU4Xjfonu5x9m6B4yxquytFP1c2CRbVR9mecxesvE. A forward address is a lot longer then a regular bitcoin address, it is 102 characters in length.\nForwarding addresses are great, however there are no other mobile bitcoin wallets but ArcBit that supports forward addresses for now. Which is why ArcBit support receiving payments from both regular bitcoin addresses and forward addresses.\nFor each account, you have one forward address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a forward address." = "Some people has compared bitcoin addresses to a bank routing number. It is a good analogy, however bitcoin addresses are public. So if you reuse the same bitcoin address for multiple payments like you would a routing number, people will be able to figure out how much bitcoins you have. Thus it is recommended that you only use one address per payment.\nThis causes usability issues because making the user use a new address whenever receiving a payment is cumbersome.\nStealth/forward addresses provides a better solution. When you give a sender a forward address, the sender will derive a one time regular bitcoin address from the forward address. Then the sender will send a payment to that regular bitcoin address. Now you can give many people just one forward address and have them all send you payments without letting other people know how much bitcoins you have.\nA forward address looks sometime like this vJmxthatTBXibYe9aZavx18iAT9gyiJETGkhwPX2WbHQGuzX83YvQXynD2t8yHU4Xjfonu5x9m6B4yxquytFP1c2CRbVR9mecxesvE. A forward address is a lot longer then a regular bitcoin address, it is 102 characters in length.\nForwarding addresses are great, however there are no other mobile bitcoin wallets but ArcBit that supports forward addresses for now. Which is why ArcBit support receiving payments from both regular bitcoin addresses and forward addresses.\nFor each account, you have one forward address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a forward address.";
+"Some people has compared bitcoin addresses to a bank routing number. It is a good analogy, however bitcoin addresses are public. So if you reuse the same bitcoin address for multiple payments like you would a routing number, people will be able to figure out how much bitcoins you have. Thus it is recommended that you only use one address per payment.\nThis causes usability issues because making the user use a new address whenever receiving a payment is cumbersome.\nStealth/reusable addresses provides a better solution. When you give a sender a reusable address, the sender will derive a one time regular bitcoin address from the reusable address. Then the sender will send a payment to that regular bitcoin address. Now you can give many people just one reusable address and have them all send you payments without letting other people know how much bitcoins you have.\nA reusable address looks sometime like this vJmxthatTBXibYe9aZavx18iAT9gyiJETGkhwPX2WbHQGuzX83YvQXynD2t8yHU4Xjfonu5x9m6B4yxquytFP1c2CRbVR9mecxesvE. A reusable address is a lot longer then a regular bitcoin address, it is 102 characters in length.\nForwarding addresses are great, however there are no other mobile bitcoin wallets but ArcBit that supports reusable addresses for now. Which is why ArcBit support receiving payments from both regular bitcoin addresses and reusable addresses.\nFor each account, you have one reusable address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a reusable address." = "Some people has compared bitcoin addresses to a bank routing number. It is a good analogy, however bitcoin addresses are public. So if you reuse the same bitcoin address for multiple payments like you would a routing number, people will be able to figure out how much bitcoins you have. Thus it is recommended that you only use one address per payment.\nThis causes usability issues because making the user use a new address whenever receiving a payment is cumbersome.\nStealth/reusable addresses provides a better solution. When you give a sender a reusable address, the sender will derive a one time regular bitcoin address from the reusable address. Then the sender will send a payment to that regular bitcoin address. Now you can give many people just one reusable address and have them all send you payments without letting other people know how much bitcoins you have.\nA reusable address looks sometime like this vJmxthatTBXibYe9aZavx18iAT9gyiJETGkhwPX2WbHQGuzX83YvQXynD2t8yHU4Xjfonu5x9m6B4yxquytFP1c2CRbVR9mecxesvE. A reusable address is a lot longer then a regular bitcoin address, it is 102 characters in length.\nForwarding addresses are great, however there are no other mobile bitcoin wallets but ArcBit that supports reusable addresses for now. Which is why ArcBit support receiving payments from both regular bitcoin addresses and reusable addresses.\nFor each account, you have one reusable address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a reusable address.";
 
 "What are Account/Extended Keys?" = "What are Account/Extended Keys?";
 
@@ -761,7 +761,7 @@
 
 "An account private key begins with the letters 'xprv'. You can see, spend and recover the transactions and bitcoins of an entire account from an account private key." = "An account private key begins with the letters 'xprv'. You can see, spend and recover the transactions and bitcoins of an entire account from an account private key.";
 
-"An account public key begins with the letters 'xpub'. You can see the transactions and bitcoins of an entire account from an account private key, with the exception of forward address payments. Future releases will address this issue.\nYou can however temporary import the corresponding account private key for this accounts' account public key to spend your watch only accounts' bitcoins. Simply go the send screen and select a watch only account to spend from and you will be prompt to temporary import your account's private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen." = "An account public key begins with the letters 'xpub'. You can see the transactions and bitcoins of an entire account from an account private key, with the exception of forward address payments. Future releases will address this issue.\nYou can however temporary import the corresponding account private key for this accounts' account public key to spend your watch only accounts' bitcoins. Simply go the send screen and select a watch only account to spend from and you will be prompt to temporary import your account's private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen.";
+"An account public key begins with the letters 'xpub'. You can see the transactions and bitcoins of an entire account from an account private key, with the exception of reusable address payments. Future releases will address this issue.\nYou can however temporary import the corresponding account private key for this accounts' account public key to spend your watch only accounts' bitcoins. Simply go the send screen and select a watch only account to spend from and you will be prompt to temporary import your account's private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen." = "An account public key begins with the letters 'xpub'. You can see the transactions and bitcoins of an entire account from an account private key, with the exception of reusable address payments. Future releases will address this issue.\nYou can however temporary import the corresponding account private key for this accounts' account public key to spend your watch only accounts' bitcoins. Simply go the send screen and select a watch only account to spend from and you will be prompt to temporary import your account's private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen.";
 
 "A private key begins with an 'L', 'K', or '5'.\nBIP 38 encrypted private keys can also be imported. They can either be imported encrypted or unencrypted. If you choose to import it encrypted, you will need to input the password each time you spend from your encrypted private key." = "A private key begins with an 'L', 'K', or '5'.\nBIP 38 encrypted private keys can also be imported. They can either be imported encrypted or unencrypted. If you choose to import it encrypted, you will need to input the password each time you spend from your encrypted private key.";
 

@@ -41,7 +41,7 @@ import UIKit
     private var pageControlBeingUsed = false
     private var receiveAddresses: NSMutableArray?
     let newAddressInfoText = "New addresses will be automatically generated and cycled for you as you use your current available addresses.".localized
-    let importedWatchAccountStealthAddressInfoText = "Imported Watch Only Accounts can't see forward address payments, thus this accounts' forward address is not available. If you want see the forward address for this account import the account private key that corresponds to this accounts public key.".localized
+    let importedWatchAccountStealthAddressInfoText = "Imported Watch Only Accounts can't see reusable address payments, thus this accounts' reusable address is not available. If you want see the reusable address for this account import the account private key that corresponds to this accounts public key.".localized
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -329,7 +329,7 @@ import UIKit
                     let infoLabel = UILabel(frame: UIEdgeInsetsInsetRect(infoLabelFrame, labelEdgeInsets))
                     infoLabel.textColor = TLColors.mainAppOppositeColor()
                     infoLabel.font = UIFont.boldSystemFontOfSize(addressLabel.font.pointSize - 5)
-                    infoLabel.text = "Forward Address:".localized
+                    infoLabel.text = "Reusable Address:".localized
                     pageView.addSubview(infoLabel)
                     //QRCodeImageView.backgroundColor = UIColor.orangeColor()
                 }

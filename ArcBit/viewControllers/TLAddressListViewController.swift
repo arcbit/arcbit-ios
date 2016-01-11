@@ -28,7 +28,7 @@ import UIKit
     var accountObject: TLAccountObject?
     private var QRImageModal: TLQRImageModal?
     var showBalances: Bool = false
-    let TL_STRING_NO_STEALTH_PAYMENT_ADDRESSES_INFO = "Imported Watch Only Accounts can't see forward address payments".localized
+    let TL_STRING_NO_STEALTH_PAYMENT_ADDRESSES_INFO = "Imported Watch Only Accounts can't see reusable address payments".localized
     let TL_STRING_NONE_CURRENTLY = "None currently".localized
     
     @IBOutlet private var addressListTableView: UITableView?
@@ -165,7 +165,7 @@ import UIKit
     func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if (section == 0) {
             //there are no archived stealth payment addresses, because old payment addresses are deleted
-            return "Forward Address Payment Addresses".localized
+            return "Reusable Address Payment Addresses".localized
         } else if (section == 1) {
             return "Active Main Addresses".localized
         } else if (section == 2) {

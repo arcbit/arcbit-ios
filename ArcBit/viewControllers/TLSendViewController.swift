@@ -862,7 +862,7 @@ import UIKit
         if toAddress != nil && TLStealthAddress.isStealthAddress(toAddress!, isTestnet: false) {
             func checkToShowStealthPaymentDelayInfo() {
                 if TLSuggestions.instance().enabledShowStealthPaymentDelayInfo() && TLBlockExplorerAPI.STATIC_MEMBERS.blockExplorerAPI == .Blockchain {
-                    let msg = "Sending payment to a forward address might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For forward address payments to show up faster, configure your app to use the Insight API in advance settings.".localized
+                    let msg = "Sending payment to a reusable address might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For reusable address payments to show up faster, configure your app to use the Insight API in advance settings.".localized
                     TLPrompts.promtForOK(self, title:"Warning".localized, message:msg, success: {
                         () in
                         TLSuggestions.instance().setEnableShowStealthPaymentDelayInfo(false)
