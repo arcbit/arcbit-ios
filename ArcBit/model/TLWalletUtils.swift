@@ -97,6 +97,10 @@ class TLWalletUtils {
         return STATIC_MEMBERS.HELP_ICON_IMAGE_NAME
     }
     
+    class func LINK_ICON_IMAGE_NAME() -> (String) {
+        return STATIC_MEMBERS.LINK_ICON_IMAGE_NAME
+    }
+    
     class func SETTINGS_ICON_IMAGE_NAME() -> (String) {
         return STATIC_MEMBERS.SETTINGS_ICON_IMAGE_NAME
     }
@@ -117,6 +121,7 @@ class TLWalletUtils {
         static let HISTORY_ICON_IMAGE_NAME = "newspaper-alt.png"
         static let ACCOUNT_ICON_IMAGE_NAME = "data.png"
         static let HELP_ICON_IMAGE_NAME = "book.png"
+        static let LINK_ICON_IMAGE_NAME = "link.png"
         static let SETTINGS_ICON_IMAGE_NAME = "settings.png"
         static let SELECT_ACCOUNT_ICON_IMAGE_NAME = "arrow-right7.png"
         

@@ -189,6 +189,7 @@
 		C0A193391ABF82F100BED648 /* TLStealthWebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193081ABF744E00BED648 /* TLStealthWebSocket.swift */; };
 		C0A1933A1ABF82F300BED648 /* TLStealthServerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193071ABF744E00BED648 /* TLStealthServerAPI.swift */; };
 		C0A1933E1ABF830000BED648 /* TLNotificationEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A192F31ABF744300BED648 /* TLNotificationEvents.swift */; };
+		C0A6AD751C42E80F00B8C22B /* TLLinksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A6AD741C42E80F00B8C22B /* TLLinksViewController.swift */; };
 		C0AB0A331AC52A8400B456DB /* TLPushTxAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AB0A321AC52A8400B456DB /* TLPushTxAPI.swift */; };
 		C0AD2C591AC3DE3200FEF982 /* TLBlockrAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AD2C581AC3DE3200FEF982 /* TLBlockrAPI.swift */; };
 		C0AD2C5A1AC3DED100FEF982 /* TLBlockrAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0AD2C581AC3DE3200FEF982 /* TLBlockrAPI.swift */; };
@@ -439,6 +440,7 @@
 		C0A193141ABF74A700BED648 /* TLTransactionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLTransactionTableViewCell.swift; sourceTree = "<group>"; };
 		C0A193181ABF751700BED648 /* ArcBitTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ArcBitTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		C0A193191ABF751800BED648 /* BreadWalletTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BreadWalletTests.m; sourceTree = "<group>"; };
+		C0A6AD741C42E80F00B8C22B /* TLLinksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLLinksViewController.swift; sourceTree = "<group>"; };
 		C0AB0A321AC52A8400B456DB /* TLPushTxAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLPushTxAPI.swift; sourceTree = "<group>"; };
 		C0AD2C581AC3DE3200FEF982 /* TLBlockrAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLBlockrAPI.swift; sourceTree = "<group>"; };
 		C0B4E7871AFAAEA200DC9B65 /* SRWebSocket+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SRWebSocket+Helpers.h"; sourceTree = "<group>"; };
@@ -990,6 +992,7 @@
 				C0A1908E1ABF53A100BED648 /* TLAddressListViewController.swift */,
 				C0A1908F1ABF53A100BED648 /* TLRestoreWalletViewController.swift */,
 				C0A190901ABF53A100BED648 /* TLHelpViewController.swift */,
+				C0A6AD741C42E80F00B8C22B /* TLLinksViewController.swift */,
 				C0A190911ABF53A100BED648 /* TLHistoryViewController.swift */,
 				C0A190921ABF53A100BED648 /* TLInstructionsViewController.swift */,
 				C0A190931ABF53A100BED648 /* TLManageAccountsViewController.swift */,
@@ -1349,6 +1352,7 @@
 				C0A190E31ABF53A100BED648 /* QR_Encode.cpp in Sources */,
 				C0A190CE1ABF53A100BED648 /* IASKAppSettingsWebViewController.m in Sources */,
 				C0A193161ABF74A700BED648 /* TLAddressTableViewCell.swift in Sources */,
+				C0A6AD751C42E80F00B8C22B /* TLLinksViewController.swift in Sources */,
 				C0A190E51ABF53A100BED648 /* QREncoder.mm in Sources */,
 				C0A191281ABF53A100BED648 /* TLQRCodeScannerViewController.swift in Sources */,
 				C0A190D01ABF53A100BED648 /* IASKSettingsReader.m in Sources */,

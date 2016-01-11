@@ -461,22 +461,6 @@
                 <key>Type</key>
                 <string>PSToggleSwitchSpecifier</string>
             </dict>
-
-
-            <dict>
-                <key>Title</key>
-                <string></string>
-                <key>Type</key>
-                <string>PSGroupSpecifier</string>
-            </dict>
-            <dict>
-                <key>Title</key>
-                <string>EMAIL_SUPPORT</string>
-                <key>Key</key>
-                <string>emailsupport</string>
-                <key>Type</key>
-                <string>IASKButtonSpecifier</string>
-            </dict>
             
             <dict>
                 <key>Title</key>

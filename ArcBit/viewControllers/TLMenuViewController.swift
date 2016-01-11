@@ -42,7 +42,7 @@ import UIKit
         self.menuTopView!.backgroundColor = TLColors.mainAppColor()
         self.tableView!.backgroundColor = TLColors.mainAppColor()
         self.tableView!.separatorInset = UIEdgeInsetsZero
-        menuItems = ["Send".localized, "Receive".localized, "History".localized, "Accounts".localized, "Help".localized, "Settings".localized]
+        menuItems = ["Send".localized, "Receive".localized, "History".localized, "Accounts".localized, "Help".localized, "Links".localized, "Settings".localized]
     }
     
     override func viewDidAppear(animated:Bool) -> () {
@@ -106,6 +106,10 @@ import UIKit
             imageName = TLWalletUtils.HELP_ICON_IMAGE_NAME()
             name = "Help".localized
             break
+        case 5:
+            imageName = TLWalletUtils.LINK_ICON_IMAGE_NAME()
+            name = "Links".localized
+            break
         default:
             imageName = TLWalletUtils.SETTINGS_ICON_IMAGE_NAME()
             name = "Settings".localized
@@ -135,6 +139,8 @@ import UIKit
             self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("ManageAccountNav")  
         } else if (indexPath.row == 4) {
             self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("HelpNav")  
+        } else if (indexPath.row == 5) {
+            self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("LinksNav")
         } else {
             self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("SettingsNav")  
         }

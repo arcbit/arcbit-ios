@@ -95,15 +95,6 @@ import AVFoundation
         super.viewWillAppear(animated)
     }
     
-    func showEmailSupportViewController() {
-        let mc = MFMailComposeViewController()
-        mc.mailComposeDelegate = self
-        mc.setSubject(String(format: "%@ Support".localized, TLWalletUtils.APP_NAME()))
-        mc.setMessageBody("Hi, \n\nI need help with... ".localized, isHTML: false)
-        mc.setToRecipients(["support@arcbit.zendesk.com"])
-        self.presentViewController(mc, animated: true, completion: nil)
-    }
-    
     private func showPromptForSetBlockExplorerURL() {
         UIAlertController.showAlertInViewController(self,
             withTitle: "Set Block Explorer URL".localized,
@@ -409,8 +400,6 @@ import AVFoundation
     func settingsViewController(sender: IASKAppSettingsViewController, buttonTappedForSpecifier specifier: IASKSpecifier) {
         if (specifier.key() == "changepincode") {
             self.showLockViewForChangingPasscode()
-        } else if (specifier.key() == "emailsupport") {
-            self.showEmailSupportViewController()
         } else if (specifier.key() == "showpassphrase") {
             let vc = self.storyboard!.instantiateViewControllerWithIdentifier("Passphrase") 
             self.slidingViewController().presentViewController(vc, animated: true, completion: nil)
