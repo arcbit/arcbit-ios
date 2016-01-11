@@ -52,10 +52,10 @@ class TLHelpDoc {
         static let ACTION_ENABLE_PIN_CODE = "Enable PIN Code".localized
         static let ACTION_BACKUP_PASSPHRASE = "Back Up Passphrase".localized
         static let ACTION_RESTORE_WALLET = "Start/Restore Another Wallet".localized
-        static let ACTION_ADD_TO_ADDRESS_BOOK = "Add Address Book Entry".localized
-        static let ACTION_EDIT_ENTRY_ADDRESS_BOOK = "Edit Address Book Entry".localized
-        static let ACTION_DELETE_ENTRY_ADDRESS_BOOK = "Delete Address Book Entry".localized
-        static let ACTION_SEND_TO_ADDRESS_IN_ADDRESS_BOOK = "Send To Address In Address Book".localized
+        static let ACTION_ADD_TO_ADDRESS_BOOK = "Add Contacts Entry".localized
+        static let ACTION_EDIT_ENTRY_ADDRESS_BOOK = "Edit Contacts Entry".localized
+        static let ACTION_DELETE_ENTRY_ADDRESS_BOOK = "Delete Contacts Entry".localized
+        static let ACTION_SEND_TO_ADDRESS_IN_ADDRESS_BOOK = "Send To Address In Contacts".localized
         static let ACTION_TAG_TRANSACTION = "Tag transaction".localized
         static let ACTION_TOGGLE_AUTOMATIC_TX_FEE = "Toggle Automatic Transaction Fee".localized
         static let ACTION_CHANGE_AUTOMATIC_TX_FEE = "Change Automatic Transaction Fee".localized
@@ -153,7 +153,7 @@ class TLHelpDoc {
                 [
                     "Go to the side menu".localized,
                     "Click ‘Send’".localized,
-                    "Click the ‘Address Book’ button".localized,
+                    "Click the ‘Contacts’ button".localized,
                     "Click the plus button at the top right".localized,
                     "Input a bitcoin address".localized,
                     "Input a label".localized,
@@ -168,14 +168,14 @@ class TLHelpDoc {
                 [
                     "Go to the side menu".localized,
                     "Click ‘Send’".localized,
-                    "Click the ‘Address Book’ button".localized,
+                    "Click the ‘Contacts’ button".localized,
                     "Swipe right on an address".localized,
                     "Click ‘Delete’".localized,
                 ],
                 [
                     "Go to the side menu".localized,
                     "Click ‘Send’".localized,
-                    "Click the ‘Address Book’ button".localized,
+                    "Click the ‘Contacts’ button".localized,
                     "Click an address".localized,
                 ],
                 [

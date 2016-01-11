@@ -47,8 +47,8 @@
 /* Class = "UILabel"; text = "Label"; ObjectID = "JHD-rx-W8M"; */
 "JHD-rx-W8M.text" = "Label";
 
-/* Class = "UIButton"; normalTitle = "Address Book"; ObjectID = "JvL-Cg-kNK"; */
-"JvL-Cg-kNK.normalTitle" = "Address Book";
+/* Class = "UIButton"; normalTitle = "Contacts"; ObjectID = "JvL-Cg-kNK"; */
+"JvL-Cg-kNK.normalTitle" = "Contacts";
 
 /* Class = "UITabBarItem"; title = "Send"; ObjectID = "KIz-U8-UaX"; */
 "KIz-U8-UaX.title" = "Send";
@@ -110,8 +110,8 @@
 /* Class = "UINavigationItem"; title = "Help"; ObjectID = "m13-Co-pa3"; */
 "m13-Co-pa3.title" = "Help";
 
-/* Class = "UINavigationItem"; title = "Address Book"; ObjectID = "ob3-Xc-rR5"; */
-"ob3-Xc-rR5.title" = "Address Book";
+/* Class = "UINavigationItem"; title = "Contacts"; ObjectID = "ob3-Xc-rR5"; */
+"ob3-Xc-rR5.title" = "Contacts";
 
 /* Class = "UITextView"; text = "nice muse brush descend pattern focus bleed college sneak calm leap flight"; ObjectID = "p18-DP-CtY"; */
 "p18-DP-CtY.text" = "nice muse brush descend pattern focus bleed college sneak calm leap flight";

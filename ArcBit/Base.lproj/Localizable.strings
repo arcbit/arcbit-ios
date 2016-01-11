@@ -549,13 +549,13 @@
 
 "Start/Restore Another Wallet" = "Start/Restore Another Wallet";
 
-"Add Address Book Entry" = "Add Address Book Entry";
+"Add Contacts Entry" = "Add Contacts Entry";
 
-"Edit Address Book Entry" = "Edit Address Book Entry";
+"Edit Contacts Entry" = "Edit Contacts Entry";
 
-"Delete Address Book Entry" = "Delete Address Book Entry";
+"Delete Contacts Entry" = "Delete Contacts Entry";
 
-"Send To Address In Address Book" = "Send To Address In Address Book";
+"Send To Address In Contacts" = "Send To Address In Contacts";
 
 "Tag transaction" = "Tag transaction";
 
@@ -645,7 +645,7 @@
 
 "Click ‘Restore’" = "Click ‘Restore’";
 
-"Click the ‘Address Book’ button" = "Click the ‘Address Book’ button";
+"Click the ‘Contacts’ button" = "Click the ‘Contacts’ button";
 
 "Click the plus button at the top right" = "Click the plus button at the top right";
 
