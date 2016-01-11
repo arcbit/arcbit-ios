@@ -87,7 +87,7 @@ import UIKit
         if (segue.identifier == "SegueText2") {
             let vc = segue.destinationViewController as! TLTextViewViewController
             vc.navigationItem.title = "ArcBit Web Wallet".localized
-            let detail1 = "\tArcBit Web Wallet is a Chrome extension. It has all the features of the mobile wallet plus more. Highlights include the ability to create multiple wallets instead of just one, and a new easy, non-cumbersome way to store and spend bitcoins from cold storage!\n".localized
+            let detail1 = "\tArcBit Web Wallet is a Chrome extension. It has all the features of the mobile wallet plus more. Highlights include the ability to create multiple wallets instead of just one, and a new non-cumbersome way to generate wallets, store and spend bitcoins all from cold storage! ArcBit's new way to manage your cold storage bitcoins also offers a more compelling reason to use ArcBit's watch only account feature. Now you can safely watch the balance of your cold storage bitcoins by enabling advance mode in ArcBit and importing your cold storage account public keys.\n".localized
             let detail2 = "\tUse ArcBit Web Wallet in whatever way you wish. You can create a new wallet, or you can input your current 12 word backup passphrase to manage the same bitcoins across different devices. Check out the ArcBit Web Wallet in the Chrome Web Store for more details!\n".localized
             vc.text = detail1 + "\n" + detail2
         }
