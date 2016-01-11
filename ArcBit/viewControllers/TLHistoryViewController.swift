@@ -317,14 +317,7 @@ import CoreData
     }
     
     private func promptTransactionActionSheet(txHash: NSString) {
-        var otherButtonTitles = []
-        
-        if (TLPreferences.enabledAdvancedMode()) {
-            otherButtonTitles = ["View in web".localized, "Label Transaction".localized, "Copy Transaction ID to Clipboard".localized]
-            
-        } else {
-            otherButtonTitles = ["View in web".localized, "Label Transaction".localized]
-        }
+        let otherButtonTitles = ["View in web".localized, "Label Transaction".localized, "Copy Transaction ID to Clipboard".localized]
         
         UIAlertController.showAlertInViewController(self,
             withTitle: String(format: "Transaction ID: %@".localized, txHash),
