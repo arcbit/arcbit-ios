@@ -63,6 +63,10 @@ import UIKit
         self.linksTableView!.tableFooterView = UIView(frame:CGRectZero)
     }
     
+    func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
+        self.dismissViewControllerAnimated(true, completion: nil)
+    }
+
     func showEmailSupportViewController() {
         let mc = MFMailComposeViewController()
         mc.mailComposeDelegate = self
