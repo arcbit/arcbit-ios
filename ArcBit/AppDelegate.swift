@@ -23,10 +23,9 @@
 import Foundation
 import UIKit
 import AVFoundation
-import HockeySDK
 
 @UIApplicationMain
-@objc(AppDelegate) class AppDelegate: UIResponder, UIApplicationDelegate, LTHPasscodeViewControllerDelegate, BITHockeyManagerDelegate {
+@objc(AppDelegate) class AppDelegate: UIResponder, UIApplicationDelegate, LTHPasscodeViewControllerDelegate {
     
     let MAX_CONSECUTIVE_FAILED_STEALTH_CHALLENGE_COUNT = 8
     let SAVE_WALLET_PAYLOAD_DELAY = 2.0
@@ -322,11 +321,6 @@ import HockeySDK
     }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
-        
-        BITHockeyManager.sharedHockeyManager().configureWithIdentifier("1930166332eb254d7c9cecd88f3ca6b0")
-        BITHockeyManager.sharedHockeyManager().startManager()
-        BITHockeyManager.sharedHockeyManager().authenticator.authenticateInstallation()
-        
         AFNetworkActivityIndicatorManager.sharedManager().enabled = true
 
         self.window!.backgroundColor = TLColors.mainAppColor()

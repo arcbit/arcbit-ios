@@ -14,8 +14,6 @@
 		C0378C931AF4A1850083206F /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0378C921AF4A1850083206F /* AssetsLibrary.framework */; };
 		C0378C951AF4A18A0083206F /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0378C941AF4A18A0083206F /* CoreText.framework */; };
 		C0378C971AF4A18F0083206F /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0378C961AF4A18F0083206F /* QuickLook.framework */; };
-		C0378C9D1AF4A1B10083206F /* HockeySDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0378C991AF4A1B10083206F /* HockeySDK.framework */; };
-		C0378C9F1AF4A1B10083206F /* HockeySDKResources.bundle in Resources */ = {isa = PBXBuildFile; fileRef = C0378C9C1AF4A1B10083206F /* HockeySDKResources.bundle */; };
 		C03ECBF71B54A104005D4B0F /* TLStringLocalized.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD70051B4E2C4F00A5788D /* TLStringLocalized.swift */; };
 		C05C398B1AD0710B00AADE55 /* TLCloudDocumentSyncWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C05C398A1AD0710B00AADE55 /* TLCloudDocumentSyncWrapper.m */; };
 		C05C398C1AD0712B00AADE55 /* TLCloudDocumentSyncWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C05C398A1AD0710B00AADE55 /* TLCloudDocumentSyncWrapper.m */; };
@@ -245,9 +243,6 @@
 		C0378C921AF4A1850083206F /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		C0378C941AF4A18A0083206F /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		C0378C961AF4A18F0083206F /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
-		C0378C991AF4A1B10083206F /* HockeySDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = HockeySDK.framework; sourceTree = "<group>"; };
-		C0378C9B1AF4A1B10083206F /* HockeySDK.xcconfig */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xcconfig; path = HockeySDK.xcconfig; sourceTree = "<group>"; };
-		C0378C9C1AF4A1B10083206F /* HockeySDKResources.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = HockeySDKResources.bundle; sourceTree = "<group>"; };
 		C04A50E91B1792A8001FCE4E /* ArcBit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ArcBit.entitlements; sourceTree = "<group>"; };
 		C05C39891AD0710B00AADE55 /* TLCloudDocumentSyncWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLCloudDocumentSyncWrapper.h; sourceTree = "<group>"; };
 		C05C398A1AD0710B00AADE55 /* TLCloudDocumentSyncWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLCloudDocumentSyncWrapper.m; sourceTree = "<group>"; };
@@ -484,7 +479,6 @@
 				C0A192E11ABF6EEE00BED648 /* Security.framework in Frameworks */,
 				C0A192DF1ABF6EE800BED648 /* SystemConfiguration.framework in Frameworks */,
 				C0A192DD1ABF6EDC00BED648 /* MobileCoreServices.framework in Frameworks */,
-				C0378C9D1AF4A1B10083206F /* HockeySDK.framework in Frameworks */,
 				C0A192DB1ABF6ED500BED648 /* CFNetwork.framework in Frameworks */,
 				C0A192D91ABF6EC900BED648 /* CoreMedia.framework in Frameworks */,
 				C0A192D71ABF6EC200BED648 /* AVFoundation.framework in Frameworks */,
@@ -519,7 +513,6 @@
 		65EAF1BBE7F17CF5F70A560B /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				C0378C981AF4A1B10083206F /* HockeySDK.embeddedframework */,
 				C0378C961AF4A18F0083206F /* QuickLook.framework */,
 				C0378C941AF4A18A0083206F /* CoreText.framework */,
 				C0378C921AF4A1850083206F /* AssetsLibrary.framework */,
@@ -537,25 +530,6 @@
 				38C44C8366A60829206A6FEE /* libPods-ArcBitTests.a */,
 			);
 			name = Frameworks;
-			sourceTree = "<group>";
-		};
-		C0378C981AF4A1B10083206F /* HockeySDK.embeddedframework */ = {
-			isa = PBXGroup;
-			children = (
-				C0378C991AF4A1B10083206F /* HockeySDK.framework */,
-				C0378C9A1AF4A1B10083206F /* Resources */,
-			);
-			name = HockeySDK.embeddedframework;
-			path = "HockeySDK-iOS/HockeySDK.embeddedframework";
-			sourceTree = "<group>";
-		};
-		C0378C9A1AF4A1B10083206F /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				C0378C9B1AF4A1B10083206F /* HockeySDK.xcconfig */,
-				C0378C9C1AF4A1B10083206F /* HockeySDKResources.bundle */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		C041DA131AE76BAA003D74C9 /* certs */ = {
@@ -1168,7 +1142,6 @@
 				C0D7B2DB1B16FDA10096E599 /* live.cer in Resources */,
 				C0A190AC1ABF53A100BED648 /* list@3x.png in Resources */,
 				C0A190A61ABF53A100BED648 /* data@3x.png in Resources */,
-				C0378C9F1AF4A1B10083206F /* HockeySDKResources.bundle in Resources */,
 				C0A190B61ABF53A100BED648 /* upload2.png in Resources */,
 				C0A190B51ABF53A100BED648 /* upload@3x.png in Resources */,
 				C0A1909F1ABF53A100BED648 /* arrow-right7.png in Resources */,
