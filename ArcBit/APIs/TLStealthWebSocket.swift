@@ -50,10 +50,12 @@ import Foundation
         
         let urlString = String(format: "%@://%@:%d%@", TLStealthServerConfig.instance().getWebSocketProtocol(), TLPreferences.getStealthExplorerURL()!, TLPreferences.getStealthWebSocketPort()!, TLStealthServerConfig.instance().getWebSocketEndpoint())
         DLog("StealthWebSocket reconnect url: \(urlString)")
-        let certificateData = TLStealthServerConfig.instance().getSSLCertificate()
-        let urlRequest = SRWebSocket.createURLRequest(urlString, withPinnedCert: certificateData)
         
-        self.webSocket = SRWebSocket(URLRequest: urlRequest)
+        //let certificateData = TLStealthServerConfig.instance().getSSLCertificate()
+        //let urlRequest = SRWebSocket.createURLRequest(urlString, withPinnedCert: certificateData)
+        //self.webSocket = SRWebSocket(URLRequest: urlRequest)
+        self.webSocket = SRWebSocket(URLRequest: NSURLRequest(URL: NSURL(string: urlString)!))
+        
         self.webSocket!.delegate = self
         self.webSocket!.open()
     }

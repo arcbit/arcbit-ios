@@ -55,8 +55,9 @@ class TLStealthExplorerAPI {
     }
     
     init(baseURL: String) {
-        let certificateData = TLStealthServerConfig.instance().getSSLCertificate()
-        self.networking = TLNetworking(certificateData: certificateData)
+        //let certificateData = TLStealthServerConfig.instance().getSSLCertificate()
+        //self.networking = TLNetworking(certificateData: certificateData)
+        self.networking = TLNetworking()
         self.baseURL = baseURL
     }
     
