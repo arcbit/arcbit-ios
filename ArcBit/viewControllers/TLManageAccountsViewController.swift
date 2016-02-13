@@ -1559,11 +1559,11 @@ import UIKit
 
         } else {
             let av = UIAlertView(title: "Invalid account private key".localized,
-                    message: "",
-                    delegate: nil,
-                    cancelButtonTitle: "OK".localized,
-                    otherButtonTitles: "")
-
+                message: "",
+                delegate: nil,
+                cancelButtonTitle: "Cancel".localized,
+                otherButtonTitles: "OK".localized)
+            
             av.show()
             return false
         }
@@ -1626,8 +1626,8 @@ import UIKit
             let av = UIAlertView(title: "Invalid account public Key".localized,
                 message: "",
                 delegate: nil,
-                cancelButtonTitle: "OK".localized,
-                otherButtonTitles: "")
+                cancelButtonTitle: "Cancel".localized,
+                otherButtonTitles: "OK".localized)
             
             av.show()
             return false
