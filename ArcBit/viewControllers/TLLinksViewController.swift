@@ -45,7 +45,8 @@ import UIKit
     private var instructions:NSArray?
     private var action:NSString?
     private var FAQText:NSString?
-    
+    private var clickRightBarButtonCount:Int = 0
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setColors()
@@ -61,6 +62,28 @@ import UIKit
         self.linksTableView!.delegate = self
         self.linksTableView!.dataSource = self
         self.linksTableView!.tableFooterView = UIView(frame:CGRectZero)
+        self.clickRightBarButtonCount = 0
+        
+        let button   = UIButton(frame: CGRectMake(0, 0, 80, 30))
+        button.backgroundColor = TLColors.mainAppColor()
+        button.setTitle("Status", forState: UIControlState.Normal)
+        button.setTitleColor(TLColors.mainAppColor(), forState: UIControlState.Normal)
+        button.addTarget(self, action: "rightBarButtonClicked", forControlEvents: UIControlEvents.TouchUpInside)
+        let rightBarButtonItem = UIBarButtonItem(customView: button)
+        navigationItem.rightBarButtonItem = rightBarButtonItem
+    }
+    
+    func rightBarButtonClicked() {
+        self.clickRightBarButtonCount++
+        if (self.clickRightBarButtonCount >= 10) {
+            TLStealthWebSocket.instance().isWebSocketOpen()
+            let av = UIAlertView(title: "Web Socket Server status",
+                message: "Up: \(TLStealthWebSocket.instance().isWebSocketOpen())",
+                delegate: nil,
+                cancelButtonTitle: "Cancel".localized,
+                otherButtonTitles: "OK".localized)
+            av.show()
+        }
     }
     
     func mailComposeController(controller: MFMailComposeViewController, didFinishWithResult result: MFMailComposeResult, error: NSError?) {
