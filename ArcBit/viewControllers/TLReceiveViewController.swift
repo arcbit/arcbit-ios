@@ -397,18 +397,20 @@ import UIKit
     }
     
     func updateViewToNewSelectedObject() {
-        self.updateAccountBalance()
-        let receivingAddressesCount = AppDelegate.instance().receiveSelectedObject!.getReceivingAddressesCount()
-        if (receivingAddressesCount == 0) {
-            // this happens if receiving addresses have not been computed yet (cuz it requires look ups), thus don't update UI yet
-            // EVENT_UPDATED_RECEIVING_ADDRESSES will fire and this method be called
-            return
+        dispatch_async(dispatch_get_main_queue()) {
+            self.updateAccountBalance()
+            let receivingAddressesCount = AppDelegate.instance().receiveSelectedObject!.getReceivingAddressesCount()
+            if (receivingAddressesCount == 0) {
+                // this happens if receiving addresses have not been computed yet (cuz it requires look ups), thus don't update UI yet
+                // EVENT_UPDATED_RECEIVING_ADDRESSES will fire and this method be called
+                return
+            }
+            let label = AppDelegate.instance().receiveSelectedObject!.getLabelForSelectedObject()
+            self.accountNameLabel!.text = label
+            self.updateReceiveAddressArray()
+            self.updateReceiveAddressesView()
+            self.scrollToPage(0)
         }
-        let label = AppDelegate.instance().receiveSelectedObject!.getLabelForSelectedObject()
-        self.accountNameLabel!.text = label
-        self.updateReceiveAddressArray()
-        self.updateReceiveAddressesView()
-        self.scrollToPage(0)
     }
 
     private func updateAccountBalance() {
