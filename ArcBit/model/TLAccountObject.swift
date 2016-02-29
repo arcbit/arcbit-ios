@@ -426,7 +426,6 @@ import Foundation
         if (processedTxDict[txObject.getHash()! as String] != nil) {
             return nil
         }
-        processedTxDict[txObject.getHash()! as String] = true
         
         let receivedAmount = processTx(txObject, shouldCheckToAddressesNTxsCount: true, shouldUpdateAccountBalance: true)
         
@@ -440,6 +439,7 @@ import Foundation
     }
     
     private func processTx(txObject: TLTxObject, shouldCheckToAddressesNTxsCount: Bool, shouldUpdateAccountBalance: Bool) -> TLCoin? {
+        processedTxDict[txObject.getHash()! as String] = true
         var currentTxSubtract:UInt64 = 0
         var currentTxAdd:UInt64 = 0
         

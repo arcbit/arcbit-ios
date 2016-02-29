@@ -226,9 +226,6 @@ import Foundation
             // happens when you send coins to the same account, so you get the same tx from the websockets more then once
             return nil
         }
-
-        processedTxDict!.setObject("", forKey:txObject.getHash()!)
-
         let doesTxInvolveAddressAndReceivedAmount = processTx(txObject, shouldUpdateAccountBalance: true)
         
         txObjectArray!.insertObject(txObject, atIndex:0)
@@ -248,6 +245,7 @@ import Foundation
     }
     
     private func processTx(txObject: TLTxObject, shouldUpdateAccountBalance: Bool) -> (Bool, TLCoin?) {
+        processedTxDict!.setObject("", forKey:txObject.getHash()!)
         var currentTxSubtract:UInt64 = 0
         var currentTxAdd:UInt64 = 0
         var doesTxInvolveAddress = false
