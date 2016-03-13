@@ -29,7 +29,7 @@ import AVFoundation
     
     let MAX_CONSECUTIVE_FAILED_STEALTH_CHALLENGE_COUNT = 8
     let SAVE_WALLET_PAYLOAD_DELAY = 2.0
-    let DEFAULT_BLOCKEXPLORER_API = TLBlockExplorer.Blockchain
+    let DEFAULT_BLOCKEXPLORER_API = TLBlockExplorer.Insight
     let RESPOND_TO_STEALTH_PAYMENT_GET_TX_TRIES_MAX_TRIES = 3
 
     var window:UIWindow?
