@@ -201,7 +201,7 @@ import UIKit
         if(indexPath.section == 0) {
             if indexPath.row == 0 {
                 self.selectedSection = "webwallet"
-                let url = NSURL(string: "https://chrome.google.com/webstore/detail/walmart/bmelcnhnemihidpaehodijpamdaeeglh"); //TODO
+                let url = NSURL(string: "https://chrome.google.com/webstore/detail/arcbit-bitcoin-wallet/dkceiphcnbfahjbomhpdgjmphnpgogfk");
                 if (UIApplication.sharedApplication().canOpenURL(url!)) {
                     UIApplication.sharedApplication().openURL(url!);
                 }
