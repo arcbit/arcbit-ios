@@ -211,7 +211,7 @@ import UIKit
         } else if(indexPath.section == 1) {
             self.selectedSection = "brainwallet"
             if indexPath.row == 0 {
-                let url = NSURL(string: "https://arcbitbrainwallet.com");
+                let url = NSURL(string: "https://www.arcbitbrainwallet.com");
                 if (UIApplication.sharedApplication().canOpenURL(url!)) {
                     UIApplication.sharedApplication().openURL(url!);
                 }

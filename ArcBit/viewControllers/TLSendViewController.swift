@@ -351,7 +351,7 @@ import UIKit
             TLPrompts.promptAlertController(self, title: "Check out the ArcBit Web Wallet!".localized,
                 message: "Use ArcBit on your browser to complement the mobile app. The web wallet has all the features that the mobile wallet has plus more! Including a new easy way to store and spend Bitcoins from cold storage!".localized, okText: "Go".localized, cancelTx: "Not now".localized,
                 success: { () -> () in
-                    let url = NSURL(string: "https://chrome.google.com/webstore/detail/walmart/bmelcnhnemihidpaehodijpamdaeeglh"); //TODO
+                    let url = NSURL(string: "https://chrome.google.com/webstore/detail/arcbit-bitcoin-wallet/dkceiphcnbfahjbomhpdgjmphnpgogfk");
                     if (UIApplication.sharedApplication().canOpenURL(url!)) {
                         UIApplication.sharedApplication().openURL(url!);
                     }
