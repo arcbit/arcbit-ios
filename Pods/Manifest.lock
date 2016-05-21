@@ -29,7 +29,6 @@ PODS:
   - MBProgressHUD (0.9.1)
   - OpenSSL-Universal (1.0.1.16)
   - RNCryptor (2.2)
-  - SIOSocket (0.2.0)
   - SwiftTryCatch (0.0.1)
 
 DEPENDENCIES:
@@ -39,7 +38,6 @@ DEPENDENCIES:
   - iCloudDocumentSync
   - MBProgressHUD (~> 0.9)
   - RNCryptor (= 2.2)
-  - SIOSocket (~> 0.2.0)
   - SwiftTryCatch
 
 EXTERNAL SOURCES:
@@ -55,9 +53,8 @@ SPEC CHECKSUMS:
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
   OpenSSL-Universal: 85ef63bf81d0741b03c8719cd29685c37c59518d
   RNCryptor: c68678461a2c7474a55db9a6a98834c22d51f535
-  SIOSocket: 2facc0bd02ae72d98c223634a46dd8ebdf9be321
   SwiftTryCatch: fb6d2b34abe48efd69578dac919293a44f95b481
 
-PODFILE CHECKSUM: afc8203bba73f7643e8d95f972c257117187dde0
+PODFILE CHECKSUM: 31de5531218514a95284f413c62e1481ca06d44f
 
 COCOAPODS: 1.0.0
