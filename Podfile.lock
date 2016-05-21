@@ -20,15 +20,21 @@ PODS:
   - AFNetworking/UIKit (2.5.3):
     - AFNetworking/NSURLConnection
     - AFNetworking/NSURLSession
+  - CoreBitcoin (0.6.8.1):
+    - ISO8601DateFormatter
+    - OpenSSL-Universal (= 1.0.1.16)
   - ECSlidingViewController (2.0.3)
   - iCloudDocumentSync (7.4.1)
+  - ISO8601DateFormatter (0.8)
   - MBProgressHUD (0.9.1)
+  - OpenSSL-Universal (1.0.1.16)
   - RNCryptor (2.2)
   - SIOSocket (0.2.0)
   - SwiftTryCatch (0.0.1)
 
 DEPENDENCIES:
   - AFNetworking (= 2.5.3)
+  - CoreBitcoin (from `https://raw.github.com/oleganza/CoreBitcoin/master/CoreBitcoin.podspec`)
   - ECSlidingViewController (~> 2.0.3)
   - iCloudDocumentSync
   - MBProgressHUD (~> 0.9)
@@ -36,15 +42,22 @@ DEPENDENCIES:
   - SIOSocket (~> 0.2.0)
   - SwiftTryCatch
 
+EXTERNAL SOURCES:
+  CoreBitcoin:
+    :podspec: https://raw.github.com/oleganza/CoreBitcoin/master/CoreBitcoin.podspec
+
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
+  CoreBitcoin: 4ac6f6a61e543f08399c2fe57496d4fdcbaf74f9
   ECSlidingViewController: 6485c14f23b4487e9946535421ca8f111f86cc53
   iCloudDocumentSync: 961aac30ca09c221de4c236e94dae69912f2c589
+  ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
+  OpenSSL-Universal: 85ef63bf81d0741b03c8719cd29685c37c59518d
   RNCryptor: c68678461a2c7474a55db9a6a98834c22d51f535
   SIOSocket: 2facc0bd02ae72d98c223634a46dd8ebdf9be321
   SwiftTryCatch: fb6d2b34abe48efd69578dac919293a44f95b481
 
-PODFILE CHECKSUM: a4a5b6777dc7547e6da378b31d36efd1506d25d6
+PODFILE CHECKSUM: afc8203bba73f7643e8d95f972c257117187dde0
 
 COCOAPODS: 1.0.0
