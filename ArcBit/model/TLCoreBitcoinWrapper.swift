@@ -32,7 +32,7 @@ class TLCoreBitcoinWrapper {
             if !isTestnet {
                 return address.string
             } else {
-                return BTCPublicKeyAddressTestnet(data: script.standardAddress.data).string
+                return BTCPublicKeyAddressTestnet(data: script.standardAddress.data)!.string
             }
         }
         
