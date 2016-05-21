@@ -7,8 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		AD3F343D75E9298FCAFD7B77 /* libPods-ArcBitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 38C44C8366A60829206A6FEE /* libPods-ArcBitTests.a */; };
-		BC9C17E6AE67D52D3CC8430C /* libPods-ArcBit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 22B2AE80D0E32756BF5F5767 /* libPods-ArcBit.a */; };
+		371609F6191B495389E4EF29 /* libPods-ArcBit.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 7C8CDAAD6F71CF30CCD5BBD6 /* libPods-ArcBit.a */; };
 		C004134A1ACEFAF200505F31 /* TLOperationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00413491ACEFAF200505F31 /* TLOperationsManager.swift */; };
 		C004134B1ACEFCB700505F31 /* TLOperationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00413491ACEFAF200505F31 /* TLOperationsManager.swift */; };
 		C0378C931AF4A1850083206F /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0378C921AF4A1850083206F /* AssetsLibrary.framework */; };
@@ -219,6 +218,7 @@
 		F3BC36121B8681FF00CBB3F7 /* TLUpdateAppData.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3BC36101B8681FF00CBB3F7 /* TLUpdateAppData.swift */; };
 		F3DAAD661BB1D9EC000488F0 /* TLWalletJSONKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DAAD651BB1D9EC000488F0 /* TLWalletJSONKeys.swift */; };
 		F3F1651B1BB1DB7F00F1293A /* TLWalletJSONKeys.swift in Sources */ = {isa = PBXBuildFile; fileRef = F3DAAD651BB1D9EC000488F0 /* TLWalletJSONKeys.swift */; };
+		F7E43EEB86A2A43FC05335C4 /* libPods-ArcBitTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = BABE2B037811FC35D025CD09 /* libPods-ArcBitTests.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -232,11 +232,11 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		22B2AE80D0E32756BF5F5767 /* libPods-ArcBit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ArcBit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		2C932837B022DBCFBFCDB9D0 /* Pods-ArcBitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArcBitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ArcBitTests/Pods-ArcBitTests.release.xcconfig"; sourceTree = "<group>"; };
-		38C44C8366A60829206A6FEE /* libPods-ArcBitTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ArcBitTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
-		690A9A840A6B0FCCB49CD6CD /* Pods-ArcBitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArcBitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ArcBitTests/Pods-ArcBitTests.debug.xcconfig"; sourceTree = "<group>"; };
-		7817897D0741470B5FDCA66C /* Pods-ArcBit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArcBit.release.xcconfig"; path = "Pods/Target Support Files/Pods-ArcBit/Pods-ArcBit.release.xcconfig"; sourceTree = "<group>"; };
+		173E65BB79838FECABC37B10 /* Pods-ArcBitTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArcBitTests.release.xcconfig"; path = "Pods/Target Support Files/Pods-ArcBitTests/Pods-ArcBitTests.release.xcconfig"; sourceTree = "<group>"; };
+		3C7ACA9C0834D6AF891F762C /* Pods-ArcBitTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArcBitTests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ArcBitTests/Pods-ArcBitTests.debug.xcconfig"; sourceTree = "<group>"; };
+		7C8CDAAD6F71CF30CCD5BBD6 /* libPods-ArcBit.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ArcBit.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		AA36D9E0C4AFE7E2A43F3C79 /* Pods-ArcBit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArcBit.release.xcconfig"; path = "Pods/Target Support Files/Pods-ArcBit/Pods-ArcBit.release.xcconfig"; sourceTree = "<group>"; };
+		BABE2B037811FC35D025CD09 /* libPods-ArcBitTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ArcBitTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C00413491ACEFAF200505F31 /* TLOperationsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLOperationsManager.swift; sourceTree = "<group>"; };
 		C01A489E1B4F9E6E004D7FA0 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
 		C02D3B111B4A45F500B3B7F0 /* ArcBit copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "ArcBit copy-Info.plist"; path = "/Users/timothylee/git/arcbit-ios/ArcBit copy-Info.plist"; sourceTree = "<absolute>"; };
@@ -458,7 +458,7 @@
 		C0EE6D681B1B7E6000982692 /* 360X80logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 360X80logo.png; sourceTree = "<group>"; };
 		C0EE6D691B1B7E6000982692 /* 1200X1200logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1200X1200logo.png; sourceTree = "<group>"; };
 		C0F278C71C41EA1A0013DC1A /* TLCurrencyFormat.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLCurrencyFormat.swift; sourceTree = "<group>"; };
-		CB2193BFA5ADE6BF5F8EC097 /* Pods-ArcBit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArcBit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ArcBit/Pods-ArcBit.debug.xcconfig"; sourceTree = "<group>"; };
+		C4D7E88E9BE3FC3994E59767 /* Pods-ArcBit.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArcBit.debug.xcconfig"; path = "Pods/Target Support Files/Pods-ArcBit/Pods-ArcBit.debug.xcconfig"; sourceTree = "<group>"; };
 		F338F9551B794D1D00C02F74 /* TLWalletPassphrase.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLWalletPassphrase.swift; sourceTree = "<group>"; };
 		F338F9571B79718900C02F74 /* TLCrypto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLCrypto.swift; sourceTree = "<group>"; };
 		F37072451B8F570D0026505D /* TLWalletConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLWalletConfig.swift; sourceTree = "<group>"; };
@@ -484,7 +484,7 @@
 				C0A192D71ABF6EC200BED648 /* AVFoundation.framework in Frameworks */,
 				C0A192D51ABF6EB900BED648 /* QuartzCore.framework in Frameworks */,
 				C0A192D31ABF6EB200BED648 /* CoreGraphics.framework in Frameworks */,
-				BC9C17E6AE67D52D3CC8430C /* libPods-ArcBit.a in Frameworks */,
+				371609F6191B495389E4EF29 /* libPods-ArcBit.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -492,20 +492,20 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				AD3F343D75E9298FCAFD7B77 /* libPods-ArcBitTests.a in Frameworks */,
+				F7E43EEB86A2A43FC05335C4 /* libPods-ArcBitTests.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		20A9FDD3657F819163BD9505 /* Pods */ = {
+		15CDECF35E9C56BC58C8CBCC /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				CB2193BFA5ADE6BF5F8EC097 /* Pods-ArcBit.debug.xcconfig */,
-				7817897D0741470B5FDCA66C /* Pods-ArcBit.release.xcconfig */,
-				690A9A840A6B0FCCB49CD6CD /* Pods-ArcBitTests.debug.xcconfig */,
-				2C932837B022DBCFBFCDB9D0 /* Pods-ArcBitTests.release.xcconfig */,
+				C4D7E88E9BE3FC3994E59767 /* Pods-ArcBit.debug.xcconfig */,
+				AA36D9E0C4AFE7E2A43F3C79 /* Pods-ArcBit.release.xcconfig */,
+				3C7ACA9C0834D6AF891F762C /* Pods-ArcBitTests.debug.xcconfig */,
+				173E65BB79838FECABC37B10 /* Pods-ArcBitTests.release.xcconfig */,
 			);
 			name = Pods;
 			sourceTree = "<group>";
@@ -526,8 +526,8 @@
 				C0A192D61ABF6EC200BED648 /* AVFoundation.framework */,
 				C0A192D41ABF6EB900BED648 /* QuartzCore.framework */,
 				C0A192D21ABF6EB200BED648 /* CoreGraphics.framework */,
-				22B2AE80D0E32756BF5F5767 /* libPods-ArcBit.a */,
-				38C44C8366A60829206A6FEE /* libPods-ArcBitTests.a */,
+				7C8CDAAD6F71CF30CCD5BBD6 /* libPods-ArcBit.a */,
+				BABE2B037811FC35D025CD09 /* libPods-ArcBitTests.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -556,7 +556,7 @@
 				C0A18FA61ABF51C200BED648 /* ArcBitTests */,
 				C0A18F8F1ABF51C200BED648 /* Products */,
 				65EAF1BBE7F17CF5F70A560B /* Frameworks */,
-				20A9FDD3657F819163BD9505 /* Pods */,
+				15CDECF35E9C56BC58C8CBCC /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -1031,12 +1031,13 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C0A18FAD1ABF51C200BED648 /* Build configuration list for PBXNativeTarget "ArcBit" */;
 			buildPhases = (
-				67A2DACFD43E57C891997D3E /* Check Pods Manifest.lock */,
+				172F38C0899F2CAA3997D54E /* 📦 Check Pods Manifest.lock */,
 				C0A18F8A1ABF51C200BED648 /* Sources */,
 				C0A18F8B1ABF51C200BED648 /* Frameworks */,
 				C0A18F8C1ABF51C200BED648 /* Resources */,
-				E2CA716A6936DAD28A062E23 /* Copy Pods Resources */,
 				C0878BE81AF4A11B002A4F5A /* ShellScript */,
+				6ABB43AFCFDF0A2994449960 /* 📦 Embed Pods Frameworks */,
+				B6B36DF9BC602A37C9711298 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1051,11 +1052,12 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = C0A18FB01ABF51C200BED648 /* Build configuration list for PBXNativeTarget "ArcBitTests" */;
 			buildPhases = (
-				1BADC1A794CBD0053C79B0CB /* Check Pods Manifest.lock */,
+				782EBA77421757A4C888700E /* 📦 Check Pods Manifest.lock */,
 				C0A18F9F1ABF51C200BED648 /* Sources */,
 				C0A18FA01ABF51C200BED648 /* Frameworks */,
 				C0A18FA11ABF51C200BED648 /* Resources */,
-				559D4495A31A938813E63CDE /* Copy Pods Resources */,
+				73FC12304A7AE0663DF98D3A /* 📦 Embed Pods Frameworks */,
+				2AE1D86853126B8686B821A5 /* 📦 Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -1171,14 +1173,14 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXShellScriptBuildPhase section */
-		1BADC1A794CBD0053C79B0CB /* Check Pods Manifest.lock */ = {
+		172F38C0899F2CAA3997D54E /* 📦 Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "📦 Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1186,14 +1188,14 @@
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
 			showEnvVarsInLog = 0;
 		};
-		559D4495A31A938813E63CDE /* Copy Pods Resources */ = {
+		2AE1D86853126B8686B821A5 /* 📦 Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Copy Pods Resources";
+			name = "📦 Copy Pods Resources";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1201,19 +1203,64 @@
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ArcBitTests/Pods-ArcBitTests-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		67A2DACFD43E57C891997D3E /* Check Pods Manifest.lock */ = {
+		6ABB43AFCFDF0A2994449960 /* 📦 Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputPaths = (
 			);
-			name = "Check Pods Manifest.lock";
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ArcBit/Pods-ArcBit-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		73FC12304A7AE0663DF98D3A /* 📦 Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Embed Pods Frameworks";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ArcBitTests/Pods-ArcBitTests-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		782EBA77421757A4C888700E /* 📦 Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Check Pods Manifest.lock";
 			outputPaths = (
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		B6B36DF9BC602A37C9711298 /* 📦 Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "📦 Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ArcBit/Pods-ArcBit-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C0878BE81AF4A11B002A4F5A /* ShellScript */ = {
@@ -1228,21 +1275,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "FILE=\"${SRCROOT}/HockeySDK-iOS/BuildAgent\"\nif [ -f \"$FILE\" ]; then\n\"$FILE\"\nfi";
-		};
-		E2CA716A6936DAD28A062E23 /* Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-			);
-			name = "Copy Pods Resources";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ArcBit/Pods-ArcBit-resources.sh\"\n";
-			showEnvVarsInLog = 0;
 		};
 /* End PBXShellScriptBuildPhase section */
 
@@ -1559,7 +1591,7 @@
 		};
 		C0A18FAE1ABF51C200BED648 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = CB2193BFA5ADE6BF5F8EC097 /* Pods-ArcBit.debug.xcconfig */;
+			baseConfigurationReference = C4D7E88E9BE3FC3994E59767 /* Pods-ArcBit.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ArcBit/ArcBit.entitlements;
@@ -1579,7 +1611,7 @@
 		};
 		C0A18FAF1ABF51C200BED648 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 7817897D0741470B5FDCA66C /* Pods-ArcBit.release.xcconfig */;
+			baseConfigurationReference = AA36D9E0C4AFE7E2A43F3C79 /* Pods-ArcBit.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_ENTITLEMENTS = ArcBit/ArcBit.entitlements;
@@ -1599,7 +1631,7 @@
 		};
 		C0A18FB11ABF51C200BED648 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 690A9A840A6B0FCCB49CD6CD /* Pods-ArcBitTests.debug.xcconfig */;
+			baseConfigurationReference = 3C7ACA9C0834D6AF891F762C /* Pods-ArcBitTests.debug.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;
@@ -1623,7 +1655,7 @@
 		};
 		C0A18FB21ABF51C200BED648 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2C932837B022DBCFBFCDB9D0 /* Pods-ArcBitTests.release.xcconfig */;
+			baseConfigurationReference = 173E65BB79838FECABC37B10 /* Pods-ArcBitTests.release.xcconfig */;
 			buildSettings = {
 				BUNDLE_LOADER = "$(TEST_HOST)";
 				CLANG_ENABLE_MODULES = YES;

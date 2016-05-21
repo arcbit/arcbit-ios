@@ -8,7 +8,6 @@ source 'https://github.com/CocoaPods/Specs.git'
 
 target 'ArcBit' do
 pod 'AFNetworking', '2.5.3', :inhibit_warnings => true
-pod 'CoreBitcoin', :podspec => 'https://raw.github.com/oleganza/CoreBitcoin/master/CoreBitcoin.podspec', :inhibit_warnings => true
 pod 'MBProgressHUD', '~> 0.9', :inhibit_warnings => true
 pod 'RNCryptor', '2.2', :inhibit_warnings => true
 pod 'SIOSocket', '~> 0.2.0', :inhibit_warnings => true
@@ -19,7 +18,6 @@ end
 
 target 'ArcBitTests' do
 pod 'AFNetworking', '2.5.3', :inhibit_warnings => true
-pod 'CoreBitcoin', :podspec => 'https://raw.github.com/oleganza/CoreBitcoin/master/CoreBitcoin.podspec', :inhibit_warnings => true
 pod 'MBProgressHUD', '~> 0.9', :inhibit_warnings => true
 pod 'RNCryptor', '2.2', :inhibit_warnings => true
 pod 'SIOSocket', '~> 0.2.0'

@@ -1,1 +1,0 @@
-PODS_ARCBIT_COREBITCOIN_OTHER_LDFLAGS = -framework "Foundation" -framework "UIKit"

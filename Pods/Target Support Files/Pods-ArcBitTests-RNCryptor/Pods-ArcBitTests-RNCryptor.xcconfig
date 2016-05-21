@@ -1,1 +1,0 @@
-PODS_ARCBITTESTS_RNCRYPTOR_OTHER_LDFLAGS = -framework "Security"
