@@ -145,7 +145,7 @@ import AVFoundation
             if (metadataObj.type == AVMetadataObjectTypeQRCode) {
                 // do something useful with results
                 dispatch_sync(dispatch_get_main_queue()) {
-                    let data = metadataObj.stringValue
+                    let data:String = metadataObj.stringValue
                     
                     if (self.success != nil) {
                         self.success!(data)
