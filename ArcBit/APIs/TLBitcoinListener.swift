@@ -27,7 +27,7 @@ import Foundation
     let SEND_EMPTY_PACKET_TIME_INTERVAL = 60.0
     private var blockExplorerAPI: TLBlockExplorer?
     private var keepAliveTimer: NSTimer?
-    private var socket: SIOSocket?
+//    private var socket: SIOSocket?
     private var socketIsConnected: Bool = false
     private var webSocket: SRWebSocket?
     var consecutiveFailedConnections = 0
@@ -64,53 +64,53 @@ import Foundation
         } else {
             DLog("websocket reconnect insight")
             let url = String(format: "%@", TLPreferences.getBlockExplorerURL(TLBlockExplorer.Insight)!)
-            SIOSocket.socketWithHost(url, response: {
-                (socket: SIOSocket!) in
-                self.socket = socket
-                
-                weak var weakSelf = self
-                self.socket!.onConnect = {
-                    () in
-                    DLog("socketio onConnect")
-                    self.consecutiveFailedConnections = 0
-                    weakSelf!.socketIsConnected = true
-                    NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_TRANSACTION_LISTENER_OPEN(), object: nil, userInfo: nil)
-                }
-                
-                self.socket!.onDisconnect = {
-                    () in
-                    DLog("socketio onDisconnect")
-                    NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_TRANSACTION_LISTENER_CLOSE(), object: nil, userInfo: nil)
-                    if self.consecutiveFailedConnections++ < self.MAX_CONSECUTIVE_FAILED_CONNECTIONS {
-                        self.socket?.close()
-                        self.reconnect()
-                    }
-                }
-                
-                self.socket!.onError = {
-                    (data: [NSObject:AnyObject]!) in
-                    DLog("socketio error: %@", function: data)
-                }
-                
-                self.socket!.onReconnectionAttempt = {
-                    (recCounter: Int) in
-                    DLog("socketio Reconnection counter \(recCounter)")
-                }
-                
-                self.socket!.onReconnectionError = {
-                    (data: [NSObject:AnyObject]!) in
-                    DLog("socketio reconnection error: %@", function: data)
-                }
-                
-                self.socket!.on("block", callback: {
-                    (_args: [AnyObject]!) in
-                    let args = _args as NSArray
-                    let data: AnyObject? = args.firstObject
-                    // data!.debugDescription is lastest block hash
-                    // can't use this to update confirmations on transactions because insight tx does not contain blockheight field
-                    DLog("socketio received lastest block hash: %@", function: data!.debugDescription ?? "")
-                })
-            })
+//            SIOSocket.socketWithHost(url, response: {
+//                (socket: SIOSocket!) in
+//                self.socket = socket
+//                
+//                weak var weakSelf = self
+//                self.socket!.onConnect = {
+//                    () in
+//                    DLog("socketio onConnect")
+//                    self.consecutiveFailedConnections = 0
+//                    weakSelf!.socketIsConnected = true
+//                    NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_TRANSACTION_LISTENER_OPEN(), object: nil, userInfo: nil)
+//                }
+//                
+//                self.socket!.onDisconnect = {
+//                    () in
+//                    DLog("socketio onDisconnect")
+//                    NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_TRANSACTION_LISTENER_CLOSE(), object: nil, userInfo: nil)
+//                    if self.consecutiveFailedConnections++ < self.MAX_CONSECUTIVE_FAILED_CONNECTIONS {
+//                        self.socket?.close()
+//                        self.reconnect()
+//                    }
+//                }
+//                
+//                self.socket!.onError = {
+//                    (data: [NSObject:AnyObject]!) in
+//                    DLog("socketio error: %@", function: data)
+//                }
+//                
+//                self.socket!.onReconnectionAttempt = {
+//                    (recCounter: Int) in
+//                    DLog("socketio Reconnection counter \(recCounter)")
+//                }
+//                
+//                self.socket!.onReconnectionError = {
+//                    (data: [NSObject:AnyObject]!) in
+//                    DLog("socketio reconnection error: %@", function: data)
+//                }
+//                
+//                self.socket!.on("block", callback: {
+//                    (_args: [AnyObject]!) in
+//                    let args = _args as NSArray
+//                    let data: AnyObject? = args.firstObject
+//                    // data!.debugDescription is lastest block hash
+//                    // can't use this to update confirmations on transactions because insight tx does not contain blockheight field
+//                    DLog("socketio received lastest block hash: %@", function: data!.debugDescription ?? "")
+//                })
+//            })
         }
     }
     
@@ -146,33 +146,33 @@ import Foundation
             }
         } else {
             if (self.socketIsConnected) {
-                if self.socket == nil {
-                    return false
-                }
-                self.socket!.emit("subscribe", args: [address])
-                
-                self.socket!.on(address, callback: {
-                    (_args: [AnyObject]!) in
-                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
-
-                        let args = _args as NSArray
-                        let data: AnyObject? = args.firstObject
-                        
-                        let txHash = data!.debugDescription ?? ""
-                        DLog("socketio on address: %@", function: address)
-                        DLog("socketio transaction: %@", function: txHash)
-                        
-                        //TODO: temp solution, ask Insight devs to get all tx data in websockets API
-                        TLBlockExplorerAPI.instance().getTx(txHash, success: {
-                            (txDict: AnyObject?) in
-                            if txDict != nil {
-                                NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_NEW_UNCONFIRMED_TRANSACTION(), object: txDict!, userInfo: nil)
-                            }
-                            }, failure: {
-                                (code: NSInteger, status: String!) in
-                        })
-                    }
-                })
+//                if self.socket == nil {
+//                    return false
+//                }
+//                self.socket!.emit("subscribe", args: [address])
+//                
+//                self.socket!.on(address, callback: {
+//                    (_args: [AnyObject]!) in
+//                    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
+//
+//                        let args = _args as NSArray
+//                        let data: AnyObject? = args.firstObject
+//                        
+//                        let txHash = data!.debugDescription ?? ""
+//                        DLog("socketio on address: %@", function: address)
+//                        DLog("socketio transaction: %@", function: txHash)
+//                        
+//                        //TODO: temp solution, ask Insight devs to get all tx data in websockets API
+//                        TLBlockExplorerAPI.instance().getTx(txHash, success: {
+//                            (txDict: AnyObject?) in
+//                            if txDict != nil {
+//                                NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_NEW_UNCONFIRMED_TRANSACTION(), object: txDict!, userInfo: nil)
+//                            }
+//                            }, failure: {
+//                                (code: NSInteger, status: String!) in
+//                        })
+//                    }
+//                })
                 return true
                 
             } else {
@@ -187,7 +187,7 @@ import Foundation
             self.webSocket!.close()
         } else {
             DLog("closing socketio")
-            self.socket!.close()
+//            self.socket!.close()
         }
     }
     

@@ -57,7 +57,6 @@
 #import "SRWebSocket.h"
 #import "SRWebSocket+Helpers.h"
 #import "AFNetworkActivityIndicatorManager.h"
-#import "SIOSocket.h"
 #import "CustomIOS7AlertView.h"
 #import "ECSlidingConstants.h"
 #import "IASKAppSettingsViewController.h"
