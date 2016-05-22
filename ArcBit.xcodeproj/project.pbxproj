@@ -14,6 +14,52 @@
 		C0378C951AF4A18A0083206F /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0378C941AF4A18A0083206F /* CoreText.framework */; };
 		C0378C971AF4A18F0083206F /* QuickLook.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0378C961AF4A18F0083206F /* QuickLook.framework */; };
 		C03ECBF71B54A104005D4B0F /* TLStringLocalized.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0BD70051B4E2C4F00A5788D /* TLStringLocalized.swift */; };
+		C04A61031CF1956A007D67E6 /* NSCharacterSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60EC1CF1956A007D67E6 /* NSCharacterSet.swift */; };
+		C04A61041CF1956A007D67E6 /* SocketAckEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60ED1CF1956A007D67E6 /* SocketAckEmitter.swift */; };
+		C04A61051CF1956A007D67E6 /* SocketAckManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60EE1CF1956A007D67E6 /* SocketAckManager.swift */; };
+		C04A61061CF1956A007D67E6 /* SocketAnyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60EF1CF1956A007D67E6 /* SocketAnyEvent.swift */; };
+		C04A61071CF1956A007D67E6 /* SocketEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60F01CF1956A007D67E6 /* SocketEngine.swift */; };
+		C04A61081CF1956A007D67E6 /* SocketEngineClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60F11CF1956A007D67E6 /* SocketEngineClient.swift */; };
+		C04A61091CF1956A007D67E6 /* SocketEnginePacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60F21CF1956A007D67E6 /* SocketEnginePacketType.swift */; };
+		C04A610A1CF1956A007D67E6 /* SocketEnginePollable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60F31CF1956A007D67E6 /* SocketEnginePollable.swift */; };
+		C04A610B1CF1956A007D67E6 /* SocketEngineSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60F41CF1956A007D67E6 /* SocketEngineSpec.swift */; };
+		C04A610C1CF1956A007D67E6 /* SocketEngineWebsocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60F51CF1956A007D67E6 /* SocketEngineWebsocket.swift */; };
+		C04A610D1CF1956A007D67E6 /* SocketEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60F61CF1956A007D67E6 /* SocketEventHandler.swift */; };
+		C04A610E1CF1956A007D67E6 /* SocketIOClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60F71CF1956A007D67E6 /* SocketIOClient.swift */; };
+		C04A610F1CF1956A007D67E6 /* SocketIOClientOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60F81CF1956A007D67E6 /* SocketIOClientOption.swift */; };
+		C04A61101CF1956A007D67E6 /* SocketIOClientSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60F91CF1956A007D67E6 /* SocketIOClientSpec.swift */; };
+		C04A61111CF1956A007D67E6 /* SocketIOClientStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60FA1CF1956A007D67E6 /* SocketIOClientStatus.swift */; };
+		C04A61121CF1956A007D67E6 /* SocketLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60FB1CF1956A007D67E6 /* SocketLogger.swift */; };
+		C04A61131CF1956A007D67E6 /* SocketPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60FC1CF1956A007D67E6 /* SocketPacket.swift */; };
+		C04A61141CF1956A007D67E6 /* SocketParsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60FD1CF1956A007D67E6 /* SocketParsable.swift */; };
+		C04A61151CF1956A007D67E6 /* SocketStringReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60FE1CF1956A007D67E6 /* SocketStringReader.swift */; };
+		C04A61161CF1956A007D67E6 /* SocketTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60FF1CF1956A007D67E6 /* SocketTypes.swift */; };
+		C04A61171CF1956A007D67E6 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A61001CF1956A007D67E6 /* String.swift */; };
+		C04A61181CF1956A007D67E6 /* SwiftRegex.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A61011CF1956A007D67E6 /* SwiftRegex.swift */; };
+		C04A61191CF1956A007D67E6 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A61021CF1956A007D67E6 /* WebSocket.swift */; };
+		C04A611A1CF19603007D67E6 /* SocketIOClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60F71CF1956A007D67E6 /* SocketIOClient.swift */; };
+		C04A611B1CF1960F007D67E6 /* NSCharacterSet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60EC1CF1956A007D67E6 /* NSCharacterSet.swift */; };
+		C04A611C1CF19611007D67E6 /* SocketAckEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60ED1CF1956A007D67E6 /* SocketAckEmitter.swift */; };
+		C04A611D1CF19613007D67E6 /* SocketAckManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60EE1CF1956A007D67E6 /* SocketAckManager.swift */; };
+		C04A611E1CF19616007D67E6 /* SocketAnyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60EF1CF1956A007D67E6 /* SocketAnyEvent.swift */; };
+		C04A611F1CF19618007D67E6 /* SocketEngine.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60F01CF1956A007D67E6 /* SocketEngine.swift */; };
+		C04A61201CF1961A007D67E6 /* SocketEngineClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60F11CF1956A007D67E6 /* SocketEngineClient.swift */; };
+		C04A61211CF1961D007D67E6 /* SocketEnginePacketType.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60F21CF1956A007D67E6 /* SocketEnginePacketType.swift */; };
+		C04A61221CF1961F007D67E6 /* SocketEnginePollable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60F31CF1956A007D67E6 /* SocketEnginePollable.swift */; };
+		C04A61231CF19624007D67E6 /* SocketEngineSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60F41CF1956A007D67E6 /* SocketEngineSpec.swift */; };
+		C04A61241CF19625007D67E6 /* SocketEngineWebsocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60F51CF1956A007D67E6 /* SocketEngineWebsocket.swift */; };
+		C04A61251CF19628007D67E6 /* SocketEventHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60F61CF1956A007D67E6 /* SocketEventHandler.swift */; };
+		C04A61261CF1962B007D67E6 /* SocketIOClientOption.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60F81CF1956A007D67E6 /* SocketIOClientOption.swift */; };
+		C04A61271CF1962D007D67E6 /* SocketIOClientSpec.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60F91CF1956A007D67E6 /* SocketIOClientSpec.swift */; };
+		C04A61281CF1962E007D67E6 /* SocketIOClientStatus.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60FA1CF1956A007D67E6 /* SocketIOClientStatus.swift */; };
+		C04A61291CF19630007D67E6 /* SocketLogger.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60FB1CF1956A007D67E6 /* SocketLogger.swift */; };
+		C04A612A1CF19631007D67E6 /* SocketPacket.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60FC1CF1956A007D67E6 /* SocketPacket.swift */; };
+		C04A612B1CF19633007D67E6 /* SocketParsable.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60FD1CF1956A007D67E6 /* SocketParsable.swift */; };
+		C04A612C1CF19635007D67E6 /* SocketStringReader.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60FE1CF1956A007D67E6 /* SocketStringReader.swift */; };
+		C04A612D1CF19636007D67E6 /* SocketTypes.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A60FF1CF1956A007D67E6 /* SocketTypes.swift */; };
+		C04A612E1CF1963B007D67E6 /* String.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A61001CF1956A007D67E6 /* String.swift */; };
+		C04A612F1CF1963D007D67E6 /* SwiftRegex.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A61011CF1956A007D67E6 /* SwiftRegex.swift */; };
+		C04A61301CF19640007D67E6 /* WebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04A61021CF1956A007D67E6 /* WebSocket.swift */; };
 		C05C398B1AD0710B00AADE55 /* TLCloudDocumentSyncWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C05C398A1AD0710B00AADE55 /* TLCloudDocumentSyncWrapper.m */; };
 		C05C398C1AD0712B00AADE55 /* TLCloudDocumentSyncWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C05C398A1AD0710B00AADE55 /* TLCloudDocumentSyncWrapper.m */; };
 		C0607FCD1AEEB3CD007203F8 /* TLStealthServerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0607FCC1AEEB3CD007203F8 /* TLStealthServerConfig.swift */; };
@@ -244,6 +290,29 @@
 		C0378C941AF4A18A0083206F /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		C0378C961AF4A18F0083206F /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
 		C04A50E91B1792A8001FCE4E /* ArcBit.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = ArcBit.entitlements; sourceTree = "<group>"; };
+		C04A60EC1CF1956A007D67E6 /* NSCharacterSet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NSCharacterSet.swift; sourceTree = "<group>"; };
+		C04A60ED1CF1956A007D67E6 /* SocketAckEmitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketAckEmitter.swift; sourceTree = "<group>"; };
+		C04A60EE1CF1956A007D67E6 /* SocketAckManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketAckManager.swift; sourceTree = "<group>"; };
+		C04A60EF1CF1956A007D67E6 /* SocketAnyEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketAnyEvent.swift; sourceTree = "<group>"; };
+		C04A60F01CF1956A007D67E6 /* SocketEngine.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketEngine.swift; sourceTree = "<group>"; };
+		C04A60F11CF1956A007D67E6 /* SocketEngineClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketEngineClient.swift; sourceTree = "<group>"; };
+		C04A60F21CF1956A007D67E6 /* SocketEnginePacketType.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketEnginePacketType.swift; sourceTree = "<group>"; };
+		C04A60F31CF1956A007D67E6 /* SocketEnginePollable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketEnginePollable.swift; sourceTree = "<group>"; };
+		C04A60F41CF1956A007D67E6 /* SocketEngineSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketEngineSpec.swift; sourceTree = "<group>"; };
+		C04A60F51CF1956A007D67E6 /* SocketEngineWebsocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketEngineWebsocket.swift; sourceTree = "<group>"; };
+		C04A60F61CF1956A007D67E6 /* SocketEventHandler.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketEventHandler.swift; sourceTree = "<group>"; };
+		C04A60F71CF1956A007D67E6 /* SocketIOClient.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketIOClient.swift; sourceTree = "<group>"; };
+		C04A60F81CF1956A007D67E6 /* SocketIOClientOption.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketIOClientOption.swift; sourceTree = "<group>"; };
+		C04A60F91CF1956A007D67E6 /* SocketIOClientSpec.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketIOClientSpec.swift; sourceTree = "<group>"; };
+		C04A60FA1CF1956A007D67E6 /* SocketIOClientStatus.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketIOClientStatus.swift; sourceTree = "<group>"; };
+		C04A60FB1CF1956A007D67E6 /* SocketLogger.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketLogger.swift; sourceTree = "<group>"; };
+		C04A60FC1CF1956A007D67E6 /* SocketPacket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketPacket.swift; sourceTree = "<group>"; };
+		C04A60FD1CF1956A007D67E6 /* SocketParsable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketParsable.swift; sourceTree = "<group>"; };
+		C04A60FE1CF1956A007D67E6 /* SocketStringReader.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketStringReader.swift; sourceTree = "<group>"; };
+		C04A60FF1CF1956A007D67E6 /* SocketTypes.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketTypes.swift; sourceTree = "<group>"; };
+		C04A61001CF1956A007D67E6 /* String.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = String.swift; sourceTree = "<group>"; };
+		C04A61011CF1956A007D67E6 /* SwiftRegex.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SwiftRegex.swift; sourceTree = "<group>"; };
+		C04A61021CF1956A007D67E6 /* WebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = WebSocket.swift; sourceTree = "<group>"; };
 		C05C39891AD0710B00AADE55 /* TLCloudDocumentSyncWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLCloudDocumentSyncWrapper.h; sourceTree = "<group>"; };
 		C05C398A1AD0710B00AADE55 /* TLCloudDocumentSyncWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLCloudDocumentSyncWrapper.m; sourceTree = "<group>"; };
 		C0607FCC1AEEB3CD007203F8 /* TLStealthServerConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStealthServerConfig.swift; sourceTree = "<group>"; };
@@ -540,6 +609,44 @@
 			path = certs;
 			sourceTree = "<group>";
 		};
+		C04A60EA1CF1956A007D67E6 /* socket.io-client-swift-6.1.1 */ = {
+			isa = PBXGroup;
+			children = (
+				C04A60EB1CF1956A007D67E6 /* Source */,
+			);
+			path = "socket.io-client-swift-6.1.1";
+			sourceTree = "<group>";
+		};
+		C04A60EB1CF1956A007D67E6 /* Source */ = {
+			isa = PBXGroup;
+			children = (
+				C04A60EC1CF1956A007D67E6 /* NSCharacterSet.swift */,
+				C04A60ED1CF1956A007D67E6 /* SocketAckEmitter.swift */,
+				C04A60EE1CF1956A007D67E6 /* SocketAckManager.swift */,
+				C04A60EF1CF1956A007D67E6 /* SocketAnyEvent.swift */,
+				C04A60F01CF1956A007D67E6 /* SocketEngine.swift */,
+				C04A60F11CF1956A007D67E6 /* SocketEngineClient.swift */,
+				C04A60F21CF1956A007D67E6 /* SocketEnginePacketType.swift */,
+				C04A60F31CF1956A007D67E6 /* SocketEnginePollable.swift */,
+				C04A60F41CF1956A007D67E6 /* SocketEngineSpec.swift */,
+				C04A60F51CF1956A007D67E6 /* SocketEngineWebsocket.swift */,
+				C04A60F61CF1956A007D67E6 /* SocketEventHandler.swift */,
+				C04A60F71CF1956A007D67E6 /* SocketIOClient.swift */,
+				C04A60F81CF1956A007D67E6 /* SocketIOClientOption.swift */,
+				C04A60F91CF1956A007D67E6 /* SocketIOClientSpec.swift */,
+				C04A60FA1CF1956A007D67E6 /* SocketIOClientStatus.swift */,
+				C04A60FB1CF1956A007D67E6 /* SocketLogger.swift */,
+				C04A60FC1CF1956A007D67E6 /* SocketPacket.swift */,
+				C04A60FD1CF1956A007D67E6 /* SocketParsable.swift */,
+				C04A60FE1CF1956A007D67E6 /* SocketStringReader.swift */,
+				C04A60FF1CF1956A007D67E6 /* SocketTypes.swift */,
+				C04A61001CF1956A007D67E6 /* String.swift */,
+				C04A61011CF1956A007D67E6 /* SwiftRegex.swift */,
+				C04A61021CF1956A007D67E6 /* WebSocket.swift */,
+			);
+			path = Source;
+			sourceTree = "<group>";
+		};
 		C05C39881AD0710B00AADE55 /* TLCloudDocumentSyncWrapper */ = {
 			isa = PBXGroup;
 			children = (
@@ -689,6 +796,7 @@
 		C0A18FDE1ABF53A100BED648 /* External */ = {
 			isa = PBXGroup;
 			children = (
+				C04A60EA1CF1956A007D67E6 /* socket.io-client-swift-6.1.1 */,
 				C0B4E7861AFAAEA200DC9B65 /* MySocketRocketExtras */,
 				C0C1BE701AF92CB500B705C4 /* SocketRocket */,
 				C05C39881AD0710B00AADE55 /* TLCloudDocumentSyncWrapper */,
@@ -1283,9 +1391,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				C04A61101CF1956A007D67E6 /* SocketIOClientSpec.swift in Sources */,
 				C0C1BE781AF92CB500B705C4 /* base64.c in Sources */,
 				C0A190F81ABF53A100BED648 /* TLSpaghettiGodSend.swift in Sources */,
 				C0A190D11ABF53A100BED648 /* IASKSettingsStore.m in Sources */,
+				C04A610A1CF1956A007D67E6 /* SocketEnginePollable.swift in Sources */,
 				C0BD70061B4E2C4F00A5788D /* TLStringLocalized.swift in Sources */,
 				C0A192ED1ABF742D00BED648 /* TLAnalytics.swift in Sources */,
 				C0A190D31ABF53A100BED648 /* IASKSettingsStoreUserDefaults.m in Sources */,
@@ -1302,6 +1412,7 @@
 				C0A190E41ABF53A100BED648 /* QRCodeEncoderDemoViewController.mm in Sources */,
 				C0A190E21ABF53A100BED648 /* DataMatrix.mm in Sources */,
 				C0A190FA1ABF53A100BED648 /* TLStealthWallet.swift in Sources */,
+				C04A61191CF1956A007D67E6 /* WebSocket.swift in Sources */,
 				C0C61C5A1AF15BEF00F9F71F /* TransitionDelegate.swift in Sources */,
 				C0C3BDEC1AC0F7AA001AC6CD /* TLWallet+Stealth.swift in Sources */,
 				C0A190F61ABF53A100BED648 /* TLSelectedObject.swift in Sources */,
@@ -1312,8 +1423,13 @@
 				C0A190CD1ABF53A100BED648 /* IASKAppSettingsViewController.m in Sources */,
 				C0A190D41ABF53A100BED648 /* IASKSpecifier.m in Sources */,
 				C0A190FF1ABF53A100BED648 /* TLWalletUtils.swift in Sources */,
+				C04A61111CF1956A007D67E6 /* SocketIOClientStatus.swift in Sources */,
 				C0A1930F1ABF744E00BED648 /* TLNetworking.swift in Sources */,
 				C0A190FE1ABF53A100BED648 /* TLWalletJson.swift in Sources */,
+				C04A610D1CF1956A007D67E6 /* SocketEventHandler.swift in Sources */,
+				C04A61181CF1956A007D67E6 /* SwiftRegex.swift in Sources */,
+				C04A610F1CF1956A007D67E6 /* SocketIOClientOption.swift in Sources */,
+				C04A61041CF1956A007D67E6 /* SocketAckEmitter.swift in Sources */,
 				C0AB0A331AC52A8400B456DB /* TLPushTxAPI.swift in Sources */,
 				C0A190C41ABF53A100BED648 /* NSData+Bitcoin.m in Sources */,
 				C0A191201ABF53A100BED648 /* TLRestoreWalletViewController.swift in Sources */,
@@ -1322,8 +1438,10 @@
 				C0A190DA1ABF53A100BED648 /* IASKTextField.m in Sources */,
 				C0A1930A1ABF744E00BED648 /* TLBlockchainAPI.swift in Sources */,
 				C0A190DC1ABF53A100BED648 /* JNKeychain.m in Sources */,
+				C04A61131CF1956A007D67E6 /* SocketPacket.swift in Sources */,
 				C0A190E11ABF53A100BED648 /* NSDate-Utilities.m in Sources */,
 				C0A192F81ABF744300BED648 /* TLUtils.swift in Sources */,
+				C04A610B1CF1956A007D67E6 /* SocketEngineSpec.swift in Sources */,
 				C0A190DD1ABF53A100BED648 /* KeychainItemWrapper.m in Sources */,
 				C0A192FE1ABF744300BED648 /* TLQRImageModal.swift in Sources */,
 				C0A1911F1ABF53A100BED648 /* TLAddressListViewController.swift in Sources */,
@@ -1332,6 +1450,8 @@
 				C0A1911A1ABF53A100BED648 /* UIViewController+Extras.swift in Sources */,
 				C0A191191ABF53A100BED648 /* UIView+FormScroll.swift in Sources */,
 				C0A190C51ABF53A100BED648 /* NSData+Hash.m in Sources */,
+				C04A61061CF1956A007D67E6 /* SocketAnyEvent.swift in Sources */,
+				C04A61161CF1956A007D67E6 /* SocketTypes.swift in Sources */,
 				C0A190C71ABF53A100BED648 /* NSString+Base58.m in Sources */,
 				C0A1912B1ABF53A100BED648 /* TLSettingsViewController.swift in Sources */,
 				C0C1BE791AF92CB500B705C4 /* NSData+SRB64Additions.m in Sources */,
@@ -1345,9 +1465,11 @@
 				C0A190F11ABF53A100BED648 /* TLCoin.swift in Sources */,
 				C0A1911B1ABF53A100BED648 /* UIViewController+Style.swift in Sources */,
 				C0A190D51ABF53A100BED648 /* IASKPSSliderSpecifierViewCell.m in Sources */,
+				C04A61171CF1956A007D67E6 /* String.swift in Sources */,
 				C0A190CF1ABF53A100BED648 /* IASKSpecifierValuesViewController.m in Sources */,
 				F3BC36111B8681FF00CBB3F7 /* TLUpdateAppData.swift in Sources */,
 				C0AD2C591AC3DE3200FEF982 /* TLBlockrAPI.swift in Sources */,
+				C04A61071CF1956A007D67E6 /* SocketEngine.swift in Sources */,
 				C0A18F941ABF51C200BED648 /* AppDelegate.swift in Sources */,
 				C004134A1ACEFAF200505F31 /* TLOperationsManager.swift in Sources */,
 				C0A190C11ABF53A100BED648 /* BRKey+BIP38.m in Sources */,
@@ -1355,8 +1477,12 @@
 				C0A193091ABF744E00BED648 /* TLBitcoinListener.swift in Sources */,
 				C0A192F91ABF744300BED648 /* TLColors.swift in Sources */,
 				C0A190E31ABF53A100BED648 /* QR_Encode.cpp in Sources */,
+				C04A61031CF1956A007D67E6 /* NSCharacterSet.swift in Sources */,
+				C04A610E1CF1956A007D67E6 /* SocketIOClient.swift in Sources */,
 				C0A190CE1ABF53A100BED648 /* IASKAppSettingsWebViewController.m in Sources */,
+				C04A61081CF1956A007D67E6 /* SocketEngineClient.swift in Sources */,
 				C0A193161ABF74A700BED648 /* TLAddressTableViewCell.swift in Sources */,
+				C04A61121CF1956A007D67E6 /* SocketLogger.swift in Sources */,
 				C0A6AD751C42E80F00B8C22B /* TLLinksViewController.swift in Sources */,
 				C0A190E51ABF53A100BED648 /* QREncoder.mm in Sources */,
 				C0A191281ABF53A100BED648 /* TLQRCodeScannerViewController.swift in Sources */,
@@ -1365,6 +1491,7 @@
 				C0A191211ABF53A100BED648 /* TLHelpViewController.swift in Sources */,
 				C0F278C81C41EA1A0013DC1A /* TLCurrencyFormat.swift in Sources */,
 				C0A190EF1ABF53A100BED648 /* TLAccounts.swift in Sources */,
+				C04A61151CF1956A007D67E6 /* SocketStringReader.swift in Sources */,
 				C0A190F21ABF53A100BED648 /* TLCoreBitcoinWrapper.swift in Sources */,
 				C0A190EA1ABF53A100BED648 /* UINavigationBar+FixedHeightWhenStatusBarHidden.m in Sources */,
 				C0A193111ABF744E00BED648 /* TLStealthWebSocket.swift in Sources */,
@@ -1384,11 +1511,13 @@
 				C0A193101ABF744E00BED648 /* TLStealthServerAPI.swift in Sources */,
 				C0B4E7891AFAAEA200DC9B65 /* SRWebSocket+Helpers.m in Sources */,
 				C0A190C21ABF53A100BED648 /* BRKey.m in Sources */,
+				C04A61091CF1956A007D67E6 /* SocketEnginePacketType.swift in Sources */,
 				C0A190EE1ABF53A100BED648 /* TLAccountObject.swift in Sources */,
 				C0A191241ABF53A100BED648 /* TLManageAccountsViewController.swift in Sources */,
 				C0A193151ABF74A700BED648 /* TLAccountTableViewCell.swift in Sources */,
 				C0A190E91ABF53A100BED648 /* UIAlertConrtoller+Blocks.m in Sources */,
 				C0A191291ABF53A100BED648 /* TLReceiveViewController.swift in Sources */,
+				C04A610C1CF1956A007D67E6 /* SocketEngineWebsocket.swift in Sources */,
 				C0C61C5E1AF15E6100F9F71F /* TransparentViewController.swift in Sources */,
 				C0A192FB1ABF744300BED648 /* TLNotificationEvents.swift in Sources */,
 				F3DAAD661BB1D9EC000488F0 /* TLWalletJSONKeys.swift in Sources */,
@@ -1397,8 +1526,10 @@
 				C0A190F51ABF53A100BED648 /* TLImportedAddresses.swift in Sources */,
 				C0607FCD1AEEB3CD007203F8 /* TLStealthServerConfig.swift in Sources */,
 				C0A190DF1ABF53A100BED648 /* LTHKeychainUtils.m in Sources */,
+				C04A61141CF1956A007D67E6 /* SocketParsable.swift in Sources */,
 				C0A190FB1ABF53A100BED648 /* TLSuggestions.swift in Sources */,
 				C0A190F71ABF53A100BED648 /* TLSendFormData.swift in Sources */,
+				C04A61051CF1956A007D67E6 /* SocketAckManager.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -1412,47 +1543,70 @@
 				C0A1931E1ABF81DD00BED648 /* TLMacros.swift in Sources */,
 				C0A193271ABF82A300BED648 /* TLBlockchainStatus.swift in Sources */,
 				C0A193201ABF824800BED648 /* TLWalletUtils.swift in Sources */,
+				C04A61231CF19624007D67E6 /* SocketEngineSpec.swift in Sources */,
 				C0A193361ABF82EA00BED648 /* TLExchangeRate.swift in Sources */,
 				C004134B1ACEFCB700505F31 /* TLOperationsManager.swift in Sources */,
 				C0A193321ABF82E200BED648 /* TLBitcoinListener.swift in Sources */,
 				C0A1932A1ABF82AC00BED648 /* TLImportedAddresses.swift in Sources */,
 				F34D5C601B7A2C0100DF37DC /* TLCrypto.swift in Sources */,
+				C04A612C1CF19635007D67E6 /* SocketStringReader.swift in Sources */,
 				C0A193331ABF82E400BED648 /* TLBlockchainAPI.swift in Sources */,
+				C04A612E1CF1963B007D67E6 /* String.swift in Sources */,
 				F3F1651B1BB1DB7F00F1293A /* TLWalletJSONKeys.swift in Sources */,
 				C03ECBF71B54A104005D4B0F /* TLStringLocalized.swift in Sources */,
 				C0A1932B1ABF82AF00BED648 /* TLSelectedObject.swift in Sources */,
+				C04A611A1CF19603007D67E6 /* SocketIOClient.swift in Sources */,
 				C0A1932D1ABF82B300BED648 /* TLSpaghettiGodSend.swift in Sources */,
 				C0F278C91C41EAF90013DC1A /* TLCurrencyFormat.swift in Sources */,
 				C0A1933A1ABF82F300BED648 /* TLStealthServerAPI.swift in Sources */,
+				C04A61241CF19625007D67E6 /* SocketEngineWebsocket.swift in Sources */,
 				C0A193251ABF829E00BED648 /* TLAccountObject.swift in Sources */,
+				C04A611B1CF1960F007D67E6 /* NSCharacterSet.swift in Sources */,
+				C04A61271CF1962D007D67E6 /* SocketIOClientSpec.swift in Sources */,
 				C0607FCE1AEEB716007203F8 /* TLStealthServerConfig.swift in Sources */,
+				C04A61281CF1962E007D67E6 /* SocketIOClientStatus.swift in Sources */,
 				C0A193301ABF82BB00BED648 /* TLTxObject.swift in Sources */,
 				C0A193391ABF82F100BED648 /* TLStealthWebSocket.swift in Sources */,
 				C0E5393E1AD4555C00651FE4 /* TLHelpDoc.swift in Sources */,
+				C04A611F1CF19618007D67E6 /* SocketEngine.swift in Sources */,
 				C0A1931F1ABF822000BED648 /* TLHDWalletWrapper.swift in Sources */,
 				C0A18FAA1ABF51C200BED648 /* ArcBitTests.swift in Sources */,
+				C04A61291CF19630007D67E6 /* SocketLogger.swift in Sources */,
+				C04A612F1CF1963D007D67E6 /* SwiftRegex.swift in Sources */,
 				C0A193241ABF829C00BED648 /* TLPreferences.swift in Sources */,
 				C0A193381ABF82EF00BED648 /* TLNetworking.swift in Sources */,
+				C04A612B1CF19633007D67E6 /* SocketParsable.swift in Sources */,
 				C0A1932E1ABF82B700BED648 /* TLStealthWallet.swift in Sources */,
+				C04A61251CF19628007D67E6 /* SocketEventHandler.swift in Sources */,
 				F3BC360F1B8681A300CBB3F7 /* TLWalletPassphrase.swift in Sources */,
+				C04A611C1CF19611007D67E6 /* SocketAckEmitter.swift in Sources */,
+				C04A61211CF1961D007D67E6 /* SocketEnginePacketType.swift in Sources */,
 				F37072481B8F57810026505D /* TLWalletConfig.swift in Sources */,
+				C04A611D1CF19613007D67E6 /* SocketAckManager.swift in Sources */,
 				C0C3BDED1AC11BD2001AC6CD /* TLWallet+Stealth.swift in Sources */,
 				C0A1931C1ABF81CB00BED648 /* TLStealthAddress.swift in Sources */,
 				C0A1931A1ABF751800BED648 /* BreadWalletTests.m in Sources */,
+				C04A61221CF1961F007D67E6 /* SocketEnginePollable.swift in Sources */,
+				C04A612A1CF19631007D67E6 /* SocketPacket.swift in Sources */,
+				C04A612D1CF19636007D67E6 /* SocketTypes.swift in Sources */,
 				F3BC36121B8681FF00CBB3F7 /* TLUpdateAppData.swift in Sources */,
 				C0A193291ABF82AA00BED648 /* TLImportedAddress.swift in Sources */,
 				C0A193341ABF82E600BED648 /* TLBlockExplorerAPI.swift in Sources */,
 				C0AD2C5A1AC3DED100FEF982 /* TLBlockrAPI.swift in Sources */,
 				C0A1933E1ABF830000BED648 /* TLNotificationEvents.swift in Sources */,
+				C04A611E1CF19616007D67E6 /* SocketAnyEvent.swift in Sources */,
 				C0A193311ABF82BD00BED648 /* TLWallet.swift in Sources */,
 				C0A193261ABF82A100BED648 /* TLAccounts.swift in Sources */,
 				C05C398C1AD0712B00AADE55 /* TLCloudDocumentSyncWrapper.m in Sources */,
 				C0A193231ABF829A00BED648 /* TLAnalytics.swift in Sources */,
 				C0A1932F1ABF82B900BED648 /* TLSuggestions.swift in Sources */,
+				C04A61261CF1962B007D67E6 /* SocketIOClientOption.swift in Sources */,
+				C04A61201CF1961A007D67E6 /* SocketEngineClient.swift in Sources */,
 				C0A1932C1ABF82B100BED648 /* TLSendFormData.swift in Sources */,
 				C0AD2C5B1AC4DF7700FEF982 /* TLUtils.swift in Sources */,
 				C0A193211ABF825700BED648 /* TLCoreBitcoinWrapper.swift in Sources */,
 				C0A193371ABF82EC00BED648 /* TLInsightAPI.swift in Sources */,
+				C04A61301CF19640007D67E6 /* WebSocket.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
