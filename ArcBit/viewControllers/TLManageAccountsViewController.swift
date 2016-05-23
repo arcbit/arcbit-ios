@@ -1225,6 +1225,12 @@ import UIKit
                             
                             AppDelegate.instance().pendingOperations.addSetUpAccountOperation(accountObject, fetchDataAgain: true, success: {
                                 self.refreshWalletAccounts(false)
+                                
+                                TLStealthExplorerAPI.instance().lookupTx(paymentAddress!, txid: txid, success: { (jsonData: AnyObject!) -> () in
+                                    DLog("lookupTx success %@", function: jsonData.description)
+                                }) { (code: Int, status: String!) -> () in
+                                    DLog("lookupTx failure code: \(code) \(status)")
+                                }
                             })
                         } else {
                             TLHUDWrapper.hideHUDForView(self.view, animated: true)
