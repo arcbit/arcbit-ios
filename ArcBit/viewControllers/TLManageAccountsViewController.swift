@@ -1226,7 +1226,7 @@ import UIKit
                             AppDelegate.instance().pendingOperations.addSetUpAccountOperation(accountObject, fetchDataAgain: true, success: {
                                 self.refreshWalletAccounts(false)
                                 
-                                TLStealthExplorerAPI.instance().lookupTx(paymentAddress!, txid: txid, success: { (jsonData: AnyObject!) -> () in
+                                TLStealthExplorerAPI.instance().lookupTx(accountObject.stealthWallet!.getStealthAddress(), txid: txid, success: { (jsonData: AnyObject!) -> () in
                                     DLog("lookupTx success %@", function: jsonData.description)
                                 }) { (code: Int, status: String!) -> () in
                                     DLog("lookupTx failure code: \(code) \(status)")
