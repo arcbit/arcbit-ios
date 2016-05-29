@@ -23,7 +23,10 @@ PODS:
   - CoreBitcoin (0.6.8.1):
     - ISO8601DateFormatter
     - OpenSSL-Universal (= 1.0.1.16)
+  - Crashlytics (3.7.0):
+    - Fabric (~> 1.6.3)
   - ECSlidingViewController (2.0.3)
+  - Fabric (1.6.7)
   - iCloudDocumentSync (7.4.1)
   - ISO8601DateFormatter (0.8)
   - MBProgressHUD (0.9.1)
@@ -34,7 +37,9 @@ PODS:
 DEPENDENCIES:
   - AFNetworking (= 2.5.3)
   - CoreBitcoin (from `https://raw.github.com/oleganza/CoreBitcoin/master/CoreBitcoin.podspec`)
+  - Crashlytics
   - ECSlidingViewController (~> 2.0.3)
+  - Fabric
   - iCloudDocumentSync
   - MBProgressHUD (~> 0.9)
   - RNCryptor (= 2.2)
@@ -47,7 +52,9 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
   CoreBitcoin: 4ac6f6a61e543f08399c2fe57496d4fdcbaf74f9
+  Crashlytics: c3a2333dea9e2733d2777f730910321fc9e25c0d
   ECSlidingViewController: 6485c14f23b4487e9946535421ca8f111f86cc53
+  Fabric: caf7580c725e64db144f610ac65cd60956911dc7
   iCloudDocumentSync: 961aac30ca09c221de4c236e94dae69912f2c589
   ISO8601DateFormatter: 4551b6ce4f83185425f583b0b3feb3c7b59b942c
   MBProgressHUD: c47f2c166c126cf2ce36498d80f33e754d4e93ad
@@ -55,6 +62,6 @@ SPEC CHECKSUMS:
   RNCryptor: c68678461a2c7474a55db9a6a98834c22d51f535
   SwiftTryCatch: fb6d2b34abe48efd69578dac919293a44f95b481
 
-PODFILE CHECKSUM: 31de5531218514a95284f413c62e1481ca06d44f
+PODFILE CHECKSUM: 2d4cd5ec5971c8b5cc8ea72595c68371dda0536b
 
 COCOAPODS: 1.0.0
