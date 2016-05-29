@@ -23,6 +23,8 @@
 import Foundation
 import UIKit
 import AVFoundation
+import Fabric
+import Crashlytics
 
 @UIApplicationMain
 @objc(AppDelegate) class AppDelegate: UIResponder, UIApplicationDelegate, LTHPasscodeViewControllerDelegate {
@@ -321,6 +323,8 @@ import AVFoundation
     }
 
     func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
+        Fabric.with([Crashlytics.self])
+        
         AFNetworkActivityIndicatorManager.sharedManager().enabled = true
 
         self.window!.backgroundColor = TLColors.mainAppColor()

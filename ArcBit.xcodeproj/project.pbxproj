@@ -1146,6 +1146,7 @@
 				C0878BE81AF4A11B002A4F5A /* ShellScript */,
 				6ABB43AFCFDF0A2994449960 /* 📦 Embed Pods Frameworks */,
 				B6B36DF9BC602A37C9711298 /* 📦 Copy Pods Resources */,
+				C0698B451CFB7D4900115062 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1370,6 +1371,19 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-ArcBit/Pods-ArcBit-resources.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		C0698B451CFB7D4900115062 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Fabric/run\" 24ecfd2fbad3162671908399854ab3e9ddba0710 fdc29481dd35a8aa6ec132c294cff185a7211174fff8b1803540ff4e64d5b24a";
 		};
 		C0878BE81AF4A11B002A4F5A /* ShellScript */ = {
 			isa = PBXShellScriptBuildPhase;
