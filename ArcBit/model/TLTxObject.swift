@@ -189,8 +189,10 @@ import Foundation
     
     func getConfirmations() -> UInt64 {
         //TODO: specific to insight api, later dont use confirmations but block_height for all apis
-        if (txDict.objectForKey("confirmations") as! NSNumber? != nil) {
-            return UInt64((txDict.objectForKey("confirmations") as! NSNumber).longLongValue)
+        if (txDict.objectForKey("confirmations") as? NSNumber? != nil) {
+            if let conf:NSNumber = txDict.objectForKey("confirmations") as? NSNumber {
+                return UInt64(conf.longLongValue)
+            }
         }
         
         if (txDict.objectForKey("block_height") != nil && (txDict.objectForKey("block_height") as! NSNumber).unsignedLongLongValue > 0) {
