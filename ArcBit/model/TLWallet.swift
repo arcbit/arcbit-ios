@@ -89,13 +89,13 @@ class TLWallet {
                 return account
             }
             
+            let extendedPublicKey = account.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PUBLIC_KEY) as! String
             //create initial receiving address
             for (var i = 0; i < TLAccountObject.MAX_ACCOUNT_WAIT_TO_RECEIVE_ADDRESS(); i++) {
                 let mainAddressDict = NSMutableDictionary()
                 let mainAddressIdx = i
                 let mainAddressSequence = [TLAddressType.Main.rawValue, (mainAddressIdx)]
                 
-                let extendedPublicKey = account.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PUBLIC_KEY) as! String
                 let address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: mainAddressSequence, isTestnet: self.walletConfig.isTestnet)
                 mainAddressDict.setObject(address, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS)
                 mainAddressDict.setObject(TLAddressStatus.Active.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS)
@@ -108,7 +108,6 @@ class TLWallet {
             let changeAddressIdx = 0
             let changeAddressSequence = [TLAddressType.Change.rawValue, changeAddressIdx]
             
-            let extendedPublicKey = account.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PUBLIC_KEY) as! String
             let address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: changeAddressSequence, isTestnet: self.walletConfig.isTestnet)
             changeAddressDict.setObject(address, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS)
             changeAddressDict.setObject(TLAddressStatus.Active.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS)

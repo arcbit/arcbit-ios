@@ -50,7 +50,7 @@ import Foundation
     private var txidToAccountAmountDict = [String:TLCoin]()
     private var txidToAccountAmountTypeDict = [String:Int]()
     private var receivingAddressesArray = [String]()
-    private var processedTxDict = [String:Bool]()
+    private var processedTxSet:NSMutableSet = NSMutableSet()
     private var accountType: TLAccountType?
     private var accountBalance = TLCoin.zero()
     private var totalUnspentOutputsSum: TLCoin?
@@ -423,7 +423,7 @@ import Foundation
     }
     
     func processNewTx(txObject: TLTxObject) -> TLCoin? {
-        if (processedTxDict[txObject.getHash()! as String] != nil) {
+        if (processedTxSet.containsObject(txObject.getHash()!)) {
             return nil
         }
         
@@ -439,7 +439,7 @@ import Foundation
     }
     
     private func processTx(txObject: TLTxObject, shouldCheckToAddressesNTxsCount: Bool, shouldUpdateAccountBalance: Bool) -> TLCoin? {
-        processedTxDict[txObject.getHash()! as String] = true
+        processedTxSet.addObject(txObject.getHash()!)
         var currentTxSubtract:UInt64 = 0
         var currentTxAdd:UInt64 = 0
         
@@ -452,11 +452,9 @@ import Foundation
         for _output in outputAddressToValueArray! {
             let output = _output as! NSDictionary
             
-            let value:UInt64
+            var value:UInt64 = 0
             if let v = output.objectForKey("value") as? NSNumber {
                 value = UInt64(v.unsignedLongLongValue)
-            } else {
-                value = 0
             }
             
             if let address = output.objectForKey("addr") as? String {
@@ -492,11 +490,9 @@ import Foundation
         for _input in inputAddressToValueArray! {
             let input = _input as! NSDictionary
             
-            let value:UInt64
+            var value:UInt64 = 0
             if let v = input.objectForKey("value") as? NSNumber {
                 value = UInt64(v.unsignedLongLongValue)
-            } else {
-                value = 0
             }
 
             if let address = input.objectForKey("addr") as? String {

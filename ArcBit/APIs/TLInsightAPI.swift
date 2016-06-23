@@ -91,7 +91,7 @@ class TLInsightAPI {
         let url = NSURL(string: endPoint, relativeToURL: NSURL(string: self.baseURL))!
         
         let jsonData: AnyObject? = self.networking.httpGETSynchronous(url, parameters: parameters)
-        
+
         if ((jsonData as! NSDictionary).objectForKey(TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) != nil) {
             return jsonData as! NSDictionary
         }
@@ -124,9 +124,6 @@ class TLInsightAPI {
         self.networking.httpGET(url, parameters: parameters,
             success: {
                 (jsonData: AnyObject!) in
-                if ((jsonData as! NSDictionary).objectForKey(TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) != nil) {
-                    success(jsonData as! NSDictionary)
-                }
  
                 let txs = (jsonData as! NSDictionary).objectForKey("items") as! NSArray
                 let to = ((jsonData as! NSDictionary).objectForKey("to") as! NSNumber)

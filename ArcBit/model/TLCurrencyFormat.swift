@@ -40,11 +40,6 @@ class TLCurrencyFormat {
     }
     
     private class func amountStringToCoin(amount: String, bitcoinDenomination: TLBitcoinDenomination, locale: NSLocale) -> TLCoin {
-        let bitcoinFormatter = NSNumberFormatter()
-        bitcoinFormatter.numberStyle = .DecimalStyle
-        bitcoinFormatter.maximumFractionDigits = 8
-        bitcoinFormatter.locale = locale
-        
         if amount.characters.count != 0 {
             if let _ = amount.rangeOfCharacterFromSet(NSCharacterSet(charactersInString: "0123456789.,").invertedSet) {
                 return TLCoin.zero()

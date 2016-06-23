@@ -37,7 +37,7 @@ import Foundation
     private var txObjectArray:NSMutableArray?
     private var txidToAccountAmountDict:NSMutableDictionary?
     private var txidToAccountAmountTypeDict:NSMutableDictionary?
-    private var processedTxDict:NSMutableDictionary?
+    private var processedTxSet:NSMutableSet?
     private var privateKey:String?
     private var importedAddress:String?
     var downloadState:TLDownloadState = .NotDownloading
@@ -48,7 +48,7 @@ import Foundation
         addressDict = NSMutableDictionary(dictionary:dict)
         importedAddress = addressDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String?
         unspentOutputs = NSMutableArray()
-        processedTxDict = NSMutableDictionary()
+        processedTxSet = NSMutableSet()
         if (addressDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_KEY) != nil) {
             self.watchOnly = false
         } else {
@@ -222,7 +222,7 @@ import Foundation
     
     
     func processNewTx(txObject: TLTxObject) -> TLCoin? {
-        if (processedTxDict!.objectForKey(txObject.getHash()!) != nil) {
+        if (processedTxSet!.containsObject(txObject.getHash()!)) {
             // happens when you send coins to the same account, so you get the same tx from the websockets more then once
             return nil
         }
@@ -245,17 +245,15 @@ import Foundation
     }
     
     private func processTx(txObject: TLTxObject, shouldUpdateAccountBalance: Bool) -> (Bool, TLCoin?) {
-        processedTxDict!.setObject("", forKey:txObject.getHash()!)
+        processedTxSet!.addObject(txObject.getHash()!)
         var currentTxSubtract:UInt64 = 0
         var currentTxAdd:UInt64 = 0
         var doesTxInvolveAddress = false
         let ouputAddressToValueArray = txObject.getOutputAddressToValueArray()
         for output in ouputAddressToValueArray as! [NSDictionary] {
-            let value:UInt64
+            var value:UInt64 = 0;
             if let v = output.objectForKey("value") as? NSNumber {
                 value = UInt64(v.unsignedLongLongValue)
-            } else {
-                value = 0
             }
             let address = output.objectForKey("addr") as? String
             if (address != nil && address == importedAddress) {
@@ -266,11 +264,9 @@ import Foundation
         
         let inputAddressToValueArray = txObject.getInputAddressToValueArray()
         for input in inputAddressToValueArray as! [NSDictionary] {
-            let value:UInt64
+            var value:UInt64 = 0;
             if let v = input.objectForKey("value") as? NSNumber {
                 value = UInt64(v.unsignedLongLongValue)
-            } else {
-                value = 0
             }
             let address = input.objectForKey("addr") as? String
             if (address != nil && address == importedAddress) {
