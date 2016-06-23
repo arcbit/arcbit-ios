@@ -829,6 +829,17 @@ class TLWallet {
         NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
+    func getLabelForAddress(address: String) -> String? { //if duplicate labels return first one
+        let addressBookArray = getCurrentWallet().objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS_BOOK) as! NSMutableArray
+        for (var i = 0; i < addressBookArray.count; i++) {
+            let addressBook: NSDictionary = addressBookArray.objectAtIndex(i) as! NSDictionary
+            if address == addressBook.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String {
+                return addressBook.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL) as! String
+            }
+        }
+        return nil
+    }
+    
     func editAddressBookEntry(index: Int, label: String) -> () {
         let addressBookArray = getCurrentWallet().objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS_BOOK) as! NSMutableArray
         let oldEntry = addressBookArray.objectAtIndex(index) as! NSDictionary

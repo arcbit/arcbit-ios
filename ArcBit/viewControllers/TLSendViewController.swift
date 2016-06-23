@@ -652,6 +652,7 @@ import UIKit
                             NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_SEND_PAYMENT(),
                                 object: nil, userInfo: nil)
                         }
+
                         TLPushTxAPI.instance().sendTx(txHex!, txHash: txHash!, toAddress: toAddress!, success: {
                             (jsonData: AnyObject!) in
                             DLog("showPromptReviewTx pushTx: success %@", function: jsonData)
@@ -665,7 +666,10 @@ import UIKit
                                     NSException(name: "API Error", reason:"txid return does not match txid in app", userInfo:nil).raise()
                                 }
                             }
-
+                            
+                            if let label = AppDelegate.instance().appWallet.getLabelForAddress(toAddress!) {
+                                AppDelegate.instance().appWallet.setTransactionTag(txHash!, tag: label)
+                            }
                             handlePushTxSuccess()
                             
                         }, failure: {
