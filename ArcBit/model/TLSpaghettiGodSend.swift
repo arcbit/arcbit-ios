@@ -345,8 +345,6 @@
                                 "script": TLWalletUtils.hexStringToData(outputScript)!,
                                 "private_key": accountObject.stealthWallet!.getPaymentAddressPrivateKey(address!)!])
                             
-                            let txid = unspentOutput.objectForKey("tx_hash_big_endian") as! String
-
                             unspentOutputsUsingCount++
                             if (valueSelected.greaterOrEqual(valueNeeded) && unspentOutputsUsingCount > 12) {
                                 // limit amount of stealth payment unspent outputs to use

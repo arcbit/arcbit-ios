@@ -71,14 +71,6 @@ import Crashlytics
         return UIApplication.sharedApplication().delegate as! (AppDelegate)
     }
     
-    private func getSendFromType() -> TLSendFromType {
-        return TLPreferences.getSendFromType()
-    }
-    
-    private func getSendFromIndex() -> Int {
-        return Int(TLPreferences.getSendFromIndex())
-    }
-    
     func aAccountNeedsRecovering() -> Bool {
         for (var i = 0; i < AppDelegate.instance().accounts!.getNumberOfAccounts();  i++) {
             let accountObject = AppDelegate.instance().accounts!.getAccountObjectForIdx(i)
