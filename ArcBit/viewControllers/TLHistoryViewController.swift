@@ -234,7 +234,7 @@ import CoreData
         cell!.descriptionLabel!.adjustsFontSizeToFitWidth = true
         if (amountType == .Send) {
             amountTypeString = "-"
-            cell!.amountButton!.backgroundColor = UIColor.redColor()
+            cell!.amountButton!.backgroundColor = UIColor.init(colorLiteralRed: 254/255.0, green: 46/255.0, blue: 46/255.0, alpha: 1)
             if txTag == nil || txTag == "" {
                 let outputAddressToValueArray = txObject!.getOutputAddressToValueArray()
                 for _dict in outputAddressToValueArray! {
