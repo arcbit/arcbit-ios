@@ -135,26 +135,30 @@ import Foundation
                     return false
                 }
                 
-                self.socket!.emit("subscribe", address)
+                //DLog("socketio emit address: %@", function: address)
+                self.socket!.emit("unsubscribe", "bitcoind/addresstxid", [address])
+                self.socket!.emit("subscribe", "bitcoind/addresstxid", [address])
                 
-                self.socket!.on(address) {data, ack in
+                self.socket!.on("bitcoind/addresstxid") {data, ack in
                     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
+                        //DLog("socketio on data: %@", function: data)
                         let dataArray = data as NSArray
-                        let firstObject: AnyObject? = dataArray.firstObject
-                
-                        let txHash = firstObject!.debugDescription ?? ""
-                        DLog("socketio on address: %@", function: address)
-                        DLog("socketio transaction: %@", function: txHash)
-                        
-                        //TODO: temp solution, ask Insight devs to get all tx data in websockets API
-                        TLBlockExplorerAPI.instance().getTx(txHash, success: {
-                            (txDict: AnyObject?) in
-                            if txDict != nil {
-                                NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_NEW_UNCONFIRMED_TRANSACTION(), object: txDict!, userInfo: nil)
-                            }
-                            }, failure: {
-                                (code: NSInteger, status: String!) in
-                        })
+                        let dataDictionary = dataArray.firstObject as! NSDictionary
+                        let addr = dataDictionary["address"] as! String
+                        //bad api design, this on is not address specific, will call for every subscribe address
+                        if (addr == address) {
+                            let txHash = dataDictionary["txid"] as! String
+                            //DLog("socketio on address: %@", function: addr)
+                            //DLog("socketio transaction: %@", function: txHash)
+                            TLBlockExplorerAPI.instance().getTx(txHash, success: {
+                                (txDict: AnyObject?) in
+                                if txDict != nil {
+                                    NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_NEW_UNCONFIRMED_TRANSACTION(), object: txDict!, userInfo: nil)
+                                }
+                                }, failure: {
+                                    (code: NSInteger, status: String!) in
+                            })
+                        }
                     }
                 }
                 return true
