@@ -297,8 +297,6 @@ import Foundation
             txidToAccountAmountTypeDict!.setObject(TLAccountTxType.MoveBetweenAccount.rawValue, forKey:txObject.getHash()!)
             receivedAmount = nil
         }
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_IMPORTED_ADDRESS_BALANCE_UPDATED()
-            ,object:importedAddress, userInfo:nil)
         
         return (doesTxInvolveAddress, receivedAmount)
     }

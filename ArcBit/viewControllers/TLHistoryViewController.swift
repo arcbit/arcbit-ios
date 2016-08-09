@@ -110,10 +110,6 @@ import CoreData
         self.refreshSelectedAccount(true)
         accountRefreshControl!.endRefreshing()
     }
-
-    func refreshSelectedAccountAgain() {
-        self.refreshSelectedAccount(true)
-    }
     
     private func refreshSelectedAccount(fetchDataAgain: Bool) {
         if (!AppDelegate.instance().historySelectedObject!.hasFetchedCurrentFromData() || fetchDataAgain) {

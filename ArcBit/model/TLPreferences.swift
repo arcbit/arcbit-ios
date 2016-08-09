@@ -168,8 +168,6 @@ class TLPreferences
     class func setBlockExplorerAPI(blockexplorerIdx:String) -> () {
         NSUserDefaults.standardUserDefaults().setObject(blockexplorerIdx ,forKey:CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API)
         NSUserDefaults.standardUserDefaults().synchronize()
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_PREFERENCES_BLOCKEXPLORER_API_CHANGED(),
-            object:nil, userInfo:nil)
     }
     
     class func getBlockExplorerURL(blockExplorer:TLBlockExplorer) -> (String?) {

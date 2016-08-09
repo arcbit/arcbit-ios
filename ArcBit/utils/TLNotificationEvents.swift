@@ -29,10 +29,8 @@ class TLNotificationEvents {
     class func EVENT_ADDRESS_SELECTED() -> String { return "event.address.selected"}
     class func EVENT_PREFERENCES_FIAT_DISPLAY_CHANGED() -> String { return "pref.fiatcurrencychanged"}
     class func EVENT_PREFERENCES_BITCOIN_DISPLAY_CHANGED() -> String { return "pref.bitcoindisplaychanged"}
-    class func EVENT_PREFERENCES_BLOCKEXPLORER_API_CHANGED() -> String { return "pref.blockexplorerchanged"}
     class func EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED() -> String { return "pref.displaylocalcurrencychanged"}
     class func EVENT_ADVANCE_MODE_TOGGLED() -> String { return "pref.advancemode"}
-    class func EVENT_IMPORTED_ADDRESS_BALANCE_UPDATED() -> String { return "api.address.balance.updated"}
     class func EVENT_FETCHED_ADDRESS() -> String { return "api.address"}
     class func EVENT_FETCHED_ADDRESSES_DATA() -> String { return "api.multiaddress"}
     class func EVENT_NEW_UNCONFIRMED_TRANSACTION() -> String { return "api.newunconfirmedtx"}

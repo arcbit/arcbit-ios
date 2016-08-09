@@ -258,18 +258,6 @@ import UIKit
         }
     }
     
-    private func updateAccountCellWithAccountID(accountIdxNumber: Int) {
-        let accountObject = AppDelegate.instance().accounts!.getAccountObjectForAccountIdxNumber(accountIdxNumber)
-        let accountIdx = AppDelegate.instance().accounts!.getIdxForAccountObject(accountObject)
-        let indexPath = NSIndexPath(forRow: accountIdx, inSection: accountListSection)
-        
-        if let cell = self.accountsTableView!.cellForRowAtIndexPath(indexPath) as? TLAccountTableViewCell {
-            let balance = TLCurrencyFormat.getProperAmount(accountObject.getBalance())
-            cell.accountBalanceButton!.setTitle(balance as String, forState: .Normal)
-            cell.accountNameLabel!.text = (accountObject.getAccountName())
-        }
-    }
-    
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }

@@ -385,33 +385,6 @@ import UIKit
         (cell.accessoryView! as! UIActivityIndicatorView).hidden = true
     }
 
-    private func promptForTempararyImportExtendedPrivateKey(success: TLWalletUtils.SuccessWithString, error: TLWalletUtils.ErrorWithString) -> () {
-        UIAlertController.showAlertInViewController(self,
-            withTitle: "Account private key missing".localized,
-                message: "Do you want to temporary import your account private key?".localized,
-                cancelButtonTitle: "NO".localized,
-            destructiveButtonTitle: nil,
-                otherButtonTitles: ["YES".localized],
-
-            tapBlock: {(alertView, action, buttonIndex) in
-                
-                if (buttonIndex == alertView.firstOtherButtonIndex) {
-
-                AppDelegate.instance().showExtendedPrivateKeyReaderController(self, success: {
-                    (data: String!) in
-                    success(data)
-
-                }, error: {
-                    (data: String?) in
-                    error(data)
-                })
-
-            } else if (buttonIndex == alertView.cancelButtonIndex) {
-                error("")
-            }
-        })
-    }
-
     private func promtForLabel(success: TLPrompts.UserInputCallback, failure: TLPrompts.Failure) -> () {
         func addTextField(textField: UITextField!){
             textField.placeholder = "label".localized
