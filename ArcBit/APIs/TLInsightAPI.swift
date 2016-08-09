@@ -86,7 +86,7 @@ class TLInsightAPI {
     func getAddressesInfoSynchronous(addressArray: Array<String>, txCountFrom: Int=0, allTxs: NSMutableArray=[]) -> NSDictionary {
         let endPoint = String(format: "%@%@%@", "api/addrs/", addressArray.joinWithSeparator(","), "/txs")
         
-        let parameters = ["from":txCountFrom]
+        let parameters = ["from":txCountFrom, "to":txCountFrom+50]
 
         let url = NSURL(string: endPoint, relativeToURL: NSURL(string: self.baseURL))!
         
@@ -117,7 +117,7 @@ class TLInsightAPI {
     
     func getAddressesInfo(addressArray: Array<String>, txCountFrom: Int=0, allTxs: NSMutableArray=[], success: TLNetworking.SuccessHandler, failure: TLNetworking.FailureHandler) {
         let endPoint = String(format: "%@%@%@", "api/addrs/", addressArray.joinWithSeparator(","), "/txs")
-        let parameters = ["from":txCountFrom]
+        let parameters = ["from":txCountFrom, "to":txCountFrom+50]
 
         let url = NSURL(string: endPoint, relativeToURL: NSURL(string: self.baseURL))!
         
