@@ -378,9 +378,7 @@ import UIKit
         if (TLSendFormData.instance().getAmount() != nil) {
             self.amountTextField!.text = TLSendFormData.instance().getAmount()!
             self.updateFiatAmountTextFieldExchangeRate(nil)
-        }
-        
-        if (TLSendFormData.instance().getFiatAmount() != nil) {
+        } else if (TLSendFormData.instance().getFiatAmount() != nil) {
             self.fiatAmountTextField!.text = TLSendFormData.instance().getFiatAmount()!
             self.updateAmountTextFieldExchangeRate(nil)
         }

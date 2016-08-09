@@ -229,7 +229,7 @@ class TLPreferences
     }
     
     class func resetStealthWebSocketPort() -> () {
-        self.setStealthServerPort(TLStealthServerConfig.instance().getWebSocketServerPort())
+        self.setStealthWebSocketPort(TLStealthServerConfig.instance().getWebSocketServerPort())
     }
     
     class func getInAppSettingsKitBlockExplorerAPI() -> (String?){

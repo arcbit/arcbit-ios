@@ -58,7 +58,7 @@ import UIKit
     
     private func promptAddToAddressBookActionSheet() -> () {
         UIAlertController.showAlertInViewController(self,
-            withTitle: "Input address".localized,
+            withTitle: "Create new contact".localized,
             message:"",
             preferredStyle: .ActionSheet,
             cancelButtonTitle: "Cancel".localized,

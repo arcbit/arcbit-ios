@@ -1018,7 +1018,7 @@ import UIKit
                     self.QRImageModal = TLQRImageModal(data: accountObject!.getExtendedPrivKey()!,
                         buttonCopyText: "Copy To Clipboard".localized, vc: self)
                     self.QRImageModal!.show()
-                    NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_EXTENDED_PUBLIC_KEY(),
+                    NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_EXTENDED_PRIVATE_KEY(),
                         object: accountObject, userInfo: nil)
                     
                 } else if (buttonIndex == VIEW_ADDRESSES_BUTTON_IDX) {
