@@ -1004,11 +1004,12 @@ import Foundation
                 addressToIdxDict.setObject(i, forKey: address)
             }
 
-            let jsonData = getAccountDataSynchronous(addresses,
-                shouldResetAccountBalance: shouldResetAccountBalance,
-                shouldProcessTxArray: false)
-                        
-            let addressesArray = jsonData!.objectForKey("addresses") as! NSArray
+            let jsonData = TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(addresses)
+            if (jsonData.objectForKey(TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) != nil) {
+                DLog("getAccountDataSynchronous error \(jsonData.description)")
+                NSException(name: "Network Error", reason: "HTTP Error", userInfo: nil).raise()
+            }
+            let addressesArray = jsonData.objectForKey("addresses") as! NSArray
             var balance:UInt64 = 0
             for _addressDict in addressesArray {
                 let addressDict = _addressDict as! NSDictionary
@@ -1066,11 +1067,12 @@ import Foundation
                 addressToIdxDict.setObject(i, forKey: address)
             }
             
-            let jsonData = getAccountDataSynchronous(addresses,
-                shouldResetAccountBalance: shouldResetAccountBalance,
-                shouldProcessTxArray: false)
-            
-            let addressesArray = jsonData!.objectForKey("addresses") as! NSArray
+            let jsonData = TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(addresses)
+            if (jsonData.objectForKey(TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) != nil) {
+                DLog("getAccountDataSynchronous error \(jsonData.description)")
+                NSException(name: "Network Error", reason: "HTTP Error", userInfo: nil).raise()
+            }
+            let addressesArray = jsonData.objectForKey("addresses") as! NSArray
             var balance:UInt64 = 0
             for _addressDict in addressesArray {
                 let addressDict = _addressDict as! NSDictionary
