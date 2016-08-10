@@ -46,8 +46,8 @@ class TLSendFormData {
     
     init() {
         self.address = nil
-        self.amount = "0"
-        self.fiatAmount = "0"
+        self.amount = nil
+        self.fiatAmount = nil
     }
     
     func setAddress(address:String?) -> () {

@@ -98,7 +98,7 @@ import UIKit
         if sendAmount.greater(TLCoin.zero()) {
             TLSendFormData.instance().setAmount(TLCurrencyFormat.coinToProperBitcoinAmountString(sendAmount))
         } else {
-            TLSendFormData.instance().setAmount("0")
+            TLSendFormData.instance().setAmount(nil)
         }
         TLSendFormData.instance().setFiatAmount(nil)
         self.updateSendForm()
@@ -364,7 +364,7 @@ import UIKit
     
     func _clearSendForm() {
         TLSendFormData.instance().setAddress(nil)
-        TLSendFormData.instance().setAmount("0")
+        TLSendFormData.instance().setAmount(nil)
         self.updateSendForm()
     }
     
@@ -498,7 +498,7 @@ import UIKit
     
     private func showPromptForTxFee() {
         func addTextField(textField: UITextField!){
-            textField.text = "0"
+            textField.text = nil
             textField.keyboardType = .DecimalPad
         }
         
@@ -839,7 +839,7 @@ import UIKit
             self.fiatAmountTextField!.text = TLExchangeRate.instance().fiatAmountStringFromBitcoin(currency,
                 bitcoinAmount: amount)
         } else {
-            self.fiatAmountTextField!.text = "0"
+            self.fiatAmountTextField!.text = nil
         }
     }
     
@@ -853,7 +853,7 @@ import UIKit
             let bitcoinAmount = TLExchangeRate.instance().bitcoinAmountFromFiat(currency, fiatAmount: fiatAmount!.doubleValue)
             self.amountTextField!.text = TLCurrencyFormat.coinToProperBitcoinAmountString(bitcoinAmount)
         } else {
-            self.amountTextField!.text = "0"
+            self.amountTextField!.text = nil
         }
     }
     
