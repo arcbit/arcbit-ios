@@ -254,13 +254,11 @@ import UIKit
             }
         }
         
-        self.accountBalanceLabel!.hidden = true
-        self.balanceActivityIndicatorView!.hidden = false
-        self.balanceActivityIndicatorView!.startAnimating()
-
         if (AppDelegate.instance().godSend!.getSelectedObjectType() == .Account) {
             let accountObject = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLAccountObject
-
+            self.balanceActivityIndicatorView!.hidden = false
+            self.accountBalanceLabel!.hidden = true
+            self.balanceActivityIndicatorView!.startAnimating()
             AppDelegate.instance().pendingOperations.addSetUpAccountOperation(accountObject, fetchDataAgain: fetchDataAgain, success: {
                 if accountObject.downloadState == .Downloaded {
                     self.accountBalanceLabel!.hidden = false
@@ -273,6 +271,9 @@ import UIKit
             
         } else if (AppDelegate.instance().godSend!.getSelectedObjectType() == .Address) {
             let importedAddress = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLImportedAddress
+            self.balanceActivityIndicatorView!.hidden = false
+            self.accountBalanceLabel!.hidden = true
+            self.balanceActivityIndicatorView!.startAnimating()
             AppDelegate.instance().pendingOperations.addSetUpImportedAddressOperation(importedAddress, fetchDataAgain: fetchDataAgain, success: {
                 if importedAddress.downloadState == .Downloaded {
                     self.accountBalanceLabel!.hidden = false

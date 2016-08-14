@@ -127,13 +127,11 @@ import UIKit
     
     private func refreshSelectedAccount(fetchDataAgain: Bool) {
         if (!AppDelegate.instance().receiveSelectedObject!.hasFetchedCurrentFromData() || fetchDataAgain) {
-            self.balanceActivityIndicatorView!.hidden = false
-            self.accountBalanceLabel!.hidden = true
-            self.balanceActivityIndicatorView!.startAnimating()
-
             if (AppDelegate.instance().receiveSelectedObject!.getSelectedObjectType() == .Account) {
                 let accountObject = AppDelegate.instance().receiveSelectedObject!.getSelectedObject() as! TLAccountObject
-
+                self.balanceActivityIndicatorView!.hidden = false
+                self.accountBalanceLabel!.hidden = true
+                self.balanceActivityIndicatorView!.startAnimating()
                 AppDelegate.instance().pendingOperations.addSetUpAccountOperation(accountObject, fetchDataAgain: fetchDataAgain, success: {
                     self.accountBalanceLabel!.hidden = false
                     self.balanceActivityIndicatorView!.stopAnimating()
@@ -145,7 +143,9 @@ import UIKit
                 
             } else if (AppDelegate.instance().receiveSelectedObject!.getSelectedObjectType() == .Address) {
                 let importedAddress = AppDelegate.instance().receiveSelectedObject!.getSelectedObject() as! TLImportedAddress
-                
+                self.balanceActivityIndicatorView!.hidden = false
+                self.accountBalanceLabel!.hidden = true
+                self.balanceActivityIndicatorView!.startAnimating()
                 AppDelegate.instance().pendingOperations.addSetUpImportedAddressOperation(importedAddress, fetchDataAgain: fetchDataAgain, success: {
                     self.accountBalanceLabel!.hidden = false
                     self.balanceActivityIndicatorView!.stopAnimating()

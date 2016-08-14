@@ -113,12 +113,11 @@ import CoreData
     
     private func refreshSelectedAccount(fetchDataAgain: Bool) {
         if (!AppDelegate.instance().historySelectedObject!.hasFetchedCurrentFromData() || fetchDataAgain) {
-            self.balanceActivityIndicatorView!.hidden = false
-            self.accountBalanceLabel!.hidden = true
-            self.balanceActivityIndicatorView!.startAnimating()
             if (AppDelegate.instance().historySelectedObject!.getSelectedObjectType() == .Account) {
                 let accountObject = AppDelegate.instance().historySelectedObject!.getSelectedObject() as! TLAccountObject
-
+                self.balanceActivityIndicatorView!.hidden = false
+                self.accountBalanceLabel!.hidden = true
+                self.balanceActivityIndicatorView!.startAnimating()
                 AppDelegate.instance().pendingOperations.addSetUpAccountOperation(accountObject, fetchDataAgain: fetchDataAgain, success: {
                     self.accountBalanceLabel!.hidden = false
                     self.balanceActivityIndicatorView!.stopAnimating()
@@ -130,7 +129,8 @@ import CoreData
                 
             } else if (AppDelegate.instance().historySelectedObject!.getSelectedObjectType() == .Address) {
                 let importedAddress = AppDelegate.instance().historySelectedObject!.getSelectedObject() as! TLImportedAddress
-
+                self.balanceActivityIndicatorView!.hidden = false
+                self.accountBalanceLabel!.hidden = true
                 AppDelegate.instance().pendingOperations.addSetUpImportedAddressOperation(importedAddress, fetchDataAgain: fetchDataAgain, success: {
                     self.accountBalanceLabel!.hidden = false
                     self.balanceActivityIndicatorView!.stopAnimating()
