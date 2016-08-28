@@ -48,10 +48,6 @@ import UIKit
     @IBOutlet private var fromLabel: UILabel?
     @IBOutlet private var tabBar: UITabBar?
     private var tapGesture: UITapGestureRecognizer?
-    private var beforeSendBalance: TLCoin? = nil
-    private var isShowingSendHUD = false
-    private var cachedDynamicFees: NSDictionary?
-    private var cachedDynamicFeesTime: NSTimeInterval?
 
     private func setAmountFromUrlHandler() -> () {
         let dict = AppDelegate.instance().bitcoinURIOptionsDict
@@ -76,7 +72,7 @@ import UIKit
     }
     
     private func setAllCoinsBarButton() {
-        let allBarButtonItem = UIBarButtonItem(title: "Use all funds".localized, style: UIBarButtonItemStyle.Plain, target: self, action: "fillAmountFieldWithWholeBalance")
+        let allBarButtonItem = UIBarButtonItem(title: "Use all funds".localized, style: UIBarButtonItemStyle.Plain, target: self, action: "checkToFetchUTXOsAndDynamicFeesAndFillAmountFieldWithWholeBalance")
         navigationItem.rightBarButtonItem = allBarButtonItem
     }
     
@@ -85,19 +81,74 @@ import UIKit
         navigationItem.rightBarButtonItem = allBarButtonItem
     }
     
-    func fillAmountFieldWithWholeBalance() {
-        let accountBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
-        let fee:TLCoin
-        if (TLPreferences.enabledInAppSettingsKitDynamicFee()) {
-            fee = TLCurrencyFormat.bitcoinAmountStringToCoin(TLWalletUtils.DEFAULT_FEE_AMOUNT_IN_BITCOINS())
+    func checkToFetchUTXOsAndDynamicFeesAndFillAmountFieldWithWholeBalance() {
+        if TLPreferences.enabledInAppSettingsKitDynamicFee() {
+            if !AppDelegate.instance().godSend!.haveUpDatedUTXOs() {
+                AppDelegate.instance().godSend!.getAndSetUnspentOutputs({
+                    if !AppDelegate.instance().txFeeAPI.haveUpdatedCachedDynamicFees() {
+                        self.checkToFetchDynamicFeesAndFillAmountFieldWithWholeBalance()
+                    } else {
+                        self.fillAmountFieldWithWholeBalance(true)
+                    }
+                    }, failure: {
+                        TLPrompts.promptErrorMessage("Error".localized, message: "Unable to query dynamic fees. Falling back on fixed transaction fee. (fee can be configured on review payment)".localized)
+                        self.fillAmountFieldWithWholeBalance(false)
+                })
+            } else {
+                checkToFetchDynamicFeesAndFillAmountFieldWithWholeBalance()
+            }
         } else {
+            fillAmountFieldWithWholeBalance(false)
+        }
+    }
+
+    func checkToFetchDynamicFeesAndFillAmountFieldWithWholeBalance() {
+        AppDelegate.instance().txFeeAPI.getDynamicTxFee({
+            (_jsonData: AnyObject!) in
+            self.fillAmountFieldWithWholeBalance(true)
+            }, failure: {
+                (code: Int, status: String!) in
+                TLPrompts.promptErrorMessage("Error".localized, message: "Unable to query dynamic fees. Falling back on fixed transaction fee. (fee can be configured on review payment)".localized)
+                self.fillAmountFieldWithWholeBalance(false)
+        })
+    }
+
+    
+    func fillAmountFieldWithWholeBalance(useDynamicFees: Bool) {
+        let fee:TLCoin
+        let txSizeBytes:UInt64
+        if useDynamicFees {
+            if (AppDelegate.instance().godSend!.getSelectedObjectType() == .Account) {
+                let accountObject = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLAccountObject
+                let inputCount = accountObject.stealthPaymentUnspentOutputsCount + accountObject.unspentOutputsCount
+                txSizeBytes = TLSpaghettiGodSend.getEstimatedTxSize(inputCount, outputCount: 1)
+                DLog("TLAccountObject useDynamicFees inputCount txSizeBytes: \(inputCount) \(txSizeBytes)")
+            } else {
+                let importedAddress = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLImportedAddress
+                txSizeBytes = TLSpaghettiGodSend.getEstimatedTxSize(importedAddress.unspentOutputsCount, outputCount: 1)
+                DLog("importedAddress useDynamicFees inputCount txSizeBytes: \(importedAddress.unspentOutputsCount) \(txSizeBytes)")
+            }
+            
+            if let dynamicFeeSatoshis:NSNumber? = AppDelegate.instance().txFeeAPI.getCachedDynamicFee() {
+                fee = TLCoin(uint64: txSizeBytes*dynamicFeeSatoshis!.unsignedLongLongValue)
+                DLog("showPromptReviewTx coinFeeAmount dynamicFeeSatoshis: \(txSizeBytes*dynamicFeeSatoshis!.unsignedLongLongValue)")
+                
+            } else {
+                DLog("fillAmountFieldWithWholeBalance 111:")
+                fee = TLCurrencyFormat.bitcoinAmountStringToCoin(TLPreferences.getInAppSettingsKitTransactionFee()!)
+            }
+            
+        } else {
+            DLog("fillAmountFieldWithWholeBalance 2:")
             let feeAmount = TLPreferences.getInAppSettingsKitTransactionFee()
             fee = TLCurrencyFormat.bitcoinAmountStringToCoin(feeAmount!)
         }
 
+        let accountBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
         let sendAmount = accountBalance.subtract(fee)
-
-        if sendAmount.greater(TLCoin.zero()) {
+        DLog("fillAmountFieldWithWholeBalance fee: \(fee.toUInt64())")
+        TLSendFormData.instance().feeAmount = fee
+        if accountBalance.greater(fee) && sendAmount.greater(TLCoin.zero()) {
             TLSendFormData.instance().setAmount(TLCurrencyFormat.coinToProperBitcoinAmountString(sendAmount))
         } else {
             TLSendFormData.instance().setAmount(nil)
@@ -176,9 +227,12 @@ import UIKit
         NSNotificationCenter.defaultCenter().addObserver(self
             ,selector:"hideHUDAndUpdateBalanceView",
             name:TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION(), object:nil)
+//        NSNotificationCenter.defaultCenter().addObserver(self
+//            ,selector:"hideHudAndRefreshSendAccount",
+//            name:TLNotificationEvents.EVENT_TO_ADDRESS_WEBSOCKET_NOTIFICATION(), object:nil)
         NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"hideHUDAndUpdateBalanceView",
-            name:TLNotificationEvents.EVENT_TO_ADDRESS_WEBSOCKET_NOTIFICATION(), object:nil)
+            ,selector:"clearSendForm:",
+             name:TLNotificationEvents.EVENT_SEND_PAYMENT(), object:nil)
         
         self.updateSendForm()
         
@@ -225,36 +279,36 @@ import UIKit
         }
     }
 
-    func hiddenPresentAndDimissTransparentViewController() -> () {
-        if AppDelegate.instance().doHiddenPresentAndDimissTransparentViewController {
-            AppDelegate.instance().doHiddenPresentAndDimissTransparentViewController = false
-            let transitionController = TransitionDelegate()
-            let vc = self.storyboard!.instantiateViewControllerWithIdentifier("TransparentViewController") 
-            vc.view.backgroundColor = UIColor.clearColor()
-            vc.transitioningDelegate = transitionController
-            vc.modalPresentationStyle = .Custom
-            
-            (AppDelegate.instance().window!.rootViewController! as! ECSlidingViewController).topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("TransparentViewController") 
-        }
-    }
+//    func hiddenPresentAndDimissTransparentViewController() -> () {
+//        if AppDelegate.instance().doHiddenPresentAndDimissTransparentViewController {
+//            AppDelegate.instance().doHiddenPresentAndDimissTransparentViewController = false
+//            let transitionController = TransitionDelegate()
+//            let vc = self.storyboard!.instantiateViewControllerWithIdentifier("TransparentViewController") 
+//            vc.view.backgroundColor = UIColor.clearColor()
+//            vc.transitioningDelegate = transitionController
+//            vc.modalPresentationStyle = .Custom
+//            
+//            (AppDelegate.instance().window!.rootViewController! as! ECSlidingViewController).topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("TransparentViewController") 
+//        }
+//    }
     
     func refreshAccountDataAndSetBalanceView(fetchDataAgain: Bool = false) -> () {
-        let checkToRefreshAgain = { () -> () in
-            let afterSendBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
-            
-            if self.beforeSendBalance != nil && afterSendBalance.equalTo(self.beforeSendBalance!) {
-                self.beforeSendBalance = nil
-                self.refreshAccountDataAndSetBalanceView()
-            } else {
-                self.setSendingHUDHidden(true)
-                
-                self.balanceActivityIndicatorView!.stopAnimating()
-                self.balanceActivityIndicatorView!.hidden = true
-                self._updateAccountBalanceView()
-                self.viewDidLoad()
-                self.hiddenPresentAndDimissTransparentViewController()
-            }
-        }
+//        let checkToRefreshAgain = { () -> () in
+//            let afterSendBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
+//            
+//            if TLSendFormData.instance().beforeSendBalance != nil && afterSendBalance.equalTo(TLSendFormData.instance().beforeSendBalance!) {
+//                TLSendFormData.instance().beforeSendBalance = nil
+//                self.refreshAccountDataAndSetBalanceView()
+//            } else {
+//                self.setSendingHUDHidden(true)
+//                
+//                self.balanceActivityIndicatorView!.stopAnimating()
+//                self.balanceActivityIndicatorView!.hidden = true
+//                self._updateAccountBalanceView()
+//                self.viewDidLoad()
+//                self.hiddenPresentAndDimissTransparentViewController()
+//            }
+//        }
         
         if (AppDelegate.instance().godSend!.getSelectedObjectType() == .Account) {
             let accountObject = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLAccountObject
@@ -267,7 +321,7 @@ import UIKit
                     self.balanceActivityIndicatorView!.stopAnimating()
                     self.balanceActivityIndicatorView!.hidden = true
                     self._updateAccountBalanceView()
-                    checkToRefreshAgain()
+//                    checkToRefreshAgain()
                 }
             })
             
@@ -282,7 +336,7 @@ import UIKit
                     self.balanceActivityIndicatorView!.stopAnimating()
                     self.balanceActivityIndicatorView!.hidden = true
                     self._updateAccountBalanceView()
-                    checkToRefreshAgain()
+//                    checkToRefreshAgain()
                 }
             })
         }
@@ -299,8 +353,9 @@ import UIKit
     }
     
     override func viewWillAppear(animated: Bool) {
+        DLog("viewWillAppearrr)")
         self.updateViewToNewSelectedObject()
-        
+    
         // TODO: better way
         if AppDelegate.instance().scannedEncryptedPrivateKey != nil {
             TLPrompts.promptForEncryptedPrivKeyPassword(self, view:self.slidingViewController().topViewController.view,
@@ -384,6 +439,9 @@ import UIKit
         } else if (TLSendFormData.instance().getFiatAmount() != nil) {
             self.fiatAmountTextField!.text = TLSendFormData.instance().getFiatAmount()!
             self.updateAmountTextFieldExchangeRate(nil)
+        } else {
+            self.amountTextField!.text = nil
+            self.fiatAmountTextField!.text = nil
         }
     }
     
@@ -424,39 +482,36 @@ import UIKit
         self.topView!.scrollToY(0)
     }
 
-    func hideHudAndRefreshSendAccount() {
-        if self.isShowingSendHUD == true {
-            TLHUDWrapper.hideHUDForView(self.view, animated: true)
-            self.isShowingSendHUD = false
-            self.refreshAccountDataAndSetBalanceView(true)
-            AppDelegate.instance().listeningToToAddress = nil
-            AppDelegate.instance().inputedToAmount = nil
-        }
-    }
+//    func hideHudAndRefreshSendAccount() {
+////        if self.isShowingSendHUD == true {
+////            TLHUDWrapper.hideHUDForView(self.view, animated: true)
+//            self.refreshAccountDataAndSetBalanceView(true)
+//            AppDelegate.instance().listeningToToAddress = nil
+//            AppDelegate.instance().inputedToAmount = nil
+////        }
+//    }
     
-    func setSendingHUDHidden(hidden: Bool) {
-        dispatch_async(dispatch_get_main_queue()) {
-            if hidden {
-                TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                self.isShowingSendHUD = false
-                NSObject.cancelPreviousPerformRequestsWithTarget(self, selector:"hideHudAndRefreshSendAccount", object:nil)
-            } else {
-                TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: "Sending".localized, animated: true)
-                self.isShowingSendHUD = true
-                
-                // relying on websocket to know when a payment has been sent can be unreliable, so cancel after a certain time
-                let TIME_TO_WAIT_TO_HIDE_HUD_AND_REFRESH_ACCOUNT = 13.0
-                NSTimer.scheduledTimerWithTimeInterval(TIME_TO_WAIT_TO_HIDE_HUD_AND_REFRESH_ACCOUNT, target: self,
-                    selector: Selector("hideHudAndRefreshSendAccount"), userInfo: nil, repeats: false)
-            }
-        }
-    }
+//    func setSendingHUDHidden(hidden: Bool) {
+//        dispatch_async(dispatch_get_main_queue()) {
+//            if hidden {
+//                TLHUDWrapper.hideHUDForView(self.view, animated: true)
+//                NSObject.cancelPreviousPerformRequestsWithTarget(self, selector:"hideHudAndRefreshSendAccount", object:nil)
+//            } else {
+//                TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: "Sending".localized, animated: true)
+//                
+//                // relying on websocket to know when a payment has been sent can be unreliable, so cancel after a certain time
+//                let TIME_TO_WAIT_TO_HIDE_HUD_AND_REFRESH_ACCOUNT = 13.0
+//                NSTimer.scheduledTimerWithTimeInterval(TIME_TO_WAIT_TO_HIDE_HUD_AND_REFRESH_ACCOUNT, target: self,
+//                    selector: Selector("hideHudAndRefreshSendAccount"), userInfo: nil, repeats: false)
+//            }
+//        }
+//    }
     
     func hideHUDAndUpdateBalanceView() {
         self.accountBalanceLabel!.hidden = false
+//        self.setSendingHUDHidden(true)
         self.balanceActivityIndicatorView!.stopAnimating()
         self.balanceActivityIndicatorView!.hidden = true
-        self.setSendingHUDHidden(true)
         self._updateAccountBalanceView()
     }
     
@@ -464,6 +519,7 @@ import UIKit
         let balance = AppDelegate.instance().godSend!.getCurrentFromBalance()
         let balanceString = TLCurrencyFormat.getProperAmount(balance)
         self.accountBalanceLabel!.text = balanceString as String
+        DLog("_updateAccountBalanceView balanceString \(balanceString)")
     }
     
     func updateAccountBalanceView(notification: NSNotification) {
@@ -499,86 +555,23 @@ import UIKit
         }
     }
     
-    private func showPromptForTxFee() {
-        func addTextField(textField: UITextField!){
-            textField.text = nil
-            textField.keyboardType = .DecimalPad
-        }
-        
-        UIAlertController.showAlertInViewController(self,
-            withTitle: "Transaction Fee".localized,
-            message: String(format: "Input desired transaction fee in %@ %@".localized, TLCurrencyFormat.getBitcoinDisplayWord(), TLCurrencyFormat.getBitcoinDisplay()),
-            preferredStyle: .Alert,
-            cancelButtonTitle: "Cancel".localized,
-            destructiveButtonTitle: nil,
-            otherButtonTitles: ["Next".localized],
-            preShowBlock: {(controller:UIAlertController!) in
-                controller.addTextFieldWithConfigurationHandler(addTextField)
-            },
-            tapBlock: {(alertView, action, buttonIndex) in
-                if (buttonIndex == alertView.firstOtherButtonIndex) {
-                    let feeAmount = (alertView.textFields![0] ).text
-                    let feeAmountCoin = TLCurrencyFormat.properBitcoinAmountStringToCoin(feeAmount!)
-                    self.showPromptReviewTx(feeAmountCoin)
-                } else if (buttonIndex == alertView.cancelButtonIndex) {
-                }
-        })
-    }
-
-    private func getCachedDynamicFee() -> NSNumber? {
-        var dynamicFee:NSNumber? = nil
-        if self.cachedDynamicFees != nil {
-            let dynamicFeeSetting = TLPreferences.getInAppSettingsKitDynamicFeeSetting()
-            if dynamicFeeSetting == TLDynamicFeeSetting.FastestFee {
-                dynamicFee = self.cachedDynamicFees!.objectForKey(TLDynamicFeeSetting.getAPIValue(TLDynamicFeeSetting.FastestFee)) as? NSNumber
-                DLog("checkTofetchFeeThenFinalPromptReviewTx FastestFee %@", function: dynamicFee!)
-            } else if dynamicFeeSetting == TLDynamicFeeSetting.HalfHourFee {
-                dynamicFee = self.cachedDynamicFees!.objectForKey(TLDynamicFeeSetting.getAPIValue(TLDynamicFeeSetting.HalfHourFee)) as? NSNumber
-                DLog("checkTofetchFeeThenFinalPromptReviewTx HalfHourFee %@", function: dynamicFee!)
-            } else if dynamicFeeSetting == TLDynamicFeeSetting.HourFee {
-                dynamicFee = self.cachedDynamicFees!.objectForKey(TLDynamicFeeSetting.getAPIValue(TLDynamicFeeSetting.HourFee)) as? NSNumber
-                DLog("checkTofetchFeeThenFinalPromptReviewTx HourFee %@", function: dynamicFee!)
-            }
-        }
-        return dynamicFee
-    }
-    
-    private func checkTofetchFeeThenFinalPromptReviewTx(feeAmount: TLCoin) {
-        let nowUnixTime = NSDate().timeIntervalSince1970
-        let tenMinutesInSeconds = 600.0
-        
-        if let dynamicFee:NSNumber? = getCachedDynamicFee() {
-            
-        } else {
-            
-        }
-        DLog("checkTofetchFeeThenFinalPromptReviewTx getDynamicTxFee \(nowUnixTime)")
-        DLog("checkTofetchFeeThenFinalPromptReviewTx getDynamicTxFee \(TLPreferences.enabledInAppSettingsKitDynamicFee())")
-
-        if TLPreferences.enabledInAppSettingsKitDynamicFee() && (self.cachedDynamicFeesTime == nil || nowUnixTime - self.cachedDynamicFeesTime! > tenMinutesInSeconds) {
-            self.cachedDynamicFeesTime = NSDate().timeIntervalSince1970
+    private func checkTofetchFeeThenFinalPromptReviewTx() {
+        if TLPreferences.enabledInAppSettingsKitDynamicFee() && AppDelegate.instance().txFeeAPI.haveUpdatedCachedDynamicFees() {
             AppDelegate.instance().txFeeAPI.getDynamicTxFee({
                 (_jsonData: AnyObject!) in
-                if let jsonData = _jsonData as? NSDictionary {
-                    self.cachedDynamicFees = jsonData
-                    DLog("checkTofetchFeeThenFinalPromptReviewTx getDynamicTxFee %@", function: jsonData.description)
-                } else {
-                    self.cachedDynamicFees = nil
-                }
-                self.showFinalPromptReviewTx(feeAmount)
+                self.showFinalPromptReviewTx()
                 }, failure: {
                     (code: Int, status: String!) in
-                    self.cachedDynamicFees = nil
-                    self.showFinalPromptReviewTx(feeAmount)
+                    self.showFinalPromptReviewTx()
             })
         } else {
-            self.showFinalPromptReviewTx(feeAmount)
+            self.showFinalPromptReviewTx()
         }
     }
 
-    private func showFinalPromptReviewTx(feeAmount: TLCoin) {
+    private func showFinalPromptReviewTx() {
         let bitcoinAmount = self.amountTextField!.text
-        let fiatAmount = self.fiatAmountTextField!.text
+//        let fiatAmount = self.fiatAmountTextField!.text
         let toAddress = self.toAddressTextField!.text
     
         if (!TLCoreBitcoinWrapper.isValidAddress(toAddress!, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
@@ -594,177 +587,83 @@ import UIKit
             return
         }
         
-        let amountNeeded = inputtedAmount.add(feeAmount)
-        let sendFromBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
-        if (amountNeeded.greater(sendFromBalance)) {
-            let msg = String(format: "You have %@ %@, but %@ is needed. (This includes the transactions fee)".localized, TLCurrencyFormat.coinToProperBitcoinAmountString(sendFromBalance), TLCurrencyFormat.getBitcoinDisplay(), TLCurrencyFormat.coinToProperBitcoinAmountString(amountNeeded))
-            TLPrompts.promptErrorMessage("Insufficient Balance".localized, message: msg)
-            return
+
+        func showReviewPaymentViewController(useDynamicFees: Bool) {
+            let fee:TLCoin
+            let txSizeBytes:UInt64
+            if useDynamicFees {
+                if (AppDelegate.instance().godSend!.getSelectedObjectType() == .Account) {
+                    let accountObject = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLAccountObject
+                    let inputCount = accountObject.stealthPaymentUnspentOutputsCount + accountObject.unspentOutputsCount
+                    txSizeBytes = TLSpaghettiGodSend.getEstimatedTxSize(inputCount, outputCount: 1)
+                    DLog("TLAccountObject useDynamicFees inputCount txSizeBytes: \(inputCount) \(txSizeBytes)")
+                } else {
+                    let importedAddress = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLImportedAddress
+                    txSizeBytes = TLSpaghettiGodSend.getEstimatedTxSize(importedAddress.unspentOutputsCount, outputCount: 1)
+                    DLog("importedAddress useDynamicFees inputCount txSizeBytes: \(importedAddress.unspentOutputsCount) \(txSizeBytes)")
+                }
+                
+                if let dynamicFeeSatoshis:NSNumber? = AppDelegate.instance().txFeeAPI.getCachedDynamicFee() {
+                    fee = TLCoin(uint64: txSizeBytes*dynamicFeeSatoshis!.unsignedLongLongValue)
+                    DLog("showPromptReviewTx coinFeeAmount dynamicFeeSatoshis: \(txSizeBytes*dynamicFeeSatoshis!.unsignedLongLongValue)")
+                    
+                } else {
+                    DLog("fillAmountFieldWithWholeBalance 111:")
+                    fee = TLCurrencyFormat.bitcoinAmountStringToCoin(TLPreferences.getInAppSettingsKitTransactionFee()!)
+                }
+                
+            } else {
+                DLog("fillAmountFieldWithWholeBalance 2:")
+                let feeAmount = TLPreferences.getInAppSettingsKitTransactionFee()
+                fee = TLCurrencyFormat.bitcoinAmountStringToCoin(feeAmount!)
+            }
+            
+            let amountNeeded = inputtedAmount.add(fee)
+            let accountBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
+            if (amountNeeded.greater(accountBalance)) {
+                let msg = String(format: "You have %@ %@, but %@ is needed. (This includes the transactions fee)".localized, TLCurrencyFormat.coinToProperBitcoinAmountString(accountBalance), TLCurrencyFormat.getBitcoinDisplay(), TLCurrencyFormat.coinToProperBitcoinAmountString(amountNeeded))
+                TLPrompts.promptErrorMessage("Insufficient Balance".localized, message: msg)
+                return
+            }
+            
+            TLSendFormData.instance().feeAmount = fee
+            TLSendFormData.instance().fromLabel = AppDelegate.instance().godSend!.getCurrentFromLabel()!
+            let vc = self.storyboard!.instantiateViewControllerWithIdentifier("ReviewPayment") as! TLReviewPaymentViewController
+            self.slidingViewController().presentViewController(vc, animated: true, completion: nil)
         }
         
-        TLSendFormData.instance().feeAmount = feeAmount
-        TLSendFormData.instance().fromLabel = AppDelegate.instance().godSend!.getCurrentFromLabel()!
-        let vc = self.storyboard!.instantiateViewControllerWithIdentifier("ReviewPayment") as! TLReviewPaymentViewController
-        self.slidingViewController().presentViewController(vc, animated: true, completion: nil)
-        return
-
+        func checkToFetchDynamicFees() {
+            AppDelegate.instance().txFeeAPI.getDynamicTxFee({
+                (_jsonData: AnyObject!) in
+                showReviewPaymentViewController(true)
+                }, failure: {
+                    (code: Int, status: String!) in
+                    TLPrompts.promptErrorMessage("Error".localized, message: "Unable to query dynamic fees. Falling back on fixed transaction fee. (fee can be configured on review payment)".localized)
+                    showReviewPaymentViewController(false)
+            })
+        }
         
-        let bitcoinDisplay = TLCurrencyFormat.getBitcoinDisplay()
-        let currency = TLCurrencyFormat.getFiatCurrency()
-        
-        let feeAmountDisplay = TLCurrencyFormat.coinToProperBitcoinAmountString(feeAmount)
-        
-        let txSummary = String(format: "To: %@\nAmount:\n%@ %@\n%@ %@\nfee: %@ %@".localized, toAddress!, bitcoinAmount!, bitcoinDisplay, fiatAmount!, currency, feeAmountDisplay, bitcoinDisplay)
-        
-        UIAlertController.showAlertInViewController(self,
-            withTitle: "Transaction Summary".localized,
-            message:txSummary,
-            preferredStyle: .Alert,
-            cancelButtonTitle: "Cancel".localized,
-            destructiveButtonTitle: nil,
-            otherButtonTitles: ["Send".localized],
-            
-            preShowBlock: {(controller:UIAlertController!) in
-                if(controller.textFields != nil)
-                {
-                    for v in controller.textFields! {
-                        if (v is UILabel) {
-                            let label = v as! UILabel
-                            label.textAlignment = .Left
-                        }
+        if TLPreferences.enabledInAppSettingsKitDynamicFee() {
+            if !AppDelegate.instance().godSend!.haveUpDatedUTXOs() {
+                AppDelegate.instance().godSend!.getAndSetUnspentOutputs({
+                    if !AppDelegate.instance().txFeeAPI.haveUpdatedCachedDynamicFees() {
+                        checkToFetchDynamicFees()
+                    } else {
+                        showReviewPaymentViewController(true)
                     }
-                    
-                }
-            },
-            tapBlock: {(alertView, action, buttonIndex) in
-            
-                if (buttonIndex == alertView.firstOtherButtonIndex) {
-                    self.setSendingHUDHidden(false)
-
-                    AppDelegate.instance().godSend!.getAndSetUnspentOutputs({
-                        () in
-                        
-                        
-                        let unspentOutputsSum = AppDelegate.instance().godSend!.getCurrentFromUnspentOutputsSum()
-                        if (unspentOutputsSum.less(inputtedAmount)) {
-                            // can only happen if unspentOutputsSum is for some reason less then the balance computed from the transactions, which it shouldn't
-                            self.setSendingHUDHidden(true)
-                            let unspentOutputsSumString = TLCurrencyFormat.coinToProperBitcoinAmountString(unspentOutputsSum)
-                            TLPrompts.promptErrorMessage("Error: Insufficient Funds".localized, message: String(format: "Account only has a balance of %@ %@".localized, unspentOutputsSumString, TLCurrencyFormat.getBitcoinDisplay()))
-                            return
-                        }
-                        
-                        let toAddressesAndAmount = NSMutableDictionary()
-                        toAddressesAndAmount.setObject(toAddress!, forKey: "address")
-                        toAddressesAndAmount.setObject(inputtedAmount, forKey: "amount")
-                        let toAddressesAndAmounts = NSArray(objects: toAddressesAndAmount)
-                        let ret = AppDelegate.instance().godSend!.createSignedSerializedTransactionHex(toAddressesAndAmounts,
-                            feeAmount: feeAmount,
-                            error: {
-                                (data: String?) in
-                                self.setSendingHUDHidden(true)
-                                TLPrompts.promptErrorMessage("Error".localized, message: data! ?? "")
-                        })
-
-                        let txHexAndTxHash = ret.0
-                        let realToAddress = ret.1
-
-                        if txHexAndTxHash == nil {
-                            return
-                        }
-                        let txHex = txHexAndTxHash!.objectForKey("txHex") as? String
-                        
-                        if (txHex == nil) {
-                            //should not reach here, because I check sum of unspent outputs already,
-                            // unless unspent outputs contains dust and are require to filled the amount I want to send
-                            self.setSendingHUDHidden(true)
-                            return
-                        }
-                        
-                        let finalFeeAmount:TLCoin
-                        if let dynamicFeeSatoshis:NSNumber? = self.getCachedDynamicFee() {
-                            let bytes = UInt64(txHex!.characters.count)/2
-                            finalFeeAmount = TLCoin(uint64: bytes*dynamicFeeSatoshis!.unsignedLongLongValue)
-                            DLog("showPromptReviewTx coinFeeAmount: \(bytes*dynamicFeeSatoshis!.unsignedLongLongValue)")
-
-                        } else {
-                            finalFeeAmount = feeAmount
-                        }
-                        DLog("showPromptReviewTx finalFeeAmount: \(finalFeeAmount.bigIntegerToBitcoinAmountString(TLBitcoinDenomination.Bitcoin))")
-                        return
-
-                        
-                        let txHash = txHexAndTxHash!.objectForKey("txHash") as? String
-                        
-                        if(txHex != nil) {
-                            DLog("showPromptReviewTx txHex: %@", function: txHex!)
-                        }
-                        
-                        if(txHash != nil) {
-                            DLog("showPromptReviewTx txHash: %@", function: txHash!)
-                        }
-                        
-                        if (toAddress == AppDelegate.instance().godSend!.getStealthAddress()) {
-                            AppDelegate.instance().pendingSelfStealthPaymentTxid = txHash
-                        }
-                        
-                        for address in realToAddress {
-                            TLTransactionListener.instance().listenToIncomingTransactionForAddress(address)
-                            AppDelegate.instance().listeningToToAddress = address
-                        }
-                        
-                        self.beforeSendBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
-                        AppDelegate.instance().inputedToAddress = toAddress
-                        AppDelegate.instance().inputedToAmount = inputtedAmount
-                        
-                        let handlePushTxSuccess = { () -> () in
-                            AppDelegate.instance().doHiddenPresentAndDimissTransparentViewController = true
-                            
-                            self._clearSendForm()
-                            
-                            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_SEND_PAYMENT(),
-                                object: nil, userInfo: nil)
-                        }
-                        
-//                        TLPushTxAPI.instance().sendTx(txHex!, txHash: txHash!, toAddress: toAddress!, success: {
-//                            (jsonData: AnyObject!) in
-//                            DLog("showPromptReviewTx pushTx: success %@", function: jsonData)
-//
-//                            if TLStealthAddress.isStealthAddress(toAddress!, isTestnet:false) == true {
-//                                // doing stealth payment with push tx insight get wrong hash back??
-//                                let txid = (jsonData as! NSDictionary).objectForKey("txid") as! String
-//                                DLog("showPromptReviewTx pushTx: success txid %@", function: txid)
-//                                DLog("showPromptReviewTx pushTx: success txHash %@", function: txHash!)
-//                                if txid != txHash! {
-//                                    NSException(name: "API Error", reason:"txid return does not match txid in app", userInfo:nil).raise()
-//                                }
-//                            }
-//
-//                            handlePushTxSuccess()
-//                            
-//                        }, failure: {
-//                            (code: Int, status: String!) in
-//                            DLog("showPromptReviewTx pushTx: failure \(code) \(status)")
-//                            if (code == 200) {
-//                                handlePushTxSuccess()
-//                            } else {
-//                                TLPrompts.promptErrorMessage("Error".localized, message: status)
-//                            }
-//                            self.setSendingHUDHidden(true)
-//                        })
                     }, failure: {
-                            () in
-                        self._clearSendForm()
-                        self.setSendingHUDHidden(true)
-                        self.refreshAccountDataAndSetBalanceView(true)
-                        TLPrompts.promptErrorMessage("Error".localized, message: "Bitcoins has already been spent.")
-                    })
-                } else if (buttonIndex == alertView.cancelButtonIndex) {
-                }
-        })
+                        TLPrompts.promptErrorMessage("Error".localized, message: "Unable to query dynamic fees. Falling back on fixed transaction fee. (fee can be configured on review payment)".localized)
+                        showReviewPaymentViewController(false)
+                })
+            } else {
+                checkToFetchDynamicFees()
+            }
+        } else {
+            showReviewPaymentViewController(false)
+        }
     }
     
-    private func handleTempararyImportPrivateKey(privateKey: String, feeAmount: TLCoin) {
+    private func handleTempararyImportPrivateKey(privateKey: String) {
         if (!TLCoreBitcoinWrapper.isValidPrivateKey(privateKey, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
             TLPrompts.promptErrorMessage("Error".localized, message: "Invalid private key".localized)
         } else {
@@ -773,12 +672,12 @@ import UIKit
             if (!success) {
                 TLPrompts.promptSuccessMessage("Error".localized, message: "Private key does not match imported address".localized)
             } else {
-                self.checkTofetchFeeThenFinalPromptReviewTx(feeAmount)
+                self.checkTofetchFeeThenFinalPromptReviewTx()
             }
         }
     }
     
-    private func showPromptReviewTx(feeAmount: TLCoin) {
+    private func showPromptReviewTx() {
         if (AppDelegate.instance().godSend!.needWatchOnlyAccountPrivateKey()) {
             let accountObject = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLAccountObject
             TLPrompts.promptForTempararyImportExtendedPrivateKey(self, success: {
@@ -790,7 +689,7 @@ import UIKit
                     if (!success) {
                         TLPrompts.promptErrorMessage("Error".localized, message: "Account private key does not match imported account public key".localized)
                     } else {
-                        self.checkTofetchFeeThenFinalPromptReviewTx(feeAmount)
+                        self.checkTofetchFeeThenFinalPromptReviewTx()
                     }
                 }
                 
@@ -804,13 +703,13 @@ import UIKit
                 if (TLCoreBitcoinWrapper.isBIP38EncryptedKey(data, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
                     TLPrompts.promptForEncryptedPrivKeyPassword(self, view:self.slidingViewController().topViewController.view, encryptedPrivKey: data, success: {
                         (privKey: String!) in
-                        self.handleTempararyImportPrivateKey(privKey, feeAmount: feeAmount)
+                        self.handleTempararyImportPrivateKey(privKey)
                         }, failure: {
                             (isCanceled: Bool) in
                     })
                 } else {
                     if AppDelegate.instance().scannedEncryptedPrivateKey == nil {
-                        self.handleTempararyImportPrivateKey(data, feeAmount: feeAmount)
+                        self.handleTempararyImportPrivateKey(data)
                     }
                 }
                 }, error: {
@@ -826,13 +725,13 @@ import UIKit
                 if (!success) {
                     TLPrompts.promptSuccessMessage("Error".localized, message: "Private key does not match imported address".localized)
                 } else {
-                    self.checkTofetchFeeThenFinalPromptReviewTx(feeAmount)
+                    self.checkTofetchFeeThenFinalPromptReviewTx()
                 }
                 }, failure: {
                     (isCanceled: Bool) in
             })
         } else {
-            self.checkTofetchFeeThenFinalPromptReviewTx(feeAmount)
+            self.checkTofetchFeeThenFinalPromptReviewTx()
         }
     }
     
@@ -856,15 +755,7 @@ import UIKit
     }
     
     func _reviewPaymentClicked() {
-        if (TLPreferences.enabledInAppSettingsKitDynamicFee()) {
-//            self.showPromptForTxFee()
-            let feeAmount = TLPreferences.getInAppSettingsKitTransactionFee()//TODO get dynamic fee
-            self.showPromptReviewTx(TLCurrencyFormat.bitcoinAmountStringToCoin(feeAmount!))
-        
-        } else {
-            let feeAmount = TLPreferences.getInAppSettingsKitTransactionFee()
-            self.showPromptReviewTx(TLCurrencyFormat.bitcoinAmountStringToCoin(feeAmount!))
-        }
+        self.showPromptReviewTx()
     }
     
     private func handleScannedAddress(data: String) {
@@ -903,11 +794,7 @@ import UIKit
             vc.navigationItem.title = "Select Account".localized
             NSNotificationCenter.defaultCenter().addObserver(self, selector: "onAccountSelected:",
                 name: TLNotificationEvents.EVENT_ACCOUNT_SELECTED(), object: nil)
-        } else if (segue.identifier == "ReviewPayment") {
-            DLog("ReviewPayment");
-//            ReviewPayment
         }
-
     }
     
     @IBAction private func updateFiatAmountTextFieldExchangeRate(sender: AnyObject?) {

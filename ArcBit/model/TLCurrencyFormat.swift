@@ -60,7 +60,7 @@ class TLCurrencyFormat {
     }
     
     class func coinToProperFiatAmountString(amount: TLCoin, withCode: Bool = false) -> String {
-        let currency = TLCurrencyFormat.getProperCurrency()
+        let currency = TLCurrencyFormat.getFiatCurrency()
         if withCode {
             return TLExchangeRate.instance().fiatAmountStringFromBitcoin(currency, bitcoinAmount: amount) + " " + TLCurrencyFormat.getFiatCurrency()
         } else {

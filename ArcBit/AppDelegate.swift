@@ -62,10 +62,7 @@ import Crashlytics
     var doHiddenPresentAndDimissTransparentViewController = false
     let pendingOperations = PendingOperations()
     var listeningToToAddress:String? = nil
-    var inputedToAddress: String? = nil
-    var inputedToAmount: TLCoin? = nil
     var pendingSelfStealthPaymentTxid: String? = nil
-    var sentPaymentHashes = [String:String]()
     lazy var txFeeAPI = TLTxFeeAPI();
 
     class func instance() -> AppDelegate {
@@ -727,13 +724,8 @@ import Crashlytics
     func updateUIForNewTx(txHash: String, receivedAmount: TLCoin?, receivedTo: String) {
         dispatch_async(dispatch_get_main_queue()) {
             if self.listeningToToAddress != nil {
-                NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_TO_ADDRESS_WEBSOCKET_NOTIFICATION(), object:nil, userInfo:nil)
+                NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_TO_ADDRESS_WEBSOCKET_NOTIFICATION(), object:txHash, userInfo:nil)
                 self.listeningToToAddress = nil
-                if self.inputedToAddress != nil && self.inputedToAmount != nil {
-                    self.showLocalNotificationForCoinsSent(txHash, address: self.inputedToAddress!, amount: self.inputedToAmount!)
-                    self.inputedToAddress = nil
-                    self.inputedToAmount = nil
-                }
             }
             NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION(), object:nil, userInfo:nil)
             if receivedAmount != nil {
@@ -916,16 +908,6 @@ import Crashlytics
             })
         }
         dispatch_group_wait(group, DISPATCH_TIME_FOREVER)
-    }
-    
-    func showLocalNotificationForCoinsSent(txHash: String, address: String, amount: TLCoin) {
-        if sentPaymentHashes[txHash] == nil {
-            sentPaymentHashes[txHash] = ""
-            let msg = String(format:"Sent %@ to %@".localized, TLCurrencyFormat.getProperAmount(amount), address)
-            TLPrompts.promptSuccessMessage(msg, message: "")
-            //self.showLocalNotification(msg)
-        }
-        
     }
     
     private func setUpLocalNotification() {

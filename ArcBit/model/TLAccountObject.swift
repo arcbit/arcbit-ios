@@ -33,6 +33,9 @@ import Foundation
     
     var appWallet:TLWallet?
     private var accountDict: NSMutableDictionary?
+    lazy var haveUpDatedUTXOs: Bool = false
+    lazy var unspentOutputsCount: Int = 0
+    lazy var stealthPaymentUnspentOutputsCount: Int = 0
     var unspentOutputs: NSMutableArray?
     var stealthPaymentUnspentOutputs: NSMutableArray?
     private var mainActiveAddresses = [String]()
@@ -439,6 +442,7 @@ import Foundation
     }
     
     private func processTx(txObject: TLTxObject, shouldCheckToAddressesNTxsCount: Bool, shouldUpdateAccountBalance: Bool) -> TLCoin? {
+        haveUpDatedUTXOs = false
         processedTxSet.addObject(txObject.getHash()!)
         var currentTxSubtract:UInt64 = 0
         var currentTxAdd:UInt64 = 0
@@ -1221,6 +1225,9 @@ import Foundation
         unspentOutputs = nil
         totalUnspentOutputsSum = nil
         stealthPaymentUnspentOutputs = nil
+        unspentOutputsCount = 0
+        stealthPaymentUnspentOutputsCount = 0
+        haveUpDatedUTXOs = false
         
         TLBlockExplorerAPI.instance().getUnspentOutputs(activeAddresses, success: {
             (jsonData: AnyObject!) in
@@ -1238,8 +1245,10 @@ import Foundation
                 }
                 if self.stealthWallet != nil && self.stealthWallet!.isPaymentAddress(address!) == true {
                     self.stealthPaymentUnspentOutputs!.addObject(unspentOutput)
+                    self.stealthPaymentUnspentOutputsCount += 1
                 } else {
                     self.unspentOutputs!.addObject(unspentOutput)
+                    self.unspentOutputsCount += 1
                 }
             }
         
@@ -1288,7 +1297,7 @@ import Foundation
                     return .OrderedSame
                 }
             })
-
+            self.haveUpDatedUTXOs = true
             success()
             }, failure: {
                 (code: NSInteger, status: String!) in

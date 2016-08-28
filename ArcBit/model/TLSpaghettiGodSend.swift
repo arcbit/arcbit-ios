@@ -24,7 +24,8 @@
 @objc class TLSpaghettiGodSend:NSObject {
     
     let DUST_AMOUNT:UInt64 = 546
-    
+    let MAX_CONSOLIDATE_STEALTH_PAYMENT_UTXOS_COUNT:Int = 12
+
     private var appWallet: TLWallet
     private var sendFromAccounts:NSMutableArray?
     private var sendFromAddresses:NSMutableArray?
@@ -63,6 +64,18 @@
         }
         
         return TLSelectObjectType.Unknown
+    }
+    
+    
+    func haveUpDatedUTXOs() -> Bool {
+        if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
+            let accountObject = sendFromAccounts!.objectAtIndex(0) as! TLAccountObject
+            return accountObject.haveUpDatedUTXOs
+        } else if (sendFromAddresses != nil && sendFromAddresses!.count != 0) {
+            let importedAddress = sendFromAddresses!.objectAtIndex(0) as! TLImportedAddress
+            return importedAddress.haveUpDatedUTXOs
+        }
+        return false
     }
     
     private func getLabelForSelectedSendObject() -> String? {
@@ -200,7 +213,7 @@
             addresses.reserveCapacity(sendFromAddresses!.count)
             let importedAddress = sendFromAddresses!.objectAtIndex(0) as! TLImportedAddress
             let amount = importedAddress.getBalance()
-            
+            importedAddress.haveUpDatedUTXOs = false
             if (amount!.greater(TLCoin.zero())) {
                 addresses.append(importedAddress.getAddress())
             }
@@ -233,7 +246,10 @@
                         let address = _address.key as! String
                         let idx = addresses.indexOf(address)
                         let importedAddress = self.sendFromAddresses!.objectAtIndex(idx!) as! TLImportedAddress
-                        importedAddress.setUnspentOutputs(address2UnspentOutputs.objectForKey(address) as! NSArray)
+                        let unspentOutputsArray = address2UnspentOutputs.objectForKey(address) as! NSArray
+                        importedAddress.unspentOutputsCount = unspentOutputsArray.count
+                        importedAddress.setUnspentOutputs(unspentOutputsArray)
+                        importedAddress.haveUpDatedUTXOs = true
                     }
                     
                     success()
@@ -243,6 +259,10 @@
                 )
             }
         }
+    }
+    
+    class func getEstimatedTxSize(inputCount: Int, outputCount: Int) -> UInt64 {
+        return UInt64(10 + 159*inputCount + 34*outputCount)
     }
     
     func createSignedSerializedTransactionHex(toAddressesAndAmounts:NSArray,
@@ -346,7 +366,7 @@
                                 "private_key": accountObject.stealthWallet!.getPaymentAddressPrivateKey(address!)!])
                             
                             unspentOutputsUsingCount++
-                            if (valueSelected.greaterOrEqual(valueNeeded) && unspentOutputsUsingCount > 12) {
+                            if (valueSelected.greaterOrEqual(valueNeeded) && unspentOutputsUsingCount >= MAX_CONSOLIDATE_STEALTH_PAYMENT_UTXOS_COUNT) {
                                 // limit amount of stealth payment unspent outputs to use
                                 break
                             }

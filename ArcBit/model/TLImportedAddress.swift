@@ -26,6 +26,8 @@ import Foundation
     
     private var appWallet:TLWallet?
     private var addressDict:NSMutableDictionary?
+    lazy var haveUpDatedUTXOs: Bool = false
+    lazy var unspentOutputsCount: Int = 0
     private var unspentOutputs:NSArray?
     private var unspentOutputsSum:TLCoin?
     var balance = TLCoin.zero()
@@ -245,6 +247,7 @@ import Foundation
     }
     
     private func processTx(txObject: TLTxObject, shouldUpdateAccountBalance: Bool) -> (Bool, TLCoin?) {
+        haveUpDatedUTXOs = false
         processedTxSet!.addObject(txObject.getHash()!)
         var currentTxSubtract:UInt64 = 0
         var currentTxAdd:UInt64 = 0
