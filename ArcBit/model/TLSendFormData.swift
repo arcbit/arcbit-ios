@@ -33,10 +33,14 @@ class TLSendFormData {
         static var _instance:TLSendFormData? = nil
     }
     
+    var fromLabel:String?
     private var address:String?
     private var amount:String?
     private var fiatAmount:String?
     
+    var toAmount:TLCoin?
+    var feeAmount:TLCoin?
+
     class func instance() -> (TLSendFormData) {
         if(STATIC_MEMBERS._instance == nil) {
             STATIC_MEMBERS._instance = TLSendFormData()

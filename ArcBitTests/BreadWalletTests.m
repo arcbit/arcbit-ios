@@ -49,7 +49,7 @@ BOOL isTestnet = NO;
 }
 
 #pragma mark - testBase58
-
+/*
 - (void)testBase58
 {
     // test bad input
@@ -300,5 +300,5 @@ BOOL isTestnet = NO;
     
     XCTAssertEqualObjects(d, tx.data, @"[BRTransaction transactionWithMessage:]");
 }
-
+//*/
 @end

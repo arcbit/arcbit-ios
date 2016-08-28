@@ -91,6 +91,7 @@ enum TLBitcoinDenomination:Int {
     }
     
     init(bitcoinAmount:(String), bitcoinDenomination:(TLBitcoinDenomination), locale: NSLocale=NSLocale.currentLocale()) {
+        //TODO move to TLCurrencyFormat like android, so dont have to create formatter everytime
         let bitcoinFormatter = NSNumberFormatter()
         bitcoinFormatter.numberStyle = .DecimalStyle
         bitcoinFormatter.maximumFractionDigits = 8
@@ -120,6 +121,7 @@ enum TLBitcoinDenomination:Int {
     }
     
     func bigIntegerToBitcoinAmountString(bitcoinDenomination: TLBitcoinDenomination) -> (String) {
+        //TODO move to TLCurrencyFormat like android, so dont have to create formatter everytime
         let bitcoinFormatter = NSNumberFormatter()
         bitcoinFormatter.numberStyle = .DecimalStyle
         

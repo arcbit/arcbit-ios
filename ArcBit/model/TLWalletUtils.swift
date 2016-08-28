@@ -153,6 +153,23 @@ class TLWalletUtils {
         return dataToHexString(hexStringToData(txHashHex)!.reverse())
     }
     
+    class func isTransactionFeeToLow(amount: TLCoin) -> Bool {
+        let minFeeAmount = TLCoin(bitcoinAmount: MIN_FEE_AMOUNT_IN_BITCOINS(), bitcoinDenomination: TLBitcoinDenomination.Bitcoin)
+        if (amount.less(minFeeAmount)) {
+            return false
+        }
+        
+        return true
+    }
+    
+    class func isTransactionFeeToHigh(amount: TLCoin) -> Bool {
+        let maxFeeAmount = TLCoin(bitcoinAmount: MAX_FEE_AMOUNT_IN_BITCOINS(), bitcoinDenomination: TLBitcoinDenomination.Bitcoin)
+        if (amount.greater(maxFeeAmount)) {
+            return false
+        }
+        return true
+    }
+    
     class func isValidInputTransactionFee(amount: TLCoin) -> Bool {
         let maxFeeAmount = TLCoin(bitcoinAmount: MAX_FEE_AMOUNT_IN_BITCOINS(), bitcoinDenomination: TLBitcoinDenomination.Bitcoin)
         let minFeeAmount = TLCoin(bitcoinAmount: MIN_FEE_AMOUNT_IN_BITCOINS(), bitcoinDenomination: TLBitcoinDenomination.Bitcoin)

@@ -80,6 +80,7 @@ class TLExchangeRate {
     }
     
     func fiatAmountStringFromBitcoin(currency:String, bitcoinAmount:TLCoin) -> (String){
+        //TODO move bitcoinFormatter to property
         let bitcoinFormatter = NSNumberFormatter()
         bitcoinFormatter.numberStyle = .DecimalStyle
         bitcoinFormatter.maximumFractionDigits = 2

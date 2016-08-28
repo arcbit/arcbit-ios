@@ -62,10 +62,11 @@ import AVFoundation
     private func updateHiddenKeys() {
         let hiddenKeys = NSMutableSet()
         
-        if (!TLPreferences.isAutomaticFee()) {
-            hiddenKeys.addObject("feeamounttitle")
+        if (TLPreferences.enabledInAppSettingsKitDynamicFee()) {
             hiddenKeys.addObject("transactionfee")
             hiddenKeys.addObject("settransactionfee")
+        } else {
+            hiddenKeys.addObject("dynamicfeeoption")
         }
         
         if (!LTHPasscodeViewController.doesPasscodeExist()) {
@@ -371,10 +372,8 @@ import AVFoundation
         } else if ((info.object as! String) == "displaylocalcurrency") {
             let enabled = (userInfo.objectForKey("displaylocalcurrency") as! Int) == 1
             TLPreferences.setDisplayLocalCurrency(enabled)
-        } else if ((info.object as! String) == "enableAutomacticFee") {
-            let enabled = (userInfo.objectForKey("enableAutomacticFee") as! Int) == 1
-            TLPreferences.setIsAutomaticFee(enabled)
-            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_TOGGLE_AUTOMATIC_TX_FEE(), object: nil)
+        } else if ((info.object as! String) == "dynamicfeeoption") {
+        } else if ((info.object as! String) == "enabledynamicfee") {
             self.updateHiddenKeys()
         } else if ((info.object as! String) == "currency") {
             let currencyIdx = userInfo.objectForKey("currency") as! String

@@ -51,8 +51,21 @@ class TLCurrencyFormat {
         }
     }
     
-    class func coinToProperBitcoinAmountString(amount: TLCoin) -> String {
-        return amount.bigIntegerToBitcoinAmountString(TLPreferences.getBitcoinDenomination())
+    class func coinToProperBitcoinAmountString(amount: TLCoin, withCode: Bool = false) -> String {
+        if withCode {
+            return amount.bigIntegerToBitcoinAmountString(TLPreferences.getBitcoinDenomination()) + " " + TLCurrencyFormat.getBitcoinDisplay()
+        } else {
+            return amount.bigIntegerToBitcoinAmountString(TLPreferences.getBitcoinDenomination())
+        }
+    }
+    
+    class func coinToProperFiatAmountString(amount: TLCoin, withCode: Bool = false) -> String {
+        let currency = TLCurrencyFormat.getProperCurrency()
+        if withCode {
+            return TLExchangeRate.instance().fiatAmountStringFromBitcoin(currency, bitcoinAmount: amount) + " " + TLCurrencyFormat.getFiatCurrency()
+        } else {
+            return TLExchangeRate.instance().fiatAmountStringFromBitcoin(currency, bitcoinAmount: amount)
+        }
     }
     
     class func getProperAmount(amount: TLCoin) -> NSString {

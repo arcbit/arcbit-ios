@@ -66,6 +66,7 @@ import Crashlytics
     var inputedToAmount: TLCoin? = nil
     var pendingSelfStealthPaymentTxid: String? = nil
     var sentPaymentHashes = [String:String]()
+    lazy var txFeeAPI = TLTxFeeAPI();
 
     class func instance() -> AppDelegate {
         return UIApplication.sharedApplication().delegate as! (AppDelegate)
@@ -376,7 +377,8 @@ import Crashlytics
         TLPreferences.setEnableBackupWithiCloud(false)
         TLPreferences.setInAppSettingsKitEnableBackupWithiCloud(false)
         
-        TLPreferences.setIsAutomaticFee(true)
+        TLPreferences.setInAppSettingsKitEnabledDynamicFee(true)
+        TLPreferences.setInAppSettingsKitDynamicFeeSettingIdx(TLDynamicFeeSetting.HalfHourFee);
         TLPreferences.setInAppSettingsKitTransactionFee(TLWalletUtils.DEFAULT_FEE_AMOUNT_IN_BITCOINS())
         TLPreferences.setEnablePINCode(false)
         TLSuggestions.instance().enabledAllSuggestions()

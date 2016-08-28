@@ -38,6 +38,8 @@ class TLPreferences
         static let INAPPSETTINGS_KIT_STEALTH_WEB_SOCKET_PORT = "stealthwebsocketport"
         static let INAPPSETTINGS_KIT_RECEIVING_CURRENCY = "currency"
         static let INAPPSETTINGS_KIT_DISPLAY_LOCAL_CURRENCY = "displaylocalcurrency"
+        static let INAPPSETTINGS_KIT_ENABLE_DYNAMIC_FEE = "enabledynamicfee"
+        static let INAPPSETTINGS_KIT_DYNAMIC_FEE_OPTION = "dynamicfeeoption"
         
         static let PREFERENCE_INSTALL_DATE = "pref-install-date"
         static let PREFERENCE_APP_VERSION = "pref-app-version"
@@ -61,7 +63,6 @@ class TLPreferences
         static let PREFERENCE_ENABLE_PIN_CODE = "pref-enable-pin-code"
         static let PREFERENCE_WALLET_ADVANCE_MODE = "pref-advance-mode"
         static let PREFERENCE_DISPLAY_LOCAL_CURRENCY = "pref-display-local-currency"
-        static let PREFERENCE_AUTOMATIC_FEE = "pref-automatic-fee"
         static let PREFERENCE_FEE_AMOUNT = "pref-fee-amount"
         static let PREFERENCE_SUGGESTIONS_DICT = "pref-suggestions-dict"
         static let PREFERENCE_ANALYTICS_DICT = "pref-analytics-dict"
@@ -481,15 +482,6 @@ class TLPreferences
         NSUserDefaults.standardUserDefaults().synchronize()
     }
     
-    class func isAutomaticFee() -> (Bool) {
-        return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.PREFERENCE_AUTOMATIC_FEE)
-    }
-    
-    class func setIsAutomaticFee(enabled:Bool) -> () {
-        NSUserDefaults.standardUserDefaults().setBool(enabled ,forKey:CLASS_STATIC.PREFERENCE_AUTOMATIC_FEE)
-        NSUserDefaults.standardUserDefaults().synchronize()
-    }
-    
     class func getSuggestionsDict() -> (NSDictionary?){
         return NSUserDefaults.standardUserDefaults().objectForKey(CLASS_STATIC.PREFERENCE_SUGGESTIONS_DICT) as! NSDictionary?
     }
@@ -541,6 +533,28 @@ class TLPreferences
     
     class func setHasRatedOnce() -> () {
         NSUserDefaults.standardUserDefaults().setBool(true ,forKey:CLASS_STATIC.PREFERENCE_RATED_ONCE)
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+    
+    class func enabledInAppSettingsKitDynamicFee() -> (Bool){
+        return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.INAPPSETTINGS_KIT_ENABLE_DYNAMIC_FEE)
+    }
+    
+    class func setInAppSettingsKitEnabledDynamicFee(enabled:Bool) -> () {
+        NSUserDefaults.standardUserDefaults().setBool(enabled ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_ENABLE_DYNAMIC_FEE)
+        NSUserDefaults.standardUserDefaults().synchronize()
+    }
+
+    //WARNING: TLDynamicFeeSetting, therefore InAppSettingsKit must match the keys for 21's dynamic fee api return object keys called in TLTxFeeAPI
+    class func getInAppSettingsKitDynamicFeeSetting() -> (TLDynamicFeeSetting?) {
+        if let fee = NSUserDefaults.standardUserDefaults().stringForKey(CLASS_STATIC.INAPPSETTINGS_KIT_DYNAMIC_FEE_OPTION) {
+            return TLDynamicFeeSetting(rawValue:fee)!
+        }
+        return nil
+    }
+    
+    class func setInAppSettingsKitDynamicFeeSettingIdx(dynamicFeeSetting:TLDynamicFeeSetting) -> () {
+        NSUserDefaults.standardUserDefaults().setObject(dynamicFeeSetting.rawValue ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_DYNAMIC_FEE_OPTION)
         NSUserDefaults.standardUserDefaults().synchronize()
     }
 }

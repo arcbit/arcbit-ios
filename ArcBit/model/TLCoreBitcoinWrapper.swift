@@ -170,7 +170,8 @@ class TLCoreBitcoinWrapper {
 
             return [
                 "txHex": TLWalletUtils.dataToHexString(tx.data),
-                "txHash": TLWalletUtils.reverseHexString(TLWalletUtils.dataToHexString(tx.txHash))
+                "txHash": TLWalletUtils.reverseHexString(TLWalletUtils.dataToHexString(tx.txHash)),
+                "txSize": tx.size
             ]
     }
 }
