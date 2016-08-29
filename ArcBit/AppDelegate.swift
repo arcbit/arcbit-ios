@@ -375,7 +375,7 @@ import Crashlytics
         TLPreferences.setInAppSettingsKitEnableBackupWithiCloud(false)
         
         TLPreferences.setInAppSettingsKitEnabledDynamicFee(true)
-        TLPreferences.setInAppSettingsKitDynamicFeeSettingIdx(TLDynamicFeeSetting.HalfHourFee);
+        TLPreferences.setInAppSettingsKitDynamicFeeSettingIdx(TLDynamicFeeSetting.FastestFee);
         TLPreferences.setInAppSettingsKitTransactionFee(TLWalletUtils.DEFAULT_FEE_AMOUNT_IN_BITCOINS())
         TLPreferences.setEnablePINCode(false)
         TLSuggestions.instance().enabledAllSuggestions()

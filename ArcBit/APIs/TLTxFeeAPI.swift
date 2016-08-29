@@ -57,13 +57,10 @@ class TLTxFeeAPI {
             let dynamicFeeSetting = TLPreferences.getInAppSettingsKitDynamicFeeSetting()
             if dynamicFeeSetting == TLDynamicFeeSetting.FastestFee {
                 dynamicFee = self.cachedDynamicFees!.objectForKey(TLDynamicFeeSetting.getAPIValue(TLDynamicFeeSetting.FastestFee)) as? NSNumber
-                DLog("checkTofetchFeeThenFinalPromptReviewTx FastestFee %@", function: dynamicFee!)
             } else if dynamicFeeSetting == TLDynamicFeeSetting.HalfHourFee {
                 dynamicFee = self.cachedDynamicFees!.objectForKey(TLDynamicFeeSetting.getAPIValue(TLDynamicFeeSetting.HalfHourFee)) as? NSNumber
-                DLog("checkTofetchFeeThenFinalPromptReviewTx HalfHourFee %@", function: dynamicFee!)
             } else if dynamicFeeSetting == TLDynamicFeeSetting.HourFee {
                 dynamicFee = self.cachedDynamicFees!.objectForKey(TLDynamicFeeSetting.getAPIValue(TLDynamicFeeSetting.HourFee)) as? NSNumber
-                DLog("checkTofetchFeeThenFinalPromptReviewTx HourFee %@", function: dynamicFee!)
             }
         }
         return dynamicFee
@@ -72,9 +69,6 @@ class TLTxFeeAPI {
     func haveUpdatedCachedDynamicFees() -> Bool {
         let nowUnixTime = NSDate().timeIntervalSince1970
         let tenMinutesInSeconds = 600.0
-        DLog("checkTofetchFeeThenFinalPromptReviewTx getDynamicTxFee \(nowUnixTime)")
-        DLog("checkTofetchFeeThenFinalPromptReviewTx getDynamicTxFee \(TLPreferences.enabledInAppSettingsKitDynamicFee())")
-
         if self.cachedDynamicFeesTime == nil || nowUnixTime - self.cachedDynamicFeesTime! > tenMinutesInSeconds {
             return false
         }
@@ -82,14 +76,13 @@ class TLTxFeeAPI {
     }
 
     func getDynamicTxFee(success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler)-> () {
-        DLog("TLTxFeeAPI getDynamicTxFee")
-        self.cachedDynamicFeesTime = NSDate().timeIntervalSince1970
         self.networking.httpGET(NSURL(string: "https://bitcoinfees.21.co/api/v1/fees/recommended")!,
                                 parameters:[:], success:{
                                     (_jsonData: AnyObject!) in
                                     if let jsonData = _jsonData as? NSDictionary {
+                                        self.cachedDynamicFeesTime = NSDate().timeIntervalSince1970
                                         self.cachedDynamicFees = jsonData
-                                        DLog("checkTofetchFeeThenFinalPromptReviewTx getDynamicTxFee %@", function: jsonData.description)
+                                        DLog("TLTxFeeAPI getDynamicTxFee success %@", function: jsonData.description)
                                     } else {
                                         self.cachedDynamicFees = nil
                                     }
@@ -97,6 +90,7 @@ class TLTxFeeAPI {
             }, failure: {
                 (code: Int, status: String!) in
                 self.cachedDynamicFees = nil
+                DLog("TLTxFeeAPI getDynamicTxFee failure")
                 failure(code, status)
         })
     }

@@ -142,9 +142,7 @@ import UIKit
         self.inputedToAddress = nil
         self.inputedToAmount = nil
         self.webSocketNotifiedTxHash = nil
-        DLog("refreshAccountDataAndSetBalanceView 10 \(txHash)")
         if !self.sentPaymentHashesSet.containsObject(txHash) {
-            DLog("refreshAccountDataAndSetBalanceView 11")
             self.sentPaymentHashesSet.addObject(txHash)
             let msg = String(format:"Sent %@ to %@".localized, TLCurrencyFormat.getProperAmount(amount), address)
             TLHUDWrapper.hideHUDForView(self.view, animated: true)
@@ -166,26 +164,19 @@ import UIKit
     func refreshAccountDataAndSetBalanceView(fetchDataAgain: Bool = false) -> () {
         func dismissSendVC() {
             if self.webSocketNotifiedTxHash != nil && inputedToAddress != nil && inputedToAmount != nil {
-                DLog("refreshAccountDataAndSetBalanceView 8")
                 self.showLocalNotificationForCoinsSent(self.webSocketNotifiedTxHash!, address: inputedToAddress!, amount: inputedToAmount!)
             } else {
-                DLog("refreshAccountDataAndSetBalanceView 9")
                 TLHUDWrapper.hideHUDForView(self.view, animated: true)
                 self.dismissViewControllerAnimated(true, completion: nil)
             }
         }
-        DLog("refreshAccountDataAndSetBalanceView 111")
         
         let checkToRefreshAgain = { () -> () in
             let afterSendBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
             
-            DLog("refreshAccountDataAndSetBalanceView 5 afterSendBalance \(afterSendBalance.toUInt64())")
-            DLog("refreshAccountDataAndSetBalanceView 5 beforeSendBalance \(TLSendFormData.instance().beforeSendBalance?.toUInt64())")
             if TLSendFormData.instance().beforeSendBalance != nil && afterSendBalance.equalTo(TLSendFormData.instance().beforeSendBalance!) {
                 self.refreshAccountDataAndSetBalanceViewDelay()
-                DLog("refreshAccountDataAndSetBalanceView 6")
             } else {
-                DLog("refreshAccountDataAndSetBalanceView 7")
                 TLSendFormData.instance().beforeSendBalance = nil
                 dismissSendVC()
             }
@@ -194,13 +185,10 @@ import UIKit
         if (AppDelegate.instance().godSend!.getSelectedObjectType() == .Account) {
             let accountObject = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLAccountObject
             AppDelegate.instance().pendingOperations.addSetUpAccountOperation(accountObject, fetchDataAgain: fetchDataAgain, success: {
-                DLog("refreshAccountDataAndSetBalanceView 2")
                 if accountObject.downloadState == .Downloaded {
-                    DLog("refreshAccountDataAndSetBalanceView 3")
                     checkToRefreshAgain()
                 } else {
                     //if dont have this, send hud can spin forever if operation fail
-                    DLog("refreshAccountDataAndSetBalanceView 4")
                     dismissSendVC()
                 }
             })
@@ -280,14 +268,6 @@ import UIKit
         
         let txHash = txHexAndTxHash!.objectForKey("txHash") as? String
         
-        if(txHex != nil) {
-            DLog("showPromptReviewTx txHex: %@", function: txHex!)
-        }
-        
-        if(txHash != nil) {
-            DLog("showPromptReviewTx txHash: %@", function: txHash!)
-        }
-        
         if (toAddress == AppDelegate.instance().godSend!.getStealthAddress()) {
             AppDelegate.instance().pendingSelfStealthPaymentTxid = txHash
         }
@@ -301,7 +281,8 @@ import UIKit
         self.inputedToAddress = toAddress
         self.inputedToAmount = inputtedAmount
         self.sendTxHash = txHash
-        DLog("broadcastTx txHash: \(txHash)")
+        DLog("showPromptReviewTx txHex: \(txHex)")
+        DLog("showPromptReviewTx txHash: \(txHash)")
         broadcastTx(txHex!, txHash: txHash!, toAddress: toAddress!)
     }
 

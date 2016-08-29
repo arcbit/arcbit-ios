@@ -85,32 +85,32 @@ import UIKit
         if TLPreferences.enabledInAppSettingsKitDynamicFee() {
             if !AppDelegate.instance().godSend!.haveUpDatedUTXOs() {
                 AppDelegate.instance().godSend!.getAndSetUnspentOutputs({
-                    if !AppDelegate.instance().txFeeAPI.haveUpdatedCachedDynamicFees() {
-                        self.checkToFetchDynamicFeesAndFillAmountFieldWithWholeBalance()
-                    } else {
-                        self.fillAmountFieldWithWholeBalance(true)
-                    }
+                    self.checkToFetchDynamicFeesAndFillAmountFieldWithWholeBalance()
                     }, failure: {
                         TLPrompts.promptErrorMessage("Error".localized, message: "Unable to query dynamic fees. Falling back on fixed transaction fee. (fee can be configured on review payment)".localized)
                         self.fillAmountFieldWithWholeBalance(false)
                 })
             } else {
-                checkToFetchDynamicFeesAndFillAmountFieldWithWholeBalance()
+                self.checkToFetchDynamicFeesAndFillAmountFieldWithWholeBalance()
             }
         } else {
-            fillAmountFieldWithWholeBalance(false)
+            self.fillAmountFieldWithWholeBalance(false)
         }
     }
 
     func checkToFetchDynamicFeesAndFillAmountFieldWithWholeBalance() {
-        AppDelegate.instance().txFeeAPI.getDynamicTxFee({
-            (_jsonData: AnyObject!) in
+        if !AppDelegate.instance().txFeeAPI.haveUpdatedCachedDynamicFees() {
+            AppDelegate.instance().txFeeAPI.getDynamicTxFee({
+                (_jsonData: AnyObject!) in
+                self.fillAmountFieldWithWholeBalance(true)
+                }, failure: {
+                    (code: Int, status: String!) in
+                    TLPrompts.promptErrorMessage("Error".localized, message: "Unable to query dynamic fees. Falling back on fixed transaction fee. (fee can be configured on review payment)".localized)
+                    self.fillAmountFieldWithWholeBalance(false)
+            })
+        } else {
             self.fillAmountFieldWithWholeBalance(true)
-            }, failure: {
-                (code: Int, status: String!) in
-                TLPrompts.promptErrorMessage("Error".localized, message: "Unable to query dynamic fees. Falling back on fixed transaction fee. (fee can be configured on review payment)".localized)
-                self.fillAmountFieldWithWholeBalance(false)
-        })
+        }
     }
 
     
@@ -132,14 +132,11 @@ import UIKit
             if let dynamicFeeSatoshis:NSNumber? = AppDelegate.instance().txFeeAPI.getCachedDynamicFee() {
                 fee = TLCoin(uint64: txSizeBytes*dynamicFeeSatoshis!.unsignedLongLongValue)
                 DLog("showPromptReviewTx coinFeeAmount dynamicFeeSatoshis: \(txSizeBytes*dynamicFeeSatoshis!.unsignedLongLongValue)")
-                
             } else {
-                DLog("fillAmountFieldWithWholeBalance 111:")
                 fee = TLCurrencyFormat.bitcoinAmountStringToCoin(TLPreferences.getInAppSettingsKitTransactionFee()!)
             }
             
         } else {
-            DLog("fillAmountFieldWithWholeBalance 2:")
             let feeAmount = TLPreferences.getInAppSettingsKitTransactionFee()
             fee = TLCurrencyFormat.bitcoinAmountStringToCoin(feeAmount!)
         }
@@ -353,7 +350,6 @@ import UIKit
     }
     
     override func viewWillAppear(animated: Bool) {
-        DLog("viewWillAppearrr)")
         self.updateViewToNewSelectedObject()
     
         // TODO: better way
@@ -519,7 +515,6 @@ import UIKit
         let balance = AppDelegate.instance().godSend!.getCurrentFromBalance()
         let balanceString = TLCurrencyFormat.getProperAmount(balance)
         self.accountBalanceLabel!.text = balanceString as String
-        DLog("_updateAccountBalanceView balanceString \(balanceString)")
     }
     
     func updateAccountBalanceView(notification: NSNotification) {
@@ -556,7 +551,7 @@ import UIKit
     }
     
     private func checkTofetchFeeThenFinalPromptReviewTx() {
-        if TLPreferences.enabledInAppSettingsKitDynamicFee() && AppDelegate.instance().txFeeAPI.haveUpdatedCachedDynamicFees() {
+        if TLPreferences.enabledInAppSettingsKitDynamicFee() && !AppDelegate.instance().txFeeAPI.haveUpdatedCachedDynamicFees() {
             AppDelegate.instance().txFeeAPI.getDynamicTxFee({
                 (_jsonData: AnyObject!) in
                 self.showFinalPromptReviewTx()
@@ -571,7 +566,6 @@ import UIKit
 
     private func showFinalPromptReviewTx() {
         let bitcoinAmount = self.amountTextField!.text
-//        let fiatAmount = self.fiatAmountTextField!.text
         let toAddress = self.toAddressTextField!.text
     
         if (!TLCoreBitcoinWrapper.isValidAddress(toAddress!, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
@@ -595,10 +589,13 @@ import UIKit
                 if (AppDelegate.instance().godSend!.getSelectedObjectType() == .Account) {
                     let accountObject = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLAccountObject
                     let inputCount = accountObject.stealthPaymentUnspentOutputsCount + accountObject.unspentOutputsCount
+                    //TODO account for change output, output count likely 2 (3 if have stealth payment) cause if user dont do click use all funds because will likely have change
+                    // but for now dont need to be fully accurate with tx fee, for now we will underestimate tx fee, wont underestimate much because outputs contributes little to tx size
                     txSizeBytes = TLSpaghettiGodSend.getEstimatedTxSize(inputCount, outputCount: 1)
                     DLog("TLAccountObject useDynamicFees inputCount txSizeBytes: \(inputCount) \(txSizeBytes)")
                 } else {
                     let importedAddress = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLImportedAddress
+                    // TODO same as above
                     txSizeBytes = TLSpaghettiGodSend.getEstimatedTxSize(importedAddress.unspentOutputsCount, outputCount: 1)
                     DLog("importedAddress useDynamicFees inputCount txSizeBytes: \(importedAddress.unspentOutputsCount) \(txSizeBytes)")
                 }
@@ -608,12 +605,10 @@ import UIKit
                     DLog("showPromptReviewTx coinFeeAmount dynamicFeeSatoshis: \(txSizeBytes*dynamicFeeSatoshis!.unsignedLongLongValue)")
                     
                 } else {
-                    DLog("fillAmountFieldWithWholeBalance 111:")
                     fee = TLCurrencyFormat.bitcoinAmountStringToCoin(TLPreferences.getInAppSettingsKitTransactionFee()!)
                 }
                 
             } else {
-                DLog("fillAmountFieldWithWholeBalance 2:")
                 let feeAmount = TLPreferences.getInAppSettingsKitTransactionFee()
                 fee = TLCurrencyFormat.bitcoinAmountStringToCoin(feeAmount!)
             }
@@ -633,24 +628,24 @@ import UIKit
         }
         
         func checkToFetchDynamicFees() {
-            AppDelegate.instance().txFeeAPI.getDynamicTxFee({
-                (_jsonData: AnyObject!) in
+            if !AppDelegate.instance().txFeeAPI.haveUpdatedCachedDynamicFees() {
+                AppDelegate.instance().txFeeAPI.getDynamicTxFee({
+                    (_jsonData: AnyObject!) in
+                    showReviewPaymentViewController(true)
+                    }, failure: {
+                        (code: Int, status: String!) in
+                        TLPrompts.promptErrorMessage("Error".localized, message: "Unable to query dynamic fees. Falling back on fixed transaction fee. (fee can be configured on review payment)".localized)
+                        showReviewPaymentViewController(false)
+                })
+            } else {
                 showReviewPaymentViewController(true)
-                }, failure: {
-                    (code: Int, status: String!) in
-                    TLPrompts.promptErrorMessage("Error".localized, message: "Unable to query dynamic fees. Falling back on fixed transaction fee. (fee can be configured on review payment)".localized)
-                    showReviewPaymentViewController(false)
-            })
+            }
         }
         
         if TLPreferences.enabledInAppSettingsKitDynamicFee() {
             if !AppDelegate.instance().godSend!.haveUpDatedUTXOs() {
                 AppDelegate.instance().godSend!.getAndSetUnspentOutputs({
-                    if !AppDelegate.instance().txFeeAPI.haveUpdatedCachedDynamicFees() {
-                        checkToFetchDynamicFees()
-                    } else {
-                        showReviewPaymentViewController(true)
-                    }
+                    checkToFetchDynamicFees()
                     }, failure: {
                         TLPrompts.promptErrorMessage("Error".localized, message: "Unable to query dynamic fees. Falling back on fixed transaction fee. (fee can be configured on review payment)".localized)
                         showReviewPaymentViewController(false)
@@ -797,6 +792,31 @@ import UIKit
         }
     }
     
+    func preFetchUTXOsAndDynamicFees() {
+        DLog("preFetchUTXOsAndDynamicFees")
+        if TLPreferences.enabledInAppSettingsKitDynamicFee() {
+            DLog("preFetchUTXOsAndDynamicFees enabledInAppSettingsKitDynamicFee")
+
+            if !AppDelegate.instance().txFeeAPI.haveUpdatedCachedDynamicFees() {
+                AppDelegate.instance().txFeeAPI.getDynamicTxFee({
+                    (_jsonData: AnyObject!) in
+                    DLog("preFetchUTXOsAndDynamicFees getDynamicTxFee success")
+                    }, failure: {
+                        (code: Int, status: String!) in
+                        DLog("preFetchUTXOsAndDynamicFees getDynamicTxFee failure")
+                })
+            }
+            
+            if !AppDelegate.instance().godSend!.haveUpDatedUTXOs() {
+                AppDelegate.instance().godSend!.getAndSetUnspentOutputs({
+                    DLog("preFetchUTXOsAndDynamicFees getAndSetUnspentOutputs success")
+                    }, failure: {
+                        DLog("preFetchUTXOsAndDynamicFees getAndSetUnspentOutputs failure")
+                })
+            }
+        }
+    }
+    
     @IBAction private func updateFiatAmountTextFieldExchangeRate(sender: AnyObject?) {
         let currency = TLCurrencyFormat.getFiatCurrency()
         let amount = TLCurrencyFormat.properBitcoinAmountStringToCoin(self.amountTextField!.text!)
@@ -916,7 +936,6 @@ import UIKit
     
     func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
         NSNotificationCenter.defaultCenter().addObserver(self, selector: "dismissTextFieldsAndScrollDown:", name: UIApplicationDidEnterBackgroundNotification, object: nil)
-
         if TLUtils.isIPhone5() {
             if textField == self.amountTextField || textField == self.fiatAmountTextField {
                 self.topView!.scrollToY(-140)
@@ -930,7 +949,9 @@ import UIKit
                 self.topView!.scrollToView(self.fiatAmountTextField!)
             }
         }
-        
+        if textField == self.amountTextField || textField == self.fiatAmountTextField {
+            self.preFetchUTXOsAndDynamicFees()
+        }
         return true
     }
     
