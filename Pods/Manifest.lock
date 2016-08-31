@@ -23,7 +23,7 @@ PODS:
   - CoreBitcoin (0.6.8.1):
     - ISO8601DateFormatter
     - OpenSSL-Universal (= 1.0.1.16)
-  - Crashlytics (3.7.2):
+  - Crashlytics (3.8.0):
     - Fabric (~> 1.6.3)
   - ECSlidingViewController (2.0.3)
   - Fabric (1.6.7)
@@ -52,7 +52,7 @@ EXTERNAL SOURCES:
 SPEC CHECKSUMS:
   AFNetworking: e1d86c2a96bb5d2e7408da36149806706ee122fe
   CoreBitcoin: 4ac6f6a61e543f08399c2fe57496d4fdcbaf74f9
-  Crashlytics: 130ab943f8c78cda7a814b434f270b2e2c8a3cba
+  Crashlytics: 8601d9c74a4c4d28f3e7f408bf4c0e490c70e8b4
   ECSlidingViewController: 6485c14f23b4487e9946535421ca8f111f86cc53
   Fabric: caf7580c725e64db144f610ac65cd60956911dc7
   iCloudDocumentSync: 961aac30ca09c221de4c236e94dae69912f2c589
