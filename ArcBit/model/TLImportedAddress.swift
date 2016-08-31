@@ -120,6 +120,21 @@ import Foundation
         unspentOutputsSum = TLCoin(uint64: unspentOutputsSumTemp)
         return unspentOutputsSum
     }
+
+    func getInputsNeededToConsume(amountNeeded: TLCoin) -> Int {
+        var valueSelected:UInt64 = 0
+        var inputCount = 0
+        for _unspentOutput in unspentOutputs! {
+            let unspentOutput = _unspentOutput as! NSDictionary
+            let amount = unspentOutput.objectForKey("value") as! NSNumber
+            valueSelected += amount.unsignedLongLongValue
+            inputCount += 1
+            if valueSelected >= amountNeeded.toUInt64() {
+                return inputCount
+            }
+        }
+        return inputCount
+    }
     
     func setUnspentOutputs(unspentOuts:NSArray)-> () {
         unspentOutputs = unspentOuts.copy() as? NSArray

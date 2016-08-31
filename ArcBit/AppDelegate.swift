@@ -59,9 +59,8 @@ import Crashlytics
     private var respondToStealthPaymentGetTxTries = 0
     var scannedEncryptedPrivateKey:String? = nil
     var scannedAddressBookAddress:String? = nil
-    var doHiddenPresentAndDimissTransparentViewController = false
     let pendingOperations = PendingOperations()
-    var listeningToToAddress:String? = nil
+    lazy var webSocketNotifiedTxHashSet:NSMutableSet = NSMutableSet()
     var pendingSelfStealthPaymentTxid: String? = nil
     lazy var txFeeAPI = TLTxFeeAPI();
 
@@ -374,7 +373,7 @@ import Crashlytics
         TLPreferences.setEnableBackupWithiCloud(false)
         TLPreferences.setInAppSettingsKitEnableBackupWithiCloud(false)
         
-        TLPreferences.setInAppSettingsKitEnabledDynamicFee(true)
+        TLPreferences.setInAppSettingsKitEnabledDynamicFee(false)
         TLPreferences.setInAppSettingsKitDynamicFeeSettingIdx(TLDynamicFeeSetting.FastestFee);
         TLPreferences.setInAppSettingsKitTransactionFee(TLWalletUtils.DEFAULT_FEE_AMOUNT_IN_BITCOINS())
         TLPreferences.setEnablePINCode(false)
@@ -723,11 +722,9 @@ import Crashlytics
     
     func updateUIForNewTx(txHash: String, receivedAmount: TLCoin?, receivedTo: String) {
         dispatch_async(dispatch_get_main_queue()) {
-            if self.listeningToToAddress != nil {
-                NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_TO_ADDRESS_WEBSOCKET_NOTIFICATION(), object:txHash, userInfo:nil)
-                self.listeningToToAddress = nil
-            }
-            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION(), object:nil, userInfo:nil)
+            DLog("updateUIForNewTx txHash \(txHash)")
+            self.webSocketNotifiedTxHashSet.addObject(txHash)
+            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION(), object: txHash, userInfo:nil)
             if receivedAmount != nil {
                 NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_RECEIVE_PAYMENT(), object:nil, userInfo:nil)
                 self.promptReceivedPayment(receivedTo, receivedAmount: receivedAmount!)
@@ -736,11 +733,14 @@ import Crashlytics
     }
     
     func promptReceivedPayment(receivedTo:String, receivedAmount:TLCoin) {
-        let msg = "\(receivedTo) received \(TLCurrencyFormat.getProperAmount(receivedAmount))"
-        TLPrompts.promptSuccessMessage(msg, message: "")
-        AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-        if (TLPreferences.getEnableSoundNotification()) {
-            AudioServicesPlaySystemSound(1016)
+        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_SEC)))
+        dispatch_after(delayTime, dispatch_get_main_queue()) {
+            let msg = "\(receivedTo) received \(TLCurrencyFormat.getProperAmount(receivedAmount))"
+            TLPrompts.promptSuccessMessage(msg, message: "")
+            AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+            if (TLPreferences.getEnableSoundNotification()) {
+                AudioServicesPlaySystemSound(1016)
+            }
         }
     }
     

@@ -22,6 +22,7 @@
 
 import Foundation
 import UIKit
+import AVFoundation
 
 @objc(TLReviewPaymentViewController) class TLReviewPaymentViewController: UIViewController {
     required init?(coder aDecoder: NSCoder) {
@@ -31,6 +32,8 @@ import UIKit
     @IBOutlet weak var navigationBar:UINavigationBar?
     @IBOutlet weak var fromLabel: UILabel!
     @IBOutlet weak var toLabel: UILabel!
+    @IBOutlet weak var unitLabel: UILabel!
+    @IBOutlet weak var fiatUnitLabel: UILabel!
     @IBOutlet weak var toAmountLabel: UILabel!
     @IBOutlet weak var feeAmountLabel: UILabel!
     @IBOutlet weak var toAmountFiatLabel: UILabel!
@@ -38,39 +41,40 @@ import UIKit
     @IBOutlet weak var totalAmountLabel: UILabel!
     @IBOutlet weak var totalFiatAmountLabel: UILabel!
     @IBOutlet weak var sendButton: UIButton!
-    private lazy var sentPaymentHashesSet:NSMutableSet = NSMutableSet()
-    var timer:NSTimer?
+    private lazy var showedPromptedForSentPaymentTxHashSet:NSMutableSet = NSMutableSet()
+    var sendTimer:NSTimer?
     var sendTxHash:String?
-    var webSocketNotifiedTxHash:String?
     var inputedToAddress: String? = nil
     var inputedToAmount: TLCoin? = nil
-    
+    var amountMovedFromAccount: TLCoin? = nil
+
     override func preferredStatusBarStyle() -> (UIStatusBarStyle) {
         return UIStatusBarStyle.LightContent
     }
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationBarColors(self.navigationBar!)
         self.sendButton.backgroundColor = TLColors.mainAppColor()
         self.sendButton.setTitleColor(TLColors.mainAppOppositeColor(), forState: .Normal)
         NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:Selector("finishSend:"),
-             name:TLNotificationEvents.EVENT_TO_ADDRESS_WEBSOCKET_NOTIFICATION(), object:nil)
-
+            ,selector:#selector(TLReviewPaymentViewController.finishSend(_:)),
+             name:TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION(), object:nil)
         updateView()
     }
-
+    
     func updateView() {
         self.fromLabel.text = TLSendFormData.instance().fromLabel
         self.toLabel.text = TLSendFormData.instance().getAddress()
-        self.toAmountLabel.text = TLCurrencyFormat.coinToProperBitcoinAmountString(TLSendFormData.instance().toAmount!, withCode: true)
-        self.toAmountFiatLabel.text = TLCurrencyFormat.coinToProperFiatAmountString(TLSendFormData.instance().toAmount!, withCode: true)
-        self.feeAmountLabel.text = TLCurrencyFormat.coinToProperBitcoinAmountString(TLSendFormData.instance().feeAmount!, withCode: true)
-        self.feeAmountFiatLabel.text = TLCurrencyFormat.coinToProperFiatAmountString(TLSendFormData.instance().feeAmount!, withCode: true)
+        self.unitLabel.text = TLCurrencyFormat.getBitcoinDisplay()
+        self.fiatUnitLabel.text = TLCurrencyFormat.getFiatCurrency()
+        self.toAmountLabel.text = TLCurrencyFormat.coinToProperBitcoinAmountString(TLSendFormData.instance().toAmount!, withCode: false)
+        self.toAmountFiatLabel.text = TLCurrencyFormat.coinToProperFiatAmountString(TLSendFormData.instance().toAmount!, withCode: false)
+        self.feeAmountLabel.text = TLCurrencyFormat.coinToProperBitcoinAmountString(TLSendFormData.instance().feeAmount!, withCode: false)
+        self.feeAmountFiatLabel.text = TLCurrencyFormat.coinToProperFiatAmountString(TLSendFormData.instance().feeAmount!, withCode: false)
         let total = TLSendFormData.instance().toAmount!.add(TLSendFormData.instance().feeAmount!)
-        self.totalAmountLabel.text = TLCurrencyFormat.coinToProperBitcoinAmountString(total, withCode: true)
-        self.totalFiatAmountLabel.text = TLCurrencyFormat.coinToProperFiatAmountString(total, withCode: true)
+        self.totalAmountLabel.text = TLCurrencyFormat.coinToProperBitcoinAmountString(total, withCode: false)
+        self.totalFiatAmountLabel.text = TLCurrencyFormat.coinToProperFiatAmountString(total, withCode: false)
     }
     
     private func showPromptForSetTransactionFee() {
@@ -107,7 +111,7 @@ import UIKit
                                                                 return
                                                             }
                                                             
-                                                            if (!TLWalletUtils.isTransactionFeeToLow(feeAmount)) {
+                                                            if (TLWalletUtils.isTransactionFeeTooLow(feeAmount)) {
                                                                 let msg = String(format: "Too low a transaction fee can cause transactions to take a long time to confirm. Continue anyways?".localized)
                                                                 
                                                                 TLPrompts.promtForOKCancel(self, title: "Non-recommended Amount Transaction Fee".localized, message: msg, success: {
@@ -118,7 +122,7 @@ import UIKit
                                                                         (isCancelled: Bool) in
                                                                         self.showPromptForSetTransactionFee()
                                                                 })
-                                                            } else if (!TLWalletUtils.isTransactionFeeToHigh(feeAmount)) {
+                                                            } else if (TLWalletUtils.isTransactionFeeTooHigh(feeAmount)) {
                                                                 let msg = String(format: "Your transaction fee is very high. Continue anyways?".localized)
                                                                 
                                                                 TLPrompts.promtForOKCancel(self, title: "Non-recommended Amount Transaction Fee".localized, message: msg, success: {
@@ -138,90 +142,46 @@ import UIKit
         })
     }
 
-    func showLocalNotificationForCoinsSent(txHash: String, address: String, amount: TLCoin) {
+    func showPromptPaymentSent(txHash: String, address: String, amount: TLCoin) {
         self.inputedToAddress = nil
         self.inputedToAmount = nil
-        self.webSocketNotifiedTxHash = nil
-        if !self.sentPaymentHashesSet.containsObject(txHash) {
-            self.sentPaymentHashesSet.addObject(txHash)
-            let msg = String(format:"Sent %@ to %@".localized, TLCurrencyFormat.getProperAmount(amount), address)
-            TLHUDWrapper.hideHUDForView(self.view, animated: true)
-            TLPrompts.promtForOK(self, title: "", message: msg, success: {
-                self.dismissViewControllerAnimated(true, completion: nil)
-            })
-        }
-    }
-
-    func refreshAccountDataAndSetBalanceViewDelay() -> () {
-        NSTimer.scheduledTimerWithTimeInterval(3, target: self,
-                                               selector: #selector(refreshAccountDataAndSetBalanceViewFetchDataAgain), userInfo: nil, repeats: false)
-    }
-
-    func refreshAccountDataAndSetBalanceViewFetchDataAgain() -> () {
-        self.refreshAccountDataAndSetBalanceView(true)
-    }
-    
-    func refreshAccountDataAndSetBalanceView(fetchDataAgain: Bool = false) -> () {
-        func dismissSendVC() {
-            if self.webSocketNotifiedTxHash != nil && inputedToAddress != nil && inputedToAmount != nil {
-                self.showLocalNotificationForCoinsSent(self.webSocketNotifiedTxHash!, address: inputedToAddress!, amount: inputedToAmount!)
-            } else {
-                TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                self.dismissViewControllerAnimated(true, completion: nil)
-            }
-        }
-        
-        let checkToRefreshAgain = { () -> () in
-            let afterSendBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
-            
-            if TLSendFormData.instance().beforeSendBalance != nil && afterSendBalance.equalTo(TLSendFormData.instance().beforeSendBalance!) {
-                self.refreshAccountDataAndSetBalanceViewDelay()
-            } else {
-                TLSendFormData.instance().beforeSendBalance = nil
-                dismissSendVC()
-            }
-        }
-        
-        if (AppDelegate.instance().godSend!.getSelectedObjectType() == .Account) {
-            let accountObject = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLAccountObject
-            AppDelegate.instance().pendingOperations.addSetUpAccountOperation(accountObject, fetchDataAgain: fetchDataAgain, success: {
-                if accountObject.downloadState == .Downloaded {
-                    checkToRefreshAgain()
-                } else {
-                    //if dont have this, send hud can spin forever if operation fail
-                    dismissSendVC()
-                }
-            })
-            
-        } else if (AppDelegate.instance().godSend!.getSelectedObjectType() == .Address) {
-            let importedAddress = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLImportedAddress
-            AppDelegate.instance().pendingOperations.addSetUpImportedAddressOperation(importedAddress, fetchDataAgain: fetchDataAgain, success: {
-                if importedAddress.downloadState == .Downloaded {
-                    checkToRefreshAgain()
-                } else {
-                    //if dont have this, send hud can spin forever if operation fail
-                    dismissSendVC()
-                }
-            })
-        }
+        DLog("showPromptPaymentSent \(txHash)")
+        let msg = String(format:"Sent %@ to %@".localized, TLCurrencyFormat.getProperAmount(amount), address)
+        TLHUDWrapper.hideHUDForView(self.view, animated: true)
+        TLPrompts.promtForOK(self, title: "", message: msg, success: {
+            self.dismissViewControllerAnimated(true, completion: nil)
+        })
     }
     
     func cancelSend() {
-        timer?.invalidate()
+        sendTimer?.invalidate()
         TLHUDWrapper.hideHUDForView(self.view, animated: true)
     }
 
     func retryFinishSend() {
-        DLog("retryFinishSend")
-        self.webSocketNotifiedTxHash = self.sendTxHash
-        self.refreshAccountDataAndSetBalanceView(true)
+        DLog("retryFinishSend \(self.sendTxHash)")
+        if !AppDelegate.instance().webSocketNotifiedTxHashSet.containsObject(self.sendTxHash!) {
+            let nonUpdatedBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
+            let accountNewBalance = nonUpdatedBalance.subtract(self.amountMovedFromAccount!)
+            DLog("retryFinishSend 2 \(self.sendTxHash)")
+            AppDelegate.instance().godSend!.setCurrentFromBalance(accountNewBalance)
+        }
+
+        if !self.showedPromptedForSentPaymentTxHashSet.containsObject(self.sendTxHash!) {
+            self.showedPromptedForSentPaymentTxHashSet.addObject(self.sendTxHash!)
+            self.showPromptPaymentSent(self.sendTxHash!, address: inputedToAddress!, amount: inputedToAmount!)
+        }
     }
     
     func finishSend(note: NSNotification) {
-        self.webSocketNotifiedTxHash = note.object as? String
-        DLog("finishSend")
-        timer?.invalidate()
-        self.refreshAccountDataAndSetBalanceView(true)
+        let webSocketNotifiedTxHash = note.object as? String
+        DLog("finishSend \(webSocketNotifiedTxHash)")
+        if webSocketNotifiedTxHash! == self.sendTxHash! && !self.showedPromptedForSentPaymentTxHashSet.containsObject(webSocketNotifiedTxHash!) {
+            DLog("finishSend 2 \(webSocketNotifiedTxHash)")
+            self.showedPromptedForSentPaymentTxHashSet.addObject(webSocketNotifiedTxHash!)
+            sendTimer?.invalidate()
+            self.showPromptPaymentSent(webSocketNotifiedTxHash!, address: inputedToAddress!, amount: inputedToAmount!)
+        }
     }
     
     func initiateSend() {
@@ -268,13 +228,19 @@ import UIKit
         
         let txHash = txHexAndTxHash!.objectForKey("txHash") as? String
         
+        
         if (toAddress == AppDelegate.instance().godSend!.getStealthAddress()) {
             AppDelegate.instance().pendingSelfStealthPaymentTxid = txHash
         }
         
+        if AppDelegate.instance().godSend!.isPaymentToOwnAccount(toAddress!) {
+            self.amountMovedFromAccount = feeAmount
+        } else {
+            self.amountMovedFromAccount = inputtedAmount.add(feeAmount)
+        }
+        
         for address in realToAddress {
             TLTransactionListener.instance().listenToIncomingTransactionForAddress(address)
-            AppDelegate.instance().listeningToToAddress = address
         }
         
         TLSendFormData.instance().beforeSendBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
@@ -288,7 +254,6 @@ import UIKit
 
     func broadcastTx(txHex: String, txHash: String, toAddress: String) {
         let handlePushTxSuccess = { () -> () in
-            AppDelegate.instance().doHiddenPresentAndDimissTransparentViewController = true
             NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_SEND_PAYMENT(),
                                                                       object: nil, userInfo: nil)
         }
@@ -307,6 +272,9 @@ import UIKit
                 }
             }
             
+            if let label = AppDelegate.instance().appWallet.getLabelForAddress(toAddress) {
+                AppDelegate.instance().appWallet.setTransactionTag(txHash, tag: label)
+            }
             handlePushTxSuccess()
             
             }, failure: {
@@ -333,7 +301,7 @@ import UIKit
         TLHUDWrapper.showHUDAddedTo(self.view, labelText: "Sending".localized, animated: true)
         // relying on websocket to know when a payment has been sent can be unreliable, so cancel after a certain time
         let TIME_TO_WAIT_TO_HIDE_HUD_AND_REFRESH_ACCOUNT = 13.0
-        timer = NSTimer.scheduledTimerWithTimeInterval(TIME_TO_WAIT_TO_HIDE_HUD_AND_REFRESH_ACCOUNT, target: self,
+        sendTimer = NSTimer.scheduledTimerWithTimeInterval(TIME_TO_WAIT_TO_HIDE_HUD_AND_REFRESH_ACCOUNT, target: self,
                                                selector: #selector(retryFinishSend), userInfo: nil, repeats: false)
 
         if !AppDelegate.instance().godSend!.haveUpDatedUTXOs() {

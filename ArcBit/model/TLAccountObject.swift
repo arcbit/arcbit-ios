@@ -30,7 +30,8 @@ import Foundation
     let MAX_ACTIVE_MAIN_ADDRESS_TO_HAVE = 55
     let MAX_ACTIVE_CHANGE_ADDRESS_TO_HAVE = 55
     let EXTENDED_KEY_DEFAULT_ACCOUNT_NAME_LENGTH = 50
-    
+    let MAX_CONSOLIDATE_STEALTH_PAYMENT_UTXOS_COUNT:Int = 12
+
     var appWallet:TLWallet?
     private var accountDict: NSMutableDictionary?
     lazy var haveUpDatedUTXOs: Bool = false
@@ -55,7 +56,7 @@ import Foundation
     private var receivingAddressesArray = [String]()
     private var processedTxSet:NSMutableSet = NSMutableSet()
     private var accountType: TLAccountType?
-    private var accountBalance = TLCoin.zero()
+    var accountBalance = TLCoin.zero()
     private var totalUnspentOutputsSum: TLCoin?
     private var fetchedAccountData = false
     var listeningToIncomingTransactions = false
@@ -449,7 +450,7 @@ import Foundation
         
         let address2hasUpdatedNTxCount = NSMutableDictionary()
         
-        //DLog("processTx: \(self.getAccountID()) \(txObject.getTxid()!)")
+//        DLog("TLAccountObject processTx: \(self.getAccountID()) \(txObject.getTxid()!)")
     
         let outputAddressToValueArray = txObject.getOutputAddressToValueArray()
 
@@ -1213,7 +1214,37 @@ import Foundation
         totalUnspentOutputsSum = TLCoin(uint64: totalUnspentOutputsSumTemp)
         return totalUnspentOutputsSum!
     }
-    
+
+    func getInputsNeededToConsume(amountNeeded: TLCoin) -> Int {
+        var valueSelected:UInt64 = 0
+        var inputCount = 0
+        for _unspentOutput in stealthPaymentUnspentOutputs! {
+            let unspentOutput = _unspentOutput as! NSDictionary
+            let amount = unspentOutput.objectForKey("value") as! NSNumber
+            valueSelected += amount.unsignedLongLongValue
+            
+            inputCount += 1
+            if (valueSelected >= amountNeeded.toUInt64() && inputCount >= MAX_CONSOLIDATE_STEALTH_PAYMENT_UTXOS_COUNT) {
+                break
+            }
+        }
+        
+        if valueSelected >= amountNeeded.toUInt64() {
+            return inputCount
+        }
+        
+        for _unspentOutput in unspentOutputs! {
+            let unspentOutput = _unspentOutput as! NSDictionary
+            let amount = unspentOutput.objectForKey("value") as! NSNumber
+            valueSelected += amount.unsignedLongLongValue
+            inputCount += 1
+            if valueSelected >= amountNeeded.toUInt64() {
+                return inputCount
+            }
+        }
+        return inputCount
+    }
+
     func getUnspentOutputs(success: TLWalletUtils.Success, failure:TLWalletUtils.Error) {
         var activeAddresses = getActiveMainAddresses()! as! [String]
         activeAddresses += getActiveChangeAddresses()! as! [String]

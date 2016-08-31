@@ -33,6 +33,7 @@ class TLSendFormData {
         static var _instance:TLSendFormData? = nil
     }
     
+    var useAllFunds = false
     var beforeSendBalance: TLCoin? = nil
     var fromLabel:String?
     private var address:String?

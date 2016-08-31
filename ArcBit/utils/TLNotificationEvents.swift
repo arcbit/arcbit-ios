@@ -43,7 +43,6 @@ class TLNotificationEvents {
     class func EVENT_RECEIVED_STEALTH_ADDRESS_SUBSCRIPTION() -> String { return "api.stealth.address.subscription"}
     class func EVENT_RECEIVED_STEALTH_PAYMENT() -> String { return "api.stealth.payment"}
     class func EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION() -> String { return "model.updated.newunconfirmedtx"}
-    class func EVENT_TO_ADDRESS_WEBSOCKET_NOTIFICATION() -> String { return "received.to.address.websocket.notification"}
     class func EVENT_MODEL_UPDATED_NEW_BLOCK() -> String { return "model.updated.newblock"}
     class func EVENT_NEW_ADDRESS_GENERATED() -> String { return "app.newaddressgenerated"}
     class func EVENT_UPDATED_RECEIVING_ADDRESSES() -> String { return "app.updatedreceivingaddresses"}

@@ -24,7 +24,6 @@
 @objc class TLSpaghettiGodSend:NSObject {
     
     let DUST_AMOUNT:UInt64 = 546
-    let MAX_CONSOLIDATE_STEALTH_PAYMENT_UTXOS_COUNT:Int = 12
 
     private var appWallet: TLWallet
     private var sendFromAccounts:NSMutableArray?
@@ -66,6 +65,26 @@
         return TLSelectObjectType.Unknown
     }
     
+    
+    func isPaymentToOwnAccount(address: String) -> Bool {
+        if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
+            let accountObject = sendFromAccounts!.objectAtIndex(0) as! TLAccountObject
+            if address == accountObject.stealthWallet?.getStealthAddress() {
+                return true
+            }
+            if accountObject.isAddressPartOfAccount(address) {
+                return true
+            }
+            return false
+        } else if (sendFromAddresses != nil && sendFromAddresses!.count != 0) {
+            let importedAddress = sendFromAddresses!.objectAtIndex(0) as! TLImportedAddress
+            if address == importedAddress.getAddress() {
+                return true
+            }
+            return false
+        }
+        return false
+    }
     
     func haveUpDatedUTXOs() -> Bool {
         if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
@@ -172,6 +191,16 @@
         }
         return true
     }
+
+    func setCurrentFromBalance(balance: TLCoin) {
+        if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
+            let accountObject = sendFromAccounts!.objectAtIndex(0) as! TLAccountObject
+            accountObject.accountBalance = balance
+        } else if (sendFromAddresses != nil && sendFromAddresses!.count != 0) {
+            let importedAddress = sendFromAddresses!.objectAtIndex(0) as! TLImportedAddress
+            importedAddress.balance = balance
+        }
+    }
     
     func getCurrentFromBalance() -> (TLCoin) {
         if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
@@ -213,12 +242,12 @@
             addresses.reserveCapacity(sendFromAddresses!.count)
             let importedAddress = sendFromAddresses!.objectAtIndex(0) as! TLImportedAddress
             let amount = importedAddress.getBalance()
-            importedAddress.haveUpDatedUTXOs = false
             if (amount!.greater(TLCoin.zero())) {
                 addresses.append(importedAddress.getAddress())
             }
             
             if (addresses.count > 0) {
+                importedAddress.haveUpDatedUTXOs = false
                 TLBlockExplorerAPI.instance().getUnspentOutputs(addresses, success:{(jsonData:AnyObject!) in
                     let unspentOutputs = (jsonData as! NSDictionary).objectForKey("unspent_outputs") as! NSArray
                     
@@ -366,7 +395,7 @@
                                 "private_key": accountObject.stealthWallet!.getPaymentAddressPrivateKey(address!)!])
                             
                             unspentOutputsUsingCount++
-                            if (valueSelected.greaterOrEqual(valueNeeded) && unspentOutputsUsingCount >= MAX_CONSOLIDATE_STEALTH_PAYMENT_UTXOS_COUNT) {
+                            if (valueSelected.greaterOrEqual(valueNeeded) && unspentOutputsUsingCount >= accountObject.MAX_CONSOLIDATE_STEALTH_PAYMENT_UTXOS_COUNT) {
                                 // limit amount of stealth payment unspent outputs to use
                                 break
                             }
