@@ -411,7 +411,7 @@
             </dict>
             <dict>
                 <key>DefaultValue</key>
-                <string>YES</string>
+                <string>NO</string>
                 <key>Key</key>
                 <string>enabledynamicfee</string>
                 <key>Title</key>
