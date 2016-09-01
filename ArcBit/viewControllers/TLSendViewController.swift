@@ -557,6 +557,7 @@ import UIKit
             } else {
                 let feeAmount = TLPreferences.getInAppSettingsKitTransactionFee()
                 fee = TLCurrencyFormat.bitcoinAmountStringToCoin(feeAmount!)
+                TLSendFormData.instance().feeAmount = fee
             }
             
             let amountNeeded = inputtedAmount.add(fee)
