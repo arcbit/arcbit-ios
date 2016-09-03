@@ -546,11 +546,12 @@ class TLPreferences
     }
 
     //WARNING: TLDynamicFeeSetting, therefore InAppSettingsKit must match the keys for 21's dynamic fee api return object keys called in TLTxFeeAPI
-    class func getInAppSettingsKitDynamicFeeSetting() -> (TLDynamicFeeSetting?) {
+    class func getInAppSettingsKitDynamicFeeSetting() -> TLDynamicFeeSetting {
         if let fee = NSUserDefaults.standardUserDefaults().stringForKey(CLASS_STATIC.INAPPSETTINGS_KIT_DYNAMIC_FEE_OPTION) {
             return TLDynamicFeeSetting(rawValue:fee)!
+        } else {
+            return TLDynamicFeeSetting.FastestFee
         }
-        return nil
     }
     
     class func setInAppSettingsKitDynamicFeeSettingIdx(dynamicFeeSetting:TLDynamicFeeSetting) -> () {
