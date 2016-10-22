@@ -143,8 +143,14 @@ class TLCoreBitcoinWrapper {
     }
     
     class func createSignedSerializedTransactionHex(hashes:NSArray, inputIndexes indexes:NSArray, inputScripts scripts:NSArray,
-        outputAddresses:NSArray, outputAmounts amounts:NSArray, privateKeys:NSArray,
-        outputScripts:NSArray?, isTestnet:Bool) -> NSDictionary? {
+                                                    outputAddresses:NSArray, outputAmounts amounts:NSArray, privateKeys:NSArray,
+                                                    outputScripts:NSArray?, isTestnet:Bool) -> NSDictionary? {
+        return createSignedSerializedTransactionHex(hashes, inputIndexes: indexes, inputScripts: scripts, outputAddresses: outputAddresses, outputAmounts: amounts, privateKeys: privateKeys, outputScripts: outputScripts, signTx: true, isTestnet: isTestnet)
+    }
+    
+    class func createSignedSerializedTransactionHex(hashes:NSArray, inputIndexes indexes:NSArray, inputScripts scripts:NSArray,
+                                                    outputAddresses:NSArray, outputAmounts amounts:NSArray, privateKeys:NSArray,
+                                                    outputScripts:NSArray?, signTx: Bool, isTestnet:Bool) -> NSDictionary? {
             
             let tx = BRTransaction(inputHashes:hashes as [AnyObject], inputIndexes:indexes as [AnyObject],inputScripts:scripts as [AnyObject],
                 outputAddresses:outputAddresses as [AnyObject], outputAmounts:amounts as [AnyObject], isTestnet:isTestnet)
@@ -155,8 +161,14 @@ class TLCoreBitcoinWrapper {
                     tx.insertOutputScript(TLWalletUtils.hexStringToData(outputScript), amount:UInt64(0), isTestnet:isTestnet)
                 }
             }
-            
-            tx.signWithPrivateKeys(privateKeys as [AnyObject], isTestnet:isTestnet)
+        
+            if signTx {
+                tx.signWithPrivateKeys(privateKeys as [AnyObject], isTestnet:isTestnet)
+            } else {
+                return [
+                    "txHex": TLWalletUtils.dataToHexString(tx.data),
+                ]
+            }
             assert(tx.isSigned, "tx is not signed")
             let txFromHexData = BRTransaction(message: tx.data, isTestnet: isTestnet)
 

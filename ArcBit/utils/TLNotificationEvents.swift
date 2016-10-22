@@ -85,6 +85,7 @@ class TLNotificationEvents {
     class func EVENT_VIEW_ACCOUNT_ADDRESS_IN_WEB() -> String { return "event.view.account.address.web"}
     class func EVENT_VIEW_TRANSACTION_IN_WEB() -> String { return "event.view.transaction.web"}
     class func EVENT_ENABLE_ADVANCE_MODE() -> String { return "event.view.enable.advance.mode"}
+    class func EVENT_IMPORT_COLD_WALLET_ACCOUNT() -> String { return "event.import.cold.wallet.account"}
     class func EVENT_IMPORT_ACCOUNT() -> String { return "event.import.account"}
     class func EVENT_IMPORT_WATCH_ONLY_ACCOUNT() -> String { return "event.import.watch.only.account"}
     class func EVENT_IMPORT_PRIVATE_KEY() -> String { return "event.import.private.key"}

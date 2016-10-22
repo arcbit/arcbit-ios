@@ -145,6 +145,14 @@
     private func addImportedAddress(importedAddress:TLImportedAddress) -> () {
         sendFromAddresses!.addObject(importedAddress)
     }
+
+    func isColdWalletAccount() -> (Bool) {
+        if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
+            let accountObject = sendFromAccounts!.objectAtIndex(0) as! TLAccountObject
+            return accountObject.isColdWalletAccount()
+        }
+        return false
+    }
     
     func needWatchOnlyAccountPrivateKey() -> (Bool) {
         if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
@@ -293,9 +301,9 @@
     class func getEstimatedTxSize(inputCount: Int, outputCount: Int) -> UInt64 {
         return UInt64(10 + 159*inputCount + 34*outputCount)
     }
-    
+        
     func createSignedSerializedTransactionHex(toAddressesAndAmounts:NSArray,
-        feeAmount:TLCoin, nonce: UInt32? = nil, ephemeralPrivateKeyHex: String? = nil, error:TLWalletUtils.ErrorWithString) -> (NSDictionary?, Array<String>) {
+                                              feeAmount:TLCoin, signTx: Bool = true, nonce: UInt32? = nil, ephemeralPrivateKeyHex: String? = nil, error:TLWalletUtils.ErrorWithString) -> (NSDictionary?, Array<String>) {
             let inputsData = NSMutableArray()
             let outputsData = NSMutableArray()
             var outputValueSum = TLCoin.zero()
@@ -338,12 +346,20 @@
                         }
                         assert(address == changeAddress, "! address == changeAddress")
                         
-                        inputsData.addObject([
-                            "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash") as! String)!,
-                            "txid": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash_big_endian") as! String)!,
-                            "tx_output_n": unspentOutput.objectForKey("tx_output_n")!,
-                            "script": TLWalletUtils.hexStringToData(outputScript)!,
-                            "private_key": importedAddress.getPrivateKey()!])
+                        if signTx {
+                            inputsData.addObject([
+                                "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash") as! String)!,
+                                "txid": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash_big_endian") as! String)!,
+                                "tx_output_n": unspentOutput.objectForKey("tx_output_n")!,
+                                "script": TLWalletUtils.hexStringToData(outputScript)!,
+                                "private_key": importedAddress.getPrivateKey()!])
+                        } else {
+                            inputsData.addObject([
+                                "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash") as! String)!,
+                                "txid": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash_big_endian") as! String)!,
+                                "tx_output_n": unspentOutput.objectForKey("tx_output_n")!,
+                                "script": TLWalletUtils.hexStringToData(outputScript)!])
+                        }
                         
                         if (valueSelected.greaterOrEqual(valueNeeded)) {
                             break
@@ -387,12 +403,20 @@
                                 continue
                             }
                             
-                            inputsData.addObject([
-                                "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash") as! String)!,
-                                "txid": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash_big_endian") as! String)!,
-                                "tx_output_n": unspentOutput.objectForKey("tx_output_n")!,
-                                "script": TLWalletUtils.hexStringToData(outputScript)!,
-                                "private_key": accountObject.stealthWallet!.getPaymentAddressPrivateKey(address!)!])
+                            if signTx {
+                                inputsData.addObject([
+                                    "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash") as! String)!,
+                                    "txid": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash_big_endian") as! String)!,
+                                    "tx_output_n": unspentOutput.objectForKey("tx_output_n")!,
+                                    "script": TLWalletUtils.hexStringToData(outputScript)!,
+                                    "private_key": accountObject.stealthWallet!.getPaymentAddressPrivateKey(address!)!])
+                            } else {
+                                inputsData.addObject([
+                                    "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash") as! String)!,
+                                    "txid": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash_big_endian") as! String)!,
+                                    "tx_output_n": unspentOutput.objectForKey("tx_output_n")!,
+                                    "script": TLWalletUtils.hexStringToData(outputScript)!])
+                            }
                             
                             unspentOutputsUsingCount++
                             if (valueSelected.greaterOrEqual(valueNeeded) && unspentOutputsUsingCount >= accountObject.MAX_CONSOLIDATE_STEALTH_PAYMENT_UTXOS_COUNT) {
@@ -426,12 +450,20 @@
                                 continue
                             }
                             
-                            inputsData.addObject([
-                                "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash") as! String)!,
-                                "txid": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash_big_endian") as! String)!,
-                                "tx_output_n": unspentOutput.objectForKey("tx_output_n")!,
-                                "script": TLWalletUtils.hexStringToData(outputScript)!,
-                                "private_key": accountObject.getAccountPrivateKey(address!)!])
+                            if signTx {
+                                inputsData.addObject([
+                                    "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash") as! String)!,
+                                    "txid": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash_big_endian") as! String)!,
+                                    "tx_output_n": unspentOutput.objectForKey("tx_output_n")!,
+                                    "script": TLWalletUtils.hexStringToData(outputScript)!,
+                                    "private_key": accountObject.getAccountPrivateKey(address!)!])
+                            } else {
+                                inputsData.addObject([
+                                    "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash") as! String)!,
+                                    "txid": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash_big_endian") as! String)!,
+                                    "tx_output_n": unspentOutput.objectForKey("tx_output_n")!,
+                                    "script": TLWalletUtils.hexStringToData(outputScript)!])
+                            }
                             
                             if (valueSelected.greaterOrEqual(valueNeeded)) {
                                 break
@@ -558,7 +590,9 @@
                 let sortedInput = _sortedInput as! NSDictionary
                 hashes.addObject(sortedInput.objectForKey("tx_hash")!)
                 inputIndexes.addObject(sortedInput.objectForKey("tx_output_n")!)
-                privateKeys.addObject(sortedInput.objectForKey("private_key")!)
+                if signTx {
+                    privateKeys.addObject(sortedInput.objectForKey("private_key")!)
+                }
                 inputScripts.addObject(sortedInput.objectForKey("script")!)
             }
             let sortedOutputs = outputsData.sortedArrayUsingComparator {
@@ -614,7 +648,7 @@
             for _ in 0...3 {
                 let txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(hashes, inputIndexes:inputIndexes, inputScripts:inputScripts,
                     outputAddresses:outputAddresses, outputAmounts:outputAmounts, privateKeys:privateKeys,
-                    outputScripts:stealthOutputScripts, isTestnet: self.appWallet.walletConfig.isTestnet)
+                    outputScripts:stealthOutputScripts, signTx: signTx, isTestnet: self.appWallet.walletConfig.isTestnet)
                 DLog("createSignedSerializedTransactionHex txHexAndTxHash: %@", function: txHexAndTxHash.debugDescription)
                 if txHexAndTxHash != nil {
                     return (txHexAndTxHash!, realToAddresses)

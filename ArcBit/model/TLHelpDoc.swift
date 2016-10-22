@@ -37,6 +37,7 @@ class TLHelpDoc {
         static let FAQ_STEALTH_ADDRESS = "Stealth/Reusable Addresses".localized
         
         static let ACCOUNT_ACTION_CREATE_NEW_ACCOUNT = "Create New Account".localized
+        static let ACCOUNT_ACTION_IMPORT_COLD_WALLET_ACCOUNT = "Import Cold Wallet Account".localized
         static let ACCOUNT_ACTION_IMPORT_ACCOUNT = "Import Account".localized
         static let ACCOUNT_ACTION_IMPORT_WATCH_ONLY_ACCOUNT = "Import Watch Only Account".localized
         static let ACCOUNT_ACTION_IMPORT_PRIVATE_KEY = "Import Private Key".localized
@@ -346,25 +347,41 @@ class TLHelpDoc {
     }
     
     class func getBasicAccountActionsArray() -> NSArray {
-        var _accountActionsArray: NSArray?
-        if (_accountActionsArray == nil) {
-            _accountActionsArray = [
-                STATIC_MEMBERS.ACCOUNT_ACTION_CREATE_NEW_ACCOUNT]
+        var accountActionsArray: NSArray?
+        if TLPreferences.enabledColdWallet() {
+            accountActionsArray = [
+                STATIC_MEMBERS.ACCOUNT_ACTION_CREATE_NEW_ACCOUNT,
+                STATIC_MEMBERS.ACCOUNT_ACTION_IMPORT_COLD_WALLET_ACCOUNT
+            ]
+        } else {
+            accountActionsArray = [
+                STATIC_MEMBERS.ACCOUNT_ACTION_CREATE_NEW_ACCOUNT
+            ]
         }
-        return _accountActionsArray!
+        return accountActionsArray!
     }
     
     class func getAdvanceAccountActionsArray() -> NSArray {
-        var _accountActionsArray: NSArray?
-        if (_accountActionsArray == nil) {
-            _accountActionsArray = [
+        var accountActionsArray: NSArray?
+        if TLPreferences.enabledColdWallet() {
+            accountActionsArray = [
+                STATIC_MEMBERS.ACCOUNT_ACTION_CREATE_NEW_ACCOUNT,
+                STATIC_MEMBERS.ACCOUNT_ACTION_IMPORT_COLD_WALLET_ACCOUNT,
+                STATIC_MEMBERS.ACCOUNT_ACTION_IMPORT_ACCOUNT,
+                STATIC_MEMBERS.ACCOUNT_ACTION_IMPORT_WATCH_ONLY_ACCOUNT,
+                STATIC_MEMBERS.ACCOUNT_ACTION_IMPORT_PRIVATE_KEY,
+                STATIC_MEMBERS.ACCOUNT_ACTION_IMPORT_WATCH_ONLY_ADDRESS
+            ]
+        } else {
+            accountActionsArray = [
                 STATIC_MEMBERS.ACCOUNT_ACTION_CREATE_NEW_ACCOUNT,
                 STATIC_MEMBERS.ACCOUNT_ACTION_IMPORT_ACCOUNT,
                 STATIC_MEMBERS.ACCOUNT_ACTION_IMPORT_WATCH_ONLY_ACCOUNT,
                 STATIC_MEMBERS.ACCOUNT_ACTION_IMPORT_PRIVATE_KEY,
-                STATIC_MEMBERS.ACCOUNT_ACTION_IMPORT_WATCH_ONLY_ADDRESS]
+                STATIC_MEMBERS.ACCOUNT_ACTION_IMPORT_WATCH_ONLY_ADDRESS
+            ]
         }
-        return _accountActionsArray!
+        return accountActionsArray!
     }
     
     class func getEventsArray() -> NSArray {

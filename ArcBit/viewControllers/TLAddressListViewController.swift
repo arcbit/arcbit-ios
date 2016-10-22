@@ -28,7 +28,7 @@ import UIKit
     var accountObject: TLAccountObject?
     private var QRImageModal: TLQRImageModal?
     var showBalances: Bool = false
-    let TL_STRING_NO_STEALTH_PAYMENT_ADDRESSES_INFO = "Imported Watch Only Accounts can't see reusable address payments".localized
+    let TL_STRING_NO_STEALTH_PAYMENT_ADDRESSES_INFO = "This account type can't see reusable address payments".localized
     let TL_STRING_NONE_CURRENTLY = "None currently".localized
     
     @IBOutlet private var addressListTableView: UITableView?
@@ -138,6 +138,8 @@ import UIKit
                     }, error: {
                         (data: String?) in
                 })
+        } else if self.accountObject!.isColdWalletAccount() {
+            TLPrompts.promptErrorMessage("".localized, message: "Cold wallet private keys are not stored here and cannot be viewed".localized)
         } else {
             self.showPrivateKeyQRCodeFinal(address, addressType: addressType)
         }
@@ -180,7 +182,7 @@ import UIKit
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count:Int
         if (section == 0) {
-            if self.accountObject!.getAccountType() != .ImportedWatch {
+            if self.accountObject!.getAccountType() != .ImportedWatch && self.accountObject!.getAccountType() != .ColdWallet {
                 count = self.accountObject!.stealthWallet!.getStealthAddressPaymentsCount()
             } else {
                 count = 0

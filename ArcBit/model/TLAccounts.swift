@@ -49,14 +49,16 @@ import Foundation
         }
     }
     
-    func addAccountWithExtendedKey(extendedPrivateKey:String) -> TLAccountObject {
+    func addAccountWithExtendedKey(extendedKey:String) -> TLAccountObject {
         assert(accountType != TLAccountType.HDWallet, "accountType == TLAccountTypeHDWallet")
         let accountObject:TLAccountObject
         
-        if (accountType == TLAccountType.Imported) {
-            accountObject = self.appWallet!.addImportedAccount(extendedPrivateKey)
+        if (accountType == TLAccountType.ColdWallet) {
+            accountObject = self.appWallet!.addColdWalletAccount(extendedKey)
+        } else if (accountType == TLAccountType.Imported) {
+            accountObject = self.appWallet!.addImportedAccount(extendedKey)
         } else {
-            accountObject = self.appWallet!.addWatchOnlyAccount(extendedPrivateKey)
+            accountObject = self.appWallet!.addWatchOnlyAccount(extendedKey)
         }
         self.accountsArray.addObject(accountObject)
         let positionInWalletArray = self.getNumberOfAccounts()+getNumberOfArchivedAccounts()-1
@@ -86,7 +88,9 @@ import Foundation
         } else  {
             let accountObject = self.getAccountObjectForAccountIdxNumber(accountIdxNumber)
             accountObject.renameAccount(accountName)
-            if (accountType == TLAccountType.Imported) {
+            if (accountType == TLAccountType.ColdWallet) {
+                self.appWallet!.setColdWalletAccountName(accountName, idx:accountIdxNumber)
+            } else if (accountType == TLAccountType.Imported) {
                 self.appWallet!.setImportedAccountName(accountName, idx:accountIdxNumber)
             } else if (accountType == TLAccountType.ImportedWatch) {
                 self.appWallet!.setWatchOnlyAccountName(accountName, idx:accountIdxNumber)
@@ -161,6 +165,8 @@ import Foundation
         
         if (accountType == TLAccountType.HDWallet) {
             self.appWallet!.archiveAccountHDWallet(accountIdxNumber, enabled:enabled)
+        } else if (accountType == TLAccountType.ColdWallet) {
+            self.appWallet!.archiveAccountColdWalletAccount(accountIdxNumber, enabled:enabled)
         } else if (accountType == TLAccountType.Imported) {
             self.appWallet!.archiveAccountImportedAccount(accountIdxNumber, enabled:enabled)
         } else if (accountType == TLAccountType.ImportedWatch) {
@@ -216,7 +222,9 @@ import Foundation
         let accountObject = self.archivedAccountsArray.objectAtIndex(idx) as! TLAccountObject
         self.archivedAccountsArray.removeObjectAtIndex(idx)
         
-        if (accountType == TLAccountType.Imported) {
+        if (accountType == TLAccountType.ColdWallet) {
+            self.appWallet!.deleteColdWalletAccount(accountObject.getPositionInWalletArray())
+        } else if (accountType == TLAccountType.Imported) {
             self.appWallet!.deleteImportedAccount(accountObject.getPositionInWalletArray())
         } else if (accountType == TLAccountType.ImportedWatch) {
             self.appWallet!.deleteWatchOnlyAccount(accountObject.getPositionInWalletArray())

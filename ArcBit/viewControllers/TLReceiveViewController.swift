@@ -42,6 +42,7 @@ import UIKit
     private var receiveAddresses: NSMutableArray?
     let newAddressInfoText = "New addresses will be automatically generated and cycled for you as you use your current available addresses.".localized
     let importedWatchAccountStealthAddressInfoText = "Imported Watch Only Accounts can't see reusable address payments, thus this accounts' reusable address is not available. If you want see the reusable address for this account import the account private key that corresponds to this accounts public key.".localized
+    let coldWalletAccountStealthAddressInfoText = "Cold Wallet Accounts can't see reusable address payments, thus this accounts' reusable address is not available.".localized
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -334,7 +335,9 @@ import UIKit
                     //QRCodeImageView.backgroundColor = UIColor.orangeColor()
                 }
             } else {
-                if AppDelegate.instance().receiveSelectedObject!.getAccountType() == .ImportedWatch {
+                if AppDelegate.instance().receiveSelectedObject!.getAccountType() == .ColdWallet {
+                    pageView.addSubview(self.getAddressInfoLabel(imageViewFrame, text: coldWalletAccountStealthAddressInfoText))
+                } else if AppDelegate.instance().receiveSelectedObject!.getAccountType() == .ImportedWatch {
                     pageView.addSubview(self.getAddressInfoLabel(imageViewFrame, text: importedWatchAccountStealthAddressInfoText))
                 } else {
                     pageView.addSubview(self.getAddressInfoLabel(imageViewFrame, text: newAddressInfoText))

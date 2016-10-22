@@ -183,7 +183,7 @@ import AVFoundation
             self.showPromptPaymentSent(webSocketNotifiedTxHash!, address: inputedToAddress!, amount: inputedToAmount!)
         }
     }
-    
+
     func initiateSend() {
         let inputtedAmount = TLSendFormData.instance().toAmount!
         let feeAmount = TLSendFormData.instance().feeAmount!
@@ -202,8 +202,11 @@ import AVFoundation
         toAddressesAndAmount.setObject(toAddress!, forKey: "address")
         toAddressesAndAmount.setObject(inputtedAmount, forKey: "amount")
         let toAddressesAndAmounts = NSArray(objects: toAddressesAndAmount)
+        
+        let signTx = !AppDelegate.instance().godSend!.isColdWalletAccount()
         let ret = AppDelegate.instance().godSend!.createSignedSerializedTransactionHex(toAddressesAndAmounts,
                                                                                        feeAmount: feeAmount,
+                                                                                       signTx: signTx,
                                                                                        error: {
                                                                                         (data: String?) in
                                                                                         self.cancelSend()
@@ -217,6 +220,7 @@ import AVFoundation
             cancelSend()
             return
         }
+        
         let txHex = txHexAndTxHash!.objectForKey("txHex") as? String
         
         if (txHex == nil) {
@@ -224,6 +228,12 @@ import AVFoundation
             // unless unspent outputs contains dust and are require to filled the amount I want to send
             cancelSend()
             return
+        }
+        
+        if AppDelegate.instance().godSend!.isColdWalletAccount() {
+            cancelSend()
+            self.promptToSignTransaction(txHex!)
+            return;
         }
         
         let txHash = txHexAndTxHash!.objectForKey("txHash") as? String
@@ -286,6 +296,16 @@ import AVFoundation
                     TLPrompts.promptErrorMessage("Error".localized, message: status)
                     self.cancelSend()
                 }
+        })
+    }
+    
+    func promptToSignTransaction(unSignedTx: String) {
+        TLPrompts.promtForOKCancel(self, title: "Cold Wallet Spending".localized, message: "Transaction needs to be authorize by an offline device. Send transaction to offline device for authorization?", success: {
+            () in
+
+            
+            }, failure: {
+                (isCancelled: Bool) in
         })
     }
     

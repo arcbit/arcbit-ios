@@ -46,6 +46,11 @@ extension TLWallet {
         setStealthAddressServerStatus(accountDict, serverURL: serverURL, isWatching:isWatching)
     }
     
+    func setStealthAddressServerStatusColdWalletAccount(idx: Int, serverURL: String, isWatching: Bool) -> () {
+        let accountDict = getColdWalletAccountAtIndex(idx)
+        setStealthAddressServerStatus(accountDict, serverURL: serverURL, isWatching: isWatching)
+    }
+    
     func setStealthAddressServerStatusImportedAccount(idx: Int, serverURL: String, isWatching: Bool) -> () {
         let accountDict = getImportedAccountAtIndex(idx)
         setStealthAddressServerStatus(accountDict, serverURL: serverURL, isWatching: isWatching)
@@ -56,7 +61,7 @@ extension TLWallet {
         setStealthAddressServerStatus(accountDict, serverURL: serverURL, isWatching: isWatching)
     }
 
-
+    
     func setStealthAddressLastTxTime(accountDict: NSMutableDictionary, serverURL: String, lastTxTime: UInt64) -> () {
         let stealthAddressArray = accountDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESSES) as! NSMutableArray
         let stealthAddressDict = (stealthAddressArray.objectAtIndex(0) as! NSMutableDictionary)
@@ -66,6 +71,11 @@ extension TLWallet {
     
     func setStealthAddressLastTxTimeHDWallet(accountIdx: Int, serverURL: String, lastTxTime: UInt64) -> () {
         let accountDict = getAccountDict(accountIdx)
+        setStealthAddressLastTxTime(accountDict, serverURL: serverURL, lastTxTime: lastTxTime)
+    }
+    
+    func setStealthAddressLastTxTimeColdWalletAccount(idx: Int, serverURL: String, lastTxTime: UInt64) -> () {
+        let accountDict = getColdWalletAccountAtIndex(idx)
         setStealthAddressLastTxTime(accountDict, serverURL: serverURL, lastTxTime: lastTxTime)
     }
     
@@ -79,7 +89,7 @@ extension TLWallet {
         setStealthAddressLastTxTime(accountDict, serverURL: serverURL, lastTxTime: lastTxTime)
     }
     
-
+    
     private func addStealthAddressPaymentKey(accountDict: NSMutableDictionary, privateKey: String,
         address: String, txid: String, txTime: UInt64, stealthPaymentStatus: TLStealthPaymentStatus) -> () {
         let paymentDict = [
@@ -119,6 +129,13 @@ extension TLWallet {
                 txid: txid, txTime: txTime, stealthPaymentStatus: stealthPaymentStatus)
     }
     
+    func addStealthAddressPaymentKeyColdWalletAccount(idx: Int, privateKey: String, address: String,
+                                                         txid: String, txTime: UInt64, stealthPaymentStatus: TLStealthPaymentStatus) -> () {
+        let accountDict = getColdWalletAccountAtIndex(idx)
+        addStealthAddressPaymentKey(accountDict, privateKey: privateKey, address: address,
+                                    txid: txid, txTime: txTime, stealthPaymentStatus: stealthPaymentStatus)
+    }
+    
     func addStealthAddressPaymentKeyImportedAccount(idx: Int, privateKey: String, address: String,
         txid: String, txTime: UInt64, stealthPaymentStatus: TLStealthPaymentStatus) -> () {
             let accountDict = getImportedAccountAtIndex(idx)
@@ -153,6 +170,11 @@ extension TLWallet {
         setStealthPaymentLastCheckTime(accountDict, txid: txid, lastCheckTime: lastCheckTime)
     }
     
+    func setStealthPaymentLastCheckTimeColdWalletAccount(idx: Int, txid: String, lastCheckTime: UInt64) -> () {
+        let accountDict = getColdWalletAccountAtIndex(idx)
+        setStealthPaymentLastCheckTime(accountDict, txid: txid, lastCheckTime: lastCheckTime)
+    }
+    
     func setStealthPaymentLastCheckTimeImportedAccount(idx: Int, txid: String, lastCheckTime: UInt64) -> () {
         let accountDict = getImportedAccountAtIndex(idx)
         setStealthPaymentLastCheckTime(accountDict, txid: txid, lastCheckTime: lastCheckTime)
@@ -183,6 +205,11 @@ extension TLWallet {
     
     func setStealthPaymentStatusHDWallet(accountIdx: Int, txid: String, stealthPaymentStatus: TLStealthPaymentStatus, lastCheckTime: UInt64) -> () {
         let accountDict = getAccountDict(accountIdx)
+        setStealthPaymentStatus(accountDict, txid: txid, stealthPaymentStatus: stealthPaymentStatus, lastCheckTime: lastCheckTime)
+    }
+    
+    func setStealthPaymentStatusColdWalletAccount(idx: Int, txid: String, stealthPaymentStatus: TLStealthPaymentStatus, lastCheckTime: UInt64) -> () {
+        let accountDict = getColdWalletAccountAtIndex(idx)
         setStealthPaymentStatus(accountDict, txid: txid, stealthPaymentStatus: stealthPaymentStatus, lastCheckTime: lastCheckTime)
     }
     
@@ -225,6 +252,11 @@ extension TLWallet {
         removeOldStealthPayments(accountDict)
     }
     
+    func removeOldStealthPaymentsColdWalletAccount(idx: Int) -> () {
+        let accountDict = getColdWalletAccountAtIndex(idx)
+        removeOldStealthPayments(accountDict)
+    }
+    
     func removeOldStealthPaymentsImportedAccount(idx: Int) -> () {
         let accountDict = getImportedAccountAtIndex(idx)
         removeOldStealthPayments(accountDict)
@@ -245,6 +277,11 @@ extension TLWallet {
     
     func clearAllStealthPaymentsFromHDWallet(accountIdx: Int) -> () {
         let accountDict = getAccountDict(accountIdx)
+        clearAllStealthPayments(accountDict)
+    }
+
+    func clearAllStealthPaymentsFromColdWalletAccount(idx: Int) -> () {
+        let accountDict = getColdWalletAccountAtIndex(idx)
         clearAllStealthPayments(accountDict)
     }
     

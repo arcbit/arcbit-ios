@@ -33,7 +33,9 @@ enum TLStealthPaymentStatus:Int {
 class TLWalletJSONKeys {
     
     struct STATIC_MEMBERS {
-        static let WALLET_PAYLOAD_VERSION = "1"
+        static let WALLET_PAYLOAD_VERSION_ONE = "1"
+        static let WALLET_PAYLOAD_VERSION_TWO = "2"
+        
         static let WALLET_PAYLOAD_KEY_VERSION = "version"
         static let WALLET_PAYLOAD_KEY_PAYLOAD = "payload"
         static let WALLET_PAYLOAD_KEY_WALLETS = "wallets"
@@ -41,6 +43,7 @@ class TLWalletJSONKeys {
         static let WALLET_PAYLOAD_KEY_ACCOUNTS = "accounts"
         static let WALLET_PAYLOAD_CURRENT_ACCOUNT_ID = "current_account_id"
         static let WALLET_PAYLOAD_IMPORTS = "imports"
+        static let WALLET_PAYLOAD_COLD_WALLET_ACCOUNTS = "cold_wallet_accounts"
         static let WALLET_PAYLOAD_IMPORTED_ACCOUNTS = "imported_accounts"
         static let WALLET_PAYLOAD_WATCH_ONLY_ACCOUNTS = "watch_only_accounts"
         static let WALLET_PAYLOAD_IMPORTED_PRIVATE_KEYS = "imported_private_keys"
@@ -76,4 +79,9 @@ class TLWalletJSONKeys {
         static let WALLET_PAYLOAD_KEY_ADDRESS_BOOK = "address_book"
         static let WALLET_PAYLOAD_KEY_TRANSACTION_TAGS = "tx_tags"        
     }
+    
+    // Notes:
+    // version 2: Add 'cold_wallet_accounts' dictionary to 'imports' dictionary
+    class func getLastestVersion () -> String { return "2" }
+
 }

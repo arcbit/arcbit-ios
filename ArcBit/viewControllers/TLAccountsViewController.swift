@@ -32,6 +32,7 @@ import UIKit
     @IBOutlet private var accountsTableView: UITableView?
     private var numberOfSections = 0
     private var accountListSection = 0
+    private var coldWalletAccountSection = 0
     private var importedAccountSection = 0
     private var importedWatchAccountSection = 0
     private var importedAddressSection = 0
@@ -91,6 +92,40 @@ import UIKit
                 dispatch_async(dispatch_get_main_queue()) {
                     self.refreshWalletAccounts(false)
                     TLHUDWrapper.hideHUDForView(self.view, animated: true)
+                }
+            }
+        }
+    }
+    
+    private func refreshColdWalletAccounts(fetchDataAgain: Bool) {
+        for (var i = 0; i < AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts(); i++) {
+            let accountObject = AppDelegate.instance().coldWalletAccounts!.getAccountObjectForIdx(i)
+            let indexPath = NSIndexPath(forRow: i, inSection:coldWalletAccountSection)
+            if (!accountObject.hasFetchedAccountData() || fetchDataAgain) {
+                let cell = self.accountsTableView!.cellForRowAtIndexPath(indexPath) as? TLAccountTableViewCell
+                if cell != nil {
+                    (cell!.accessoryView as! UIActivityIndicatorView).hidden = false
+                    cell!.accountBalanceButton!.hidden = true
+                    (cell!.accessoryView as! UIActivityIndicatorView).startAnimating()
+                }
+                AppDelegate.instance().pendingOperations.addSetUpAccountOperation(accountObject,
+                                                                                  fetchDataAgain: fetchDataAgain, success: {
+                                                                                    if cell != nil {
+                                                                                        (cell!.accessoryView as! UIActivityIndicatorView).stopAnimating()
+                                                                                        (cell!.accessoryView as! UIActivityIndicatorView).hidden = true
+                                                                                        cell!.accountBalanceButton!.hidden = false
+                                                                                        if accountObject.downloadState == .Downloaded {
+                                                                                            let balance = TLCurrencyFormat.getProperAmount(accountObject.getBalance())
+                                                                                            cell!.accountBalanceButton!.setTitle(balance as String, forState: .Normal)
+                                                                                        }
+                                                                                        cell!.accountBalanceButton!.hidden = false
+                                                                                    }
+                })
+            } else {
+                if let cell = self.accountsTableView!.cellForRowAtIndexPath(indexPath) as? TLAccountTableViewCell {
+                    cell.accountNameLabel!.text = accountObject.getAccountName()
+                    let balance = TLCurrencyFormat.getProperAmount(accountObject.getBalance())
+                    cell.accountBalanceButton!.setTitle(balance as String, forState: .Normal)
                 }
             }
         }
@@ -269,6 +304,9 @@ import UIKit
     private func refreshWalletAccounts(fetchDataAgain: Bool) {
         self._accountsTableViewReloadDataWrapper()
         self.refreshAccountBalances(fetchDataAgain)
+        if TLPreferences.enabledColdWallet() {
+            self.refreshColdWalletAccounts(fetchDataAgain)
+        }
         if (TLPreferences.enabledAdvancedMode()) {
             self.refreshImportedAccounts(fetchDataAgain)
             self.refreshImportedWatchAccounts(fetchDataAgain)
@@ -317,6 +355,16 @@ import UIKit
         numberOfSections = 1
         
         var sectionCounter = 1
+        
+        if TLPreferences.enabledColdWallet() {
+            if (AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts() > 0) {
+                coldWalletAccountSection = sectionCounter
+                sectionCounter++
+                numberOfSections++
+            } else {
+                coldWalletAccountSection = NSIntegerMax
+            }
+        }
         
         if (TLPreferences.enabledAdvancedMode()) {
             if (AppDelegate.instance().importedAccounts!.getNumberOfAccounts() > 0) {
@@ -383,6 +431,8 @@ import UIKit
         if (TLPreferences.enabledAdvancedMode()) {
             if (section == accountListSection) {
                 return "Accounts".localized
+            } else if (section == coldWalletAccountSection) {
+                return "Cold Wallet Accounts".localized
             } else if (section == importedAccountSection) {
                 return "Imported Accounts".localized
             } else if (section == importedWatchAccountSection) {
@@ -404,6 +454,9 @@ import UIKit
     }
     
     func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if (TLPreferences.enabledColdWallet() && section == coldWalletAccountSection) {
+            return AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts()
+        }
         if (TLPreferences.enabledAdvancedMode()) {
             if (section == accountListSection) {
                 return AppDelegate.instance().accounts!.getNumberOfAccounts()
@@ -441,7 +494,10 @@ import UIKit
         cell!.accessoryView = (activityView)
         
         cell!.accountBalanceButton!.titleLabel!.adjustsFontSizeToFitWidth = true
-        
+        if (TLPreferences.enabledColdWallet() && indexPath.section == coldWalletAccountSection) {
+            let accountObject = AppDelegate.instance().coldWalletAccounts!.getAccountObjectForIdx(indexPath.row)
+            self.setUpCellAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
+        }
         if (TLPreferences.enabledAdvancedMode()) {
             if (indexPath.section == accountListSection) {
                 let accountObject = AppDelegate.instance().accounts!.getAccountObjectForIdx(indexPath.row)
@@ -482,6 +538,10 @@ import UIKit
     }
     
     func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+        if (TLPreferences.enabledColdWallet() && indexPath.section == coldWalletAccountSection) {
+            self.doSelectFrom(.ColdWalletAccount, sendFromIndex: indexPath.row)
+            return nil
+        }
         if (TLPreferences.enabledAdvancedMode()) {
             if (indexPath.section == accountListSection) {
                 let accountObject = AppDelegate.instance().accounts!.getAccountObjectForIdx(indexPath.row)

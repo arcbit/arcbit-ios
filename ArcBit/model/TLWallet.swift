@@ -139,6 +139,17 @@ class TLWallet {
         NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
+    func clearAllAddressesFromColdWalletAccount(idx: Int) -> () {
+        let accountDict = getColdWalletAccountAtIndex(idx)
+        let mainAddressesArray = NSMutableArray()
+        accountDict.setObject(mainAddressesArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MAIN_ADDRESSES)
+        let changeAddressesArray = NSMutableArray()
+        accountDict.setObject(changeAddressesArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_CHANGE_ADDRESSES)
+        accountDict.setObject(0, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MIN_MAIN_ADDRESS_IDX)
+        accountDict.setObject(0, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MIN_CHANGE_ADDRESS_IDX)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
+    }
+    
     func clearAllAddressesFromImportedAccount(idx: Int) -> () {
         let accountDict = getImportedAccountAtIndex(idx)
         let mainAddressesArray = NSMutableArray()
@@ -168,6 +179,12 @@ class TLWallet {
         NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
     }
     
+    func updateAccountNeedsRecoveringFromColdWalletAccount(idx: Int, accountNeedsRecovering: Bool) -> () {
+        let accountDict = getColdWalletAccountAtIndex(idx)
+        accountDict.setObject(accountNeedsRecovering, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_NEEDS_RECOVERING)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
+    }
+    
     func updateAccountNeedsRecoveringFromImportedAccount(idx: Int, accountNeedsRecovering: Bool) -> () {
         let accountDict = getImportedAccountAtIndex(idx)
         accountDict.setObject(accountNeedsRecovering, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_NEEDS_RECOVERING)
@@ -188,6 +205,14 @@ class TLWallet {
             self.updateMainAddressStatus(accountDict,
                 addressIdx: addressIdx,
                 addressStatus: addressStatus)
+    }
+    
+    func updateMainAddressStatusFromColdWalletAccount(idx: Int, addressIdx: Int,
+                                                         addressStatus: TLAddressStatus) -> () {
+        let accountDict = getColdWalletAccountAtIndex(idx)
+        self.updateMainAddressStatus(accountDict,
+                                     addressIdx: addressIdx,
+                                     addressStatus: addressStatus)
     }
     
     func updateMainAddressStatusFromImportedAccount(idx: Int, addressIdx: Int,
@@ -245,6 +270,14 @@ class TLWallet {
                 addressStatus: addressStatus)
     }
     
+    func updateChangeAddressStatusFromColdWalletAccount(idx: Int, addressIdx: Int,
+                                                           addressStatus: TLAddressStatus) -> () {
+        let accountDict = getColdWalletAccountAtIndex(idx)
+        self.updateChangeAddressStatus(accountDict,
+                                       addressIdx: addressIdx,
+                                       addressStatus: addressStatus)
+    }
+    
     func updateChangeAddressStatusFromImportedWatchAccount(idx: Int, addressIdx: Int,
         addressStatus: TLAddressStatus) -> () {
             let accountDict = getImportedWatchOnlyAccountAtIndex(idx)
@@ -281,6 +314,11 @@ class TLWallet {
         return self.getMinMainAddressIdx(accountDict)
     }
     
+    func getMinMainAddressIdxFromColdWalletAccount(idx: Int) -> (Int) {
+        let accountDict = getColdWalletAccountAtIndex(idx)
+        return self.getMinMainAddressIdx(accountDict)
+    }
+    
     func getMinMainAddressIdxFromImportedAccount(idx: Int) -> (Int) {
         let accountDict = getImportedAccountAtIndex(idx)
         return self.getMinMainAddressIdx(accountDict)
@@ -297,6 +335,11 @@ class TLWallet {
     
     func getMinChangeAddressIdxFromHDWallet(accountIdx: Int) -> (Int) {
         let accountDict = getAccountDict(accountIdx)
+        return self.getMinChangeAddressIdx(accountDict) as Int
+    }
+    
+    func getMinChangeAddressIdxFromColdWalletAccount(idx: Int) -> (Int) {
+        let accountDict = getColdWalletAccountAtIndex(idx)
         return self.getMinChangeAddressIdx(accountDict) as Int
     }
     
@@ -318,6 +361,11 @@ class TLWallet {
     
     func getNewMainAddressFromHDWallet(accountIdx: Int, expectedAddressIndex: Int) -> (NSDictionary) {
         let accountDict = getAccountDict(accountIdx)
+        return getNewMainAddress(accountDict, expectedAddressIndex: expectedAddressIndex)
+    }
+    
+    func getNewMainAddressFromColdWalletAccount(idx: Int, expectedAddressIndex: Int) -> (NSDictionary) {
+        let accountDict = getColdWalletAccountAtIndex(idx)
         return getNewMainAddress(accountDict, expectedAddressIndex: expectedAddressIndex)
     }
     
@@ -375,6 +423,11 @@ class TLWallet {
         return getNewChangeAddress(accountDict, expectedAddressIndex: expectedAddressIndex)
     }
     
+    func getNewChangeAddressFromColdWalletAccount(idx: UInt, expectedAddressIndex: Int) -> (NSDictionary) {
+        let accountDict = getColdWalletAccountAtIndex(Int(idx))
+        return getNewChangeAddress(accountDict, expectedAddressIndex: expectedAddressIndex)
+    }
+    
     func getNewChangeAddressFromImportedAccount(idx: Int, expectedAddressIndex: Int) -> (NSDictionary) {
         let accountDict = getImportedAccountAtIndex(idx)
         return getNewChangeAddress(accountDict, expectedAddressIndex: expectedAddressIndex)
@@ -429,6 +482,11 @@ class TLWallet {
         return removeTopMainAddress(accountDict)
     }
     
+    func removeTopMainAddressFromColdWalletAccount(idx: Int) -> (String?) {
+        let accountDict = getColdWalletAccountAtIndex(idx)
+        return removeTopMainAddress(accountDict)
+    }
+    
     func removeTopMainAddressFromImportedAccount(idx: Int) -> (String?) {
         let accountDict = getImportedAccountAtIndex(idx)
         return removeTopMainAddress(accountDict)
@@ -456,16 +514,19 @@ class TLWallet {
         return removeTopChangeAddress(accountDict)
     }
     
+    func removeTopChangeAddressFromColdWalletAccount(idx: Int) -> (String?) {
+        let accountDict = getColdWalletAccountAtIndex(idx)
+        return removeTopChangeAddress(accountDict)
+    }
+
     func removeTopChangeAddressFromImportedAccount(idx: Int) -> (String?) {
         let accountDict = getImportedAccountAtIndex(idx)
         return removeTopChangeAddress(accountDict)
-        
     }
     
     func removeTopChangeAddressFromImportedWatchAccount(idx: Int) -> (String?) {
         let accountDict = getImportedWatchOnlyAccountAtIndex(idx)
         return removeTopChangeAddress(accountDict)
-        
     }
     
     private func removeTopChangeAddress(accountDict: NSMutableDictionary) -> (String?) {
@@ -485,6 +546,13 @@ class TLWallet {
         let accountsArray = getAccountsArray()
         assert(accountsArray.count > 1, "")
         let accountDict = accountsArray.objectAtIndex(accountIdx) as! NSDictionary
+        let status = enabled ? TLAddressStatus.Archived : TLAddressStatus.Active
+        accountDict.setValue(status.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
+    }
+    
+    func archiveAccountColdWalletAccount(idx: Int, enabled: Bool) -> () {
+        let accountDict = getColdWalletAccountAtIndex(idx)
         let status = enabled ? TLAddressStatus.Archived : TLAddressStatus.Active
         accountDict.setValue(status.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS)
         NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
@@ -569,10 +637,12 @@ class TLWallet {
         
         let importedKeysDict = NSMutableDictionary()
         
+        let coldWalletAccountsArray = NSMutableArray()
         let importedAccountsArray = NSMutableArray()
         let watchOnlyAccountsArray = NSMutableArray()
         let importedPrivateKeysArray = NSMutableArray()
         let watchOnlyAddressesArray = NSMutableArray()
+        importedKeysDict.setObject(coldWalletAccountsArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_COLD_WALLET_ACCOUNTS)
         importedKeysDict.setObject(importedAccountsArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_IMPORTED_ACCOUNTS)
         importedKeysDict.setObject(watchOnlyAccountsArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_WATCH_ONLY_ACCOUNTS)
         importedKeysDict.setObject(importedPrivateKeysArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_IMPORTED_PRIVATE_KEYS)
@@ -587,6 +657,13 @@ class TLWallet {
     private func getImportedKeysDict() -> (NSMutableDictionary) {
         let hdWallet = getCurrentWallet()
         return hdWallet.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_IMPORTS) as! NSMutableDictionary
+    }
+    
+    internal func getColdWalletAccountAtIndex(idx: Int) -> (NSMutableDictionary) {
+        let importedKeysDict = getImportedKeysDict()
+        let coldWalletAccountsArray = importedKeysDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_COLD_WALLET_ACCOUNTS) as! NSArray
+        let accountDict = coldWalletAccountsArray.objectAtIndex(idx) as! NSMutableDictionary
+        return accountDict
     }
     
     internal func getImportedAccountAtIndex(idx: Int) -> (NSMutableDictionary) {
@@ -608,6 +685,47 @@ class TLWallet {
     //------------------------------------------------------------------------------------------------------------------------------------------------
     //------------------------------------------------------------------------------------------------------------------------------------------------
     
+    func addColdWalletAccount(extendedPublicKey: String) -> (TLAccountObject) {
+        let importedKeysDict = getImportedKeysDict()
+        let coldWalletAccountsArray = importedKeysDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_COLD_WALLET_ACCOUNTS) as! NSMutableArray
+        
+        let accountIdx = coldWalletAccountsArray.count // "accountIdx" key is different for ImportedAccount then hdwallet account
+        let coldWalletAccountDict = createAccountDictWithPreload("", extendedKey: extendedPublicKey, isPrivateExtendedKey: false, accountIdx: accountIdx, preloadStartingAddresses: false)
+        coldWalletAccountsArray.addObject(coldWalletAccountDict)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
+        return TLAccountObject(appWallet: self, dict: coldWalletAccountDict, accountType: .ColdWallet)
+    }
+    
+    func deleteColdWalletAccount(idx: Int) -> () {
+        let importedKeysDict = getImportedKeysDict()
+        let coldWalletAccountsArray = importedKeysDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_COLD_WALLET_ACCOUNTS) as! NSMutableArray
+        
+        coldWalletAccountsArray.removeObjectAtIndex(idx)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
+    }
+    
+    func setColdWalletAccountName(name: String, idx: Int) -> () {
+        let importedKeysDict = getImportedKeysDict()
+        let coldWalletAccountsArray = importedKeysDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_COLD_WALLET_ACCOUNTS) as! NSArray
+        
+        let accountDict = coldWalletAccountsArray.objectAtIndex(idx) as! NSMutableDictionary
+        accountDict.setObject(name, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_NAME)
+        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
+    }
+    
+    func getColdWalletAccountArray() -> (NSArray) {
+        let importedKeysDict = getImportedKeysDict()
+        let accountsArray = importedKeysDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_COLD_WALLET_ACCOUNTS) as! NSArray
+        
+        
+        let accountObjectArray = NSMutableArray()
+        for accountDict in accountsArray as! [NSDictionary] {
+            let accountObject = TLAccountObject(appWallet: self, dict: accountDict, accountType: .ColdWallet)
+            accountObjectArray.addObject(accountObject)
+        }
+        return accountObjectArray
+    }
+
     func addImportedAccount(extendedPrivateKey: String) -> (TLAccountObject) {
         let importedKeysDict = getImportedKeysDict()
         let importedAccountsArray = importedKeysDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_IMPORTED_ACCOUNTS) as! NSMutableArray
@@ -886,7 +1004,7 @@ class TLWallet {
         
         rootDict = NSMutableDictionary()
         let walletsArray = NSMutableArray()
-        rootDict!.setValue(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_VERSION, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_VERSION)
+        rootDict!.setValue(TLWalletJSONKeys.getLastestVersion(), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_VERSION)
         
         let payload = NSMutableDictionary()
         rootDict!.setValue(payload, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_PAYLOAD)
@@ -907,11 +1025,23 @@ class TLWallet {
             let accountDict: AnyObject = accountsArray.objectAtIndex(i).mutableCopy()
             accountsArray.replaceObjectsAtIndexes(NSIndexSet(index: i), withObjects: (NSArray(object: accountDict)) as [AnyObject])
         }
+        DLog(String(format: "loadWalletPayload rootDict: 1 \n%@", rootDict!.description))
+
+        // migrate to version 2 of wallet payload
+        let version = rootDict!.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_VERSION) as! String
+        if version == TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_VERSION_ONE {
+            rootDict!.setObject(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_VERSION_TWO, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_VERSION)
+            getImportedKeysDict().setObject(NSMutableArray(), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_COLD_WALLET_ACCOUNTS)
+            getCurrentWallet().setObject(getImportedKeysDict(), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_IMPORTS)
+            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
+        }
         
         let importedKeysDict = getImportedKeysDict().mutableCopy() as! NSMutableDictionary
-        //DLog(String(format: "loadWalletPayload rootDict: \n%@", rootDict!.description))
         
         walletDict.setObject(importedKeysDict, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_IMPORTS)
+
+        let coldWalletAccountsArray: AnyObject = (importedKeysDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_COLD_WALLET_ACCOUNTS) as! NSArray).mutableCopy()
+        importedKeysDict.setObject(coldWalletAccountsArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_COLD_WALLET_ACCOUNTS)
         
         let importedAccountsArray: AnyObject = (importedKeysDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_IMPORTED_ACCOUNTS) as! NSArray).mutableCopy()
         importedKeysDict.setObject(importedAccountsArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_IMPORTED_ACCOUNTS)

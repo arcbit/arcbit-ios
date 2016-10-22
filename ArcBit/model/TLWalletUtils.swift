@@ -29,6 +29,7 @@ enum TLSendFromType: Int {
     case ImportedWatchAccount = 2
     case ImportedAddress = 3
     case ImportedWatchAddress = 4
+    case ColdWalletAccount = 5
 }
 
 enum TLAccountTxType: Int {
@@ -42,6 +43,7 @@ enum TLAccountType: Int {
     case HDWallet = 1
     case Imported = 2
     case ImportedWatch = 3
+    case ColdWallet = 4
 }
 
 enum TLAccountAddressType: Int {
