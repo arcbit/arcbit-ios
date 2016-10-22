@@ -61,6 +61,7 @@ class TLPreferences
         static let PREFERENCE_ENCRYPTED_WALLET_JSON_CHECKSUM = "pref-encrypted-wallet-json-checksum"
         static let PREFERENCE_LAST_SAVED_ENCRYPTED_WALLET_JSON_DATE = "pref-last-saved-encrypted-wallet-json-date"
         static let PREFERENCE_ENABLE_PIN_CODE = "pref-enable-pin-code"
+        static let PREFERENCE_WALLET_COLD_WALLET = "pref-cold-wallet"
         static let PREFERENCE_WALLET_ADVANCE_MODE = "pref-advance-mode"
         static let PREFERENCE_DISPLAY_LOCAL_CURRENCY = "pref-display-local-currency"
         static let PREFERENCE_FEE_AMOUNT = "pref-fee-amount"
@@ -461,6 +462,15 @@ class TLPreferences
         NSUserDefaults.standardUserDefaults().setBool(enabled ,forKey:CLASS_STATIC.PREFERENCE_DISPLAY_LOCAL_CURRENCY)
         NSUserDefaults.standardUserDefaults().synchronize()
         NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED(), object:nil)
+    }
+    
+    class func enabledColdWallet() -> (Bool) {
+        return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.PREFERENCE_WALLET_COLD_WALLET)
+    }
+    
+    class func setEnableColdWallet(enabled:Bool) -> () {
+        NSUserDefaults.standardUserDefaults().setBool(enabled ,forKey:CLASS_STATIC.PREFERENCE_WALLET_COLD_WALLET)
+        NSUserDefaults.standardUserDefaults().synchronize()
     }
     
     class func enabledAdvancedMode() -> (Bool) {

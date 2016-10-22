@@ -84,6 +84,12 @@ import UIKit
             alertView.delegate = vc as! TLManageAccountsViewController
         } else if (vc is TLAddressListViewController) {
             alertView.delegate = vc as! TLAddressListViewController
+        } else if (vc is TLCreateColdWalletViewController) {
+            alertView.delegate = vc as! TLCreateColdWalletViewController
+        } else if (vc is TLSpendColdWalletViewController) {
+            alertView.delegate = vc as! TLSpendColdWalletViewController
+        } else if (vc is TLBrainWalletViewController) {
+            alertView.delegate = vc as! TLBrainWalletViewController
         }
     }
     

@@ -14,6 +14,25 @@
             <key>Type</key>
             <string>PSGroupSpecifier</string>
             <key>FooterText</key>
+            <string>ENABLE_COLD_WALLET_FOOTER</string>
+        </dict>
+        <dict>
+            <key>DefaultValue</key>
+            <string>NO</string>
+            <key>Key</key>
+            <string>enablecoldwallet</string>
+            <key>Title</key>
+            <string>ENABLE_COLD_WALLET</string>
+            <key>Type</key>
+            <string>PSToggleSwitchSpecifier</string>
+        </dict>
+        
+        <dict>
+            <key>Title</key>
+            <string>EMPTY</string>
+            <key>Type</key>
+            <string>PSGroupSpecifier</string>
+            <key>FooterText</key>
             <string>ENABLE_ADVANCE_MODE_FOOTER</string>
         </dict>
         <dict>

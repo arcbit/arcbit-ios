@@ -42,7 +42,6 @@ import UIKit
         self.menuTopView!.backgroundColor = TLColors.mainAppColor()
         self.tableView!.backgroundColor = TLColors.mainAppColor()
         self.tableView!.separatorInset = UIEdgeInsetsZero
-        menuItems = ["Send".localized, "Receive".localized, "History".localized, "Accounts".localized, "Help".localized, "Links".localized, "Settings".localized]
     }
     
     override func viewDidAppear(animated:Bool) -> () {
@@ -54,6 +53,12 @@ import UIKit
     
     override func viewWillAppear(animated:Bool) {
         super.viewWillAppear(animated)
+        if TLPreferences.enabledColdWallet() {
+            menuItems = ["Send".localized, "Receive".localized, "History".localized, "Accounts".localized, "Cold Wallet".localized, "Help".localized, "Links".localized, "Settings".localized]
+        } else {
+            menuItems = ["Send".localized, "Receive".localized, "History".localized, "Accounts".localized, "Help".localized, "Links".localized, "Settings".localized]
+        }
+        self.tableView!.reloadData()
     }
     
     override func viewWillDisappear(animated:Bool) {
@@ -85,36 +90,74 @@ import UIKit
         var name = ""
         
         
-        switch (indexPath.row) {
-        case 0:
-            imageName = TLWalletUtils.SEND_ICON_IMAGE_NAME()
-            name = "Send".localized
-            break
-        case 1:
-            imageName = TLWalletUtils.RECEIVE_ICON_IMAGE_NAME()
-            name = "Receive".localized
-            break
-        case 2:
-            imageName = TLWalletUtils.HISTORY_ICON_IMAGE_NAME()
-            name = "History".localized
-            break
-        case 3:
-            imageName = TLWalletUtils.ACCOUNT_ICON_IMAGE_NAME()
-            name = "Accounts".localized
-            break
-        case 4:
-            imageName = TLWalletUtils.HELP_ICON_IMAGE_NAME()
-            name = "Help".localized
-            break
-        case 5:
-            imageName = TLWalletUtils.LINK_ICON_IMAGE_NAME()
-            name = "More".localized
-            break
-        default:
-            imageName = TLWalletUtils.SETTINGS_ICON_IMAGE_NAME()
-            name = "Settings".localized
-            break
+        if TLPreferences.enabledColdWallet() {
+            switch (indexPath.row) {
+            case 0:
+                imageName = TLWalletUtils.SEND_ICON_IMAGE_NAME()
+                name = "Send".localized
+                break
+            case 1:
+                imageName = TLWalletUtils.RECEIVE_ICON_IMAGE_NAME()
+                name = "Receive".localized
+                break
+            case 2:
+                imageName = TLWalletUtils.HISTORY_ICON_IMAGE_NAME()
+                name = "History".localized
+                break
+            case 3:
+                imageName = TLWalletUtils.ACCOUNT_ICON_IMAGE_NAME()
+                name = "Accounts".localized
+                break
+            case 4:
+                imageName = TLWalletUtils.ACCOUNT_ICON_IMAGE_NAME()
+                name = "Cold Wallet".localized
+                break
+            case 5:
+                imageName = TLWalletUtils.HELP_ICON_IMAGE_NAME()
+                name = "Help".localized
+                break
+            case 6:
+                imageName = TLWalletUtils.LINK_ICON_IMAGE_NAME()
+                name = "More".localized
+                break
+            default:
+                imageName = TLWalletUtils.SETTINGS_ICON_IMAGE_NAME()
+                name = "Settings".localized
+                break
+            }
+        } else {
+            switch (indexPath.row) {
+            case 0:
+                imageName = TLWalletUtils.SEND_ICON_IMAGE_NAME()
+                name = "Send".localized
+                break
+            case 1:
+                imageName = TLWalletUtils.RECEIVE_ICON_IMAGE_NAME()
+                name = "Receive".localized
+                break
+            case 2:
+                imageName = TLWalletUtils.HISTORY_ICON_IMAGE_NAME()
+                name = "History".localized
+                break
+            case 3:
+                imageName = TLWalletUtils.ACCOUNT_ICON_IMAGE_NAME()
+                name = "Accounts".localized
+                break
+            case 4:
+                imageName = TLWalletUtils.HELP_ICON_IMAGE_NAME()
+                name = "Help".localized
+                break
+            case 5:
+                imageName = TLWalletUtils.LINK_ICON_IMAGE_NAME()
+                name = "More".localized
+                break
+            default:
+                imageName = TLWalletUtils.SETTINGS_ICON_IMAGE_NAME()
+                name = "Settings".localized
+                break
+            }
         }
+
         cell!.textLabel!.text = name
         cell!.textLabel!.textColor = TLColors.mainAppOppositeColor()
         
@@ -129,20 +172,40 @@ import UIKit
     }
 
     func tableView(tableView:UITableView, didSelectRowAtIndexPath indexPath:NSIndexPath) -> () {
-        if (indexPath.row == 0) {
-            self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("SendNav") 
-        } else if (indexPath.row == 1) {
-            self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("ReceiveNav")  
-        } else if (indexPath.row == 2) {
-            self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("HistoryNav")  
-        } else if (indexPath.row == 3) {
-            self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("ManageAccountNav")  
-        } else if (indexPath.row == 4) {
-            self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("HelpNav")  
-        } else if (indexPath.row == 5) {
-            self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("LinksNav")
+        if TLPreferences.enabledColdWallet() {
+            if (indexPath.row == 0) {
+                self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("SendNav")
+            } else if (indexPath.row == 1) {
+                self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("ReceiveNav")
+            } else if (indexPath.row == 2) {
+                self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("HistoryNav")
+            } else if (indexPath.row == 3) {
+                self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("ManageAccountNav")
+            } else if (indexPath.row == 4) {
+                self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("ColdWalletNav")
+            } else if (indexPath.row == 5) {
+                self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("HelpNav")
+            } else if (indexPath.row == 6) {
+                self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("LinksNav")
+            } else {
+                self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("SettingsNav")
+            }
         } else {
-            self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("SettingsNav")  
+            if (indexPath.row == 0) {
+                self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("SendNav")
+            } else if (indexPath.row == 1) {
+                self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("ReceiveNav")
+            } else if (indexPath.row == 2) {
+                self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("HistoryNav")
+            } else if (indexPath.row == 3) {
+                self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("ManageAccountNav")
+            } else if (indexPath.row == 4) {
+                self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("HelpNav")
+            } else if (indexPath.row == 5) {
+                self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("LinksNav")
+            } else {
+                self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("SettingsNav")
+            }
         }
         
         self.slidingViewController().resetTopViewAnimated(true)

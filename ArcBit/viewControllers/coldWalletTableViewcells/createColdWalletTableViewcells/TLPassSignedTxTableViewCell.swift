@@ -1,5 +1,5 @@
 //
-//  TLTransactionTableViewCell.swift
+//  TLPassSignedTxTableViewCell.swift
 //  ArcBit
 //
 //  Created by Timothy Lee on 3/14/15.
@@ -24,23 +24,19 @@ import Foundation
 import UIKit
 
 
-@objc(TLTransactionTableViewCell) class TLTransactionTableViewCell:UITableViewCell {
+protocol TLPassSignedTxTableViewCellDelegate {
+    func didClickPassButton(cell: TLPassSignedTxTableViewCell)
+    func didClickPassSignedTxInfoButton(cell: TLPassSignedTxTableViewCell)
+}
+
+@objc(TLPassSignedTxTableViewCell) class TLPassSignedTxTableViewCell:UITableViewCell {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    @IBOutlet var dateLabel:UILabel?
-    @IBOutlet var currencyLabel:UILabel?
-    @IBOutlet var amountLabel:UILabel?
-    @IBOutlet var descriptionLabel:UILabel?
-    @IBOutlet var confirmationsLabel:UILabel?
-    @IBOutlet var amountButton:UIButton?
-    @IBOutlet var confirmedStatusImageView:UIImageView?
+    @IBOutlet var passButtonButton:UIButton!
     
-    @IBAction private func amountButtonClicked(sender:UIButton) {
-        TLPreferences.setDisplayLocalCurrency(!TLPreferences.isDisplayLocalCurrency())
-        TLPreferences.setInAppSettingsKitDisplayLocalCurrency(TLPreferences.isDisplayLocalCurrency())
-    }
+    var delegate: TLPassSignedTxTableViewCellDelegate?
     
     override init(style:UITableViewCellStyle, reuseIdentifier:String?) {
         super.init(style:style, reuseIdentifier:reuseIdentifier)
@@ -48,13 +44,19 @@ import UIKit
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        
-        self.amountButton!.backgroundColor = TLColors.mainAppColor()
-        self.amountButton!.setTitleColor(TLColors.mainAppOppositeColor(), forState:UIControlState.Normal)
-        self.amountButton!.titleLabel!.adjustsFontSizeToFitWidth = true
+        self.passButtonButton.backgroundColor = TLColors.mainAppColor()
+        self.passButtonButton.setTitleColor(TLColors.mainAppOppositeColor(), forState:UIControlState.Normal)
     }
-        
-    override func setSelected(selected:Bool, animated:Bool) -> () {
-        super.setSelected(selected, animated:animated)
+    
+    class func cellHeight() -> CGFloat {
+        return 88
+    }
+    
+    @IBAction private func infoButtonClicked(sender:UIButton) {
+        delegate?.didClickPassSignedTxInfoButton(self)
+    }
+    
+    @IBAction private func passButtonClicked(sender:UIButton) {
+        delegate?.didClickPassButton(self)
     }
 }

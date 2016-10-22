@@ -286,7 +286,10 @@ import AVFoundation
     
     func settingDidChange(info: NSNotification) {
         let userInfo = info.userInfo! as NSDictionary
-        if ((info.object as! String) == "enableadvancemode") {
+        if ((info.object as! String) == "enablecoldwallet") {
+            let enabled = (userInfo.objectForKey("enablecoldwallet")) as! Int == 1
+            TLPreferences.setEnableColdWallet(enabled)
+        } else if ((info.object as! String) == "enableadvancemode") {
             let enabled = (userInfo.objectForKey("enableadvancemode")) as! Int == 1
             TLPreferences.setAdvancedMode(enabled)
         } else if ((info.object as! String) == "canrestoredeletedapp") {

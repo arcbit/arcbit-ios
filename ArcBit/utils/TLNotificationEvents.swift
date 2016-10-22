@@ -59,6 +59,7 @@ class TLNotificationEvents {
     class func EVENT_VIEW_ACCOUNTS_SCREEN() -> String { return "event.view.accounts!.screen"}
     class func EVENT_VIEW_MANAGE_ACCOUNTS_SCREEN() -> String { return "event.view.manageaccounts.screen"}
     class func EVENT_VIEW_HELP_SCREEN() -> String { return "event.view.help.screen"}
+    class func EVENT_VIEW_COLD_WALLET_SCREEN() -> String { return "event.view.cold.wallet.screen"}
     class func EVENT_VIEW_SETTINGS_SCREEN() -> String { return "event.view.settings.screen"}
     class func EVENT_HAMBURGER_MENU_OPENED() -> String { return "event.feature.hamburger.menu.opened"}
     class func EVENT_HAMBURGER_MENU_CLOSED() -> String { return "event.feature.hamburger.menu.closed"}
