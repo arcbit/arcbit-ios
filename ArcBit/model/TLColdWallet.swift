@@ -39,7 +39,7 @@ class TLColdWallet {
             let JSONString = NSString(data: jsonData, encoding: String.Encoding.ascii.rawValue)
             
             DLog("theJSONText:  \(JSONString)")
-            return JSONString as! String
+            return JSONString as? String
             
         } catch let error as NSError {
             DLog("error:  \(error)")
@@ -56,9 +56,9 @@ class TLColdWallet {
                 "account_public_key": extendedPublicKey,
                 "unsigned_tx_base64": base64Encoded,
                 "tx_inputs_account_hd_idxes": txInputsAccountHDIdxes //[["idx":123, "is_change":false], ["idx":124, "is_change":true]]
-            ]
+            ] as [String : Any]
             
-            return dictionaryToJsonString(dataDictionaryToAirGapPass)
+            return dictionaryToJsonString(dataDictionaryToAirGapPass as NSDictionary)
         }
         return nil
     }
@@ -160,7 +160,7 @@ class TLColdWallet {
                 let HDIndexNumber = txInputsAccountHDIdx["idx"] as! Int
                 let isChange = txInputsAccountHDIdx["is_change"] as! Bool
                 let addressSequence = [isChange ? Int(TLAddressType.change.rawValue) : Int(TLAddressType.main.rawValue), HDIndexNumber]
-                let privateKey = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey, sequence: addressSequence, isTestnet: isTestnet)
+                let privateKey = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey as NSString, sequence: addressSequence as NSArray, isTestnet: isTestnet)
                 privateKeysArray.add(privateKey)
             }
             
@@ -171,7 +171,7 @@ class TLColdWallet {
             
             for _ in 0...3 {
                 let txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(txData!, privateKeys: privateKeysArray, isTestnet: isTestnet)
-                DLog("createSignedAipGapData txHexAndTxHash: %@", function: txHexAndTxHash.debugDescription)
+                DLog("createSignedAipGapData txHexAndTxHash: %@", function: txHexAndTxHash.debugDescription as AnyObject)
                 //                break
                 if txHexAndTxHash != nil {
                     //                    return txHexAndTxHash!

@@ -91,7 +91,7 @@ class TLWallet {
             
             let extendedPublicKey = account.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PUBLIC_KEY) as! String
             //create initial receiving address
-            for (i in 0 ..< TLAccountObject.MAX_ACCOUNT_WAIT_TO_RECEIVE_ADDRESS()) {
+            for i in stride(from: 0, through: TLAccountObject.MAX_ACCOUNT_WAIT_TO_RECEIVE_ADDRESS(), by: 1) {
                 let mainAddressDict = NSMutableDictionary()
                 let mainAddressIdx = i
                 let mainAddressSequence = [TLAddressType.main.rawValue, (mainAddressIdx)]
@@ -949,7 +949,7 @@ class TLWallet {
     
     func getLabelForAddress(_ address: String) -> String? { //if duplicate labels return first one
         let addressBookArray = getCurrentWallet().object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS_BOOK) as! NSMutableArray
-        for (i in 0 ..< addressBookArray.count) {
+        for i in stride(from: 0, through: addressBookArray.count, by: 1) {
             let addressBook: NSDictionary = addressBookArray.object(at: i) as! NSDictionary
             if address == addressBook.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String {
                 return addressBook.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL) as! String
@@ -1021,7 +1021,7 @@ class TLWallet {
         let walletDict = getCurrentWallet().mutableCopy() as! NSMutableDictionary
         
         let accountsArray = getAccountsArray().mutableCopy() as! NSMutableArray
-        for (i in 0 ..< accountsArray.count) {
+        for i in stride(from: 0, through: accountsArray.count, by: 1) {
             let accountDict: AnyObject = (accountsArray.object(at: i) as AnyObject).mutableCopy()
             accountsArray.replaceObjects(at: IndexSet(integer: i), with: (NSArray(object: accountDict)) as [AnyObject])
         }

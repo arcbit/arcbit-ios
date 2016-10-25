@@ -153,7 +153,7 @@ import Foundation
         let nowTime = UInt64(Date().timeIntervalSince1970)
 
     
-        for (i in 0 ..< paymentsArray.count) {
+        for i in stride(from: 0, through: paymentsArray.count, by: 1) {
             let paymentDict = paymentsArray.object(at: i) as! NSDictionary
 
             let address = paymentDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String
