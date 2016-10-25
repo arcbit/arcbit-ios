@@ -1,8 +1,8 @@
 //
-//  String.swift
+//  SocketAckEmitter.swift
 //  Socket.IO-Client-Swift
 //
-//  Created by Yannick Loriot on 5/4/16.
+//  Created by Erik Little on 9/16/15.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,8 +24,24 @@
 
 import Foundation
 
-extension String {
-  func urlEncode() -> String? {
-    return addingPercentEncoding(withAllowedCharacters: .allowedURLCharacterSet)
-  }
+public final class SocketAckEmitter : NSObject {
+    let socket: SocketIOClient
+    let ackNum: Int
+    
+    init(socket: SocketIOClient, ackNum: Int) {
+        self.socket = socket
+        self.ackNum = ackNum
+    }
+    
+    public func with(_ items: SocketData...) {
+        guard ackNum != -1 else { return }
+        
+        socket.emitAck(ackNum, with: items)
+    }
+    
+    public func with(_ items: [Any]) {
+        guard ackNum != -1 else { return }
+        
+        socket.emitAck(ackNum, with: items)
+    }
 }

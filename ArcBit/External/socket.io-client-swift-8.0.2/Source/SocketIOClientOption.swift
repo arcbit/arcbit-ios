@@ -24,12 +24,12 @@
 
 import Foundation
 
-protocol ClientOption : CustomStringConvertible, Hashable {
-    func getSocketIOOptionValue() -> AnyObject
+protocol ClientOption : CustomStringConvertible, Equatable {
+    func getSocketIOOptionValue() -> Any
 }
 
 public enum SocketIOClientOption : ClientOption {
-    case connectParams([String: AnyObject])
+    case connectParams([String: Any])
     case cookies([HTTPCookie])
     case doubleEncodeUTF8(Bool)
     case extraHeaders([String: String])
@@ -45,6 +45,7 @@ public enum SocketIOClientOption : ClientOption {
     case reconnectAttempts(Int)
     case reconnectWait(Int)
     case secure(Bool)
+    case security(SSLSecurity)
     case selfSigned(Bool)
     case sessionDelegate(URLSessionDelegate)
     case voipEnabled(Bool)
@@ -87,6 +88,8 @@ public enum SocketIOClientOption : ClientOption {
             description = "secure"
         case .selfSigned:
             description = "selfSigned"
+        case .security:
+            description = "security"
         case .sessionDelegate:
             description = "sessionDelegate"
         case .voipEnabled:
@@ -96,52 +99,50 @@ public enum SocketIOClientOption : ClientOption {
         return description
     }
     
-    public var hashValue: Int {
-        return description.hashValue
-    }
-    
-    func getSocketIOOptionValue() -> AnyObject {
-        let value: AnyObject
+    func getSocketIOOptionValue() -> Any {
+        let value: Any
         
         switch self {
         case let .connectParams(params):
-            value = params as AnyObject
+            value = params
         case let .cookies(cookies):
-            value = cookies as AnyObject
+            value = cookies
         case let .doubleEncodeUTF8(encode):
-            value = encode as AnyObject
+            value = encode
         case let .extraHeaders(headers):
-            value = headers as AnyObject
+            value = headers
         case let .forceNew(force):
-            value = force as AnyObject
+            value = force
         case let .forcePolling(force):
-            value = force as AnyObject
+            value = force
         case let .forceWebsockets(force):
-            value = force as AnyObject
+            value = force
         case let .handleQueue(queue):
             value = queue
         case let .log(log):
-            value = log as AnyObject
+            value = log
         case let .logger(logger):
             value = logger
         case let .nsp(nsp):
-            value = nsp as AnyObject
+            value = nsp
         case let .path(path):
-            value = path as AnyObject
+            value = path
         case let .reconnects(reconnects):
-            value = reconnects as AnyObject
+            value = reconnects
         case let .reconnectAttempts(attempts):
-            value = attempts as AnyObject
+            value = attempts
         case let .reconnectWait(wait):
-            value = wait as AnyObject
+            value = wait
         case let .secure(secure):
-            value = secure as AnyObject
+            value = secure
+        case let .security(security):
+            value = security
         case let .selfSigned(signed):
-            value = signed as AnyObject
+            value = signed
         case let .sessionDelegate(delegate):
             value = delegate
         case let .voipEnabled(enabled):
-            value = enabled as AnyObject
+            value = enabled
         }
         
         return value
@@ -150,71 +151,4 @@ public enum SocketIOClientOption : ClientOption {
 
 public func ==(lhs: SocketIOClientOption, rhs: SocketIOClientOption) -> Bool {
     return lhs.description == rhs.description
-}
-
-extension Set where Element : ClientOption {
-    mutating func insertIgnore(_ element: Element) {
-        if !contains(element) {
-            insert(element)
-        }
-    }
-}
-
-extension NSDictionary {
-    fileprivate static func keyValueToSocketIOClientOption(_ key: String, value: AnyObject) -> SocketIOClientOption? {
-        switch (key, value) {
-        case let ("connectParams", params as [String: AnyObject]):
-            return .connectParams(params)
-        case let ("cookies", cookies as [HTTPCookie]):
-            return .cookies(cookies)
-        case let ("doubleEncodeUTF8", encode as Bool):
-            return .doubleEncodeUTF8(encode)
-        case let ("extraHeaders", headers as [String: String]):
-            return .extraHeaders(headers)
-        case let ("forceNew", force as Bool):
-            return .forceNew(force)
-        case let ("forcePolling", force as Bool):
-            return .forcePolling(force)
-        case let ("forceWebsockets", force as Bool):
-            return .forceWebsockets(force)
-        case let ("handleQueue", queue as DispatchQueue):
-            return .handleQueue(queue)
-        case let ("log", log as Bool):
-            return .log(log)
-        case let ("logger", logger as SocketLogger):
-            return .logger(logger)
-        case let ("nsp", nsp as String):
-            return .nsp(nsp)
-        case let ("path", path as String):
-            return .path(path)
-        case let ("reconnects", reconnects as Bool):
-            return .reconnects(reconnects)
-        case let ("reconnectAttempts", attempts as Int):
-            return .reconnectAttempts(attempts)
-        case let ("reconnectWait", wait as Int):
-            return .reconnectWait(wait)
-        case let ("secure", secure as Bool):
-            return .secure(secure)
-        case let ("selfSigned", selfSigned as Bool):
-            return .selfSigned(selfSigned)
-        case let ("sessionDelegate", delegate as URLSessionDelegate):
-            return .sessionDelegate(delegate)
-        case let ("voipEnabled", enable as Bool):
-            return .voipEnabled(enable)
-        default:
-            return nil
-        }
-    }
-    
-    func toSocketOptionsSet() -> Set<SocketIOClientOption> {
-        var options = Set<SocketIOClientOption>()
-        
-        for (rawKey, value) in self {
-            if let key = rawKey as? String, let opt = NSDictionary.keyValueToSocketIOClientOption(key, value: value as AnyObject) {
-                options.insertIgnore(opt)
-            }
-        }
-        
-        return options
-    }
 }

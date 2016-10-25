@@ -38,31 +38,36 @@ struct SocketStringReader {
         currentIndex = message.startIndex
     }
     
-    mutating func advanceIndexBy(_ n: Int) {
-        currentIndex = <#T##Collection corresponding to your index##Collection#>.index(currentIndex, offsetBy: n)
+    @discardableResult
+    mutating func advance(by: Int) -> String.Index {
+        currentIndex = message.characters.index(currentIndex, offsetBy: by)
+        
+        return currentIndex
     }
     
-    mutating func read(_ readLength: Int) -> String {
-        let readString = message[currentIndex..<<#T##Collection corresponding to your index##Collection#>.index(currentIndex, offsetBy: readLength)]
-        advanceIndexBy(readLength)
+    mutating func read(count: Int) -> String {
+        let readString = message[currentIndex..<message.characters.index(currentIndex, offsetBy: count)]
+        
+        advance(by: count)
         
         return readString
     }
     
-    mutating func readUntilStringOccurence(_ string: String) -> String {
+    mutating func readUntilOccurence(of string: String) -> String {
         let substring = message[currentIndex..<message.endIndex]
+        
         guard let foundRange = substring.range(of: string) else {
             currentIndex = message.endIndex
             
             return substring
         }
         
-        advanceIndexBy(message.characters.distance(from: message.startIndex, to: foundRange.lowerBound) + 1)
+        advance(by: message.characters.distance(from: message.characters.startIndex, to: foundRange.lowerBound) + 1)
         
         return substring.substring(to: foundRange.lowerBound)
     }
     
     mutating func readUntilEnd() -> String {
-        return read(<#T##Collection corresponding to your index##Collection#>.distance(from: currentIndex, to: message.endIndex))
+        return read(count: message.characters.distance(from: currentIndex, to: message.endIndex))
     }
 }

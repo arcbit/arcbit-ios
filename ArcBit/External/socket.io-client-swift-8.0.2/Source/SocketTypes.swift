@@ -1,8 +1,8 @@
 //
-//  SocketIOClientSpec.swift
+//  SocketTypes.swift
 //  Socket.IO-Client-Swift
 //
-//  Created by Erik Little on 1/3/16.
+//  Created by Erik Little on 4/8/15.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,22 +22,31 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-protocol SocketIOClientSpec : class {
-    var nsp: String { get set }
-    var waitingPackets: [SocketPacket] { get set }
-    
-    func didConnect()
-    func didDisconnect(_ reason: String)
-    func didError(_ reason: String)
-    func handleAck(_ ack: Int, data: [AnyObject])
-    func handleEvent(_ event: String, data: [AnyObject], isInternalMessage: Bool, withAck ack: Int)
-    func joinNamespace(_ namespace: String)
-}
+import Foundation
 
-extension SocketIOClientSpec {
-    func didError(_ reason: String) {
-        DefaultSocketLogger.Logger.error("%@", type: "SocketIOClient", args: reason)
-        
-        handleEvent("error", data: [reason as AnyObject], isInternalMessage: true, withAck: -1)
-    }
+public protocol SocketData {}
+
+extension Array : SocketData {}
+extension Bool : SocketData {}
+extension Dictionary : SocketData {}
+extension Double : SocketData {}
+extension Int : SocketData {}
+extension NSArray : SocketData {}
+extension Data : SocketData {}
+extension NSData : SocketData {}
+extension NSDictionary : SocketData {}
+extension NSString : SocketData {}
+extension NSNull : SocketData {}
+extension String : SocketData {}
+
+public typealias AckCallback = ([Any]) -> Void
+public typealias NormalCallback = ([Any], SocketAckEmitter) -> Void
+public typealias OnAckCallback = (_ timeoutAfter: UInt64, _ callback: @escaping AckCallback) -> Void
+
+typealias Probe = (msg: String, type: SocketEnginePacketType, data: [Data])
+typealias ProbeWaitQueue = [Probe]
+
+enum Either<E, V> {
+    case left(E)
+    case right(V)
 }

@@ -29,18 +29,18 @@ import Foundation
     weak var client: SocketEngineClient? { get set }
     var closed: Bool { get }
     var connected: Bool { get }
-    var connectParams: [String: AnyObject]? { get set }
+    var connectParams: [String: Any]? { get set }
     var doubleEncodeUTF8: Bool { get }
     var cookies: [HTTPCookie]? { get }
     var extraHeaders: [String: String]? { get }
     var fastUpgrade: Bool { get }
     var forcePolling: Bool { get }
     var forceWebsockets: Bool { get }
-    var parseQueue: DispatchQueue! { get }
+    var parseQueue: DispatchQueue { get }
     var polling: Bool { get }
     var probing: Bool { get }
-    var emitQueue: DispatchQueue! { get }
-    var handleQueue: DispatchQueue! { get }
+    var emitQueue: DispatchQueue { get }
+    var handleQueue: DispatchQueue { get }
     var sid: String { get }
     var socketPath: String { get }
     var urlPolling: URL { get }
@@ -51,8 +51,8 @@ import Foundation
     init(client: SocketEngineClient, url: URL, options: NSDictionary?)
     
     func connect()
-    func didError(_ error: String)
-    func disconnect(_ reason: String)
+    func didError(reason: String)
+    func disconnect(reason: String)
     func doFastUpgrade()
     func flushWaitingForPostToWebSocket()
     func parseEngineData(_ data: Data)
@@ -75,16 +75,16 @@ extension SocketEngineSpec {
         return com.url!
     }
     
-    func createBinaryDataForSend(_ data: Data) -> Either<Data, String> {
+    func createBinaryDataForSend(using data: Data) -> Either<Data, String> {
         if websocket {
             var byteArray = [UInt8](repeating: 0x4, count: 1)
             let mutData = NSMutableData(bytes: &byteArray, length: 1)
             
             mutData.append(data)
             
-            return .left(mutData)
+            return .left(mutData as Data)
         } else {
-            let str = "b4" + data.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+            let str = "b4" + data.base64EncodedString(options: Data.Base64EncodingOptions(rawValue: 0))
             
             return .right(str)
         }

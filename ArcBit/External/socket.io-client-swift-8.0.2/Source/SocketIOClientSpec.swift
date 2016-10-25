@@ -1,8 +1,8 @@
 //
-//  NSCharacterSet.swift
+//  SocketIOClientSpec.swift
 //  Socket.IO-Client-Swift
 //
-//  Created by Yannick Loriot on 5/4/16.
+//  Created by Erik Little on 1/3/16.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -22,10 +22,22 @@
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
 
-import Foundation
+protocol SocketIOClientSpec : class {
+    var nsp: String { get set }
+    var waitingPackets: [SocketPacket] { get set }
+    
+    func didConnect()
+    func didDisconnect(reason: String)
+    func didError(reason: String)
+    func handleAck(_ ack: Int, data: [Any])
+    func handleEvent(_ event: String, data: [Any], isInternalMessage: Bool, withAck ack: Int)
+    func joinNamespace(_ namespace: String)
+}
 
-extension CharacterSet {
-  static var allowedURLCharacterSet: CharacterSet {
-    return CharacterSet(charactersIn: "!*'();:@&=+$,/?%#[]\" {}").inverted
-  }
+extension SocketIOClientSpec {
+    func didError(reason: String) {
+        DefaultSocketLogger.Logger.error("%@", type: "SocketIOClient", args: reason)
+        
+        handleEvent("error", data: [reason], isInternalMessage: true, withAck: -1)
+    }
 }

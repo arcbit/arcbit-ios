@@ -1,8 +1,8 @@
 //
-//  EventHandler.swift
+//  SocketEngineClient.swift
 //  Socket.IO-Client-Swift
 //
-//  Created by Erik Little on 1/18/15.
+//  Created by Erik Little on 3/19/15.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -21,15 +21,14 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
+//
 
 import Foundation
 
-struct SocketEventHandler {
-    let event: String
-    let id: UUID
-    let callback: NormalCallback
-    
-    func executeCallback(_ items: [AnyObject], withAck ack: Int, withSocket socket: SocketIOClient) {
-        callback(items, SocketAckEmitter(socket: socket, ackNum: ack))
-    }
+@objc public protocol SocketEngineClient {    
+    func engineDidError(reason: String)
+    func engineDidClose(reason: String)
+    func engineDidOpen(reason: String)
+    func parseEngineMessage(_ msg: String)
+    func parseEngineBinaryData(_ data: Data)
 }

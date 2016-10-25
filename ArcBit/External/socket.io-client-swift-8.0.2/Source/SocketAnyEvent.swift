@@ -1,8 +1,8 @@
 //
-//  SocketLogger.swift
+//  SocketAnyEvent.swift
 //  Socket.IO-Client-Swift
 //
-//  Created by Erik Little on 4/11/15.
+//  Created by Erik Little on 3/28/15.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,38 +24,15 @@
 
 import Foundation
 
-public protocol SocketLogger : class {
-    /// Whether to log or not
-    var log: Bool { get set }
-    
-    /// Normal log messages
-    func log(_ message: String, type: String, args: AnyObject...)
-    
-    /// Error Messages
-    func error(_ message: String, type: String, args: AnyObject...)
-}
-
-public extension SocketLogger {
-    func log(_ message: String, type: String, args: AnyObject...) {
-        abstractLog("LOG", message: message, type: type, args: args)
+public final class SocketAnyEvent : NSObject {
+    public let event: String
+    public let items: [Any]?
+    override public var description: String {
+        return "SocketAnyEvent: Event: \(event) items: \(items ?? nil)"
     }
     
-    func error(_ message: String, type: String, args: AnyObject...) {
-        abstractLog("ERROR", message: message, type: type, args: args)
+    init(event: String, items: [Any]?) {
+        self.event = event
+        self.items = items
     }
-    
-    fileprivate func abstractLog(_ logType: String, message: String, type: String, args: [AnyObject]) {
-        guard log else { return }
-        
-        let newArgs = args.map({arg -> CVarArg in String(describing: arg)})
-        let replaced = String(format: message, arguments: newArgs)
-        
-        NSLog("%@ %@: %@", logType, type, replaced)
-    }
-}
-
-class DefaultSocketLogger : SocketLogger {
-    static var Logger: SocketLogger = DefaultSocketLogger()
-
-    var log = false
 }

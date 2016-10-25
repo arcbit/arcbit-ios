@@ -1,8 +1,8 @@
 //
-//  SocketAckManager.swift
+//  SocketLogger.swift
 //  Socket.IO-Client-Swift
 //
-//  Created by Erik Little on 4/3/15.
+//  Created by Erik Little on 4/11/15.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -24,51 +24,38 @@
 
 import Foundation
 
-private struct SocketAck : Hashable, Equatable {
-    let ack: Int
-    var callback: AckCallback!
-    var hashValue: Int {
-        return ack.hashValue
-    }
+public protocol SocketLogger : class {
+    /// Whether to log or not
+    var log: Bool { get set }
     
-    init(ack: Int) {
-        self.ack = ack
-    }
+    /// Normal log messages
+    func log(_ message: String, type: String, args: Any...)
     
-    init(ack: Int, callback: @escaping AckCallback) {
-        self.ack = ack
-        self.callback = callback
-    }
+    /// Error Messages
+    func error(_ message: String, type: String, args: Any...)
 }
 
-private func <(lhs: SocketAck, rhs: SocketAck) -> Bool {
-    return lhs.ack < rhs.ack
-}
-
-private func ==(lhs: SocketAck, rhs: SocketAck) -> Bool {
-    return lhs.ack == rhs.ack
-}
-
-struct SocketAckManager {
-    fileprivate var acks = Set<SocketAck>(minimumCapacity: 1)
-    
-    mutating func addAck(_ ack: Int, callback: @escaping AckCallback) {
-        acks.insert(SocketAck(ack: ack, callback: callback))
+public extension SocketLogger {
+    func log(_ message: String, type: String, args: Any...) {
+        abstractLog("LOG", message: message, type: type, args: args)
     }
     
-    mutating func executeAck(_ ack: Int, items: [AnyObject]) {
-        let callback = acks.remove(SocketAck(ack: ack))
-
-        DispatchQueue.main.async {
-            callback?.callback(items)
-        }
+    func error(_ message: String, type: String, args: Any...) {
+        abstractLog("ERROR", message: message, type: type, args: args)
     }
     
-    mutating func timeoutAck(_ ack: Int) {
-        let callback = acks.remove(SocketAck(ack: ack))
+    private func abstractLog(_ logType: String, message: String, type: String, args: [Any]) {
+        guard log else { return }
         
-        DispatchQueue.main.async {
-            callback?.callback(["NO ACK"])
-        }
+        let newArgs = args.map({arg -> CVarArg in String(describing: arg)})
+        let messageFormat = String(format: message, arguments: newArgs) 
+        
+        NSLog("\(logType) \(type): %@", messageFormat)
     }
+}
+
+class DefaultSocketLogger : SocketLogger {
+    static var Logger: SocketLogger = DefaultSocketLogger()
+
+    var log = false
 }

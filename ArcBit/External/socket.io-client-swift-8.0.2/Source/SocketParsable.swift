@@ -28,21 +28,19 @@ protocol SocketParsable : SocketIOClientSpec {
 }
 
 extension SocketParsable {
-    fileprivate func isCorrectNamespace(_ nsp: String) -> Bool {
+    private func isCorrectNamespace(_ nsp: String) -> Bool {
         return nsp == self.nsp
     }
     
-    fileprivate func handleConnect(_ p: SocketPacket) {
-        if p.nsp == "/" && nsp != "/" {
+    private func handleConnect(_ packetNamespace: String) {
+        if packetNamespace == "/" && nsp != "/" {
             joinNamespace(nsp)
-        } else if p.nsp != "/" && nsp == "/" {
-            didConnect()
         } else {
             didConnect()
         }
     }
     
-    fileprivate func handlePacket(_ pack: SocketPacket) {
+    private func handlePacket(_ pack: SocketPacket) {
         switch pack.type {
         case .event where isCorrectNamespace(pack.nsp):
             handleEvent(pack.event, data: pack.args, isInternalMessage: false, withAck: pack.id)
@@ -53,9 +51,9 @@ extension SocketParsable {
         case .binaryAck where isCorrectNamespace(pack.nsp):
             waitingPackets.append(pack)
         case .connect:
-            handleConnect(pack)
+            handleConnect(pack.nsp)
         case .disconnect:
-            didDisconnect("Got Disconnect")
+            didDisconnect(reason: "Got Disconnect")
         case .error:
             handleEvent("error", data: pack.data, isInternalMessage: true, withAck: pack.id)
         default:
@@ -65,13 +63,13 @@ extension SocketParsable {
     
     /// Parses a messsage from the engine. Returning either a string error or a complete SocketPacket
     func parseString(_ message: String) -> Either<String, SocketPacket> {
-        var parser = SocketStringReader(message: message)
+        var reader = SocketStringReader(message: message)
         
-        guard let type = SocketPacket.PacketType(rawValue: Int(parser.read(1)) ?? -1) else {
+		guard let type = Int(reader.read(count: 1)).flatMap({ SocketPacket.PacketType(rawValue: $0) }) else {
             return .left("Invalid packet type")
         }
         
-        if !parser.hasNext {
+        if !reader.hasNext {
             return .right(SocketPacket(type: type, nsp: "/"))
         }
         
@@ -79,49 +77,47 @@ extension SocketParsable {
         var placeholders = -1
         
         if type == .binaryEvent || type == .binaryAck {
-            if let holders = Int(parser.readUntilStringOccurence("-")) {
+            if let holders = Int(reader.readUntilOccurence(of: "-")) {
                 placeholders = holders
             } else {
                 return .left("Invalid packet")
             }
         }
         
-        if parser.currentCharacter == "/" {
-            namespace = parser.readUntilStringOccurence(",") ?? parser.readUntilEnd()
+        if reader.currentCharacter == "/" {
+            namespace = reader.readUntilOccurence(of: ",") 
         }
         
-        if !parser.hasNext {
-            return .right(SocketPacket(type: type, id: -1,
-                nsp: namespace ?? "/", placeholders: placeholders))
+        if !reader.hasNext {
+            return .right(SocketPacket(type: type, nsp: namespace, placeholders: placeholders))
         }
         
         var idString = ""
         
         if type == .error {
-            parser.advanceIndexBy(-1)
-        }
-        
-        while parser.hasNext && type != .error {
-            if let int = Int(parser.read(1)) {
-                idString += String(int)
-            } else {
-                parser.advanceIndexBy(-2)
-                break
+            reader.advance(by: -1)
+        } else {
+            while reader.hasNext {
+                if let int = Int(reader.read(count: 1)) {
+                    idString += String(int)
+                } else {
+                    reader.advance(by: -2)
+                    break
+                }
             }
         }
         
-        let d = message[<#T##Collection corresponding to your index##Collection#>.index(parser.currentIndex, offsetBy: 1)..<message.endIndex]
-        let noPlaceholders = d["(\\{\"_placeholder\":true,\"num\":(\\d*)\\})"] <~ "\"~~$2\""
         
-        switch parseData(noPlaceholders) {
+        
+        var dataArray = message[message.characters.index(reader.currentIndex, offsetBy: 1)..<message.endIndex]
+        
+        if type == .error && !dataArray.hasPrefix("[") && !dataArray.hasSuffix("]") {
+            dataArray = "[" + dataArray + "]"
+        }
+        
+        switch parseData(dataArray) {
         case let .left(err):
-            // Errors aren't always enclosed in an array
-            if case let .right(data) = parseData("\([noPlaceholders as AnyObject])") {
-                return .right(SocketPacket(type: type, data: data, id: Int(idString) ?? -1,
-                    nsp: namespace, placeholders: placeholders))
-            } else {
-                return .left(err)
-            }
+            return .left(err)
         case let .right(data):
             return .right(SocketPacket(type: type, data: data, id: Int(idString) ?? -1,
                 nsp: namespace, placeholders: placeholders))
@@ -129,16 +125,9 @@ extension SocketParsable {
     }
     
     // Parses data for events
-    fileprivate func parseData(_ data: String) -> Either<String, [AnyObject]> {
-        let stringData = data.data(using: String.Encoding.utf8, allowLossyConversion: false)
-        
+    private func parseData(_ data: String) -> Either<String, [Any]> {
         do {
-            if let arr = try JSONSerialization.jsonObject(with: stringData!,
-                    options: JSONSerialization.ReadingOptions.mutableContainers) as? [AnyObject] {
-                return .right(arr)
-            } else {
-                return .left("Expected data array")
-            }
+            return .right(try data.toArray())
         } catch {
             return .left("Error parsing data for packet")
         }
@@ -166,15 +155,12 @@ extension SocketParsable {
         }
         
         // Should execute event?
-        guard waitingPackets[waitingPackets.count - 1].addData(data) else {
-            return
-        }
+        guard waitingPackets[waitingPackets.count - 1].addData(data) else { return }
         
         let packet = waitingPackets.removeLast()
         
         if packet.type != .binaryAck {
-            handleEvent(packet.event, data: packet.args ?? [],
-                isInternalMessage: false, withAck: packet.id)
+            handleEvent(packet.event, data: packet.args, isInternalMessage: false, withAck: packet.id)
         } else {
             handleAck(packet.id, data: packet.args)
         }
