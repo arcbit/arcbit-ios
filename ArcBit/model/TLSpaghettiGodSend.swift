@@ -128,6 +128,14 @@
         return nil
     }
     
+    func getExtendedPubKey() -> String? {
+        if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
+            let accountObject = sendFromAccounts!.objectAtIndex(0) as! TLAccountObject
+            return accountObject.getExtendedPubKey()
+        }
+        return nil
+    }
+    
     func setOnlyFromAccount(accountObject:TLAccountObject) -> () {
         sendFromAddresses = nil
         sendFromAccounts = NSMutableArray(objects:accountObject)
@@ -303,7 +311,7 @@
     }
         
     func createSignedSerializedTransactionHex(toAddressesAndAmounts:NSArray,
-                                              feeAmount:TLCoin, signTx: Bool = true, nonce: UInt32? = nil, ephemeralPrivateKeyHex: String? = nil, error:TLWalletUtils.ErrorWithString) -> (NSDictionary?, Array<String>) {
+                                              feeAmount:TLCoin, signTx: Bool = true, nonce: UInt32? = nil, ephemeralPrivateKeyHex: String? = nil, error:TLWalletUtils.ErrorWithString) -> (NSDictionary?, Array<String>, NSArray?) {
             let inputsData = NSMutableArray()
             let outputsData = NSMutableArray()
             var outputValueSum = TLCoin.zero()
@@ -456,13 +464,16 @@
                                     "txid": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash_big_endian") as! String)!,
                                     "tx_output_n": unspentOutput.objectForKey("tx_output_n")!,
                                     "script": TLWalletUtils.hexStringToData(outputScript)!,
-                                    "private_key": accountObject.getAccountPrivateKey(address!)!])
+                                    "private_key": accountObject.getAccountPrivateKey(address!)!
+                                    ])
                             } else {
                                 inputsData.addObject([
                                     "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash") as! String)!,
                                     "txid": TLWalletUtils.hexStringToData(unspentOutput.objectForKey("tx_hash_big_endian") as! String)!,
                                     "tx_output_n": unspentOutput.objectForKey("tx_output_n")!,
-                                    "script": TLWalletUtils.hexStringToData(outputScript)!])
+                                    "script": TLWalletUtils.hexStringToData(outputScript)!,
+                                    "hd_account_info": ["idx": accountObject.getAddressHDIndex(address!), "is_change": !accountObject.isMainAddress(address!)]
+                                    ])
                             }
                             
                             if (valueSelected.greaterOrEqual(valueNeeded)) {
@@ -484,12 +495,12 @@
                     DLog("createSignedSerializedTransactionHex valueNeeded %@", function: valueNeeded.toString())
                     let amountCanSendString = TLCurrencyFormat.coinToProperBitcoinAmountString(valueNeeded.subtract(dustCoinAmount))
                     error(String(format: "Insufficient Funds. Account contains bitcoin dust. You can only send up to %@ %@ for now.".localized, amountCanSendString, TLCurrencyFormat.getBitcoinDisplay()))
-                    return (nil, realToAddresses)
+                    return (nil, realToAddresses, nil)
                 }
                 let valueSelectedString = TLCurrencyFormat.coinToProperBitcoinAmountString(valueSelected)
                 let valueNeededString = TLCurrencyFormat.coinToProperBitcoinAmountString(valueNeeded)
                 error(String(format: "Insufficient Funds. Account balance is %@ %@ when %@ %@ is required.".localized, valueSelectedString, TLCurrencyFormat.getBitcoinDisplay(), valueNeededString, TLCurrencyFormat.getBitcoinDisplay()))
-                return (nil, realToAddresses)
+                return (nil, realToAddresses, nil)
             }
             
             var stealthOutputScripts:NSMutableArray? = nil
@@ -549,7 +560,7 @@
                 if outputAmount <= DUST_AMOUNT {
                     let dustAmountBitcoins = TLCoin(uint64: DUST_AMOUNT).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.Bitcoin)
                     error(String(format: "Cannot create transactions with outputs less then %@ bitcoins.".localized, dustAmountBitcoins))
-                    return (nil, realToAddresses)
+                    return (nil, realToAddresses, nil)
                 }
             }
             
@@ -586,12 +597,20 @@
             let inputIndexes = NSMutableArray()
             let inputScripts = NSMutableArray()
             let privateKeys = NSMutableArray()
+            let txInputsAccountHDIdxes = NSMutableArray()
+            var isInputsAllFromHDAccountAddresses = true //only used for cold wallet accounts, and cant have addresses from other then hd account addresses
             for _sortedInput in sortedInputs {
                 let sortedInput = _sortedInput as! NSDictionary
                 hashes.addObject(sortedInput.objectForKey("tx_hash")!)
                 inputIndexes.addObject(sortedInput.objectForKey("tx_output_n")!)
                 if signTx {
                     privateKeys.addObject(sortedInput.objectForKey("private_key")!)
+                } else {
+                    if let hdAccountInfo = sortedInput.objectForKey("hd_account_info") {
+                        txInputsAccountHDIdxes.addObject(hdAccountInfo)
+                    } else {
+                        isInputsAllFromHDAccountAddresses = false
+                    }
                 }
                 inputScripts.addObject(sortedInput.objectForKey("script")!)
             }
@@ -651,12 +670,12 @@
                     outputScripts:stealthOutputScripts, signTx: signTx, isTestnet: self.appWallet.walletConfig.isTestnet)
                 DLog("createSignedSerializedTransactionHex txHexAndTxHash: %@", function: txHexAndTxHash.debugDescription)
                 if txHexAndTxHash != nil {
-                    return (txHexAndTxHash!, realToAddresses)
+                    return (txHexAndTxHash!, realToAddresses, isInputsAllFromHDAccountAddresses ? txInputsAccountHDIdxes : nil)
                 }
             }
             
             error("Encountered error creating transaction. Please try again.".localized)
-            return (nil, realToAddresses)
+            return (nil, realToAddresses, nil)
     }
 }
 

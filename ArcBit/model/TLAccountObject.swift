@@ -324,6 +324,10 @@ import Foundation
         return address2NumberOfTransactions[address]!
     }
     
+    func isMainAddress(address: String) -> Bool {
+        return address2IsMainAddress[address]!
+    }
+    
     func getAddressHDIndex(address: String) -> Int {
         return address2HDIndexDict[address]!
     }

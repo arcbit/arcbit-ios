@@ -76,8 +76,16 @@ import UIKit
     
     func didClickScanUnsignedTxInfoButton(cell: TLScanUnsignedTxTableViewCell) {
         dismissKeyboard()
-        TLPrompts.promtForOK(self, title:"", message: "Info Text".localized, success: {
-            () in
+//        TLPrompts.promtForOK(self, title:"", message: "Info Text".localized, success: {
+//            () in
+//        })
+        
+        AppDelegate.instance().showColdWalletSpendReaderControllerFromViewController(self, success: {
+            (data: String!) in
+            
+            DLog("didClickScanUnsignedTxInfoButton \(data)");
+            }, error: {
+                (data: String?) in
         })
     }
 

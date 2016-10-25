@@ -272,7 +272,7 @@ class ArcBitTests: XCTestCase {
         NSLog("testCreateSignedSerializedTransactionHexAndBIP69")
         
         var mockWalletPayload = NSMutableDictionary()
-        mockWalletPayload.setObject(1, forKey: "version")
+        mockWalletPayload.setObject("1", forKey: "version")
         var wallets = NSMutableArray()
         var wallet = NSMutableDictionary()
         

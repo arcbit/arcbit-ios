@@ -24,7 +24,7 @@ import Foundation
 import UIKit
 import AVFoundation
 
-@objc(TLReviewPaymentViewController) class TLReviewPaymentViewController: UIViewController {
+@objc(TLReviewPaymentViewController) class TLReviewPaymentViewController: UIViewController, CustomIOS7AlertViewDelegate {
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
@@ -42,6 +42,8 @@ import AVFoundation
     @IBOutlet weak var totalFiatAmountLabel: UILabel!
     @IBOutlet weak var sendButton: UIButton!
     private lazy var showedPromptedForSentPaymentTxHashSet:NSMutableSet = NSMutableSet()
+    private var QRImageModal: TLQRImageModal?
+    private var airGapDataBase64PartsArray: Array<String>?
     var sendTimer:NSTimer?
     var sendTxHash:String?
     var inputedToAddress: String? = nil
@@ -232,7 +234,8 @@ import AVFoundation
         
         if AppDelegate.instance().godSend!.isColdWalletAccount() {
             cancelSend()
-            self.promptToSignTransaction(txHex!)
+            let txInputsAccountHDIdxes = ret.2
+            self.promptToSignTransaction(txHex!, txInputsAccountHDIdxes:txInputsAccountHDIdxes!)
             return;
         }
         
@@ -298,15 +301,29 @@ import AVFoundation
                 }
         })
     }
-    
-    func promptToSignTransaction(unSignedTx: String) {
-        TLPrompts.promtForOKCancel(self, title: "Cold Wallet Spending".localized, message: "Transaction needs to be authorize by an offline device. Send transaction to offline device for authorization?", success: {
-            () in
+
+    func promptToSignTransaction(unSignedTx: String, txInputsAccountHDIdxes:NSArray) {
+        let extendedPublicKey = AppDelegate.instance().godSend!.getExtendedPubKey()
+        if let airGapDataBase64 = TLColdWallet.createSerializedAipGapData(unSignedTx, extendedPublicKey: extendedPublicKey!, txInputsAccountHDIdxes: txInputsAccountHDIdxes) {
+            DLog("airGapDataBase64 0000 \(airGapDataBase64)")
+            self.airGapDataBase64PartsArray = TLColdWallet.splitStringToAray(airGapDataBase64)
+            DLog("airGapDataBase64PartsArray \(airGapDataBase64PartsArray)")
 
             
-            }, failure: {
-                (isCancelled: Bool) in
-        })
+            let signedAirGapData = TLColdWallet.createSignedAipGapData(airGapDataBase64, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)
+            
+            TLPrompts.promtForOKCancel(self, title: "Spending from a cold wallet account".localized, message: "Transaction needs to be authorize by an offline and airgap device. Send transaction to an offline device for authorization?", success: {
+                () in
+                
+                let firstAipGapDataPart = self.airGapDataBase64PartsArray![0]
+                self.airGapDataBase64PartsArray!.removeAtIndex(0)
+                self.QRImageModal = TLQRImageModal(data: firstAipGapDataPart, buttonCopyText: "Next".localized, vc: self)
+                self.QRImageModal!.show()
+                
+                }, failure: {
+                    (isCancelled: Bool) in
+            })
+        }
     }
     
     @IBAction func customizeFeeButtonClicked(sender: AnyObject) {
@@ -338,5 +355,28 @@ import AVFoundation
 
     @IBAction private func cancel(sender:AnyObject) {
         self.dismissViewControllerAnimated(true, completion:nil)
+    }
+    
+    func customIOS7dialogButtonTouchUpInside(alertView: AnyObject, clickedButtonAtIndex buttonIndex: Int) {
+        if (buttonIndex == 0) {
+            if self.airGapDataBase64PartsArray?.count > 0 {
+                let nextAipGapDataPart = self.airGapDataBase64PartsArray![0]
+                self.airGapDataBase64PartsArray!.removeAtIndex(0)
+                self.QRImageModal = TLQRImageModal(data: nextAipGapDataPart, buttonCopyText: "Next".localized, vc: self)
+                self.QRImageModal!.show()
+            } else {
+                TLPrompts.promptAlertController(self, title: "Finished Passing Transaction Data".localized,
+                                                message: "Now authorize the transaction on your air gap device. When you have done so click continue on this device to scan the authorized transaction data and make your payment.".localized,
+                                                okText: "Continue".localized, cancelTx: "Cancel".localized, success: {
+                                                    () in
+
+                    
+                    }, failure: {
+                        (isCancelled: Bool) in
+                })
+            }
+        }
+        
+        alertView.close()
     }
 }

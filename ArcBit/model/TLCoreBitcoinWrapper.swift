@@ -186,4 +186,26 @@ class TLCoreBitcoinWrapper {
                 "txSize": tx.size
             ]
     }
+
+    class func createSignedSerializedTransactionHex(unsignedTx:NSData, privateKeys:NSArray, isTestnet:Bool) -> NSDictionary? {
+        let tx = BRTransaction(message: unsignedTx, isTestnet: isTestnet)
+//        let tx = BRTransaction.transactionWithMessage(unsignedTx, isTestnet: isTestnet)
+        tx.signWithPrivateKeys(privateKeys as [AnyObject], isTestnet:isTestnet)
+        DLog("createSignedSerializedTransactionHex x.isSigned: \(tx.isSigned)")
+
+        
+        let txFromHexData = BRTransaction(message: tx.data, isTestnet: isTestnet)
+        DLog("createSignedSerializedTransactionHex txFromHexData: %@", function: TLWalletUtils.dataToHexString(txFromHexData.data))
+        DLog("createSignedSerializedTransactionHex txFromHexData: %@", function: TLWalletUtils.reverseHexString(TLWalletUtils.dataToHexString(txFromHexData.txHash)))
+        DLog("createSignedSerializedTransactionHex txFromHexData: %@", function: txFromHexData.size)
+
+        
+//        assert(tx.isSigned, "tx is not signed")
+        return [
+            "txHex": TLWalletUtils.dataToHexString(tx.data),
+            "txHash": TLWalletUtils.reverseHexString(TLWalletUtils.dataToHexString(tx.txHash)),
+            "txSize": tx.size
+        ]
+    }
+
 }

@@ -90,6 +90,8 @@ import UIKit
             alertView.delegate = vc as! TLSpendColdWalletViewController
         } else if (vc is TLBrainWalletViewController) {
             alertView.delegate = vc as! TLBrainWalletViewController
+        } else if (vc is TLReviewPaymentViewController) {
+            alertView.delegate = vc as! TLReviewPaymentViewController
         }
     }
     

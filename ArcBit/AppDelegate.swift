@@ -1086,6 +1086,21 @@ import Crashlytics
         viewController.presentViewController(reader, animated:true, completion:nil)
     }
     
+    func showColdWalletSpendReaderControllerFromViewController(viewController: (UIViewController), success: (TLWalletUtils.SuccessWithString), error: (TLWalletUtils.ErrorWithString)) {
+        if (!isCameraAllowed()) {
+            promptAppNotAllowedCamera()
+            return
+        }
+        
+        let reader = TLQRCodeScannerViewController(success:{(data: String?) in
+            success(data)
+            }, error:{(e: String?) in
+                error(e)
+        })
+        
+        viewController.presentViewController(reader, animated:true, completion:nil)
+    }
+    
     func listenToIncomingTransactionForWallet() {
         if (!self.isAccountsAndImportsLoaded || !TLTransactionListener.instance().isWebSocketOpen()) {
             return
