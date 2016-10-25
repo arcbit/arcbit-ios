@@ -31,17 +31,17 @@ class TLCurrencyFormat {
         static var _bitcoinDisplayWords: NSArray?
     }
     
-    class func bitcoinAmountStringToCoin(amount: String, locale: NSLocale=NSLocale.currentLocale()) -> TLCoin {
-        return amountStringToCoin(amount, bitcoinDenomination: TLBitcoinDenomination.Bitcoin, locale: locale)
+    class func bitcoinAmountStringToCoin(_ amount: String, locale: Locale=Locale.current) -> TLCoin {
+        return amountStringToCoin(amount, bitcoinDenomination: TLBitcoinDenomination.bitcoin, locale: locale)
     }
     
-    class func properBitcoinAmountStringToCoin(amount: String, locale: NSLocale=NSLocale.currentLocale()) -> TLCoin {
+    class func properBitcoinAmountStringToCoin(_ amount: String, locale: Locale=Locale.current) -> TLCoin {
         return amountStringToCoin(amount, bitcoinDenomination: TLPreferences.getBitcoinDenomination(), locale: locale)
     }
     
-    private class func amountStringToCoin(amount: String, bitcoinDenomination: TLBitcoinDenomination, locale: NSLocale) -> TLCoin {
+    fileprivate class func amountStringToCoin(_ amount: String, bitcoinDenomination: TLBitcoinDenomination, locale: Locale) -> TLCoin {
         if amount.characters.count != 0 {
-            if let _ = amount.rangeOfCharacterFromSet(NSCharacterSet(charactersInString: "0123456789.,").invertedSet) {
+            if let _ = amount.rangeOfCharacter(from: CharacterSet(charactersIn: "0123456789.,").inverted) {
                 return TLCoin.zero()
             } else {
                 return TLCoin(bitcoinAmount: amount, bitcoinDenomination: bitcoinDenomination, locale: locale)
@@ -51,7 +51,7 @@ class TLCurrencyFormat {
         }
     }
     
-    class func coinToProperBitcoinAmountString(amount: TLCoin, withCode: Bool = false) -> String {
+    class func coinToProperBitcoinAmountString(_ amount: TLCoin, withCode: Bool = false) -> String {
         if withCode {
             return amount.bigIntegerToBitcoinAmountString(TLPreferences.getBitcoinDenomination()) + " " + TLCurrencyFormat.getBitcoinDisplay()
         } else {
@@ -59,7 +59,7 @@ class TLCurrencyFormat {
         }
     }
     
-    class func coinToProperFiatAmountString(amount: TLCoin, withCode: Bool = false) -> String {
+    class func coinToProperFiatAmountString(_ amount: TLCoin, withCode: Bool = false) -> String {
         let currency = TLCurrencyFormat.getFiatCurrency()
         if withCode {
             return TLExchangeRate.instance().fiatAmountStringFromBitcoin(currency, bitcoinAmount: amount) + " " + TLCurrencyFormat.getFiatCurrency()
@@ -68,31 +68,31 @@ class TLCurrencyFormat {
         }
     }
     
-    class func getProperAmount(amount: TLCoin) -> NSString {
+    class func getProperAmount(_ amount: TLCoin) -> NSString {
         var balance: NSString? = nil
         if (TLPreferences.isDisplayLocalCurrency()) {
             let currency = TLCurrencyFormat.getProperCurrency()
             balance = TLExchangeRate.instance().fiatAmountStringFromBitcoin(currency, bitcoinAmount: amount)
         } else {
-            balance = coinToProperBitcoinAmountString(amount)
+            balance = coinToProperBitcoinAmountString(amount) as NSString?
         }
         
-        balance = String(format: "%@ %@", balance!, getProperCurrency())
+        balance = String(format: "%@ %@", balance!, getProperCurrency()) as NSString?
         
         return balance!
     }
     
     class func getCurrencySymbol() -> String {
-        return getCurrencySymbolArray().objectAtIndex(Int(TLPreferences.getCurrencyIdx()!)!) as! String
+        return getCurrencySymbolArray().object(at: Int(TLPreferences.getCurrencyIdx()!)!) as! String
     }
     
     class func getFiatCurrency() -> String {
-        return getCurrencyArray().objectAtIndex(Int(TLPreferences.getCurrencyIdx()!)!) as! String
+        return getCurrencyArray().object(at: Int(TLPreferences.getCurrencyIdx()!)!) as! String
     }
     
     class func getProperCurrency() -> String {
         if (TLPreferences.isDisplayLocalCurrency()) {
-            return getCurrencyArray().objectAtIndex(Int(TLPreferences.getCurrencyIdx()!)!) as! String
+            return getCurrencyArray().object(at: Int(TLPreferences.getCurrencyIdx()!)!) as! String
         } else {
             return getBitcoinDisplay()
         }
@@ -101,24 +101,24 @@ class TLCurrencyFormat {
     class func getBitcoinDisplay() -> String {
         let bitcoinDenomination = TLPreferences.getBitcoinDenomination()
         
-        if (bitcoinDenomination == TLBitcoinDenomination.Bitcoin) {
-            return getBitcoinDisplayArray().objectAtIndex(0) as! String
-        } else if (bitcoinDenomination == TLBitcoinDenomination.MilliBit) {
-            return getBitcoinDisplayArray().objectAtIndex(1) as! String
+        if (bitcoinDenomination == TLBitcoinDenomination.bitcoin) {
+            return getBitcoinDisplayArray().object(at: 0) as! String
+        } else if (bitcoinDenomination == TLBitcoinDenomination.milliBit) {
+            return getBitcoinDisplayArray().object(at: 1) as! String
         } else {
-            return getBitcoinDisplayArray().objectAtIndex(2) as! String
+            return getBitcoinDisplayArray().object(at: 2) as! String
         }
     }
     
     class func getBitcoinDisplayWord() -> String {
         let bitcoinDenomination = TLPreferences.getBitcoinDenomination()
         
-        if (bitcoinDenomination == TLBitcoinDenomination.Bitcoin) {
-            return getBitcoinDisplayWordArray().objectAtIndex(0) as! String
-        } else if (bitcoinDenomination == TLBitcoinDenomination.MilliBit) {
-            return getBitcoinDisplayWordArray().objectAtIndex(1) as! String
+        if (bitcoinDenomination == TLBitcoinDenomination.bitcoin) {
+            return getBitcoinDisplayWordArray().object(at: 0) as! String
+        } else if (bitcoinDenomination == TLBitcoinDenomination.milliBit) {
+            return getBitcoinDisplayWordArray().object(at: 1) as! String
         } else {
-            return getBitcoinDisplayWordArray().objectAtIndex(2) as! String
+            return getBitcoinDisplayWordArray().object(at: 2) as! String
         }
     }
     

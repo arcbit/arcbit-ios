@@ -26,7 +26,7 @@ import UIKit
 
 extension UINavigationController {
     // work around to get status bar text color to be white: http://stackoverflow.com/a/21433339/299648
-    public override func preferredStatusBarStyle() -> UIStatusBarStyle {
-        return UIStatusBarStyle.LightContent
+    open override var preferredStatusBarStyle : UIStatusBarStyle {
+        return UIStatusBarStyle.lightContent
     }
 }

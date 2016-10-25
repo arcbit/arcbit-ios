@@ -29,7 +29,7 @@ import UIKit
     
     var eventActionArray:NSArray?
     var  advanceeventActionArray:NSArray?
-    @IBOutlet private var howToInstructionsTableView: UITableView?
+    @IBOutlet fileprivate var howToInstructionsTableView: UITableView?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -40,14 +40,14 @@ import UIKit
         
         self.howToInstructionsTableView!.delegate = self
         self.howToInstructionsTableView!.dataSource = self
-        self.howToInstructionsTableView!.tableFooterView = UIView(frame:CGRectZero)
+        self.howToInstructionsTableView!.tableFooterView = UIView(frame:CGRect.zero)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    func numberOfSectionsInTableView(tableView:UITableView) -> Int {
+    func numberOfSections(in tableView:UITableView) -> Int {
         if (TLPreferences.enabledAdvancedMode()) {
             return 2
         } else {
@@ -55,7 +55,7 @@ import UIKit
         }
     }
     
-    func tableView(tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
+    func tableView(_ tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
         if(section == 0) {
             return "Achievement List".localized
         }
@@ -65,7 +65,7 @@ import UIKit
     }
     
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section:Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section:Int) -> Int {
         if(section == 0) {
             return eventActionArray!.count
         }
@@ -74,35 +74,35 @@ import UIKit
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath:NSIndexPath) -> UITableViewCell{
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath:IndexPath) -> UITableViewCell{
         let MyIdentifier = "AchievementCellIdentifier"
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier) 
+        var cell = tableView.dequeueReusableCell(withIdentifier: MyIdentifier) 
         if (cell == nil) {
-            cell = UITableViewCell(style:UITableViewCellStyle.Default,
+            cell = UITableViewCell(style:UITableViewCellStyle.default,
                 reuseIdentifier:MyIdentifier)
         }
         cell!.textLabel!.numberOfLines = 0
 
-        if(indexPath.section == 0) {
-            let event = eventActionArray!.objectAtIndex(indexPath.row) as! String
+        if((indexPath as NSIndexPath).section == 0) {
+            let event = eventActionArray!.object(at: (indexPath as NSIndexPath).row) as! String
             if (TLAchievements.instance().hasDoneAction(event)) {
-                cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
+                cell!.accessoryType = UITableViewCellAccessoryType.checkmark
             } else {
-                cell!.accessoryType = UITableViewCellAccessoryType.None
+                cell!.accessoryType = UITableViewCellAccessoryType.none
             }
-            cell!.textLabel!.text = TLHelpDoc.getActionEventToHowToActionTitleDict().objectForKey(event) as? String
+            cell!.textLabel!.text = TLHelpDoc.getActionEventToHowToActionTitleDict().object(forKey: event) as? String
         } else {
-            let event = advanceeventActionArray!.objectAtIndex(indexPath.row) as! String
+            let event = advanceeventActionArray!.object(at: (indexPath as NSIndexPath).row) as! String
             if (TLAchievements.instance().hasDoneAction(event)) {
-                cell!.accessoryType = UITableViewCellAccessoryType.Checkmark
+                cell!.accessoryType = UITableViewCellAccessoryType.checkmark
             } else {
-                cell!.accessoryType = UITableViewCellAccessoryType.None
+                cell!.accessoryType = UITableViewCellAccessoryType.none
             }
-            cell!.textLabel!.text = TLHelpDoc.getActionEventToHowToActionTitleDict().objectForKey(event) as? String
+            cell!.textLabel!.text = TLHelpDoc.getActionEventToHowToActionTitleDict().object(forKey: event) as? String
         }
         
-        if (indexPath.row % 2 == 0) {
+        if ((indexPath as NSIndexPath).row % 2 == 0) {
             cell!.backgroundColor = TLColors.evenTableViewCellColor()
         } else {
             cell!.backgroundColor = TLColors.oddTableViewCellColor()
@@ -111,7 +111,7 @@ import UIKit
         return cell!
     }
     
-    func tableView(tableView:UITableView, willSelectRowAtIndexPath indexPath:NSIndexPath) -> NSIndexPath? {
+    func tableView(_ tableView:UITableView, willSelectRowAt indexPath:IndexPath) -> IndexPath? {
         return nil
     }
 }

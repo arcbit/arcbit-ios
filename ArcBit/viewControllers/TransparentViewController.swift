@@ -29,11 +29,11 @@ import UIKit
         super.init(coder: aDecoder)
     }
     
-    override func preferredStatusBarStyle() -> (UIStatusBarStyle) {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : (UIStatusBarStyle) {
+        return UIStatusBarStyle.lightContent
     }
     
-    override func viewWillAppear(animated: Bool) {
-        self.slidingViewController()!.topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("SendNav") 
+    override func viewWillAppear(_ animated: Bool) {
+        self.slidingViewController()!.topViewController = self.storyboard!.instantiateViewController(withIdentifier: "SendNav") 
     }
 }

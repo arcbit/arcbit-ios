@@ -23,26 +23,26 @@
 import Foundation
 
 class PendingOperations {
-    private lazy var downloadQueue:NSOperationQueue = {
-        var queue = NSOperationQueue()
-        queue.qualityOfService = NSQualityOfService.UserInteractive
+    fileprivate lazy var downloadQueue:OperationQueue = {
+        var queue = OperationQueue()
+        queue.qualityOfService = QualityOfService.userInteractive
         queue.name = "Fetch addresses data queue"
         return queue
         }()
     
-    func addSetUpImportedAddressesOperation(importedAddresses: TLImportedAddresses, fetchDataAgain :Bool, success: TLWalletUtils.Success) -> Bool {
-        if importedAddresses.downloadState == .QueuedForDownloading || importedAddresses.downloadState == .Downloading
-            || (!fetchDataAgain && importedAddresses.downloadState == .Downloaded)  {
+    func addSetUpImportedAddressesOperation(_ importedAddresses: TLImportedAddresses, fetchDataAgain :Bool, success: @escaping TLWalletUtils.Success) -> Bool {
+        if importedAddresses.downloadState == .queuedForDownloading || importedAddresses.downloadState == .downloading
+            || (!fetchDataAgain && importedAddresses.downloadState == .downloaded)  {
             return false
         }
-        importedAddresses.downloadState = .QueuedForDownloading
+        importedAddresses.downloadState = .queuedForDownloading
         
         let downloader = SetUpImportedAddressesOperation(importedAddresses: importedAddresses, fetchDataAgain: fetchDataAgain)
         downloader.completionBlock = {
-            if downloader.cancelled {
+            if downloader.isCancelled {
                 return
             }
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 success()
             })
         }
@@ -50,22 +50,22 @@ class PendingOperations {
         return true
     }
     
-    func addSetUpImportedAddressOperation(importedAddress: TLImportedAddress, fetchDataAgain :Bool, success: TLWalletUtils.Success) -> Bool {
-        if importedAddress.downloadState == .QueuedForDownloading || importedAddress.downloadState == .Downloading
-            || (!fetchDataAgain && importedAddress.downloadState == .Downloaded)  {
+    func addSetUpImportedAddressOperation(_ importedAddress: TLImportedAddress, fetchDataAgain :Bool, success: @escaping TLWalletUtils.Success) -> Bool {
+        if importedAddress.downloadState == .queuedForDownloading || importedAddress.downloadState == .downloading
+            || (!fetchDataAgain && importedAddress.downloadState == .downloaded)  {
             return false
         }
-        importedAddress.downloadState = .QueuedForDownloading
+        importedAddress.downloadState = .queuedForDownloading
         
         let downloader = SetUpImportedAddressOperation(importedAddress: importedAddress, fetchDataAgain: fetchDataAgain)
         downloader.completionBlock = {
-            if downloader.cancelled {
-                dispatch_async(dispatch_get_main_queue(), {
+            if downloader.isCancelled {
+                DispatchQueue.main.async(execute: {
                     success()
                 })
                 return
             }
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 success()
             })
         }
@@ -73,23 +73,23 @@ class PendingOperations {
         return true
     }
     
-    func addSetUpAccountOperation(accountObject: TLAccountObject, fetchDataAgain :Bool, success: TLWalletUtils.Success) -> Bool {
-        if accountObject.downloadState == .QueuedForDownloading || accountObject.downloadState == .Downloading
-            || (!fetchDataAgain && accountObject.downloadState == .Downloaded)  {
+    func addSetUpAccountOperation(_ accountObject: TLAccountObject, fetchDataAgain :Bool, success: @escaping TLWalletUtils.Success) -> Bool {
+        if accountObject.downloadState == .queuedForDownloading || accountObject.downloadState == .downloading
+            || (!fetchDataAgain && accountObject.downloadState == .downloaded)  {
             return false
         }
-        accountObject.downloadState = .QueuedForDownloading
+        accountObject.downloadState = .queuedForDownloading
         
 
         let downloader = SetUpAccountOperation(accountObject: accountObject)
         downloader.completionBlock = {
-            if downloader.cancelled {
-                dispatch_async(dispatch_get_main_queue(), {
+            if downloader.isCancelled {
+                DispatchQueue.main.async(execute: {
                     success()
                 })
                 return
             }
-            dispatch_async(dispatch_get_main_queue(), {
+            DispatchQueue.main.async(execute: {
                 success()
             })
         }
@@ -99,10 +99,10 @@ class PendingOperations {
 }
 
 enum TLDownloadState:Int {
-    case NotDownloading=0, QueuedForDownloading, Downloading, Downloaded, Failed
+    case notDownloading=0, queuedForDownloading, downloading, downloaded, failed
 }
 
-class SetUpImportedAddressOperation: NSOperation {
+class SetUpImportedAddressOperation: Operation {
     let importedAddress: TLImportedAddress
     let fetchDataAgain: Bool
     init(importedAddress: TLImportedAddress, fetchDataAgain:Bool) {
@@ -112,16 +112,16 @@ class SetUpImportedAddressOperation: NSOperation {
     }
     
     override func main () {
-        if self.cancelled {
+        if self.isCancelled {
             return
         }
         
-        self.importedAddress.downloadState = .Downloading
+        self.importedAddress.downloadState = .downloading
         self.importedAddress.getSingleAddressDataO(self.fetchDataAgain)
     }
 }
 
-class SetUpImportedAddressesOperation: NSOperation {
+class SetUpImportedAddressesOperation: Operation {
     let importedAddresses: TLImportedAddresses
     let fetchDataAgain: Bool
     
@@ -131,16 +131,16 @@ class SetUpImportedAddressesOperation: NSOperation {
     }
     
     override func main () {
-        if self.cancelled {
+        if self.isCancelled {
             return
         }
 
-        self.importedAddresses.downloadState = .Downloading
+        self.importedAddresses.downloadState = .downloading
         self.importedAddresses.checkToGetAndSetAddressesDataO(self.fetchDataAgain)
     }
 }
 
-class SetUpAccountOperation: NSOperation {
+class SetUpAccountOperation: Operation {
     let accountObject: TLAccountObject
     
     init(accountObject: TLAccountObject) {
@@ -148,11 +148,11 @@ class SetUpAccountOperation: NSOperation {
     }
     
     override func main () {
-        if self.cancelled {
+        if self.isCancelled {
             return
         }
         
-        self.accountObject.downloadState = .Downloading        
+        self.accountObject.downloadState = .downloading        
         self.accountObject.getAccountDataO()
     }
 }

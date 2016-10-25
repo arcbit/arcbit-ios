@@ -24,10 +24,10 @@ import Foundation
 
 
 @objc class TLStealthWebSocket: NSObject, SRWebSocketDelegate {
-    private var webSocket: SRWebSocket?
-    private var consecutiveFailedConnections = 0
+    fileprivate var webSocket: SRWebSocket?
+    fileprivate var consecutiveFailedConnections = 0
     var challenge = "0"
-    private let MAX_CONSECUTIVE_FAILED_CONNECTIONS = 5
+    fileprivate let MAX_CONSECUTIVE_FAILED_CONNECTIONS = 5
 
     struct STATIC_MEMBERS {
         static var instance: TLStealthWebSocket?
@@ -54,7 +54,7 @@ import Foundation
         //let certificateData = TLStealthServerConfig.instance().getSSLCertificate()
         //let urlRequest = SRWebSocket.createURLRequest(urlString, withPinnedCert: certificateData)
         //self.webSocket = SRWebSocket(URLRequest: urlRequest)
-        self.webSocket = SRWebSocket(URLRequest: NSURLRequest(URL: NSURL(string: urlString)!))
+        self.webSocket = SRWebSocket(urlRequest: URLRequest(url: URL(string: urlString)!))
         
         self.webSocket!.delegate = self
         self.webSocket!.open()
@@ -77,13 +77,13 @@ import Foundation
         return self.sendMessage(msg)
     }
     
-    func sendMessageSubscribeToStealthAddress(stealthAddress: String, signature: String) -> Bool {
-        let msgDict = ["op":"addr_sub", "x":["addr":stealthAddress,"sig":signature]]
+    func sendMessageSubscribeToStealthAddress(_ stealthAddress: String, signature: String) -> Bool {
+        let msgDict = ["op":"addr_sub", "x":["addr":stealthAddress,"sig":signature]] as [String : Any]
         let msg = TLUtils.dictionaryToJSONString(false, dict: msgDict)
         return self.sendMessage(msg)
     }
     
-    func sendMessage(msg: String) -> Bool {
+    func sendMessage(_ msg: String) -> Bool {
         DLog("StealthWebSocket sendMessage: %@", function: msg)
         if self.isWebSocketOpen() {
             self.webSocket!.send(msg)
@@ -96,56 +96,56 @@ import Foundation
     
     func periodicPing() {
         let PERIODIC_PING_INTERVAL = 55.0
-        dispatch_async(dispatch_get_main_queue()) {
-        NSObject.cancelPreviousPerformRequestsWithTarget(self, selector:"sendMessagePing", object:nil)
-        NSTimer.scheduledTimerWithTimeInterval(PERIODIC_PING_INTERVAL, target: self,
-            selector: Selector("sendMessagePing"), userInfo: nil, repeats: true)
+        DispatchQueue.main.async {
+        NSObject.cancelPreviousPerformRequests(withTarget: self, selector:#selector(TLStealthWebSocket.sendMessagePing), object:nil)
+        Timer.scheduledTimer(timeInterval: PERIODIC_PING_INTERVAL, target: self,
+            selector: #selector(TLStealthWebSocket.sendMessagePing), userInfo: nil, repeats: true)
         }
     }
     
     
-    func webSocketDidOpen(webSocket: SRWebSocket) -> () {
+    func webSocketDidOpen(_ webSocket: SRWebSocket) -> () {
         DLog("StealthWebSocket webSocketDidOpen")
         self.sendMessageGetChallenge()
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_STEALTH_PAYMENT_LISTENER_OPEN(), object: nil, userInfo: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_STEALTH_PAYMENT_LISTENER_OPEN()), object: nil, userInfo: nil)
         self.periodicPing()
     }
     
-    func webSocket(webSocket:SRWebSocket, didFailWithError error:NSError) -> () {
+    func webSocket(_ webSocket:SRWebSocket, didFailWithError error:NSError) -> () {
         DLog("StealthWebSocket didFailWithError %@", function: error.description)
 
         self.webSocket!.delegate = nil
         self.webSocket!.close()
         self.webSocket = nil
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_STEALTH_PAYMENT_LISTENER_CLOSE(), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_STEALTH_PAYMENT_LISTENER_CLOSE()), object: nil)
         if consecutiveFailedConnections++ < MAX_CONSECUTIVE_FAILED_CONNECTIONS {
             self.reconnect()
         } else {
-            dispatch_async(dispatch_get_main_queue()) {
-                NSObject.cancelPreviousPerformRequestsWithTarget(self, selector:"sendMessagePing", object:nil)
+            DispatchQueue.main.async {
+                NSObject.cancelPreviousPerformRequests(withTarget: self, selector:#selector(TLStealthWebSocket.sendMessagePing), object:nil)
             }
         }
     }
     
-    func webSocket(webSocket: SRWebSocket, didReceiveMessage message: AnyObject) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
+    func webSocket(_ webSocket: SRWebSocket, didReceiveMessage message: AnyObject) {
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
             self.consecutiveFailedConnections = 0
-            let data = message.dataUsingEncoding(NSUTF8StringEncoding)
+            let data = message.data(using: String.Encoding.utf8)
 
-            let jsonDict = (try! NSJSONSerialization.JSONObjectWithData(data!, options: NSJSONReadingOptions(rawValue: 0))) as! NSDictionary
+            let jsonDict = (try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions(rawValue: 0))) as! NSDictionary
             DLog("StealthWebSocket didReceiveMessage \(jsonDict.description)")
 
-            if (jsonDict.objectForKey("op") as! String == "challenge") {
-                NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_RECEIVED_STEALTH_CHALLENGE(), object: jsonDict.objectForKey("x"), userInfo: nil)
-            } else if (jsonDict.objectForKey("op") as! String == "addr_sub") {
-                NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_RECEIVED_STEALTH_ADDRESS_SUBSCRIPTION(), object: jsonDict.objectForKey("x"), userInfo: nil)
-            } else if (jsonDict.objectForKey("op") as! String == "tx") {
-                NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_RECEIVED_STEALTH_PAYMENT(), object: jsonDict.objectForKey("x"), userInfo: nil)
+            if (jsonDict.object(forKey: "op") as! String == "challenge") {
+                NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_RECEIVED_STEALTH_CHALLENGE()), object: jsonDict.object(forKey: "x"), userInfo: nil)
+            } else if (jsonDict.object(forKey: "op") as! String == "addr_sub") {
+                NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_RECEIVED_STEALTH_ADDRESS_SUBSCRIPTION()), object: jsonDict.object(forKey: "x"), userInfo: nil)
+            } else if (jsonDict.object(forKey: "op") as! String == "tx") {
+                NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_RECEIVED_STEALTH_PAYMENT()), object: jsonDict.object(forKey: "x"), userInfo: nil)
             }
         }
     }
     
-    func webSocket(webSocket: SRWebSocket, didCloseWithCode code: Int, reason: String, wasClean: Bool) -> () {
+    func webSocket(_ webSocket: SRWebSocket, didCloseWithCode code: Int, reason: String, wasClean: Bool) -> () {
         if wasClean {
             DLog("StealthWebSocket didCloseWithCode With No Error \(code) \(reason)")
         } else {
@@ -155,12 +155,12 @@ import Foundation
         self.webSocket!.delegate = nil
         self.webSocket!.close()
         self.webSocket = nil
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_STEALTH_PAYMENT_LISTENER_CLOSE(), object: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_STEALTH_PAYMENT_LISTENER_CLOSE()), object: nil)
         if consecutiveFailedConnections++ < MAX_CONSECUTIVE_FAILED_CONNECTIONS {
             self.reconnect()
         } else {
-            dispatch_async(dispatch_get_main_queue()) {
-                NSObject.cancelPreviousPerformRequestsWithTarget(self, selector:"sendMessagePing", object:nil)
+            DispatchQueue.main.async {
+                NSObject.cancelPreviousPerformRequests(withTarget: self, selector:#selector(TLStealthWebSocket.sendMessagePing), object:nil)
             }
         }
     }

@@ -29,7 +29,7 @@ import UIKit
         super.init(coder: aDecoder)
     }
     
-    @IBOutlet private var instructionsTableView: UITableView?
+    @IBOutlet fileprivate var instructionsTableView: UITableView?
     var action:String?
     var actionInstructionsSteps:NSArray?
     
@@ -38,39 +38,39 @@ import UIKit
         setColors()
         self.instructionsTableView!.delegate = self
         self.instructionsTableView!.dataSource = self
-        self.instructionsTableView!.tableFooterView = UIView(frame:CGRectZero)
+        self.instructionsTableView!.tableFooterView = UIView(frame:CGRect.zero)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    func numberOfSectionsInTableView(tableView:UITableView) -> Int {
+    func numberOfSections(in tableView:UITableView) -> Int {
         return 1
     }
     
-    func tableView(tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
+    func tableView(_ tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
         return "Steps".localized
     }
         
-    func tableView(tableView: UITableView, numberOfRowsInSection section:Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section:Int) -> Int {
         return actionInstructionsSteps!.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath:NSIndexPath) -> UITableViewCell{
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath:IndexPath) -> UITableViewCell{
         let MyIdentifier = "InstructionStepCellIdentifier"
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier) 
+        var cell = tableView.dequeueReusableCell(withIdentifier: MyIdentifier) 
         if (cell == nil) {
-            cell = UITableViewCell(style:UITableViewCellStyle.Default,
+            cell = UITableViewCell(style:UITableViewCellStyle.default,
                 reuseIdentifier:MyIdentifier)
         }
         cell!.textLabel!.numberOfLines = 0
 
-        let text = String(format:"%ld. %@", indexPath.row+1, actionInstructionsSteps!.objectAtIndex(indexPath.row) as! String)
+        let text = String(format:"%ld. %@", (indexPath as NSIndexPath).row+1, actionInstructionsSteps!.object(at: (indexPath as NSIndexPath).row) as! String)
         cell!.textLabel!.text = text
         
-        if (indexPath.row % 2 == 0) {
+        if ((indexPath as NSIndexPath).row % 2 == 0) {
             cell!.backgroundColor = TLColors.evenTableViewCellColor()
         } else {
             cell!.backgroundColor = TLColors.oddTableViewCellColor()

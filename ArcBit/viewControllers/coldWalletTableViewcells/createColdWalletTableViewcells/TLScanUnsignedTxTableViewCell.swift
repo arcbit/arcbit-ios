@@ -25,8 +25,8 @@ import UIKit
 
 
 protocol TLScanUnsignedTxTableViewCellDelegate {
-    func didClickScanButton(cell: TLScanUnsignedTxTableViewCell)
-    func didClickScanUnsignedTxInfoButton(cell: TLScanUnsignedTxTableViewCell)
+    func didClickScanButton(_ cell: TLScanUnsignedTxTableViewCell)
+    func didClickScanUnsignedTxInfoButton(_ cell: TLScanUnsignedTxTableViewCell)
 }
 
 @objc(TLScanUnsignedTxTableViewCell) class TLScanUnsignedTxTableViewCell:UITableViewCell {
@@ -46,7 +46,7 @@ protocol TLScanUnsignedTxTableViewCellDelegate {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.scanButtonButton.backgroundColor = TLColors.mainAppColor()
-        self.scanButtonButton.setTitleColor(TLColors.mainAppOppositeColor(), forState:UIControlState.Normal)
+        self.scanButtonButton.setTitleColor(TLColors.mainAppOppositeColor(), for:UIControlState())
         self.setstatusLabel(false)
     }
     
@@ -54,20 +54,20 @@ protocol TLScanUnsignedTxTableViewCellDelegate {
         return 88
     }
     
-    @IBAction private func infoButtonClicked(sender:UIButton) {
+    @IBAction fileprivate func infoButtonClicked(_ sender:UIButton) {
         delegate?.didClickScanUnsignedTxInfoButton(self)
     }
     
-    @IBAction private func scanButtonClicked(sender:UIButton) {
+    @IBAction fileprivate func scanButtonClicked(_ sender:UIButton) {
         delegate?.didClickScanButton(self)
     }
     
-    func setstatusLabel(complete:Bool) {
+    func setstatusLabel(_ complete:Bool) {
         if complete {
-            statusLabel.textColor = UIColor.greenColor()
+            statusLabel.textColor = UIColor.green
             statusLabel.text = "Complete".localized
         } else {
-            statusLabel.textColor = UIColor.redColor()
+            statusLabel.textColor = UIColor.red
             statusLabel.text = "Incomplete".localized
         }
     }

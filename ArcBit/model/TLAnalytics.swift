@@ -39,265 +39,265 @@ class TLAnalytics: NSObject {
         observeUserInterfaceInteractions()
     }
     
-    private func observeUserInterfaceInteractionsWithAchievements() -> () {
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateSentPayment:",
-            name:TLNotificationEvents.EVENT_SEND_PAYMENT(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateReceivePayment:",
-            name:TLNotificationEvents.EVENT_RECEIVE_PAYMENT(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateViewHistoryScreen:",
-            name:TLNotificationEvents.EVENT_VIEW_HISTORY(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateCreateNewAccount:",
-            name:TLNotificationEvents.EVENT_CREATE_NEW_ACCOUNT(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateEditAccountName:",
-            name:TLNotificationEvents.EVENT_EDIT_ACCOUNT_NAME(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateArchiveAccount:",
-            name:TLNotificationEvents.EVENT_ARCHIVE_ACCOUNT(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateEnablePINCode:",
-            name:TLNotificationEvents.EVENT_ENABLE_PIN_CODE(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateBackupPassphrase:",
-            name:TLNotificationEvents.EVENT_BACKUP_PASSPHRASE(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateRestoreWallet:",
-            name:TLNotificationEvents.EVENT_RESTORE_WALLET(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateAddToAddressBook:",
-            name:TLNotificationEvents.EVENT_ADD_TO_ADDRESS_BOOK(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateEditEntryAddressBook:",
-            name:TLNotificationEvents.EVENT_EDIT_ENTRY_ADDRESS_BOOK(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateDeleteEntryAddressBook:",
-            name:TLNotificationEvents.EVENT_DELETE_ENTRY_ADDRESS_BOOK(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateSendToAddressInAddressBook:",
-            name:TLNotificationEvents.EVENT_SEND_TO_ADDRESS_IN_ADDRESS_BOOK(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateTagTransaction:",
-            name:TLNotificationEvents.EVENT_TAG_TRANSACTION(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateToggleAutomaticTxFee:",
-            name:TLNotificationEvents.EVENT_TOGGLE_AUTOMATIC_TX_FEE(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateChangeAutomaticTxFee:",
-            name:TLNotificationEvents.EVENT_CHANGE_AUTOMATIC_TX_FEE(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateViewAccountAddresses:",
-            name:TLNotificationEvents.EVENT_VIEW_ACCOUNT_ADDRESSES(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateViewAccountAddress:",
-            name:TLNotificationEvents.EVENT_VIEW_ACCOUNT_ADDRESS(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateViewTransactionInWeb:",
-            name:TLNotificationEvents.EVENT_VIEW_TRANSACTION_IN_WEB(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateViewAccountAddressInWeb:",
-            name:TLNotificationEvents.EVENT_VIEW_ACCOUNT_ADDRESS_IN_WEB(), object:nil)
+    fileprivate func observeUserInterfaceInteractionsWithAchievements() -> () {
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateSentPayment(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_SEND_PAYMENT()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateReceivePayment(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_RECEIVE_PAYMENT()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateViewHistoryScreen(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_HISTORY()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateCreateNewAccount(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_CREATE_NEW_ACCOUNT()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateEditAccountName(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_EDIT_ACCOUNT_NAME()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateArchiveAccount(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ARCHIVE_ACCOUNT()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateEnablePINCode(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ENABLE_PIN_CODE()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateBackupPassphrase(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_BACKUP_PASSPHRASE()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateRestoreWallet(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_RESTORE_WALLET()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateAddToAddressBook(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ADD_TO_ADDRESS_BOOK()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateEditEntryAddressBook(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_EDIT_ENTRY_ADDRESS_BOOK()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateDeleteEntryAddressBook(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_DELETE_ENTRY_ADDRESS_BOOK()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateSendToAddressInAddressBook(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_SEND_TO_ADDRESS_IN_ADDRESS_BOOK()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateTagTransaction(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_TAG_TRANSACTION()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateToggleAutomaticTxFee(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_TOGGLE_AUTOMATIC_TX_FEE()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateChangeAutomaticTxFee(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_CHANGE_AUTOMATIC_TX_FEE()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateViewAccountAddresses(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_ACCOUNT_ADDRESSES()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateViewAccountAddress(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_ACCOUNT_ADDRESS()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateViewTransactionInWeb(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_TRANSACTION_IN_WEB()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateViewAccountAddressInWeb(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_ACCOUNT_ADDRESS_IN_WEB()), object:nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateImportAccount:",
-            name:TLNotificationEvents.EVENT_IMPORT_ACCOUNT(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateImportWatchOnlyAccount:",
-            name:TLNotificationEvents.EVENT_IMPORT_WATCH_ONLY_ACCOUNT(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateImportPrivateKey:",
-            name:TLNotificationEvents.EVENT_IMPORT_PRIVATE_KEY(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateImportWatchOnlyAddress:",
-            name:TLNotificationEvents.EVENT_IMPORT_WATCH_ONLY_ADDRESS(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateChangeBlockExplorerType:",
-            name:TLNotificationEvents.EVENT_CHANGE_BLOCKEXPLORER_TYPE(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateViewExtendedPublicKey:",
-            name:TLNotificationEvents.EVENT_VIEW_EXTENDED_PUBLIC_KEY(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateViewExtendedPrivateKey:",
-            name:TLNotificationEvents.EVENT_VIEW_EXTENDED_PRIVATE_KEY(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateViewAccountsPrivateKey:",
-            name:TLNotificationEvents.EVENT_VIEW_ACCOUNT_PRIVATE_KEY(), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateImportAccount(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_IMPORT_ACCOUNT()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateImportWatchOnlyAccount(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_IMPORT_WATCH_ONLY_ACCOUNT()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateImportPrivateKey(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_IMPORT_PRIVATE_KEY()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateImportWatchOnlyAddress(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_IMPORT_WATCH_ONLY_ADDRESS()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateChangeBlockExplorerType(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_CHANGE_BLOCKEXPLORER_TYPE()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateViewExtendedPublicKey(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_EXTENDED_PUBLIC_KEY()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateViewExtendedPrivateKey(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_EXTENDED_PRIVATE_KEY()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateViewAccountsPrivateKey(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_ACCOUNT_PRIVATE_KEY()), object:nil)
     }
     
     func observeUserInterfaceInteractions() -> () {
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateViewSendScreen:",
-            name:TLNotificationEvents.EVENT_VIEW_SEND_SCREEN(), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateViewSendScreen(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_SEND_SCREEN()), object:nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateViewReceiveScreen:",
-            name:TLNotificationEvents.EVENT_VIEW_RECEIVE_SCREEN(), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateViewReceiveScreen(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_RECEIVE_SCREEN()), object:nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateViewAccountsScreen:",
-            name:TLNotificationEvents.EVENT_VIEW_ACCOUNTS_SCREEN(), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateViewAccountsScreen(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_ACCOUNTS_SCREEN()), object:nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateViewManageAccountsScreen:",
-            name:TLNotificationEvents.EVENT_VIEW_MANAGE_ACCOUNTS_SCREEN(), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateViewManageAccountsScreen(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_MANAGE_ACCOUNTS_SCREEN()), object:nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateViewHelpScreen:",
-            name:TLNotificationEvents.EVENT_VIEW_HELP_SCREEN(), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateViewHelpScreen(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_HELP_SCREEN()), object:nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateViewSettingsScreen:",
-            name:TLNotificationEvents.EVENT_VIEW_SETTINGS_SCREEN(), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateViewSettingsScreen(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_SETTINGS_SCREEN()), object:nil)
         
         observeUserInterfaceInteractionsWithAchievements()
     }
     
-    func updateViewSendScreen(notification: NSNotification) -> () {
+    func updateViewSendScreen(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_VIEW_SEND_SCREEN())
     }
     
-    func updateViewReceiveScreen(notification: NSNotification) -> () {
+    func updateViewReceiveScreen(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_VIEW_RECEIVE_SCREEN())
     }
     
-    func updateViewAccountsScreen(notification: NSNotification) -> () {
+    func updateViewAccountsScreen(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_VIEW_ACCOUNTS_SCREEN())
     }
     
-    func updateViewManageAccountsScreen(notification: NSNotification) -> () {
+    func updateViewManageAccountsScreen(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_VIEW_MANAGE_ACCOUNTS_SCREEN())
     }
     
-    func updateViewHelpScreen(notification: NSNotification) -> () {
+    func updateViewHelpScreen(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_VIEW_HELP_SCREEN())
     }
     
-    func updateViewSettingsScreen(notification: NSNotification) -> () {
+    func updateViewSettingsScreen(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_VIEW_SETTINGS_SCREEN())
     }
     
     // Achievements
-    func updateSentPayment(notification: NSNotification) -> () {
+    func updateSentPayment(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_SEND_PAYMENT())
     }
     
-    func updateReceivePayment(notification: NSNotification) -> () {
+    func updateReceivePayment(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_RECEIVE_PAYMENT())
     }
     
-    func updateViewHistoryScreen(notification: NSNotification) -> () {
+    func updateViewHistoryScreen(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_VIEW_HISTORY())
     }
     
-    func updateCreateNewAccount(notification: NSNotification) -> () {
+    func updateCreateNewAccount(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_CREATE_NEW_ACCOUNT())
     }
     
-    func updateEditAccountName(notification: NSNotification) -> () {
+    func updateEditAccountName(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_EDIT_ACCOUNT_NAME())
     }
     
-    func updateArchiveAccount(notification: NSNotification) -> () {
+    func updateArchiveAccount(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_ARCHIVE_ACCOUNT())
     }
     
-    func updateEnablePINCode(notification: NSNotification) -> () {
+    func updateEnablePINCode(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_ENABLE_PIN_CODE())
     }
     
-    func updateBackupPassphrase(notification: NSNotification) -> () {
+    func updateBackupPassphrase(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_BACKUP_PASSPHRASE())
     }
     
-    func updateRestoreWallet(notification: NSNotification) -> () {
+    func updateRestoreWallet(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_RESTORE_WALLET())
     }
     
-    func updateAddToAddressBook(notification: NSNotification) -> () {
+    func updateAddToAddressBook(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_ADD_TO_ADDRESS_BOOK())
     }
     
-    func updateEditEntryAddressBook(notification: NSNotification) -> () {
+    func updateEditEntryAddressBook(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_EDIT_ENTRY_ADDRESS_BOOK())
     }
     
-    func updateDeleteEntryAddressBook(notification: NSNotification) -> () {
+    func updateDeleteEntryAddressBook(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_DELETE_ENTRY_ADDRESS_BOOK())
     }
     
-    func updateSendToAddressInAddressBook(notification: NSNotification) -> () {
+    func updateSendToAddressInAddressBook(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_SEND_TO_ADDRESS_IN_ADDRESS_BOOK())
     }
     
-    func updateTagTransaction(notification: NSNotification) -> () {
+    func updateTagTransaction(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_TAG_TRANSACTION())
     }
     
-    func updateToggleAutomaticTxFee(notification: NSNotification) -> () {
+    func updateToggleAutomaticTxFee(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_TOGGLE_AUTOMATIC_TX_FEE())
     }
     
-    func updateChangeAutomaticTxFee(notification: NSNotification) -> () {
+    func updateChangeAutomaticTxFee(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_CHANGE_AUTOMATIC_TX_FEE())
     }
     
-    func updateViewAccountAddresses(notification: NSNotification) -> () {
+    func updateViewAccountAddresses(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_VIEW_ACCOUNT_ADDRESSES())
     }
     
-    func updateViewAccountAddress(notification: NSNotification) -> () {
+    func updateViewAccountAddress(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_VIEW_ACCOUNT_ADDRESS())
     }
     
-    func updateViewTransactionInWeb(notification: NSNotification) -> () {
+    func updateViewTransactionInWeb(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_VIEW_TRANSACTION_IN_WEB())
     }
     
-    func updateViewAccountAddressInWeb(notification: NSNotification) -> () {
+    func updateViewAccountAddressInWeb(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_VIEW_ACCOUNT_ADDRESS_IN_WEB())
     }
     
     
-    func updateImportAccount(notification: NSNotification) -> () {
+    func updateImportAccount(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_IMPORT_ACCOUNT())
     }
     
-    func updateImportWatchOnlyAccount(notification: NSNotification) -> () {
+    func updateImportWatchOnlyAccount(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_IMPORT_WATCH_ONLY_ACCOUNT())
     }
     
-    func updateImportPrivateKey(notification: NSNotification) -> () {
+    func updateImportPrivateKey(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_IMPORT_PRIVATE_KEY())
     }
     
-    func updateImportWatchOnlyAddress(notification: NSNotification) -> () {
+    func updateImportWatchOnlyAddress(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_IMPORT_WATCH_ONLY_ADDRESS())
     }
     
-    func updateChangeBlockExplorerType(notification: NSNotification) -> () {
+    func updateChangeBlockExplorerType(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_CHANGE_BLOCKEXPLORER_TYPE())
     }
     
-    func updateViewExtendedPublicKey(notification: NSNotification) -> ()  {
+    func updateViewExtendedPublicKey(_ notification: Notification) -> ()  {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_VIEW_EXTENDED_PUBLIC_KEY())
     }
     
-    func updateViewExtendedPrivateKey(notification: NSNotification) -> () {
+    func updateViewExtendedPrivateKey(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_VIEW_EXTENDED_PRIVATE_KEY())
     }
     
-    func updateViewAccountsPrivateKey(notification: NSNotification) -> () {
+    func updateViewAccountsPrivateKey(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_VIEW_ACCOUNT_PRIVATE_KEY())
     }
     
-    private func updateUserAnalyticsWithEvent(event: String) -> ()  {
+    fileprivate func updateUserAnalyticsWithEvent(_ event: String) -> ()  {
         let userAnalyticsDict = NSMutableDictionary(dictionary:TLPreferences.getAnalyticsDict() ?? NSDictionary())
-        let dict = (userAnalyticsDict.valueForKey(event) as! NSNumber? ?? 0)
-        let eventCount = dict.unsignedIntegerValue
-        userAnalyticsDict.setObject(eventCount + 1, forKey:event)
+        let dict = (userAnalyticsDict.value(forKey: event) as! NSNumber? ?? 0)
+        let eventCount = dict.uintValue
+        userAnalyticsDict.setObject(eventCount + 1, forKey:event as NSCopying)
         TLPreferences.setAnalyticsDict(userAnalyticsDict)
     }
 }

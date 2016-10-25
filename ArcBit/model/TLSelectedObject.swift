@@ -22,15 +22,15 @@
 
 import Foundation
 @objc class TLSelectedObject:NSObject {
-    private var accountObject:TLAccountObject?
-    private var importedAddress:TLImportedAddress?
+    fileprivate var accountObject:TLAccountObject?
+    fileprivate var importedAddress:TLImportedAddress?
     
-    func setSelectedAccount(accountObject: TLAccountObject) -> () {
+    func setSelectedAccount(_ accountObject: TLAccountObject) -> () {
         self.accountObject = accountObject
         self.importedAddress = nil
     }
     
-    func setSelectedAddress(importedAddress: TLImportedAddress) -> () {
+    func setSelectedAddress(_ importedAddress: TLImportedAddress) -> () {
         self.importedAddress = importedAddress
         self.accountObject = nil
     }
@@ -42,7 +42,7 @@ import Foundation
             return self.importedAddress!.downloadState
         }
         
-        return .Failed
+        return .failed
     }
     
     func getBalanceForSelectedObject() -> (TLCoin?) {
@@ -72,7 +72,7 @@ import Foundation
         return 0
     }
     
-    func getReceivingAddressForSelectedObject(idx:Int) -> (String?) {
+    func getReceivingAddressForSelectedObject(_ idx:Int) -> (String?) {
         if (self.accountObject != nil) {
             return self.accountObject!.getReceivingAddress(idx)
         } else if (self.importedAddress != nil) {
@@ -83,7 +83,7 @@ import Foundation
     }
     
     func getStealthAddress() -> String? {
-        if self.accountObject != nil && self.accountObject!.getAccountType() != .ImportedWatch {
+        if self.accountObject != nil && self.accountObject!.getAccountType() != .importedWatch {
             if self.accountObject!.stealthWallet != nil {
                 return self.accountObject!.stealthWallet!.getStealthAddress()
             }
@@ -102,7 +102,7 @@ import Foundation
     }
     
     
-    func isAddressPartOfAccount(address: String) -> (Bool) {
+    func isAddressPartOfAccount(_ address: String) -> (Bool) {
         if (self.accountObject != nil) {
             return self.accountObject!.isAddressPartOfAccount(address)
         } else if (self.importedAddress != nil) {
@@ -122,7 +122,7 @@ import Foundation
         return 1
     }
     
-    func getTxObject(txIdx:Int) -> (TLTxObject?) {
+    func getTxObject(_ txIdx:Int) -> (TLTxObject?) {
         if (self.accountObject != nil) {
             return self.accountObject!.getTxObject(txIdx)
         } else if (self.importedAddress != nil) {
@@ -132,7 +132,7 @@ import Foundation
         return nil
     }
     
-    func getAccountAmountChangeForTx(txHash: String) -> (TLCoin?) {
+    func getAccountAmountChangeForTx(_ txHash: String) -> (TLCoin?) {
         if (self.accountObject != nil) {
             return self.accountObject!.getAccountAmountChangeForTx(txHash)!
         } else if (self.importedAddress != nil) {
@@ -142,7 +142,7 @@ import Foundation
         return nil
     }
     
-    func getAccountAmountChangeTypeForTx(txHash: String) -> (TLAccountTxType) {
+    func getAccountAmountChangeTypeForTx(_ txHash: String) -> (TLAccountTxType) {
         if (self.accountObject != nil) {
             return self.accountObject!.getAccountAmountChangeTypeForTx(txHash)
         } else if (self.importedAddress != nil) {
@@ -154,9 +154,9 @@ import Foundation
     
     func getSelectedObjectType() -> (TLSelectObjectType) {
         if (self.accountObject != nil) {
-            return TLSelectObjectType.Account
+            return TLSelectObjectType.account
         } else {
-            return TLSelectObjectType.Address
+            return TLSelectObjectType.address
         }
     }
     
@@ -172,7 +172,7 @@ import Foundation
         if (self.accountObject != nil) {
             return self.accountObject!.getAccountType()
         } else {
-            return TLAccountType.Unknown
+            return TLAccountType.unknown
         }
     }
 }

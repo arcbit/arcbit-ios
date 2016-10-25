@@ -27,7 +27,7 @@ class TLExchangeRate {
         static var instance:TLExchangeRate?
     }
     
-    private var exchangeRateDict:NSMutableDictionary? = nil
+    fileprivate var exchangeRateDict:NSMutableDictionary? = nil
     var networking:TLNetworking
 
     class func instance() -> (TLExchangeRate) {
@@ -40,8 +40,8 @@ class TLExchangeRate {
     init() {
         self.networking = TLNetworking()
         self.exchangeRateDict = NSMutableDictionary()
-        let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)
-        dispatch_async(queue) {
+        let queue = DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background)
+        queue.async {
             self.getExchangeRates({ (jsonData:AnyObject!) in
                 let array = jsonData as! NSArray
                 for(var i = 0; i < array.count; i++) {
@@ -55,7 +55,7 @@ class TLExchangeRate {
         }
     }
     
-    private func getExchangeRate(currency:String) -> (Double) {
+    fileprivate func getExchangeRate(_ currency:String) -> (Double) {
         if (self.exchangeRateDict == nil || self.exchangeRateDict![currency] == nil) {
             return 0
         } else {
@@ -63,27 +63,27 @@ class TLExchangeRate {
         }
     }
     
-    private func getExchangeRates(success: TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
-        self.networking.httpGET(NSURL(string: "https://bitpay.com/api/rates")!,
+    fileprivate func getExchangeRates(_ success: TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
+        self.networking.httpGET(URL(string: "https://bitpay.com/api/rates")!,
             parameters:[:], success:success, failure:failure)
     }
     
-    private func fiatAmountFromBitcoin(currency:String, bitcoinAmount:TLCoin) -> (Double) {
+    fileprivate func fiatAmountFromBitcoin(_ currency:String, bitcoinAmount:TLCoin) -> (Double) {
         let exchangeRate = getExchangeRate(currency)
         return bitcoinAmount.bigIntegerToBitcoin() * exchangeRate
     }
 
-    func bitcoinAmountFromFiat(currency:String, fiatAmount:Double) -> (TLCoin) {
+    func bitcoinAmountFromFiat(_ currency:String, fiatAmount:Double) -> (TLCoin) {
         let exchangeRate = getExchangeRate(currency)
         let bitcoinAmount = TLCoin(doubleValue: fiatAmount/exchangeRate)
         return bitcoinAmount
     }
     
-    func fiatAmountStringFromBitcoin(currency:String, bitcoinAmount:TLCoin) -> (String){
+    func fiatAmountStringFromBitcoin(_ currency:String, bitcoinAmount:TLCoin) -> (String){
         //TODO move bitcoinFormatter to property
-        let bitcoinFormatter = NSNumberFormatter()
-        bitcoinFormatter.numberStyle = .DecimalStyle
+        let bitcoinFormatter = NumberFormatter()
+        bitcoinFormatter.numberStyle = .decimal
         bitcoinFormatter.maximumFractionDigits = 2
-        return bitcoinFormatter.stringFromNumber(NSNumber(double: fiatAmountFromBitcoin(currency, bitcoinAmount:bitcoinAmount)))!
+        return bitcoinFormatter.string(from: NSNumber(value: fiatAmountFromBitcoin(currency, bitcoinAmount:bitcoinAmount) as Double))!
     }
 }

@@ -29,20 +29,20 @@ import CoreData
         super.init(coder: aDecoder)
     }
     
-    private let MAX_CONFIRMATIONS_TO_DISPLAY = 6
-    private var accountRefreshControl: UIRefreshControl?
-    private var managedObjectContext: NSManagedObjectContext?
-    private var paymentInfos: NSMutableArray?
-    private var transactions: NSMutableArray?
-    @IBOutlet private var transactionsTableView: UITableView?
-    @IBOutlet private var accountNameLabel: UILabel?
-    @IBOutlet private var accountBalanceLabel: UILabel?
-    @IBOutlet private var balanceActivityIndicatorView: UIActivityIndicatorView?
-    @IBOutlet private var selectAccountImageView: UIImageView?
-    @IBOutlet private var fromViewContainer: UIButton?
-    @IBOutlet private var tableviewBackgroundView: UIView?
-    @IBOutlet private var fromBackgroundView: UIView?
-    @IBOutlet private var revealButtonItem: UIBarButtonItem?
+    fileprivate let MAX_CONFIRMATIONS_TO_DISPLAY = 6
+    fileprivate var accountRefreshControl: UIRefreshControl?
+    fileprivate var managedObjectContext: NSManagedObjectContext?
+    fileprivate var paymentInfos: NSMutableArray?
+    fileprivate var transactions: NSMutableArray?
+    @IBOutlet fileprivate var transactionsTableView: UITableView?
+    @IBOutlet fileprivate var accountNameLabel: UILabel?
+    @IBOutlet fileprivate var accountBalanceLabel: UILabel?
+    @IBOutlet fileprivate var balanceActivityIndicatorView: UIActivityIndicatorView?
+    @IBOutlet fileprivate var selectAccountImageView: UIImageView?
+    @IBOutlet fileprivate var fromViewContainer: UIButton?
+    @IBOutlet fileprivate var tableviewBackgroundView: UIView?
+    @IBOutlet fileprivate var fromBackgroundView: UIView?
+    @IBOutlet fileprivate var revealButtonItem: UIBarButtonItem?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -57,48 +57,48 @@ import CoreData
         
         self.navigationController!.view.addGestureRecognizer(self.slidingViewController().panGesture)
         
-        NSNotificationCenter.defaultCenter().addObserver(self
-            , selector: "updateViewToNewSelectedObject",
-            name: TLNotificationEvents.EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED(), object: nil)
+        NotificationCenter.default.addObserver(self
+            , selector: #selector(TLHistoryViewController.updateViewToNewSelectedObject),
+            name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED()), object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self
-            , selector: "updateViewToNewSelectedObject",
-            name: TLNotificationEvents.EVENT_FETCHED_ADDRESSES_DATA(), object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            , selector: "updateViewToNewSelectedObject",
-            name: TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION(), object: nil)
+        NotificationCenter.default.addObserver(self
+            , selector: #selector(TLHistoryViewController.updateViewToNewSelectedObject),
+            name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_FETCHED_ADDRESSES_DATA()), object: nil)
+        NotificationCenter.default.addObserver(self
+            , selector: #selector(TLHistoryViewController.updateViewToNewSelectedObject),
+            name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION()), object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self
-            , selector: "updateViewToNewSelectedObject",
-            name: TLNotificationEvents.EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED(), object: nil)
+        NotificationCenter.default.addObserver(self
+            , selector: #selector(TLHistoryViewController.updateViewToNewSelectedObject),
+            name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED()), object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self
-            , selector: "updateTransactionsTableView:",
-            name: TLNotificationEvents.EVENT_PREFERENCES_BITCOIN_DISPLAY_CHANGED(), object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            , selector: "updateTransactionsTableView:",
-            name: TLNotificationEvents.EVENT_PREFERENCES_FIAT_DISPLAY_CHANGED(), object: nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            , selector: "updateTransactionsTableView:",
-            name: TLNotificationEvents.EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED(), object: nil)
+        NotificationCenter.default.addObserver(self
+            , selector: #selector(TLHistoryViewController.updateTransactionsTableView(_:)),
+            name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_PREFERENCES_BITCOIN_DISPLAY_CHANGED()), object: nil)
+        NotificationCenter.default.addObserver(self
+            , selector: #selector(TLHistoryViewController.updateTransactionsTableView(_:)),
+            name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_PREFERENCES_FIAT_DISPLAY_CHANGED()), object: nil)
+        NotificationCenter.default.addObserver(self
+            , selector: #selector(TLHistoryViewController.updateTransactionsTableView(_:)),
+            name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED()), object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self
-            , selector: "updateTransactionsTableView:",
-            name: TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_BLOCK(), object: nil)
+        NotificationCenter.default.addObserver(self
+            , selector: #selector(TLHistoryViewController.updateTransactionsTableView(_:)),
+            name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_BLOCK()), object: nil)
         
         self.transactionsTableView!.delegate = self
         self.transactionsTableView!.dataSource = self
-        self.transactionsTableView!.tableFooterView = UIView(frame: CGRectZero)
+        self.transactionsTableView!.tableFooterView = UIView(frame: CGRect.zero)
         self.transactionsTableView!.backgroundColor = self.fromBackgroundView!.backgroundColor
         
         self.tableviewBackgroundView!.layer.masksToBounds = false
         self.tableviewBackgroundView!.layer.shadowOpacity = 0.75
         self.tableviewBackgroundView!.layer.shadowRadius = 10.0
-        self.tableviewBackgroundView!.layer.shadowColor = UIColor.blackColor().CGColor
-        self.tableviewBackgroundView!.hidden = true // If I want the shadow, comment out this line
+        self.tableviewBackgroundView!.layer.shadowColor = UIColor.black.cgColor
+        self.tableviewBackgroundView!.isHidden = true // If I want the shadow, comment out this line
         
         accountRefreshControl = UIRefreshControl()
-        accountRefreshControl!.addTarget(self, action: "refresh:", forControlEvents: .ValueChanged)
+        accountRefreshControl!.addTarget(self, action: #selector(TLHistoryViewController.refresh(_:)), for: .valueChanged)
         self.transactionsTableView!.addSubview(accountRefreshControl!)
         
         self.updateViewToNewSelectedObject()
@@ -106,36 +106,36 @@ import CoreData
         self.refreshSelectedAccount(false)
     }
     
-    func refresh(refreshControl: UIRefreshControl) {
+    func refresh(_ refreshControl: UIRefreshControl) {
         self.refreshSelectedAccount(true)
         accountRefreshControl!.endRefreshing()
     }
     
-    private func refreshSelectedAccount(fetchDataAgain: Bool) {
+    fileprivate func refreshSelectedAccount(_ fetchDataAgain: Bool) {
         if (!AppDelegate.instance().historySelectedObject!.hasFetchedCurrentFromData() || fetchDataAgain) {
-            if (AppDelegate.instance().historySelectedObject!.getSelectedObjectType() == .Account) {
+            if (AppDelegate.instance().historySelectedObject!.getSelectedObjectType() == .account) {
                 let accountObject = AppDelegate.instance().historySelectedObject!.getSelectedObject() as! TLAccountObject
-                self.balanceActivityIndicatorView!.hidden = false
-                self.accountBalanceLabel!.hidden = true
+                self.balanceActivityIndicatorView!.isHidden = false
+                self.accountBalanceLabel!.isHidden = true
                 self.balanceActivityIndicatorView!.startAnimating()
                 AppDelegate.instance().pendingOperations.addSetUpAccountOperation(accountObject, fetchDataAgain: fetchDataAgain, success: {
-                    self.accountBalanceLabel!.hidden = false
+                    self.accountBalanceLabel!.isHidden = false
                     self.balanceActivityIndicatorView!.stopAnimating()
-                    self.balanceActivityIndicatorView!.hidden = true
-                    if accountObject.downloadState == .Downloaded {
+                    self.balanceActivityIndicatorView!.isHidden = true
+                    if accountObject.downloadState == .downloaded {
                         self.updateAccountBalance()
                     }
                 })
                 
-            } else if (AppDelegate.instance().historySelectedObject!.getSelectedObjectType() == .Address) {
+            } else if (AppDelegate.instance().historySelectedObject!.getSelectedObjectType() == .address) {
                 let importedAddress = AppDelegate.instance().historySelectedObject!.getSelectedObject() as! TLImportedAddress
-                self.balanceActivityIndicatorView!.hidden = false
-                self.accountBalanceLabel!.hidden = true
+                self.balanceActivityIndicatorView!.isHidden = false
+                self.accountBalanceLabel!.isHidden = true
                 AppDelegate.instance().pendingOperations.addSetUpImportedAddressOperation(importedAddress, fetchDataAgain: fetchDataAgain, success: {
-                    self.accountBalanceLabel!.hidden = false
+                    self.accountBalanceLabel!.isHidden = false
                     self.balanceActivityIndicatorView!.stopAnimating()
-                    self.balanceActivityIndicatorView!.hidden = true
-                    if importedAddress.downloadState != .Downloaded {
+                    self.balanceActivityIndicatorView!.isHidden = true
+                    if importedAddress.downloadState != .downloaded {
                         self.updateAccountBalance()
                     }
                 })
@@ -143,7 +143,7 @@ import CoreData
         } else {
             let balance = TLCurrencyFormat.getProperAmount(AppDelegate.instance().historySelectedObject!.getBalanceForSelectedObject()!)
             accountBalanceLabel!.text = balance as String
-            self.balanceActivityIndicatorView!.hidden = true
+            self.balanceActivityIndicatorView!.isHidden = true
         }
     }
     
@@ -158,67 +158,67 @@ import CoreData
         self.transactionsTableView!.reloadData()
     }
     
-    func updateTransactionsTableView(notification: NSNotification) {
+    func updateTransactionsTableView(_ notification: Notification) {
         _updateTransactionsTableView()
     }
     
-    override func viewWillAppear(animated: Bool) -> () {
+    override func viewWillAppear(_ animated: Bool) -> () {
         self.updateViewToNewSelectedObject()
     }
     
-    override func viewDidAppear(animated: Bool) -> () {
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_HISTORY(),
+    override func viewDidAppear(_ animated: Bool) -> () {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_HISTORY()),
             object: nil, userInfo: nil)
     }
     
-    private func updateAccountBalance() {
+    fileprivate func updateAccountBalance() {
         let balance = AppDelegate.instance().historySelectedObject!.getBalanceForSelectedObject()
         let balanceString = TLCurrencyFormat.getProperAmount(balance!)
     
         self.balanceActivityIndicatorView!.stopAnimating()
-        self.balanceActivityIndicatorView!.hidden = true
+        self.balanceActivityIndicatorView!.isHidden = true
 
         self.accountBalanceLabel!.text = balanceString as String
-        self.accountBalanceLabel!.hidden = false
+        self.accountBalanceLabel!.isHidden = false
     }
     
-    func onAccountSelected(note: NSNotification) {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: TLNotificationEvents.EVENT_ACCOUNT_SELECTED(),
+    func onAccountSelected(_ note: Notification) {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ACCOUNT_SELECTED()),
             object: nil)
         
         let selectedDict = note.object as! NSDictionary
-        let sendFromType = TLSendFromType(rawValue: selectedDict.objectForKey("sendFromType") as! Int)
-        let sendFromIndex = selectedDict.objectForKey("sendFromIndex") as! Int
+        let sendFromType = TLSendFromType(rawValue: selectedDict.object(forKey: "sendFromType") as! Int)
+        let sendFromIndex = selectedDict.object(forKey: "sendFromIndex") as! Int
         AppDelegate.instance().updateHistorySelectedObject(sendFromType!, sendFromIndex: sendFromIndex)
         self.updateViewToNewSelectedObject()
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) -> () {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any!) -> () {
         if (segue.identifier == "selectAccount") {
-            let vc = segue.destinationViewController 
+            let vc = segue.destination 
             vc.navigationItem.title = "Select Account".localized
             
-            NSNotificationCenter.defaultCenter().addObserver(self
-                , selector: "onAccountSelected:",
-                name: TLNotificationEvents.EVENT_ACCOUNT_SELECTED(), object: nil)
+            NotificationCenter.default.addObserver(self
+                , selector: #selector(TLHistoryViewController.onAccountSelected(_:)),
+                name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ACCOUNT_SELECTED()), object: nil)
         }
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return Int(AppDelegate.instance().historySelectedObject!.getTxObjectCount())
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let MyIdentifier = "TransactionCellIdentifier"
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier) as! TLTransactionTableViewCell?
+        var cell = tableView.dequeueReusableCell(withIdentifier: MyIdentifier) as! TLTransactionTableViewCell?
         if (cell == nil) {
-            cell = UITableViewCell(style: UITableViewCellStyle.Default,
+            cell = UITableViewCell(style: UITableViewCellStyle.default,
                 reuseIdentifier: MyIdentifier) as? TLTransactionTableViewCell
         }
         
         cell!.amountButton!.titleEdgeInsets = UIEdgeInsetsMake(0.0, 5.0, 0.0, 5.0)
-        let txObject = AppDelegate.instance().historySelectedObject!.getTxObject(indexPath.row)
+        let txObject = AppDelegate.instance().historySelectedObject!.getTxObject((indexPath as NSIndexPath).row)
         DLog("txObject hash: %@", function: txObject!.getHash()!)
         cell!.dateLabel!.text = txObject!.getTime()
         
@@ -228,14 +228,14 @@ import CoreData
         let txTag = AppDelegate.instance().appWallet.getTransactionTag(txObject!.getHash()! as String)
 
         cell!.descriptionLabel!.adjustsFontSizeToFitWidth = true
-        if (amountType == .Send) {
+        if (amountType == .send) {
             amountTypeString = "-"
-            cell!.amountButton!.backgroundColor = UIColor.redColor()
+            cell!.amountButton!.backgroundColor = UIColor.red
             if txTag == nil || txTag == "" {
                 let outputAddressToValueArray = txObject!.getOutputAddressToValueArray()
                 for _dict in outputAddressToValueArray! {
                     let dict = _dict as! NSDictionary
-                    if let address = dict.objectForKey("addr") as? String {
+                    if let address = dict.object(forKey: "addr") as? String {
                         if AppDelegate.instance().historySelectedObject!.isAddressPartOfAccount(address) {
                             cell!.descriptionLabel!.text = address
                         } else {
@@ -249,9 +249,9 @@ import CoreData
             } else {
                 cell!.descriptionLabel!.text = txTag
             }
-        } else if (amountType == .Receive) {
+        } else if (amountType == .receive) {
             amountTypeString = "+"
-            cell!.amountButton!.backgroundColor = UIColor.greenColor()
+            cell!.amountButton!.backgroundColor = UIColor.green
             if txTag == nil || txTag == "" {
                 cell!.descriptionLabel!.text = ""
             } else {
@@ -259,32 +259,32 @@ import CoreData
             }
 
         } else {
-            cell!.amountButton!.backgroundColor = UIColor.grayColor()
+            cell!.amountButton!.backgroundColor = UIColor.gray
             if (txTag == nil) {
                 cell!.descriptionLabel!.text = String(format: "Intra account transfer".localized)
             } else {
                 cell!.descriptionLabel!.text = txTag
             }
         }
-        cell!.amountButton!.setTitle(String(format: "%@%@", amountTypeString, amount), forState: .Normal)
+        cell!.amountButton!.setTitle(String(format: "%@%@", amountTypeString, amount), for: UIControlState())
         
         let confirmations = txObject!.getConfirmations()
         DLog("confirmations %ld", function: Int(confirmations))
         
         if (Int(confirmations) > MAX_CONFIRMATIONS_TO_DISPLAY) {
             cell!.confirmationsLabel!.text = String(format: "%llu confirmations".localized, txObject!.getConfirmations()) // label is hidden
-            cell!.confirmationsLabel!.backgroundColor = UIColor.greenColor()
-            cell!.confirmationsLabel!.hidden = true
+            cell!.confirmationsLabel!.backgroundColor = UIColor.green
+            cell!.confirmationsLabel!.isHidden = true
         } else {
             if (confirmations == 0) {
-                cell!.confirmationsLabel!.backgroundColor = UIColor.redColor()
+                cell!.confirmationsLabel!.backgroundColor = UIColor.red
             } else if (confirmations == 1) {
-                cell!.confirmationsLabel!.backgroundColor = UIColor.orangeColor()
+                cell!.confirmationsLabel!.backgroundColor = UIColor.orange
             } else if (confirmations <= 2 && confirmations <= 5) {
                 //cell!.confirmationsLabel.backgroundColor = UIColor.yellowColor) //yellow color too light
-                cell!.confirmationsLabel!.backgroundColor = UIColor.greenColor()
+                cell!.confirmationsLabel!.backgroundColor = UIColor.green
             } else {
-                cell!.confirmationsLabel!.backgroundColor = UIColor.greenColor()
+                cell!.confirmationsLabel!.backgroundColor = UIColor.green
             }
             
             if (confirmations == 0) {
@@ -294,10 +294,10 @@ import CoreData
             } else {
                 cell!.confirmationsLabel!.text = String(format: "%llu confirmations".localized, txObject!.getConfirmations())
             }
-            cell!.confirmationsLabel!.hidden = false
+            cell!.confirmationsLabel!.isHidden = false
         }
         
-        if (indexPath.row % 2 == 0) {
+        if ((indexPath as NSIndexPath).row % 2 == 0) {
             cell!.backgroundColor = TLColors.evenTableViewCellColor()
         } else {
             cell!.backgroundColor = TLColors.oddTableViewCellColor()
@@ -306,68 +306,68 @@ import CoreData
         return cell!
     }
     
-    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        let txObject = AppDelegate.instance().historySelectedObject!.getTxObject(indexPath.row)
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        let txObject = AppDelegate.instance().historySelectedObject!.getTxObject((indexPath as NSIndexPath).row)
         self.promptTransactionActionSheet(txObject!.getHash()!)
         return nil
     }
     
-    private func promptTransactionActionSheet(txHash: NSString) {
+    fileprivate func promptTransactionActionSheet(_ txHash: NSString) {
         let otherButtonTitles = ["View in web".localized, "Label Transaction".localized, "Copy Transaction ID to Clipboard".localized]
         
-        UIAlertController.showAlertInViewController(self,
+        UIAlertController.showAlert(in: self,
             withTitle: String(format: "Transaction ID: %@".localized, txHash),
             message:"",
-            preferredStyle: .ActionSheet,
+            preferredStyle: .actionSheet,
             cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
             otherButtonTitles: otherButtonTitles as [AnyObject],
-            tapBlock: {(actionSheet, action, buttonIndex) in
-                if (buttonIndex == actionSheet.firstOtherButtonIndex) {
+            tap: {(actionSheet, action, buttonIndex) in
+                if (buttonIndex == actionSheet?.firstOtherButtonIndex) {
                     TLBlockExplorerAPI.instance().openWebViewForTransaction(txHash as String)
-                    NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_TRANSACTION_IN_WEB(),
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_TRANSACTION_IN_WEB()),
                         object: nil, userInfo: nil)
-                } else if (buttonIndex == actionSheet.firstOtherButtonIndex + 1) {
+                } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 1) {
                     TLPrompts.promtForInputText(self, title:"Edit Transaction tag".localized, message: "", textFieldPlaceholder: "tag".localized, success: {
                         (inputText: String!) in
                         if (inputText == "") {
                             AppDelegate.instance().appWallet.deleteTransactionTag(txHash as String)
                         } else {
                             AppDelegate.instance().appWallet.setTransactionTag(txHash as String, tag: inputText)
-                            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_TAG_TRANSACTION(),
+                            NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_TAG_TRANSACTION()),
                                 object: nil, userInfo: nil)
                         }
                         self._updateTransactionsTableView()
                         }, failure: {
                             (isCancelled: Bool) in
                     })
-                } else if (buttonIndex == actionSheet.firstOtherButtonIndex + 2) {
-                    let pasteboard = UIPasteboard.generalPasteboard()
+                } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 2) {
+                    let pasteboard = UIPasteboard.general
                     pasteboard.string = txHash as String
                     iToast.makeText("Copied To clipboard".localized).setGravity(iToastGravityCenter).setDuration(1000).show()
-                } else if (buttonIndex == actionSheet.cancelButtonIndex) {
+                } else if (buttonIndex == actionSheet?.cancelButtonIndex) {
                 }
         })
     }
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let moreAction = UITableViewRowAction(style: .Default, title: "More".localized, handler: {
-            (action: UITableViewRowAction, indexPath: NSIndexPath) in
-            tableView.editing = false
-            let txObject = AppDelegate.instance().historySelectedObject!.getTxObject(indexPath.row)
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let moreAction = UITableViewRowAction(style: .default, title: "More".localized, handler: {
+            (action: UITableViewRowAction, indexPath: IndexPath) in
+            tableView.isEditing = false
+            let txObject = AppDelegate.instance().historySelectedObject!.getTxObject((indexPath as NSIndexPath).row)
             
             self.promptTransactionActionSheet(txObject!.getHash()!)
         })
-        moreAction.backgroundColor = UIColor.lightGrayColor()
+        moreAction.backgroundColor = UIColor.lightGray
         
         return [moreAction]
     }
     
-    @IBAction private func menuButtonClicked(sender: AnyObject) {
-        self.slidingViewController().anchorTopViewToRightAnimated(true)
+    @IBAction fileprivate func menuButtonClicked(_ sender: AnyObject) {
+        self.slidingViewController().anchorTopViewToRight(animated: true)
     }
 
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 }

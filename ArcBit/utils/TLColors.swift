@@ -41,14 +41,14 @@ class TLColors {
     }
     
     class func mainAppOppositeColor() -> UIColor {
-        return UIColor.whiteColor()
+        return UIColor.white
     }
     
     class func evenTableViewCellColor() -> UIColor {
-        return UIColor.whiteColor()
+        return UIColor.white
     }
     
     class func oddTableViewCellColor() -> UIColor {
-        return UIColor.whiteColor()
+        return UIColor.white
     }
 }

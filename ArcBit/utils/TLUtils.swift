@@ -26,41 +26,41 @@ import Foundation
 class TLUtils {
 
     class func getiOSVersion() -> Int {
-        let versionArray = UIDevice.currentDevice().systemVersion.componentsSeparatedByString(".")
+        let versionArray = UIDevice.current.systemVersion.components(separatedBy: ".")
         return (versionArray[0] as NSString).integerValue
     }
     
     //TODO: better way
     class func isIPhone5() -> Bool {
-        return UIScreen.mainScreen().bounds.size.height == 568
+        return UIScreen.main.bounds.size.height == 568
     }
     class func isIPhone4() -> Bool {
-        return UIScreen.mainScreen().bounds.size.height == 480
+        return UIScreen.main.bounds.size.height == 480
     }
     
     class func defaultAppName() -> String {
         return "ArcBit"
     }
     
-    class func dictionaryToJSONString(prettyPrint: Bool, dict: NSDictionary) -> String {
-        let jsonData: NSData?
+    class func dictionaryToJSONString(_ prettyPrint: Bool, dict: NSDictionary) -> String {
+        let jsonData: Data?
         do {
-            jsonData = try NSJSONSerialization.dataWithJSONObject(dict,
-                        options: (prettyPrint ? NSJSONWritingOptions.PrettyPrinted : NSJSONWritingOptions(rawValue: 0)) as NSJSONWritingOptions)
+            jsonData = try JSONSerialization.data(withJSONObject: dict,
+                        options: (prettyPrint ? JSONSerialization.WritingOptions.prettyPrinted : JSONSerialization.WritingOptions(rawValue: 0)) as JSONSerialization.WritingOptions)
         } catch _ as NSError {
             jsonData = nil
         }
         assert(jsonData != nil, "jsonData not valid")
-        return NSString(data: jsonData!, encoding: NSUTF8StringEncoding)! as String
+        return NSString(data: jsonData!, encoding: String.Encoding.utf8.rawValue)! as String
     }
     
-    class func JSONStringToDictionary(jsonString: String) -> NSDictionary {
+    class func JSONStringToDictionary(_ jsonString: String) -> NSDictionary {
         var error: NSError? = nil
-        let jsonData = jsonString.dataUsingEncoding(NSUTF8StringEncoding)
+        let jsonData = jsonString.data(using: String.Encoding.utf8)
         let jsonDict:AnyObject?
         do {
-            jsonDict = try NSJSONSerialization.JSONObjectWithData(jsonData!,
-                        options: NSJSONReadingOptions.MutableContainers)
+            jsonDict = try JSONSerialization.jsonObject(with: jsonData!,
+                        options: JSONSerialization.ReadingOptions.mutableContainers)
         } catch let error1 as NSError {
             error = error1
             jsonDict = nil

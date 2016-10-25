@@ -26,26 +26,26 @@ import AVFoundation
 
 @objc(TLQRCodeScannerViewController) class TLQRCodeScannerViewController: UIViewController, AVCaptureMetadataOutputObjectsDelegate {
     
-    private let n = 66
-    private let DEFAULT_HEADER_HEIGHT = 66
+    fileprivate let n = 66
+    fileprivate let DEFAULT_HEADER_HEIGHT = 66
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    private var success: ((String?) -> ())?
-    private var error: ((String?) -> ())?
-    private var captureSession: AVCaptureSession?
-    private var videoPreviewLayer: AVCaptureVideoPreviewLayer?
-    private var isReadingQRCode: Bool = false
+    fileprivate var success: ((String?) -> ())?
+    fileprivate var error: ((String?) -> ())?
+    fileprivate var captureSession: AVCaptureSession?
+    fileprivate var videoPreviewLayer: AVCaptureVideoPreviewLayer?
+    fileprivate var isReadingQRCode: Bool = false
     
-    override func preferredStatusBarStyle() -> (UIStatusBarStyle) {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : (UIStatusBarStyle) {
+        return UIStatusBarStyle.lightContent
     }
     
     init(success __success: ((String?) -> ())?, error __error: ((String?) -> ())?) {
         super.init(nibName: nil, bundle: nil)
-        self.modalTransitionStyle = UIModalTransitionStyle.CrossDissolve
+        self.modalTransitionStyle = UIModalTransitionStyle.crossDissolve
         self.success = __success
         self.error = __error
     }
@@ -53,34 +53,34 @@ import AVFoundation
     override func viewDidLoad() {
         super.viewDidLoad()
         let app = AppDelegate.instance()
-        self.view.frame = CGRectMake(0, 0, app.window!.frame.size.width, app.window!.frame.size.height - CGFloat(DEFAULT_HEADER_HEIGHT))
+        self.view.frame = CGRect(x: 0, y: 0, width: app.window!.frame.size.width, height: app.window!.frame.size.height - CGFloat(DEFAULT_HEADER_HEIGHT))
         
-        let topBarView = UIView(frame: CGRectMake(0, 0, self.view.frame.size.width, CGFloat(DEFAULT_HEADER_HEIGHT)))
+        let topBarView = UIView(frame: CGRect(x: 0, y: 0, width: self.view.frame.size.width, height: CGFloat(DEFAULT_HEADER_HEIGHT)))
         topBarView.backgroundColor = TLColors.mainAppColor()
         self.view.addSubview(topBarView)
         
         let logo = UIImageView(image: UIImage(named: "top_menu_logo.png"))
-        logo.frame = CGRectMake(88, 22, 143, 40)
+        logo.frame = CGRect(x: 88, y: 22, width: 143, height: 40)
         topBarView.addSubview(logo)
         
-        let closeButton = UIButton(frame: CGRectMake(self.view.frame.size.width - 70, 15, 80, 51))
-        closeButton.setTitle("Close".localized, forState: UIControlState.Normal)
-        closeButton.setTitleColor(UIColor(white:0.56, alpha: 1.0), forState: UIControlState.Highlighted)
-        closeButton.titleLabel!.font = UIFont.systemFontOfSize(15)
-        closeButton.addTarget(self, action: "closeButtonClicked:", forControlEvents: .TouchUpInside)
+        let closeButton = UIButton(frame: CGRect(x: self.view.frame.size.width - 70, y: 15, width: 80, height: 51))
+        closeButton.setTitle("Close".localized, for: UIControlState())
+        closeButton.setTitleColor(UIColor(white:0.56, alpha: 1.0), for: UIControlState.highlighted)
+        closeButton.titleLabel!.font = UIFont.systemFont(ofSize: 15)
+        closeButton.addTarget(self, action: #selector(TLQRCodeScannerViewController.closeButtonClicked(_:)), for: .touchUpInside)
         topBarView.addSubview(closeButton)
         
         self.startReadingQRCode()
     }
     
-    func closeButtonClicked(sender: UIButton) -> () {
+    func closeButtonClicked(_ sender: UIButton) -> () {
         self.stopReadingQRCode()
     }
     
     func startReadingQRCode() -> () {
         var error: NSError?
         
-        let captureDevice = AVCaptureDevice.defaultDeviceWithMediaType(AVMediaTypeVideo)
+        let captureDevice = AVCaptureDevice.defaultDevice(withMediaType: AVMediaTypeVideo)
         
         var input: AnyObject!
         do {
@@ -101,7 +101,7 @@ import AVFoundation
         let captureMetadataOutput = AVCaptureMetadataOutput()
         captureSession!.addOutput(captureMetadataOutput)
         
-        let dispatchQueue = dispatch_queue_create("myQueue", nil)
+        let dispatchQueue = DispatchQueue(label: "myQueue", attributes: [])
         captureMetadataOutput.setMetadataObjectsDelegate(self, queue: dispatchQueue)
         captureMetadataOutput.metadataObjectTypes = [AVMetadataObjectTypeQRCode]
         
@@ -109,7 +109,7 @@ import AVFoundation
         videoPreviewLayer?.videoGravity = (AVLayerVideoGravityResizeAspectFill)
         
         let app = AppDelegate.instance()
-        let frame = CGRectMake(0, CGFloat(DEFAULT_HEADER_HEIGHT), app.window!.frame.size.width, app.window!.frame.size.height - CGFloat(DEFAULT_HEADER_HEIGHT))
+        let frame = CGRect(x: 0, y: CGFloat(DEFAULT_HEADER_HEIGHT), width: app.window!.frame.size.width, height: app.window!.frame.size.height - CGFloat(DEFAULT_HEADER_HEIGHT))
         
         videoPreviewLayer!.frame = frame
         
@@ -130,21 +130,21 @@ import AVFoundation
             videoPreviewLayer!.removeFromSuperlayer()
         }
         
-        self.dismissViewControllerAnimated(true, completion: nil)
+        self.dismiss(animated: true, completion: nil)
         
         if (self.error != nil) {
             self.error!(nil)
         }
     }
     
-     func captureOutput(captureOutput: AVCaptureOutput!,
-        didOutputMetadataObjects metadataObjects: [AnyObject]!,
-        fromConnection connection: AVCaptureConnection!) -> () {
+     func captureOutput(_ captureOutput: AVCaptureOutput!,
+        didOutputMetadataObjects metadataObjects: [Any]!,
+        from connection: AVCaptureConnection!) -> () {
         if (metadataObjects != nil && metadataObjects!.count > 0) {
-            let metadataObj: AnyObject = metadataObjects![0]
+            let metadataObj: AnyObject = metadataObjects![0] as AnyObject
             if (metadataObj.type == AVMetadataObjectTypeQRCode) {
                 // do something useful with results
-                dispatch_sync(dispatch_get_main_queue()) {
+                DispatchQueue.main.sync {
                     let data:String = metadataObj.stringValue
                     
                     if (self.success != nil) {

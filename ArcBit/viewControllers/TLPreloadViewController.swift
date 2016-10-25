@@ -30,46 +30,46 @@ import UIKit
         super.init(coder: aDecoder)
     }
     
-    @IBOutlet private var walletLoadingActivityIndicatorView: UIActivityIndicatorView?
-    @IBOutlet private var backgroundView: UIView?
+    @IBOutlet fileprivate var walletLoadingActivityIndicatorView: UIActivityIndicatorView?
+    @IBOutlet fileprivate var backgroundView: UIView?
     @IBOutlet weak var backgroundImageView: UIImageView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        self.walletLoadingActivityIndicatorView!.hidden = true
-        self.walletLoadingActivityIndicatorView!.color = UIColor.grayColor()
+        self.walletLoadingActivityIndicatorView!.isHidden = true
+        self.walletLoadingActivityIndicatorView!.color = UIColor.gray
         
-        self.navigationController!.navigationBar.hidden = true
-        UIApplication.sharedApplication().setStatusBarHidden(true, withAnimation: UIStatusBarAnimation.None)
+        self.navigationController!.navigationBar.isHidden = true
+        UIApplication.shared.setStatusBarHidden(true, with: UIStatusBarAnimation.none)
         
         let passphrase = TLWalletPassphrase.getDecryptedWalletPassphrase()
         if (TLPreferences.canRestoreDeletedApp() && !TLPreferences.hasSetupHDWallet() && passphrase != nil) {
             // is fresh app but not first time installing
-            UIAlertController.showAlertInViewController(self,
+            UIAlertController.showAlert(in: self,
                 withTitle: "Backup passphrase found in keychain".localized,
                 message: "Do you want to restore from your backup passphrase or start a fresh app?".localized,
                 cancelButtonTitle: "Restore".localized,
                 destructiveButtonTitle: nil,
                 otherButtonTitles: ["Start fresh".localized],
-                tapBlock: {(alertView, action, buttonIndex) in
-                    if (buttonIndex == alertView.firstOtherButtonIndex) {
+                tap: {(alertView, action, buttonIndex) in
+                    if (buttonIndex == alertView?.firstOtherButtonIndex) {
                         self.initializeWalletAppAndShowInitialScreenAndGoToMainScreen(nil)
-                    } else if (buttonIndex == alertView.cancelButtonIndex) {
+                    } else if (buttonIndex == alertView?.cancelButtonIndex) {
                         
                         TLHUDWrapper.showHUDAddedTo(self.view, labelText: "Restoring Wallet".localized, animated: true)
                         AppDelegate.instance().saveWalletJSONEnabled = false
 
-                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
+                        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
                             AppDelegate.instance().initializeWalletAppAndShowInitialScreen(true, walletPayload: nil)
                             AppDelegate.instance().refreshHDWalletAccounts(true)
-                            dispatch_async(dispatch_get_main_queue()) {
+                            DispatchQueue.main.async {
                                 AppDelegate.instance().saveWalletJSONEnabled = true
                                 AppDelegate.instance().saveWalletJsonCloud()
                                 TLTransactionListener.instance().reconnect()
                                 TLStealthWebSocket.instance().reconnect()
                                 TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                                self.slidingViewController()!.topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("SendNav") 
+                                self.slidingViewController()!.topViewController = self.storyboard!.instantiateViewController(withIdentifier: "SendNav") 
                             }
                         }
                     }
@@ -80,7 +80,7 @@ import UIKit
         }
     }
     
-    private func checkToLoadFromLocal() -> () {
+    fileprivate func checkToLoadFromLocal() -> () {
         if (TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase() != nil) {
             let localWalletPayload = AppDelegate.instance().getLocalWalletJsonDict()
             self.initializeWalletAppAndShowInitialScreenAndGoToMainScreen(localWalletPayload)
@@ -89,24 +89,24 @@ import UIKit
         }
     }
     
-    private func checkToLoadFromiCloud() -> () {
+    fileprivate func checkToLoadFromiCloud() -> () {
         if (TLPreferences.getEnableBackupWithiCloud()) {
             self.walletLoadingActivityIndicatorView!.startAnimating()
             
             TLCloudDocumentSyncWrapper.instance().getFileFromCloud(TLPreferences.getCloudBackupWalletFileName()!, completion: {
-                (cloudDocument: UIDocument!, documentData: NSData!, error: NSError?) in
+                (cloudDocument: UIDocument!, documentData: Data!, error: NSError?) in
                 var walletPayload: NSDictionary? = nil
                 
-                if (documentData.length == 0) {
+                if (documentData.count == 0) {
                     self.walletLoadingActivityIndicatorView!.stopAnimating()
                     walletPayload = AppDelegate.instance().getLocalWalletJsonDict()
-                    UIAlertController.showAlertInViewController(self,
+                    UIAlertController.showAlert(in: self,
                         withTitle: "iCloud backup not found".localized,
                         message: "Do you want to load and backup your current local wallet file?".localized,
                         cancelButtonTitle: "No".localized,
                         destructiveButtonTitle: nil,
                         otherButtonTitles: ["Yes".localized],
-                        tapBlock: {(alertView, action, buttonIndex) in
+                        tap: {(alertView, action, buttonIndex) in
                             if (buttonIndex == alertView.firstOtherButtonIndex) {
                                 self.initializeWalletAppAndShowInitialScreenAndGoToMainScreen(walletPayload!)
                                 AppDelegate.instance().saveWalletJsonCloudBackground()
@@ -119,8 +119,8 @@ import UIKit
                         let localWalletJSONDocumentSavedDate = TLPreferences.getLastSavedEncryptedWalletJSONDate()
                         let comparisonResult = cloudWalletJSONDocumentSavedDate!.compare(localWalletJSONDocumentSavedDate)
                         
-                        if (comparisonResult == NSComparisonResult.OrderedDescending || comparisonResult == NSComparisonResult.OrderedSame) {
-                            let encryptedWalletJSON = NSString(data: documentData, encoding: NSUTF8StringEncoding)
+                        if (comparisonResult == ComparisonResult.orderedDescending || comparisonResult == ComparisonResult.orderedSame) {
+                            let encryptedWalletJSON = NSString(data: documentData, encoding: String.Encoding.utf8)
                             let passphrase = TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase()
                             walletPayload = TLWalletJson.getWalletJsonDict((encryptedWalletJSON as! String), password: passphrase)
                             if (walletPayload != nil) {
@@ -143,14 +143,14 @@ import UIKit
                         
                         walletPayload = AppDelegate.instance().getLocalWalletJsonDict()
                         
-                        UIAlertController.showAlertInViewController(self,
+                        UIAlertController.showAlert(in: self,
                             withTitle: String(format: "iCloud Error: %@".localized, error!.description),
                             message: "Do you want to load local wallet file?".localized,
                             cancelButtonTitle: "No".localized,
                             destructiveButtonTitle: nil,
                             otherButtonTitles: ["Yes".localized],
                             
-                            tapBlock: {(alertView, action, buttonIndex) in
+                            tap: {(alertView, action, buttonIndex) in
                                 if (buttonIndex == alertView.firstOtherButtonIndex) {
                                     self.initializeWalletAppAndShowInitialScreenAndGoToMainScreen(walletPayload!)
                                 } else if (buttonIndex == alertView.cancelButtonIndex) {
@@ -166,19 +166,19 @@ import UIKit
         }
     }
     
-    private func initializeWalletAppAndShowInitialScreenAndGoToMainScreen(walletPayload: NSDictionary?) -> () {
+    fileprivate func initializeWalletAppAndShowInitialScreenAndGoToMainScreen(_ walletPayload: NSDictionary?) -> () {
         AppDelegate.instance().initializeWalletAppAndShowInitialScreen(false, walletPayload: walletPayload)
         TLTransactionListener.instance().reconnect()
         TLStealthWebSocket.instance().reconnect()
 
         if self.slidingViewController() != nil {
-            self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("SendNav") 
+            self.slidingViewController().topViewController = self.storyboard!.instantiateViewController(withIdentifier: "SendNav") 
         } else {
             //is running unit test
         }
     }
     
-    override func viewWillDisappear(animated: Bool) -> () {
-        UIApplication.sharedApplication().setStatusBarHidden(false, withAnimation: UIStatusBarAnimation.None)
+    override func viewWillDisappear(_ animated: Bool) -> () {
+        UIApplication.shared.setStatusBarHidden(false, with: UIStatusBarAnimation.none)
     }
 }

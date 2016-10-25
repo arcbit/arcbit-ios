@@ -25,16 +25,16 @@ import UIKit
 
 @objc(TLAddressBookViewController) class TLAddressBookViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    @IBOutlet private var navigationBar: UINavigationBar?
-    @IBOutlet private var addressBookTableView: UITableView?
-    private var addressBook: NSArray?
+    @IBOutlet fileprivate var navigationBar: UINavigationBar?
+    @IBOutlet fileprivate var addressBookTableView: UITableView?
+    fileprivate var addressBook: NSArray?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    override func preferredStatusBarStyle() -> (UIStatusBarStyle) {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : (UIStatusBarStyle) {
+        return UIStatusBarStyle.lightContent
     }
     
     override func viewDidLoad() {
@@ -45,10 +45,10 @@ import UIKit
         
         self.addressBookTableView!.delegate = self
         self.addressBookTableView!.dataSource = self
-        self.addressBookTableView!.tableFooterView = UIView(frame: CGRectZero)
+        self.addressBookTableView!.tableFooterView = UIView(frame: CGRect.zero)
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         // TODO: better way
         if AppDelegate.instance().scannedAddressBookAddress != nil {
             self.processAddressBookAddress(AppDelegate.instance().scannedAddressBookAddress!)
@@ -56,37 +56,37 @@ import UIKit
         }
     }
     
-    private func promptAddToAddressBookActionSheet() -> () {
-        UIAlertController.showAlertInViewController(self,
+    fileprivate func promptAddToAddressBookActionSheet() -> () {
+        UIAlertController.showAlert(in: self,
             withTitle: "Create new contact".localized,
             message:"",
-            preferredStyle: .ActionSheet,
+            preferredStyle: .actionSheet,
             cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
             otherButtonTitles: ["Add via QR Code".localized, "Add via Text Input".localized],
             
-            tapBlock: {(actionSheet, action, buttonIndex) in
-                if (buttonIndex == actionSheet.firstOtherButtonIndex) {
+            tap: {(actionSheet, action, buttonIndex) in
+                if (buttonIndex == actionSheet?.firstOtherButtonIndex) {
                     AppDelegate.instance().showAddressReaderControllerFromViewController(self, success: {
                         (data: String!) in
                         AppDelegate.instance().scannedAddressBookAddress = data
                         }, error: {
                             (data: String?) in
                     })
-                } else if (buttonIndex == actionSheet.firstOtherButtonIndex + 1) {
+                } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 1) {
                     TLPrompts.promtForInputText(self, title: "Input address".localized, message: "", textFieldPlaceholder: "address".localized, success: {(inputText: String!) in
                         self.processAddressBookAddress(inputText)
                         }, failure: {
                             (isCanceled: Bool) in
                             
                     })
-                } else if (buttonIndex == actionSheet.cancelButtonIndex) {
+                } else if (buttonIndex == actionSheet?.cancelButtonIndex) {
                 }
                 
         })
     }
     
-    private func processAddressBookAddress(address: String) -> () {
+    fileprivate func processAddressBookAddress(_ address: String) -> () {
         if (TLCoreBitcoinWrapper.isValidAddress(address, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
             if (TLCoreBitcoinWrapper.isAddressVersion0(address, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
                 if (TLSuggestions.instance().enabledSuggestDontAddNormalAddressToAddressBook()) {
@@ -109,11 +109,11 @@ import UIKit
         }
     }
     
-    private func promptForLabel(address: String) -> () {
+    fileprivate func promptForLabel(_ address: String) -> () {
         TLPrompts.promtForInputText(self, title: "Input label for address".localized, message: "", textFieldPlaceholder: "label".localized, success: {
             (inputText: String!) in
             AppDelegate.instance().appWallet.addAddressBookEntry(address, label: inputText)
-            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_ADD_TO_ADDRESS_BOOK(), object: nil, userInfo: nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_ADD_TO_ADDRESS_BOOK()), object: nil, userInfo: nil)
             
             self.addressBookTableView!.reloadData()
             
@@ -123,47 +123,47 @@ import UIKit
         })
     }
     
-    @IBAction private func addAddressBookEntryButtonClicked(sender: UIButton) -> () {
+    @IBAction fileprivate func addAddressBookEntryButtonClicked(_ sender: UIButton) -> () {
         self.promptAddToAddressBookActionSheet()
     }
     
-    @IBAction private func cancelButtonClicked(sender: UIButton) -> () {
-        dismissViewControllerAnimated(true, completion: nil)
+    @IBAction fileprivate func cancelButtonClicked(_ sender: UIButton) -> () {
+        dismiss(animated: true, completion: nil)
     }
     
-    func tableView(tableView: UITableView, canEditRowAtIndexPath indexPath: NSIndexPath) -> Bool {
+    func tableView(_ tableView: UITableView, canEditRowAt indexPath: IndexPath) -> Bool {
         return true
     }
     
-    func tableView(tableView: UITableView, commitEditingStyle editingStyle: UITableViewCellEditingStyle, forRowAtIndexPath indexPath: NSIndexPath) -> () {
-        if (editingStyle == UITableViewCellEditingStyle.Delete) {
+    func tableView(_ tableView: UITableView, commit editingStyle: UITableViewCellEditingStyle, forRowAt indexPath: IndexPath) -> () {
+        if (editingStyle == UITableViewCellEditingStyle.delete) {
             
-        } else if (editingStyle == UITableViewCellEditingStyle.None) {
+        } else if (editingStyle == UITableViewCellEditingStyle.none) {
         }
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> (Int) {
+    func numberOfSections(in tableView: UITableView) -> (Int) {
         return 1
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return addressBook!.count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let MyIdentifier = "AddressBookCellIdentifier"
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier) 
+        var cell = tableView.dequeueReusableCell(withIdentifier: MyIdentifier) 
         if (cell == nil) {
-            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle,
+            cell = UITableViewCell(style: UITableViewCellStyle.subtitle,
                 reuseIdentifier: MyIdentifier)
         }
         
-        cell!.textLabel!.text = (addressBook!.objectAtIndex(indexPath.row) as! NSDictionary).objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL) as? String
-        cell!.detailTextLabel!.text = (addressBook!.objectAtIndex(indexPath.row) as! NSDictionary).objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as? String
+        cell!.textLabel!.text = (addressBook!.object(at: (indexPath as NSIndexPath).row) as! NSDictionary).object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL) as? String
+        cell!.detailTextLabel!.text = (addressBook!.object(at: (indexPath as NSIndexPath).row) as! NSDictionary).object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as? String
         cell!.detailTextLabel!.numberOfLines = 0
         
-        if (indexPath.row % 2 == 0) {
+        if ((indexPath as NSIndexPath).row % 2 == 0) {
             cell!.backgroundColor = TLColors.evenTableViewCellColor()
         } else {
             cell!.backgroundColor = TLColors.oddTableViewCellColor()
@@ -172,40 +172,40 @@ import UIKit
         return cell!
     }
     
-    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
-        let cell = self.addressBookTableView!.cellForRowAtIndexPath(indexPath)
-        self.dismissViewControllerAnimated(true, completion: nil)
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        let cell = self.addressBookTableView!.cellForRow(at: indexPath)
+        self.dismiss(animated: true, completion: nil)
         let address = cell!.detailTextLabel!.text
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_ADDRESS_SELECTED(), object: address, userInfo: nil)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_SEND_TO_ADDRESS_IN_ADDRESS_BOOK(), object: nil, userInfo: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_ADDRESS_SELECTED()), object: address, userInfo: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_SEND_TO_ADDRESS_IN_ADDRESS_BOOK()), object: nil, userInfo: nil)
         
         return nil
     }
     
-    func tableView(tableView: UITableView, editActionsForRowAtIndexPath indexPath: NSIndexPath) -> [UITableViewRowAction]? {
-        let moreAction = UITableViewRowAction(style:UITableViewRowActionStyle.Default, title: "Edit", handler: {
-            (action: UITableViewRowAction, indexPath: NSIndexPath) in
-            tableView.editing = false
+    func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let moreAction = UITableViewRowAction(style:UITableViewRowActionStyle.default, title: "Edit", handler: {
+            (action: UITableViewRowAction, indexPath: IndexPath) in
+            tableView.isEditing = false
             
             TLPrompts.promtForInputText(self, title: "Edit address label".localized, message: "Input label for address".localized, textFieldPlaceholder: "address".localized, success: {
                 (inputText: String!) in
-                AppDelegate.instance().appWallet.editAddressBookEntry(indexPath.row, label: inputText)
-                NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_EDIT_ENTRY_ADDRESS_BOOK(), object: nil, userInfo: nil)
+                AppDelegate.instance().appWallet.editAddressBookEntry((indexPath as NSIndexPath).row, label: inputText)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_EDIT_ENTRY_ADDRESS_BOOK()), object: nil, userInfo: nil)
                 tableView.reloadData()
                 }, failure: {
                     (isCancelled: Bool) in
             })
         })
-        moreAction.backgroundColor = UIColor.lightGrayColor()
+        moreAction.backgroundColor = UIColor.lightGray
         
-        let deleteAction = UITableViewRowAction(style:UITableViewRowActionStyle.Default, title: "Delete".localized, handler: {
-            (action: UITableViewRowAction, indexPath: NSIndexPath) in
-            tableView.editing = false
+        let deleteAction = UITableViewRowAction(style:UITableViewRowActionStyle.default, title: "Delete".localized, handler: {
+            (action: UITableViewRowAction, indexPath: IndexPath) in
+            tableView.isEditing = false
             
             TLPrompts.promtForOKCancel(self, title: "Delete address".localized, message: "Are you sure you want to delete this address?".localized, success: {
                 () in
-                AppDelegate.instance().appWallet.deleteAddressBookEntry(indexPath.row)
-                NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_DELETE_ENTRY_ADDRESS_BOOK(), object: nil, userInfo: nil)
+                AppDelegate.instance().appWallet.deleteAddressBookEntry((indexPath as NSIndexPath).row)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_DELETE_ENTRY_ADDRESS_BOOK()), object: nil, userInfo: nil)
                 tableView.reloadData()
                 }, failure: {
                     (isCancelled: Bool) in

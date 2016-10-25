@@ -78,148 +78,148 @@ class TLPreferences
         static let PREFERENCE_RATED_ONCE = "pref-rated-once"
     }
     
-    class func setHasSetupHDWallet(enabled:Bool) -> () {
-        NSUserDefaults.standardUserDefaults().setBool(enabled ,forKey:CLASS_STATIC.PREFERENCE_HAS_SETUP_HDWALLET)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setHasSetupHDWallet(_ enabled:Bool) -> () {
+        UserDefaults.standard.set(enabled ,forKey:CLASS_STATIC.PREFERENCE_HAS_SETUP_HDWALLET)
+        UserDefaults.standard.synchronize()
     }
     
     class func hasSetupHDWallet() -> (Bool) {
-        return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.PREFERENCE_HAS_SETUP_HDWALLET)
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.PREFERENCE_HAS_SETUP_HDWALLET)
     }
     
     class func setInstallDate() -> () {
-        if(NSUserDefaults.standardUserDefaults().objectForKey(CLASS_STATIC.PREFERENCE_INSTALL_DATE) == nil) {
-            NSUserDefaults.standardUserDefaults().setObject(NSDate() ,forKey:CLASS_STATIC.PREFERENCE_INSTALL_DATE)
-            NSUserDefaults.standardUserDefaults().synchronize()
+        if(UserDefaults.standard.object(forKey: CLASS_STATIC.PREFERENCE_INSTALL_DATE) == nil) {
+            UserDefaults.standard.set(Date() ,forKey:CLASS_STATIC.PREFERENCE_INSTALL_DATE)
+            UserDefaults.standard.synchronize()
         }
     }
     
     class func getInstallDate() -> (String?) {
-        let joined = NSUserDefaults.standardUserDefaults().objectForKey(CLASS_STATIC.PREFERENCE_INSTALL_DATE) as! NSDate?
+        let joined = UserDefaults.standard.object(forKey: CLASS_STATIC.PREFERENCE_INSTALL_DATE) as! Date?
         if(joined == nil) {
             return nil
         }
-        let dateFormatter = NSDateFormatter()
+        let dateFormatter = DateFormatter()
         dateFormatter.dateFormat = "yyyyMMdd"
         
-        return dateFormatter.stringFromDate(joined!)
+        return dateFormatter.string(from: joined!)
     }
     
     class func getAppVersion() -> String {
-        let ver = NSUserDefaults.standardUserDefaults().stringForKey(CLASS_STATIC.PREFERENCE_APP_VERSION)
+        let ver = UserDefaults.standard.string(forKey: CLASS_STATIC.PREFERENCE_APP_VERSION)
         return ver != nil ? ver! : "0";
     }
     
-    class func setAppVersion(version: String) -> () {
-        NSUserDefaults.standardUserDefaults().setObject(version, forKey:CLASS_STATIC.PREFERENCE_APP_VERSION)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setAppVersion(_ version: String) -> () {
+        UserDefaults.standard.set(version, forKey:CLASS_STATIC.PREFERENCE_APP_VERSION)
+        UserDefaults.standard.synchronize()
     }
     
     class func getCurrencyIdx() -> (String?) {
-        return NSUserDefaults.standardUserDefaults().stringForKey(CLASS_STATIC.PREFERENCE_FIAT_DISPLAY)
+        return UserDefaults.standard.string(forKey: CLASS_STATIC.PREFERENCE_FIAT_DISPLAY)
     }
     
-    class func setCurrency(currencyIdx:String) -> () {
-        NSUserDefaults.standardUserDefaults().setObject(currencyIdx ,forKey:CLASS_STATIC.PREFERENCE_FIAT_DISPLAY)
-        NSUserDefaults.standardUserDefaults().synchronize()
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_PREFERENCES_FIAT_DISPLAY_CHANGED(), object:nil, userInfo:nil)
+    class func setCurrency(_ currencyIdx:String) -> () {
+        UserDefaults.standard.set(currencyIdx ,forKey:CLASS_STATIC.PREFERENCE_FIAT_DISPLAY)
+        UserDefaults.standard.synchronize()
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_PREFERENCES_FIAT_DISPLAY_CHANGED()), object:nil, userInfo:nil)
     }
     
     class func getBitcoinDenomination() -> (TLBitcoinDenomination) {
-        let value = NSUserDefaults.standardUserDefaults().stringForKey(CLASS_STATIC.PREFERENCE_BITCOIN_DISPLAY) as NSString?
+        let value = UserDefaults.standard.string(forKey: CLASS_STATIC.PREFERENCE_BITCOIN_DISPLAY) as NSString?
         if(value == nil) {
             return TLBitcoinDenomination(rawValue: 0)!
         }
         return TLBitcoinDenomination(rawValue: value!.integerValue)!
     }
     
-    class func setBitcoinDisplay(bitcoinDisplayIdx:String) -> (){
-        NSUserDefaults.standardUserDefaults().setObject(bitcoinDisplayIdx ,forKey:CLASS_STATIC.PREFERENCE_BITCOIN_DISPLAY)
-        NSUserDefaults.standardUserDefaults().synchronize()
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_PREFERENCES_BITCOIN_DISPLAY_CHANGED()
+    class func setBitcoinDisplay(_ bitcoinDisplayIdx:String) -> (){
+        UserDefaults.standard.set(bitcoinDisplayIdx ,forKey:CLASS_STATIC.PREFERENCE_BITCOIN_DISPLAY)
+        UserDefaults.standard.synchronize()
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_PREFERENCES_BITCOIN_DISPLAY_CHANGED())
             ,object:nil, userInfo:nil)
     }
     
     class func getSendFromType() -> (TLSendFromType) {
-        return TLSendFromType(rawValue:NSUserDefaults.standardUserDefaults().integerForKey(CLASS_STATIC.PREFERENCE_SEND_FROM_TYPE))!
+        return TLSendFromType(rawValue:UserDefaults.standard.integer(forKey: CLASS_STATIC.PREFERENCE_SEND_FROM_TYPE))!
     }
     
-    class func setSendFromType(sendFromType:TLSendFromType) -> () {
-        NSUserDefaults.standardUserDefaults().setInteger(sendFromType.rawValue ,forKey:CLASS_STATIC.PREFERENCE_SEND_FROM_TYPE)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setSendFromType(_ sendFromType:TLSendFromType) -> () {
+        UserDefaults.standard.set(sendFromType.rawValue ,forKey:CLASS_STATIC.PREFERENCE_SEND_FROM_TYPE)
+        UserDefaults.standard.synchronize()
     }
     
     class func getSendFromIndex() -> (UInt) {
-        return UInt(NSUserDefaults.standardUserDefaults().integerForKey(CLASS_STATIC.PREFERENCE_SEND_FROM_INDEX))
+        return UInt(UserDefaults.standard.integer(forKey: CLASS_STATIC.PREFERENCE_SEND_FROM_INDEX))
     }
     
-    class func setSendFromIndex(sendFromIndex:UInt) -> () {
-        NSUserDefaults.standardUserDefaults().setInteger(Int(sendFromIndex) ,forKey:CLASS_STATIC.PREFERENCE_SEND_FROM_INDEX)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setSendFromIndex(_ sendFromIndex:UInt) -> () {
+        UserDefaults.standard.set(Int(sendFromIndex) ,forKey:CLASS_STATIC.PREFERENCE_SEND_FROM_INDEX)
+        UserDefaults.standard.synchronize()
     }
     
     
     class func getBlockExplorerAPI() -> (TLBlockExplorer) {
-        let value = NSUserDefaults.standardUserDefaults().stringForKey(CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API) as NSString?
+        let value = UserDefaults.standard.string(forKey: CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API) as NSString?
         if(value == nil) {
             return TLBlockExplorer(rawValue: 0)!
         }
         return TLBlockExplorer(rawValue: value!.integerValue)!
     }
     
-    class func setBlockExplorerAPI(blockexplorerIdx:String) -> () {
-        NSUserDefaults.standardUserDefaults().setObject(blockexplorerIdx ,forKey:CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setBlockExplorerAPI(_ blockexplorerIdx:String) -> () {
+        UserDefaults.standard.set(blockexplorerIdx ,forKey:CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API)
+        UserDefaults.standard.synchronize()
     }
     
-    class func getBlockExplorerURL(blockExplorer:TLBlockExplorer) -> (String?) {
-        let blockExplorer2blockExplorerURLDict = NSUserDefaults.standardUserDefaults().objectForKey(CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT) as! NSDictionary
+    class func getBlockExplorerURL(_ blockExplorer:TLBlockExplorer) -> (String?) {
+        let blockExplorer2blockExplorerURLDict = UserDefaults.standard.object(forKey: CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT) as! NSDictionary
         let key = String(format:"%ld", blockExplorer.rawValue)
-        return blockExplorer2blockExplorerURLDict.valueForKey(key) as? String
+        return blockExplorer2blockExplorerURLDict.value(forKey: key) as? String
     }
     
-    class func setBlockExplorerURL(blockExplorer:TLBlockExplorer, value:(String)) -> (){
-        assert(blockExplorer == TLBlockExplorer.Insight, "can only change insight URL currently")
-        let blockExplorer2blockExplorerURLDict = (NSUserDefaults.standardUserDefaults().objectForKey(CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT) as! NSDictionary).mutableCopy() as! NSDictionary
+    class func setBlockExplorerURL(_ blockExplorer:TLBlockExplorer, value:(String)) -> (){
+        assert(blockExplorer == TLBlockExplorer.insight, "can only change insight URL currently")
+        let blockExplorer2blockExplorerURLDict = (UserDefaults.standard.object(forKey: CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT) as! NSDictionary).mutableCopy() as! NSDictionary
         blockExplorer2blockExplorerURLDict.setValue(value ,forKey:String(format:"%ld", blockExplorer.rawValue))
-        NSUserDefaults.standardUserDefaults().setObject(blockExplorer2blockExplorerURLDict ,forKey:CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT)
-        NSUserDefaults.standardUserDefaults().synchronize()
+        UserDefaults.standard.set(blockExplorer2blockExplorerURLDict ,forKey:CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT)
+        UserDefaults.standard.synchronize()
     }
     
     class func resetBlockExplorerAPIURL() -> (){
         let blockExplorer2blockExplorerURLDict = NSMutableDictionary(capacity: 3)
-        blockExplorer2blockExplorerURLDict.setObject("https://blockchain.info/" ,forKey:String(format:"%ld", TLBlockExplorer.Blockchain.rawValue))
-        blockExplorer2blockExplorerURLDict.setObject("https://insight.bitpay.com/" ,forKey:String(format:"%ld", TLBlockExplorer.Insight.rawValue))
-        blockExplorer2blockExplorerURLDict.setObject("https://bitcoin.toshi.io/" ,forKey:String(format:"%ld", TLBlockExplorer.Toshi.rawValue))
-        NSUserDefaults.standardUserDefaults().setObject(blockExplorer2blockExplorerURLDict ,forKey:CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT)
-        NSUserDefaults.standardUserDefaults().synchronize()
+        blockExplorer2blockExplorerURLDict.setObject("https://blockchain.info/" ,forKey:String(format:"%ld", TLBlockExplorer.blockchain.rawValue))
+        blockExplorer2blockExplorerURLDict.setObject("https://insight.bitpay.com/" ,forKey:String(format:"%ld", TLBlockExplorer.insight.rawValue))
+        blockExplorer2blockExplorerURLDict.setObject("https://bitcoin.toshi.io/" ,forKey:String(format:"%ld", TLBlockExplorer.toshi.rawValue))
+        UserDefaults.standard.set(blockExplorer2blockExplorerURLDict ,forKey:CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT)
+        UserDefaults.standard.synchronize()
     }
     
     class func getStealthExplorerURL() -> (String?) {
-        return NSUserDefaults.standardUserDefaults().stringForKey(CLASS_STATIC.INAPPSETTINGS_KIT_STEALTH_EXPLORER_URL)
+        return UserDefaults.standard.string(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_STEALTH_EXPLORER_URL)
     }
     
-    class func setStealthExplorerURL(value:(String)) -> () {
-        NSUserDefaults.standardUserDefaults().setObject(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_STEALTH_EXPLORER_URL)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setStealthExplorerURL(_ value:(String)) -> () {
+        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_STEALTH_EXPLORER_URL)
+        UserDefaults.standard.synchronize()
     }
     
     class func getStealthServerPort() -> (Int?) {
-        return NSUserDefaults.standardUserDefaults().integerForKey(CLASS_STATIC.INAPPSETTINGS_KIT_STEALTH_SERVER_PORT)
+        return UserDefaults.standard.integer(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_STEALTH_SERVER_PORT)
     }
     
-    class func setStealthServerPort(value:(Int)) -> () {
-        NSUserDefaults.standardUserDefaults().setObject(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_STEALTH_SERVER_PORT)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setStealthServerPort(_ value:(Int)) -> () {
+        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_STEALTH_SERVER_PORT)
+        UserDefaults.standard.synchronize()
     }
     
     class func getStealthWebSocketPort() -> (Int?) {
-        return NSUserDefaults.standardUserDefaults().integerForKey(CLASS_STATIC.INAPPSETTINGS_KIT_STEALTH_WEB_SOCKET_PORT)
+        return UserDefaults.standard.integer(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_STEALTH_WEB_SOCKET_PORT)
     }
     
-    class func setStealthWebSocketPort(value:(Int)) -> () {
-        NSUserDefaults.standardUserDefaults().setObject(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_STEALTH_WEB_SOCKET_PORT)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setStealthWebSocketPort(_ value:(Int)) -> () {
+        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_STEALTH_WEB_SOCKET_PORT)
+        UserDefaults.standard.synchronize()
     }
     
     class func resetStealthExplorerAPIURL() -> () {
@@ -235,91 +235,91 @@ class TLPreferences
     }
     
     class func getInAppSettingsKitBlockExplorerAPI() -> (String?){
-        return NSUserDefaults.standardUserDefaults().stringForKey(CLASS_STATIC.INAPPSETTINGS_KIT_BLOCKEXPLORER_API)
+        return UserDefaults.standard.string(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_BLOCKEXPLORER_API)
     }
     
-    class func setInAppSettingsKitBlockExplorerAPI(value:String) -> () {
-        NSUserDefaults.standardUserDefaults().setObject(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_BLOCKEXPLORER_API)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setInAppSettingsKitBlockExplorerAPI(_ value:String) -> () {
+        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_BLOCKEXPLORER_API)
+        UserDefaults.standard.synchronize()
     }
     
     class func getInAppSettingsKitBlockExplorerURL() -> (String?) {
-        return NSUserDefaults.standardUserDefaults().stringForKey(CLASS_STATIC.INAPPSETTINGS_KIT_BLOCKEXPLORER_URL)
+        return UserDefaults.standard.string(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_BLOCKEXPLORER_URL)
     }
     
-    class func setInAppSettingsKitBlockExplorerURL(value: String) -> (){
-        NSUserDefaults.standardUserDefaults().setObject(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_BLOCKEXPLORER_URL)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setInAppSettingsKitBlockExplorerURL(_ value: String) -> (){
+        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_BLOCKEXPLORER_URL)
+        UserDefaults.standard.synchronize()
     }
     
     class func getInAppSettingsKitCurrencyIdx() -> (String?) {
-        return NSUserDefaults.standardUserDefaults().stringForKey(CLASS_STATIC.INAPPSETTINGS_KIT_RECEIVING_CURRENCY)
+        return UserDefaults.standard.string(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_RECEIVING_CURRENCY)
     }
     
-    class func setInAppSettingsKitCurrency(currencyIdx:String) -> () {
-        NSUserDefaults.standardUserDefaults().setObject(currencyIdx, forKey:CLASS_STATIC.INAPPSETTINGS_KIT_RECEIVING_CURRENCY)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setInAppSettingsKitCurrency(_ currencyIdx:String) -> () {
+        UserDefaults.standard.set(currencyIdx, forKey:CLASS_STATIC.INAPPSETTINGS_KIT_RECEIVING_CURRENCY)
+        UserDefaults.standard.synchronize()
     }
     
     class func isInAppSettingsKitDisplayLocalCurrency() -> (Bool) {
-        return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.INAPPSETTINGS_KIT_DISPLAY_LOCAL_CURRENCY)
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_DISPLAY_LOCAL_CURRENCY)
     }
     
-    class func setInAppSettingsKitDisplayLocalCurrency(enabled:Bool) -> () {
-        NSUserDefaults.standardUserDefaults().setBool(enabled ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_DISPLAY_LOCAL_CURRENCY)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setInAppSettingsKitDisplayLocalCurrency(_ enabled:Bool) -> () {
+        UserDefaults.standard.set(enabled ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_DISPLAY_LOCAL_CURRENCY)
+        UserDefaults.standard.synchronize()
     }
     
     class func getInAppSettingsKitName() -> (String?) {
-        return NSUserDefaults.standardUserDefaults().stringForKey(CLASS_STATIC.INAPPSETTINGS_KIT_NAME)
+        return UserDefaults.standard.string(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_NAME)
     }
     
-    class func setInAppSettingsKitName(value:String) -> () {
-        NSUserDefaults.standardUserDefaults().setObject(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_NAME)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setInAppSettingsKitName(_ value:String) -> () {
+        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_NAME)
+        UserDefaults.standard.synchronize()
     }
     
     class func getInAppSettingsKitEnablePinCode() -> (Bool) {
-        return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.INAPPSETTINGS_KIT_ENABLE_PIN_CODE)
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_ENABLE_PIN_CODE)
     }
     
-    class func setInAppSettingsKitEnablePinCode(value:Bool) -> () {
-        NSUserDefaults.standardUserDefaults().setBool(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_ENABLE_PIN_CODE)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setInAppSettingsKitEnablePinCode(_ value:Bool) -> () {
+        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_ENABLE_PIN_CODE)
+        UserDefaults.standard.synchronize()
     }
     
     class func getInAppSettingsKitTransactionFee() -> (String?) {
-        return NSUserDefaults.standardUserDefaults().stringForKey(CLASS_STATIC.INAPPSETTINGS_KIT_TRANSACTION_FEE)
+        return UserDefaults.standard.string(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_TRANSACTION_FEE)
     }
     
-    class func setInAppSettingsKitTransactionFee(value:String) -> () {
-        NSUserDefaults.standardUserDefaults().setObject(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_TRANSACTION_FEE)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setInAppSettingsKitTransactionFee(_ value:String) -> () {
+        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_TRANSACTION_FEE)
+        UserDefaults.standard.synchronize()
     }
     
     class func getInAppSettingsKitEnableBackupWithiCloud() -> (Bool) {
-        return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.INAPPSETTINGS_KIT_ENABLE_BACKUP_WITH_ICLOUD)
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_ENABLE_BACKUP_WITH_ICLOUD)
     }
     
-    class func setInAppSettingsKitEnableBackupWithiCloud(value:Bool) -> () {
-        NSUserDefaults.standardUserDefaults().setBool(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_ENABLE_BACKUP_WITH_ICLOUD)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setInAppSettingsKitEnableBackupWithiCloud(_ value:Bool) -> () {
+        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_ENABLE_BACKUP_WITH_ICLOUD)
+        UserDefaults.standard.synchronize()
     }
     
     class func getEnableBackupWithiCloud() -> (Bool) {
-        return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.PREFERENCE_ENABLE_BACKUP_WITH_ICLOUD)
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.PREFERENCE_ENABLE_BACKUP_WITH_ICLOUD)
     }
     
-    class func setEnableBackupWithiCloud(value:Bool) -> () {
-        NSUserDefaults.standardUserDefaults().setBool(value ,forKey:CLASS_STATIC.PREFERENCE_ENABLE_BACKUP_WITH_ICLOUD)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setEnableBackupWithiCloud(_ value:Bool) -> () {
+        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.PREFERENCE_ENABLE_BACKUP_WITH_ICLOUD)
+        UserDefaults.standard.synchronize()
     }
     
     class func deleteAllKeychainItems() -> () {
-        JNKeychain.deleteValueForKey(CLASS_STATIC.PREFERENCE_CLOUD_BACKUP_WALLET_FILE_NAME)
-        JNKeychain.deleteValueForKey(CLASS_STATIC.PREFERENCE_WALLET_PASSPHRASE)
-        JNKeychain.deleteValueForKey(CLASS_STATIC.PREFERENCE_ENCRYPTED_WALLET_JSON_PASSPHRASE)
-        JNKeychain.deleteValueForKey(CLASS_STATIC.PREFERENCE_CAN_RESTORE_DELETED_APP)
+        JNKeychain.deleteValue(forKey: CLASS_STATIC.PREFERENCE_CLOUD_BACKUP_WALLET_FILE_NAME)
+        JNKeychain.deleteValue(forKey: CLASS_STATIC.PREFERENCE_WALLET_PASSPHRASE)
+        JNKeychain.deleteValue(forKey: CLASS_STATIC.PREFERENCE_ENCRYPTED_WALLET_JSON_PASSPHRASE)
+        JNKeychain.deleteValue(forKey: CLASS_STATIC.PREFERENCE_CAN_RESTORE_DELETED_APP)
     }
     
     class func getCloudBackupWalletFileName() -> (String?) {
@@ -327,12 +327,12 @@ class TLPreferences
         if (CLASS_STATIC.RESET_CLOUD_BACKUP_WALLET_FILE_NAME) {
             return nil
         }
-        return JNKeychain.loadValueForKey(CLASS_STATIC.PREFERENCE_CLOUD_BACKUP_WALLET_FILE_NAME) as! String?
+        return JNKeychain.loadValue(forKey: CLASS_STATIC.PREFERENCE_CLOUD_BACKUP_WALLET_FILE_NAME) as! String?
     }
     
     class func setCloudBackupWalletFileName() -> (){
-        if (JNKeychain.loadValueForKey(CLASS_STATIC.PREFERENCE_CLOUD_BACKUP_WALLET_FILE_NAME) != nil && !CLASS_STATIC.RESET_CLOUD_BACKUP_WALLET_FILE_NAME) {
-            NSException(name:"Cannot set cloud backup wallet file name", reason:"Cloud backup wallet file name is already set", userInfo:nil).raise()
+        if (JNKeychain.loadValue(forKey: CLASS_STATIC.PREFERENCE_CLOUD_BACKUP_WALLET_FILE_NAME) != nil && !CLASS_STATIC.RESET_CLOUD_BACKUP_WALLET_FILE_NAME) {
+            NSException(name:NSExceptionName(rawValue: "Cannot set cloud backup wallet file name"), reason:"Cloud backup wallet file name is already set", userInfo:nil).raise()
         }
         let cloudBackupWalletFileName = String(format:"%@.%@.%@", TLWalletUtils.STATIC_MEMBERS.WALLET_JSON_CLOUD_BACKUP_FILE_NAME,
             TLStealthAddress.generateEphemeralPrivkey(), TLWalletUtils.STATIC_MEMBERS.WALLET_JSON_CLOUD_BACKUP_FILE_EXTENSION)
@@ -341,51 +341,51 @@ class TLPreferences
     }
     
     class func deleteWalletPassphrase()  -> (){
-        JNKeychain.deleteValueForKey(CLASS_STATIC.PREFERENCE_WALLET_PASSPHRASE)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(CLASS_STATIC.PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE)
-        NSUserDefaults.standardUserDefaults().synchronize()
+        JNKeychain.deleteValue(forKey: CLASS_STATIC.PREFERENCE_WALLET_PASSPHRASE)
+        UserDefaults.standard.removeObject(forKey: CLASS_STATIC.PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE)
+        UserDefaults.standard.synchronize()
     }
     
-    class func getWalletPassphrase(useKeychain:Bool)  -> (String?){
+    class func getWalletPassphrase(_ useKeychain:Bool)  -> (String?){
         if useKeychain {
-            return JNKeychain.loadValueForKey(CLASS_STATIC.PREFERENCE_WALLET_PASSPHRASE) as! String?
+            return JNKeychain.loadValue(forKey: CLASS_STATIC.PREFERENCE_WALLET_PASSPHRASE) as! String?
         } else {
-            return NSUserDefaults.standardUserDefaults().stringForKey(CLASS_STATIC.PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE)
+            return UserDefaults.standard.string(forKey: CLASS_STATIC.PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE)
         }
     }
     
-    class func setWalletPassphrase(value:String, useKeychain:Bool)  -> (){
+    class func setWalletPassphrase(_ value:String, useKeychain:Bool)  -> (){
         if useKeychain {
             JNKeychain.saveValue(value ,forKey:CLASS_STATIC.PREFERENCE_WALLET_PASSPHRASE)
-            NSUserDefaults.standardUserDefaults().removeObjectForKey(CLASS_STATIC.PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.removeObject(forKey: CLASS_STATIC.PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE)
+            UserDefaults.standard.synchronize()
         } else {
-            NSUserDefaults.standardUserDefaults().setObject(value ,forKey:CLASS_STATIC.PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE)
-            NSUserDefaults.standardUserDefaults().synchronize()
-            JNKeychain.deleteValueForKey(CLASS_STATIC.PREFERENCE_WALLET_PASSPHRASE)
+            UserDefaults.standard.set(value ,forKey:CLASS_STATIC.PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE)
+            UserDefaults.standard.synchronize()
+            JNKeychain.deleteValue(forKey: CLASS_STATIC.PREFERENCE_WALLET_PASSPHRASE)
         }
     }
     class func deleteEncryptedWalletJSONPassphrase()  -> (){
-        JNKeychain.deleteValueForKey(CLASS_STATIC.PREFERENCE_ENCRYPTED_WALLET_JSON_PASSPHRASE)
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(CLASS_STATIC.PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE)
-        NSUserDefaults.standardUserDefaults().synchronize()
+        JNKeychain.deleteValue(forKey: CLASS_STATIC.PREFERENCE_ENCRYPTED_WALLET_JSON_PASSPHRASE)
+        UserDefaults.standard.removeObject(forKey: CLASS_STATIC.PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE)
+        UserDefaults.standard.synchronize()
     }
 
     class func getEncryptedWalletPassphraseKey() -> (String?) {
-        return NSUserDefaults.standardUserDefaults().stringForKey(CLASS_STATIC.PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE_KEY)
+        return UserDefaults.standard.string(forKey: CLASS_STATIC.PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE_KEY)
     }
     
-    class func setEncryptedWalletPassphraseKey(value:String)  -> (){
-        NSUserDefaults.standardUserDefaults().setObject(value ,forKey:CLASS_STATIC.PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE_KEY)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setEncryptedWalletPassphraseKey(_ value:String)  -> (){
+        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE_KEY)
+        UserDefaults.standard.synchronize()
     }
     
     class func clearEncryptedWalletPassphraseKey() -> () {
-        NSUserDefaults.standardUserDefaults().removeObjectForKey(CLASS_STATIC.PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE_KEY)
-        NSUserDefaults.standardUserDefaults().synchronize()
+        UserDefaults.standard.removeObject(forKey: CLASS_STATIC.PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE_KEY)
+        UserDefaults.standard.synchronize()
     }
     
-    class func setCanRestoreDeletedApp(enabled:Bool)  -> (){
+    class func setCanRestoreDeletedApp(_ enabled:Bool)  -> (){
         if (enabled) {
             JNKeychain.saveValue("true" ,forKey:CLASS_STATIC.PREFERENCE_CAN_RESTORE_DELETED_APP)
         } else {
@@ -394,178 +394,178 @@ class TLPreferences
     }
     
     class func canRestoreDeletedApp() -> (Bool) {
-        let enabled = JNKeychain.loadValueForKey(CLASS_STATIC.PREFERENCE_CAN_RESTORE_DELETED_APP) as! NSString?
+        let enabled = JNKeychain.loadValue(forKey: CLASS_STATIC.PREFERENCE_CAN_RESTORE_DELETED_APP) as! NSString?
         return enabled == "true" ? true : false
     }
     
     class func getInAppSettingsKitcanRestoreDeletedApp() -> (Bool) {
-        return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.INAPPSETTINGS_CAN_RESTORE_DELETED_APP)
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.INAPPSETTINGS_CAN_RESTORE_DELETED_APP)
     }
     
-    class func setInAppSettingsCanRestoreDeletedApp(value: Bool) -> () {
-        NSUserDefaults.standardUserDefaults().setBool(value ,forKey:CLASS_STATIC.INAPPSETTINGS_CAN_RESTORE_DELETED_APP)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setInAppSettingsCanRestoreDeletedApp(_ value: Bool) -> () {
+        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.INAPPSETTINGS_CAN_RESTORE_DELETED_APP)
+        UserDefaults.standard.synchronize()
     }
     
     class func getEnableSoundNotification() -> (Bool) {
-        return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.INAPPSETTINGS_ENABLE_SOUND_NOTIFICATION)
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.INAPPSETTINGS_ENABLE_SOUND_NOTIFICATION)
     }
     
-    class func setEnableSoundNotification(value:Bool) -> () {
-        NSUserDefaults.standardUserDefaults().setBool(value ,forKey:CLASS_STATIC.INAPPSETTINGS_ENABLE_SOUND_NOTIFICATION)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setEnableSoundNotification(_ value:Bool) -> () {
+        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.INAPPSETTINGS_ENABLE_SOUND_NOTIFICATION)
+        UserDefaults.standard.synchronize()
     }
     
-    class func getEncryptedWalletJSONPassphrase(useKeychain:Bool) -> (String?){
+    class func getEncryptedWalletJSONPassphrase(_ useKeychain:Bool) -> (String?){
         if useKeychain {
-            return JNKeychain.loadValueForKey(CLASS_STATIC.PREFERENCE_ENCRYPTED_WALLET_JSON_PASSPHRASE) as! String?
+            return JNKeychain.loadValue(forKey: CLASS_STATIC.PREFERENCE_ENCRYPTED_WALLET_JSON_PASSPHRASE) as! String?
         } else {
-            return NSUserDefaults.standardUserDefaults().stringForKey(CLASS_STATIC.PREFERENCE_ENCRYPTED_WALLET_JSON_PASSPHRASE) as String?
+            return UserDefaults.standard.string(forKey: CLASS_STATIC.PREFERENCE_ENCRYPTED_WALLET_JSON_PASSPHRASE) as String?
         }
     }
     
-    class func setEncryptedWalletJSONPassphrase(value: String, useKeychain:Bool) -> () {
+    class func setEncryptedWalletJSONPassphrase(_ value: String, useKeychain:Bool) -> () {
         if useKeychain {
             JNKeychain.saveValue(value ,forKey:CLASS_STATIC.PREFERENCE_ENCRYPTED_WALLET_JSON_PASSPHRASE)
-            NSUserDefaults.standardUserDefaults().removeObjectForKey(CLASS_STATIC.PREFERENCE_ENCRYPTED_WALLET_JSON_PASSPHRASE)
-            NSUserDefaults.standardUserDefaults().synchronize()
+            UserDefaults.standard.removeObject(forKey: CLASS_STATIC.PREFERENCE_ENCRYPTED_WALLET_JSON_PASSPHRASE)
+            UserDefaults.standard.synchronize()
         } else {
-            NSUserDefaults.standardUserDefaults().setObject(value ,forKey:CLASS_STATIC.PREFERENCE_ENCRYPTED_WALLET_JSON_PASSPHRASE)
-            NSUserDefaults.standardUserDefaults().synchronize()
-            JNKeychain.deleteValueForKey(CLASS_STATIC.PREFERENCE_ENCRYPTED_WALLET_JSON_PASSPHRASE)
+            UserDefaults.standard.set(value ,forKey:CLASS_STATIC.PREFERENCE_ENCRYPTED_WALLET_JSON_PASSPHRASE)
+            UserDefaults.standard.synchronize()
+            JNKeychain.deleteValue(forKey: CLASS_STATIC.PREFERENCE_ENCRYPTED_WALLET_JSON_PASSPHRASE)
         }
     }
     
     class func getEncryptedWalletJSONChecksum() -> (String?) {
-        return NSUserDefaults.standardUserDefaults().stringForKey(CLASS_STATIC.PREFERENCE_ENCRYPTED_WALLET_JSON_CHECKSUM) as String?
+        return UserDefaults.standard.string(forKey: CLASS_STATIC.PREFERENCE_ENCRYPTED_WALLET_JSON_CHECKSUM) as String?
     }
     
-    class func setEncryptedWalletJSONChecksum(value:String) -> (){
-        NSUserDefaults.standardUserDefaults().setObject(value ,forKey:CLASS_STATIC.PREFERENCE_ENCRYPTED_WALLET_JSON_CHECKSUM)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setEncryptedWalletJSONChecksum(_ value:String) -> (){
+        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.PREFERENCE_ENCRYPTED_WALLET_JSON_CHECKSUM)
+        UserDefaults.standard.synchronize()
     }
     
-    class func getLastSavedEncryptedWalletJSONDate() -> (NSDate) {
-        return NSUserDefaults.standardUserDefaults().objectForKey(CLASS_STATIC.PREFERENCE_LAST_SAVED_ENCRYPTED_WALLET_JSON_DATE) as! NSDate
+    class func getLastSavedEncryptedWalletJSONDate() -> (Date) {
+        return UserDefaults.standard.object(forKey: CLASS_STATIC.PREFERENCE_LAST_SAVED_ENCRYPTED_WALLET_JSON_DATE) as! Date
     }
     
-    class func setLastSavedEncryptedWalletJSONDate(value:NSDate) -> () {
-        NSUserDefaults.standardUserDefaults().setObject(value ,forKey:CLASS_STATIC.PREFERENCE_LAST_SAVED_ENCRYPTED_WALLET_JSON_DATE)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setLastSavedEncryptedWalletJSONDate(_ value:Date) -> () {
+        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.PREFERENCE_LAST_SAVED_ENCRYPTED_WALLET_JSON_DATE)
+        UserDefaults.standard.synchronize()
     }
     
     class func isDisplayLocalCurrency() ->(Bool){
-        return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.PREFERENCE_DISPLAY_LOCAL_CURRENCY)
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.PREFERENCE_DISPLAY_LOCAL_CURRENCY)
     }
     
-    class func setDisplayLocalCurrency(enabled:Bool) -> () {
-        NSUserDefaults.standardUserDefaults().setBool(enabled ,forKey:CLASS_STATIC.PREFERENCE_DISPLAY_LOCAL_CURRENCY)
-        NSUserDefaults.standardUserDefaults().synchronize()
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED(), object:nil)
+    class func setDisplayLocalCurrency(_ enabled:Bool) -> () {
+        UserDefaults.standard.set(enabled ,forKey:CLASS_STATIC.PREFERENCE_DISPLAY_LOCAL_CURRENCY)
+        UserDefaults.standard.synchronize()
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED()), object:nil)
     }
     
     class func enabledColdWallet() -> (Bool) {
-        return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.PREFERENCE_WALLET_COLD_WALLET)
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.PREFERENCE_WALLET_COLD_WALLET)
     }
     
-    class func setEnableColdWallet(enabled:Bool) -> () {
-        NSUserDefaults.standardUserDefaults().setBool(enabled ,forKey:CLASS_STATIC.PREFERENCE_WALLET_COLD_WALLET)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setEnableColdWallet(_ enabled:Bool) -> () {
+        UserDefaults.standard.set(enabled ,forKey:CLASS_STATIC.PREFERENCE_WALLET_COLD_WALLET)
+        UserDefaults.standard.synchronize()
     }
     
     class func enabledAdvancedMode() -> (Bool) {
-        return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.PREFERENCE_WALLET_ADVANCE_MODE)
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.PREFERENCE_WALLET_ADVANCE_MODE)
     }
     
-    class func setAdvancedMode(enabled:Bool) -> () {
-        NSUserDefaults.standardUserDefaults().setBool(enabled ,forKey:CLASS_STATIC.PREFERENCE_WALLET_ADVANCE_MODE)
-        NSUserDefaults.standardUserDefaults().synchronize()
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_ADVANCE_MODE_TOGGLED(), object:enabled)
+    class func setAdvancedMode(_ enabled:Bool) -> () {
+        UserDefaults.standard.set(enabled ,forKey:CLASS_STATIC.PREFERENCE_WALLET_ADVANCE_MODE)
+        UserDefaults.standard.synchronize()
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_ADVANCE_MODE_TOGGLED()), object:enabled)
     }
     
     class func isEnablePINCode() -> (Bool) {
-        return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.PREFERENCE_ENABLE_PIN_CODE)
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.PREFERENCE_ENABLE_PIN_CODE)
     }
     
-    class func setEnablePINCode(enabled:Bool) -> () {
-        NSUserDefaults.standardUserDefaults().setBool(enabled ,forKey:CLASS_STATIC.PREFERENCE_ENABLE_PIN_CODE)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setEnablePINCode(_ enabled:Bool) -> () {
+        UserDefaults.standard.set(enabled ,forKey:CLASS_STATIC.PREFERENCE_ENABLE_PIN_CODE)
+        UserDefaults.standard.synchronize()
     }
     
     class func getSuggestionsDict() -> (NSDictionary?){
-        return NSUserDefaults.standardUserDefaults().objectForKey(CLASS_STATIC.PREFERENCE_SUGGESTIONS_DICT) as! NSDictionary?
+        return UserDefaults.standard.object(forKey: CLASS_STATIC.PREFERENCE_SUGGESTIONS_DICT) as! NSDictionary?
     }
     
-    class func setSuggestionsDict(value:NSDictionary) -> () {
-        NSUserDefaults.standardUserDefaults().setObject(value ,forKey:CLASS_STATIC.PREFERENCE_SUGGESTIONS_DICT)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setSuggestionsDict(_ value:NSDictionary) -> () {
+        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.PREFERENCE_SUGGESTIONS_DICT)
+        UserDefaults.standard.synchronize()
     }
     
     class func getAnalyticsDict() -> (NSDictionary?) {
-        return NSUserDefaults.standardUserDefaults().objectForKey(CLASS_STATIC.PREFERENCE_ANALYTICS_DICT) as! NSDictionary?
+        return UserDefaults.standard.object(forKey: CLASS_STATIC.PREFERENCE_ANALYTICS_DICT) as! NSDictionary?
     }
     
-    class func setAnalyticsDict(value:NSDictionary) -> (){
-        NSUserDefaults.standardUserDefaults().setObject(value ,forKey:CLASS_STATIC.PREFERENCE_ANALYTICS_DICT)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setAnalyticsDict(_ value:NSDictionary) -> (){
+        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.PREFERENCE_ANALYTICS_DICT)
+        UserDefaults.standard.synchronize()
     }
     
     class func enabledStealthAddressDefault() -> (Bool){
-        return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.PREFERENCE_ENABLE_STEALTH_ADDRESS_DEFAULT)
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.PREFERENCE_ENABLE_STEALTH_ADDRESS_DEFAULT)
     }
     
-    class func setEnabledStealthAddressDefault(enabled:Bool) -> () {
-        NSUserDefaults.standardUserDefaults().setBool(enabled ,forKey:CLASS_STATIC.PREFERENCE_ENABLE_STEALTH_ADDRESS_DEFAULT)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setEnabledStealthAddressDefault(_ enabled:Bool) -> () {
+        UserDefaults.standard.set(enabled ,forKey:CLASS_STATIC.PREFERENCE_ENABLE_STEALTH_ADDRESS_DEFAULT)
+        UserDefaults.standard.synchronize()
     }
     
     class func disabledPromptShowWebWallet() -> (Bool) {
-        return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.PREFERENCE_ENABLED_PROMPT_SHOW_WEB_WALLET)
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.PREFERENCE_ENABLED_PROMPT_SHOW_WEB_WALLET)
     }
     
-    class func setDisabledPromptShowWebWallet(disabled:Bool) -> () {
-        NSUserDefaults.standardUserDefaults().setBool(disabled ,forKey:CLASS_STATIC.PREFERENCE_ENABLED_PROMPT_SHOW_WEB_WALLET)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setDisabledPromptShowWebWallet(_ disabled:Bool) -> () {
+        UserDefaults.standard.set(disabled ,forKey:CLASS_STATIC.PREFERENCE_ENABLED_PROMPT_SHOW_WEB_WALLET)
+        UserDefaults.standard.synchronize()
     }
     
     class func disabledPromptRateApp() -> (Bool) {
-        return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.PREFERENCE_ENABLED_PROMPT_RATE_APP)
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.PREFERENCE_ENABLED_PROMPT_RATE_APP)
     }
     
-    class func setDisabledPromptRateApp(disabled:Bool) -> () {
-        NSUserDefaults.standardUserDefaults().setBool(disabled ,forKey:CLASS_STATIC.PREFERENCE_ENABLED_PROMPT_RATE_APP)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setDisabledPromptRateApp(_ disabled:Bool) -> () {
+        UserDefaults.standard.set(disabled ,forKey:CLASS_STATIC.PREFERENCE_ENABLED_PROMPT_RATE_APP)
+        UserDefaults.standard.synchronize()
     }
     
     class func hasRatedOnce() -> (Bool) {
-        return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.PREFERENCE_RATED_ONCE)
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.PREFERENCE_RATED_ONCE)
     }
     
     class func setHasRatedOnce() -> () {
-        NSUserDefaults.standardUserDefaults().setBool(true ,forKey:CLASS_STATIC.PREFERENCE_RATED_ONCE)
-        NSUserDefaults.standardUserDefaults().synchronize()
+        UserDefaults.standard.set(true ,forKey:CLASS_STATIC.PREFERENCE_RATED_ONCE)
+        UserDefaults.standard.synchronize()
     }
     
     class func enabledInAppSettingsKitDynamicFee() -> (Bool){
-        return NSUserDefaults.standardUserDefaults().boolForKey(CLASS_STATIC.INAPPSETTINGS_KIT_ENABLE_DYNAMIC_FEE)
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_ENABLE_DYNAMIC_FEE)
     }
     
-    class func setInAppSettingsKitEnabledDynamicFee(enabled:Bool) -> () {
-        NSUserDefaults.standardUserDefaults().setBool(enabled ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_ENABLE_DYNAMIC_FEE)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setInAppSettingsKitEnabledDynamicFee(_ enabled:Bool) -> () {
+        UserDefaults.standard.set(enabled ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_ENABLE_DYNAMIC_FEE)
+        UserDefaults.standard.synchronize()
     }
 
     //WARNING: TLDynamicFeeSetting, therefore InAppSettingsKit must match the keys for 21's dynamic fee api return object keys called in TLTxFeeAPI
     class func getInAppSettingsKitDynamicFeeSetting() -> TLDynamicFeeSetting {
-        if let fee = NSUserDefaults.standardUserDefaults().stringForKey(CLASS_STATIC.INAPPSETTINGS_KIT_DYNAMIC_FEE_OPTION) {
+        if let fee = UserDefaults.standard.string(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_DYNAMIC_FEE_OPTION) {
             return TLDynamicFeeSetting(rawValue:fee)!
         } else {
             return TLDynamicFeeSetting.FastestFee
         }
     }
     
-    class func setInAppSettingsKitDynamicFeeSettingIdx(dynamicFeeSetting:TLDynamicFeeSetting) -> () {
-        NSUserDefaults.standardUserDefaults().setObject(dynamicFeeSetting.rawValue ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_DYNAMIC_FEE_OPTION)
-        NSUserDefaults.standardUserDefaults().synchronize()
+    class func setInAppSettingsKitDynamicFeeSettingIdx(_ dynamicFeeSetting:TLDynamicFeeSetting) -> () {
+        UserDefaults.standard.set(dynamicFeeSetting.rawValue ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_DYNAMIC_FEE_OPTION)
+        UserDefaults.standard.synchronize()
     }
 }

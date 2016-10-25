@@ -20,24 +20,24 @@ class TLCrypto {
         return 10000
     }
     
-    class func encrypt(plainText: String, password: String) -> (String) {
+    class func encrypt(_ plainText: String, password: String) -> (String) {
         return TLCrypto.encrypt(plainText, password: password, PBKDF2Iterations: getDefaultPBKDF2Iterations())
     }
     
-    class func decrypt(cipherText: String, password: String) -> (String?) {
+    class func decrypt(_ cipherText: String, password: String) -> (String?) {
         return TLCrypto.decrypt(cipherText, password: password, PBKDF2Iterations: getDefaultPBKDF2Iterations())
     }
     
-    class func encrypt(plainText: String, password: String, PBKDF2Iterations: UInt32) -> String {
+    class func encrypt(_ plainText: String, password: String, PBKDF2Iterations: UInt32) -> String {
         var settings = kRNCryptorAES256Settings
         settings.keySettings.rounds = PBKDF2Iterations
         //DLog("saveWalletJson encrypt: %@", plainText)
         
-        let data = plainText.dataUsingEncoding(NSUTF8StringEncoding)
+        let data = plainText.data(using: String.Encoding.utf8)
         var error: NSError? = nil
-        var encryptedData: NSData!
+        var encryptedData: Data!
         do {
-            encryptedData = try RNEncryptor.encryptData(data, withSettings: settings, password: password)
+            encryptedData = try RNEncryptor.encryptData(data, with: settings, password: password)
         } catch let error1 as NSError {
             error = error1
             encryptedData = nil
@@ -45,24 +45,24 @@ class TLCrypto {
         
         if (error != nil) {
             DLog("TLCrypto encrypt error: %@", function: error!.localizedDescription)
-            NSException(name: "Error", reason: "Error encrypting", userInfo: nil).raise()
+            NSException(name: NSExceptionName(rawValue: "Error"), reason: "Error encrypting", userInfo: nil).raise()
         }
         
-        let base64EncryptedString = encryptedData.base64EncodedStringWithOptions(NSDataBase64EncodingOptions.Encoding64CharacterLineLength)
+        let base64EncryptedString = encryptedData.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength64Characters)
         //DLog("TLCrypto encrypt base64EncryptedData: %@", base64EncryptedString)
         return base64EncryptedString
     }
     
-    class func decrypt(cipherText: String, password: String, PBKDF2Iterations: UInt32) -> String? {
+    class func decrypt(_ cipherText: String, password: String, PBKDF2Iterations: UInt32) -> String? {
         var settings = kRNCryptorAES256Settings
         settings.keySettings.rounds = PBKDF2Iterations
         
-        let encryptedData = NSData(base64EncodedString: cipherText, options: NSDataBase64DecodingOptions.IgnoreUnknownCharacters)
+        let encryptedData = Data(base64Encoded: cipherText, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters)
         var error: NSError? = nil
-        let decryptedData: NSData!
+        let decryptedData: Data!
         do {
             decryptedData = try RNDecryptor.decryptData(encryptedData,
-                        withSettings: settings,
+                        with: settings,
                         password: password)
         } catch let error1 as NSError {
             error = error1
@@ -74,39 +74,39 @@ class TLCrypto {
             return nil
         }
         
-        let decryptedString = NSString(data: decryptedData!, encoding: NSUTF8StringEncoding)
+        let decryptedString = NSString(data: decryptedData!, encoding: String.Encoding.utf8.rawValue)
         //DLog("TLCrypto decrypt decryptedString: %@", decryptedString!)
         return decryptedString as? String
     }
 
-    class func SHA256HashFor(input: NSString) -> String {
-        let str = input.UTF8String
+    class func SHA256HashFor(_ input: NSString) -> String {
+        let str = input.utf8String
         
-        let result = [CUnsignedChar](count: Int(CC_SHA256_DIGEST_LENGTH), repeatedValue: 0)
-        let resultBytes: UnsafeMutablePointer<UInt8> = UnsafeMutablePointer(result)
+        let result = [CUnsignedChar](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
+        let resultBytes: UnsafeMutablePointer<UInt8> = UnsafeMutablePointer(mutating: result)
         
         CC_SHA256(str, CC_LONG(strlen(str)), resultBytes)
         
         let ret = NSMutableString(capacity:Int(CC_SHA256_DIGEST_LENGTH)*2)
-        for(var i = 0; i < Int(CC_SHA256_DIGEST_LENGTH); i++) {
+        for(i in 0 ..< Int(CC_SHA256_DIGEST_LENGTH)) {
             ret.appendFormat("%02x",result[i])
         }
         return ret as String
     }
     
-    class func doubleSHA256HashFor(input: NSString) -> String {
-        let str = input.UTF8String
-        let result = [CUnsignedChar](count: Int(CC_SHA256_DIGEST_LENGTH), repeatedValue: 0)
-        let resultBytes: UnsafeMutablePointer<UInt8> = UnsafeMutablePointer(result)
+    class func doubleSHA256HashFor(_ input: NSString) -> String {
+        let str = input.utf8String
+        let result = [CUnsignedChar](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
+        let resultBytes: UnsafeMutablePointer<UInt8> = UnsafeMutablePointer(mutating: result)
         
         CC_SHA256(str, CC_LONG(strlen(str)), resultBytes)
-        let result2 = [CUnsignedChar](count: Int(CC_SHA256_DIGEST_LENGTH), repeatedValue: 0)
-        let result2Bytes: UnsafeMutablePointer<UInt8> = UnsafeMutablePointer(result2)
+        let result2 = [CUnsignedChar](repeating: 0, count: Int(CC_SHA256_DIGEST_LENGTH))
+        let result2Bytes: UnsafeMutablePointer<UInt8> = UnsafeMutablePointer(mutating: result2)
         
         CC_SHA256(result, CC_LONG(CC_SHA256_DIGEST_LENGTH), result2Bytes)
         
         let ret = NSMutableString(capacity:Int(CC_SHA256_DIGEST_LENGTH*2))
-        for(var i = 0; i<Int(CC_SHA256_DIGEST_LENGTH); i++) {
+        for(i in 0 ..< Int(CC_SHA256_DIGEST_LENGTH)) {
             ret.appendFormat("%02x",result2[i])
         }
         return ret as String

@@ -24,13 +24,13 @@ import Foundation
 import UIKit
 
 enum TLColdWalletKeyType:Int {
-    case Mnemonic = 0
-    case AccountPrivateKey = 1
-    case AccountPublicKey = 2
+    case mnemonic = 0
+    case accountPrivateKey = 1
+    case accountPublicKey = 2
 }
 
 protocol TLColdWalletSelectKeyTypeTableViewCellDelegate {
-    func didSelectColdWalletKeyType(cell: TLColdWalletSelectKeyTypeTableViewCell, keyType: TLColdWalletKeyType)
+    func didSelectColdWalletKeyType(_ cell: TLColdWalletSelectKeyTypeTableViewCell, keyType: TLColdWalletKeyType)
 }
 
 @objc(TLColdWalletSelectKeyTypeTableViewCell) class TLColdWalletSelectKeyTypeTableViewCell:UITableViewCell {
@@ -48,23 +48,23 @@ protocol TLColdWalletSelectKeyTypeTableViewCellDelegate {
     override func awakeFromNib() {
         super.awakeFromNib()
         let attr:NSDictionary
-        if UIScreen.mainScreen().bounds.size.width <= 320 {
-            attr = NSDictionary(object: UIFont(name: "HelveticaNeue", size: 10.0)!, forKey: NSFontAttributeName)
+        if UIScreen.main.bounds.size.width <= 320 {
+            attr = NSDictionary(object: UIFont(name: "HelveticaNeue", size: 10.0)!, forKey: NSFontAttributeName as NSCopying)
         } else {
-            attr = NSDictionary(object: UIFont(name: "HelveticaNeue", size: 12.0)!, forKey: NSFontAttributeName)
+            attr = NSDictionary(object: UIFont(name: "HelveticaNeue", size: 12.0)!, forKey: NSFontAttributeName as NSCopying)
         }
-        self.coldWalletSelectSegmentedControl.setTitleTextAttributes(attr as [NSObject : AnyObject] , forState: .Normal)
+        self.coldWalletSelectSegmentedControl.setTitleTextAttributes(attr as! [AnyHashable: Any] , for: UIControlState())
      
-        self.coldWalletSelectSegmentedControl.setTitle("Mnemonic", forSegmentAtIndex: 0)
-        self.coldWalletSelectSegmentedControl.setTitle("Account Private Key", forSegmentAtIndex: 1)
-        self.coldWalletSelectSegmentedControl.setTitle("Account Public Key", forSegmentAtIndex: 2)
+        self.coldWalletSelectSegmentedControl.setTitle("Mnemonic", forSegmentAt: 0)
+        self.coldWalletSelectSegmentedControl.setTitle("Account Private Key", forSegmentAt: 1)
+        self.coldWalletSelectSegmentedControl.setTitle("Account Public Key", forSegmentAt: 2)
     }
     
     class func cellHeight() -> CGFloat {
         return 61
     }
     
-    @IBAction func coldWalletKeyTypeValueChanged(sender: UISegmentedControl) {
+    @IBAction func coldWalletKeyTypeValueChanged(_ sender: UISegmentedControl) {
         let selectedIndex = sender.selectedSegmentIndex
         DLog("selectedIndex: \(selectedIndex)")
         delegate?.didSelectColdWalletKeyType(self, keyType: TLColdWalletKeyType(rawValue: selectedIndex)!)

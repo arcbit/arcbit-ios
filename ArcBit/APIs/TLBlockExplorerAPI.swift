@@ -23,16 +23,16 @@
 import Foundation
 
 enum TLBlockExplorer:Int {
-    case Blockchain  = 0
-    case Insight     = 1
-    case Toshi     = 2
-    case Blockr     = 3
+    case blockchain  = 0
+    case insight     = 1
+    case toshi     = 2
+    case blockr     = 3
 }
 
 class TLBlockExplorerAPI {
     
     struct STATIC_MEMBERS {
-        static var blockExplorerAPI:TLBlockExplorer = .Blockchain
+        static var blockExplorerAPI:TLBlockExplorer = .blockchain
         static var BLOCKEXPLORER_BASE_URL:String? = "https://blockchain.info/"
         static var _instance:TLBlockExplorerAPI? = nil
     }
@@ -57,20 +57,20 @@ class TLBlockExplorerAPI {
     }
     
     init() {
-        if (STATIC_MEMBERS.blockExplorerAPI == .Blockchain) {
+        if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
             self.blockchainAPI = TLBlockchainAPI(baseURL: STATIC_MEMBERS.BLOCKEXPLORER_BASE_URL!)
             //needed for push tx api for stealth addresses
             self.insightAPI = TLInsightAPI(baseURL: "https://insight.bitpay.com/")
-        } else if (STATIC_MEMBERS.blockExplorerAPI == .Insight) {
+        } else if (STATIC_MEMBERS.blockExplorerAPI == .insight) {
             self.insightAPI = TLInsightAPI(baseURL: STATIC_MEMBERS.BLOCKEXPLORER_BASE_URL!)
         }
     }
     
     
-    func getBlockHeight(success: TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> (){
-        if (STATIC_MEMBERS.blockExplorerAPI == .Blockchain) {
+    func getBlockHeight(_ success: @escaping TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> (){
+        if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
             self.blockchainAPI!.getBlockHeight({(height:AnyObject!) in
-                let blockHeight = ["height": NSNumber(longLong: (height as! NSString).longLongValue)]
+                let blockHeight = ["height": NSNumber(value: (height as! NSString).longLongValue as Int64)]
                 success(blockHeight)
                 }, failure:failure)
         }
@@ -85,56 +85,56 @@ class TLBlockExplorerAPI {
         }
     }
     
-    func getAddressesInfoSynchronous(addressArray:Array<String>) -> NSDictionary {
-        if (STATIC_MEMBERS.blockExplorerAPI == .Blockchain) {
+    func getAddressesInfoSynchronous(_ addressArray:Array<String>) -> NSDictionary {
+        if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
             return self.blockchainAPI!.getAddressesInfoSynchronous(addressArray)
         } else {
             return self.insightAPI!.getAddressesInfoSynchronous(addressArray)
         }
     }
     
-    func getAddressesInfo(addressArray:Array<String>, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler)-> () {
-        if (STATIC_MEMBERS.blockExplorerAPI == .Blockchain) {
+    func getAddressesInfo(_ addressArray:Array<String>, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler)-> () {
+        if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
             self.blockchainAPI!.getAddressesInfo(addressArray, success:success, failure:failure)
         } else {
             self.insightAPI!.getAddressesInfo(addressArray, success:success, failure:failure)
         }
     }
     
-    func getUnspentOutputs(addressArray:Array<String>, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
-        if (STATIC_MEMBERS.blockExplorerAPI == .Blockchain) {
+    func getUnspentOutputs(_ addressArray:Array<String>, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
+        if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
             self.blockchainAPI!.getUnspentOutputs(addressArray, success:success, failure:failure)
         } else {
             self.insightAPI!.getUnspentOutputs(addressArray, success:success, failure:failure)
         }
     }
     
-    func getUnspentOutputsSynchronous(addressArray:NSArray) -> NSDictionary {
-        if (STATIC_MEMBERS.blockExplorerAPI == .Blockchain) {
+    func getUnspentOutputsSynchronous(_ addressArray:NSArray) -> NSDictionary {
+        if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
             return self.blockchainAPI!.getUnspentOutputsSynchronous(addressArray)
         } else {
             return self.insightAPI!.getUnspentOutputsSynchronous(addressArray)
         }
     }
     
-    func getAddressDataSynchronous(address:String) -> NSDictionary {
-        if (STATIC_MEMBERS.blockExplorerAPI == .Blockchain) {
+    func getAddressDataSynchronous(_ address:String) -> NSDictionary {
+        if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
             return self.blockchainAPI!.getAddressDataSynchronous(address)
         } else {
             return self.insightAPI!.getAddressDataSynchronous(address)               
         }
     }
     
-    func getAddressData(address:String, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
-        if (STATIC_MEMBERS.blockExplorerAPI == .Blockchain) {
+    func getAddressData(_ address:String, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
+        if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
             self.blockchainAPI!.getAddressData(address, success:success, failure:failure)
         } else {
             self.insightAPI!.getAddressData(address, success: success, failure: failure)
         }
     }
     
-    func getTx(txHash:String, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
-        if (STATIC_MEMBERS.blockExplorerAPI == .Blockchain) {
+    func getTx(_ txHash:String, success:@escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler) -> () {
+        if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
             self.blockchainAPI!.getTx(txHash, success:success, failure:failure)
         } else {
             self.insightAPI!.getTx(txHash, success:{(jsonData:AnyObject!) in
@@ -146,8 +146,8 @@ class TLBlockExplorerAPI {
         }
     }
     
-    func getTxBackground(txHash:String, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
-        if (STATIC_MEMBERS.blockExplorerAPI == .Blockchain) {
+    func getTxBackground(_ txHash:String, success:@escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler) -> () {
+        if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
             self.blockchainAPI!.getTxBackground(txHash, success:success, failure:failure)
         } else {
             self.insightAPI!.getTxBackground(txHash, success:{(jsonData:AnyObject!) in
@@ -159,35 +159,35 @@ class TLBlockExplorerAPI {
         }
     }
     
-    func pushTx(txHex:String, txHash:String, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler)-> () {
-        if (STATIC_MEMBERS.blockExplorerAPI == .Blockchain) {
+    func pushTx(_ txHex:String, txHash:String, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler)-> () {
+        if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
             self.blockchainAPI!.pushTx(txHex, txHash:txHash, success:success, failure:failure)
         } else {
             self.insightAPI!.pushTx(txHex, success:success, failure:failure)
         }
     }
     
-    func openWebViewForAddress(address:String) -> () {
-        if (STATIC_MEMBERS.blockExplorerAPI == .Blockchain) {
+    func openWebViewForAddress(_ address:String) -> () {
+        if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
             let endPoint = "address/"
             let url = String(format: "%@%@%@", STATIC_MEMBERS.BLOCKEXPLORER_BASE_URL!, endPoint, address)
-            UIApplication.sharedApplication().openURL(NSURL(string: url)!)
+            UIApplication.shared.openURL(URL(string: url)!)
         } else {
             let endPoint = "address/"
             let url = String(format: "%@%@%@",STATIC_MEMBERS.BLOCKEXPLORER_BASE_URL!, endPoint, address)
-            UIApplication.sharedApplication().openURL(NSURL(string:url)!)
+            UIApplication.shared.openURL(URL(string:url)!)
         }
     }
     
-    func openWebViewForTransaction(txid:String) -> () {
-        if (STATIC_MEMBERS.blockExplorerAPI == .Blockchain) {
+    func openWebViewForTransaction(_ txid:String) -> () {
+        if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
             let endPoint = "tx/"
             let url = String(format: "%@%@%@",STATIC_MEMBERS.BLOCKEXPLORER_BASE_URL!, endPoint, txid)
-            UIApplication.sharedApplication().openURL(NSURL(string: url)!)
+            UIApplication.shared.openURL(URL(string: url)!)
         } else {
             let endPoint = "tx/"
             let url = String(format: "%@%@%@",STATIC_MEMBERS.BLOCKEXPLORER_BASE_URL!, endPoint, txid)
-            UIApplication.sharedApplication().openURL(NSURL(string: url)!)
+            UIApplication.shared.openURL(URL(string: url)!)
         }
     }
 }

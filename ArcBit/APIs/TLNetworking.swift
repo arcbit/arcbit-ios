@@ -23,16 +23,16 @@
 import Foundation
 
 enum TLDOMAINREACHABLE:Int {
-    case WWAN           = 0
-    case WIFI           = 1
-    case NOTREACHABLE   = 2
+    case wwan           = 0
+    case wifi           = 1
+    case notreachable   = 2
 }
 
 class TLNetworking {
     
     typealias ReachableHandler = (TLDOMAINREACHABLE) -> ()
     typealias SuccessHandler = (AnyObject!) -> ()
-    typealias FailureHandler = (Int, String!) -> ()
+    typealias FailureHandler = (Int, String?) -> ()
     
     struct STATIC_MEMBERS {
         static var _instance:TLNetworking? = nil
@@ -46,7 +46,7 @@ class TLNetworking {
     let postSynchronousManager:AFHTTPRequestOperationManager
     let getManagerBackground:AFHTTPRequestOperationManager
     
-    init(certificateData: NSData? = nil) {
+    init(certificateData: Data? = nil) {
         let ua = "Mozilla/5.0 (Macintosh Intel Mac OS X 10_9_0) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/31.0.1650.57 Safari/537.36"
 
         self.getManager = AFHTTPRequestOperationManager()
@@ -60,7 +60,7 @@ class TLNetworking {
         requestSerializer.setValue(ua, forHTTPHeaderField:"User-Agent")
         requestSerializer.setValue("utf-8", forHTTPHeaderField:"charset")
         self.getManagerBackground.requestSerializer = requestSerializer
-        self.getManagerBackground.completionQueue  = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+        self.getManagerBackground.completionQueue  = DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default)
         
 
         self.getSynchronousManager = AFHTTPRequestOperationManager()
@@ -68,7 +68,7 @@ class TLNetworking {
         requestSerializer.setValue(ua, forHTTPHeaderField:"User-Agent")
         requestSerializer.setValue("utf-8", forHTTPHeaderField:"charset")
         self.getSynchronousManager.requestSerializer = requestSerializer
-        self.getSynchronousManager.completionQueue  = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+        self.getSynchronousManager.completionQueue  = DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default)
         
         
         self.postManager = AFHTTPRequestOperationManager()
@@ -83,14 +83,14 @@ class TLNetworking {
         postRequestSerializer.setValue(ua, forHTTPHeaderField:"User-Agent")
         postRequestSerializer.setValue("utf-8", forHTTPHeaderField:"charset")
         self.postSynchronousManager.requestSerializer = postRequestSerializer
-        self.postSynchronousManager.completionQueue  = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)
+        self.postSynchronousManager.completionQueue  = DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default)
         
         if certificateData != nil {
-            let securityPolicy = AFSecurityPolicy(pinningMode: AFSSLPinningMode.Certificate)
-            securityPolicy.allowInvalidCertificates = true
-            securityPolicy.validatesCertificateChain = false
-            securityPolicy.validatesDomainName = false
-            securityPolicy.pinnedCertificates = [certificateData!]
+            let securityPolicy = AFSecurityPolicy(pinningMode: AFSSLPinningMode.certificate)
+            securityPolicy?.allowInvalidCertificates = true
+            securityPolicy?.validatesCertificateChain = false
+            securityPolicy?.validatesDomainName = false
+            securityPolicy?.pinnedCertificates = [certificateData!]
 
             self.getManager.securityPolicy = securityPolicy
             self.getManagerBackground.securityPolicy = securityPolicy
@@ -100,45 +100,45 @@ class TLNetworking {
         }
     }
     
-    class func isReachable(url: NSURL, reachable: ReachableHandler) -> () {
+    class func isReachable(_ url: URL, reachable: @escaping ReachableHandler) -> () {
         let manager = AFHTTPRequestOperationManager(baseURL:url)
         
-        let operationQueue = manager.operationQueue
-        manager.reachabilityManager.setReachabilityStatusChangeBlock({(status: AFNetworkReachabilityStatus) in
+        let operationQueue = manager?.operationQueue
+        manager?.reachabilityManager.setReachabilityStatusChange({(status: AFNetworkReachabilityStatus) in
             switch (status) {
-            case AFNetworkReachabilityStatus.ReachableViaWWAN:
+            case AFNetworkReachabilityStatus.reachableViaWWAN:
                 DLog("AFNetworkReachabilityStatusReachableViaWWAN")
-                operationQueue.suspended = false
-                reachable(TLDOMAINREACHABLE.WWAN)
+                operationQueue?.isSuspended = false
+                reachable(TLDOMAINREACHABLE.wwan)
                 break
-            case AFNetworkReachabilityStatus.ReachableViaWiFi:
+            case AFNetworkReachabilityStatus.reachableViaWiFi:
                 DLog("AFNetworkReachabilityStatusReachableViaWiFi")
-                operationQueue.suspended = false
+                operationQueue?.isSuspended = false
                 
-                reachable(TLDOMAINREACHABLE.WIFI)
+                reachable(TLDOMAINREACHABLE.wifi)
                 break
-            case AFNetworkReachabilityStatus.NotReachable:
-                reachable(TLDOMAINREACHABLE.NOTREACHABLE)
+            case AFNetworkReachabilityStatus.notReachable:
+                reachable(TLDOMAINREACHABLE.notreachable)
                 DLog("AFNetworkReachabilityStatusNotReachable")
             default:
-                operationQueue.suspended = true
+                operationQueue?.isSuspended = true
                 break
             }
         })
         
-        manager.reachabilityManager.startMonitoring()
+        manager?.reachabilityManager.startMonitoring()
     }
     
-    func httpGETSynchronous(url: NSURL, parameters: NSDictionary) -> AnyObject? {
+    func httpGETSynchronous(_ url: URL, parameters: NSDictionary) -> AnyObject? {
         var response:AnyObject? = nil
-        let semaphore = dispatch_semaphore_create(0)
+        let semaphore = DispatchSemaphore(value: 0)
 
         DLog("httpGETSynchronous: url %@", function: url.absoluteString)
-        _ = self.getSynchronousManager.GET(url.absoluteString,
+        _ = self.getSynchronousManager.get(url.absoluteString,
             parameters: parameters,
             success:{(operation:AFHTTPRequestOperation!, responseObject:AnyObject!) in
                 response = responseObject
-                dispatch_semaphore_signal(semaphore)
+                semaphore.signal()
             },
             failure:{(operation:AFHTTPRequestOperation!, error:NSError!) in
                 DLog("httpGETSynchronous: requestFailed url %@", function: url.absoluteString)
@@ -147,19 +147,19 @@ class TLNetworking {
                 } else {
                     response = [STATIC_MEMBERS.HTTP_ERROR_CODE: "499", STATIC_MEMBERS.HTTP_ERROR_MSG:"No Response"]
                 }
-                dispatch_semaphore_signal(semaphore)
+                semaphore.signal()
         })
         
         
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+        semaphore.wait(timeout: DispatchTime.distantFuture)
         return response
     }
     
-    func httpGET(url: NSURL, parameters: NSDictionary,
+    func httpGET(_ url: URL, parameters: NSDictionary,
         success: SuccessHandler?, failure: FailureHandler?) -> () {
             
             DLog("httpGET: url %@", function: url.absoluteString)
-            self.getManager.GET(url.absoluteString,
+            self.getManager.get(url.absoluteString,
                 parameters:parameters,
                 success:{(operation:AFHTTPRequestOperation!, responseObject:AnyObject!) in
                     if success != nil {
@@ -174,11 +174,11 @@ class TLNetworking {
             })
     }
     
-    func httpGETBackground(url: NSURL, parameters: NSDictionary,
+    func httpGETBackground(_ url: URL, parameters: NSDictionary,
         success: SuccessHandler?, failure: FailureHandler?) -> () {
             
             DLog("httpGETBackground: url %@", function: url.absoluteString)
-            self.getManagerBackground.GET(url.absoluteString,
+            self.getManagerBackground.get(url.absoluteString,
                 parameters:parameters,
                 success:{(operation:AFHTTPRequestOperation!, responseObject:AnyObject!) in
                     if success != nil {
@@ -193,11 +193,11 @@ class TLNetworking {
             })
     }
     
-    func httpPOST(url: NSURL, parameters: NSDictionary,
+    func httpPOST(_ url: URL, parameters: NSDictionary,
         success: SuccessHandler?, failure: FailureHandler?) -> () {
             
             DLog("httpPOST:function:  url %@", function: url.absoluteString)
-            self.postManager.POST(url.absoluteString,
+            self.postManager.post(url.absoluteString,
                 parameters:parameters,
                 success:{(operation:AFHTTPRequestOperation!, responseObject:AnyObject!) in
                     if success != nil {
@@ -212,17 +212,17 @@ class TLNetworking {
             })
     }
     
-    func httpPOSTSynchronous(url: NSURL, parameters: NSDictionary) -> AnyObject? {
+    func httpPOSTSynchronous(_ url: URL, parameters: NSDictionary) -> AnyObject? {
         var response:AnyObject?
         
-        let semaphore = dispatch_semaphore_create(0)
+        let semaphore = DispatchSemaphore(value: 0)
         
         DLog("httpPOSTSynchronous: url %@", function: url.absoluteString)
-        _ = self.postSynchronousManager.POST(url.absoluteString,
+        _ = self.postSynchronousManager.post(url.absoluteString,
             parameters: parameters,
             success:{(operation:AFHTTPRequestOperation!, responseObject:AnyObject!) in
                 response = responseObject
-                dispatch_semaphore_signal(semaphore)
+                semaphore.signal()
             },
             failure:{(operation:AFHTTPRequestOperation!, error:NSError!) in
                 DLog("httpPOSTSynchronous: requestFailed url %@", function: url.absoluteString)
@@ -231,11 +231,11 @@ class TLNetworking {
                 } else {
                     response = [STATIC_MEMBERS.HTTP_ERROR_CODE: "499", STATIC_MEMBERS.HTTP_ERROR_MSG:"No Response"]
                 }
-                dispatch_semaphore_signal(semaphore)
+                semaphore.signal()
         })
         
         
-        dispatch_semaphore_wait(semaphore, DISPATCH_TIME_FOREVER)
+        semaphore.wait(timeout: DispatchTime.distantFuture)
         return response
     }
 }

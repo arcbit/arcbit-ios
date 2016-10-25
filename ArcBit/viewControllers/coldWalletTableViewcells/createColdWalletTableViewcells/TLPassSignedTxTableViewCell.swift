@@ -25,8 +25,8 @@ import UIKit
 
 
 protocol TLPassSignedTxTableViewCellDelegate {
-    func didClickPassButton(cell: TLPassSignedTxTableViewCell)
-    func didClickPassSignedTxInfoButton(cell: TLPassSignedTxTableViewCell)
+    func didClickPassButton(_ cell: TLPassSignedTxTableViewCell)
+    func didClickPassSignedTxInfoButton(_ cell: TLPassSignedTxTableViewCell)
 }
 
 @objc(TLPassSignedTxTableViewCell) class TLPassSignedTxTableViewCell:UITableViewCell {
@@ -45,18 +45,18 @@ protocol TLPassSignedTxTableViewCellDelegate {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.passButtonButton.backgroundColor = TLColors.mainAppColor()
-        self.passButtonButton.setTitleColor(TLColors.mainAppOppositeColor(), forState:UIControlState.Normal)
+        self.passButtonButton.setTitleColor(TLColors.mainAppOppositeColor(), for:UIControlState())
     }
     
     class func cellHeight() -> CGFloat {
         return 88
     }
     
-    @IBAction private func infoButtonClicked(sender:UIButton) {
+    @IBAction fileprivate func infoButtonClicked(_ sender:UIButton) {
         delegate?.didClickPassSignedTxInfoButton(self)
     }
     
-    @IBAction private func passButtonClicked(sender:UIButton) {
+    @IBAction fileprivate func passButtonClicked(_ sender:UIButton) {
         delegate?.didClickPassButton(self)
     }
 }

@@ -23,18 +23,18 @@
 import Foundation
 
 enum TLBitcoinDenomination:Int {
-    case Bitcoin  = 0
-    case MilliBit = 1
-    case Bits     = 2
+    case bitcoin  = 0
+    case milliBit = 1
+    case bits     = 2
 }
 
 
 @objc class TLCoin:NSObject {
     struct STATIC_MEMBERS {
-        static let numberFormatter: NSNumberFormatter =  NSNumberFormatter()
+        static let numberFormatter: NumberFormatter =  NumberFormatter()
     }
     
-    private var coin:BTCMutableBigNumber
+    fileprivate var coin:BTCMutableBigNumber
     
     class func zero() -> (TLCoin) {
         return TLCoin(btcNumber:BTCBigNumber.zero())
@@ -52,90 +52,90 @@ enum TLBitcoinDenomination:Int {
         coin = btcNumber.mutableCopy()
     }
     
-    private func getBTCNumber() -> (BTCBigNumber) {
+    fileprivate func getBTCNumber() -> (BTCBigNumber) {
         return coin
     }
     
-    func add(other:TLCoin) -> (TLCoin) {
+    func add(_ other:TLCoin) -> (TLCoin) {
         let tmp = coin.mutableCopy().add(other.getBTCNumber())
-        return TLCoin(btcNumber: tmp.copy())
+        return TLCoin(btcNumber: tmp!.copy())
     }
     
-    func subtract(other:TLCoin) -> (TLCoin) {
+    func subtract(_ other:TLCoin) -> (TLCoin) {
         let tmp = coin.mutableCopy().subtract(other.getBTCNumber())
-        return TLCoin(btcNumber: tmp.copy())
+        return TLCoin(btcNumber: tmp!.copy())
     }
     
-    private func multiply(other:TLCoin) -> (TLCoin) {
+    fileprivate func multiply(_ other:TLCoin) -> (TLCoin) {
         let tmp = coin.mutableCopy().multiply(other.getBTCNumber())
-        return TLCoin(btcNumber: tmp.copy())
+        return TLCoin(btcNumber: tmp!.copy())
     }
     
-    private func divide(other:TLCoin) -> (TLCoin) {
+    fileprivate func divide(_ other:TLCoin) -> (TLCoin) {
         let tmp = coin.mutableCopy().divide(other.getBTCNumber())
-        return TLCoin(btcNumber: tmp.copy())
+        return TLCoin(btcNumber: tmp!.copy())
     }
     
     init(uint64:UInt64) {
-        coin = BTCMutableBigNumber(UInt64: uint64)
+        coin = BTCMutableBigNumber(uInt64: uint64)
     }
     
     init(doubleValue:Double) {
         //TODO: get rid this init method
-        let tmp = NSDecimalNumber(double: doubleValue).decimalNumberByMultiplyingBy(NSDecimalNumber(unsignedLongLong: 100000000))
-        coin = BTCMutableBigNumber(UInt64: tmp.unsignedLongLongValue)
+        let tmp = NSDecimalNumber(value: doubleValue as Double).multiplying(by: NSDecimalNumber(value: 100000000 as UInt64))
+        coin = BTCMutableBigNumber(uInt64: tmp.uint64Value)
     }
     
     func toUInt64() -> (UInt64) {
-        return STATIC_MEMBERS.numberFormatter.numberFromString(coin.decimalString)!.unsignedLongLongValue
+        return STATIC_MEMBERS.numberFormatter.number(from: coin.decimalString)!.uint64Value
     }
     
-    init(bitcoinAmount:(String), bitcoinDenomination:(TLBitcoinDenomination), locale: NSLocale=NSLocale.currentLocale()) {
+    init(bitcoinAmount:(String), bitcoinDenomination:(TLBitcoinDenomination), locale: Locale=Locale.current) {
         //TODO move to TLCurrencyFormat like android, so dont have to create formatter everytime
-        let bitcoinFormatter = NSNumberFormatter()
-        bitcoinFormatter.numberStyle = .DecimalStyle
+        let bitcoinFormatter = NumberFormatter()
+        bitcoinFormatter.numberStyle = .decimal
         bitcoinFormatter.maximumFractionDigits = 8
         bitcoinFormatter.locale = locale
         
-        let tmpString = bitcoinFormatter.numberFromString(bitcoinAmount)
+        let tmpString = bitcoinFormatter.number(from: bitcoinAmount)
         if tmpString == nil {
-            coin = BTCMutableBigNumber(UInt64:0)
+            coin = BTCMutableBigNumber(uInt64:0)
             return
         }
 
         let satoshis:UInt64
-        let mericaFormatter = NSNumberFormatter()
+        let mericaFormatter = NumberFormatter()
         mericaFormatter.maximumFractionDigits = 8
-        mericaFormatter.locale = NSLocale(localeIdentifier: "en_US")
-        let decimalAmount = NSDecimalNumber(string: mericaFormatter.stringFromNumber(bitcoinFormatter.numberFromString(bitcoinAmount)!))
-        if (bitcoinDenomination == TLBitcoinDenomination.Bitcoin) {
-            satoshis = decimalAmount.decimalNumberByMultiplyingBy(NSDecimalNumber(string: "100000000")).unsignedLongLongValue
+        mericaFormatter.locale = Locale(identifier: "en_US")
+        let decimalAmount = NSDecimalNumber(string: mericaFormatter.string(from: bitcoinFormatter.number(from: bitcoinAmount)!))
+        if (bitcoinDenomination == TLBitcoinDenomination.bitcoin) {
+            satoshis = decimalAmount.multiplying(by: NSDecimalNumber(string: "100000000")).uint64Value
         }
-        else if (bitcoinDenomination == TLBitcoinDenomination.MilliBit) {
-            satoshis = (decimalAmount.decimalNumberByMultiplyingBy(NSDecimalNumber(unsignedLongLong: 100000))).unsignedLongLongValue
+        else if (bitcoinDenomination == TLBitcoinDenomination.milliBit) {
+            satoshis = (decimalAmount.multiplying(by: NSDecimalNumber(value: 100000 as UInt64))).uint64Value
         }
         else {
-            satoshis = (decimalAmount.decimalNumberByMultiplyingBy(NSDecimalNumber(unsignedLongLong: 100))).unsignedLongLongValue
+            satoshis = (decimalAmount.multiplying(by: NSDecimalNumber(value: 100 as UInt64))).uint64Value
         }
-        coin = BTCMutableBigNumber(UInt64:satoshis)
+        coin = BTCMutableBigNumber(uInt64:satoshis)
     }
     
-    func bigIntegerToBitcoinAmountString(bitcoinDenomination: TLBitcoinDenomination) -> (String) {
+    func bigIntegerToBitcoinAmountString(_ bitcoinDenomination: TLBitcoinDenomination) -> (String) {
         //TODO move to TLCurrencyFormat like android, so dont have to create formatter everytime
-        let bitcoinFormatter = NSNumberFormatter()
-        bitcoinFormatter.numberStyle = .DecimalStyle
+        let bitcoinFormatter = NumberFormatter()
+        bitcoinFormatter.numberStyle = .decimal
         
-        if (bitcoinDenomination == TLBitcoinDenomination.Bitcoin) {
+        if (bitcoinDenomination == TLBitcoinDenomination.bitcoin) {
             bitcoinFormatter.maximumFractionDigits = 8
-            return bitcoinFormatter.stringFromNumber(NSNumber(double: bigIntegerToBitcoin()))!
+            return bitcoinFormatter.string(from: NSNumber(value: bigIntegerToBitcoin() as Double))!
         }
-        else if (bitcoinDenomination == TLBitcoinDenomination.MilliBit) {
+        else if (bitcoinDenomination == TLBitcoinDenomination.milliBit) {
             bitcoinFormatter.maximumFractionDigits = 5
-            return bitcoinFormatter.stringFromNumber(NSNumber(double: bigIntegerToMilliBit()))!
+            return bitcoinFormatter.string(from: NSNumber(value: bigIntegerToMilliBit() as Double))!
         }
         else {
             bitcoinFormatter.maximumFractionDigits = 2
-            return bitcoinFormatter.stringFromNumber(NSNumber(double: bigIntegerToBits()))!
+            return bitcoinFormatter.string(from: NSNumber(value: bigIntegerToBits() as Double))!
         }
     }
     
@@ -143,35 +143,35 @@ enum TLBitcoinDenomination:Int {
         return coin.decimalString != nil ? coin.decimalString : "0"
     }
     
-    private func bigIntegerToBits() -> (Double) {
-        return (NSDecimalNumber(string: coin.decimalString as String).decimalNumberByMultiplyingBy(NSDecimalNumber(double: 0.01))).doubleValue
+    fileprivate func bigIntegerToBits() -> (Double) {
+        return (NSDecimalNumber(string: coin.decimalString as String).multiplying(by: NSDecimalNumber(value: 0.01 as Double))).doubleValue
     }
     
-    private func bigIntegerToMilliBit() -> (Double){
-        return (NSDecimalNumber(string: coin.decimalString as String).decimalNumberByMultiplyingBy(NSDecimalNumber(double: 0.00001))).doubleValue
+    fileprivate func bigIntegerToMilliBit() -> (Double){
+        return (NSDecimalNumber(string: coin.decimalString as String).multiplying(by: NSDecimalNumber(value: 0.00001 as Double))).doubleValue
     }
     
     func bigIntegerToBitcoin() -> (Double) {
-        return (NSDecimalNumber(string: coin.decimalString as String).decimalNumberByMultiplyingBy(NSDecimalNumber(double: 0.00000001))).doubleValue
+        return (NSDecimalNumber(string: coin.decimalString as String).multiplying(by: NSDecimalNumber(value: 0.00000001 as Double))).doubleValue
     }
     
-    func less(other:TLCoin) -> (Bool) {
+    func less(_ other:TLCoin) -> (Bool) {
         return coin.less(other.getBTCNumber())
     }
     
-    func lessOrEqual(other:TLCoin) -> (Bool) {
+    func lessOrEqual(_ other:TLCoin) -> (Bool) {
         return coin.lessOrEqual(other.getBTCNumber())
     }
     
-    func greater(other:TLCoin) -> (Bool) {
+    func greater(_ other:TLCoin) -> (Bool) {
         return coin.greater(other.getBTCNumber())
     }
     
-    func greaterOrEqual(other:TLCoin) -> (Bool) {
+    func greaterOrEqual(_ other:TLCoin) -> (Bool) {
         return coin.greaterOrEqual(other.getBTCNumber())
     }
     
-    func equalTo(other:TLCoin) -> (Bool) {
+    func equalTo(_ other:TLCoin) -> (Bool) {
         return coin.greaterOrEqual(other.getBTCNumber()) && coin.lessOrEqual(other.getBTCNumber())
     }
 }

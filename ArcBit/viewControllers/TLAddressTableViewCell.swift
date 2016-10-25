@@ -35,15 +35,15 @@ import UIKit
     override func awakeFromNib() {
         super.awakeFromNib()
         self.amountButton!.backgroundColor = TLColors.mainAppColor()
-        self.amountButton!.setTitleColor(TLColors.mainAppOppositeColor(), forState:UIControlState.Normal)
+        self.amountButton!.setTitleColor(TLColors.mainAppOppositeColor(), for:UIControlState())
         self.amountButton!.titleLabel!.adjustsFontSizeToFitWidth = true
     }
     
-    override func setSelected(selected:Bool, animated:Bool) -> () {
+    override func setSelected(_ selected:Bool, animated:Bool) -> () {
         super.setSelected(selected, animated:animated)
     }
     
-    @IBAction private func amountButtonClicked(sender:UIButton) {
+    @IBAction fileprivate func amountButtonClicked(_ sender:UIButton) {
         TLPreferences.setDisplayLocalCurrency(!TLPreferences.isDisplayLocalCurrency())
         TLPreferences.setInAppSettingsKitDisplayLocalCurrency(TLPreferences.isDisplayLocalCurrency())
     }

@@ -28,7 +28,7 @@ import UIKit
         static var DISMISS_TEXT = "Dismiss".localized
     }
     
-    private let alertView:CustomIOS7AlertView
+    fileprivate let alertView:CustomIOS7AlertView
     let QRcodeDisplayData:String
     
     init(data:NSString, buttonCopyText:(String), vc:(UIViewController)) {
@@ -42,7 +42,7 @@ import UIKit
         
         let QRCodeImageDimension:CGFloat
         let dataLabelHeight:CGFloat
-        if (UIDevice.currentDevice().userInterfaceIdiom == .Phone) {
+        if (UIDevice.current.userInterfaceIdiom == .phone) {
             QRCodeImageDimension = QR_CODE_IMAGE_DIMENSION_IPHONE
             dataLabelHeight = DATA_LABEL_HEIGHT_IPHONE
         } else {
@@ -50,26 +50,26 @@ import UIKit
             dataLabelHeight = DATA_LABEL_HEIGHT_IPAD
         }
         
-        let containerView = UIView(frame:CGRectMake(0, 0,
-            QRCodeImageDimension,
-            QRCodeImageDimension+dataLabelHeight))
+        let containerView = UIView(frame:CGRect(x: 0, y: 0,
+            width: QRCodeImageDimension,
+            height: QRCodeImageDimension+dataLabelHeight))
         
         
         let QRCodeImage = TLWalletUtils.getQRCodeImage(data as String, imageDimension:Int(QRCodeImageDimension))
-        let qrCodeImageView = UIImageView(frame: CGRectMake(0, 0,
-            QRCodeImageDimension,
-            QRCodeImageDimension))
+        let qrCodeImageView = UIImageView(frame: CGRect(x: 0, y: 0,
+            width: QRCodeImageDimension,
+            height: QRCodeImageDimension))
         qrCodeImageView.image = QRCodeImage
         
         containerView.addSubview(qrCodeImageView)
         
         alertView = CustomIOS7AlertView()
         
-        let titleLabel = UITextView(frame:CGRectMake(0, QRCodeImageDimension, QRCodeImageDimension, dataLabelHeight))
+        let titleLabel = UITextView(frame:CGRect(x: 0, y: QRCodeImageDimension, width: QRCodeImageDimension, height: dataLabelHeight))
         titleLabel.text = data as String
-        titleLabel.textAlignment = .Center
+        titleLabel.textAlignment = .center
         
-        titleLabel.userInteractionEnabled = false
+        titleLabel.isUserInteractionEnabled = false
         titleLabel.backgroundColor = TLColors.mainAppColor()
         titleLabel.textColor = TLColors.mainAppOppositeColor()
         titleLabel.layer.cornerRadius = 5.0
@@ -97,21 +97,21 @@ import UIKit
     
     func show() -> () {
         alertView.show()
-        NSNotificationCenter.defaultCenter().addObserver(self, selector:"dismissDialog:", name:UIApplicationDidEnterBackgroundNotification, object:nil)
+        NotificationCenter.default.addObserver(self, selector:#selector(TLQRImageModal.dismissDialog(_:)), name:NSNotification.Name.UIApplicationDidEnterBackground, object:nil)
     }
     
-    func dismissDialog(notification: NSNotification) -> () {
+    func dismissDialog(_ notification: Notification) -> () {
         for subview in alertView.dialogView.subviews {
             if (subview is UIButton) {
                 let button = subview as! UIButton
                 if (button.titleLabel!.text == STATIC_MEMBERS.DISMISS_TEXT) {
-                    button.sendActionsForControlEvents(.TouchUpInside)
+                    button.sendActions(for: .touchUpInside)
                 }
             }
         }
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name:UIApplicationDidEnterBackgroundNotification, object:nil)
+        NotificationCenter.default.removeObserver(self, name:NSNotification.Name.UIApplicationDidEnterBackground, object:nil)
     }
 }

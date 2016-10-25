@@ -23,23 +23,23 @@
 import UIKit
 
 @objc(TLReceiveViewController) class TLReceiveViewController: UIViewController, UIScrollViewDelegate, UITabBarDelegate {
-    @IBOutlet private var addressQRCodeImageView: UIImageView?
-    @IBOutlet private var addressLabel: UILabel?
-    @IBOutlet private var accountNameLabel: UILabel?
-    @IBOutlet private var receiveAddressesScrollView: UIScrollView?
-    @IBOutlet private var receiveAddressesPageControl: UIPageControl?
-    @IBOutlet private var fromViewContainerButton: UIButton?
-    @IBOutlet private var scrollContentView: UIView?
-    @IBOutlet private var selectAccountImageView: UIImageView?
-    @IBOutlet private var balanceActivityIndicatorView: UIActivityIndicatorView?
-    @IBOutlet private var accountBalanceLabel: UILabel?
-    @IBOutlet private var fromViewContainer: UIButton?
-    @IBOutlet private var pageControlViewContainer: UIView?
-    @IBOutlet private var receivingAddressPageControl: UIPageControl?
-    @IBOutlet private var tabBar: UITabBar?
+    @IBOutlet fileprivate var addressQRCodeImageView: UIImageView?
+    @IBOutlet fileprivate var addressLabel: UILabel?
+    @IBOutlet fileprivate var accountNameLabel: UILabel?
+    @IBOutlet fileprivate var receiveAddressesScrollView: UIScrollView?
+    @IBOutlet fileprivate var receiveAddressesPageControl: UIPageControl?
+    @IBOutlet fileprivate var fromViewContainerButton: UIButton?
+    @IBOutlet fileprivate var scrollContentView: UIView?
+    @IBOutlet fileprivate var selectAccountImageView: UIImageView?
+    @IBOutlet fileprivate var balanceActivityIndicatorView: UIActivityIndicatorView?
+    @IBOutlet fileprivate var accountBalanceLabel: UILabel?
+    @IBOutlet fileprivate var fromViewContainer: UIButton?
+    @IBOutlet fileprivate var pageControlViewContainer: UIView?
+    @IBOutlet fileprivate var receivingAddressPageControl: UIPageControl?
+    @IBOutlet fileprivate var tabBar: UITabBar?
     
-    private var pageControlBeingUsed = false
-    private var receiveAddresses: NSMutableArray?
+    fileprivate var pageControlBeingUsed = false
+    fileprivate var receiveAddresses: NSMutableArray?
     let newAddressInfoText = "New addresses will be automatically generated and cycled for you as you use your current available addresses.".localized
     let importedWatchAccountStealthAddressInfoText = "Imported Watch Only Accounts can't see reusable address payments, thus this accounts' reusable address is not available. If you want see the reusable address for this account import the account private key that corresponds to this accounts public key.".localized
     let coldWalletAccountStealthAddressInfoText = "Cold Wallet Accounts can't see reusable address payments, thus this accounts' reusable address is not available.".localized
@@ -59,43 +59,43 @@ import UIKit
         self.balanceActivityIndicatorView!.color = TLColors.mainAppOppositeColor()
 
         self.navigationController!.setToolbarHidden(false, animated: false)
-        self.navigationController!.toolbarHidden = true
+        self.navigationController!.isToolbarHidden = true
 
-        self.tabBar!.selectedItem = ((self.tabBar!.items as NSArray!).objectAtIndex(1)) as? UITabBarItem
-        if UIScreen.mainScreen().bounds.size.height <= 480.0 { // is 3.5 inch screen
-            self.tabBar!.hidden = true
+        self.tabBar!.selectedItem = ((self.tabBar!.items as NSArray!).object(at: 1)) as? UITabBarItem
+        if UIScreen.main.bounds.size.height <= 480.0 { // is 3.5 inch screen
+            self.tabBar!.isHidden = true
         }
         
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.Refresh, target: self, action: "refreshSelectedAccountAgain")
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.refresh, target: self, action: #selector(TLReceiveViewController.refreshSelectedAccountAgain))
         
         self.navigationController!.view.addGestureRecognizer(self.slidingViewController().panGesture)
 
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateReceiveViewController:",
-            name: TLNotificationEvents.EVENT_ADVANCE_MODE_TOGGLED(), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TLReceiveViewController.updateReceiveViewController(_:)),
+            name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ADVANCE_MODE_TOGGLED()), object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "updateViewToNewSelectedObject",
-            name: TLNotificationEvents.EVENT_UPDATED_RECEIVING_ADDRESSES(), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(TLReceiveViewController.updateViewToNewSelectedObject),
+            name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_UPDATED_RECEIVING_ADDRESSES()), object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self
-            , selector: "updateViewToNewSelectedObjectAndAlertNewText",
-            name: TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION(), object: nil)
+        NotificationCenter.default.addObserver(self
+            , selector: #selector(TLReceiveViewController.updateViewToNewSelectedObjectAndAlertNewText),
+            name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION()), object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self
-            , selector: "updateViewToNewSelectedObject",
-            name: TLNotificationEvents.EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED(), object: nil)
+        NotificationCenter.default.addObserver(self
+            , selector: #selector(TLReceiveViewController.updateViewToNewSelectedObject),
+            name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED()), object: nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self
-            , selector: "updateViewToNewSelectedObject",
-            name: TLNotificationEvents.EVENT_FETCHED_ADDRESSES_DATA(), object: nil)
+        NotificationCenter.default.addObserver(self
+            , selector: #selector(TLReceiveViewController.updateViewToNewSelectedObject),
+            name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_FETCHED_ADDRESSES_DATA()), object: nil)
 
         
-        NSNotificationCenter.defaultCenter().addObserver(self
-            , selector: "updateViewToNewSelectedObject",
-            name: TLNotificationEvents.EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED(), object: nil)
+        NotificationCenter.default.addObserver(self
+            , selector: #selector(TLReceiveViewController.updateViewToNewSelectedObject),
+            name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED()), object: nil)
         
         self.receiveAddressesScrollView!.delegate = self
         
-        let singleFingerTap = UITapGestureRecognizer(target: self, action: "singleFingerTap")
+        let singleFingerTap = UITapGestureRecognizer(target: self, action: #selector(TLReceiveViewController.singleFingerTap))
         self.receiveAddressesScrollView!.addGestureRecognizer(singleFingerTap)
         
         if (AppDelegate.instance().justSetupHDWallet) {
@@ -106,12 +106,12 @@ import UIKit
         self.refreshSelectedAccount(false)
     }
     
-    override func viewWillAppear(animated: Bool) -> () {
+    override func viewWillAppear(_ animated: Bool) -> () {
         self.updateViewToNewSelectedObject()
     }
     
-    override func viewDidAppear(animated: Bool) -> () {
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_RECEIVE_SCREEN(), object: nil, userInfo: nil)
+    override func viewDidAppear(_ animated: Bool) -> () {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_RECEIVE_SCREEN()), object: nil, userInfo: nil)
         
         if (TLSuggestions.instance().conditionToPromptToSuggestedBackUpWalletPassphraseSatisfied()) {
             TLSuggestions.instance().promptToSuggestBackUpWalletPassphrase(self)
@@ -126,32 +126,32 @@ import UIKit
         self.refreshSelectedAccount(true)
     }
     
-    private func refreshSelectedAccount(fetchDataAgain: Bool) {
+    fileprivate func refreshSelectedAccount(_ fetchDataAgain: Bool) {
         if (!AppDelegate.instance().receiveSelectedObject!.hasFetchedCurrentFromData() || fetchDataAgain) {
-            if (AppDelegate.instance().receiveSelectedObject!.getSelectedObjectType() == .Account) {
+            if (AppDelegate.instance().receiveSelectedObject!.getSelectedObjectType() == .account) {
                 let accountObject = AppDelegate.instance().receiveSelectedObject!.getSelectedObject() as! TLAccountObject
-                self.balanceActivityIndicatorView!.hidden = false
-                self.accountBalanceLabel!.hidden = true
+                self.balanceActivityIndicatorView!.isHidden = false
+                self.accountBalanceLabel!.isHidden = true
                 self.balanceActivityIndicatorView!.startAnimating()
                 AppDelegate.instance().pendingOperations.addSetUpAccountOperation(accountObject, fetchDataAgain: fetchDataAgain, success: {
-                    self.accountBalanceLabel!.hidden = false
+                    self.accountBalanceLabel!.isHidden = false
                     self.balanceActivityIndicatorView!.stopAnimating()
-                    self.balanceActivityIndicatorView!.hidden = true
-                    if accountObject.downloadState != .Downloaded {
+                    self.balanceActivityIndicatorView!.isHidden = true
+                    if accountObject.downloadState != .downloaded {
                         self.updateAccountBalance()
                     }
                 })
                 
-            } else if (AppDelegate.instance().receiveSelectedObject!.getSelectedObjectType() == .Address) {
+            } else if (AppDelegate.instance().receiveSelectedObject!.getSelectedObjectType() == .address) {
                 let importedAddress = AppDelegate.instance().receiveSelectedObject!.getSelectedObject() as! TLImportedAddress
-                self.balanceActivityIndicatorView!.hidden = false
-                self.accountBalanceLabel!.hidden = true
+                self.balanceActivityIndicatorView!.isHidden = false
+                self.accountBalanceLabel!.isHidden = true
                 self.balanceActivityIndicatorView!.startAnimating()
                 AppDelegate.instance().pendingOperations.addSetUpImportedAddressOperation(importedAddress, fetchDataAgain: fetchDataAgain, success: {
-                    self.accountBalanceLabel!.hidden = false
+                    self.accountBalanceLabel!.isHidden = false
                     self.balanceActivityIndicatorView!.stopAnimating()
-                    self.balanceActivityIndicatorView!.hidden = true
-                    if importedAddress.downloadState != .Downloaded {
+                    self.balanceActivityIndicatorView!.isHidden = true
+                    if importedAddress.downloadState != .downloaded {
                         self.updateAccountBalance()
                     }
                 })
@@ -159,12 +159,12 @@ import UIKit
         } else {
             let balance = TLCurrencyFormat.getProperAmount(AppDelegate.instance().historySelectedObject!.getBalanceForSelectedObject()!)
             accountBalanceLabel!.text = balance as String
-            self.balanceActivityIndicatorView!.hidden = true
+            self.balanceActivityIndicatorView!.isHidden = true
         }
     }
     
     override func showSendView() {
-        self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("SendNav") 
+        self.slidingViewController().topViewController = self.storyboard!.instantiateViewController(withIdentifier: "SendNav") 
     }
     
     func singleFingerTap() {
@@ -172,46 +172,46 @@ import UIKit
             // receiveAddresses not loaded yet
             return
         }
-        let address = self.receiveAddresses!.objectAtIndex(self.receiveAddressesPageControl!.currentPage) as! String
-        let pasteboard = UIPasteboard.generalPasteboard()
+        let address = self.receiveAddresses!.object(at: self.receiveAddressesPageControl!.currentPage) as! String
+        let pasteboard = UIPasteboard.general
         pasteboard.string = address
         iToast.makeText("Copied To clipboard".localized).setGravity(iToastGravityCenter).setDuration(1000).show()
     }
     
-    @IBAction private func scrollViewClicked(sender: AnyObject) {
+    @IBAction fileprivate func scrollViewClicked(_ sender: AnyObject) {
         if self.receiveAddresses == nil {
             // receiveAddresses not loaded yet
             return
         }
-        let address = self.receiveAddresses!.objectAtIndex(self.receiveAddressesPageControl!.currentPage) as! String
-        let pasteboard = UIPasteboard.generalPasteboard()
+        let address = self.receiveAddresses!.object(at: self.receiveAddressesPageControl!.currentPage) as! String
+        let pasteboard = UIPasteboard.general
         pasteboard.string = address
         iToast.makeText("Copied To clipboard".localized).setGravity(iToastGravityCenter).setDuration(1000).show()
     }
     
-    private func getAddressInfoLabel(frame: CGRect, text: String) -> UILabel {
+    fileprivate func getAddressInfoLabel(_ frame: CGRect, text: String) -> UILabel {
         let addressInfoLabel = UILabel(frame: frame)
-        addressInfoLabel.textAlignment = .Center
+        addressInfoLabel.textAlignment = .center
         addressInfoLabel.text = text
         addressInfoLabel.textColor = TLColors.mainAppOppositeColor()
         addressInfoLabel.numberOfLines = 0
         return addressInfoLabel
     }
     
-    private func getPageWidth() -> CGFloat {
-        if (UIScreen.mainScreen().bounds.size.width > 414) {
+    fileprivate func getPageWidth() -> CGFloat {
+        if (UIScreen.main.bounds.size.width > 414) {
             //is iPad
-            return UIScreen.mainScreen().bounds.size.width - 16
+            return UIScreen.main.bounds.size.width - 16
         }
-        if (UIScreen.mainScreen().bounds.size.width == 414) {
+        if (UIScreen.main.bounds.size.width == 414) {
             //is iPhone6+
-            return UIScreen.mainScreen().bounds.size.width - 16 - 8
+            return UIScreen.main.bounds.size.width - 16 - 8
         }
         
-        return UIScreen.mainScreen().bounds.size.width - 16
+        return UIScreen.main.bounds.size.width - 16
     }
     
-    private func getLastPageView(lastPageCount: Int, text: String) -> UIView {
+    fileprivate func getLastPageView(_ lastPageCount: Int, text: String) -> UIView {
         let pageWidth = self.getPageWidth()
         
         var frame = CGRect()
@@ -223,10 +223,10 @@ import UIKit
         let QRCodeImageWidth = pageWidth - 40
         
         let xToBeInCenter = (pageWidth - QRCodeImageWidth) / 2
-        let imageViewFrame = CGRectMake(xToBeInCenter,
-            0,
-            QRCodeImageWidth,
-            QRCodeImageWidth)
+        let imageViewFrame = CGRect(x: xToBeInCenter,
+            y: 0,
+            width: QRCodeImageWidth,
+            height: QRCodeImageWidth)
         
         pageView.addSubview(self.getAddressInfoLabel(imageViewFrame, text: text))
         
@@ -235,7 +235,7 @@ import UIKit
         return pageView
     }
     
-    private func updateReceiveAddressesView() {
+    fileprivate func updateReceiveAddressesView() {
         self.scrollContentView!.autoresizesSubviews = false
         
         var numPages = 0
@@ -251,7 +251,7 @@ import UIKit
         
         let pageWidth = self.getPageWidth()
         let pageHeight:CGFloat
-        if UIScreen.mainScreen().bounds.size.height > 480.0 {
+        if UIScreen.main.bounds.size.height > 480.0 {
             pageHeight = pageWidth
         } else { // is 3.5 inch screen
             pageHeight = pageWidth - 100
@@ -259,8 +259,8 @@ import UIKit
         
         var pageCount = 0
 
-        for (var i = 0; i < self.receiveAddresses!.count; i++) {
-            pageCount++
+        for (i in 0 ..< self.receiveAddresses!.count) {
+            pageCount += 1
             
             var frame = CGRect()
             frame.origin.x = pageWidth * CGFloat(i)
@@ -269,22 +269,22 @@ import UIKit
             let pageView = UIView(frame: frame)
             
             let QRCodeImageWidth:CGFloat
-            if UIScreen.mainScreen().bounds.size.height > 480.0 {
+            if UIScreen.main.bounds.size.height > 480.0 {
                 QRCodeImageWidth = pageWidth - 30
             } else { // is 3.5 inch screen
                 QRCodeImageWidth = pageWidth - 110
             }
             
             let xToBeInCenter = (pageWidth - QRCodeImageWidth) / 2.0
-            let imageViewFrame = CGRectMake(xToBeInCenter,
-                0,
-                QRCodeImageWidth,
-                QRCodeImageWidth)
+            let imageViewFrame = CGRect(x: xToBeInCenter,
+                y: 0,
+                width: QRCodeImageWidth,
+                height: QRCodeImageWidth)
             
-            if (i < self.receiveAddresses!.count - 1 || AppDelegate.instance().receiveSelectedObject!.getSelectedObjectType() == .Address) {
+            if (i < self.receiveAddresses!.count - 1 || AppDelegate.instance().receiveSelectedObject!.getSelectedObjectType() == .address) {
                     
                     
-                let address = self.receiveAddresses!.objectAtIndex(i) as! String
+                let address = self.receiveAddresses!.object(at: i) as! String
                 let QRCodeImage = getQRCodeImage(address, size: QRCodeImageWidth - 5)
                     
                 let QRCodeImageView = UIImageView(frame: imageViewFrame)
@@ -293,7 +293,7 @@ import UIKit
                     
                 let addressLabelY: CGFloat
                 let infoLabelY: CGFloat
-                if (UIScreen.mainScreen().bounds.size.width <= 320) {
+                if (UIScreen.main.bounds.size.width <= 320) {
                     //is <= iPhone5s
                     addressLabelY = QRCodeImageWidth + 5
                     infoLabelY = QRCodeImageWidth - 15
@@ -302,17 +302,17 @@ import UIKit
                     infoLabelY = QRCodeImageWidth
                 }
                     
-                let addressLabelFrame = CGRectMake(xToBeInCenter,
-                    addressLabelY,
-                    QRCodeImageWidth,
-                    21)
+                let addressLabelFrame = CGRect(x: xToBeInCenter,
+                    y: addressLabelY,
+                    width: QRCodeImageWidth,
+                    height: 21)
                 let labelEdgeInsets = UIEdgeInsetsMake(0, 5, 0, 5)
                     
                 let addressLabel = UILabel(frame: UIEdgeInsetsInsetRect(addressLabelFrame, labelEdgeInsets))
                 addressLabel.textColor = TLColors.mainAppOppositeColor()
                 addressLabel.adjustsFontSizeToFitWidth = true
-                addressLabel.textAlignment = .Center
-                addressLabel.font = UIFont.boldSystemFontOfSize(addressLabel.font.pointSize)
+                addressLabel.textAlignment = .center
+                addressLabel.font = UIFont.boldSystemFont(ofSize: addressLabel.font.pointSize)
                 addressLabel.text = address
                 if address.characters.count > 35 { // is stealth address
                     addressLabel.numberOfLines = 2
@@ -322,22 +322,22 @@ import UIKit
                 pageView.addSubview(addressLabel)
                     
                 if (TLStealthAddress.isStealthAddress(address, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
-                    let infoLabelFrame = CGRectMake(xToBeInCenter,
-                        infoLabelY,
-                        QRCodeImageWidth,
-                        21)
+                    let infoLabelFrame = CGRect(x: xToBeInCenter,
+                        y: infoLabelY,
+                        width: QRCodeImageWidth,
+                        height: 21)
                         
                     let infoLabel = UILabel(frame: UIEdgeInsetsInsetRect(infoLabelFrame, labelEdgeInsets))
                     infoLabel.textColor = TLColors.mainAppOppositeColor()
-                    infoLabel.font = UIFont.boldSystemFontOfSize(addressLabel.font.pointSize - 5)
+                    infoLabel.font = UIFont.boldSystemFont(ofSize: addressLabel.font.pointSize - 5)
                     infoLabel.text = "Reusable Address:".localized
                     pageView.addSubview(infoLabel)
                     //QRCodeImageView.backgroundColor = UIColor.orangeColor()
                 }
             } else {
-                if AppDelegate.instance().receiveSelectedObject!.getAccountType() == .ColdWallet {
+                if AppDelegate.instance().receiveSelectedObject!.getAccountType() == .coldWallet {
                     pageView.addSubview(self.getAddressInfoLabel(imageViewFrame, text: coldWalletAccountStealthAddressInfoText))
-                } else if AppDelegate.instance().receiveSelectedObject!.getAccountType() == .ImportedWatch {
+                } else if AppDelegate.instance().receiveSelectedObject!.getAccountType() == .importedWatch {
                     pageView.addSubview(self.getAddressInfoLabel(imageViewFrame, text: importedWatchAccountStealthAddressInfoText))
                 } else {
                     pageView.addSubview(self.getAddressInfoLabel(imageViewFrame, text: newAddressInfoText))
@@ -352,46 +352,46 @@ import UIKit
         
         while (pageCount < numPages) {
             self.scrollContentView!.addSubview(self.getLastPageView(pageCount, text: newAddressInfoText))
-            pageCount++
+            pageCount += 1
         }
         
-        self.receiveAddressesScrollView!.contentSize = CGSizeMake(pageWidth * CGFloat(numPages),
-            CGFloat(pageHeight))
+        self.receiveAddressesScrollView!.contentSize = CGSize(width: pageWidth * CGFloat(numPages),
+            height: CGFloat(pageHeight))
         
         self.receiveAddressesPageControl!.currentPage = 0
         self.receiveAddressesPageControl!.numberOfPages = numPages
         
         if (self.receiveAddressesPageControl!.numberOfPages > 1) {
-            self.receiveAddressesPageControl!.hidden = false
-            self.pageControlViewContainer!.hidden = false
+            self.receiveAddressesPageControl!.isHidden = false
+            self.pageControlViewContainer!.isHidden = false
         } else {
-            self.receiveAddressesPageControl!.hidden = true
-            self.pageControlViewContainer!.hidden = true
+            self.receiveAddressesPageControl!.isHidden = true
+            self.pageControlViewContainer!.isHidden = true
         }
     }
 
-    private func updateReceiveAddressArray() {
+    fileprivate func updateReceiveAddressArray() {
         let receivingAddressesCount = AppDelegate.instance().receiveSelectedObject!.getReceivingAddressesCount()
         self.receiveAddresses = NSMutableArray(capacity: Int(receivingAddressesCount))
-        for (var i = 0; i < Int(receivingAddressesCount); i++) {
+        for (i in 0 ..< Int(receivingAddressesCount)) {
             let address = AppDelegate.instance().receiveSelectedObject!.getReceivingAddressForSelectedObject(i)
-            self.receiveAddresses!.addObject(address!)
+            self.receiveAddresses!.add(address!)
         }
 
         if (TLWalletUtils.ENABLE_STEALTH_ADDRESS()) {
-            if (AppDelegate.instance().receiveSelectedObject!.getSelectedObjectType() == .Account) {
+            if (AppDelegate.instance().receiveSelectedObject!.getSelectedObjectType() == .account) {
                 if let stealthAddress = AppDelegate.instance().receiveSelectedObject!.getStealthAddress() {
                     if (TLPreferences.enabledStealthAddressDefault()) {
-                        self.receiveAddresses!.insertObject(stealthAddress, atIndex: 0)
+                        self.receiveAddresses!.insert(stealthAddress, at: 0)
                     } else {
-                        self.receiveAddresses!.addObject(stealthAddress)
+                        self.receiveAddresses!.add(stealthAddress)
                     }                    
                 }
             }
         }
 
-        if (AppDelegate.instance().receiveSelectedObject!.getSelectedObjectType() == .Account) {
-            self.receiveAddresses!.addObject("End")
+        if (AppDelegate.instance().receiveSelectedObject!.getSelectedObjectType() == .account) {
+            self.receiveAddresses!.add("End")
         }
     }
 
@@ -400,7 +400,7 @@ import UIKit
     }
     
     func updateViewToNewSelectedObject() {
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             self.updateAccountBalance()
             let receivingAddressesCount = AppDelegate.instance().receiveSelectedObject!.getReceivingAddressesCount()
             if (receivingAddressesCount == 0) {
@@ -416,19 +416,19 @@ import UIKit
         }
     }
 
-    private func updateAccountBalance() {
+    fileprivate func updateAccountBalance() {
         let balance = AppDelegate.instance().receiveSelectedObject!.getBalanceForSelectedObject()
         let balanceString = TLCurrencyFormat.getProperAmount(balance!)
         
-        if AppDelegate.instance().receiveSelectedObject!.getDownloadState() == .Downloaded {
+        if AppDelegate.instance().receiveSelectedObject!.getDownloadState() == .downloaded {
             self.balanceActivityIndicatorView!.stopAnimating()
-            self.balanceActivityIndicatorView!.hidden = true
+            self.balanceActivityIndicatorView!.isHidden = true
             self.accountBalanceLabel!.text = balanceString as String
-            self.accountBalanceLabel!.hidden = false
+            self.accountBalanceLabel!.isHidden = false
         }
     }
 
-    private func getQRCodeImage(address: String, size: CGFloat) -> UIImage {
+    fileprivate func getQRCodeImage(_ address: String, size: CGFloat) -> UIImage {
         //let QRCodeData = TLWalletUtils.getBitcoinURI(address, amount: TLCoin.zero(), label: nil, message: nil)
         let QRCodeData = address
         let QRCodeImage = TLWalletUtils.getQRCodeImage(QRCodeData,
@@ -437,7 +437,7 @@ import UIKit
         return QRCodeImage
     }
 
-    func updateReceiveViewController(notification: NSNotification) {
+    func updateReceiveViewController(_ notification: Notification) {
         if (TLPreferences.enabledAdvancedMode()) {
             //self.addressLabel!.hidden = false
         } else {
@@ -445,26 +445,26 @@ import UIKit
         }
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) -> () {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any!) -> () {
         if(segue.identifier == "selectAccount") {
-            let vc = segue.destinationViewController 
+            let vc = segue.destination 
             vc.navigationItem.title = "Select Account".localized
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "onAccountSelected:", name: TLNotificationEvents.EVENT_ACCOUNT_SELECTED(), object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(TLReceiveViewController.onAccountSelected(_:)), name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ACCOUNT_SELECTED()), object: nil)
         }
     }
 
-    func onAccountSelected(note: NSNotification) {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: TLNotificationEvents.EVENT_ACCOUNT_SELECTED(), object: nil)
+    func onAccountSelected(_ note: Notification) {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ACCOUNT_SELECTED()), object: nil)
         let selectedDict = note.object as! NSDictionary
-        let sendFromType = TLSendFromType(rawValue: selectedDict.objectForKey("sendFromType") as! Int)
+        let sendFromType = TLSendFromType(rawValue: selectedDict.object(forKey: "sendFromType") as! Int)
 
-        let sendFromIndex = selectedDict.objectForKey("sendFromIndex") as! Int
+        let sendFromIndex = selectedDict.object(forKey: "sendFromIndex") as! Int
         AppDelegate.instance().updateReceiveSelectedObject(sendFromType!, sendFromIndex: sendFromIndex)
 
         self.updateViewToNewSelectedObject()
     }
 
-    private func scrollToPage(page: NSInteger) {
+    fileprivate func scrollToPage(_ page: NSInteger) {
         // Update the scroll view to the appropriate page
         var frame = CGRect()
         frame.origin.x = self.receiveAddressesScrollView!.frame.size.width * CGFloat(page)
@@ -479,15 +479,15 @@ import UIKit
         pageControlBeingUsed = true
     }
 
-    @IBAction private func changePage(sender: AnyObject) {
+    @IBAction fileprivate func changePage(_ sender: AnyObject) {
         self.scrollToPage(self.receiveAddressesPageControl!.currentPage)
     }
 
-    @IBAction private func menuButtonClicked(sender: AnyObject) {
-        self.slidingViewController().anchorTopViewToRightAnimated(true)
+    @IBAction fileprivate func menuButtonClicked(_ sender: AnyObject) {
+        self.slidingViewController().anchorTopViewToRight(animated: true)
     }
 
-    func scrollViewDidScroll(sender: UIScrollView) {
+    func scrollViewDidScroll(_ sender: UIScrollView) {
         if (!pageControlBeingUsed) {
             // change page when more than 50% of the previous/next page is visible
             let pageWidth = self.receiveAddressesScrollView!.frame.size.width
@@ -496,22 +496,22 @@ import UIKit
         }
     }
 
-    func scrollViewWillBeginDragging(scrollView: UIScrollView) {
+    func scrollViewWillBeginDragging(_ scrollView: UIScrollView) {
         pageControlBeingUsed = false
     }
 
-    func scrollViewDidEndDecelerating(scrollView: UIScrollView) {
+    func scrollViewDidEndDecelerating(_ scrollView: UIScrollView) {
         pageControlBeingUsed = false
     }
 
-    func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
+    func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         if (item.tag == 0) {
             self.showSendView()
         }
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 }
 

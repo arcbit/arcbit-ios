@@ -29,20 +29,20 @@ class TLHUDWrapper {
         static var BACKGROUND_VIEW_ALPHA = 0.7
     }
     
-    class func showHUDAddedTo(view:UIView, labelText:String, animated:Bool) -> () {
+    class func showHUDAddedTo(_ view:UIView, labelText:String, animated:Bool) -> () {
         let subView = UIView(frame: view.frame)
-        subView.backgroundColor = UIColor.blackColor()
+        subView.backgroundColor = UIColor.black
         subView.alpha = CGFloat(STATIC_MEMBERS.BACKGROUND_VIEW_ALPHA)
         subView.tag = STATIC_MEMBERS.LOADING_BACKGROUND_VIEW_TAG
         
         AppDelegate.instance().window!.addSubview(subView)
         
-        let hud = MBProgressHUD.showHUDAddedTo(AppDelegate.instance().window, animated:animated)
-        hud.labelText = labelText
+        let hud = MBProgressHUD.showAdded(to: AppDelegate.instance().window, animated:animated)
+        hud?.labelText = labelText
     }
     
-    class func hideHUDForView(view:UIView, animated:(Bool)) -> () {
-        MBProgressHUD.hideHUDForView(AppDelegate.instance().window, animated:true)
+    class func hideHUDForView(_ view:UIView, animated:(Bool)) -> () {
+        MBProgressHUD.hide(for: AppDelegate.instance().window, animated:true)
         
         for subview in AppDelegate.instance().window!.subviews {
             if (subview.tag == STATIC_MEMBERS.LOADING_BACKGROUND_VIEW_TAG) {

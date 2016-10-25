@@ -23,11 +23,11 @@
 import Foundation
 
 @objc class TLAccounts:NSObject {
-    private var appWallet:TLWallet?
-    private var accountsDict:NSMutableDictionary?
-    private let accountsArray = NSMutableArray()
-    private let archivedAccountsArray = NSMutableArray()
-    private var accountType:TLAccountType?
+    fileprivate var appWallet:TLWallet?
+    fileprivate var accountsDict:NSMutableDictionary?
+    fileprivate let accountsArray = NSMutableArray()
+    fileprivate let archivedAccountsArray = NSMutableArray()
+    fileprivate var accountType:TLAccountType?
 
     init(appWallet: TLWallet, accountsArray: NSArray, accountType at:TLAccountType) {
         super.init()
@@ -36,63 +36,63 @@ import Foundation
         
         self.accountsDict = NSMutableDictionary(capacity: accountsArray.count)
         
-        for (var i:Int = 0; i < accountsArray.count; i++) {
-            let accountObject = accountsArray.objectAtIndex(i) as! TLAccountObject
+        for (i:Int in 0 ..< accountsArray.count) {
+            let accountObject = accountsArray.object(at: i) as! TLAccountObject
             if (accountObject.isArchived()) {
-                self.archivedAccountsArray.addObject(accountObject)
+                self.archivedAccountsArray.add(accountObject)
             } else {
-                self.accountsArray.addObject(accountObject)
+                self.accountsArray.add(accountObject)
             }
             
             accountObject.setPositionInWalletArray(i)
-            self.accountsDict!.setObject(accountObject, forKey:i)
+            self.accountsDict!.setObject(accountObject, forKey:i as NSCopying)
         }
     }
     
-    func addAccountWithExtendedKey(extendedKey:String) -> TLAccountObject {
-        assert(accountType != TLAccountType.HDWallet, "accountType == TLAccountTypeHDWallet")
+    func addAccountWithExtendedKey(_ extendedKey:String) -> TLAccountObject {
+        assert(accountType != TLAccountType.hdWallet, "accountType == TLAccountTypeHDWallet")
         let accountObject:TLAccountObject
         
-        if (accountType == TLAccountType.ColdWallet) {
+        if (accountType == TLAccountType.coldWallet) {
             accountObject = self.appWallet!.addColdWalletAccount(extendedKey)
-        } else if (accountType == TLAccountType.Imported) {
+        } else if (accountType == TLAccountType.imported) {
             accountObject = self.appWallet!.addImportedAccount(extendedKey)
         } else {
             accountObject = self.appWallet!.addWatchOnlyAccount(extendedKey)
         }
-        self.accountsArray.addObject(accountObject)
+        self.accountsArray.add(accountObject)
         let positionInWalletArray = self.getNumberOfAccounts()+getNumberOfArchivedAccounts()-1
         accountObject.setPositionInWalletArray(positionInWalletArray)
-        self.accountsDict!.setObject(accountObject, forKey:accountObject.getPositionInWalletArray())
+        self.accountsDict!.setObject(accountObject, forKey:accountObject.getPositionInWalletArray() as NSCopying)
         
         renameAccount(positionInWalletArray, accountName: accountObject.getDefaultNameAccount())
         
         return accountObject
     }
     
-    private func addAccount(accountObject: TLAccountObject) -> (Bool){
-        assert(accountType == TLAccountType.HDWallet, "accountType != TLAccountTypeHDWallet")
-        assert(self.accountsDict!.objectForKey(accountObject.getAccountIdxNumber()) == nil, "")
+    fileprivate func addAccount(_ accountObject: TLAccountObject) -> (Bool){
+        assert(accountType == TLAccountType.hdWallet, "accountType != TLAccountTypeHDWallet")
+        assert(self.accountsDict!.object(forKey: accountObject.getAccountIdxNumber()) == nil, "")
         
-        self.accountsDict!.setObject(accountObject, forKey:accountObject.getAccountIdxNumber())
-        self.accountsArray.addObject(accountObject)
+        self.accountsDict!.setObject(accountObject, forKey:accountObject.getAccountIdxNumber() as NSCopying)
+        self.accountsArray.add(accountObject)
         
         return true
     }
     
-    func renameAccount(accountIdxNumber:Int, accountName:String) -> (Bool){
-        if (accountType == TLAccountType.HDWallet) {
-            let accountObject = self.accountsDict!.objectForKey(accountIdxNumber) as! TLAccountObject
+    func renameAccount(_ accountIdxNumber:Int, accountName:String) -> (Bool){
+        if (accountType == TLAccountType.hdWallet) {
+            let accountObject = self.accountsDict!.object(forKey: accountIdxNumber) as! TLAccountObject
             accountObject.renameAccount(accountName)
             self.appWallet!.renameAccount(accountObject.getAccountIdxNumber(), accountName:accountName)
         } else  {
             let accountObject = self.getAccountObjectForAccountIdxNumber(accountIdxNumber)
             accountObject.renameAccount(accountName)
-            if (accountType == TLAccountType.ColdWallet) {
+            if (accountType == TLAccountType.coldWallet) {
                 self.appWallet!.setColdWalletAccountName(accountName, idx:accountIdxNumber)
-            } else if (accountType == TLAccountType.Imported) {
+            } else if (accountType == TLAccountType.imported) {
                 self.appWallet!.setImportedAccountName(accountName, idx:accountIdxNumber)
-            } else if (accountType == TLAccountType.ImportedWatch) {
+            } else if (accountType == TLAccountType.importedWatch) {
                 self.appWallet!.setWatchOnlyAccountName(accountName, idx:accountIdxNumber)
             }
         }
@@ -101,16 +101,16 @@ import Foundation
     }
     
     //in this context accountIdx is not the accountID, accountIdx is simply the order in which i want to display the accounts, neccessary cuz accounts can be deleted and such,
-    func getAccountObjectForIdx(idx:Int)-> (TLAccountObject) {
-        return self.accountsArray.objectAtIndex(idx) as! TLAccountObject
+    func getAccountObjectForIdx(_ idx:Int)-> (TLAccountObject) {
+        return self.accountsArray.object(at: idx) as! TLAccountObject
     }
     
-    func getArchivedAccountObjectForIdx(idx:Int) -> TLAccountObject {
-        return self.archivedAccountsArray.objectAtIndex(idx) as! TLAccountObject
+    func getArchivedAccountObjectForIdx(_ idx:Int) -> TLAccountObject {
+        return self.archivedAccountsArray.object(at: idx) as! TLAccountObject
     }
     
-    func getIdxForAccountObject(accountObject:TLAccountObject) -> (Int){
-        return self.accountsArray.indexOfObject(accountObject) as Int
+    func getIdxForAccountObject(_ accountObject:TLAccountObject) -> (Int){
+        return self.accountsArray.index(of: accountObject) as Int
     }
     
     func getNumberOfAccounts() -> Int {
@@ -122,61 +122,61 @@ import Foundation
     }
     
     
-    func getAccountObjectForAccountIdxNumber(accountIdxNumber:Int) ->TLAccountObject {
-        return self.accountsDict!.objectForKey(accountIdxNumber) as! TLAccountObject
+    func getAccountObjectForAccountIdxNumber(_ accountIdxNumber:Int) ->TLAccountObject {
+        return self.accountsDict!.object(forKey: accountIdxNumber) as! TLAccountObject
     }
     
-    func archiveAccount(positionInWalletArray:Int) -> (){
+    func archiveAccount(_ positionInWalletArray:Int) -> (){
         setArchiveAccount(positionInWalletArray, enabled:true)
         
-        let toMoveAccountObject = self.accountsDict!.objectForKey(positionInWalletArray) as! TLAccountObject
+        let toMoveAccountObject = self.accountsDict!.object(forKey: positionInWalletArray) as! TLAccountObject
         
-        self.accountsArray.removeObject(toMoveAccountObject)
-        for (var i = 0; i < self.archivedAccountsArray.count; i++) {
-            let accountObject = self.archivedAccountsArray.objectAtIndex(i) as! TLAccountObject
+        self.accountsArray.remove(toMoveAccountObject)
+        for (i in 0 ..< self.archivedAccountsArray.count) {
+            let accountObject = self.archivedAccountsArray.object(at: i) as! TLAccountObject
             
             if (accountObject.getPositionInWalletArray() > toMoveAccountObject.getPositionInWalletArray()) {
-                self.archivedAccountsArray.insertObject(toMoveAccountObject, atIndex:i)
+                self.archivedAccountsArray.insert(toMoveAccountObject, at:i)
                 return
             }
         }
-        self.archivedAccountsArray.addObject(toMoveAccountObject)
+        self.archivedAccountsArray.add(toMoveAccountObject)
     }
     
-    func unarchiveAccount(positionInWalletArray:Int) -> (){
+    func unarchiveAccount(_ positionInWalletArray:Int) -> (){
         setArchiveAccount(positionInWalletArray, enabled:false)
         
-        let toMoveAccountObject = self.accountsDict!.objectForKey(positionInWalletArray) as! TLAccountObject
+        let toMoveAccountObject = self.accountsDict!.object(forKey: positionInWalletArray) as! TLAccountObject
         
-        self.archivedAccountsArray.removeObject(toMoveAccountObject)
-        for (var i = 0; i < self.accountsArray.count; i++) {
-            let accountObject = self.accountsArray.objectAtIndex(i) as! TLAccountObject
+        self.archivedAccountsArray.remove(toMoveAccountObject)
+        for (i in 0 ..< self.accountsArray.count) {
+            let accountObject = self.accountsArray.object(at: i) as! TLAccountObject
             if (accountObject.getPositionInWalletArray() > toMoveAccountObject.getPositionInWalletArray()) {
-                self.accountsArray.insertObject(toMoveAccountObject, atIndex:i)
+                self.accountsArray.insert(toMoveAccountObject, at:i)
                 return
             }
         }
-        self.accountsArray.addObject(toMoveAccountObject)
+        self.accountsArray.add(toMoveAccountObject)
     }
     
-    private func setArchiveAccount(accountIdxNumber:Int, enabled:Bool)  -> (){
+    fileprivate func setArchiveAccount(_ accountIdxNumber:Int, enabled:Bool)  -> (){
         let accountObject = getAccountObjectForAccountIdxNumber(accountIdxNumber) as TLAccountObject
         accountObject.archiveAccount(enabled)
         
-        if (accountType == TLAccountType.HDWallet) {
+        if (accountType == TLAccountType.hdWallet) {
             self.appWallet!.archiveAccountHDWallet(accountIdxNumber, enabled:enabled)
-        } else if (accountType == TLAccountType.ColdWallet) {
+        } else if (accountType == TLAccountType.coldWallet) {
             self.appWallet!.archiveAccountColdWalletAccount(accountIdxNumber, enabled:enabled)
-        } else if (accountType == TLAccountType.Imported) {
+        } else if (accountType == TLAccountType.imported) {
             self.appWallet!.archiveAccountImportedAccount(accountIdxNumber, enabled:enabled)
-        } else if (accountType == TLAccountType.ImportedWatch) {
+        } else if (accountType == TLAccountType.importedWatch) {
             self.appWallet!.archiveAccountImportedWatchAccount(accountIdxNumber, enabled:enabled)
         }
     }
     
-    private func getAccountWithAccountName(accountName:String?) -> TLAccountObject?{
+    fileprivate func getAccountWithAccountName(_ accountName:String?) -> TLAccountObject?{
         for key in self.accountsDict! {
-            let accountObject = self.accountsDict!.objectForKey(key.key) as! TLAccountObject
+            let accountObject = self.accountsDict!.object(forKey: key.key) as! TLAccountObject
             if (accountObject.getAccountName() == accountName)
             {
                 return accountObject
@@ -185,20 +185,20 @@ import Foundation
         return nil
     }
     
-    func accountNameExist(accountName:String) -> (Bool) {
+    func accountNameExist(_ accountName:String) -> (Bool) {
         return getAccountWithAccountName(accountName) == nil ? false : true
     }
     
-    func createNewAccount(accountName:String, accountType:TLAccount) -> TLAccountObject {
-        let accountObject = self.appWallet!.createNewAccount(accountName, accountType:TLAccount.Normal,
+    func createNewAccount(_ accountName:String, accountType:TLAccount) -> TLAccountObject {
+        let accountObject = self.appWallet!.createNewAccount(accountName, accountType:TLAccount.normal,
             preloadStartingAddresses:true)
         accountObject.updateAccountNeedsRecovering(false)
         addAccount(accountObject)
         return accountObject
     }
     
-    func createNewAccount(accountName:String, accountType:TLAccount, preloadStartingAddresses:Bool) -> TLAccountObject {
-        let accountObject = self.appWallet!.createNewAccount(accountName, accountType:TLAccount.Normal, preloadStartingAddresses:preloadStartingAddresses)
+    func createNewAccount(_ accountName:String, accountType:TLAccount, preloadStartingAddresses:Bool) -> TLAccountObject {
+        let accountObject = self.appWallet!.createNewAccount(accountName, accountType:TLAccount.normal, preloadStartingAddresses:preloadStartingAddresses)
         addAccount(accountObject)
         return accountObject
     }
@@ -209,40 +209,40 @@ import Foundation
         }
         
         let accountObject = self.accountsArray.lastObject as! TLAccountObject
-        self.accountsDict!.removeObjectForKey(accountObject.getAccountIdxNumber())
+        self.accountsDict!.removeObject(forKey: accountObject.getAccountIdxNumber())
         
         self.accountsArray.removeLastObject()
         self.appWallet!.removeTopAccount()
         return true
     }
     
-    func deleteAccount(idx:Int) -> (Bool){
-        assert(accountType != TLAccountType.HDWallet, "accountType == TLAccountTypeHDWallet")
+    func deleteAccount(_ idx:Int) -> (Bool){
+        assert(accountType != TLAccountType.hdWallet, "accountType == TLAccountTypeHDWallet")
         
-        let accountObject = self.archivedAccountsArray.objectAtIndex(idx) as! TLAccountObject
-        self.archivedAccountsArray.removeObjectAtIndex(idx)
+        let accountObject = self.archivedAccountsArray.object(at: idx) as! TLAccountObject
+        self.archivedAccountsArray.removeObject(at: idx)
         
-        if (accountType == TLAccountType.ColdWallet) {
+        if (accountType == TLAccountType.coldWallet) {
             self.appWallet!.deleteColdWalletAccount(accountObject.getPositionInWalletArray())
-        } else if (accountType == TLAccountType.Imported) {
+        } else if (accountType == TLAccountType.imported) {
             self.appWallet!.deleteImportedAccount(accountObject.getPositionInWalletArray())
-        } else if (accountType == TLAccountType.ImportedWatch) {
+        } else if (accountType == TLAccountType.importedWatch) {
             self.appWallet!.deleteWatchOnlyAccount(accountObject.getPositionInWalletArray())
         }
         
-        self.accountsDict!.removeObjectForKey(accountObject.getPositionInWalletArray())
+        self.accountsDict!.removeObject(forKey: accountObject.getPositionInWalletArray())
         
         let tmpDict = self.accountsDict!.copy() as! NSDictionary
         for (key, _) in tmpDict {
-            let ao = self.accountsDict!.objectForKey(key) as! TLAccountObject
+            let ao = self.accountsDict!.object(forKey: key) as! TLAccountObject
             if (ao.getPositionInWalletArray() > accountObject.getPositionInWalletArray()) {
                 ao.setPositionInWalletArray(ao.getPositionInWalletArray()-1)
-                self.accountsDict!.setObject(ao, forKey:ao.getPositionInWalletArray())
+                self.accountsDict!.setObject(ao, forKey:ao.getPositionInWalletArray() as NSCopying)
             }
         }
         
         if (accountObject.getPositionInWalletArray() < self.accountsDict!.count - 1) {
-            self.accountsDict!.removeObjectForKey(self.accountsDict!.count-1)
+            self.accountsDict!.removeObject(forKey: self.accountsDict!.count-1)
         }
         
         return true

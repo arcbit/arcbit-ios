@@ -22,7 +22,7 @@
 
 import Foundation
 
-func DLog(message: String, function: AnyObject) {
+func DLog(_ message: String, function: AnyObject) {
 #if DEBUG
     if(function is NSObject) {
     let obj = function as! NSObject
@@ -33,7 +33,7 @@ func DLog(message: String, function: AnyObject) {
 #endif
 }
 
-func DLog(message: String) {
+func DLog(_ message: String) {
 #if DEBUG
     NSLog("%@", message)
 #endif

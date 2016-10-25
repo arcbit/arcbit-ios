@@ -38,10 +38,10 @@ class TLBlockchainAPI {
         self.baseURL = baseURL
     }
     
-    func getBlockHeight(success: TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> (){
+    func getBlockHeight(_ success: @escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler) -> (){
         let endPoint = "q/getblockcount"
         let parameters = [:]
-        let url = NSURL(string: endPoint, relativeToURL:NSURL(string:self.baseURL))
+        let url = URL(string: endPoint, relativeTo:URL(string:self.baseURL))
         
         self.networking.httpGET(url!, parameters:parameters,
             success: {(jsonData:AnyObject!) in
@@ -55,93 +55,93 @@ class TLBlockchainAPI {
         })
     }
     
-    func getAddressData(address:String, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
+    func getAddressData(_ address:String, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
         let endPoint = String(format:"%@%@", STATIC_MEMBERS.BLOCKCHAIN_ENDPOINT_ADDRESS, address)
         let parameters = [
             STATIC_MEMBERS.BC_REQ_FORMAT: "json"
         ]
-        let url = NSURL(string:endPoint, relativeToURL:NSURL(string:self.baseURL))
+        let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
         self.networking.httpGET(url!, parameters:parameters,
             success:success, failure:failure)
     }
     
-    func getAddressDataSynchronous(address:String) -> NSDictionary {
+    func getAddressDataSynchronous(_ address:String) -> NSDictionary {
         let endPoint = String(format:"%@%@", STATIC_MEMBERS.BLOCKCHAIN_ENDPOINT_ADDRESS, address)
         let parameters = [
             STATIC_MEMBERS.BC_REQ_FORMAT: "json"
         ]
-        let url = NSURL(string:endPoint, relativeToURL:NSURL(string:self.baseURL))
+        let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
         return self.networking.httpGETSynchronous(url!, parameters:parameters) as! NSDictionary
     }
     
-    func getTx(txHash:String, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
+    func getTx(_ txHash:String, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
         let endPoint = String(format:"%@%@", STATIC_MEMBERS.BLOCKCHAIN_ENDPOINT_TX, txHash)
         let parameters = [
             STATIC_MEMBERS.BC_REQ_FORMAT: "json"
         ]
         
-        let url = NSURL(string:endPoint, relativeToURL:NSURL(string:self.baseURL))
+        let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
         self.networking.httpGET(url!, parameters:parameters,
             success:success, failure:failure)
     }
     
-    func getTxBackground(txHash:String, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
+    func getTxBackground(_ txHash:String, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
         let endPoint = String(format:"%@%@", STATIC_MEMBERS.BLOCKCHAIN_ENDPOINT_TX, txHash)
         let parameters = [
             STATIC_MEMBERS.BC_REQ_FORMAT: "json"
         ]
         
-        let url = NSURL(string:endPoint, relativeToURL:NSURL(string:self.baseURL))
+        let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
         self.networking.httpGETBackground(url!, parameters:parameters,
             success:success, failure:failure)
     }
     
-    func pushTx(txHex:String, txHash:String, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
+    func pushTx(_ txHex:String, txHash:String, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
         let endPoint = "pushtx"
         let parameters = [
             STATIC_MEMBERS.BC_REQ_FORMAT: "plain",
             "tx":txHex
         ]
         
-        let url = NSURL(string:endPoint, relativeToURL:NSURL(string:self.baseURL))
+        let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
         self.networking.httpPOST(url!, parameters:parameters,
             success:success, failure:failure)
     }
     
-    func getUnspentOutputsSynchronous(addressArray:NSArray) -> NSDictionary {
+    func getUnspentOutputsSynchronous(_ addressArray:NSArray) -> NSDictionary {
         let endPoint = "unspent"
         let parameters = [
-            STATIC_MEMBERS.BC_REQ_ACTIVE:addressArray.componentsJoinedByString("|")
+            STATIC_MEMBERS.BC_REQ_ACTIVE:addressArray.componentsJoined(by: "|")
         ]
-        let url = NSURL(string:endPoint, relativeToURL:NSURL(string:self.baseURL))
+        let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
         return self.networking.httpGETSynchronous(url!, parameters:parameters) as! NSDictionary
     }
     
-    func getUnspentOutputs(addressArray:Array<String>, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
+    func getUnspentOutputs(_ addressArray:Array<String>, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
         let endPoint = "unspent"
         let parameters = [
-            STATIC_MEMBERS.BC_REQ_ACTIVE:addressArray.joinWithSeparator("|")
+            STATIC_MEMBERS.BC_REQ_ACTIVE:addressArray.joined(separator: "|")
         ]
-        let url = NSURL(string:endPoint, relativeToURL:NSURL(string:self.baseURL))
+        let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
         self.networking.httpGET(url!, parameters:parameters,
             success:success, failure:failure)
     }
     
-    func getAddressesInfoSynchronous(addressArray:Array<String>) -> NSDictionary{
+    func getAddressesInfoSynchronous(_ addressArray:Array<String>) -> NSDictionary{
         let endPoint = "multiaddr"
         let parameters = [
-            STATIC_MEMBERS.BC_REQ_ACTIVE:addressArray.joinWithSeparator("|"),
+            STATIC_MEMBERS.BC_REQ_ACTIVE:addressArray.joined(separator: "|"),
             "no_buttons":"true"]
-        let url = NSURL(string:endPoint, relativeToURL:NSURL(string:self.baseURL))
+        let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
         return self.networking.httpGETSynchronous(url!, parameters:parameters) as! NSDictionary
     }
     
-    func getAddressesInfo(addressArray:Array<String>, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
+    func getAddressesInfo(_ addressArray:Array<String>, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
         let endPoint = "multiaddr"
         let parameters = [
-            STATIC_MEMBERS.BC_REQ_ACTIVE:addressArray.joinWithSeparator("|"),
+            STATIC_MEMBERS.BC_REQ_ACTIVE:addressArray.joined(separator: "|"),
             "no_buttons":"true"]
-        let url = NSURL(string:endPoint, relativeToURL:NSURL(string:self.baseURL))
+        let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
         self.networking.httpGET(url!, parameters:parameters,
             success:success, failure:failure)
     }

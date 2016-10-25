@@ -28,39 +28,39 @@ import UIKit
         super.init(coder: aDecoder)
     }
     
-    @IBOutlet private var currencySymbolButton: UIButton?
-    @IBOutlet private var toAddressTextField: UITextField?
-    @IBOutlet private var amountTextField: UITextField?
-    @IBOutlet private var qrCodeImageView: UIImageView?
-    @IBOutlet private var selectAccountImageView: UIImageView?
-    @IBOutlet private var bitcoinDisplayLabel: UILabel?
-    @IBOutlet private var fiatCurrencyDisplayLabel: UILabel?
-    @IBOutlet private var scanQRButton: UIButton?
-    @IBOutlet private var reviewPaymentButton: UIButton?
-    @IBOutlet private var addressBookButton: UIButton?
-    @IBOutlet private var fiatAmountTextField: UITextField?
-    @IBOutlet private var topView: UIView?
-    @IBOutlet private var bottomView: UIView?
-    @IBOutlet private var accountNameLabel: UILabel?
-    @IBOutlet private var accountBalanceLabel: UILabel?
-    @IBOutlet private var balanceActivityIndicatorView: UIActivityIndicatorView?
-    @IBOutlet private var fromViewContainer: UIView?
-    @IBOutlet private var fromLabel: UILabel?
-    @IBOutlet private var tabBar: UITabBar?
-    private var tapGesture: UITapGestureRecognizer?
+    @IBOutlet fileprivate var currencySymbolButton: UIButton?
+    @IBOutlet fileprivate var toAddressTextField: UITextField?
+    @IBOutlet fileprivate var amountTextField: UITextField?
+    @IBOutlet fileprivate var qrCodeImageView: UIImageView?
+    @IBOutlet fileprivate var selectAccountImageView: UIImageView?
+    @IBOutlet fileprivate var bitcoinDisplayLabel: UILabel?
+    @IBOutlet fileprivate var fiatCurrencyDisplayLabel: UILabel?
+    @IBOutlet fileprivate var scanQRButton: UIButton?
+    @IBOutlet fileprivate var reviewPaymentButton: UIButton?
+    @IBOutlet fileprivate var addressBookButton: UIButton?
+    @IBOutlet fileprivate var fiatAmountTextField: UITextField?
+    @IBOutlet fileprivate var topView: UIView?
+    @IBOutlet fileprivate var bottomView: UIView?
+    @IBOutlet fileprivate var accountNameLabel: UILabel?
+    @IBOutlet fileprivate var accountBalanceLabel: UILabel?
+    @IBOutlet fileprivate var balanceActivityIndicatorView: UIActivityIndicatorView?
+    @IBOutlet fileprivate var fromViewContainer: UIView?
+    @IBOutlet fileprivate var fromLabel: UILabel?
+    @IBOutlet fileprivate var tabBar: UITabBar?
+    fileprivate var tapGesture: UITapGestureRecognizer?
 
-    private func setAmountFromUrlHandler() -> () {
+    fileprivate func setAmountFromUrlHandler() -> () {
         let dict = AppDelegate.instance().bitcoinURIOptionsDict
         if (dict != nil) {
-            let addr = dict!.objectForKey("address") as! String
-            let amount = dict!.objectForKey("amount") as! String
+            let addr = dict!.object(forKey: "address") as! String
+            let amount = dict!.object(forKey: "amount") as! String
             
             self.setAmountFromUrlHandler(TLCurrencyFormat.bitcoinAmountStringToCoin(amount), address: addr)
             AppDelegate.instance().bitcoinURIOptionsDict = nil
         }
     }
     
-    private func setAmountFromUrlHandler(amount: TLCoin, address: String) {
+    fileprivate func setAmountFromUrlHandler(_ amount: TLCoin, address: String) {
         self.toAddressTextField!.text = address
         let amountString = TLCurrencyFormat.coinToProperBitcoinAmountString(amount)
         self.amountTextField!.text = amountString
@@ -71,13 +71,13 @@ import UIKit
         self.updateFiatAmountTextFieldExchangeRate(nil)
     }
     
-    private func setAllCoinsBarButton() {
-        let allBarButtonItem = UIBarButtonItem(title: "Use all funds".localized, style: UIBarButtonItemStyle.Plain, target: self, action: "checkToFetchUTXOsAndDynamicFeesAndFillAmountFieldWithWholeBalance")
+    fileprivate func setAllCoinsBarButton() {
+        let allBarButtonItem = UIBarButtonItem(title: "Use all funds".localized, style: UIBarButtonItemStyle.plain, target: self, action: #selector(TLSendViewController.checkToFetchUTXOsAndDynamicFeesAndFillAmountFieldWithWholeBalance))
         navigationItem.rightBarButtonItem = allBarButtonItem
     }
     
-    private func clearRightBarButton() {
-        let allBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: self, action: nil)
+    fileprivate func clearRightBarButton() {
+        let allBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: self, action: nil)
         navigationItem.rightBarButtonItem = allBarButtonItem
     }
     
@@ -113,11 +113,11 @@ import UIKit
     }
 
     
-    func fillAmountFieldWithWholeBalance(useDynamicFees: Bool) {
+    func fillAmountFieldWithWholeBalance(_ useDynamicFees: Bool) {
         let fee:TLCoin
         let txSizeBytes:UInt64
         if useDynamicFees {
-            if (AppDelegate.instance().godSend!.getSelectedObjectType() == .Account) {
+            if (AppDelegate.instance().godSend!.getSelectedObjectType() == .account) {
                 let accountObject = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLAccountObject
                 let inputCount = accountObject.stealthPaymentUnspentOutputsCount + accountObject.unspentOutputsCount
                 txSizeBytes = TLSpaghettiGodSend.getEstimatedTxSize(inputCount, outputCount: 1)
@@ -129,8 +129,8 @@ import UIKit
             }
             
             if let dynamicFeeSatoshis:NSNumber? = AppDelegate.instance().txFeeAPI.getCachedDynamicFee() {
-                fee = TLCoin(uint64: txSizeBytes*dynamicFeeSatoshis!.unsignedLongLongValue)
-                DLog("fillAmountFieldWithWholeBalance coinFeeAmount dynamicFeeSatoshis: \(txSizeBytes*dynamicFeeSatoshis!.unsignedLongLongValue)")
+                fee = TLCoin(uint64: txSizeBytes*dynamicFeeSatoshis!.uint64Value)
+                DLog("fillAmountFieldWithWholeBalance coinFeeAmount dynamicFeeSatoshis: \(txSizeBytes*dynamicFeeSatoshis!.uint64Value)")
             } else {
                 fee = TLCurrencyFormat.bitcoinAmountStringToCoin(TLPreferences.getInAppSettingsKitTransactionFee()!)
             }
@@ -172,89 +172,89 @@ import UIKit
         self.scanQRButton!.backgroundColor = TLColors.mainAppColor()
         self.reviewPaymentButton!.backgroundColor = TLColors.mainAppColor()
         self.addressBookButton!.backgroundColor = TLColors.mainAppColor()
-        self.scanQRButton!.setTitleColor(TLColors.mainAppOppositeColor(), forState: .Normal)
-        self.reviewPaymentButton!.setTitleColor(TLColors.mainAppOppositeColor(), forState: .Normal)
-        self.addressBookButton!.setTitleColor(TLColors.mainAppOppositeColor(), forState: .Normal)
+        self.scanQRButton!.setTitleColor(TLColors.mainAppOppositeColor(), for: UIControlState())
+        self.reviewPaymentButton!.setTitleColor(TLColors.mainAppOppositeColor(), for: UIControlState())
+        self.addressBookButton!.setTitleColor(TLColors.mainAppOppositeColor(), for: UIControlState())
         
         if TLUtils.isIPhone5() || TLUtils.isIPhone4() {
             let keyboardDoneButtonView = UIToolbar()
             keyboardDoneButtonView.sizeToFit()
-            let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.Plain, target: self, action: Selector("dismissKeyboard") )
+            let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: self, action: #selector(TLSendViewController.dismissKeyboard) )
             let toolbarButtons = [item]
             keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
             self.amountTextField!.inputAccessoryView = keyboardDoneButtonView
             self.fiatAmountTextField!.inputAccessoryView = keyboardDoneButtonView
         }
 
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_SEND_SCREEN_LOADING(),
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_SEND_SCREEN_LOADING()),
             object: nil)
         
 
-        self.tabBar!.selectedItem = ((self.tabBar!.items as NSArray!).objectAtIndex(0)) as? UITabBarItem
-        if UIScreen.mainScreen().bounds.size.height <= 480.0 { // is 3.5 inch screen
-            self.tabBar!.hidden = true
+        self.tabBar!.selectedItem = ((self.tabBar!.items as NSArray!).object(at: 0)) as? UITabBarItem
+        if UIScreen.main.bounds.size.height <= 480.0 { // is 3.5 inch screen
+            self.tabBar!.isHidden = true
         }
         
         
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"dismissTextFieldsAndScrollDown:",
-            name:TLNotificationEvents.EVENT_HAMBURGER_MENU_OPENED(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"clearSendForm:",
-            name:TLNotificationEvents.EVENT_PREFERENCES_FIAT_DISPLAY_CHANGED(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"clearSendForm:",
-            name:TLNotificationEvents.EVENT_PREFERENCES_BITCOIN_DISPLAY_CHANGED(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateCurrencyView:",
-            name:TLNotificationEvents.EVENT_PREFERENCES_FIAT_DISPLAY_CHANGED(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateBitcoinDisplayView:",
-            name:TLNotificationEvents.EVENT_PREFERENCES_BITCOIN_DISPLAY_CHANGED(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateAccountBalanceView:",
-            name:TLNotificationEvents.EVENT_PREFERENCES_FIAT_DISPLAY_CHANGED(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateAccountBalanceView:",
-            name:TLNotificationEvents.EVENT_PREFERENCES_BITCOIN_DISPLAY_CHANGED(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateAccountBalanceView:",
-            name:TLNotificationEvents.EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateAccountBalanceView:",
-            name:TLNotificationEvents.EVENT_FETCHED_ADDRESSES_DATA(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"hideHUDAndUpdateBalanceView",
-            name:TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"clearSendForm:",
-             name:TLNotificationEvents.EVENT_SEND_PAYMENT(), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLSendViewController.dismissTextFieldsAndScrollDown(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_HAMBURGER_MENU_OPENED()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLSendViewController.clearSendForm(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_PREFERENCES_FIAT_DISPLAY_CHANGED()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLSendViewController.clearSendForm(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_PREFERENCES_BITCOIN_DISPLAY_CHANGED()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLSendViewController.updateCurrencyView(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_PREFERENCES_FIAT_DISPLAY_CHANGED()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLSendViewController.updateBitcoinDisplayView(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_PREFERENCES_BITCOIN_DISPLAY_CHANGED()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLSendViewController.updateAccountBalanceView(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_PREFERENCES_FIAT_DISPLAY_CHANGED()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLSendViewController.updateAccountBalanceView(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_PREFERENCES_BITCOIN_DISPLAY_CHANGED()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLSendViewController.updateAccountBalanceView(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLSendViewController.updateAccountBalanceView(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_FETCHED_ADDRESSES_DATA()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLSendViewController.hideHUDAndUpdateBalanceView),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLSendViewController.clearSendForm(_:)),
+             name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_SEND_PAYMENT()), object:nil)
         
         self.updateSendForm()
         
-        self.amountTextField!.keyboardType = .DecimalPad
+        self.amountTextField!.keyboardType = .decimalPad
         self.amountTextField!.delegate = self
-        self.fiatAmountTextField!.keyboardType = .DecimalPad
+        self.fiatAmountTextField!.keyboardType = .decimalPad
         self.fiatAmountTextField!.delegate = self
         
         self.toAddressTextField!.delegate = self
-        self.toAddressTextField!.clearButtonMode = UITextFieldViewMode.WhileEditing
+        self.toAddressTextField!.clearButtonMode = UITextFieldViewMode.whileEditing
         
-        self.currencySymbolButton?.setBackgroundImage(UIImage(named: "balance_bg_pressed.9.png"), forState: .Highlighted)
-        self.currencySymbolButton?.setBackgroundImage(UIImage(named: "balance_bg_normal.9.png"), forState: .Normal)
+        self.currencySymbolButton?.setBackgroundImage(UIImage(named: "balance_bg_pressed.9.png"), for: .highlighted)
+        self.currencySymbolButton?.setBackgroundImage(UIImage(named: "balance_bg_normal.9.png"), for: UIControlState())
         
         self.sendViewSetup()
         
         if self.slidingViewController() != nil {
-            self.slidingViewController().topViewAnchoredGesture = [.Tapping, .Panning]
+            self.slidingViewController().topViewAnchoredGesture = [.tapping, .panning]
         }
     }
     
-    override func viewWillDisappear(animated: Bool) {
+    override func viewWillDisappear(_ animated: Bool) {
         self.topView!.scrollToY(0)
     }
     
-    private func sendViewSetup() -> () {
+    fileprivate func sendViewSetup() -> () {
         self._updateCurrencyView()
         self._updateBitcoinDisplayView()
         
@@ -264,9 +264,9 @@ import UIKit
             let balance = AppDelegate.instance().godSend!.getCurrentFromBalance()
             let balanceString = TLCurrencyFormat.getProperAmount(balance)
             self.accountBalanceLabel!.text = balanceString as String
-            self.accountBalanceLabel!.hidden = false
+            self.accountBalanceLabel!.isHidden = false
             self.balanceActivityIndicatorView!.stopAnimating()
-            self.balanceActivityIndicatorView!.hidden = true
+            self.balanceActivityIndicatorView!.isHidden = true
         } else {
             self.refreshAccountDataAndSetBalanceView()
         }
@@ -275,48 +275,48 @@ import UIKit
         }
     }
     
-    func refreshAccountDataAndSetBalanceView(fetchDataAgain: Bool = false) -> () {
-        if (AppDelegate.instance().godSend!.getSelectedObjectType() == .Account) {
+    func refreshAccountDataAndSetBalanceView(_ fetchDataAgain: Bool = false) -> () {
+        if (AppDelegate.instance().godSend!.getSelectedObjectType() == .account) {
             let accountObject = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLAccountObject
-            self.balanceActivityIndicatorView!.hidden = false
-            self.accountBalanceLabel!.hidden = true
+            self.balanceActivityIndicatorView!.isHidden = false
+            self.accountBalanceLabel!.isHidden = true
             self.balanceActivityIndicatorView!.startAnimating()
             AppDelegate.instance().pendingOperations.addSetUpAccountOperation(accountObject, fetchDataAgain: fetchDataAgain, success: {
-                if accountObject.downloadState == .Downloaded {
-                    self.accountBalanceLabel!.hidden = false
+                if accountObject.downloadState == .downloaded {
+                    self.accountBalanceLabel!.isHidden = false
                     self.balanceActivityIndicatorView!.stopAnimating()
-                    self.balanceActivityIndicatorView!.hidden = true
+                    self.balanceActivityIndicatorView!.isHidden = true
                     self._updateAccountBalanceView()
                 }
             })
             
-        } else if (AppDelegate.instance().godSend!.getSelectedObjectType() == .Address) {
+        } else if (AppDelegate.instance().godSend!.getSelectedObjectType() == .address) {
             let importedAddress = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLImportedAddress
-            self.balanceActivityIndicatorView!.hidden = false
-            self.accountBalanceLabel!.hidden = true
+            self.balanceActivityIndicatorView!.isHidden = false
+            self.accountBalanceLabel!.isHidden = true
             self.balanceActivityIndicatorView!.startAnimating()
             AppDelegate.instance().pendingOperations.addSetUpImportedAddressOperation(importedAddress, fetchDataAgain: fetchDataAgain, success: {
-                if importedAddress.downloadState == .Downloaded {
-                    self.accountBalanceLabel!.hidden = false
+                if importedAddress.downloadState == .downloaded {
+                    self.accountBalanceLabel!.isHidden = false
                     self.balanceActivityIndicatorView!.stopAnimating()
-                    self.balanceActivityIndicatorView!.hidden = true
+                    self.balanceActivityIndicatorView!.isHidden = true
                     self._updateAccountBalanceView()
                 }
             })
         }
     }
     
-    private func showReceiveView() -> () {
-        self.slidingViewController().topViewController = self.storyboard!.instantiateViewControllerWithIdentifier("ReceiveNav") 
+    fileprivate func showReceiveView() -> () {
+        self.slidingViewController().topViewController = self.storyboard!.instantiateViewController(withIdentifier: "ReceiveNav") 
     }
     
-    private func updateViewToNewSelectedObject() -> () {
+    fileprivate func updateViewToNewSelectedObject() -> () {
         let label = AppDelegate.instance().godSend!.getCurrentFromLabel()
         self.accountNameLabel!.text = label
         self._updateAccountBalanceView()
     }
     
-    override func viewWillAppear(animated: Bool) {
+    override func viewWillAppear(_ animated: Bool) {
         self.updateViewToNewSelectedObject()
     
         // TODO: better way
@@ -346,8 +346,8 @@ import UIKit
         }
     }
     
-    override func viewDidAppear(animated: Bool) {
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_SEND_SCREEN(),
+    override func viewDidAppear(_ animated: Bool) {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_SEND_SCREEN()),
             object: nil, userInfo: nil)
         
         self.setAmountFromUrlHandler()
@@ -358,9 +358,9 @@ import UIKit
             TLPrompts.promptAlertController(self, title: "Like using ArcBit?".localized,
                 message: "Rate us in the App Store!".localized, okText: "Rate Now".localized, cancelTx: "Not now".localized,
                 success: { () -> () in
-                    let url = NSURL(string: "https://itunes.apple.com/app/id999487888");
-                    if (UIApplication.sharedApplication().canOpenURL(url!)) {
-                        UIApplication.sharedApplication().openURL(url!);
+                    let url = URL(string: "https://itunes.apple.com/app/id999487888");
+                    if (UIApplication.shared.canOpenURL(url!)) {
+                        UIApplication.shared.openURL(url!);
                     }
                     TLPreferences.setDisabledPromptRateApp(true)
                     if !TLPreferences.hasRatedOnce() {
@@ -372,9 +372,9 @@ import UIKit
             TLPrompts.promptAlertController(self, title: "Check out the ArcBit Web Wallet!".localized,
                 message: "Use ArcBit on your browser to complement the mobile app. The web wallet has all the features that the mobile wallet has plus more! Including a new easy way to store and spend Bitcoins from cold storage!".localized, okText: "Go".localized, cancelTx: "Not now".localized,
                 success: { () -> () in
-                    let url = NSURL(string: "https://chrome.google.com/webstore/detail/arcbit-bitcoin-wallet/dkceiphcnbfahjbomhpdgjmphnpgogfk");
-                    if (UIApplication.sharedApplication().canOpenURL(url!)) {
-                        UIApplication.sharedApplication().openURL(url!);
+                    let url = URL(string: "https://chrome.google.com/webstore/detail/arcbit-bitcoin-wallet/dkceiphcnbfahjbomhpdgjmphnpgogfk");
+                    if (UIApplication.shared.canOpenURL(url!)) {
+                        UIApplication.shared.openURL(url!);
                     }
                     TLPreferences.setDisabledPromptShowWebWallet(true)
                 }, failure: { (Bool) -> () in
@@ -389,11 +389,11 @@ import UIKit
         self.updateSendForm()
     }
     
-    func clearSendForm(notification: NSNotification) {
+    func clearSendForm(_ notification: Notification) {
         _clearSendForm()
     }
     
-    private func updateSendForm() {
+    fileprivate func updateSendForm() {
         self.toAddressTextField!.text = TLSendFormData.instance().getAddress()
         
         if (TLSendFormData.instance().getAmount() != nil) {
@@ -417,7 +417,7 @@ import UIKit
         self.updateAmountTextFieldExchangeRate(nil)
     }
     
-    func updateCurrencyView(notification: NSNotification) {
+    func updateCurrencyView(_ notification: Notification) {
         _updateCurrencyView()
     }
     
@@ -430,7 +430,7 @@ import UIKit
         self.updateFiatAmountTextFieldExchangeRate(nil)
     }
     
-    func updateBitcoinDisplayView(notification: NSNotification) {
+    func updateBitcoinDisplayView(_ notification: Notification) {
         _updateBitcoinDisplayView()
     }
     
@@ -446,9 +446,9 @@ import UIKit
     }
     
     func hideHUDAndUpdateBalanceView() {
-        self.accountBalanceLabel!.hidden = false
+        self.accountBalanceLabel!.isHidden = false
         self.balanceActivityIndicatorView!.stopAnimating()
-        self.balanceActivityIndicatorView!.hidden = true
+        self.balanceActivityIndicatorView!.isHidden = true
         self._updateAccountBalanceView()
     }
     
@@ -458,23 +458,23 @@ import UIKit
         self.accountBalanceLabel!.text = balanceString as String
     }
     
-    func updateAccountBalanceView(notification: NSNotification) {
+    func updateAccountBalanceView(_ notification: Notification) {
         self._updateAccountBalanceView()
     }
     
-    func onAccountSelected(note: NSNotification) {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: TLNotificationEvents.EVENT_ACCOUNT_SELECTED(),
+    func onAccountSelected(_ note: Notification) {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ACCOUNT_SELECTED()),
             object: nil)
         
         let selectedDict = note.object as! NSDictionary
-        let sendFromType = TLSendFromType(rawValue: selectedDict.objectForKey("sendFromType") as! Int)
-        let sendFromIndex = selectedDict.objectForKey("sendFromIndex") as! Int
+        let sendFromType = TLSendFromType(rawValue: selectedDict.object(forKey: "sendFromType") as! Int)
+        let sendFromIndex = selectedDict.object(forKey: "sendFromIndex") as! Int
         AppDelegate.instance().updateGodSend(sendFromType!, sendFromIndex: sendFromIndex)
         
         self.updateViewToNewSelectedObject()
     }
     
-    private func fillToAddressTextField(address: String) -> Bool {
+    fileprivate func fillToAddressTextField(_ address: String) -> Bool {
         if (TLCoreBitcoinWrapper.isValidAddress(address, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
             self.toAddressTextField!.text = address
             TLSendFormData.instance().setAddress(address)
@@ -491,7 +491,7 @@ import UIKit
         }
     }
     
-    private func checkTofetchFeeThenFinalPromptReviewTx() {
+    fileprivate func checkTofetchFeeThenFinalPromptReviewTx() {
         if TLPreferences.enabledInAppSettingsKitDynamicFee() && !AppDelegate.instance().txFeeAPI.haveUpdatedCachedDynamicFees() {
             AppDelegate.instance().txFeeAPI.getDynamicTxFee({
                 (_jsonData: AnyObject!) in
@@ -505,7 +505,7 @@ import UIKit
         }
     }
 
-    private func showFinalPromptReviewTx() {
+    fileprivate func showFinalPromptReviewTx() {
         let bitcoinAmount = self.amountTextField!.text
         let toAddress = self.toAddressTextField!.text
     
@@ -523,14 +523,14 @@ import UIKit
         }
         
 
-        func showReviewPaymentViewController(useDynamicFees: Bool) {
+        func showReviewPaymentViewController(_ useDynamicFees: Bool) {
             let fee:TLCoin
             let txSizeBytes:UInt64
             if useDynamicFees {
                 if TLSendFormData.instance().useAllFunds {
                     fee = TLSendFormData.instance().feeAmount!
                 } else {
-                    if (AppDelegate.instance().godSend!.getSelectedObjectType() == .Account) {
+                    if (AppDelegate.instance().godSend!.getSelectedObjectType() == .account) {
                         let accountObject = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLAccountObject
                         let inputCount = accountObject.getInputsNeededToConsume(inputtedAmount)
                         //TODO account for change output, output count likely 2 (3 if have stealth payment) cause if user dont do click use all funds because will likely have change
@@ -546,8 +546,8 @@ import UIKit
                     }
                     
                     if let dynamicFeeSatoshis:NSNumber? = AppDelegate.instance().txFeeAPI.getCachedDynamicFee() {
-                        fee = TLCoin(uint64: txSizeBytes*dynamicFeeSatoshis!.unsignedLongLongValue)
-                        DLog("showPromptReviewTx coinFeeAmount dynamicFeeSatoshis: \(txSizeBytes*dynamicFeeSatoshis!.unsignedLongLongValue)")
+                        fee = TLCoin(uint64: txSizeBytes*dynamicFeeSatoshis!.uint64Value)
+                        DLog("showPromptReviewTx coinFeeAmount dynamicFeeSatoshis: \(txSizeBytes*dynamicFeeSatoshis!.uint64Value)")
                         
                     } else {
                         fee = TLCurrencyFormat.bitcoinAmountStringToCoin(TLPreferences.getInAppSettingsKitTransactionFee()!)
@@ -572,8 +572,8 @@ import UIKit
             DLog("showPromptReviewTx inputtedAmount: \(inputtedAmount.toUInt64())")
             DLog("showPromptReviewTx fee: \(fee.toUInt64())")
             TLSendFormData.instance().fromLabel = AppDelegate.instance().godSend!.getCurrentFromLabel()!
-            let vc = self.storyboard!.instantiateViewControllerWithIdentifier("ReviewPayment") as! TLReviewPaymentViewController
-            self.slidingViewController().presentViewController(vc, animated: true, completion: nil)
+            let vc = self.storyboard!.instantiateViewController(withIdentifier: "ReviewPayment") as! TLReviewPaymentViewController
+            self.slidingViewController().present(vc, animated: true, completion: nil)
         }
         
         func checkToFetchDynamicFees() {
@@ -606,7 +606,7 @@ import UIKit
         }
     }
     
-    private func handleTempararyImportPrivateKey(privateKey: String) {
+    fileprivate func handleTempararyImportPrivateKey(_ privateKey: String) {
         if (!TLCoreBitcoinWrapper.isValidPrivateKey(privateKey, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
             TLPrompts.promptErrorMessage("Error".localized, message: "Invalid private key".localized)
         } else {
@@ -620,7 +620,7 @@ import UIKit
         }
     }
     
-    private func showPromptReviewTx() {
+    fileprivate func showPromptReviewTx() {
         if (AppDelegate.instance().godSend!.needWatchOnlyAccountPrivateKey()) {
             let accountObject = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLAccountObject
             TLPrompts.promptForTempararyImportExtendedPrivateKey(self, success: {
@@ -678,18 +678,18 @@ import UIKit
         }
     }
     
-    func dismissTextFieldsAndScrollDown(notification: NSNotification) {
+    func dismissTextFieldsAndScrollDown(_ notification: Notification) {
         self.fiatAmountTextField!.resignFirstResponder()
         self.amountTextField!.resignFirstResponder()
         self.toAddressTextField!.resignFirstResponder()
         
         self.topView!.scrollToY(0)
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIApplicationDidEnterBackgroundNotification,
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name.UIApplicationDidEnterBackground,
             object: nil)
     }
     
-    func onAddressSelected(note: NSNotification) {
-        NSNotificationCenter.defaultCenter().removeObserver(self, name: TLNotificationEvents.EVENT_ADDRESS_SELECTED(),
+    func onAddressSelected(_ note: Notification) {
+        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ADDRESS_SELECTED()),
             object: nil)
         
         let address = note.object as! String
@@ -701,14 +701,14 @@ import UIKit
         self.showPromptReviewTx()
     }
     
-    private func handleScannedAddress(data: String) {
+    fileprivate func handleScannedAddress(_ data: String) {
         if (data.hasPrefix("bitcoin:")) {
             let parsedBitcoinURI = TLWalletUtils.parseBitcoinURI(data)
             if parsedBitcoinURI == nil {
                 TLPrompts.promptErrorMessage("Error".localized, message: "URL does not contain an address.".localized)
                 return
             }
-            let address = parsedBitcoinURI!.objectForKey("address") as! String?
+            let address = parsedBitcoinURI!.object(forKey: "address") as! String?
             if (address == nil) {
                 TLPrompts.promptErrorMessage("Error".localized, message: "URL does not contain an address.".localized)
                 return
@@ -716,9 +716,9 @@ import UIKit
             
             let success = self.fillToAddressTextField(address!)
             if (success) {
-                let parsedBitcoinURIAmount = parsedBitcoinURI!.objectForKey("amount") as! String?
+                let parsedBitcoinURIAmount = parsedBitcoinURI!.object(forKey: "amount") as! String?
                 if (parsedBitcoinURIAmount != nil) {
-                    let coinAmount = TLCoin(bitcoinAmount: parsedBitcoinURIAmount!, bitcoinDenomination: TLBitcoinDenomination.Bitcoin)
+                    let coinAmount = TLCoin(bitcoinAmount: parsedBitcoinURIAmount!, bitcoinDenomination: TLBitcoinDenomination.bitcoin)
                     let amountString = TLCurrencyFormat.coinToProperBitcoinAmountString(coinAmount)
                     self.amountTextField!.text = amountString
                     self.updateFiatAmountTextFieldExchangeRate(nil)
@@ -731,17 +731,17 @@ import UIKit
         }
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject!) -> () {
+    override func prepare(for segue: UIStoryboardSegue, sender: Any!) -> () {
         if (segue.identifier == "selectAccount") {
-            let vc = segue.destinationViewController 
+            let vc = segue.destination 
             vc.navigationItem.title = "Select Account".localized
-            NSNotificationCenter.defaultCenter().addObserver(self, selector: "onAccountSelected:",
-                name: TLNotificationEvents.EVENT_ACCOUNT_SELECTED(), object: nil)
+            NotificationCenter.default.addObserver(self, selector: #selector(TLSendViewController.onAccountSelected(_:)),
+                name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ACCOUNT_SELECTED()), object: nil)
         }
     }
     
     func preFetchUTXOsAndDynamicFees() {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).async {
             DLog("preFetchUTXOsAndDynamicFees")
             if TLPreferences.enabledInAppSettingsKitDynamicFee() {
                 DLog("preFetchUTXOsAndDynamicFees enabledInAppSettingsKitDynamicFee")
@@ -767,7 +767,7 @@ import UIKit
         }
     }
     
-    @IBAction private func updateFiatAmountTextFieldExchangeRate(sender: AnyObject?) {
+    @IBAction fileprivate func updateFiatAmountTextFieldExchangeRate(_ sender: AnyObject?) {
         let currency = TLCurrencyFormat.getFiatCurrency()
         let amount = TLCurrencyFormat.properBitcoinAmountStringToCoin(self.amountTextField!.text!)
 
@@ -781,12 +781,12 @@ import UIKit
         }
     }
     
-    @IBAction private func updateAmountTextFieldExchangeRate(sender: AnyObject?) {
+    @IBAction fileprivate func updateAmountTextFieldExchangeRate(_ sender: AnyObject?) {
         let currency = TLCurrencyFormat.getFiatCurrency()
-        let fiatFormatter = NSNumberFormatter()
-        fiatFormatter.numberStyle = .DecimalStyle
+        let fiatFormatter = NumberFormatter()
+        fiatFormatter.numberStyle = .decimal
         fiatFormatter.maximumFractionDigits = 2
-        let fiatAmount = fiatFormatter.numberFromString(self.fiatAmountTextField!.text!)
+        let fiatAmount = fiatFormatter.number(from: self.fiatAmountTextField!.text!)
         if fiatAmount != nil && fiatAmount! != 0 {
             let bitcoinAmount = TLExchangeRate.instance().bitcoinAmountFromFiat(currency, fiatAmount: fiatAmount!.doubleValue)
             self.amountTextField!.text = TLCurrencyFormat.coinToProperBitcoinAmountString(bitcoinAmount)
@@ -797,13 +797,13 @@ import UIKit
         }
     }
     
-    @IBAction private func reviewPaymentClicked(sender: AnyObject) {
+    @IBAction fileprivate func reviewPaymentClicked(_ sender: AnyObject) {
         self.dismissKeyboard()
         
         let toAddress = self.toAddressTextField!.text
         if toAddress != nil && TLStealthAddress.isStealthAddress(toAddress!, isTestnet: false) {
             func checkToShowStealthPaymentDelayInfo() {
-                if TLSuggestions.instance().enabledShowStealthPaymentDelayInfo() && TLBlockExplorerAPI.STATIC_MEMBERS.blockExplorerAPI == .Blockchain {
+                if TLSuggestions.instance().enabledShowStealthPaymentDelayInfo() && TLBlockExplorerAPI.STATIC_MEMBERS.blockExplorerAPI == .blockchain {
                     let msg = "Sending payment to a reusable address might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For reusable address payments to show up faster, configure your app to use the Insight API in advance settings.".localized
                     TLPrompts.promtForOK(self, title:"Warning".localized, message:msg, success: {
                         () in
@@ -831,7 +831,7 @@ import UIKit
         }
     }
     
-    @IBAction private func scanQRCodeClicked(sender: AnyObject) {
+    @IBAction fileprivate func scanQRCodeClicked(_ sender: AnyObject) {
         AppDelegate.instance().showAddressReaderControllerFromViewController(self, success: {
             (data: String!) in
             self.handleScannedAddress(data)
@@ -840,18 +840,18 @@ import UIKit
         })
     }
     
-    @IBAction private func addressBookClicked(sender: AnyObject) {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "onAddressSelected:", name: TLNotificationEvents.EVENT_ADDRESS_SELECTED(), object: nil)
-        let vc = self.storyboard!.instantiateViewControllerWithIdentifier("AddressBook") 
-        self.slidingViewController().presentViewController(vc, animated: true, completion: nil)
+    @IBAction fileprivate func addressBookClicked(_ sender: AnyObject) {
+        NotificationCenter.default.addObserver(self, selector: #selector(TLSendViewController.onAddressSelected(_:)), name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ADDRESS_SELECTED()), object: nil)
+        let vc = self.storyboard!.instantiateViewController(withIdentifier: "AddressBook") 
+        self.slidingViewController().present(vc, animated: true, completion: nil)
     }
     
-    @IBAction private func menuButtonClicked(sender: AnyObject) {
-        self.slidingViewController().anchorTopViewToRightAnimated(true)
+    @IBAction fileprivate func menuButtonClicked(_ sender: AnyObject) {
+        self.slidingViewController().anchorTopViewToRight(animated: true)
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: (NSRange), replacementString string: String) -> Bool {
-        let newString = (textField.text as! NSString).stringByReplacingCharactersInRange(range, withString: string)
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: (NSRange), replacementString string: String) -> Bool {
+        let newString = (textField.text as! NSString).replacingCharacters(in: range, with: string)
         if (textField == self.toAddressTextField) {
             TLSendFormData.instance().setAddress(newString)
         } else if (textField == self.amountTextField) {
@@ -866,11 +866,11 @@ import UIKit
         return true
     }
     
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         
         if (self.tapGesture == nil) {
             self.tapGesture = UITapGestureRecognizer(target: self,
-                action: "dismissKeyboard")
+                action: #selector(TLSendViewController.dismissKeyboard))
             
             self.view.addGestureRecognizer(self.tapGesture!)
         }
@@ -878,14 +878,14 @@ import UIKit
         self.setAllCoinsBarButton()
     }
     
-    func textFieldShouldReturn(textField: UITextField) -> Bool {
+    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
         
         textField.resignFirstResponder()
         return true
     }
     
-    func textFieldShouldBeginEditing(textField: UITextField) -> Bool {
-        NSNotificationCenter.defaultCenter().addObserver(self, selector: "dismissTextFieldsAndScrollDown:", name: UIApplicationDidEnterBackgroundNotification, object: nil)
+    func textFieldShouldBeginEditing(_ textField: UITextField) -> Bool {
+        NotificationCenter.default.addObserver(self, selector: #selector(TLSendViewController.dismissTextFieldsAndScrollDown(_:)), name: NSNotification.Name.UIApplicationDidEnterBackground, object: nil)
         if TLUtils.isIPhone5() {
             if textField == self.amountTextField || textField == self.fiatAmountTextField {
                 self.topView!.scrollToY(-140)
@@ -905,7 +905,7 @@ import UIKit
         return true
     }
     
-    func textFieldShouldEndEditing(textField: UITextField) -> Bool {
+    func textFieldShouldEndEditing(_ textField: UITextField) -> Bool {
         if textField != self.toAddressTextField {
             self.clearRightBarButton()
         }
@@ -913,7 +913,7 @@ import UIKit
         return true
     }
     
-    func textFieldShouldClear(textField: UITextField) -> Bool {
+    func textFieldShouldClear(_ textField: UITextField) -> Bool {
         if (textField == self.toAddressTextField) {
             TLSendFormData.instance().setAddress(nil)
         }
@@ -921,14 +921,14 @@ import UIKit
         return true
     }
     
-    func tabBar(tabBar: UITabBar, didSelectItem item: UITabBarItem) {
+    func tabBar(_ tabBar: UITabBar, didSelect item: UITabBarItem) {
         if (item.tag == 1) {
             self.showReceiveView()
         }
     }
 
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 }
 

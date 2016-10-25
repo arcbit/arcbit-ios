@@ -34,20 +34,20 @@ import UIKit
     override func awakeFromNib() {
         super.awakeFromNib()
         accountBalanceButton!.backgroundColor = TLColors.mainAppColor()
-        self.accountBalanceButton!.setTitleColor(TLColors.mainAppOppositeColor(), forState:UIControlState.Normal)
+        self.accountBalanceButton!.setTitleColor(TLColors.mainAppOppositeColor(), for:UIControlState())
         self.accountBalanceButton!.titleLabel!.adjustsFontSizeToFitWidth = true
     }
     
     override init(style: UITableViewCellStyle, reuseIdentifier: String?) {
-        super.init(style: UITableViewCellStyle.Subtitle, reuseIdentifier: reuseIdentifier)
+        super.init(style: UITableViewCellStyle.subtitle, reuseIdentifier: reuseIdentifier)
         
     }
     
-    override func setSelected(selected:Bool, animated:Bool) -> () {
+    override func setSelected(_ selected:Bool, animated:Bool) -> () {
         super.setSelected(selected, animated:animated)
     }
     
-    @IBAction private func accountBalanceButtonClicked(sender:UIButton) {
+    @IBAction fileprivate func accountBalanceButtonClicked(_ sender:UIButton) {
         TLPreferences.setDisplayLocalCurrency(!TLPreferences.isDisplayLocalCurrency())
         TLPreferences.setInAppSettingsKitDisplayLocalCurrency(TLPreferences.isDisplayLocalCurrency())
     }

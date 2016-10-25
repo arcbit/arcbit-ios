@@ -31,12 +31,12 @@ import Crashlytics
     
     let MAX_CONSECUTIVE_FAILED_STEALTH_CHALLENGE_COUNT = 8
     let SAVE_WALLET_PAYLOAD_DELAY = 2.0
-    let DEFAULT_BLOCKEXPLORER_API = TLBlockExplorer.Blockchain
+    let DEFAULT_BLOCKEXPLORER_API = TLBlockExplorer.blockchain
     let RESPOND_TO_STEALTH_PAYMENT_GET_TX_TRIES_MAX_TRIES = 3
 
     var window:UIWindow?
-    private var storyboard:UIStoryboard?
-    private var modalDelegate:AnyObject?
+    fileprivate var storyboard:UIStoryboard?
+    fileprivate var modalDelegate:AnyObject?
     var appWallet = TLWallet(walletName: "App Wallet", walletConfig: TLWalletConfig(isTestnet: false))
     var accounts:TLAccounts?
     var coldWalletAccounts:TLAccounts?
@@ -50,14 +50,14 @@ import Crashlytics
     var bitcoinURIOptionsDict:NSDictionary?
     var justSetupHDWallet = false
     var giveExitAppNoticeForBlockExplorerAPIToTakeEffect = false
-    private var isAccountsAndImportsLoaded = false
+    fileprivate var isAccountsAndImportsLoaded = false
     var saveWalletJSONEnabled = true
     var consecutiveFailedStealthChallengeCount = 0
-    private var savedPasscodeViewDefaultBackgroundColor: UIColor?
-    private var savedPasscodeViewDefaultLabelTextColor: UIColor?
-    private var savedPasscodeViewDefaultPasscodeTextColor: UIColor?
-    private var hasFinishLaunching = false
-    private var respondToStealthPaymentGetTxTries = 0
+    fileprivate var savedPasscodeViewDefaultBackgroundColor: UIColor?
+    fileprivate var savedPasscodeViewDefaultLabelTextColor: UIColor?
+    fileprivate var savedPasscodeViewDefaultPasscodeTextColor: UIColor?
+    fileprivate var hasFinishLaunching = false
+    fileprivate var respondToStealthPaymentGetTxTries = 0
     var scannedEncryptedPrivateKey:String? = nil
     var scannedAddressBookAddress:String? = nil
     let pendingOperations = PendingOperations()
@@ -66,32 +66,32 @@ import Crashlytics
     lazy var txFeeAPI = TLTxFeeAPI();
 
     class func instance() -> AppDelegate {
-        return UIApplication.sharedApplication().delegate as! (AppDelegate)
+        return UIApplication.shared.delegate as! (AppDelegate)
     }
     
     func aAccountNeedsRecovering() -> Bool {
-        for (var i = 0; i < AppDelegate.instance().accounts!.getNumberOfAccounts();  i++) {
+        for (i in 0 ..< AppDelegate.instance().accounts!.getNumberOfAccounts()) {
             let accountObject = AppDelegate.instance().accounts!.getAccountObjectForIdx(i)
             if (accountObject.needsRecovering()) {
                 return true
             }
         }
         
-        for (var i = 0; i < AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts();  i++) {
+        for (i in 0 ..< AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts()) {
             let accountObject = AppDelegate.instance().coldWalletAccounts!.getAccountObjectForIdx(i)
             if (accountObject.needsRecovering()) {
                 return true
             }
         }
         
-        for (var i = 0; i < AppDelegate.instance().importedAccounts!.getNumberOfAccounts();  i++) {
+        for (i in 0 ..< AppDelegate.instance().importedAccounts!.getNumberOfAccounts()) {
             let accountObject = AppDelegate.instance().importedAccounts!.getAccountObjectForIdx(i)
             if (accountObject.needsRecovering()) {
                 return true
             }
         }
         
-        for (var i = 0; i < AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts();  i++) {
+        for (i in 0 ..< AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts()) {
             let accountObject = AppDelegate.instance().importedWatchAccounts!.getAccountObjectForIdx(i)
             if (accountObject.needsRecovering()) {
                 return true
@@ -101,7 +101,7 @@ import Crashlytics
     }
     
     func checkToRecoverAccounts() {
-        for (var i = 0; i < AppDelegate.instance().accounts!.getNumberOfAccounts();  i++) {
+        for (i in 0 ..< AppDelegate.instance().accounts!.getNumberOfAccounts()) {
             let accountObject = AppDelegate.instance().accounts!.getAccountObjectForIdx(i)
             if (accountObject.needsRecovering()) {
                 accountObject.clearAllAddresses()
@@ -109,7 +109,7 @@ import Crashlytics
             }
         }
         
-        for (var i = 0; i < AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts();  i++) {
+        for (i in 0 ..< AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts()) {
             let accountObject = AppDelegate.instance().coldWalletAccounts!.getAccountObjectForIdx(i)
             if (accountObject.needsRecovering()) {
                 accountObject.clearAllAddresses()
@@ -117,7 +117,7 @@ import Crashlytics
             }
         }
         
-        for (var i = 0; i < AppDelegate.instance().importedAccounts!.getNumberOfAccounts();  i++) {
+        for (i in 0 ..< AppDelegate.instance().importedAccounts!.getNumberOfAccounts()) {
             let accountObject = AppDelegate.instance().importedAccounts!.getAccountObjectForIdx(i)
             if (accountObject.needsRecovering()) {
                 accountObject.clearAllAddresses()
@@ -125,7 +125,7 @@ import Crashlytics
             }
         }
         
-        for (var i = 0; i < AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts();  i++) {
+        for (i in 0 ..< AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts()) {
             let accountObject = AppDelegate.instance().importedWatchAccounts!.getAccountObjectForIdx(i)
             if (accountObject.needsRecovering()) {
                 accountObject.clearAllAddresses()
@@ -138,34 +138,34 @@ import Crashlytics
         var sendFromType = TLPreferences.getSendFromType()
         var sendFromIndex = Int(TLPreferences.getSendFromIndex())
         
-        if (sendFromType == .HDWallet) {
+        if (sendFromType == .hdWallet) {
             if (sendFromIndex > self.accounts!.getNumberOfAccounts() - 1 ) {
-                sendFromType = TLSendFromType.HDWallet
+                sendFromType = TLSendFromType.hdWallet
                 sendFromIndex = 0
             }
-        } else if (sendFromType == .ColdWalletAccount) {
+        } else if (sendFromType == .coldWalletAccount) {
             if (sendFromIndex > self.coldWalletAccounts!.getNumberOfAccounts() - 1) {
-                sendFromType = TLSendFromType.HDWallet
+                sendFromType = TLSendFromType.hdWallet
                 sendFromIndex = 0
             }
-        } else if (sendFromType == .ImportedAccount) {
+        } else if (sendFromType == .importedAccount) {
             if (sendFromIndex > self.importedAccounts!.getNumberOfAccounts() - 1) {
-                sendFromType = TLSendFromType.HDWallet
+                sendFromType = TLSendFromType.hdWallet
                 sendFromIndex = 0
             }
-        } else if (sendFromType == .ImportedWatchAccount) {
+        } else if (sendFromType == .importedWatchAccount) {
             if (sendFromIndex > self.importedWatchAccounts!.getNumberOfAccounts() - 1) {
-                sendFromType = TLSendFromType.HDWallet
+                sendFromType = TLSendFromType.hdWallet
                 sendFromIndex = 0
             }
-        } else if (sendFromType == .ImportedAddress) {
+        } else if (sendFromType == .importedAddress) {
             if (sendFromIndex > self.importedAddresses!.getCount() - 1 ) {
-                sendFromType = TLSendFromType.HDWallet
+                sendFromType = TLSendFromType.hdWallet
                 sendFromIndex = 0
             }
-        } else if (sendFromType == .ImportedWatchAddress) {
+        } else if (sendFromType == .importedWatchAddress) {
             if (sendFromIndex > self.importedWatchAddresses!.getCount() - 1) {
-                sendFromType = TLSendFromType.HDWallet
+                sendFromType = TLSendFromType.hdWallet
                 sendFromIndex = 0
             }
         }
@@ -173,81 +173,81 @@ import Crashlytics
         self.updateGodSend(sendFromType, sendFromIndex:sendFromIndex)
     }
     
-    func updateGodSend(sendFromType: TLSendFromType, sendFromIndex: Int) {
+    func updateGodSend(_ sendFromType: TLSendFromType, sendFromIndex: Int) {
         TLPreferences.setSendFromType(sendFromType)
         TLPreferences.setSendFromIndex(UInt(sendFromIndex))
         
-        if (sendFromType == .HDWallet) {
+        if (sendFromType == .hdWallet) {
             let accountObject = self.accounts!.getAccountObjectForIdx(sendFromIndex)
             self.godSend?.setOnlyFromAccount(accountObject)
-        } else if (sendFromType == .ColdWalletAccount) {
+        } else if (sendFromType == .coldWalletAccount) {
             let accountObject = self.coldWalletAccounts!.getAccountObjectForIdx(sendFromIndex)
             self.godSend?.setOnlyFromAccount(accountObject)
-        } else if (sendFromType == .ImportedAccount) {
+        } else if (sendFromType == .importedAccount) {
             let accountObject = self.importedAccounts!.getAccountObjectForIdx(sendFromIndex)
             self.godSend?.setOnlyFromAccount(accountObject)
-        } else if (sendFromType == .ImportedWatchAccount) {
+        } else if (sendFromType == .importedWatchAccount) {
             let accountObject = self.importedWatchAccounts!.getAccountObjectForIdx(sendFromIndex)
             self.godSend?.setOnlyFromAccount(accountObject)
-        } else if (sendFromType == .ImportedAddress) {
+        } else if (sendFromType == .importedAddress) {
             let importedAddress = self.importedAddresses!.getAddressObjectAtIdx(sendFromIndex)
             self.godSend?.setOnlyFromAddress(importedAddress)
-        } else if (sendFromType == .ImportedWatchAddress) {
+        } else if (sendFromType == .importedWatchAddress) {
             let importedAddress = self.importedWatchAddresses!.getAddressObjectAtIdx(sendFromIndex)
             self.godSend?.setOnlyFromAddress(importedAddress)
         }
     }
     
-    func updateReceiveSelectedObject(sendFromType: TLSendFromType, sendFromIndex: Int) {
-        if (sendFromType == .HDWallet) {
+    func updateReceiveSelectedObject(_ sendFromType: TLSendFromType, sendFromIndex: Int) {
+        if (sendFromType == .hdWallet) {
             let accountObject = self.accounts!.getAccountObjectForIdx(sendFromIndex)
             self.receiveSelectedObject!.setSelectedAccount(accountObject)
-        } else if (sendFromType == .ColdWalletAccount) {
+        } else if (sendFromType == .coldWalletAccount) {
             let accountObject = self.accounts!.getAccountObjectForIdx(sendFromIndex)
             self.receiveSelectedObject!.setSelectedAccount(accountObject)
-        } else if (sendFromType == .ImportedAccount) {
+        } else if (sendFromType == .importedAccount) {
             let accountObject = self.importedAccounts!.getAccountObjectForIdx(sendFromIndex)
             self.receiveSelectedObject!.setSelectedAccount(accountObject)
-        } else if (sendFromType == .ImportedWatchAccount) {
+        } else if (sendFromType == .importedWatchAccount) {
             let accountObject = self.importedWatchAccounts!.getAccountObjectForIdx(sendFromIndex)
             self.receiveSelectedObject!.setSelectedAccount(accountObject)
-        } else if (sendFromType == .ImportedAddress) {
+        } else if (sendFromType == .importedAddress) {
             let importedAddress = self.importedAddresses!.getAddressObjectAtIdx(sendFromIndex)
             self.receiveSelectedObject!.setSelectedAddress(importedAddress)
-        } else if (sendFromType == .ImportedWatchAddress) {
+        } else if (sendFromType == .importedWatchAddress) {
             let importedAddress = self.importedWatchAddresses!.getAddressObjectAtIdx(sendFromIndex)
             self.receiveSelectedObject!.setSelectedAddress(importedAddress)
         }
     }
     
-    func updateHistorySelectedObject(sendFromType: TLSendFromType, sendFromIndex: Int) {
-        if (sendFromType == .HDWallet) {
+    func updateHistorySelectedObject(_ sendFromType: TLSendFromType, sendFromIndex: Int) {
+        if (sendFromType == .hdWallet) {
             let accountObject = self.accounts!.getAccountObjectForIdx(sendFromIndex)
             self.historySelectedObject!.setSelectedAccount(accountObject)
-        } else if (sendFromType == .ColdWalletAccount) {
+        } else if (sendFromType == .coldWalletAccount) {
             let accountObject = self.accounts!.getAccountObjectForIdx(sendFromIndex)
             self.historySelectedObject!.setSelectedAccount(accountObject)
-        } else if (sendFromType == .ImportedAccount) {
+        } else if (sendFromType == .importedAccount) {
             let accountObject = self.importedAccounts!.getAccountObjectForIdx(sendFromIndex)
-        } else if (sendFromType == .ImportedWatchAccount) {
+        } else if (sendFromType == .importedWatchAccount) {
             let accountObject = self.importedWatchAccounts!.getAccountObjectForIdx(sendFromIndex)
             self.historySelectedObject!.setSelectedAccount(accountObject)
-        } else if (sendFromType == .ImportedAddress) {
+        } else if (sendFromType == .importedAddress) {
             let importedAddress = self.importedAddresses!.getAddressObjectAtIdx(sendFromIndex)
             self.historySelectedObject!.setSelectedAddress(importedAddress)
-        } else if (sendFromType == .ImportedWatchAddress) {
+        } else if (sendFromType == .importedWatchAddress) {
             let importedAddress = self.importedWatchAddresses!.getAddressObjectAtIdx(sendFromIndex)
             self.historySelectedObject!.setSelectedAddress(importedAddress)
         }
     }
     
     
-    func showLockViewForEnteringPasscode(notification: NSNotification) {
+    func showLockViewForEnteringPasscode(_ notification: Notification) {
         if (!hasFinishLaunching && LTHPasscodeViewController.doesPasscodeExist()) {
             //LTHPasscodeViewController.sharedUser().maxNumberOfAllowedFailedAttempts = 0
-            UIApplication.sharedApplication().statusBarHidden = true
+            UIApplication.shared.isStatusBarHidden = true
             LTHPasscodeViewController.sharedUser().delegate = self
-            LTHPasscodeViewController.sharedUser().showLockScreenWithAnimation(false,
+            LTHPasscodeViewController.sharedUser().showLockScreen(withAnimation: false,
                 withLogout:false                                                         ,
                 andLogoutTitle:nil)
         }
@@ -255,19 +255,19 @@ import Crashlytics
         hasFinishLaunching = true
     }
     
-    func recoverHDWallet(mnemonic: String, shouldRefreshApp: Bool = true) {
+    func recoverHDWallet(_ mnemonic: String, shouldRefreshApp: Bool = true) {
         if shouldRefreshApp {
             self.refreshApp(mnemonic)
         } else {
             let masterHex = TLHDWalletWrapper.getMasterHex(mnemonic)
             self.appWallet.createInitialWalletPayload(mnemonic, masterHex:masterHex)
             
-            self.accounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getAccountObjectArray(), accountType:.HDWallet)
-            self.coldWalletAccounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getColdWalletAccountArray(), accountType:.ColdWallet)
-            self.importedAccounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getImportedAccountArray(), accountType:.Imported)
-            self.importedWatchAccounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getWatchOnlyAccountArray(), accountType:.ImportedWatch)
-            self.importedAddresses = TLImportedAddresses(appWallet: self.appWallet, importedAddresses:self.appWallet.getImportedPrivateKeyArray(), accountAddressType:.Imported)
-            self.importedWatchAddresses = TLImportedAddresses(appWallet: self.appWallet, importedAddresses:self.appWallet.getWatchOnlyAddressArray(), accountAddressType:.ImportedWatch)
+            self.accounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getAccountObjectArray(), accountType:.hdWallet)
+            self.coldWalletAccounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getColdWalletAccountArray(), accountType:.coldWallet)
+            self.importedAccounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getImportedAccountArray(), accountType:.imported)
+            self.importedWatchAccounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getWatchOnlyAccountArray(), accountType:.importedWatch)
+            self.importedAddresses = TLImportedAddresses(appWallet: self.appWallet, importedAddresses:self.appWallet.getImportedPrivateKeyArray(), accountAddressType:.imported)
+            self.importedWatchAddresses = TLImportedAddresses(appWallet: self.appWallet, importedAddresses:self.appWallet.getWatchOnlyAddressArray(), accountAddressType:.importedWatch)
         }
         
         var accountIdx = 0
@@ -276,7 +276,7 @@ import Crashlytics
         
         while (true) {
             let accountName = String(format:"Account %lu".localized, (accountIdx + 1))
-            let accountObject = self.accounts!.createNewAccount(accountName, accountType:.Normal, preloadStartingAddresses:false)
+            let accountObject = self.accounts!.createNewAccount(accountName, accountType:.normal, preloadStartingAddresses:false)
             
             DLog("recoverHDWalletaccountName %@", function: accountName)
             
@@ -285,7 +285,7 @@ import Crashlytics
             if sumMainAndChangeAddressMaxIdx > -2 || accountObject.stealthWallet!.checkIfHaveStealthPayments() {
                 consecutiveUnusedAccountCount = 0
             } else {
-                consecutiveUnusedAccountCount++
+                consecutiveUnusedAccountCount += 1
                 if (consecutiveUnusedAccountCount == MAX_CONSECUTIVE_UNUSED_ACCOUNT_LOOK_AHEAD_COUNT) {
                     break
                 }
@@ -296,17 +296,17 @@ import Crashlytics
         
         DLog("recoverHDWallet getNumberOfAccounts: \(self.accounts!.getNumberOfAccounts())")
         if (self.accounts!.getNumberOfAccounts() == 0) {
-            self.accounts!.createNewAccount("Account 1".localized, accountType:.Normal)
+            self.accounts!.createNewAccount("Account 1".localized, accountType:.normal)
         } else if (self.accounts!.getNumberOfAccounts() > 1) {
             while (self.accounts!.getNumberOfAccounts() > 1 && consecutiveUnusedAccountCount > 0) {
                 self.accounts!.popTopAccount()
-                consecutiveUnusedAccountCount--
+                consecutiveUnusedAccountCount -= 1
             }
         }
     }
     
     // work around to show SendView
-    func checkToShowSendViewWithURL(notification: NSNotification) {
+    func checkToShowSendViewWithURL(_ notification: Notification) {
         if (self.bitcoinURIOptionsDict != nil) {
             assert(self.window!.rootViewController is ECSlidingViewController, "rootViewController != ECSlidingViewController")
             let vc = self.window!.rootViewController as! ECSlidingViewController
@@ -319,7 +319,7 @@ import Crashlytics
         
         LTHPasscodeViewController.sharedUser().failedAttemptLabel.textColor = savedPasscodeViewDefaultLabelTextColor
         LTHPasscodeViewController.sharedUser().enterPasscodeLabel.textColor = savedPasscodeViewDefaultLabelTextColor
-        LTHPasscodeViewController.sharedUser().OKButton.setTitleColor(savedPasscodeViewDefaultLabelTextColor, forState:UIControlState.Normal)
+        LTHPasscodeViewController.sharedUser().okButton.setTitleColor(savedPasscodeViewDefaultLabelTextColor, for:UIControlState())
         
         LTHPasscodeViewController.sharedUser().firstDigitTextField.textColor = savedPasscodeViewDefaultPasscodeTextColor
         LTHPasscodeViewController.sharedUser().secondDigitTextField.textColor = savedPasscodeViewDefaultPasscodeTextColor
@@ -327,7 +327,7 @@ import Crashlytics
         LTHPasscodeViewController.sharedUser().fourthDigitTextField.textColor = savedPasscodeViewDefaultPasscodeTextColor
     }
     
-    private func setupPasscodeViewColors() {
+    fileprivate func setupPasscodeViewColors() {
         savedPasscodeViewDefaultBackgroundColor = LTHPasscodeViewController.sharedUser().backgroundColor
         savedPasscodeViewDefaultLabelTextColor = LTHPasscodeViewController.sharedUser().labelTextColor
         savedPasscodeViewDefaultPasscodeTextColor = LTHPasscodeViewController.sharedUser().passcodeTextColor
@@ -341,16 +341,16 @@ import Crashlytics
         LTHPasscodeViewController.sharedUser().navigationTitleColor = TLColors.mainAppOppositeColor()
     }
 
-    func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject : AnyObject]?) -> Bool {
+    func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         Fabric.with([Crashlytics.self])
         
-        AFNetworkActivityIndicatorManager.sharedManager().enabled = true
+        AFNetworkActivityIndicatorManager.shared().isEnabled = true
 
         self.window!.backgroundColor = TLColors.mainAppColor()
-        application.statusBarStyle = UIStatusBarStyle.LightContent
+        application.statusBarStyle = UIStatusBarStyle.lightContent
         
         self.justSetupHDWallet = false
-        let appVersion = NSBundle.mainBundle().infoDictionary!["CFBundleShortVersionString"] as! String
+        let appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
         if (TLPreferences.getInstallDate() != nil) {
             TLPreferences.setHasSetupHDWallet(false)
             TLPreferences.setInstallDate()
@@ -366,12 +366,12 @@ import Crashlytics
         
         self.isAccountsAndImportsLoaded = false
         
-        if (TLPreferences.hasSetupHDWallet() && UIApplication.instancesRespondToSelector("registerUserNotificationSettings"))
+        if (TLPreferences.hasSetupHDWallet() && UIApplication.instancesRespond(to: "registerUserNotificationSettings"))
         {
-            application.registerUserNotificationSettings(UIUserNotificationSettings(forTypes: [.Alert, .Badge, .Sound], categories:nil))
+            application.registerUserNotificationSettings(UIUserNotificationSettings(types: [.alert, .badge, .sound], categories:nil))
         }
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector:"checkToShowSendViewWithURL:", name:UIApplicationDidBecomeActiveNotification, object:nil)
+        NotificationCenter.default.addObserver(self, selector:#selector(AppDelegate.checkToShowSendViewWithURL(_:)), name:NSNotification.Name.UIApplicationDidBecomeActive, object:nil)
         
         // condition is used so that I dont prompt user to setup notifactions when just installed app
         if (TLPreferences.hasSetupHDWallet()) {
@@ -380,12 +380,12 @@ import Crashlytics
         
         hasFinishLaunching = false
         
-        NSNotificationCenter.defaultCenter().addObserver(self, selector:"showLockViewForEnteringPasscode:", name:TLNotificationEvents.EVENT_SEND_SCREEN_LOADING(), object:nil)
+        NotificationCenter.default.addObserver(self, selector:#selector(AppDelegate.showLockViewForEnteringPasscode(_:)), name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_SEND_SCREEN_LOADING()), object:nil)
         
         return true
     }
     
-    func refreshApp(passphrase: String, clearWalletInMemory: Bool = true) {
+    func refreshApp(_ passphrase: String, clearWalletInMemory: Bool = true) {
         if (TLPreferences.getCloudBackupWalletFileName() == nil) {
             TLPreferences.setCloudBackupWalletFileName()
         }
@@ -424,19 +424,19 @@ import Crashlytics
         TLPreferences.setInAppSettingsKitCurrency(DEFAULT_CURRENCY_IDX)
         TLPreferences.setEnableSoundNotification(true)
         
-        TLPreferences.setSendFromType(.HDWallet)
+        TLPreferences.setSendFromType(.hdWallet)
         TLPreferences.setSendFromIndex(0)
         
         if clearWalletInMemory {
             let masterHex = TLHDWalletWrapper.getMasterHex(passphrase)
             self.appWallet.createInitialWalletPayload(passphrase, masterHex:masterHex)
             
-            self.accounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getAccountObjectArray(), accountType:.HDWallet)
-            self.coldWalletAccounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getColdWalletAccountArray(), accountType:.ColdWallet)
-            self.importedAccounts = TLAccounts(appWallet:self.appWallet, accountsArray:self.appWallet.getImportedAccountArray(), accountType:.Imported)
-            self.importedWatchAccounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getWatchOnlyAccountArray(), accountType:.ImportedWatch)
-            self.importedAddresses = TLImportedAddresses(appWallet: self.appWallet, importedAddresses:self.appWallet.getImportedPrivateKeyArray(), accountAddressType:.Imported)
-            self.importedWatchAddresses = TLImportedAddresses(appWallet: self.appWallet, importedAddresses:self.appWallet.getWatchOnlyAddressArray(), accountAddressType:.ImportedWatch)
+            self.accounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getAccountObjectArray(), accountType:.hdWallet)
+            self.coldWalletAccounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getColdWalletAccountArray(), accountType:.coldWallet)
+            self.importedAccounts = TLAccounts(appWallet:self.appWallet, accountsArray:self.appWallet.getImportedAccountArray(), accountType:.imported)
+            self.importedWatchAccounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getWatchOnlyAccountArray(), accountType:.importedWatch)
+            self.importedAddresses = TLImportedAddresses(appWallet: self.appWallet, importedAddresses:self.appWallet.getImportedPrivateKeyArray(), accountAddressType:.imported)
+            self.importedWatchAddresses = TLImportedAddresses(appWallet: self.appWallet, importedAddresses:self.appWallet.getWatchOnlyAddressArray(), accountAddressType:.importedWatch)
         }
         
         self.receiveSelectedObject = TLSelectedObject()
@@ -446,14 +446,14 @@ import Crashlytics
     }
     
     func setAccountsListeningToStealthPaymentsToFalse() {
-        for (var i = 0; i < self.accounts!.getNumberOfAccounts();  i++) {
+        for (i in 0 ..< self.accounts!.getNumberOfAccounts()) {
             let accountObject = self.accounts!.getAccountObjectForIdx(i)
             if accountObject.stealthWallet != nil {
                 accountObject.stealthWallet!.isListeningToStealthPayment = false
             }
         }
         
-        for (var i = 0; i < self.importedAccounts!.getNumberOfAccounts();  i++) {
+        for (i in 0 ..< self.importedAccounts!.getNumberOfAccounts()) {
             let accountObject = self.importedAccounts!.getAccountObjectForIdx(i)
             if accountObject.stealthWallet != nil {
                 accountObject.stealthWallet!.isListeningToStealthPayment = false
@@ -461,9 +461,9 @@ import Crashlytics
         }
     }
     
-    func respondToStealthChallegeNotification(note: NSNotification) {
+    func respondToStealthChallegeNotification(_ note: Notification) {
         let responseDict = note.object as! NSDictionary
-        let challenge = responseDict.objectForKey("challenge") as! String
+        let challenge = responseDict.object(forKey: "challenge") as! String
         let lock = NSLock()
         lock.lock()
         TLStealthWebSocket.instance().challenge = challenge
@@ -471,12 +471,12 @@ import Crashlytics
         self.respondToStealthChallege(challenge)
     }
     
-    func respondToStealthChallege(challenge: String) {
+    func respondToStealthChallege(_ challenge: String) {
         if (!self.isAccountsAndImportsLoaded || !TLStealthWebSocket.instance().isWebSocketOpen()) {
             return
         }
 
-        for (var i = 0; i < self.accounts!.getNumberOfAccounts();  i++) {
+        for (i in 0 ..< self.accounts!.getNumberOfAccounts()) {
             let accountObject = self.accounts!.getAccountObjectForIdx(i)
             if accountObject.hasFetchedAccountData() &&
                 accountObject.stealthWallet != nil && accountObject.stealthWallet!.isListeningToStealthPayment == false {
@@ -485,7 +485,7 @@ import Crashlytics
             }
         }
         
-        for (var i = 0; i < self.importedAccounts!.getNumberOfAccounts();  i++) {
+        for (i in 0 ..< self.importedAccounts!.getNumberOfAccounts()) {
             let accountObject = self.importedAccounts!.getAccountObjectForIdx(i)
             if accountObject.hasFetchedAccountData() &&
                 accountObject.stealthWallet != nil && accountObject.stealthWallet!.isListeningToStealthPayment == false {
@@ -495,25 +495,25 @@ import Crashlytics
         }
     }
     
-    func respondToStealthAddressSubscription(note: NSNotification) {
+    func respondToStealthAddressSubscription(_ note: Notification) {
         let responseDict = note.object as! NSDictionary
-        let stealthAddress = responseDict.objectForKey("addr") as! String
-        let subscriptionSuccess = responseDict.objectForKey("success") as! String
+        let stealthAddress = responseDict.object(forKey: "addr") as! String
+        let subscriptionSuccess = responseDict.object(forKey: "success") as! String
         if subscriptionSuccess == "False" && consecutiveFailedStealthChallengeCount < MAX_CONSECUTIVE_FAILED_STEALTH_CHALLENGE_COUNT {
-            consecutiveFailedStealthChallengeCount++
+            consecutiveFailedStealthChallengeCount += 1
             TLStealthWebSocket.instance().sendMessageGetChallenge()
             return
         }
         consecutiveFailedStealthChallengeCount = 0
         
-        for (var i = 0; i < self.accounts!.getNumberOfAccounts();  i++) {
+        for (i in 0 ..< self.accounts!.getNumberOfAccounts()) {
             let accountObject = self.accounts!.getAccountObjectForIdx(i)
             if accountObject.stealthWallet!.getStealthAddress() == stealthAddress {
                 accountObject.stealthWallet!.isListeningToStealthPayment = true
             }
         }
         
-        for (var i = 0; i < self.importedAccounts!.getNumberOfAccounts();  i++) {
+        for (i in 0 ..< self.importedAccounts!.getNumberOfAccounts()) {
             let accountObject = self.importedAccounts!.getAccountObjectForIdx(i)
             if accountObject.stealthWallet!.getStealthAddress() == stealthAddress {
                 accountObject.stealthWallet!.isListeningToStealthPayment = true
@@ -521,23 +521,23 @@ import Crashlytics
         }
     }
 
-    func handleGetTxSuccessForRespondToStealthPayment(stealthAddress: String, paymentAddress: String,
+    func handleGetTxSuccessForRespondToStealthPayment(_ stealthAddress: String, paymentAddress: String,
         txid: String, txTime: UInt64, txObject: TLTxObject) {
             let inputAddresses = txObject.getInputAddressArray()
             let outputAddresses = txObject.getOutputAddressArray()
             
-            if outputAddresses.indexOf(paymentAddress) == nil {
+            if outputAddresses.index(of: paymentAddress) == nil {
                 return
             }
 
             let possibleStealthDataScripts = txObject.getPossibleStealthDataScripts()
             
-            func processStealthPayment(accountObject: TLAccountObject) {
+            func processStealthPayment(_ accountObject: TLAccountObject) {
                 if accountObject.stealthWallet!.getStealthAddress() == stealthAddress {
                     if accountObject.hasFetchedAccountData() {
                         for stealthDataScript in possibleStealthDataScripts {
                             let privateKey = accountObject.stealthWallet!.generateAndAddStealthAddressPaymentKey(stealthDataScript, expectedAddress: paymentAddress,
-                                txid: txid, txTime: txTime, stealthPaymentStatus: TLStealthPaymentStatus.Unspent)
+                                txid: txid, txTime: txTime, stealthPaymentStatus: TLStealthPaymentStatus.unspent)
                             if privateKey != nil {
                                 self.handleNewTxForAccount(accountObject, txObject: txObject)
                                 break
@@ -555,12 +555,12 @@ import Crashlytics
                 }
             }
 
-            for (var i = 0; i < self.accounts!.getNumberOfAccounts();  i++) {
+            for (i in 0 ..< self.accounts!.getNumberOfAccounts()) {
                 let accountObject = self.accounts!.getAccountObjectForIdx(i)
                 processStealthPayment(accountObject)
             }
         
-            for (var i = 0; i < self.coldWalletAccounts!.getNumberOfAccounts();  i++) {
+            for (i in 0 ..< self.coldWalletAccounts!.getNumberOfAccounts()) {
                 let accountObject = self.coldWalletAccounts!.getAccountObjectForIdx(i)
                 for address in inputAddresses {
                     if accountObject.isAddressPartOfAccount(address) {
@@ -569,12 +569,12 @@ import Crashlytics
                 }
             }
 
-            for (var i = 0; i < self.importedAccounts!.getNumberOfAccounts();  i++) {
+            for (i in 0 ..< self.importedAccounts!.getNumberOfAccounts()) {
                 let accountObject = self.importedAccounts!.getAccountObjectForIdx(i)
                 processStealthPayment(accountObject)
             }
             
-            for (var i = 0; i < self.importedWatchAccounts!.getNumberOfAccounts();  i++) {
+            for (i in 0 ..< self.importedWatchAccounts!.getNumberOfAccounts()) {
                 let accountObject = self.importedWatchAccounts!.getAccountObjectForIdx(i)
                 for address in inputAddresses {
                     if accountObject.isAddressPartOfAccount(address) {
@@ -582,7 +582,7 @@ import Crashlytics
                     }
                 }
             }
-            for (var i = 0; i < self.importedAddresses!.getCount();  i++) {
+            for (i in 0 ..< self.importedAddresses!.getCount()) {
                 let importedAddress = self.importedAddresses!.getAddressObjectAtIdx(i)
                 for addr in inputAddresses {
                     if (addr == importedAddress.getAddress()) {
@@ -590,7 +590,7 @@ import Crashlytics
                     }
                 }
             }
-            for (var i = 0; i < self.importedWatchAddresses!.getCount();  i++) {
+            for (i in 0 ..< self.importedWatchAddresses!.getCount()) {
                 let importedAddress = self.importedWatchAddresses!.getAddressObjectAtIdx(i)
                 for addr in inputAddresses {
                     if (addr == importedAddress.getAddress()) {
@@ -600,12 +600,12 @@ import Crashlytics
             }
     }
     
-    func respondToStealthPayment(note: NSNotification) {
+    func respondToStealthPayment(_ note: Notification) {
         let responseDict = note.object as! NSDictionary
-        let stealthAddress = responseDict.objectForKey("stealth_addr") as! String
-        let txid = responseDict.objectForKey("txid") as! String
-        let paymentAddress = responseDict.objectForKey("addr") as! String
-        let txTime = UInt64((responseDict.objectForKey("time") as! NSNumber).unsignedLongLongValue)
+        let stealthAddress = responseDict.object(forKey: "stealth_addr") as! String
+        let txid = responseDict.object(forKey: "txid") as! String
+        let paymentAddress = responseDict.object(forKey: "addr") as! String
+        let txTime = UInt64((responseDict.object(forKey: "time") as! NSNumber).uint64Value)
         DLog("respondToStealthPayment stealthAddress: %@", function: stealthAddress)
         DLog("respondToStealthPayment respondToStealthPaymentGetTxTries: \(self.respondToStealthPaymentGetTxTries)")
 
@@ -629,43 +629,43 @@ import Crashlytics
     
     func setWalletTransactionListenerClosed() {
         DLog("setWalletTransactionListenerClosed")
-        for (var i = 0; i < self.accounts!.getNumberOfAccounts();  i++) {
+        for (i in 0 ..< self.accounts!.getNumberOfAccounts()) {
             let accountObject = self.accounts!.getAccountObjectForIdx(i)
             accountObject.listeningToIncomingTransactions = false
         }
-        for (var i = 0; i < self.coldWalletAccounts!.getNumberOfAccounts();  i++) {
+        for (i in 0 ..< self.coldWalletAccounts!.getNumberOfAccounts()) {
             let accountObject = self.coldWalletAccounts!.getAccountObjectForIdx(i)
             accountObject.listeningToIncomingTransactions = false
         }
-        for (var i = 0; i < self.importedAccounts!.getNumberOfAccounts();  i++) {
+        for (i in 0 ..< self.importedAccounts!.getNumberOfAccounts()) {
             let accountObject = self.importedAccounts!.getAccountObjectForIdx(i)
             accountObject.listeningToIncomingTransactions = false
         }
-        for (var i = 0; i < self.importedWatchAccounts!.getNumberOfAccounts();  i++) {
+        for (i in 0 ..< self.importedWatchAccounts!.getNumberOfAccounts()) {
             let accountObject = self.importedWatchAccounts!.getAccountObjectForIdx(i)
             accountObject.listeningToIncomingTransactions = false
         }
-        for (var i = 0; i < self.importedAddresses!.getCount();  i++) {
+        for (i in 0 ..< self.importedAddresses!.getCount()) {
             let importedAddress = self.importedAddresses!.getAddressObjectAtIdx(i)
             importedAddress.listeningToIncomingTransactions = false
         }
-        for (var i = 0; i < self.importedWatchAddresses!.getCount();  i++) {
+        for (i in 0 ..< self.importedWatchAddresses!.getCount()) {
             let importedAddress = self.importedWatchAddresses!.getAddressObjectAtIdx(i)
             importedAddress.listeningToIncomingTransactions = false
         }
     }
     
-    func listenToIncomingTransactionForGeneratedAddress(note: NSNotification) {
-        let address: AnyObject? = note.object
+    func listenToIncomingTransactionForGeneratedAddress(_ note: Notification) {
+        let address: AnyObject? = note.object as AnyObject?
         
         TLTransactionListener.instance().listenToIncomingTransactionForAddress(address as! String)
     }
     
-    func updateModelWithNewTransaction(note: NSNotification) {
+    func updateModelWithNewTransaction(_ note: Notification) {
         let txDict = note.object as! NSDictionary
         DLog("updateModelWithNewTransaction txDict: %@", function: txDict.debugDescription)
         
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)) {
+        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).async {
             let txObject = TLTxObject(dict:txDict)
             if self.pendingSelfStealthPaymentTxid != nil {
                 // Special case where receiving stealth payment from same sending account. 
@@ -679,7 +679,7 @@ import Crashlytics
             
             let addressesInTx = txObject.getAddresses()
             
-            for (var i = 0; i < self.accounts!.getNumberOfAccounts();  i++) {
+            for (i in 0 ..< self.accounts!.getNumberOfAccounts()) {
                 let accountObject = self.accounts!.getAccountObjectForIdx(i)
                 if !accountObject.hasFetchedAccountData() {
                     continue
@@ -692,7 +692,7 @@ import Crashlytics
                 }
             }
             
-            for (var i = 0; i < self.coldWalletAccounts!.getNumberOfAccounts();  i++) {
+            for (i in 0 ..< self.coldWalletAccounts!.getNumberOfAccounts()) {
                 let accountObject = self.coldWalletAccounts!.getAccountObjectForIdx(i)
                 if !accountObject.hasFetchedAccountData() {
                     continue
@@ -705,7 +705,7 @@ import Crashlytics
                 }
             }
             
-            for (var i = 0; i < self.importedAccounts!.getNumberOfAccounts();  i++) {
+            for (i in 0 ..< self.importedAccounts!.getNumberOfAccounts()) {
                 let accountObject = self.importedAccounts!.getAccountObjectForIdx(i)
                 if !accountObject.hasFetchedAccountData() {
                     continue
@@ -718,7 +718,7 @@ import Crashlytics
                 }
             }
             
-            for (var i = 0; i < self.importedWatchAccounts!.getNumberOfAccounts();  i++) {
+            for (i in 0 ..< self.importedWatchAccounts!.getNumberOfAccounts()) {
                 let accountObject = self.importedWatchAccounts!.getAccountObjectForIdx(i)
                 if !accountObject.hasFetchedAccountData() {
                     continue
@@ -731,7 +731,7 @@ import Crashlytics
                 }
             }
             
-            for (var i = 0; i < self.importedAddresses!.getCount();  i++) {
+            for (i in 0 ..< self.importedAddresses!.getCount()) {
                 let importedAddress = self.importedAddresses!.getAddressObjectAtIdx(i)
                 if !importedAddress.hasFetchedAccountData() {
                     continue
@@ -745,7 +745,7 @@ import Crashlytics
                 }
             }
             
-            for (var i = 0; i < self.importedWatchAddresses!.getCount();  i++) {
+            for (i in 0 ..< self.importedWatchAddresses!.getCount()) {
                 let importedAddress = self.importedWatchAddresses!.getAddressObjectAtIdx(i)
                 if !importedAddress.hasFetchedAccountData() {
                     continue
@@ -761,7 +761,7 @@ import Crashlytics
         }
     }
 
-    func handleNewTxForAccount(accountObject: TLAccountObject, txObject: TLTxObject) {
+    func handleNewTxForAccount(_ accountObject: TLAccountObject, txObject: TLTxObject) {
         let receivedAmount = accountObject.processNewTx(txObject)
         let receivedTo = accountObject.getAccountNameOrAccountPublicKey()
         //AppDelegate.instance().pendingOperations.addSetUpAccountOperation(accountObject, fetchDataAgain: true, success: {
@@ -769,7 +769,7 @@ import Crashlytics
         //})
     }
     
-    func handleNewTxForImportedAddress(importedAddress: TLImportedAddress, txObject: TLTxObject) {
+    func handleNewTxForImportedAddress(_ importedAddress: TLImportedAddress, txObject: TLTxObject) {
         let receivedAmount = importedAddress.processNewTx(txObject)
         let receivedTo = importedAddress.getLabel()
         //AppDelegate.instance().pendingOperations.addSetUpImportedAddressOperation(importedAddress, fetchDataAgain: true, success: {
@@ -777,21 +777,21 @@ import Crashlytics
         //})
     }
     
-    func updateUIForNewTx(txHash: String, receivedAmount: TLCoin?, receivedTo: String) {
-        dispatch_async(dispatch_get_main_queue()) {
+    func updateUIForNewTx(_ txHash: String, receivedAmount: TLCoin?, receivedTo: String) {
+        DispatchQueue.main.async {
             DLog("updateUIForNewTx txHash \(txHash)")
-            self.webSocketNotifiedTxHashSet.addObject(txHash)
-            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION(), object: txHash, userInfo:nil)
+            self.webSocketNotifiedTxHashSet.add(txHash)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION()), object: txHash, userInfo:nil)
             if receivedAmount != nil {
-                NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_RECEIVE_PAYMENT(), object:nil, userInfo:nil)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_RECEIVE_PAYMENT()), object:nil, userInfo:nil)
                 self.promptReceivedPayment(receivedTo, receivedAmount: receivedAmount!)
             }
         }
     }
     
-    func promptReceivedPayment(receivedTo:String, receivedAmount:TLCoin) {
-        let delayTime = dispatch_time(DISPATCH_TIME_NOW, Int64(1 * Double(NSEC_PER_SEC)))
-        dispatch_after(delayTime, dispatch_get_main_queue()) {
+    func promptReceivedPayment(_ receivedTo:String, receivedAmount:TLCoin) {
+        let delayTime = DispatchTime.now() + Double(Int64(1 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
+        DispatchQueue.main.asyncAfter(deadline: delayTime) {
             let msg = "\(receivedTo) received \(TLCurrencyFormat.getProperAmount(receivedAmount))"
             TLPrompts.promptSuccessMessage(msg, message: "")
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
@@ -801,53 +801,53 @@ import Crashlytics
         }
     }
     
-    func updateModelWithNewBlock(note: NSNotification) {
+    func updateModelWithNewBlock(_ note: Notification) {
         let jsonData = note.object as! NSDictionary
-        let blockHeight = jsonData.objectForKey("height") as! NSNumber
+        let blockHeight = jsonData.object(forKey: "height") as! NSNumber
         DLog("updateModelWithNewBlock: %llu", function: blockHeight)
-        TLBlockchainStatus.instance().blockHeight = blockHeight.unsignedLongLongValue
+        TLBlockchainStatus.instance().blockHeight = blockHeight.uint64Value
         
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_BLOCK(), object:nil, userInfo:nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_BLOCK()), object:nil, userInfo:nil)
         
     }
     
-    func initializeWalletAppAndShowInitialScreen(recoverHDWalletIfNewlyInstalledApp:(Bool), walletPayload:(NSDictionary?)) {
+    func initializeWalletAppAndShowInitialScreen(_ recoverHDWalletIfNewlyInstalledApp:(Bool), walletPayload:(NSDictionary?)) {
         if (TLPreferences.getEnableBackupWithiCloud()) {
             TLCloudDocumentSyncWrapper.instance().checkCloudAvailability()
         }
         TLAnalytics.instance()
         
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"saveWalletPayloadDelay:",
-            name:TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateModelWithNewTransaction:",
-            name:TLNotificationEvents.EVENT_NEW_UNCONFIRMED_TRANSACTION(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"updateModelWithNewBlock:",
-            name:TLNotificationEvents.EVENT_NEW_BLOCK(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"listenToIncomingTransactionForGeneratedAddress:",
-            name:TLNotificationEvents.EVENT_NEW_ADDRESS_GENERATED(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"setWalletTransactionListenerClosed",
-            name:TLNotificationEvents.EVENT_TRANSACTION_LISTENER_CLOSE(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"listenToIncomingTransactionForWallet",
-            name:TLNotificationEvents.EVENT_TRANSACTION_LISTENER_OPEN(), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(AppDelegate.saveWalletPayloadDelay(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(AppDelegate.updateModelWithNewTransaction(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_NEW_UNCONFIRMED_TRANSACTION()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(AppDelegate.updateModelWithNewBlock(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_NEW_BLOCK()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(AppDelegate.listenToIncomingTransactionForGeneratedAddress(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_NEW_ADDRESS_GENERATED()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(AppDelegate.setWalletTransactionListenerClosed),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_TRANSACTION_LISTENER_CLOSE()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(AppDelegate.listenToIncomingTransactionForWallet),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_TRANSACTION_LISTENER_OPEN()), object:nil)
         
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"setAccountsListeningToStealthPaymentsToFalse",
-            name:TLNotificationEvents.EVENT_STEALTH_PAYMENT_LISTENER_CLOSE(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"respondToStealthChallegeNotification:",
-            name:TLNotificationEvents.EVENT_RECEIVED_STEALTH_CHALLENGE(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"respondToStealthAddressSubscription:",
-            name:TLNotificationEvents.EVENT_RECEIVED_STEALTH_ADDRESS_SUBSCRIPTION(), object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self
-            ,selector:"respondToStealthPayment:",
-            name:TLNotificationEvents.EVENT_RECEIVED_STEALTH_PAYMENT(), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(AppDelegate.setAccountsListeningToStealthPaymentsToFalse),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_STEALTH_PAYMENT_LISTENER_CLOSE()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(AppDelegate.respondToStealthChallegeNotification(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_RECEIVED_STEALTH_CHALLENGE()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(AppDelegate.respondToStealthAddressSubscription(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_RECEIVED_STEALTH_ADDRESS_SUBSCRIPTION()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(AppDelegate.respondToStealthPayment(_:)),
+            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_RECEIVED_STEALTH_PAYMENT()), object:nil)
     
         var passphrase = TLWalletPassphrase.getDecryptedWalletPassphrase()
 
@@ -857,20 +857,20 @@ import Crashlytics
             } else {
                 passphrase = TLHDWalletWrapper.generateMnemonicPassphrase()
                 self.refreshApp(passphrase!)
-                let accountObject = self.accounts!.createNewAccount("Account 1", accountType:.Normal, preloadStartingAddresses:true)
+                let accountObject = self.accounts!.createNewAccount("Account 1", accountType:.normal, preloadStartingAddresses:true)
                 accountObject.updateAccountNeedsRecovering(false)
-                AppDelegate.instance().updateGodSend(TLSendFromType.HDWallet, sendFromIndex:0)
-                AppDelegate.instance().updateReceiveSelectedObject(TLSendFromType.HDWallet, sendFromIndex:0)
-                AppDelegate.instance().updateHistorySelectedObject(TLSendFromType.HDWallet, sendFromIndex:0)
+                AppDelegate.instance().updateGodSend(TLSendFromType.hdWallet, sendFromIndex:0)
+                AppDelegate.instance().updateReceiveSelectedObject(TLSendFromType.hdWallet, sendFromIndex:0)
+                AppDelegate.instance().updateHistorySelectedObject(TLSendFromType.hdWallet, sendFromIndex:0)
             }
             self.justSetupHDWallet = true
             let encryptedWalletJson = TLWalletJson.getEncryptedWalletJsonContainer(self.appWallet.getWalletsJson()!,
                 password:TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase()!)
-            let success = self.saveWalletJson(encryptedWalletJson, date:NSDate())
+            let success = self.saveWalletJson(encryptedWalletJson, date:Date())
             if success {
                 TLPreferences.setHasSetupHDWallet(true)
             } else {
-                NSException(name: "Error".localized, reason: "Error saving wallet JSON file".localized, userInfo: nil).raise()
+                NSException(name: NSExceptionName(rawValue: "Error".localized), reason: "Error saving wallet JSON file".localized, userInfo: nil).raise()
             }
         } else {
             let masterHex = TLHDWalletWrapper.getMasterHex(passphrase ?? "")
@@ -879,16 +879,16 @@ import Crashlytics
                 self.appWallet.loadWalletPayload(walletPayload!, masterHex:masterHex)
             } else {
                 TLPrompts.promptErrorMessage("Error".localized, message:"Error loading wallet JSON file".localized)
-                NSException(name: "Error".localized, reason: "Error loading wallet JSON file".localized, userInfo: nil).raise()
+                NSException(name: NSExceptionName(rawValue: "Error".localized), reason: "Error loading wallet JSON file".localized, userInfo: nil).raise()
             }
         }
         
-        self.accounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getAccountObjectArray(), accountType:.HDWallet)
-        self.coldWalletAccounts = TLAccounts(appWallet:self.appWallet, accountsArray:self.appWallet.getColdWalletAccountArray(), accountType:.ColdWallet)
-        self.importedAccounts = TLAccounts(appWallet:self.appWallet, accountsArray:self.appWallet.getImportedAccountArray(), accountType:.Imported)
-        self.importedWatchAccounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getWatchOnlyAccountArray(), accountType:.ImportedWatch)
-        self.importedAddresses = TLImportedAddresses(appWallet: self.appWallet, importedAddresses:self.appWallet.getImportedPrivateKeyArray(), accountAddressType:TLAccountAddressType.Imported)
-        self.importedWatchAddresses = TLImportedAddresses(appWallet: self.appWallet, importedAddresses:self.appWallet.getWatchOnlyAddressArray(), accountAddressType:TLAccountAddressType.ImportedWatch)
+        self.accounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getAccountObjectArray(), accountType:.hdWallet)
+        self.coldWalletAccounts = TLAccounts(appWallet:self.appWallet, accountsArray:self.appWallet.getColdWalletAccountArray(), accountType:.coldWallet)
+        self.importedAccounts = TLAccounts(appWallet:self.appWallet, accountsArray:self.appWallet.getImportedAccountArray(), accountType:.imported)
+        self.importedWatchAccounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getWatchOnlyAccountArray(), accountType:.importedWatch)
+        self.importedAddresses = TLImportedAddresses(appWallet: self.appWallet, importedAddresses:self.appWallet.getImportedPrivateKeyArray(), accountAddressType:TLAccountAddressType.imported)
+        self.importedWatchAddresses = TLImportedAddresses(appWallet: self.appWallet, importedAddresses:self.appWallet.getWatchOnlyAddressArray(), accountAddressType:TLAccountAddressType.importedWatch)
         
         self.isAccountsAndImportsLoaded = true
         
@@ -911,17 +911,17 @@ import Crashlytics
         TLAchievements.instance()
         
         let blockExplorerURL = TLPreferences.getBlockExplorerURL(TLPreferences.getBlockExplorerAPI())!
-        let baseURL = NSURL(string:blockExplorerURL)
+        let baseURL = URL(string:blockExplorerURL)
         TLNetworking.isReachable(baseURL!, reachable:{(reachable: TLDOMAINREACHABLE) in
-            if (reachable == TLDOMAINREACHABLE.NOTREACHABLE) {
+            if (reachable == TLDOMAINREACHABLE.notreachable) {
                 TLPrompts.promptErrorMessage("Network Error".localized,
                     message:String(format:"%@ servers not reachable.".localized, blockExplorerURL))
             }
         })
         
         TLBlockExplorerAPI.instance().getBlockHeight({(jsonData:AnyObject!) in
-            let blockHeight = (jsonData.objectForKey("height") as! NSNumber).unsignedLongLongValue
-            DLog("setBlockHeight: %llu", function: (jsonData.objectForKey("height") as! NSNumber))
+            let blockHeight = (jsonData.object(forKey: "height") as! NSNumber).uint64Value
+            DLog("setBlockHeight: %llu", function: (jsonData.object(forKey: "height") as! NSNumber))
             TLBlockchainStatus.instance().blockHeight = blockHeight
             }, failure:{(code:NSInteger, status:String!) in
                 DLog("Error getting block height.")
@@ -930,11 +930,11 @@ import Crashlytics
         })
     }
     
-    func refreshHDWalletAccounts(isRestoringWallet: Bool) {
-        let group = dispatch_group_create()
-        for (var i = 0; i < self.accounts!.getNumberOfAccounts();  i++) {
+    func refreshHDWalletAccounts(_ isRestoringWallet: Bool) {
+        let group = DispatchGroup()
+        for (i in 0 ..< self.accounts!.getNumberOfAccounts()) {
             let accountObject = self.accounts!.getAccountObjectForIdx(i)
-            dispatch_group_enter(group)
+            group.enter()
             
             // if account needs recovering dont fetch account data
             if (accountObject.needsRecovering()) {
@@ -949,35 +949,35 @@ import Crashlytics
             }
             
             if accountObject.stealthWallet != nil {
-                dispatch_group_enter(group)
-                dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0)) {
+                group.enter()
+                DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
                     accountObject.fetchNewStealthPayments(isRestoringWallet)
-                    dispatch_group_leave(group)
+                    group.leave()
                 }
             }
             
             accountObject.getAccountData(activeAddresses, shouldResetAccountBalance: true, success: {
                 () in
-                dispatch_group_leave(group)
+                group.leave()
                 
                 }, failure: {
                     () in
-                    dispatch_group_leave(group)
+                    group.leave()
             })
         }
-        dispatch_group_wait(group, DISPATCH_TIME_FOREVER)
+        group.wait(timeout: DispatchTime.distantFuture)
     }
     
-    private func setUpLocalNotification() {
+    fileprivate func setUpLocalNotification() {
         if (TLUtils.getiOSVersion() >= 8) {
-            let types: UIUserNotificationType = [UIUserNotificationType.Badge, UIUserNotificationType.Sound, UIUserNotificationType.Alert]
+            let types: UIUserNotificationType = [UIUserNotificationType.badge, UIUserNotificationType.sound, UIUserNotificationType.alert]
             let mySettings =
-            UIUserNotificationSettings(forTypes: types, categories:nil)
-            UIApplication.sharedApplication().registerUserNotificationSettings(mySettings)
+            UIUserNotificationSettings(types: types, categories:nil)
+            UIApplication.shared.registerUserNotificationSettings(mySettings)
         }
     }
     
-    func application(applcation: UIApplication, didReceiveLocalNotification notification: UILocalNotification) {
+    func application(_ applcation: UIApplication, didReceive notification: UILocalNotification) {
         DLog("didReceiveLocalNotification: %@", function: notification.alertBody!)
         let av = UIAlertView(title:notification.alertBody!,
             message:""                                       ,
@@ -990,24 +990,24 @@ import Crashlytics
         
     }
     
-    private func showLocalNotification(message: String) {
+    fileprivate func showLocalNotification(_ message: String) {
         DLog("showLocalNotification: %@", function: message)
         let localNotification = UILocalNotification()
         localNotification.soundName = UILocalNotificationDefaultSoundName
-        localNotification.fireDate = NSDate(timeIntervalSinceNow:1)
+        localNotification.fireDate = Date(timeIntervalSinceNow:1)
         localNotification.alertBody = message
-        localNotification.timeZone = NSTimeZone.defaultTimeZone()
-        UIApplication.sharedApplication().scheduleLocalNotification(localNotification)
+        localNotification.timeZone = TimeZone.current
+        UIApplication.shared.scheduleLocalNotification(localNotification)
         if (TLPreferences.getEnableSoundNotification()) {
             AudioServicesPlaySystemSound(1016)
         }
     }
     
-    private func isCameraAllowed() -> Bool {
-        return AVCaptureDevice.authorizationStatusForMediaType(AVMediaTypeVideo) != AVAuthorizationStatus.Denied
+    fileprivate func isCameraAllowed() -> Bool {
+        return AVCaptureDevice.authorizationStatus(forMediaType: AVMediaTypeVideo) != AVAuthorizationStatus.denied
     }
     
-    private func promptAppNotAllowedCamera() {
+    fileprivate func promptAppNotAllowedCamera() {
         let displayName = TLUtils.defaultAppName()
         
         let av = UIAlertView(title: String(format:"%@ is not allowed to access the camera".localized, displayName),
@@ -1019,7 +1019,7 @@ import Crashlytics
     }
     
     
-    func showPrivateKeyReaderController(viewController: UIViewController, success: TLWalletUtils.SuccessWithDictionary, error: TLWalletUtils.ErrorWithString) {
+    func showPrivateKeyReaderController(_ viewController: UIViewController, success: @escaping TLWalletUtils.SuccessWithDictionary, error: @escaping TLWalletUtils.ErrorWithString) {
         if (!isCameraAllowed()) {
             self.promptAppNotAllowedCamera()
             return
@@ -1038,10 +1038,10 @@ import Crashlytics
                 error(e)
         })
         
-        viewController.presentViewController(reader, animated:true, completion:nil)
+        viewController.present(reader, animated:true, completion:nil)
     }
     
-    func showAddressReaderControllerFromViewController(viewController: (UIViewController), success: (TLWalletUtils.SuccessWithString), error: (TLWalletUtils.ErrorWithString)) {
+    func showAddressReaderControllerFromViewController(_ viewController: (UIViewController), success: @escaping (TLWalletUtils.SuccessWithString), error: @escaping (TLWalletUtils.ErrorWithString)) {
         if (!isCameraAllowed()) {
             promptAppNotAllowedCamera()
             return
@@ -1053,10 +1053,10 @@ import Crashlytics
                 error(e)
         })
         
-        viewController.presentViewController(reader, animated:true, completion:nil)
+        viewController.present(reader, animated:true, completion:nil)
     }
     
-    func showExtendedPrivateKeyReaderController(viewController: (UIViewController), success: (TLWalletUtils.SuccessWithString), error: (TLWalletUtils.ErrorWithString)) {
+    func showExtendedPrivateKeyReaderController(_ viewController: (UIViewController), success: @escaping (TLWalletUtils.SuccessWithString), error: @escaping (TLWalletUtils.ErrorWithString)) {
         if (!isCameraAllowed()) {
             promptAppNotAllowedCamera()
             return
@@ -1068,10 +1068,10 @@ import Crashlytics
                 error(e)
         })
         
-        viewController.presentViewController(reader, animated:true, completion:nil)
+        viewController.present(reader, animated:true, completion:nil)
     }
     
-    func showExtendedPublicKeyReaderController(viewController: (UIViewController), success: (TLWalletUtils.SuccessWithString), error: (TLWalletUtils.ErrorWithString)) {
+    func showExtendedPublicKeyReaderController(_ viewController: (UIViewController), success: @escaping (TLWalletUtils.SuccessWithString), error: @escaping (TLWalletUtils.ErrorWithString)) {
         if (!isCameraAllowed()) {
             promptAppNotAllowedCamera()
             return
@@ -1083,10 +1083,10 @@ import Crashlytics
                 error(e)
         })
         
-        viewController.presentViewController(reader, animated:true, completion:nil)
+        viewController.present(reader, animated:true, completion:nil)
     }
     
-    func showColdWalletSpendReaderControllerFromViewController(viewController: (UIViewController), success: (TLWalletUtils.SuccessWithString), error: (TLWalletUtils.ErrorWithString)) {
+    func showColdWalletSpendReaderControllerFromViewController(_ viewController: (UIViewController), success: @escaping (TLWalletUtils.SuccessWithString), error: @escaping (TLWalletUtils.ErrorWithString)) {
         if (!isCameraAllowed()) {
             promptAppNotAllowedCamera()
             return
@@ -1098,7 +1098,7 @@ import Crashlytics
                 error(e)
         })
         
-        viewController.presentViewController(reader, animated:true, completion:nil)
+        viewController.present(reader, animated:true, completion:nil)
     }
     
     func listenToIncomingTransactionForWallet() {
@@ -1106,9 +1106,9 @@ import Crashlytics
             return
         }
         
-        for (var i = 0; i < self.accounts!.getNumberOfAccounts();  i++) {
+        for (i in 0 ..< self.accounts!.getNumberOfAccounts()) {
             let accountObject = self.accounts!.getAccountObjectForIdx(i)
-            if accountObject.downloadState != .Downloaded {
+            if accountObject.downloadState != .downloaded {
                 continue
             }
             let activeMainAddresses = accountObject.getActiveMainAddresses()
@@ -1129,9 +1129,9 @@ import Crashlytics
             accountObject.listeningToIncomingTransactions = true
         }
         
-        for (var i = 0; i < self.coldWalletAccounts!.getNumberOfAccounts();  i++) {
+        for (i in 0 ..< self.coldWalletAccounts!.getNumberOfAccounts()) {
             let accountObject = self.coldWalletAccounts!.getAccountObjectForIdx(i)
-            if accountObject.downloadState != .Downloaded {
+            if accountObject.downloadState != .downloaded {
                 continue
             }
             let activeMainAddresses = accountObject.getActiveMainAddresses()
@@ -1145,9 +1145,9 @@ import Crashlytics
             accountObject.listeningToIncomingTransactions = true
         }
         
-        for (var i = 0; i < self.importedAccounts!.getNumberOfAccounts();  i++) {
+        for (i in 0 ..< self.importedAccounts!.getNumberOfAccounts()) {
             let accountObject = self.importedAccounts!.getAccountObjectForIdx(i)
-            if accountObject.downloadState != .Downloaded {
+            if accountObject.downloadState != .downloaded {
                 continue
             }
             let activeMainAddresses = accountObject.getActiveMainAddresses()
@@ -1168,9 +1168,9 @@ import Crashlytics
             accountObject.listeningToIncomingTransactions = true
         }
         
-        for (var i = 0; i < self.importedWatchAccounts!.getNumberOfAccounts();  i++) {
+        for (i in 0 ..< self.importedWatchAccounts!.getNumberOfAccounts()) {
             let accountObject = self.importedWatchAccounts!.getAccountObjectForIdx(i)
-            if accountObject.downloadState != .Downloaded {
+            if accountObject.downloadState != .downloaded {
                 continue
             }
             let activeMainAddresses = accountObject.getActiveMainAddresses()
@@ -1185,9 +1185,9 @@ import Crashlytics
         }
         
         
-        for (var i = 0; i < self.importedAddresses!.getCount();  i++) {
+        for (i in 0 ..< self.importedAddresses!.getCount()) {
             let importedAddress = self.importedAddresses!.getAddressObjectAtIdx(i)
-            if importedAddress.downloadState != .Downloaded {
+            if importedAddress.downloadState != .downloaded {
                 continue
             }
             let address = importedAddress.getAddress()
@@ -1195,9 +1195,9 @@ import Crashlytics
             importedAddress.listeningToIncomingTransactions = true
         }
         
-        for (var i = 0; i < self.importedWatchAddresses!.getCount();  i++) {
+        for (i in 0 ..< self.importedWatchAddresses!.getCount()) {
             let importedAddress = self.importedWatchAddresses!.getAddressObjectAtIdx(i)
-            if importedAddress.downloadState != .Downloaded {
+            if importedAddress.downloadState != .downloaded {
                 continue
             }
             let address = importedAddress.getAddress()
@@ -1207,48 +1207,48 @@ import Crashlytics
         
     }
     
-    func application(application: (UIApplication), openURL url: (NSURL), sourceApplication: (String)?, annotation:(AnyObject)) -> Bool {
+    func application(_ application: (UIApplication), open url: URL, sourceApplication: (String)?, annotation:Any) -> Bool {
         self.bitcoinURIOptionsDict = TLWalletUtils.parseBitcoinURI(url.absoluteString)        
         return true
     }
     
-    func applicationWillResignActive(application: UIApplication) {
+    func applicationWillResignActive(_ application: UIApplication) {
     }
     
-    func applicationDidEnterBackground(application: UIApplication) {
+    func applicationDidEnterBackground(_ application: UIApplication) {
     }
     
-    func applicationWillEnterForeground(application: UIApplication) {
+    func applicationWillEnterForeground(_ application: UIApplication) {
     }   
     
-    func applicationDidBecomeActive(application: UIApplication) {
+    func applicationDidBecomeActive(_ application: UIApplication) {
     }
     
-    func applicationWillTerminate(application: UIApplication) {
+    func applicationWillTerminate(_ application: UIApplication) {
         if (TLPreferences.getEnableBackupWithiCloud()) {
             // when terminating app must save immediately, don't wait to save to iCloud
             let encryptedWalletJson = TLWalletJson.getEncryptedWalletJsonContainer(self.appWallet.getWalletsJson()!,
                 password:TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase()!)
-            self.saveWalletJson(encryptedWalletJson, date:NSDate())
+            self.saveWalletJson(encryptedWalletJson, date:Date())
         }
         self.saveWalletJsonCloud()
     }
     
-    func saveWalletPayloadDelay(notification: NSNotification) {
-        dispatch_async(dispatch_get_main_queue()) {
+    func saveWalletPayloadDelay(_ notification: Notification) {
+        DispatchQueue.main.async {
             if self.saveWalletJSONEnabled == false {
                 return
             }
-            NSObject.cancelPreviousPerformRequestsWithTarget(self, selector:"saveWalletJsonCloudBackground", object:nil)
-            NSTimer.scheduledTimerWithTimeInterval(self.SAVE_WALLET_PAYLOAD_DELAY, target: self,
-                selector: Selector("saveWalletJsonCloudBackground"), userInfo: nil, repeats: false)
+            NSObject.cancelPreviousPerformRequests(withTarget: self, selector:#selector(AppDelegate.saveWalletJsonCloudBackground), object:nil)
+            Timer.scheduledTimer(timeInterval: self.SAVE_WALLET_PAYLOAD_DELAY, target: self,
+                selector: #selector(AppDelegate.saveWalletJsonCloudBackground), userInfo: nil, repeats: false)
         }
     }
     
     func saveWalletJsonCloudBackground() {
         DLog("saveWalletJsonCloudBackground starting...")
-        let queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0)
-        dispatch_async(queue) {
+        let queue = DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background)
+        queue.async {
             self.saveWalletJsonCloud()
         }
     }
@@ -1268,8 +1268,8 @@ import Crashlytics
             password:TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase()!)
         if (TLPreferences.getEnableBackupWithiCloud()) {
             if (TLCloudDocumentSyncWrapper.instance().checkCloudAvailability()) {
-                TLCloudDocumentSyncWrapper.instance().saveFileToCloud(TLPreferences.getCloudBackupWalletFileName()!, content:encryptedWalletJson,
-                    completion:{(cloudDocument: UIDocument!,documentData: NSData!, error: NSError?) in
+                TLCloudDocumentSyncWrapper.instance().saveFile(toCloud: TLPreferences.getCloudBackupWalletFileName()!, content:encryptedWalletJson,
+                    completion:{(cloudDocument: UIDocument!,documentData: Data!, error: NSError?) in
                         if error == nil {
                             self.saveWalletJson(encryptedWalletJson, date:cloudDocument.fileModificationDate!)
                             DLog("saveFileToCloud done")
@@ -1278,21 +1278,21 @@ import Crashlytics
                         }
                 })
             } else {
-                self.saveWalletJson(encryptedWalletJson, date:NSDate())
+                self.saveWalletJson(encryptedWalletJson, date:Date())
                 DLog("saveFileToCloud ! checkCloudAvailability save local done")
             }
         } else {
-            self.saveWalletJson(encryptedWalletJson, date:NSDate())
+            self.saveWalletJson(encryptedWalletJson, date:Date())
             DLog("saveFileToCloud local done")
         }
         return true
     }
     
-    private func saveWalletJson(encryptedWalletJson: (NSString), date: (NSDate)) -> Bool {
+    fileprivate func saveWalletJson(_ encryptedWalletJson: (NSString), date: (Date)) -> Bool {
         let success = TLWalletJson.saveWalletJson(encryptedWalletJson as String, date:date)
         
         if (!success) {
-            dispatch_async(dispatch_get_main_queue()) {
+            DispatchQueue.main.async {
                 TLPrompts.promptErrorMessage("Error".localized, message:"Local back up to wallet failed!".localized)
             }
         }
@@ -1305,27 +1305,27 @@ import Crashlytics
             password:TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase())
     }
     
-    private func menuShownHideStatusBar() {
-        UIApplication.sharedApplication().statusBarHidden = true
+    fileprivate func menuShownHideStatusBar() {
+        UIApplication.shared.isStatusBarHidden = true
     }
     
-    private func menuHiddenShowStatusBar() {
-        UIApplication.sharedApplication().statusBarHidden = false
+    fileprivate func menuHiddenShowStatusBar() {
+        UIApplication.shared.isStatusBarHidden = false
     }
     
     
     func passcodeViewControllerWillClose() {
-        UIApplication.sharedApplication().statusBarHidden = false
+        UIApplication.shared.isStatusBarHidden = false
     }
     
     func maxNumberOfFailedAttemptsReached() {
     }
     
     func passcodeWasEnteredSuccessfully() {
-        UIApplication.sharedApplication().statusBarHidden = false
+        UIApplication.shared.isStatusBarHidden = false
     }
     
     func logoutButtonWasPressed() {
-        UIApplication.sharedApplication().statusBarHidden = false
+        UIApplication.shared.isStatusBarHidden = false
     }
 }

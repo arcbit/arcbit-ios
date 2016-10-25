@@ -23,9 +23,9 @@
 import Foundation
 
 enum TLSelectObjectType:Int {
-    case Unknown       = 0
-    case Account       = 1
-    case Address       = 2
+    case unknown       = 0
+    case account       = 1
+    case address       = 2
 }
 
 class TLSendFormData {
@@ -36,9 +36,9 @@ class TLSendFormData {
     var useAllFunds = false
     var beforeSendBalance: TLCoin? = nil
     var fromLabel:String?
-    private var address:String?
-    private var amount:String?
-    private var fiatAmount:String?
+    fileprivate var address:String?
+    fileprivate var amount:String?
+    fileprivate var fiatAmount:String?
 
     var toAmount:TLCoin?
     var feeAmount:TLCoin?
@@ -56,7 +56,7 @@ class TLSendFormData {
         self.fiatAmount = nil
     }
     
-    func setAddress(address:String?) -> () {
+    func setAddress(_ address:String?) -> () {
         self.address = address
     }
     
@@ -64,7 +64,7 @@ class TLSendFormData {
         return self.address
     }
     
-    func setAmount(amount:String?) -> () {
+    func setAmount(_ amount:String?) -> () {
         self.amount = amount
     }
     
@@ -72,7 +72,7 @@ class TLSendFormData {
         return self.amount
     }
     
-    func setFiatAmount(fiatAmount:String?) -> () {
+    func setFiatAmount(_ fiatAmount:String?) -> () {
         self.fiatAmount = fiatAmount
     }
     

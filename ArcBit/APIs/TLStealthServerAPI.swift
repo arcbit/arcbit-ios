@@ -61,11 +61,11 @@ class TLStealthExplorerAPI {
         self.baseURL = baseURL
     }
     
-    func ping(success: TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
+    func ping(_ success: TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
         let
         endPoint = "ping"
         let parameters = [:]
-        let url = NSURL(string:endPoint, relativeToURL:NSURL(string:self.baseURL))
+        let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
 
         self.networking.httpGET(url!, parameters:parameters,
             success:success, failure:failure)
@@ -74,42 +74,42 @@ class TLStealthExplorerAPI {
     func getChallenge() -> NSDictionary {
         let endPoint = "challenge"
         let parameters = [:]
-        let url = NSURL(string:endPoint, relativeToURL:NSURL(string:self.baseURL))
+        let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
         let jsonDict = self.networking.httpGETSynchronous(url!, parameters: parameters) as! NSDictionary
         return jsonDict
     }
     
-    func getStealthPaymentsSynchronous(stealthAddress:String, signature:String, offset:Int) -> NSDictionary {
+    func getStealthPaymentsSynchronous(_ stealthAddress:String, signature:String, offset:Int) -> NSDictionary {
         let endPoint = "payments"
         let parameters = [
             "addr": stealthAddress,
             "sig":signature,
             "offset":offset
-        ]
-        let url = NSURL(string:endPoint, relativeToURL:NSURL(string:self.baseURL))
+        ] as [String : Any]
+        let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
         let jsonDict = self.networking.httpGETSynchronous(url!, parameters: parameters) as! NSDictionary
         return jsonDict
     }
     
-    func watchStealthAddressSynchronous(stealthAddress:String, scanPriv:String, signature:String) -> NSDictionary {
+    func watchStealthAddressSynchronous(_ stealthAddress:String, scanPriv:String, signature:String) -> NSDictionary {
         let endPoint = "watch"
         let parameters = [
             "addr": stealthAddress,
             "scan_key":scanPriv,
             "sig":signature
         ]
-        let url = NSURL(string:endPoint, relativeToURL:NSURL(string:self.baseURL))
+        let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
         let jsonDict = self.networking.httpGETSynchronous(url!, parameters: parameters) as! NSDictionary
         return jsonDict
     }
     
-    func lookupTx(stealthAddress:String, txid:String, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
+    func lookupTx(_ stealthAddress:String, txid:String, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
         let endPoint = "lookuptx"
         let parameters = [
             "addr": stealthAddress,
             "txid":txid,
         ]
-        let url = NSURL(string:endPoint, relativeToURL:NSURL(string:self.baseURL))
+        let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
         
         self.networking.httpGET(url!, parameters:parameters, success:success, failure:failure)
     }

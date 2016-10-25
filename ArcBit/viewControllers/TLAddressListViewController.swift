@@ -26,12 +26,12 @@ import UIKit
 @objc(TLAddressListViewController) class TLAddressListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomIOS7AlertViewDelegate {
     
     var accountObject: TLAccountObject?
-    private var QRImageModal: TLQRImageModal?
+    fileprivate var QRImageModal: TLQRImageModal?
     var showBalances: Bool = false
     let TL_STRING_NO_STEALTH_PAYMENT_ADDRESSES_INFO = "This account type can't see reusable address payments".localized
     let TL_STRING_NONE_CURRENTLY = "None currently".localized
     
-    @IBOutlet private var addressListTableView: UITableView?
+    @IBOutlet fileprivate var addressListTableView: UITableView?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
@@ -41,17 +41,17 @@ import UIKit
         super.viewDidLoad()
         setColors()
         
-        NSNotificationCenter.defaultCenter().addObserver(self,
-            selector: "reloadAddressListTableView:",
-            name: TLNotificationEvents.EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED(), object: nil)
+        NotificationCenter.default.addObserver(self,
+            selector: #selector(TLAddressListViewController.reloadAddressListTableView(_:)),
+            name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED()), object: nil)
         
         self.addressListTableView!.delegate = self
         self.addressListTableView!.dataSource = self
-        self.addressListTableView!.tableFooterView = UIView(frame: CGRectZero)
+        self.addressListTableView!.tableFooterView = UIView(frame: CGRect.zero)
     }
     
-    override func viewDidAppear(animated: Bool) -> () {
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_ACCOUNT_ADDRESSES(),
+    override func viewDidAppear(_ animated: Bool) -> () {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_ACCOUNT_ADDRESSES()),
             object: nil, userInfo: nil)
     }
     
@@ -59,11 +59,11 @@ import UIKit
         super.didReceiveMemoryWarning()
     }
     
-    func reloadAddressListTableView(notification: NSNotification) -> () {
+    func reloadAddressListTableView(_ notification: Notification) -> () {
         self.addressListTableView!.reloadData()
     }
     
-    private func promptAddressActionSheet(address: String, addressType: TLAddressType,
+    fileprivate func promptAddressActionSheet(_ address: String, addressType: TLAddressType,
         title: String,
         addressNtxs: Int) -> () {
             let otherButtonTitles:[String]
@@ -73,22 +73,22 @@ import UIKit
                 otherButtonTitles = ["View in web".localized, "View address QR code".localized]
             }
             
-            UIAlertController.showAlertInViewController(self,
+            UIAlertController.showAlert(in: self,
                 withTitle: title,
                 message:"",
-                preferredStyle: .ActionSheet,
+                preferredStyle: .actionSheet,
                 cancelButtonTitle: "Cancel".localized,
                 destructiveButtonTitle: nil,
                 otherButtonTitles: otherButtonTitles as [AnyObject],
                 
-                tapBlock: {(actionSheet, action, buttonIndex) in
+                tap: {(actionSheet, action, buttonIndex) in
                     
-                    if (buttonIndex == actionSheet.firstOtherButtonIndex) {
+                    if (buttonIndex == actionSheet?.firstOtherButtonIndex) {
                         TLBlockExplorerAPI.instance().openWebViewForAddress(address)
-                        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_ACCOUNT_ADDRESS_IN_WEB(),
+                        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_ACCOUNT_ADDRESS_IN_WEB()),
                             object: nil, userInfo: nil)
                         
-                    } else if (buttonIndex == actionSheet.firstOtherButtonIndex + 1) {
+                    } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 1) {
                         if (TLSuggestions.instance().enabledSuggestDontManageIndividualAccountAddress()) {
                             TLPrompts.promtForOK(self, title:"Warning".localized, message: "Do not use the QR code from here to receive bitcoins. Go to the Receive screen to get a QR code to receive bitcoins.".localized, success: {
                                 () in
@@ -98,7 +98,7 @@ import UIKit
                         } else {
                             self.showAddressQRCode(address)
                         }
-                    } else if (buttonIndex == actionSheet.firstOtherButtonIndex + 2) {
+                    } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 2) {
                         if (TLSuggestions.instance().enabledSuggestDontManageIndividualAccountPrivateKeys()) {
                             TLPrompts.promtForOK(self,title:"Warning".localized, message: "It is not recommended that you manually manage an accounts' private key yourself. A leak of a private key can lead to the compromise of your accounts' bitcoins.".localized, success: {
                                 () in
@@ -108,21 +108,21 @@ import UIKit
                         } else {
                             self.showPrivateKeyQRCode(address, addressType: addressType)
                         }
-                    } else if (buttonIndex == actionSheet.cancelButtonIndex) {
+                    } else if (buttonIndex == actionSheet?.cancelButtonIndex) {
                     }
             })
     }
     
-    private func showAddressQRCode(address: String) -> () {
-        self.QRImageModal = TLQRImageModal(data: address, buttonCopyText: "Copy To Clipboard".localized, vc: self)
+    fileprivate func showAddressQRCode(_ address: String) -> () {
+        self.QRImageModal = TLQRImageModal(data: address as NSString, buttonCopyText: "Copy To Clipboard".localized, vc: self)
         self.QRImageModal!.show()
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_ACCOUNT_ADDRESS(),
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_ACCOUNT_ADDRESS()),
             object: nil, userInfo: nil)
     }
     
-    private func showPrivateKeyQRCode(address: String, addressType: TLAddressType) -> () {
+    fileprivate func showPrivateKeyQRCode(_ address: String, addressType: TLAddressType) -> () {
         if (self.accountObject!.isWatchOnly() && !self.accountObject!.hasSetExtendedPrivateKeyInMemory() &&
-            (addressType == .Main || addressType == .Change)) {
+            (addressType == .main || addressType == .change)) {
                 TLPrompts.promptForTempararyImportExtendedPrivateKey(self, success: {
                     (data: String!) -> () in
                     if (!TLHDWalletWrapper.isValidExtendedPrivateKey(data)) {
@@ -145,26 +145,26 @@ import UIKit
         }
     }
     
-    private func showPrivateKeyQRCodeFinal(address: String, addressType: TLAddressType) {
+    fileprivate func showPrivateKeyQRCodeFinal(_ address: String, addressType: TLAddressType) {
         let privateKey:String
-        if (addressType == .Stealth) {
+        if (addressType == .stealth) {
             privateKey = self.accountObject!.stealthWallet!.getPaymentAddressPrivateKey(address)!
-        } else if (addressType == .Main) {
+        } else if (addressType == .main) {
             privateKey = self.accountObject!.getMainPrivateKey(address)
         } else {
             privateKey = self.accountObject!.getChangePrivateKey(address)
         }
         
-        self.QRImageModal = TLQRImageModal(data: privateKey, buttonCopyText: "Copy To Clipboard".localized, vc: self)
+        self.QRImageModal = TLQRImageModal(data: privateKey as NSString, buttonCopyText: "Copy To Clipboard".localized, vc: self)
         self.QRImageModal!.show()
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_ACCOUNT_PRIVATE_KEY(), object: nil, userInfo: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_ACCOUNT_PRIVATE_KEY()), object: nil, userInfo: nil)
     }
     
-    func numberOfSectionsInTableView(tableView: UITableView) -> Int {
+    func numberOfSections(in tableView: UITableView) -> Int {
         return 5
     }
     
-    func tableView(tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+    func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if (section == 0) {
             //there are no archived stealth payment addresses, because old payment addresses are deleted
             return "Reusable Address Payment Addresses".localized
@@ -179,10 +179,10 @@ import UIKit
         }
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count:Int
         if (section == 0) {
-            if self.accountObject!.getAccountType() != .ImportedWatch && self.accountObject!.getAccountType() != .ColdWallet {
+            if self.accountObject!.getAccountType() != .importedWatch && self.accountObject!.getAccountType() != .coldWallet {
                 count = self.accountObject!.stealthWallet!.getStealthAddressPaymentsCount()
             } else {
                 count = 0
@@ -199,84 +199,84 @@ import UIKit
         return count == 0 ? 1 : count
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath: NSIndexPath) -> UITableViewCell {
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let MyIdentifier = "AddressCellIdentifier"
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier) as! TLAddressTableViewCell?
+        var cell = tableView.dequeueReusableCell(withIdentifier: MyIdentifier) as! TLAddressTableViewCell?
         if (cell == nil) {
-            cell = UITableViewCell(style: UITableViewCellStyle.Subtitle,
+            cell = UITableViewCell(style: UITableViewCellStyle.subtitle,
                 reuseIdentifier: MyIdentifier) as? TLAddressTableViewCell
         }
         
         
-        if (indexPath.section == 0 || indexPath.section == 1 || indexPath.section == 3) {
-            cell!.textLabel!.hidden = true
-            cell!.amountButton!.hidden = false
-            cell!.addressLabel!.hidden = false
+        if ((indexPath as NSIndexPath).section == 0 || (indexPath as NSIndexPath).section == 1 || (indexPath as NSIndexPath).section == 3) {
+            cell!.textLabel!.isHidden = true
+            cell!.amountButton!.isHidden = false
+            cell!.addressLabel!.isHidden = false
             cell!.addressLabel!.adjustsFontSizeToFitWidth = true
             
             var address = ""
             var balance = ""
-            if (indexPath.section == 0) {
-                if self.accountObject!.getAccountType() != .ImportedWatch {
+            if ((indexPath as NSIndexPath).section == 0) {
+                if self.accountObject!.getAccountType() != .importedWatch {
                     if (self.accountObject!.stealthWallet!.getStealthAddressPaymentsCount() == 0) {
                         address = TL_STRING_NONE_CURRENTLY
                     } else {
-                        let idx = self.accountObject!.stealthWallet!.getStealthAddressPaymentsCount() - 1 - indexPath.row
+                        let idx = self.accountObject!.stealthWallet!.getStealthAddressPaymentsCount() - 1 - (indexPath as NSIndexPath).row
                         address = self.accountObject!.stealthWallet!.getPaymentAddressForIndex(idx)
                     }
                 } else {
-                    cell!.textLabel!.hidden = false
-                    cell!.addressLabel!.hidden = true
+                    cell!.textLabel!.isHidden = false
+                    cell!.addressLabel!.isHidden = true
                     cell!.textLabel!.numberOfLines = 0
                     cell!.textLabel!.text = TL_STRING_NO_STEALTH_PAYMENT_ADDRESSES_INFO
                     address = TL_STRING_NO_STEALTH_PAYMENT_ADDRESSES_INFO
                 }
-            } else if (indexPath.section == 1) {
+            } else if ((indexPath as NSIndexPath).section == 1) {
                 if (self.accountObject!.getMainActiveAddressesCount() == 0) {
                     address = TL_STRING_NONE_CURRENTLY
                 } else {
-                    let idx = self.accountObject!.getMainActiveAddressesCount() - 1 - indexPath.row
+                    let idx = self.accountObject!.getMainActiveAddressesCount() - 1 - (indexPath as NSIndexPath).row
                     address = self.accountObject!.getMainActiveAddress(idx)
                 }
-            } else if (indexPath.section == 3) {
+            } else if ((indexPath as NSIndexPath).section == 3) {
                 if (self.accountObject!.getChangeActiveAddressesCount() == 0) {
                     address = TL_STRING_NONE_CURRENTLY
                 } else {
-                    let idx = self.accountObject!.getChangeActiveAddressesCount() - 1 - indexPath.row
+                    let idx = self.accountObject!.getChangeActiveAddressesCount() - 1 - (indexPath as NSIndexPath).row
                     address = self.accountObject!.getChangeActiveAddress(idx)
                 }
             }
             
             cell!.addressLabel!.text = address
             if (self.showBalances && address != TL_STRING_NONE_CURRENTLY && address != TL_STRING_NO_STEALTH_PAYMENT_ADDRESSES_INFO &&
-                (indexPath.section == 0 || indexPath.section == 1 || indexPath.section == 3)) {
+                ((indexPath as NSIndexPath).section == 0 || (indexPath as NSIndexPath).section == 1 || (indexPath as NSIndexPath).section == 3)) {
                     // only show balances of active addresses
-                    cell!.amountButton!.hidden = false
+                    cell!.amountButton!.isHidden = false
                     balance = TLCurrencyFormat.getProperAmount(self.accountObject!.getAddressBalance(address)) as String
-                    cell!.amountButton!.setTitle(balance, forState: UIControlState.Normal)
+                    cell!.amountButton!.setTitle(balance, for: UIControlState())
             } else {
-                cell!.amountButton!.hidden = true
+                cell!.amountButton!.isHidden = true
             }            
         } else {
-            cell!.textLabel!.hidden = false
-            cell!.amountButton!.hidden = true
-            cell!.addressLabel!.hidden = true
+            cell!.textLabel!.isHidden = false
+            cell!.amountButton!.isHidden = true
+            cell!.addressLabel!.isHidden = true
             cell!.textLabel!.adjustsFontSizeToFitWidth = true
             
             var address = ""
-            if (indexPath.section == 2) {
+            if ((indexPath as NSIndexPath).section == 2) {
                 if (self.accountObject!.getMainArchivedAddressesCount() == 0) {
                     address = TL_STRING_NONE_CURRENTLY
                 } else {
-                    let idx = self.accountObject!.getMainArchivedAddressesCount() - 1 - indexPath.row
+                    let idx = self.accountObject!.getMainArchivedAddressesCount() - 1 - (indexPath as NSIndexPath).row
                     address = self.accountObject!.getMainArchivedAddress(idx)
                 }
-            } else if (indexPath.section == 4) {
+            } else if ((indexPath as NSIndexPath).section == 4) {
                 if (self.accountObject!.getChangeArchivedAddressesCount() == 0) {
                     address = TL_STRING_NONE_CURRENTLY
                 } else {
-                    let idx = self.accountObject!.getChangeArchivedAddressesCount() - 1 - indexPath.row
+                    let idx = self.accountObject!.getChangeArchivedAddressesCount() - 1 - (indexPath as NSIndexPath).row
                     address = self.accountObject!.getChangeArchivedAddress(idx)
                 }
             }
@@ -284,7 +284,7 @@ import UIKit
             cell!.textLabel!.text = address
         }
         
-        if (indexPath.row % 2 == 0) {
+        if ((indexPath as NSIndexPath).row % 2 == 0) {
             cell!.backgroundColor = TLColors.evenTableViewCellColor()
         } else {
             cell!.backgroundColor = TLColors.oddTableViewCellColor()
@@ -293,10 +293,10 @@ import UIKit
         return cell!
     }
     
-    func tableView(tableView: UITableView, willSelectRowAtIndexPath indexPath: NSIndexPath) -> NSIndexPath? {
+    func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         var address = ""
-        let cell = tableView.cellForRowAtIndexPath(indexPath) as! TLAddressTableViewCell
-        if (indexPath.section == 0 || indexPath.section == 1 || indexPath.section == 3) {
+        let cell = tableView.cellForRow(at: indexPath) as! TLAddressTableViewCell
+        if ((indexPath as NSIndexPath).section == 0 || (indexPath as NSIndexPath).section == 1 || (indexPath as NSIndexPath).section == 3) {
             address = cell.addressLabel!.text!
         } else {
             address = cell.textLabel!.text!
@@ -308,19 +308,19 @@ import UIKit
         
         let addressType:TLAddressType
         let title:String
-        if indexPath.section == 0 {
-            addressType = .Stealth
-            title = String(format: "Payment Index: %lu".localized, self.accountObject!.stealthWallet!.getStealthAddressPaymentsCount() - indexPath.row)
-        } else if (indexPath.section == 1 || indexPath.section == 3) {
-            addressType = .Main
+        if (indexPath as NSIndexPath).section == 0 {
+            addressType = .stealth
+            title = String(format: "Payment Index: %lu".localized, self.accountObject!.stealthWallet!.getStealthAddressPaymentsCount() - (indexPath as NSIndexPath).row)
+        } else if ((indexPath as NSIndexPath).section == 1 || (indexPath as NSIndexPath).section == 3) {
+            addressType = .main
             title = String(format: "Address ID: %lu".localized, self.accountObject!.getAddressHDIndex(address))
         } else {
-            addressType = .Change
+            addressType = .change
             title = String(format: "Address ID: %lu".localized, self.accountObject!.getAddressHDIndex(address))
         }
         
         var nTxs = 0
-        if (indexPath.section == 1 || indexPath.section == 3) {
+        if ((indexPath as NSIndexPath).section == 1 || (indexPath as NSIndexPath).section == 3) {
             nTxs = self.accountObject!.getNumberOfTransactionsForAddress(address)
         }
         
@@ -330,11 +330,11 @@ import UIKit
         return nil
     }
     
-    func customIOS7dialogButtonTouchUpInside(alertView: AnyObject, clickedButtonAtIndex buttonIndex: Int) {
+    func customIOS7dialogButtonTouchUp(inside alertView: AnyObject, clickedButtonAt buttonIndex: Int) {
         if (buttonIndex == 0) {
             iToast.makeText("Copied To clipboard".localized).setGravity(iToastGravityCenter).setDuration(1000).show()
             
-            let pasteboard = UIPasteboard.generalPasteboard()
+            let pasteboard = UIPasteboard.general
             pasteboard.string = self.QRImageModal!.QRcodeDisplayData
         }
         
@@ -342,6 +342,6 @@ import UIKit
     }
     
     deinit {
-        NSNotificationCenter.defaultCenter().removeObserver(self)
+        NotificationCenter.default.removeObserver(self)
     }
 }

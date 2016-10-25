@@ -36,24 +36,24 @@ import UIKit
         static let kPassSignedTxRow = "kPassSignedTxRow"
     }
     
-    @IBOutlet private var tableView: UITableView?
-    private var QRImageModal: TLQRImageModal?
-    private var sectionArray: Array<String>?
-    private var instructionsRowArray: Array<String>?
-    private var spendColdWalletRowArray: Array<String>?
-    private var tapGesture: UITapGestureRecognizer?
-    private var scanUnsignedTxTableViewCell: TLScanUnsignedTxTableViewCell?
-    private var inputColdWalletKeyTableViewCell: TLInputColdWalletKeyTableViewCell?
-    private var passSignedTxTableViewCell: TLPassSignedTxTableViewCell?
+    @IBOutlet fileprivate var tableView: UITableView?
+    fileprivate var QRImageModal: TLQRImageModal?
+    fileprivate var sectionArray: Array<String>?
+    fileprivate var instructionsRowArray: Array<String>?
+    fileprivate var spendColdWalletRowArray: Array<String>?
+    fileprivate var tapGesture: UITapGestureRecognizer?
+    fileprivate var scanUnsignedTxTableViewCell: TLScanUnsignedTxTableViewCell?
+    fileprivate var inputColdWalletKeyTableViewCell: TLInputColdWalletKeyTableViewCell?
+    fileprivate var passSignedTxTableViewCell: TLPassSignedTxTableViewCell?
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setColors()
         
-        NSNotificationCenter.defaultCenter().addObserver(self ,selector:#selector(TLCreateColdWalletViewController.keyboardWillShow(_:)),
-                                                         name:UIKeyboardWillShowNotification, object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self ,selector:#selector(TLCreateColdWalletViewController.keyboardWillHide(_:)),
-                                                         name:UIKeyboardWillHideNotification, object:nil)
+        NotificationCenter.default.addObserver(self ,selector:#selector(TLCreateColdWalletViewController.keyboardWillShow(_:)),
+                                                         name:NSNotification.Name.UIKeyboardWillShow, object:nil)
+        NotificationCenter.default.addObserver(self ,selector:#selector(TLCreateColdWalletViewController.keyboardWillHide(_:)),
+                                                         name:NSNotification.Name.UIKeyboardWillHide, object:nil)
         
         self.tapGesture = UITapGestureRecognizer(target: self,
                                                  action: #selector(dismissKeyboard))
@@ -67,14 +67,14 @@ import UIKit
         
         self.tableView!.delegate = self
         self.tableView!.dataSource = self
-        self.tableView!.tableFooterView = UIView(frame:CGRectZero)
+        self.tableView!.tableFooterView = UIView(frame:CGRect.zero)
     }
     
     func dismissKeyboard() {
         self.inputColdWalletKeyTableViewCell?.keyInputTextView.resignFirstResponder()
     }
     
-    func didClickScanUnsignedTxInfoButton(cell: TLScanUnsignedTxTableViewCell) {
+    func didClickScanUnsignedTxInfoButton(_ cell: TLScanUnsignedTxTableViewCell) {
         dismissKeyboard()
 //        TLPrompts.promtForOK(self, title:"", message: "Info Text".localized, success: {
 //            () in
@@ -89,34 +89,34 @@ import UIKit
         })
     }
 
-    func didClickScanButton(cell: TLScanUnsignedTxTableViewCell) {
+    func didClickScanButton(_ cell: TLScanUnsignedTxTableViewCell) {
         dismissKeyboard()
         
     }
     
-    func didClickInputColdWalletKeyInfoButton(cell: TLInputColdWalletKeyTableViewCell) {
+    func didClickInputColdWalletKeyInfoButton(_ cell: TLInputColdWalletKeyTableViewCell) {
         dismissKeyboard()
         TLPrompts.promtForOK(self, title:"", message: "Info Text".localized, success: {
             () in
         })
     }
     
-    func didClickPassButton(cell: TLPassSignedTxTableViewCell) {
+    func didClickPassButton(_ cell: TLPassSignedTxTableViewCell) {
         dismissKeyboard()
 
     }
     
-    func didClickPassSignedTxInfoButton(cell: TLPassSignedTxTableViewCell) {
+    func didClickPassSignedTxInfoButton(_ cell: TLPassSignedTxTableViewCell) {
         dismissKeyboard()
         TLPrompts.promtForOK(self, title:"", message: "Info Text".localized, success: {
             () in
         })
     }
     
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         if textView == self.inputColdWalletKeyTableViewCell?.keyInputTextView {
             let value = textView.text!
-            if value.containsString(" ") && TLHDWalletWrapper.phraseIsValid(value) {
+            if value.contains(" ") && TLHDWalletWrapper.phraseIsValid(value) {
                 
                 if let accountPublicKey = self.inputColdWalletKeyTableViewCell?.accountPublicKey {
                     let masterHex = TLHDWalletWrapper.getMasterHex(value)
@@ -147,16 +147,16 @@ import UIKit
         }
     }
     
-    func numberOfSectionsInTableView(tableView:UITableView) -> Int {
+    func numberOfSections(in tableView:UITableView) -> Int {
         return self.sectionArray!.count
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let section = self.sectionArray![indexPath.section]
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let section = self.sectionArray![(indexPath as NSIndexPath).section]
         if(section == STATIC_MEMBERS.kInstuctionsSection) {
             return 100
         } else if(section == STATIC_MEMBERS.kSpendColdWalletSection) {
-            let row = self.spendColdWalletRowArray![indexPath.row]
+            let row = self.spendColdWalletRowArray![(indexPath as NSIndexPath).row]
             if row == STATIC_MEMBERS.kScanUnsignedTxRow {
                 return TLScanUnsignedTxTableViewCell.cellHeight()
             } else if row == STATIC_MEMBERS.kInputKeyRow {
@@ -168,7 +168,7 @@ import UIKit
         return 0
     }
     
-    func tableView(tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
+    func tableView(_ tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
         let section = self.sectionArray![section]
         if(section == STATIC_MEMBERS.kInstuctionsSection) {
             return "".localized
@@ -179,7 +179,7 @@ import UIKit
     }
     
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section:Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section:Int) -> Int {
         let section = self.sectionArray![section]
         if (section == STATIC_MEMBERS.kInstuctionsSection) {
             return self.instructionsRowArray!.count
@@ -189,26 +189,26 @@ import UIKit
         return 0
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath:NSIndexPath) -> UITableViewCell{
-        let section = self.sectionArray![indexPath.section];
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath:IndexPath) -> UITableViewCell{
+        let section = self.sectionArray![(indexPath as NSIndexPath).section];
         if (section == STATIC_MEMBERS.kInstuctionsSection) {
             let MyIdentifier = "InstructionsCellIdentifier"
             
-            var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier)
+            var cell = tableView.dequeueReusableCell(withIdentifier: MyIdentifier)
             if (cell == nil) {
-                cell = UITableViewCell(style:UITableViewCellStyle.Default,
+                cell = UITableViewCell(style:UITableViewCellStyle.default,
                                        reuseIdentifier:MyIdentifier)
             }
             return cell!
         } else if(section == STATIC_MEMBERS.kSpendColdWalletSection) {
-            let row = self.spendColdWalletRowArray![indexPath.row];
+            let row = self.spendColdWalletRowArray![(indexPath as NSIndexPath).row];
             self.spendColdWalletRowArray = [STATIC_MEMBERS.kScanUnsignedTxRow, STATIC_MEMBERS.kInputKeyRow, STATIC_MEMBERS.kPassSignedTxRow]
 
             if row == STATIC_MEMBERS.kScanUnsignedTxRow {
                 let MyIdentifier = "ScanUnsignedTxCellIdentifier"
-                var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier) as! TLScanUnsignedTxTableViewCell?
+                var cell = tableView.dequeueReusableCell(withIdentifier: MyIdentifier) as! TLScanUnsignedTxTableViewCell?
                 if (cell == nil) {
-                    cell = UITableViewCell(style: UITableViewCellStyle.Default,
+                    cell = UITableViewCell(style: UITableViewCellStyle.default,
                                            reuseIdentifier: MyIdentifier) as? TLScanUnsignedTxTableViewCell
                 }
                 
@@ -217,9 +217,9 @@ import UIKit
                 return cell!
             } else if row == STATIC_MEMBERS.kInputKeyRow {
                 let MyIdentifier = "InputColdWalletKeyCellIdentifier"
-                var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier) as! TLInputColdWalletKeyTableViewCell?
+                var cell = tableView.dequeueReusableCell(withIdentifier: MyIdentifier) as! TLInputColdWalletKeyTableViewCell?
                 if (cell == nil) {
-                    cell = UITableViewCell(style: UITableViewCellStyle.Default,
+                    cell = UITableViewCell(style: UITableViewCellStyle.default,
                                            reuseIdentifier: MyIdentifier) as? TLInputColdWalletKeyTableViewCell
                 }
                 
@@ -229,9 +229,9 @@ import UIKit
                 return cell!
             } else if row == STATIC_MEMBERS.kPassSignedTxRow {
                 let MyIdentifier = "PassSignedTxCellIdentifier"
-                var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier) as! TLPassSignedTxTableViewCell?
+                var cell = tableView.dequeueReusableCell(withIdentifier: MyIdentifier) as! TLPassSignedTxTableViewCell?
                 if (cell == nil) {
-                    cell = UITableViewCell(style: UITableViewCellStyle.Default,
+                    cell = UITableViewCell(style: UITableViewCellStyle.default,
                                            reuseIdentifier: MyIdentifier) as? TLPassSignedTxTableViewCell
                 }
                 
@@ -241,17 +241,17 @@ import UIKit
             }
         }
         
-        return UITableViewCell(style:UITableViewCellStyle.Default,
+        return UITableViewCell(style:UITableViewCellStyle.default,
                                reuseIdentifier:"DefaultCellIdentifier")
     }
     
-    func keyboardWillShow(sender: NSNotification) {
-        let kbSize = sender.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue!.size
+    func keyboardWillShow(_ sender: Notification) {
+        let kbSize = ((sender as NSNotification).userInfo![UIKeyboardFrameEndUserInfoKey]! as AnyObject).cgRectValue!.size
         
-        let duration = sender.userInfo![UIKeyboardAnimationDurationUserInfoKey]!.doubleValue!
+        let duration = ((sender as NSNotification).userInfo![UIKeyboardAnimationDurationUserInfoKey]! as AnyObject).doubleValue!
         
-        let height = UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation) ? kbSize.height : kbSize.width;
-        UIView.animateWithDuration(duration, delay: 1.0, options: .TransitionNone, animations: {
+        let height = UIDeviceOrientationIsPortrait(UIDevice.current.orientation) ? kbSize.height : kbSize.width;
+        UIView.animate(withDuration: duration, delay: 1.0, options: UIViewAnimationOptions(), animations: {
             var edgeInsets = self.tableView!.contentInset;
             edgeInsets.bottom = height;
             self.tableView!.contentInset = edgeInsets;
@@ -262,9 +262,9 @@ import UIKit
         })
     }
     
-    func keyboardWillHide(sender: NSNotification) {
-        let duration = sender.userInfo![UIKeyboardAnimationDurationUserInfoKey]!.doubleValue!
-        UIView.animateWithDuration(duration, delay: 1.0, options: .TransitionNone, animations: {
+    func keyboardWillHide(_ sender: Notification) {
+        let duration = ((sender as NSNotification).userInfo![UIKeyboardAnimationDurationUserInfoKey]! as AnyObject).doubleValue!
+        UIView.animate(withDuration: duration, delay: 1.0, options: UIViewAnimationOptions(), animations: {
             var edgeInsets = self.tableView!.contentInset;
             edgeInsets.bottom = 0;
             self.tableView!.contentInset = edgeInsets;
@@ -275,11 +275,11 @@ import UIKit
         })
     }
     
-    func customIOS7dialogButtonTouchUpInside(alertView: AnyObject, clickedButtonAtIndex buttonIndex: Int) {
+    func customIOS7dialogButtonTouchUp(inside alertView: AnyObject, clickedButtonAt buttonIndex: Int) {
         if (buttonIndex == 0) {
             iToast.makeText("Copied To clipboard".localized).setGravity(iToastGravityCenter).setDuration(1000).show()
             
-            let pasteboard = UIPasteboard.generalPasteboard()
+            let pasteboard = UIPasteboard.general
             pasteboard.string = self.QRImageModal!.QRcodeDisplayData
         }
         

@@ -25,15 +25,15 @@ import UIKit
 
 
 extension UIView{
-    public func scrollToY(y:Float) -> () {
+    public func scrollToY(_ y:Float) -> () {
         UIView.beginAnimations("registerScroll", context:nil)
-        UIView.setAnimationCurve(.EaseInOut)
+        UIView.setAnimationCurve(.easeInOut)
         UIView.setAnimationDuration(0.4)
-        transform = CGAffineTransformMakeTranslation(0, CGFloat(y))
+        transform = CGAffineTransform(translationX: 0, y: CGFloat(y))
         UIView.commitAnimations()
     }
 
-    public func scrollToView(view:UIView) -> () {
+    public func scrollToView(_ view:UIView) -> () {
         let OFFSET_Y = CGFloat(70.0)
 
         let theFrame = view.frame
@@ -47,7 +47,7 @@ extension UIView{
         }
     }
 
-    public func scrollElement(view:UIView, toPoint y:Float) -> () {
+    public func scrollElement(_ view:UIView, toPoint y:Float) -> () {
         let theFrame = view.frame
         let orig_y = theFrame.origin.y
         let diff = y - Float(orig_y)

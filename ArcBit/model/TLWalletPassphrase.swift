@@ -10,7 +10,7 @@ import Foundation
 
 class TLWalletPassphrase {
 
-    class func enableRecoverableFeature(useKeychain:Bool) {
+    class func enableRecoverableFeature(_ useKeychain:Bool) {
         let encryptedWalletPassphraseKey = TLPreferences.getEncryptedWalletPassphraseKey()
         let encryptedWalletPassphrase = TLPreferences.getWalletPassphrase(useKeychain)
         assert(encryptedWalletPassphraseKey != nil)
@@ -20,7 +20,7 @@ class TLWalletPassphrase {
         TLPreferences.clearEncryptedWalletPassphraseKey()
     }
     
-    class func disableRecoverableFeature(useKeychain:Bool) {
+    class func disableRecoverableFeature(_ useKeychain:Bool) {
         let encryptedWalletPassphraseKey = TLWalletPassphrase.generateWalletPassphraseKey()
         let walletPassphrase = TLPreferences.getWalletPassphrase(useKeychain)
         let encryptedWalletPassphrase = TLWalletPassphrase.encryptWalletPassphrase(walletPassphrase!, key: encryptedWalletPassphraseKey)
@@ -54,11 +54,11 @@ class TLWalletPassphrase {
         return BTCKey().privateKeyAddress.base58String
     }
     
-    class func decryptWalletPassphrase(encryptedWalletPassphrase: String, key: String)  -> String? {
+    class func decryptWalletPassphrase(_ encryptedWalletPassphrase: String, key: String)  -> String? {
         return TLCrypto.decrypt(encryptedWalletPassphrase, password: key)
     }
     
-    class func encryptWalletPassphrase(walletPassphrase: String, key: String)  -> String {
+    class func encryptWalletPassphrase(_ walletPassphrase: String, key: String)  -> String {
         return TLCrypto.encrypt(walletPassphrase, password: key)
     }
     

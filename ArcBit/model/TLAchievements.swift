@@ -34,12 +34,12 @@ class TLAchievements {
         return STATIC_MEMBERS._instance!
     }
     
-    func hasDoneAction(action:String) -> (Bool) {
+    func hasDoneAction(_ action:String) -> (Bool) {
         let userAnalyticsDict = NSMutableDictionary(dictionary:TLPreferences.getAnalyticsDict() ?? NSDictionary())
-        if userAnalyticsDict.valueForKey(action) == nil {
+        if userAnalyticsDict.value(forKey: action) == nil {
             return false
         }
-        let eventCount = (userAnalyticsDict.valueForKey(action) as! NSNumber).integerValue
+        let eventCount = (userAnalyticsDict.value(forKey: action) as! NSNumber).intValue
         return eventCount > 0
     }
 }

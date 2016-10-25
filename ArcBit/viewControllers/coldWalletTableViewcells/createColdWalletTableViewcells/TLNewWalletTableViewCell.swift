@@ -25,7 +25,7 @@ import UIKit
 
 
 protocol TLNewWalletTableViewCellDelegate {
-    func didClickShowQRCodeButton(cell: TLNewWalletTableViewCell, data: String)
+    func didClickShowQRCodeButton(_ cell: TLNewWalletTableViewCell, data: String)
 }
 
 @objc(TLNewWalletTableViewCell) class TLNewWalletTableViewCell:UITableViewCell {
@@ -48,41 +48,41 @@ protocol TLNewWalletTableViewCellDelegate {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.mnemonicTextView.layer.borderWidth = 1.0
-        self.mnemonicTextView.layer.borderColor = UIColor.blackColor().CGColor
+        self.mnemonicTextView.layer.borderColor = UIColor.black.cgColor
         self.mnemonicTextView.text = nil
-        self.mnemonicTextView.autocorrectionType = UITextAutocorrectionType.No
+        self.mnemonicTextView.autocorrectionType = UITextAutocorrectionType.no
         self.newWalletButton.backgroundColor = TLColors.mainAppColor()
-        self.newWalletButton.setTitleColor(TLColors.mainAppOppositeColor(), forState:UIControlState.Normal)
+        self.newWalletButton.setTitleColor(TLColors.mainAppOppositeColor(), for:UIControlState())
         self.newWalletButton.titleLabel!.adjustsFontSizeToFitWidth = true
-        self.accountIDTextField.keyboardType = UIKeyboardType.NumberPad
-        self.accountIDTextField.autocorrectionType = UITextAutocorrectionType.No
+        self.accountIDTextField.keyboardType = UIKeyboardType.numberPad
+        self.accountIDTextField.autocorrectionType = UITextAutocorrectionType.no
         self.accountPublicKeyTextView.layer.borderWidth = 1.0
         self.accountPublicKeyTextView.alpha = 0.5
         self.accountPublicKeyTextView.text = nil
-        self.accountPublicKeyTextView.userInteractionEnabled = false
+        self.accountPublicKeyTextView.isUserInteractionEnabled = false
         self.showAccountPublicKeyQRButton.backgroundColor = TLColors.mainAppColor()
-        self.showAccountPublicKeyQRButton.setTitleColor(TLColors.mainAppOppositeColor(), forState:UIControlState.Normal)
+        self.showAccountPublicKeyQRButton.setTitleColor(TLColors.mainAppOppositeColor(), for:UIControlState())
     }
     
     class func cellHeight() -> CGFloat {
         return 287
     }
     
-    @IBAction private func newWalletButtonClicked(sender:UIButton) {
+    @IBAction fileprivate func newWalletButtonClicked(_ sender:UIButton) {
         if let mnemonicPassphrase = TLHDWalletWrapper.generateMnemonicPassphrase() {
             self.mnemonicTextView.text = mnemonicPassphrase
             self.didUpdateMnemonic(mnemonicPassphrase)
         }
     }
     
-    @IBAction private func showAccountPublicKeyQRButtonClicked(sender:UIButton) {
+    @IBAction fileprivate func showAccountPublicKeyQRButtonClicked(_ sender:UIButton) {
         let accountPublicKey = self.accountPublicKeyTextView.text
-        if accountPublicKey != nil && !accountPublicKey.isEmpty && TLHDWalletWrapper.isValidExtendedPublicKey(accountPublicKey) {
+        if accountPublicKey != nil && !accountPublicKey!.isEmpty && TLHDWalletWrapper.isValidExtendedPublicKey(accountPublicKey) {
             delegate?.didClickShowQRCodeButton(self, data: accountPublicKey!)
         }
     }
     
-    func didUpdateMnemonic(mnemonicPassphrase: String) {
+    func didUpdateMnemonic(_ mnemonicPassphrase: String) {
         let masterHex = TLHDWalletWrapper.getMasterHex(mnemonicPassphrase)
         if let accountID = UInt(self.accountIDTextField.text!) {
             let extendedPublicKey = TLHDWalletWrapper.getExtendPubKeyFromMasterHex(masterHex, accountIdx: accountID)
@@ -94,23 +94,23 @@ protocol TLNewWalletTableViewCellDelegate {
         }
     }
 
-    func updateAccountPublicKeyTextView(extendedPublicKey: String?) {
+    func updateAccountPublicKeyTextView(_ extendedPublicKey: String?) {
         if extendedPublicKey == nil {
-            self.showAccountPublicKeyQRButton.enabled = false
+            self.showAccountPublicKeyQRButton.isEnabled = false
             self.showAccountPublicKeyQRButton.alpha = 0.5
             self.accountPublicKeyTextView.text = nil
             return
         }
-        self.showAccountPublicKeyQRButton.enabled = true
+        self.showAccountPublicKeyQRButton.isEnabled = true
         self.showAccountPublicKeyQRButton.alpha = 1
         self.accountPublicKeyTextView.text = extendedPublicKey!
         
         // shrink text to fit textview
         var fontSize:CGFloat = (self.accountPublicKeyTextView.font?.pointSize)!
-        self.accountPublicKeyTextView.font = self.accountPublicKeyTextView.font?.fontWithSize(fontSize)
+        self.accountPublicKeyTextView.font = self.accountPublicKeyTextView.font?.withSize(fontSize)
         while (self.accountPublicKeyTextView.contentSize.height > self.accountPublicKeyTextView.frame.size.height && fontSize > 8.0) {
             fontSize -= 1.0
-            self.accountPublicKeyTextView.font = self.accountPublicKeyTextView.font?.fontWithSize(fontSize)
+            self.accountPublicKeyTextView.font = self.accountPublicKeyTextView.font?.withSize(fontSize)
         }
     }
 }

@@ -25,7 +25,7 @@ import UIKit
 
 
 protocol TLInputColdWalletKeyTableViewCellDelegate {
-    func didClickInputColdWalletKeyInfoButton(cell: TLInputColdWalletKeyTableViewCell)
+    func didClickInputColdWalletKeyInfoButton(_ cell: TLInputColdWalletKeyTableViewCell)
 }
 
 @objc(TLInputColdWalletKeyTableViewCell) class TLInputColdWalletKeyTableViewCell:UITableViewCell {
@@ -46,8 +46,8 @@ protocol TLInputColdWalletKeyTableViewCellDelegate {
     override func awakeFromNib() {
         super.awakeFromNib()
         self.keyInputTextView.layer.borderWidth = 1.0
-        self.keyInputTextView.layer.borderColor = UIColor.blackColor().CGColor
-        self.keyInputTextView.autocorrectionType = UITextAutocorrectionType.No
+        self.keyInputTextView.layer.borderColor = UIColor.black.cgColor
+        self.keyInputTextView.autocorrectionType = UITextAutocorrectionType.no
         self.keyInputTextView.text = nil
         self.setstatusLabel(false)
     }
@@ -56,16 +56,16 @@ protocol TLInputColdWalletKeyTableViewCellDelegate {
         return 151
     }
     
-    @IBAction private func infoButtonClicked(sender:UIButton) {
+    @IBAction fileprivate func infoButtonClicked(_ sender:UIButton) {
         delegate?.didClickInputColdWalletKeyInfoButton(self)
     }
     
-    func setstatusLabel(complete:Bool) {
+    func setstatusLabel(_ complete:Bool) {
         if complete {
-            statusLabel.textColor = UIColor.greenColor()
+            statusLabel.textColor = UIColor.green
             statusLabel.text = "Complete".localized
         } else {
-            statusLabel.textColor = UIColor.redColor()
+            statusLabel.textColor = UIColor.red
             statusLabel.text = "Incomplete".localized
         }
     }

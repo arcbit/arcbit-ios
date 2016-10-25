@@ -25,7 +25,7 @@ import UIKit
 
 @objc(TLTextViewViewController) class TLTextViewViewController:UIViewController {
     var text:String?
-    @IBOutlet private var textView:UITextView?
+    @IBOutlet fileprivate var textView:UITextView?
     
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)

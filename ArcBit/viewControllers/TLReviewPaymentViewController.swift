@@ -23,6 +23,26 @@
 import Foundation
 import UIKit
 import AVFoundation
+fileprivate func < <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l < r
+  case (nil, _?):
+    return true
+  default:
+    return false
+  }
+}
+
+fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
+  switch (lhs, rhs) {
+  case let (l?, r?):
+    return l > r
+  default:
+    return rhs < lhs
+  }
+}
+
 
 @objc(TLReviewPaymentViewController) class TLReviewPaymentViewController: UIViewController, CustomIOS7AlertViewDelegate {
     required init?(coder aDecoder: NSCoder) {
@@ -41,27 +61,27 @@ import AVFoundation
     @IBOutlet weak var totalAmountLabel: UILabel!
     @IBOutlet weak var totalFiatAmountLabel: UILabel!
     @IBOutlet weak var sendButton: UIButton!
-    private lazy var showedPromptedForSentPaymentTxHashSet:NSMutableSet = NSMutableSet()
-    private var QRImageModal: TLQRImageModal?
-    private var airGapDataBase64PartsArray: Array<String>?
-    var sendTimer:NSTimer?
+    fileprivate lazy var showedPromptedForSentPaymentTxHashSet:NSMutableSet = NSMutableSet()
+    fileprivate var QRImageModal: TLQRImageModal?
+    fileprivate var airGapDataBase64PartsArray: Array<String>?
+    var sendTimer:Timer?
     var sendTxHash:String?
     var inputedToAddress: String? = nil
     var inputedToAmount: TLCoin? = nil
     var amountMovedFromAccount: TLCoin? = nil
 
-    override func preferredStatusBarStyle() -> (UIStatusBarStyle) {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : (UIStatusBarStyle) {
+        return UIStatusBarStyle.lightContent
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationBarColors(self.navigationBar!)
         self.sendButton.backgroundColor = TLColors.mainAppColor()
-        self.sendButton.setTitleColor(TLColors.mainAppOppositeColor(), forState: .Normal)
-        NSNotificationCenter.defaultCenter().addObserver(self
+        self.sendButton.setTitleColor(TLColors.mainAppOppositeColor(), for: UIControlState())
+        NotificationCenter.default.addObserver(self
             ,selector:#selector(TLReviewPaymentViewController.finishSend(_:)),
-             name:TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION(), object:nil)
+             name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION()), object:nil)
         updateView()
     }
     
@@ -79,28 +99,28 @@ import AVFoundation
         self.totalFiatAmountLabel.text = TLCurrencyFormat.coinToProperFiatAmountString(total, withCode: false)
     }
     
-    private func showPromptForSetTransactionFee() {
+    fileprivate func showPromptForSetTransactionFee() {
         let msg = String(format: "Input your custom fee in %@", TLCurrencyFormat.getBitcoinDisplay())
         
-        func addTextField(textField: UITextField!){
+        func addTextField(_ textField: UITextField!){
             textField.placeholder = "fee amount".localized
-            textField.keyboardType = .DecimalPad
+            textField.keyboardType = .decimalPad
         }
         
-        UIAlertController.showAlertInViewController(self,
+        UIAlertController.showAlert(in: self,
                                                     withTitle: "Transaction Fee".localized,
                                                     
                                                     message: msg,
-                                                    preferredStyle: .Alert,
+                                                    preferredStyle: .alert,
                                                     cancelButtonTitle: "Cancel".localized,
                                                     destructiveButtonTitle: nil,
                                                     otherButtonTitles: ["OK".localized],
                                                     
-                                                    preShowBlock: {(controller:UIAlertController!) in
-                                                        controller.addTextFieldWithConfigurationHandler(addTextField)
+                                                    preShow: {(controller:UIAlertController!) in
+                                                        controller.addTextField(configurationHandler: addTextField)
             }
             ,
-                                                    tapBlock: {(alertView, action, buttonIndex) in
+                                                    tap: {(alertView, action, buttonIndex) in
                                                         if (buttonIndex == alertView.firstOtherButtonIndex) {
                                                             let feeAmountString = (alertView.textFields![0]).text
                                                             
@@ -144,14 +164,14 @@ import AVFoundation
         })
     }
 
-    func showPromptPaymentSent(txHash: String, address: String, amount: TLCoin) {
+    func showPromptPaymentSent(_ txHash: String, address: String, amount: TLCoin) {
         self.inputedToAddress = nil
         self.inputedToAmount = nil
         DLog("showPromptPaymentSent \(txHash)")
         let msg = String(format:"Sent %@ to %@".localized, TLCurrencyFormat.getProperAmount(amount), address)
         TLHUDWrapper.hideHUDForView(self.view, animated: true)
         TLPrompts.promtForOK(self, title: "", message: msg, success: {
-            self.dismissViewControllerAnimated(true, completion: nil)
+            self.dismiss(animated: true, completion: nil)
         })
     }
     
@@ -162,25 +182,25 @@ import AVFoundation
 
     func retryFinishSend() {
         DLog("retryFinishSend \(self.sendTxHash)")
-        if !AppDelegate.instance().webSocketNotifiedTxHashSet.containsObject(self.sendTxHash!) {
+        if !AppDelegate.instance().webSocketNotifiedTxHashSet.contains(self.sendTxHash!) {
             let nonUpdatedBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
             let accountNewBalance = nonUpdatedBalance.subtract(self.amountMovedFromAccount!)
             DLog("retryFinishSend 2 \(self.sendTxHash)")
             AppDelegate.instance().godSend!.setCurrentFromBalance(accountNewBalance)
         }
 
-        if !self.showedPromptedForSentPaymentTxHashSet.containsObject(self.sendTxHash!) {
-            self.showedPromptedForSentPaymentTxHashSet.addObject(self.sendTxHash!)
+        if !self.showedPromptedForSentPaymentTxHashSet.contains(self.sendTxHash!) {
+            self.showedPromptedForSentPaymentTxHashSet.add(self.sendTxHash!)
             self.showPromptPaymentSent(self.sendTxHash!, address: inputedToAddress!, amount: inputedToAmount!)
         }
     }
     
-    func finishSend(note: NSNotification) {
+    func finishSend(_ note: Notification) {
         let webSocketNotifiedTxHash = note.object as? String
         DLog("finishSend \(webSocketNotifiedTxHash)")
-        if webSocketNotifiedTxHash! == self.sendTxHash! && !self.showedPromptedForSentPaymentTxHashSet.containsObject(webSocketNotifiedTxHash!) {
+        if webSocketNotifiedTxHash! == self.sendTxHash! && !self.showedPromptedForSentPaymentTxHashSet.contains(webSocketNotifiedTxHash!) {
             DLog("finishSend 2 \(webSocketNotifiedTxHash)")
-            self.showedPromptedForSentPaymentTxHashSet.addObject(webSocketNotifiedTxHash!)
+            self.showedPromptedForSentPaymentTxHashSet.add(webSocketNotifiedTxHash!)
             sendTimer?.invalidate()
             self.showPromptPaymentSent(webSocketNotifiedTxHash!, address: inputedToAddress!, amount: inputedToAmount!)
         }
@@ -201,8 +221,8 @@ import AVFoundation
         }
         
         let toAddressesAndAmount = NSMutableDictionary()
-        toAddressesAndAmount.setObject(toAddress!, forKey: "address")
-        toAddressesAndAmount.setObject(inputtedAmount, forKey: "amount")
+        toAddressesAndAmount.setObject(toAddress!, forKey: "address" as NSCopying)
+        toAddressesAndAmount.setObject(inputtedAmount, forKey: "amount" as NSCopying)
         let toAddressesAndAmounts = NSArray(objects: toAddressesAndAmount)
         
         let signTx = !AppDelegate.instance().godSend!.isColdWalletAccount()
@@ -223,7 +243,7 @@ import AVFoundation
             return
         }
         
-        let txHex = txHexAndTxHash!.objectForKey("txHex") as? String
+        let txHex = txHexAndTxHash!.object(forKey: "txHex") as? String
         
         if (txHex == nil) {
             //should not reach here, because I check sum of unspent outputs already,
@@ -239,7 +259,7 @@ import AVFoundation
             return;
         }
         
-        let txHash = txHexAndTxHash!.objectForKey("txHash") as? String
+        let txHash = txHexAndTxHash!.object(forKey: "txHash") as? String
         
         
         if (toAddress == AppDelegate.instance().godSend!.getStealthAddress()) {
@@ -265,9 +285,9 @@ import AVFoundation
         broadcastTx(txHex!, txHash: txHash!, toAddress: toAddress!)
     }
 
-    func broadcastTx(txHex: String, txHash: String, toAddress: String) {
+    func broadcastTx(_ txHex: String, txHash: String, toAddress: String) {
         let handlePushTxSuccess = { () -> () in
-            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_SEND_PAYMENT(),
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_SEND_PAYMENT()),
                                                                       object: nil, userInfo: nil)
         }
         
@@ -277,7 +297,7 @@ import AVFoundation
             
             if TLStealthAddress.isStealthAddress(toAddress, isTestnet:false) == true {
                 // doing stealth payment with push tx insight get wrong hash back??
-                let txid = (jsonData as! NSDictionary).objectForKey("txid") as! String
+                let txid = (jsonData as! NSDictionary).object(forKey: "txid") as! String
                 DLog("showPromptReviewTx pushTx: success txid %@", function: txid)
                 DLog("showPromptReviewTx pushTx: success txHash %@", function: txHash)
                 if txid != txHash {
@@ -302,7 +322,7 @@ import AVFoundation
         })
     }
 
-    func promptToSignTransaction(unSignedTx: String, txInputsAccountHDIdxes:NSArray) {
+    func promptToSignTransaction(_ unSignedTx: String, txInputsAccountHDIdxes:NSArray) {
         let extendedPublicKey = AppDelegate.instance().godSend!.getExtendedPubKey()
         if let airGapDataBase64 = TLColdWallet.createSerializedAipGapData(unSignedTx, extendedPublicKey: extendedPublicKey!, txInputsAccountHDIdxes: txInputsAccountHDIdxes) {
             DLog("airGapDataBase64 0000 \(airGapDataBase64)")
@@ -316,7 +336,7 @@ import AVFoundation
                 () in
                 
                 let firstAipGapDataPart = self.airGapDataBase64PartsArray![0]
-                self.airGapDataBase64PartsArray!.removeAtIndex(0)
+                self.airGapDataBase64PartsArray!.remove(at: 0)
                 self.QRImageModal = TLQRImageModal(data: firstAipGapDataPart, buttonCopyText: "Next".localized, vc: self)
                 self.QRImageModal!.show()
                 
@@ -326,19 +346,19 @@ import AVFoundation
         }
     }
     
-    @IBAction func customizeFeeButtonClicked(sender: AnyObject) {
+    @IBAction func customizeFeeButtonClicked(_ sender: AnyObject) {
         showPromptForSetTransactionFee()
     }
     
-    @IBAction func feeInfoButtonClicked(sender: AnyObject) {
+    @IBAction func feeInfoButtonClicked(_ sender: AnyObject) {
         TLPrompts.promptSuccessMessage("Transaction Fees", message: "Transaction fees impact how quickly the Bitcoin mining network will confirm your transactions, and depend on the current network conditions.")
     }
     
-    @IBAction func sendButtonClicked(sender: AnyObject) {
+    @IBAction func sendButtonClicked(_ sender: AnyObject) {
         TLHUDWrapper.showHUDAddedTo(self.view, labelText: "Sending".localized, animated: true)
         // relying on websocket to know when a payment has been sent can be unreliable, so cancel after a certain time
         let TIME_TO_WAIT_TO_HIDE_HUD_AND_REFRESH_ACCOUNT = 13.0
-        sendTimer = NSTimer.scheduledTimerWithTimeInterval(TIME_TO_WAIT_TO_HIDE_HUD_AND_REFRESH_ACCOUNT, target: self,
+        sendTimer = Timer.scheduledTimer(timeInterval: TIME_TO_WAIT_TO_HIDE_HUD_AND_REFRESH_ACCOUNT, target: self,
                                                selector: #selector(retryFinishSend), userInfo: nil, repeats: false)
 
         if !AppDelegate.instance().godSend!.haveUpDatedUTXOs() {
@@ -353,16 +373,16 @@ import AVFoundation
         }
     }
 
-    @IBAction private func cancel(sender:AnyObject) {
-        self.dismissViewControllerAnimated(true, completion:nil)
+    @IBAction fileprivate func cancel(_ sender:AnyObject) {
+        self.dismiss(animated: true, completion:nil)
     }
     
-    func customIOS7dialogButtonTouchUpInside(alertView: AnyObject, clickedButtonAtIndex buttonIndex: Int) {
+    func customIOS7dialogButtonTouchUp(inside alertView: AnyObject, clickedButtonAt buttonIndex: Int) {
         if (buttonIndex == 0) {
             if self.airGapDataBase64PartsArray?.count > 0 {
                 let nextAipGapDataPart = self.airGapDataBase64PartsArray![0]
-                self.airGapDataBase64PartsArray!.removeAtIndex(0)
-                self.QRImageModal = TLQRImageModal(data: nextAipGapDataPart, buttonCopyText: "Next".localized, vc: self)
+                self.airGapDataBase64PartsArray!.remove(at: 0)
+                self.QRImageModal = TLQRImageModal(data: nextAipGapDataPart as NSString, buttonCopyText: "Next".localized, vc: self)
                 self.QRImageModal!.show()
             } else {
                 TLPrompts.promptAlertController(self, title: "Finished Passing Transaction Data".localized,

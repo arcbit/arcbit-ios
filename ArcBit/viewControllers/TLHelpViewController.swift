@@ -37,14 +37,14 @@ import UIKit
         super.init(coder: aDecoder)
     }
     
-    @IBOutlet private var howToInstructionsTableView:UITableView?
-    private var eventActionArray:NSArray?
-    private var eventAdvanceActionArray:NSArray?
-    private var FAQArray:NSArray?
-    private var advancedFAQArray:NSArray?
-    private var instructions:NSArray?
-    private var action:NSString?
-    private var FAQText:NSString?
+    @IBOutlet fileprivate var howToInstructionsTableView:UITableView?
+    fileprivate var eventActionArray:NSArray?
+    fileprivate var eventAdvanceActionArray:NSArray?
+    fileprivate var FAQArray:NSArray?
+    fileprivate var advancedFAQArray:NSArray?
+    fileprivate var instructions:NSArray?
+    fileprivate var action:NSString?
+    fileprivate var FAQText:NSString?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,11 +60,11 @@ import UIKit
         
         self.howToInstructionsTableView!.delegate = self
         self.howToInstructionsTableView!.dataSource = self
-        self.howToInstructionsTableView!.tableFooterView = UIView(frame:CGRectZero)
+        self.howToInstructionsTableView!.tableFooterView = UIView(frame:CGRect.zero)
     }
     
-    override func viewDidAppear(animated:Bool) -> () {
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_HELP_SCREEN(),
+    override func viewDidAppear(_ animated:Bool) -> () {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_HELP_SCREEN()),
             object:nil)
     }
     
@@ -72,27 +72,27 @@ import UIKit
         super.didReceiveMemoryWarning()
     }
     
-    override func prepareForSegue(segue: UIStoryboardSegue, sender:AnyObject!) -> () {
+    override func prepare(for segue: UIStoryboardSegue, sender:Any!) -> () {
         if (segue.identifier == "SegueAchievements") {
-            let vc = segue.destinationViewController 
+            let vc = segue.destination 
             vc.navigationItem.title = "Achievements".localized
         } else if (segue.identifier == "SegueText") {
-            let vc = segue.destinationViewController as! TLTextViewViewController
+            let vc = segue.destination as! TLTextViewViewController
             vc.navigationItem.title = "Explanation".localized
             vc.text = FAQText as? String
         } else if (segue.identifier == "SegueInstructions") {
-            let vc = segue.destinationViewController as! TLInstructionsViewController
+            let vc = segue.destination as! TLInstructionsViewController
             vc.navigationItem.title = "Instructions".localized
             vc.action = action as? String
             vc.actionInstructionsSteps = instructions
         }
     }
     
-    @IBAction private func menuButtonClicked(sender:UIButton) -> () {
-        self.slidingViewController().anchorTopViewToRightAnimated(true)
+    @IBAction fileprivate func menuButtonClicked(_ sender:UIButton) -> () {
+        self.slidingViewController().anchorTopViewToRight(animated: true)
     }
     
-    func numberOfSectionsInTableView(tableView:UITableView) -> Int {
+    func numberOfSections(in tableView:UITableView) -> Int {
         if (TLPreferences.enabledAdvancedMode()) {
             return 5
         } else {
@@ -100,7 +100,7 @@ import UIKit
         }
     }
     
-    func tableView(tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
+    func tableView(_ tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
         if (TLPreferences.enabledAdvancedMode()) {
             if(section == 0) {
                 return "Achievements".localized
@@ -130,7 +130,7 @@ import UIKit
         }
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section:Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section:Int) -> Int {
         if (TLPreferences.enabledAdvancedMode()) {
             if(section == 0) {
                 return 1
@@ -160,46 +160,46 @@ import UIKit
         }
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath:NSIndexPath) -> UITableViewCell{
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath:IndexPath) -> UITableViewCell{
         let MyIdentifier = "HowToCellIdentifier"
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier) 
+        var cell = tableView.dequeueReusableCell(withIdentifier: MyIdentifier) 
         if (cell == nil) {
-            cell = UITableViewCell(style:UITableViewCellStyle.Default,
+            cell = UITableViewCell(style:UITableViewCellStyle.default,
                 reuseIdentifier:MyIdentifier)
         }
         cell!.textLabel!.numberOfLines = 0
         
         if (TLPreferences.enabledAdvancedMode()) {
-            if(indexPath.section == 0) {
+            if((indexPath as NSIndexPath).section == 0) {
                 cell!.textLabel!.text = "View Achievements".localized
             }
-            else if(indexPath.section == 1) {
-                cell!.textLabel!.text = FAQArray!.objectAtIndex(indexPath.row) as? String
+            else if((indexPath as NSIndexPath).section == 1) {
+                cell!.textLabel!.text = FAQArray!.object(at: (indexPath as NSIndexPath).row) as? String
             }
-            else if(indexPath.section == 2) {
-                cell!.textLabel!.text = TLHelpDoc.getActionEventToHowToActionTitleDict().objectForKey(eventActionArray!.objectAtIndex(indexPath.row) as! String) as? String
+            else if((indexPath as NSIndexPath).section == 2) {
+                cell!.textLabel!.text = TLHelpDoc.getActionEventToHowToActionTitleDict().object(forKey: eventActionArray!.object(at: (indexPath as NSIndexPath).row) as! String) as? String
             }
-            else if(indexPath.section == 3) {
-                cell!.textLabel!.text = advancedFAQArray!.objectAtIndex(indexPath.row) as? String
+            else if((indexPath as NSIndexPath).section == 3) {
+                cell!.textLabel!.text = advancedFAQArray!.object(at: (indexPath as NSIndexPath).row) as? String
             }
             else
             {
-                cell!.textLabel!.text = TLHelpDoc.getActionEventToHowToActionTitleDict().objectForKey(eventAdvanceActionArray!.objectAtIndex(indexPath.row) as! String) as? String
+                cell!.textLabel!.text = TLHelpDoc.getActionEventToHowToActionTitleDict().object(forKey: eventAdvanceActionArray!.object(at: (indexPath as NSIndexPath).row) as! String) as? String
             }
         } else {
-            if(indexPath.section == 0) {
+            if((indexPath as NSIndexPath).section == 0) {
                 cell!.textLabel!.text = "View Achievements".localized
             }
-            else if(indexPath.section == 1) {
-                cell!.textLabel!.text = FAQArray!.objectAtIndex(indexPath.row) as? String
+            else if((indexPath as NSIndexPath).section == 1) {
+                cell!.textLabel!.text = FAQArray!.object(at: (indexPath as NSIndexPath).row) as? String
             }
             else {
-                cell!.textLabel!.text = TLHelpDoc.getActionEventToHowToActionTitleDict().objectForKey(eventActionArray!.objectAtIndex(indexPath.row) as! String) as? String
+                cell!.textLabel!.text = TLHelpDoc.getActionEventToHowToActionTitleDict().object(forKey: eventActionArray!.object(at: (indexPath as NSIndexPath).row) as! String) as? String
             }
         }
         
-        if (indexPath.row % 2 == 0) {
+        if ((indexPath as NSIndexPath).row % 2 == 0) {
             cell!.backgroundColor = TLColors.evenTableViewCellColor()
         } else {
             cell!.backgroundColor = TLColors.oddTableViewCellColor()
@@ -208,35 +208,35 @@ import UIKit
         return cell!
     }
     
-    func tableView(tableView:UITableView, willSelectRowAtIndexPath indexPath:NSIndexPath) -> NSIndexPath? {
+    func tableView(_ tableView:UITableView, willSelectRowAt indexPath:IndexPath) -> IndexPath? {
         if (TLPreferences.enabledAdvancedMode()) {
-            if(indexPath.section == 0) {
-                performSegueWithIdentifier("SegueAchievements", sender:self)
-            } else if(indexPath.section == 1) {
-                FAQText = TLHelpDoc.getExplanation(indexPath.row)
-                performSegueWithIdentifier("SegueText", sender:self)
-            } else if(indexPath.section == 2) {
-                action = TLHelpDoc.getActionEventToHowToActionTitleDict().objectForKey(eventActionArray!.objectAtIndex(indexPath.row)) as! String
-                instructions = TLHelpDoc.getBasicActionInstructionStepsArray(indexPath.row)
-                performSegueWithIdentifier("SegueInstructions", sender:self)
-            } else if(indexPath.section == 3) {
-                FAQText = TLHelpDoc.getAdvanceExplanation(indexPath.row)
-                performSegueWithIdentifier("SegueText", sender:self)
+            if((indexPath as NSIndexPath).section == 0) {
+                performSegue(withIdentifier: "SegueAchievements", sender:self)
+            } else if((indexPath as NSIndexPath).section == 1) {
+                FAQText = TLHelpDoc.getExplanation((indexPath as NSIndexPath).row)
+                performSegue(withIdentifier: "SegueText", sender:self)
+            } else if((indexPath as NSIndexPath).section == 2) {
+                action = TLHelpDoc.getActionEventToHowToActionTitleDict().object(forKey: eventActionArray!.object(at: (indexPath as NSIndexPath).row)) as! String as NSString?
+                instructions = TLHelpDoc.getBasicActionInstructionStepsArray((indexPath as NSIndexPath).row)
+                performSegue(withIdentifier: "SegueInstructions", sender:self)
+            } else if((indexPath as NSIndexPath).section == 3) {
+                FAQText = TLHelpDoc.getAdvanceExplanation((indexPath as NSIndexPath).row)
+                performSegue(withIdentifier: "SegueText", sender:self)
             } else {
-                action = TLHelpDoc.getActionEventToHowToActionTitleDict().objectForKey(eventAdvanceActionArray!.objectAtIndex(indexPath.row)) as! String
-                instructions = TLHelpDoc.getAdvanceActionInstructionStepsArray(indexPath.row)
-                performSegueWithIdentifier("SegueInstructions", sender:self)
+                action = TLHelpDoc.getActionEventToHowToActionTitleDict().object(forKey: eventAdvanceActionArray!.object(at: (indexPath as NSIndexPath).row)) as! String as NSString?
+                instructions = TLHelpDoc.getAdvanceActionInstructionStepsArray((indexPath as NSIndexPath).row)
+                performSegue(withIdentifier: "SegueInstructions", sender:self)
             }
         } else {
-            if(indexPath.section == 0) {
-                performSegueWithIdentifier("SegueAchievements", sender:self)
-            } else if(indexPath.section == 1) {
-                FAQText = TLHelpDoc.getExplanation(indexPath.row)
-                performSegueWithIdentifier("SegueText", sender:self)
+            if((indexPath as NSIndexPath).section == 0) {
+                performSegue(withIdentifier: "SegueAchievements", sender:self)
+            } else if((indexPath as NSIndexPath).section == 1) {
+                FAQText = TLHelpDoc.getExplanation((indexPath as NSIndexPath).row)
+                performSegue(withIdentifier: "SegueText", sender:self)
             } else {
-                action = TLHelpDoc.getActionEventToHowToActionTitleDict().objectForKey(eventActionArray!.objectAtIndex(indexPath.row)) as! String
-                instructions = TLHelpDoc.getBasicActionInstructionStepsArray(indexPath.row)
-                performSegueWithIdentifier("SegueInstructions", sender:self)
+                action = TLHelpDoc.getActionEventToHowToActionTitleDict().object(forKey: eventActionArray!.object(at: (indexPath as NSIndexPath).row)) as! String as NSString?
+                instructions = TLHelpDoc.getBasicActionInstructionStepsArray((indexPath as NSIndexPath).row)
+                performSegue(withIdentifier: "SegueInstructions", sender:self)
             }
         }
         

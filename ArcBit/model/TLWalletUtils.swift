@@ -24,31 +24,31 @@ import Foundation
 
 
 enum TLSendFromType: Int {
-    case HDWallet = 0
-    case ImportedAccount = 1
-    case ImportedWatchAccount = 2
-    case ImportedAddress = 3
-    case ImportedWatchAddress = 4
-    case ColdWalletAccount = 5
+    case hdWallet = 0
+    case importedAccount = 1
+    case importedWatchAccount = 2
+    case importedAddress = 3
+    case importedWatchAddress = 4
+    case coldWalletAccount = 5
 }
 
 enum TLAccountTxType: Int {
-    case Send = 0
-    case Receive = 1
-    case MoveBetweenAccount = 2
+    case send = 0
+    case receive = 1
+    case moveBetweenAccount = 2
 }
 
 enum TLAccountType: Int {
-    case Unknown = 0
-    case HDWallet = 1
-    case Imported = 2
-    case ImportedWatch = 3
-    case ColdWallet = 4
+    case unknown = 0
+    case hdWallet = 1
+    case imported = 2
+    case importedWatch = 3
+    case coldWallet = 4
 }
 
 enum TLAccountAddressType: Int {
-    case Imported = 1
-    case ImportedWatch = 2
+    case imported = 1
+    case importedWatch = 2
 }
 
 
@@ -67,15 +67,15 @@ class TLWalletUtils {
     }
     
     class func DEFAULT_FEE_AMOUNT_IN_BITCOINS() -> (String) {
-        return TLCurrencyFormat.bitcoinAmountStringToCoin(STATIC_MEMBERS.DEFAULT_FEE_AMOUNT, locale: NSLocale(localeIdentifier: "en_US")).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.Bitcoin)
+        return TLCurrencyFormat.bitcoinAmountStringToCoin(STATIC_MEMBERS.DEFAULT_FEE_AMOUNT, locale: Locale(localeIdentifier: "en_US")).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.bitcoin)
     }
     
     class func MAX_FEE_AMOUNT_IN_BITCOINS() -> (String) {
-        return TLCurrencyFormat.bitcoinAmountStringToCoin(STATIC_MEMBERS.MAX_FEE_AMOUNT, locale: NSLocale(localeIdentifier: "en_US")).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.Bitcoin)
+        return TLCurrencyFormat.bitcoinAmountStringToCoin(STATIC_MEMBERS.MAX_FEE_AMOUNT, locale: Locale(localeIdentifier: "en_US")).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.bitcoin)
     }
     
     class func MIN_FEE_AMOUNT_IN_BITCOINS() -> (String) {
-        return TLCurrencyFormat.bitcoinAmountStringToCoin(STATIC_MEMBERS.MIN_FEE_AMOUNT, locale: NSLocale(localeIdentifier: "en_US")).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.Bitcoin)
+        return TLCurrencyFormat.bitcoinAmountStringToCoin(STATIC_MEMBERS.MIN_FEE_AMOUNT, locale: Locale(localeIdentifier: "en_US")).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.bitcoin)
     }
 
     class func RECEIVE_ICON_IMAGE_NAME() -> (String) {
@@ -143,37 +143,37 @@ class TLWalletUtils {
         return STATIC_MEMBERS.ENABLE_STEALTH_ADDRESS
     }
     
-    class func dataToHexString(data: NSData) -> String {
-        return data.hex()
+    class func dataToHexString(_ data: Data) -> String {
+        return (data as NSData).hex()
     }
     
-    class func hexStringToData(hexString: String) -> NSData? {
+    class func hexStringToData(_ hexString: String) -> Data? {
         return BTCDataFromHex(hexString)
     }
     
-    class func reverseHexString(txHashHex: String) -> String {
-        return dataToHexString(hexStringToData(txHashHex)!.reverse())
+    class func reverseHexString(_ txHashHex: String) -> String {
+        return dataToHexString((hexStringToData(txHashHex)! as NSData).reverse())
     }
     
-    class func isTransactionFeeTooLow(amount: TLCoin) -> Bool {
-        let minFeeAmount = TLCoin(bitcoinAmount: MIN_FEE_AMOUNT_IN_BITCOINS(), bitcoinDenomination: TLBitcoinDenomination.Bitcoin)
+    class func isTransactionFeeTooLow(_ amount: TLCoin) -> Bool {
+        let minFeeAmount = TLCoin(bitcoinAmount: MIN_FEE_AMOUNT_IN_BITCOINS(), bitcoinDenomination: TLBitcoinDenomination.bitcoin)
         if (amount.less(minFeeAmount)) {
             return true
         }
         return false
     }
     
-    class func isTransactionFeeTooHigh(amount: TLCoin) -> Bool {
-        let maxFeeAmount = TLCoin(bitcoinAmount: MAX_FEE_AMOUNT_IN_BITCOINS(), bitcoinDenomination: TLBitcoinDenomination.Bitcoin)
+    class func isTransactionFeeTooHigh(_ amount: TLCoin) -> Bool {
+        let maxFeeAmount = TLCoin(bitcoinAmount: MAX_FEE_AMOUNT_IN_BITCOINS(), bitcoinDenomination: TLBitcoinDenomination.bitcoin)
         if (amount.greater(maxFeeAmount)) {
             return true
         }
         return false
     }
     
-    class func isValidInputTransactionFee(amount: TLCoin) -> Bool {
-        let maxFeeAmount = TLCoin(bitcoinAmount: MAX_FEE_AMOUNT_IN_BITCOINS(), bitcoinDenomination: TLBitcoinDenomination.Bitcoin)
-        let minFeeAmount = TLCoin(bitcoinAmount: MIN_FEE_AMOUNT_IN_BITCOINS(), bitcoinDenomination: TLBitcoinDenomination.Bitcoin)
+    class func isValidInputTransactionFee(_ amount: TLCoin) -> Bool {
+        let maxFeeAmount = TLCoin(bitcoinAmount: MAX_FEE_AMOUNT_IN_BITCOINS(), bitcoinDenomination: TLBitcoinDenomination.bitcoin)
+        let minFeeAmount = TLCoin(bitcoinAmount: MIN_FEE_AMOUNT_IN_BITCOINS(), bitcoinDenomination: TLBitcoinDenomination.bitcoin)
         if (amount.greater(maxFeeAmount)) {
             return false
         }
@@ -184,71 +184,71 @@ class TLWalletUtils {
         return true
     }
     
-    class func getBitcoinURI(address: String, amount: TLCoin,
+    class func getBitcoinURI(_ address: String, amount: TLCoin,
         label: String?, message: String?) -> String {
             
             let bitcoinURI = NSMutableString(string: STATIC_MEMBERS.BITCOIN_URI_BASE)
             
-            bitcoinURI.appendString(address)
+            bitcoinURI.append(address)
             
-            bitcoinURI.appendString("?amount=")
-            bitcoinURI.appendString(amount.toString())
+            bitcoinURI.append("?amount=")
+            bitcoinURI.append(amount.toString())
             
             if (label != nil && label! != "") {
-                bitcoinURI.appendString("&label=")
-                bitcoinURI.appendString(label!)
+                bitcoinURI.append("&label=")
+                bitcoinURI.append(label!)
             }
             
             if (message != nil && message! != "") {
-                bitcoinURI.appendString("&message=")
-                bitcoinURI.appendString(message!)
+                bitcoinURI.append("&message=")
+                bitcoinURI.append(message!)
             }
             
             return bitcoinURI as String
     }
     
-    class func parseBitcoinURI(urlString: String) -> NSDictionary? {
+    class func parseBitcoinURI(_ urlString: String) -> NSDictionary? {
         if !urlString.hasPrefix("bitcoin:") {
             return nil
         }
         
-        var replaced = urlString.stringByReplacingOccurrencesOfString("bitcoin:", withString: "bitcoin://").stringByReplacingOccurrencesOfString("////", withString: "//")
+        var replaced = urlString.replacingOccurrences(of: "bitcoin:", with: "bitcoin://").replacingOccurrences(of: "////", with: "//")
         
-        if replaced.rangeOfString("&") == nil && replaced.rangeOfString("?") == nil {
+        if replaced.range(of: "&") == nil && replaced.range(of: "?") == nil {
             replaced = replaced+"?"
         }
         
-        let url = NSURL(string: replaced)
+        let url = URL(string: replaced)
         
         let dict = parseBitcoinQueryString(url!.query!)
         
         if (url!.host != nil) {
-            dict.setObject(url!.host!, forKey: "address")
+            dict.setObject(url!.host!, forKey: "address" as NSCopying)
         }
         
         return dict
     }
     
-    class func parseBitcoinQueryString(query: String) -> NSMutableDictionary {
+    class func parseBitcoinQueryString(_ query: String) -> NSMutableDictionary {
         let dict = NSMutableDictionary(capacity: 6)
-        let pairs = query.componentsSeparatedByString("&")
+        let pairs = query.components(separatedBy: "&")
         
         for _pair in pairs {
             let pair = _pair as String
-            let elements = pair.componentsSeparatedByString("=")
+            let elements = pair.components(separatedBy: "=")
             if (elements.count >= 2) {
-                let key = elements[0].stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
-                let val = elements[1].stringByReplacingPercentEscapesUsingEncoding(NSUTF8StringEncoding)!
+                let key = elements[0].replacingPercentEscapes(using: String.Encoding.utf8)!
+                let val = elements[1].replacingPercentEscapes(using: String.Encoding.utf8)!
                 
-                dict.setObject(val, forKey: key)
+                dict.setObject(val, forKey: key as NSCopying)
             }
         }
         return dict
     }
     
-    class func getQRCodeImage(data: String, imageDimension: Int) -> UIImage {
-        let dataMatrix = QREncoder.encodeWithECLevel(1, version: 1, string: data)
+    class func getQRCodeImage(_ data: String, imageDimension: Int) -> UIImage {
+        let dataMatrix = QREncoder.encode(withECLevel: 1, version: 1, string: data)
         let image = QREncoder.renderDataMatrix(dataMatrix, imageDimension: Int32(imageDimension))
-        return image
+        return image!
     }
 }

@@ -24,33 +24,33 @@ import Foundation
 
 @objc class TLImportedAddresses:NSObject
 {
-    private var appWallet:TLWallet?
-    private let importedAddresses = NSMutableArray()
-    private let archivedImportedAddresses = NSMutableArray()
-    private let addressToIdxDict = NSMutableDictionary()
-    private let addressToPositionInWalletArrayDict = NSMutableDictionary()
-    private var accountAddressType:TLAccountAddressType?
-    var downloadState:TLDownloadState = .NotDownloading
+    fileprivate var appWallet:TLWallet?
+    fileprivate let importedAddresses = NSMutableArray()
+    fileprivate let archivedImportedAddresses = NSMutableArray()
+    fileprivate let addressToIdxDict = NSMutableDictionary()
+    fileprivate let addressToPositionInWalletArrayDict = NSMutableDictionary()
+    fileprivate var accountAddressType:TLAccountAddressType?
+    var downloadState:TLDownloadState = .notDownloading
 
     init(appWallet: TLWallet, importedAddresses:NSArray, accountAddressType:(TLAccountAddressType)) {
         super.init()
         self.appWallet = appWallet
         self.accountAddressType = accountAddressType
         
-        for (var i = 0; i < importedAddresses.count; i++) {
-            let importedAddressObject = importedAddresses.objectAtIndex(i) as! TLImportedAddress
+        for (i in 0 ..< importedAddresses.count) {
+            let importedAddressObject = importedAddresses.object(at: i) as! TLImportedAddress
             if (importedAddressObject.isArchived()) {
-                self.archivedImportedAddresses.addObject(importedAddressObject)
+                self.archivedImportedAddresses.add(importedAddressObject)
             } else {
-                var indexes = self.addressToIdxDict.objectForKey(importedAddressObject.getAddress()) as? NSMutableArray
+                var indexes = self.addressToIdxDict.object(forKey: importedAddressObject.getAddress()) as? NSMutableArray
                 if (indexes == nil) {
                     indexes = NSMutableArray()
-                    self.addressToIdxDict.setObject(indexes!, forKey:importedAddressObject.getAddress())
+                    self.addressToIdxDict.setObject(indexes!, forKey:importedAddressObject.getAddress() as NSCopying)
                 }
                 
-                indexes!.addObject(self.importedAddresses.count)
+                indexes!.add(self.importedAddresses.count)
                 
-                self.importedAddresses.addObject(importedAddressObject)
+                self.importedAddresses.add(importedAddressObject)
             }
             
             importedAddressObject.setPositionInWalletArray(i)
@@ -58,12 +58,12 @@ import Foundation
         }
     }
     
-    func getAddressObjectAtIdx(idx:Int) -> TLImportedAddress {
-        return self.importedAddresses.objectAtIndex(idx) as! TLImportedAddress
+    func getAddressObjectAtIdx(_ idx:Int) -> TLImportedAddress {
+        return self.importedAddresses.object(at: idx) as! TLImportedAddress
     }
     
-    func getArchivedAddressObjectAtIdx(idx:Int) -> TLImportedAddress{
-        return self.archivedImportedAddresses.objectAtIndex(idx) as! TLImportedAddress
+    func getArchivedAddressObjectAtIdx(_ idx:Int) -> TLImportedAddress{
+        return self.archivedImportedAddresses.object(at: idx) as! TLImportedAddress
     }
     
     func getCount() -> Int{
@@ -74,13 +74,13 @@ import Foundation
         return self.archivedImportedAddresses.count
     }
     
-    func checkToGetAndSetAddressesData(fetchDataAgain:Bool, success:TLWalletUtils.Success, failure:TLWalletUtils.Error) -> () {
+    func checkToGetAndSetAddressesData(_ fetchDataAgain:Bool, success:@escaping TLWalletUtils.Success, failure:@escaping TLWalletUtils.Error) -> () {
         let addresses = NSMutableSet()
 
         for importedAddressObject in self.importedAddresses {
             if (!(importedAddressObject as! TLImportedAddress).hasFetchedAccountData() || fetchDataAgain) {
                 let address = (importedAddressObject as! TLImportedAddress).getAddress()
-                addresses.addObject(address)
+                addresses.add(address)
                 
             }
         }
@@ -91,15 +91,15 @@ import Foundation
         }
 
         TLBlockExplorerAPI.instance().getAddressesInfo(addresses.allObjects as! [String], success:{(jsonData:AnyObject!) in
-            let addressesArray = jsonData.objectForKey("addresses") as! NSArray
-            let txArray = jsonData.objectForKey("txs") as! NSArray
+            let addressesArray = jsonData.object(forKey: "addresses") as! NSArray
+            let txArray = jsonData.object(forKey: "txs") as! NSArray
             for addressDict in addressesArray {
-                let address = (addressDict as! NSDictionary).objectForKey("address") as! String
+                let address = (addressDict as! NSDictionary).object(forKey: "address") as! String
                 
-                let indexes = self.addressToIdxDict.objectForKey(address) as! NSArray
+                let indexes = self.addressToIdxDict.object(forKey: address) as! NSArray
                 for idx in indexes {
-                    let importedAddressObject = self.importedAddresses.objectAtIndex(idx as! Int) as! TLImportedAddress
-                    let addressBalance = (addressDict.objectForKey("final_balance") as! NSNumber).unsignedLongLongValue
+                    let importedAddressObject = self.importedAddresses.object(at: idx as! Int) as! TLImportedAddress
+                    let addressBalance = (addressDict.object(forKey: "final_balance") as! NSNumber).uint64Value
                     importedAddressObject.balance = TLCoin(uint64: addressBalance)
                     importedAddressObject.processTxArray(txArray, shouldUpdateAccountBalance: false)
                     importedAddressObject.setHasFetchedAccountData(true)
@@ -107,7 +107,7 @@ import Foundation
             }
             
             DLog("postNotificationName: EVENT_FETCHED_ADDRESSES_DATA importedAddresses")
-            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_FETCHED_ADDRESSES_DATA(),
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_FETCHED_ADDRESSES_DATA()),
                 object:nil, userInfo:nil)
             
             success()
@@ -116,13 +116,13 @@ import Foundation
         })
     }
     
-    func checkToGetAndSetAddressesDataO(fetchDataAgain:Bool) -> () {
+    func checkToGetAndSetAddressesDataO(_ fetchDataAgain:Bool) -> () {
         let addresses = NSMutableSet()
         
         for importedAddressObject in self.importedAddresses {
             if (!(importedAddressObject as! TLImportedAddress).hasFetchedAccountData() || fetchDataAgain) {
                 let address = (importedAddressObject as! TLImportedAddress).getAddress()
-                addresses.addObject(address)
+                addresses.add(address)
                 
             }
         }
@@ -132,152 +132,152 @@ import Foundation
         }
         
         let jsonData = TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(addresses.allObjects as! [String])
-        if (jsonData.objectForKey(TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) != nil) {
-            self.downloadState = .Failed
+        if (jsonData.object(forKey: TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) != nil) {
+            self.downloadState = .failed
             return
         }
 
-        let addressesArray = jsonData.objectForKey("addresses") as! NSArray
-        let txArray = jsonData.objectForKey("txs") as! NSArray
+        let addressesArray = jsonData.object(forKey: "addresses") as! NSArray
+        let txArray = jsonData.object(forKey: "txs") as! NSArray
         for addressDict in addressesArray {
-            let address = (addressDict as! NSDictionary).objectForKey("address") as! String
+            let address = (addressDict as! NSDictionary).object(forKey: "address") as! String
             
-            let indexes = (self.addressToIdxDict).objectForKey(address) as! NSArray
+            let indexes = (self.addressToIdxDict).object(forKey: address) as! NSArray
             for idx in indexes {
-                let importedAddressObject = self.importedAddresses.objectAtIndex(idx as! Int) as! TLImportedAddress
-                let addressBalance = (addressDict.objectForKey("final_balance") as! NSNumber).unsignedLongLongValue
+                let importedAddressObject = self.importedAddresses.object(at: idx as! Int) as! TLImportedAddress
+                let addressBalance = (addressDict.object(forKey: "final_balance") as! NSNumber).uint64Value
                 importedAddressObject.balance = TLCoin(uint64: addressBalance)
                 importedAddressObject.processTxArray(txArray, shouldUpdateAccountBalance: false)
                 importedAddressObject.setHasFetchedAccountData(true)
             }
         }
         
-        self.downloadState = .Downloaded
-        dispatch_async(dispatch_get_main_queue(), {
+        self.downloadState = .downloaded
+        DispatchQueue.main.async(execute: {
             DLog("postNotificationName: EVENT_FETCHED_ADDRESSES_DATA importedAddresses")
-            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_FETCHED_ADDRESSES_DATA(), object:nil, userInfo:nil)
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_FETCHED_ADDRESSES_DATA()), object:nil, userInfo:nil)
         })
     }
     
-    func addImportedPrivateKey(privateKey:String, encryptedPrivateKey:String?) -> (TLImportedAddress) {
+    func addImportedPrivateKey(_ privateKey:String, encryptedPrivateKey:String?) -> (TLImportedAddress) {
         let importedPrivateKeyDict = self.appWallet!.addImportedPrivateKey(privateKey, encryptedPrivateKey:encryptedPrivateKey)
         
         let importedAddressObject = TLImportedAddress(appWallet:self.appWallet!, dict:importedPrivateKeyDict)
-        self.importedAddresses.addObject(importedAddressObject)
+        self.importedAddresses.add(importedAddressObject)
         
         importedAddressObject.setPositionInWalletArray(self.importedAddresses.count - 1)
         self.addressToPositionInWalletArrayDict.setObject(importedAddressObject, forKey:importedAddressObject.getPositionInWalletArrayNumber())
         
         let address = TLCoreBitcoinWrapper.getAddress(privateKey, isTestnet: self.appWallet!.walletConfig.isTestnet)
         
-        var indexes = self.addressToIdxDict.objectForKey(address!) as! NSMutableArray?
+        var indexes = self.addressToIdxDict.object(forKey: address!) as! NSMutableArray?
         if (indexes == nil) {
             indexes = NSMutableArray()
             self.addressToIdxDict.setObject(indexes!, forKey:importedAddressObject.getAddress())
         }
         
-        indexes!.addObject(self.importedAddresses.count-1)
+        indexes!.add(self.importedAddresses.count-1)
         
         setLabel(importedAddressObject.getDefaultAddressLabel()!, positionInWalletArray:self.importedAddresses.count-1)
         
         return importedAddressObject
     }
     
-    func addImportedWatchAddress(address:String) -> (TLImportedAddress) {
+    func addImportedWatchAddress(_ address:String) -> (TLImportedAddress) {
         let importedDict = self.appWallet!.addWatchOnlyAddress(address)
         let importedAddressObject = TLImportedAddress(appWallet:self.appWallet!, dict:importedDict)
-        self.importedAddresses.addObject(importedAddressObject)
+        self.importedAddresses.add(importedAddressObject)
         
         importedAddressObject.setPositionInWalletArray(self.importedAddresses.count - 1)
         self.addressToPositionInWalletArrayDict.setObject(importedAddressObject, forKey:importedAddressObject.getPositionInWalletArrayNumber())
         
-        var indexes = self.addressToIdxDict.objectForKey(address) as? NSMutableArray
+        var indexes = self.addressToIdxDict.object(forKey: address) as? NSMutableArray
         if (indexes == nil) {
             indexes = NSMutableArray()
-            self.addressToIdxDict.setObject(indexes!, forKey:address)
+            self.addressToIdxDict.setObject(indexes!, forKey:address as NSCopying)
         }
         
-        indexes!.addObject(self.importedAddresses.count-1)
+        indexes!.add(self.importedAddresses.count-1)
         
         setLabel(importedAddressObject.getDefaultAddressLabel()!, positionInWalletArray:self.importedAddresses.count-1)
         
         return importedAddressObject
     }
     
-    func setLabel(label:String, positionInWalletArray:Int) -> Bool {
-        let importedAddressObject = self.addressToPositionInWalletArrayDict.objectForKey(positionInWalletArray) as! TLImportedAddress
+    func setLabel(_ label:String, positionInWalletArray:Int) -> Bool {
+        let importedAddressObject = self.addressToPositionInWalletArrayDict.object(forKey: positionInWalletArray) as! TLImportedAddress
         
         importedAddressObject.setLabel(label)
-        if (self.accountAddressType == .Imported) {
+        if (self.accountAddressType == .imported) {
             self.appWallet!.setImportedPrivateKeyLabel(label, idx:positionInWalletArray)
-        } else if (self.accountAddressType! == .ImportedWatch) {
+        } else if (self.accountAddressType! == .importedWatch) {
             self.appWallet!.setWatchOnlyAddressLabel(label, idx:positionInWalletArray)
         }
         
         return true
     }
     
-    func archiveAddress(positionInWalletArray:Int) -> () {
+    func archiveAddress(_ positionInWalletArray:Int) -> () {
         self.setArchived(positionInWalletArray, archive:true)
         
-        let toMoveAddressObject = self.addressToPositionInWalletArrayDict.objectForKey(positionInWalletArray) as! TLImportedAddress
-        var indexes = self.addressToIdxDict.objectForKey(toMoveAddressObject.getAddress()) as? NSMutableArray
+        let toMoveAddressObject = self.addressToPositionInWalletArrayDict.object(forKey: positionInWalletArray) as! TLImportedAddress
+        var indexes = self.addressToIdxDict.object(forKey: toMoveAddressObject.getAddress()) as? NSMutableArray
         if (indexes == nil) {
             indexes = NSMutableArray()
-            self.addressToIdxDict.setObject(indexes!, forKey:toMoveAddressObject.getAddress())
+            self.addressToIdxDict.setObject(indexes!, forKey:toMoveAddressObject.getAddress() as NSCopying)
         }
-        let toMoveIndex = self.importedAddresses.indexOfObject(toMoveAddressObject) as Int
+        let toMoveIndex = self.importedAddresses.index(of: toMoveAddressObject) as Int
         
         for key in self.addressToIdxDict {
-            let indexes: AnyObject = (self.addressToIdxDict.objectForKey(key.key) as! NSArray).copy()
+            let indexes: AnyObject = (self.addressToIdxDict.object(forKey: key.key) as! NSArray).copy() as AnyObject
             
             for idx in indexes as! [Int] {
                 if (idx > toMoveIndex) {
-                    let indexes = self.addressToIdxDict.objectForKey(key.key) as! NSMutableArray
-                    indexes.removeObject(idx)
-                    indexes.addObject(UInt(idx)-1)
+                    let indexes = self.addressToIdxDict.object(forKey: key.key) as! NSMutableArray
+                    indexes.remove(idx)
+                    indexes.add(UInt(idx)-1)
                 }
             }
         }
         
-        indexes!.removeObject(toMoveIndex)
+        indexes!.remove(toMoveIndex)
         
-        self.importedAddresses.removeObject(toMoveAddressObject)
-        for (var i = 0; i < self.archivedImportedAddresses.count; i++) {
-            let importedAddressObject = self.archivedImportedAddresses.objectAtIndex(i) as! TLImportedAddress
+        self.importedAddresses.remove(toMoveAddressObject)
+        for (i in 0 ..< self.archivedImportedAddresses.count) {
+            let importedAddressObject = self.archivedImportedAddresses.object(at: i) as! TLImportedAddress
             
             if (importedAddressObject.getPositionInWalletArray() > toMoveAddressObject.getPositionInWalletArray()) {
-                self.archivedImportedAddresses.insertObject(toMoveAddressObject, atIndex:i)
+                self.archivedImportedAddresses.insert(toMoveAddressObject, at:i)
                 return
             }
         }
-        self.archivedImportedAddresses.addObject(toMoveAddressObject)
+        self.archivedImportedAddresses.add(toMoveAddressObject)
     }
     
-    func unarchiveAddress(positionInWalletArray:Int) -> (){
+    func unarchiveAddress(_ positionInWalletArray:Int) -> (){
         setArchived(positionInWalletArray, archive:false)
         
-        let toMoveAddressObject = self.addressToPositionInWalletArrayDict.objectForKey(positionInWalletArray) as! TLImportedAddress
+        let toMoveAddressObject = self.addressToPositionInWalletArrayDict.object(forKey: positionInWalletArray) as! TLImportedAddress
         
-        self.archivedImportedAddresses.removeObject(toMoveAddressObject)
-        for (var i = 0; i < self.importedAddresses.count; i++) {
-            let importedAddressObject = self.importedAddresses.objectAtIndex(i) as! TLImportedAddress
+        self.archivedImportedAddresses.remove(toMoveAddressObject)
+        for (i in 0 ..< self.importedAddresses.count) {
+            let importedAddressObject = self.importedAddresses.object(at: i) as! TLImportedAddress
             if (importedAddressObject.getPositionInWalletArray() > toMoveAddressObject.getPositionInWalletArray()) {
-                self.importedAddresses.insertObject(toMoveAddressObject, atIndex:i)
-                var indexes = self.addressToIdxDict.objectForKey(toMoveAddressObject.getAddress()) as? NSMutableArray
+                self.importedAddresses.insert(toMoveAddressObject, at:i)
+                var indexes = self.addressToIdxDict.object(forKey: toMoveAddressObject.getAddress()) as? NSMutableArray
                 if (indexes == nil) {
                     indexes = NSMutableArray()
-                    indexes!.addObject(i)
-                    self.addressToIdxDict.setObject(indexes!, forKey:toMoveAddressObject.getAddress())
+                    indexes!.add(i)
+                    self.addressToIdxDict.setObject(indexes!, forKey:toMoveAddressObject.getAddress() as NSCopying)
                 }
                 
                 for key in self.addressToIdxDict {
-                    let indexes: AnyObject = (self.addressToIdxDict.objectForKey(key.key) as! NSArray).copy()
+                    let indexes: AnyObject = (self.addressToIdxDict.object(forKey: key.key) as! NSArray).copy() as AnyObject
                     for idx in indexes as! [Int] {
                         if (idx >= i) {
-                            let indexes = self.addressToIdxDict.objectForKey(key.key) as! NSMutableArray
-                            indexes.removeObject(idx)
-                            indexes.addObject(UInt(idx)+1)
+                            let indexes = self.addressToIdxDict.object(forKey: key.key) as! NSMutableArray
+                            indexes.remove(idx)
+                            indexes.add(UInt(idx)+1)
                         }
                     }
                 }
@@ -285,36 +285,36 @@ import Foundation
                 return
             }
         }
-        self.importedAddresses.addObject(toMoveAddressObject)
+        self.importedAddresses.add(toMoveAddressObject)
     }
     
-    private func setArchived(positionInWalletArray:Int, archive:Bool) -> Bool{
-        let importedAddressObject = self.addressToPositionInWalletArrayDict.objectForKey(positionInWalletArray) as! TLImportedAddress
+    fileprivate func setArchived(_ positionInWalletArray:Int, archive:Bool) -> Bool{
+        let importedAddressObject = self.addressToPositionInWalletArrayDict.object(forKey: positionInWalletArray) as! TLImportedAddress
         
         importedAddressObject.setArchived(archive)
-        if (self.accountAddressType! == .Imported) {
+        if (self.accountAddressType! == .imported) {
             self.appWallet!.setImportedPrivateKeyArchive(archive, idx:positionInWalletArray)
-        } else if (self.accountAddressType == .ImportedWatch) {
+        } else if (self.accountAddressType == .importedWatch) {
             self.appWallet!.setWatchOnlyAddressArchive(archive, idx:positionInWalletArray)
         }
         
         return true
     }
     
-    func deleteAddress(idx:Int) -> Bool {
-        let importedAddressObject = self.archivedImportedAddresses.objectAtIndex(idx) as! TLImportedAddress
+    func deleteAddress(_ idx:Int) -> Bool {
+        let importedAddressObject = self.archivedImportedAddresses.object(at: idx) as! TLImportedAddress
         
-        self.archivedImportedAddresses.removeObjectAtIndex(idx)
-        if (self.accountAddressType == .Imported) {
+        self.archivedImportedAddresses.removeObject(at: idx)
+        if (self.accountAddressType == .imported) {
             self.appWallet!.deleteImportedPrivateKey(importedAddressObject.getPositionInWalletArray())
-        } else if (self.accountAddressType == .ImportedWatch) {
+        } else if (self.accountAddressType == .importedWatch) {
             self.appWallet!.deleteImportedWatchAddress(importedAddressObject.getPositionInWalletArray())
         }
         
-        self.addressToPositionInWalletArrayDict.removeObjectForKey(importedAddressObject.getPositionInWalletArrayNumber())
+        self.addressToPositionInWalletArrayDict.removeObject(forKey: importedAddressObject.getPositionInWalletArrayNumber())
         let tmpDict = self.addressToPositionInWalletArrayDict.copy() as! NSDictionary
         for (key, _) in tmpDict {
-            let ia = self.addressToPositionInWalletArrayDict.objectForKey(key as! NSNumber) as! TLImportedAddress
+            let ia = self.addressToPositionInWalletArrayDict.object(forKey: key as! NSNumber) as! TLImportedAddress
             if (ia.getPositionInWalletArray() > importedAddressObject.getPositionInWalletArray()) {
                 ia.setPositionInWalletArray(ia.getPositionInWalletArray()-1)
                 self.addressToPositionInWalletArrayDict.setObject(ia, forKey:ia.getPositionInWalletArrayNumber())
@@ -323,7 +323,7 @@ import Foundation
         
 
         if importedAddressObject.getPositionInWalletArray() < self.addressToPositionInWalletArrayDict.count - 1 {
-            self.addressToPositionInWalletArrayDict.removeObjectForKey(self.addressToPositionInWalletArrayDict.count-1)
+            self.addressToPositionInWalletArrayDict.removeObject(forKey: self.addressToPositionInWalletArrayDict.count-1)
         }
         
         return true

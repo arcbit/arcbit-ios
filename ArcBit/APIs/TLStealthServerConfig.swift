@@ -27,12 +27,12 @@ class TLStealthServerConfig {
         static var instance:TLStealthServerConfig?
     }
     
-    private var stealthServerUrl = "www.arcbit.net"
-    private var stealthServerPort = 443
-    private var webSocketServerPort = 443
-    private var webServerProtocol = "https"
-    private var webSocketProtocol = "wss"
-    private var webSocketEndpoint = "/inv"
+    fileprivate var stealthServerUrl = "www.arcbit.net"
+    fileprivate var stealthServerPort = 443
+    fileprivate var webSocketServerPort = 443
+    fileprivate var webServerProtocol = "https"
+    fileprivate var webSocketProtocol = "wss"
+    fileprivate var webSocketEndpoint = "/inv"
 
     class func instance() -> (TLStealthServerConfig) {
         if(STATIC_MEMBERS.instance == nil) {
@@ -41,9 +41,9 @@ class TLStealthServerConfig {
         return STATIC_MEMBERS.instance!
     }
     
-    func getSSLCertificate() -> NSData {
-        let certificatePath = NSBundle.mainBundle().pathForResource("live", ofType: "cer")!
-        let certificateData = NSData(contentsOfFile: certificatePath)!
+    func getSSLCertificate() -> Data {
+        let certificatePath = Bundle.main.path(forResource: "live", ofType: "cer")!
+        let certificateData = try! Data(contentsOf: URL(fileURLWithPath: certificatePath))
         return certificateData
     }
     

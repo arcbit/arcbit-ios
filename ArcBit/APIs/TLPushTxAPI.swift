@@ -36,7 +36,7 @@ class TLPushTxAPI {
         return STATIC_MEMBERS._instance!
     }
     
-    func sendTx(txHex:String, txHash:String, toAddress:String, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler)-> () {
+    func sendTx(_ txHex:String, txHash:String, toAddress:String, success:@escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler)-> () {
         DLog("TLPushTxAPI pushTx txHex %@ ", function: txHex)
         DLog("TLPushTxAPI pushTx txHash %@ ", function: txHash)
         DLog("TLPushTxAPI pushTx toAddress %@ ", function: toAddress)
@@ -48,21 +48,21 @@ class TLPushTxAPI {
             var pushTxMethod = TLBlockExplorerAPI.instance().insightAPI!.pushTx
             //pushTxMethod = TLBlockrAPI().pushTx
 
-            pushTxMethod(txHex, success: { (jsonData: AnyObject!) -> () in
+            pushTxMethod(txHex, { (jsonData: AnyObject!) -> () in
                 DLog("TLPushTxAPI pushTxMethod %@", function: jsonData)
 
-                func getTxidFromInsightPushTx(jsonData:NSDictionary) -> String {
-                    return jsonData.objectForKey("txid") as! String
+                func getTxidFromInsightPushTx(_ jsonData:NSDictionary) -> String {
+                    return jsonData.object(forKey: "txid") as! String
                 }
                 
-                func getTxidFromBlockrPushTx(jsonData:NSDictionary) -> String? {
-                    if jsonData.objectForKey("status") as! String != "success" {
-                        let code = jsonData.objectForKey("code") as! Int
-                        let message = jsonData.objectForKey("message") as! String
+                func getTxidFromBlockrPushTx(_ jsonData:NSDictionary) -> String? {
+                    if jsonData.object(forKey: "status") as! String != "success" {
+                        let code = jsonData.object(forKey: "code") as! Int
+                        let message = jsonData.object(forKey: "message") as! String
                         failure(code, message)
                         return nil
                     }
-                    return jsonData.objectForKey("data") as? String
+                    return jsonData.object(forKey: "data") as? String
                 }
                 
                 let txid = getTxidFromInsightPushTx(jsonData as! NSDictionary)
@@ -71,8 +71,8 @@ class TLPushTxAPI {
                 
                 TLStealthExplorerAPI.instance().lookupTx(toAddress, txid: txid, success: { (jsonData: AnyObject!) -> () in
                     DLog("TLPushTxAPI TLStealthExplorerAPI success %@", function: jsonData.description)
-                    if let errorCode = (jsonData as! NSDictionary).objectForKey(TLStealthExplorerAPI.STATIC_MEMBERS.SERVER_ERROR_CODE) as? Int {
-                        let errorMsg = (jsonData as! NSDictionary).objectForKey(TLStealthExplorerAPI.STATIC_MEMBERS.SERVER_ERROR_MSG) as! String
+                    if let errorCode = (jsonData as! NSDictionary).object(forKey: TLStealthExplorerAPI.STATIC_MEMBERS.SERVER_ERROR_CODE) as? Int {
+                        let errorMsg = (jsonData as! NSDictionary).object(forKey: TLStealthExplorerAPI.STATIC_MEMBERS.SERVER_ERROR_MSG) as! String
                         DLog(String(format: "TLPushTxAPI TLStealthExplorerAPI success failure %ld %@", errorCode, errorMsg))
                         if errorCode == TLStealthExplorerAPI.STATIC_MEMBERS.SEND_TX_ERROR {
                             DLog("TLPushTxAPI TLStealthExplorerAPI SEND_TX_ERROR %@", function: errorMsg)

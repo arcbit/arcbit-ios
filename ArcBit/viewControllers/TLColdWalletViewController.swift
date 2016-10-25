@@ -43,15 +43,15 @@ import UIKit
         static let kSeeHDWalletDataRow = "kSeeHDWalletDataRow"
     }
     
-    private var sectionArray: Array<String>?
-    private var coldWalletRowArray: Array<String>?
-    private var seeHDWalletDataRowArray: Array<String>?
+    fileprivate var sectionArray: Array<String>?
+    fileprivate var coldWalletRowArray: Array<String>?
+    fileprivate var seeHDWalletDataRowArray: Array<String>?
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    @IBOutlet private var coldWalletTableView:UITableView?
+    @IBOutlet fileprivate var coldWalletTableView:UITableView?
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -71,32 +71,32 @@ import UIKit
         
         self.coldWalletTableView!.delegate = self
         self.coldWalletTableView!.dataSource = self
-        self.coldWalletTableView!.tableFooterView = UIView(frame:CGRectZero)
+        self.coldWalletTableView!.tableFooterView = UIView(frame:CGRect.zero)
     }
     
-    override func viewDidAppear(animated:Bool) -> () {
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_VIEW_COLD_WALLET_SCREEN(),
+    override func viewDidAppear(_ animated:Bool) -> () {
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_COLD_WALLET_SCREEN()),
             object:nil)
     }
 
-    override func prepareForSegue(segue: UIStoryboardSegue, sender:AnyObject!) -> () {
+    override func prepare(for segue: UIStoryboardSegue, sender:Any!) -> () {
         if (segue.identifier == "SegueCreateColdWallet") {
-            let vc = segue.destinationViewController
+            let vc = segue.destination
             vc.navigationItem.title = "Create".localized
         } else if (segue.identifier == "SegueSpendColdWallet") {
-            let vc = segue.destinationViewController
+            let vc = segue.destination
             vc.navigationItem.title = "Spend".localized
         } else if (segue.identifier == "SegueSpendColdWallet") {
-            let vc = segue.destinationViewController
+            let vc = segue.destination
             vc.navigationItem.title = "".localized
         }
     }
     
-    @IBAction private func menuButtonClicked(sender:UIButton) -> () {
-        self.slidingViewController().anchorTopViewToRightAnimated(true)
+    @IBAction fileprivate func menuButtonClicked(_ sender:UIButton) -> () {
+        self.slidingViewController().anchorTopViewToRight(animated: true)
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section:Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section:Int) -> Int {
         let sectionType = self.sectionArray![section]
         if(sectionType == STATIC_MEMBERS.kColdWalletSection) {
             return self.coldWalletRowArray!.count
@@ -106,11 +106,11 @@ import UIKit
         return 0
     }
     
-    func numberOfSectionsInTableView(tableView:UITableView) -> Int {
+    func numberOfSections(in tableView:UITableView) -> Int {
         return self.sectionArray!.count
     }
     
-    func tableView(tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
+    func tableView(_ tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
         let sectionType = self.sectionArray![section]
         if(sectionType == STATIC_MEMBERS.kColdWalletSection) {
             return "Cold Wallet".localized
@@ -120,24 +120,24 @@ import UIKit
         return "".localized
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath:NSIndexPath) -> UITableViewCell{
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath:IndexPath) -> UITableViewCell{
         let MyIdentifier = "ColdWalletCellIdentifier"
         
-        var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier)
+        var cell = tableView.dequeueReusableCell(withIdentifier: MyIdentifier)
         if (cell == nil) {
-            cell = UITableViewCell(style:UITableViewCellStyle.Default,
+            cell = UITableViewCell(style:UITableViewCellStyle.default,
                 reuseIdentifier:MyIdentifier)
         }
-        let sectionType = self.sectionArray![indexPath.section]
+        let sectionType = self.sectionArray![(indexPath as NSIndexPath).section]
         if(sectionType == STATIC_MEMBERS.kColdWalletSection) {
-            let row = self.coldWalletRowArray![indexPath.row]
+            let row = self.coldWalletRowArray![(indexPath as NSIndexPath).row]
             if row == STATIC_MEMBERS.kColdWalletCreateRow {
                 cell!.textLabel!.text = "Create Cold Wallet".localized
             } else if row == STATIC_MEMBERS.kColdWalletSpendtRow {
                 cell!.textLabel!.text = "Spend From Cold Wallet Account".localized
             }
         } else if(sectionType == STATIC_MEMBERS.kSeeHDWalletDataSection) {
-            let row = self.seeHDWalletDataRowArray![indexPath.row]
+            let row = self.seeHDWalletDataRowArray![(indexPath as NSIndexPath).row]
             if row == STATIC_MEMBERS.kSeeHDWalletDataRow {
                 cell!.textLabel!.text = "See Internal Wallet Data".localized
             }
@@ -146,19 +146,19 @@ import UIKit
         return cell!
     }
     
-    func tableView(tableView:UITableView, willSelectRowAtIndexPath indexPath:NSIndexPath) -> NSIndexPath? {
-        let sectionType = self.sectionArray![indexPath.section]
+    func tableView(_ tableView:UITableView, willSelectRowAt indexPath:IndexPath) -> IndexPath? {
+        let sectionType = self.sectionArray![(indexPath as NSIndexPath).section]
         if(sectionType == STATIC_MEMBERS.kColdWalletSection) {
-            let row = self.coldWalletRowArray![indexPath.row]
+            let row = self.coldWalletRowArray![(indexPath as NSIndexPath).row]
             if row == STATIC_MEMBERS.kColdWalletCreateRow {
-                performSegueWithIdentifier("SegueCreateColdWallet", sender:self)
+                performSegue(withIdentifier: "SegueCreateColdWallet", sender:self)
             } else if row == STATIC_MEMBERS.kColdWalletSpendtRow {
-                performSegueWithIdentifier("SegueSpendColdWallet", sender:self)
+                performSegue(withIdentifier: "SegueSpendColdWallet", sender:self)
             }
         } else if(sectionType == STATIC_MEMBERS.kSeeHDWalletDataSection){
-            let row = self.seeHDWalletDataRowArray![indexPath.row]
+            let row = self.seeHDWalletDataRowArray![(indexPath as NSIndexPath).row]
             if row == STATIC_MEMBERS.kSeeHDWalletDataRow {
-                performSegueWithIdentifier("SegueSeeWalletData", sender:self)
+                performSegue(withIdentifier: "SegueSeeWalletData", sender:self)
             }
         }
 

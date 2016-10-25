@@ -34,29 +34,29 @@ import UIKit
         static let kAdvancedNewWalletRow = "kAdvancedNewWalletRow"
     }
     
-    @IBOutlet private var tableView: UITableView?
-    private var QRImageModal: TLQRImageModal?
-    private var mnemonicPassphrase: String?
+    @IBOutlet fileprivate var tableView: UITableView?
+    fileprivate var QRImageModal: TLQRImageModal?
+    fileprivate var mnemonicPassphrase: String?
     //    private var shouldShowMore: Bool = false
-    private var masterHex: String?
-    private var extendedKeyIdx: UInt?
-    private var extendedPublicKey: String?
-    private var extendedPrivateKey: String?
-    private var sectionArray: Array<String>?
-    private var instructionsRowArray: Array<String>?
-    private var createNewWalletRowArray: Array<String>?
-    private var advancedNewWalletTableViewCell: TLAdvancedNewWalletTableViewCell?
-    private var tapGesture: UITapGestureRecognizer?
-    private lazy var coldWalletKeyType: TLColdWalletKeyType = .Mnemonic
+    fileprivate var masterHex: String?
+    fileprivate var extendedKeyIdx: UInt?
+    fileprivate var extendedPublicKey: String?
+    fileprivate var extendedPrivateKey: String?
+    fileprivate var sectionArray: Array<String>?
+    fileprivate var instructionsRowArray: Array<String>?
+    fileprivate var createNewWalletRowArray: Array<String>?
+    fileprivate var advancedNewWalletTableViewCell: TLAdvancedNewWalletTableViewCell?
+    fileprivate var tapGesture: UITapGestureRecognizer?
+    fileprivate lazy var coldWalletKeyType: TLColdWalletKeyType = .mnemonic
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setColors()
         
-        NSNotificationCenter.defaultCenter().addObserver(self ,selector:#selector(TLBrainWalletViewController.keyboardWillShow(_:)),
-                                                         name:UIKeyboardWillShowNotification, object:nil)
-        NSNotificationCenter.defaultCenter().addObserver(self ,selector:#selector(TLBrainWalletViewController.keyboardWillHide(_:)),
-                                                         name:UIKeyboardWillHideNotification, object:nil)
+        NotificationCenter.default.addObserver(self ,selector:#selector(TLBrainWalletViewController.keyboardWillShow(_:)),
+                                                         name:NSNotification.Name.UIKeyboardWillShow, object:nil)
+        NotificationCenter.default.addObserver(self ,selector:#selector(TLBrainWalletViewController.keyboardWillHide(_:)),
+                                                         name:NSNotification.Name.UIKeyboardWillHide, object:nil)
         
         self.tapGesture = UITapGestureRecognizer(target: self,
                                                  action: #selector(dismissKeyboard))
@@ -72,7 +72,7 @@ import UIKit
         
         self.tableView!.delegate = self
         self.tableView!.dataSource = self
-        self.tableView!.tableFooterView = UIView(frame:CGRectZero)
+        self.tableView!.tableFooterView = UIView(frame:CGRect.zero)
     }
     
     func dismissKeyboard() {
@@ -84,19 +84,19 @@ import UIKit
         self.advancedNewWalletTableViewCell?.startingChangeAddressIDTextField.resignFirstResponder()
     }
     
-    func didSelectColdWalletKeyType(cell: TLColdWalletSelectKeyTypeTableViewCell, keyType: TLColdWalletKeyType) {
+    func didSelectColdWalletKeyType(_ cell: TLColdWalletSelectKeyTypeTableViewCell, keyType: TLColdWalletKeyType) {
         self.coldWalletKeyType = keyType
         self.tableView?.reloadData()
     }
 
     
-    func didAdvancedNewWalletClickShowQRCodeButton(cell: TLAdvancedNewWalletTableViewCell, data: String) {
+    func didAdvancedNewWalletClickShowQRCodeButton(_ cell: TLAdvancedNewWalletTableViewCell, data: String) {
         dismissKeyboard()
-        self.QRImageModal = TLQRImageModal(data: data, buttonCopyText: "Copy To Clipboard".localized, vc: self)
+        self.QRImageModal = TLQRImageModal(data: data as NSString, buttonCopyText: "Copy To Clipboard".localized, vc: self)
         self.QRImageModal!.show()
     }
     
-    func textFieldDidBeginEditing(textField: UITextField) {
+    func textFieldDidBeginEditing(_ textField: UITextField) {
         //        var frame:CGRect = CGRectMake(textField.frame.origin.x, textField.frame.origin.y, textField.frame.size.width, textField.frame.size.height)
         //        if textField == self.newWalletTableViewCell?.accountIDTextField {
         //            frame.origin.y += 100
@@ -104,34 +104,34 @@ import UIKit
         //            frame.origin.y += 50
         //        }
         //        self.tableView!.scrollRectToVisible(self.tableView!.convertRect(frame, fromView:textField.superview), animated:true)
-        self.tableView!.scrollRectToVisible(self.tableView!.convertRect(textField.frame, fromView:textField.superview), animated:true)
+        self.tableView!.scrollRectToVisible(self.tableView!.convert(textField.frame, from:textField.superview), animated:true)
     }
     
-    func textViewDidBeginEditing(textView: UITextView) {
-        let frame = CGRectMake(textView.frame.origin.x, textView.frame.origin.y+50, textView.frame.size.width, textView.frame.size.height)
-        self.tableView!.scrollRectToVisible(self.tableView!.convertRect(frame, fromView:textView.superview), animated:true)
+    func textViewDidBeginEditing(_ textView: UITextView) {
+        let frame = CGRect(x: textView.frame.origin.x, y: textView.frame.origin.y+50, width: textView.frame.size.width, height: textView.frame.size.height)
+        self.tableView!.scrollRectToVisible(self.tableView!.convert(frame, from:textView.superview), animated:true)
     }
     
-    func textField(textField: UITextField, shouldChangeCharactersInRange range: NSRange, replacementString string: String) -> Bool {
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         
         if textField == self.advancedNewWalletTableViewCell?.accountIDTextField {
             
             let nsString = textField.text! as NSString
-            let newString = nsString.stringByReplacingCharactersInRange(range, withString: string)
+            let newString = nsString.replacingCharacters(in: range, with: string)
             
             var HDAccountID:UInt = 0
             if let accountID = UInt(newString) {
                 HDAccountID = accountID
             }
             
-            if self.coldWalletKeyType != .Mnemonic {
+            if self.coldWalletKeyType != .mnemonic {
                 return true
             }
             self.advancedNewWalletTableViewCell?.didUpdateMnemonic(self.advancedNewWalletTableViewCell!.mnemonicTextView.text, accountID: HDAccountID)
 
         } else if textField == self.advancedNewWalletTableViewCell?.startingAddressIDTextField {
             let nsString = textField.text! as NSString
-            let newString = nsString.stringByReplacingCharactersInRange(range, withString: string)
+            let newString = nsString.replacingCharacters(in: range, with: string)
             
             var addressID:UInt = 0
             if let HDAccountID = UInt(newString) {
@@ -140,7 +140,7 @@ import UIKit
             self.advancedNewWalletTableViewCell?.updateAddressFieldsWithStartingAddressID(addressID)
         } else if textField == self.advancedNewWalletTableViewCell?.startingChangeAddressIDTextField {
             let nsString = textField.text! as NSString
-            let newString = nsString.stringByReplacingCharactersInRange(range, withString: string)
+            let newString = nsString.replacingCharacters(in: range, with: string)
             
             var addressID:UInt = 0
             if let HDAccountID = UInt(newString) {
@@ -152,7 +152,7 @@ import UIKit
         return true
     }
     
-    func textViewDidChange(textView: UITextView) {
+    func textViewDidChange(_ textView: UITextView) {
         if textView == self.advancedNewWalletTableViewCell?.mnemonicTextView {
             self.advancedNewWalletTableViewCell?.didUpdateMnemonic(textView.text!)
         } else if textView == self.advancedNewWalletTableViewCell?.accountPublicKeyTextView {
@@ -165,13 +165,13 @@ import UIKit
     
     
     
-    func keyboardWillShow(sender: NSNotification) {
-        let kbSize = sender.userInfo![UIKeyboardFrameEndUserInfoKey]!.CGRectValue!.size
+    func keyboardWillShow(_ sender: Notification) {
+        let kbSize = ((sender as NSNotification).userInfo![UIKeyboardFrameEndUserInfoKey]! as AnyObject).cgRectValue!.size
         
-        let duration = sender.userInfo![UIKeyboardAnimationDurationUserInfoKey]!.doubleValue!
+        let duration = ((sender as NSNotification).userInfo![UIKeyboardAnimationDurationUserInfoKey]! as AnyObject).doubleValue!
         
-        let height = UIDeviceOrientationIsPortrait(UIDevice.currentDevice().orientation) ? kbSize.height : kbSize.width;
-        UIView.animateWithDuration(duration, delay: 1.0, options: .TransitionNone, animations: {
+        let height = UIDeviceOrientationIsPortrait(UIDevice.current.orientation) ? kbSize.height : kbSize.width;
+        UIView.animate(withDuration: duration, delay: 1.0, options: UIViewAnimationOptions(), animations: {
             var edgeInsets = self.tableView!.contentInset;
             edgeInsets.bottom = height;
             self.tableView!.contentInset = edgeInsets;
@@ -182,9 +182,9 @@ import UIKit
         })
     }
     
-    func keyboardWillHide(sender: NSNotification) {
-        let duration = sender.userInfo![UIKeyboardAnimationDurationUserInfoKey]!.doubleValue!
-        UIView.animateWithDuration(duration, delay: 1.0, options: .TransitionNone, animations: {
+    func keyboardWillHide(_ sender: Notification) {
+        let duration = ((sender as NSNotification).userInfo![UIKeyboardAnimationDurationUserInfoKey]! as AnyObject).doubleValue!
+        UIView.animate(withDuration: duration, delay: 1.0, options: UIViewAnimationOptions(), animations: {
             var edgeInsets = self.tableView!.contentInset;
             edgeInsets.bottom = 0;
             self.tableView!.contentInset = edgeInsets;
@@ -195,16 +195,16 @@ import UIKit
         })
     }
     
-    func numberOfSectionsInTableView(tableView:UITableView) -> Int {
+    func numberOfSections(in tableView:UITableView) -> Int {
         return self.sectionArray!.count
     }
     
-    func tableView(tableView: UITableView, heightForRowAtIndexPath indexPath: NSIndexPath) -> CGFloat {
-        let section = self.sectionArray![indexPath.section]
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        let section = self.sectionArray![(indexPath as NSIndexPath).section]
         if(section == STATIC_MEMBERS.kInstuctionsSection) {
             return 100
         } else if(section == STATIC_MEMBERS.kCreateNewWalletSection) {
-            let row = self.createNewWalletRowArray![indexPath.row]
+            let row = self.createNewWalletRowArray![(indexPath as NSIndexPath).row]
             if row == STATIC_MEMBERS.kSelectWhichKeyRow {
                 return TLColdWalletSelectKeyTypeTableViewCell.cellHeight()
             } else if row == STATIC_MEMBERS.kAdvancedNewWalletRow {
@@ -214,7 +214,7 @@ import UIKit
         return 0
     }
     
-    func tableView(tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
+    func tableView(_ tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
         let section = self.sectionArray![section]
         if(section == STATIC_MEMBERS.kInstuctionsSection) {
             return "".localized
@@ -224,7 +224,7 @@ import UIKit
         return "".localized
     }
     
-    func tableView(tableView: UITableView, numberOfRowsInSection section:Int) -> Int {
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section:Int) -> Int {
         let section = self.sectionArray![section]
         if (section == STATIC_MEMBERS.kInstuctionsSection) {
             return self.instructionsRowArray!.count
@@ -234,25 +234,25 @@ import UIKit
         return 0
     }
     
-    func tableView(tableView: UITableView, cellForRowAtIndexPath indexPath:NSIndexPath) -> UITableViewCell {
-        let section = self.sectionArray![indexPath.section];
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath:IndexPath) -> UITableViewCell {
+        let section = self.sectionArray![(indexPath as NSIndexPath).section];
         if (section == STATIC_MEMBERS.kInstuctionsSection) {
             let MyIdentifier = "InstructionsCellIdentifier"
             
-            var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier)
+            var cell = tableView.dequeueReusableCell(withIdentifier: MyIdentifier)
             if (cell == nil) {
-                cell = UITableViewCell(style:UITableViewCellStyle.Default,
+                cell = UITableViewCell(style:UITableViewCellStyle.default,
                                        reuseIdentifier:MyIdentifier)
             }
             return cell!
         } else if(section == STATIC_MEMBERS.kCreateNewWalletSection) {
-            let row = self.createNewWalletRowArray![indexPath.row];
+            let row = self.createNewWalletRowArray![(indexPath as NSIndexPath).row];
             if row == STATIC_MEMBERS.kSelectWhichKeyRow {
                 let MyIdentifier = "ColdWalletSelectKeyTypeCellIdentifier"
                 
-                var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier) as! TLColdWalletSelectKeyTypeTableViewCell?
+                var cell = tableView.dequeueReusableCell(withIdentifier: MyIdentifier) as! TLColdWalletSelectKeyTypeTableViewCell?
                 if (cell == nil) {
-                    cell = UITableViewCell(style: UITableViewCellStyle.Default,
+                    cell = UITableViewCell(style: UITableViewCellStyle.default,
                                            reuseIdentifier: MyIdentifier) as? TLColdWalletSelectKeyTypeTableViewCell
                 }
                 cell?.delegate = self
@@ -260,9 +260,9 @@ import UIKit
             } else if row == STATIC_MEMBERS.kAdvancedNewWalletRow {
                 let MyIdentifier = "AdvancedNewWalletCellIdentifier"
                 
-                var cell = tableView.dequeueReusableCellWithIdentifier(MyIdentifier) as! TLAdvancedNewWalletTableViewCell?
+                var cell = tableView.dequeueReusableCell(withIdentifier: MyIdentifier) as! TLAdvancedNewWalletTableViewCell?
                 if (cell == nil) {
-                    cell = UITableViewCell(style: UITableViewCellStyle.Default,
+                    cell = UITableViewCell(style: UITableViewCellStyle.default,
                                            reuseIdentifier: MyIdentifier) as? TLAdvancedNewWalletTableViewCell
                 }
                 
@@ -278,19 +278,19 @@ import UIKit
                 return cell!
             }
         }
-        return UITableViewCell(style:UITableViewCellStyle.Default,
+        return UITableViewCell(style:UITableViewCellStyle.default,
                                reuseIdentifier:"DefaultCellIdentifier")
     }
     
-    func tableView(tableView:UITableView, willSelectRowAtIndexPath indexPath:NSIndexPath) -> NSIndexPath? {
+    func tableView(_ tableView:UITableView, willSelectRowAt indexPath:IndexPath) -> IndexPath? {
         return nil
     }
     
-    func customIOS7dialogButtonTouchUpInside(alertView: AnyObject, clickedButtonAtIndex buttonIndex: Int) {
+    func customIOS7dialogButtonTouchUp(inside alertView: AnyObject, clickedButtonAt buttonIndex: Int) {
         if (buttonIndex == 0) {
             iToast.makeText("Copied To clipboard".localized).setGravity(iToastGravityCenter).setDuration(1000).show()
             
-            let pasteboard = UIPasteboard.generalPasteboard()
+            let pasteboard = UIPasteboard.general
             pasteboard.string = self.QRImageModal!.QRcodeDisplayData
         }
         

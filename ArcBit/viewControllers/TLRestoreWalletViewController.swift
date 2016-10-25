@@ -29,15 +29,15 @@ import UIKit
         super.init(coder: aDecoder)
     }
     
-    @IBOutlet private var navigationBar:UINavigationBar?
-    @IBOutlet private var inputMnemonicTextView:UITextView?
-    @IBOutlet private var restoreWalletDescriptionLabel:UILabel?
+    @IBOutlet fileprivate var navigationBar:UINavigationBar?
+    @IBOutlet fileprivate var inputMnemonicTextView:UITextView?
+    @IBOutlet fileprivate var restoreWalletDescriptionLabel:UILabel?
     
     var encryptedWalletJSON:String?
     var isRestoringFromEncryptedWalletJSON:Bool = false
     
-    override func preferredStatusBarStyle() -> (UIStatusBarStyle) {
-        return UIStatusBarStyle.LightContent
+    override var preferredStatusBarStyle : (UIStatusBarStyle) {
+        return UIStatusBarStyle.lightContent
     }
     
     override func viewDidLoad() {
@@ -48,26 +48,26 @@ import UIKit
             self.restoreWalletDescriptionLabel!.text = "Enter passphrase for your iCloud backup wallet.".localized
         }
         
-        self.inputMnemonicTextView!.returnKeyType = .Done
+        self.inputMnemonicTextView!.returnKeyType = .done
         self.inputMnemonicTextView!.delegate = self
         self.inputMnemonicTextView!.backgroundColor = TLColors.mainAppColor()
         self.inputMnemonicTextView!.textColor = TLColors.mainAppOppositeColor()
-        self.inputMnemonicTextView!.secureTextEntry = true
+        self.inputMnemonicTextView!.isSecureTextEntry = true
         
         self.inputMnemonicTextView!.becomeFirstResponder()
     }
     
-    private func showPromptToRestoreWallet(mnemonicPassphrase:String, walletPayload:NSDictionary?) -> () {
+    fileprivate func showPromptToRestoreWallet(_ mnemonicPassphrase:String, walletPayload:NSDictionary?) -> () {
         let msg = String(format:"Your current wallet will be deleted. Your can restore your current wallet later with the wallet passphrase, but any imported accounts or addresses created in advanced mode cannot be recovered. Do you wish to continue?".localized)
         
-        UIAlertController.showAlertInViewController(self,
+        UIAlertController.showAlert(in: self,
             withTitle:"Restoring Wallet".localized,
             message:msg,
             cancelButtonTitle:"Cancel".localized,
             destructiveButtonTitle: nil,
             otherButtonTitles:["Continue".localized],
-            tapBlock: {(alertView, action, buttonIndex) in
-                if (buttonIndex == alertView.firstOtherButtonIndex) {
+            tap: {(alertView, action, buttonIndex) in
+                if (buttonIndex == alertView?.firstOtherButtonIndex) {
                     self.inputMnemonicTextView!.resignFirstResponder()
                     TLHUDWrapper.showHUDAddedTo(self.view, labelText:"Restoring Wallet".localized, animated:true)
                     
@@ -78,7 +78,7 @@ import UIKit
                         TLPreferences.setEncryptedWalletJSONPassphrase(mnemonicPassphrase, useKeychain: true)
                         self.handleAfterRecoverWallet(mnemonicPassphrase)
                     } else {
-                        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_HIGH, 0)) {
+                        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
                             AppDelegate.instance().saveWalletJSONEnabled = false
                             AppDelegate.instance().recoverHDWallet(mnemonicPassphrase, shouldRefreshApp:false)
                             AppDelegate.instance().refreshHDWalletAccounts(true)
@@ -88,42 +88,42 @@ import UIKit
                         }
                     }
                 }
-                else if (buttonIndex == alertView.cancelButtonIndex) {
+                else if (buttonIndex == alertView?.cancelButtonIndex) {
                 }
         })
     }
     
-    private func handleAfterRecoverWallet(mnemonicPassphrase:String) -> () {
-        AppDelegate.instance().updateGodSend(TLSendFromType.HDWallet, sendFromIndex:0)
-        AppDelegate.instance().updateReceiveSelectedObject(TLSendFromType.HDWallet, sendFromIndex:0)
-        AppDelegate.instance().updateHistorySelectedObject(TLSendFromType.HDWallet, sendFromIndex:0)
+    fileprivate func handleAfterRecoverWallet(_ mnemonicPassphrase:String) -> () {
+        AppDelegate.instance().updateGodSend(TLSendFromType.hdWallet, sendFromIndex:0)
+        AppDelegate.instance().updateReceiveSelectedObject(TLSendFromType.hdWallet, sendFromIndex:0)
+        AppDelegate.instance().updateHistorySelectedObject(TLSendFromType.hdWallet, sendFromIndex:0)
         
         AppDelegate.instance().saveWalletJsonCloud()
         
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_RESTORE_WALLET(),
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_RESTORE_WALLET()),
             object:nil, userInfo:nil)
         
-        dispatch_async(dispatch_get_main_queue()) {
+        DispatchQueue.main.async {
             TLTransactionListener.instance().reconnect()
             TLStealthWebSocket.instance().reconnect()
             TLHUDWrapper.hideHUDForView(self.view, animated:true)
-            self.dismissViewControllerAnimated(true, completion:nil)
+            self.dismiss(animated: true, completion:nil)
             TLPrompts.promptSuccessMessage("Success".localized, message:"Your wallet is now restored!".localized)
         }
     }
     
-    @IBAction private func cancel(sender:AnyObject!) {
+    @IBAction fileprivate func cancel(_ sender:AnyObject!) {
         self.inputMnemonicTextView!.resignFirstResponder()
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_ENTER_MNEMONIC_VIEWCONTROLLER_DISMISSED(),
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_ENTER_MNEMONIC_VIEWCONTROLLER_DISMISSED()),
             object:nil, userInfo:nil)
-        self.dismissViewControllerAnimated(true, completion:nil)
+        self.dismiss(animated: true, completion:nil)
     }
     
-    func textView(textView:UITextView, shouldChangeTextInRange range:NSRange, replacementText text:String) -> Bool {
+    func textView(_ textView:UITextView, shouldChangeTextIn range:NSRange, replacementText text:String) -> Bool {
         
         if(text == "\n") {
             var passphrase = textView.text
-            passphrase = passphrase.stringByTrimmingCharactersInSet(NSCharacterSet.whitespaceAndNewlineCharacterSet())
+            passphrase = passphrase?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             
             if (TLHDWalletWrapper.phraseIsValid(passphrase)) {
                 if (self.isRestoringFromEncryptedWalletJSON) {
@@ -136,7 +136,7 @@ import UIKit
                         showPromptToRestoreWallet(passphrase, walletPayload:walletPayload!)
                     }
                 } else {
-                    showPromptToRestoreWallet(passphrase, walletPayload:nil)
+                    showPromptToRestoreWallet(passphrase!, walletPayload:nil)
                 }
             } else {
                 TLPrompts.promptErrorMessage("Error".localized, message:"Invalid backup passphrase".localized)
@@ -148,16 +148,16 @@ import UIKit
         return true
     }
     
-    private func textViewShouldReturn(textView:UITextView) -> (Bool){
+    fileprivate func textViewShouldReturn(_ textView:UITextView) -> (Bool){
         textView.resignFirstResponder()
         return true
     }
     
-    func textViewShouldBeginEditing(textView:UITextView) -> (Bool) {
+    func textViewShouldBeginEditing(_ textView:UITextView) -> (Bool) {
         return true
     }
     
-    func textViewShouldEndEditing(textView:UITextView) -> (Bool) {
+    func textViewShouldEndEditing(_ textView:UITextView) -> (Bool) {
         textView.resignFirstResponder()
         return true
     }

@@ -77,7 +77,7 @@ class TLHelpDoc {
         
     }
     
-    class func getBasicActionInstructionStepsArray(idx: Int) -> NSArray {
+    class func getBasicActionInstructionStepsArray(_ idx: Int) -> NSArray {
         if (STATIC_MEMBERS._actionEventToInstructionStepsTitleArray == nil) {
             STATIC_MEMBERS._actionEventToInstructionStepsTitleArray = [
                 [
@@ -234,12 +234,12 @@ class TLHelpDoc {
                 ],
             ]
         }
-        return STATIC_MEMBERS._actionEventToInstructionStepsTitleArray!.objectAtIndex(idx) as! NSArray
+        return STATIC_MEMBERS._actionEventToInstructionStepsTitleArray!.object(at: idx) as! NSArray
         
     }
     
     
-    class func getAdvanceActionInstructionStepsArray(idx: Int) -> NSArray {
+    class func getAdvanceActionInstructionStepsArray(_ idx: Int) -> NSArray {
         if (STATIC_MEMBERS._advanceActionInstructionStepsArray == nil) {
             STATIC_MEMBERS._advanceActionInstructionStepsArray = [
                 [
@@ -296,7 +296,7 @@ class TLHelpDoc {
                 ],
             ]
         }
-        return STATIC_MEMBERS._advanceActionInstructionStepsArray!.objectAtIndex(idx) as! NSArray
+        return STATIC_MEMBERS._advanceActionInstructionStepsArray!.object(at: idx) as! NSArray
     }
     
     class func getActionEventToHowToActionTitleDict() -> NSDictionary {
@@ -449,7 +449,7 @@ class TLHelpDoc {
         return _faqArray!
     }
     
-    class func getExplanation(idx: Int) -> String {
+    class func getExplanation(_ idx: Int) -> String {
         if (STATIC_MEMBERS._explanationArray == nil) {
             STATIC_MEMBERS._explanationArray = [
                 "Bitcoin, uppercase 'B', is an online payment system invented in 2008, and released as open-source software in 2009 by a programmer name Satoshi Nakamoto. The system is decentralized and peer-to-peer, users can transact directly without needing an intermediary.\nBitcoin is also a platform where other decentralized applications can be built on top of. Bitcoin, lowercase 'b' is the currency unit that Bitcoin uses.".localized,
@@ -463,7 +463,7 @@ class TLHelpDoc {
                 "Some people has compared bitcoin addresses to a bank routing number. It is a good analogy, however bitcoin addresses are public. So if you reuse the same bitcoin address for multiple payments like you would a routing number, people will be able to figure out how much bitcoins you have. Thus it is recommended that you only use one address per payment.\nThis causes usability issues because making the user use a new address whenever receiving a payment is cumbersome.\nStealth/reusable addresses provides a better solution. When you give a sender a reusable address, the sender will derive a one time regular bitcoin address from the reusable address. Then the sender will send a payment to that regular bitcoin address. Now you can give many people just one reusable address and have them all send you payments without letting other people know how much bitcoins you have.\nA reusable address looks sometime like this vJmxthatTBXibYe9aZavx18iAT9gyiJETGkhwPX2WbHQGuzX83YvQXynD2t8yHU4Xjfonu5x9m6B4yxquytFP1c2CRbVR9mecxesvE. A reusable address is a lot longer then a regular bitcoin address, it is 102 characters in length.\nForwarding addresses are great, however there are no other mobile bitcoin wallets but ArcBit that supports reusable addresses for now. Which is why ArcBit support receiving payments from both regular bitcoin addresses and reusable addresses.\nFor each account, you have one reusable address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a reusable address.".localized,
             ]
         }
-        return STATIC_MEMBERS._explanationArray!.objectAtIndex(idx) as! String
+        return STATIC_MEMBERS._explanationArray!.object(at: idx) as! String
     }
     
     class func getAdvanceFAQArray() -> NSArray {
@@ -481,7 +481,7 @@ class TLHelpDoc {
         return _faqArray!
     }
     
-    class func getAdvanceExplanation(idx: Int) -> String {
+    class func getAdvanceExplanation(_ idx: Int) -> String {
         if (STATIC_MEMBERS._advanceExplanationArray == nil) {
             STATIC_MEMBERS._advanceExplanationArray = [
                 "Each account has a public and private account/extended key. Accounts keys should be kept secret as they are used to view the account's transactions, and spend the accounts bitcoins.".localized,
@@ -493,6 +493,6 @@ class TLHelpDoc {
             ]
         }
         
-        return STATIC_MEMBERS._advanceExplanationArray!.objectAtIndex(idx) as! String
+        return STATIC_MEMBERS._advanceExplanationArray!.object(at: idx) as! String
     }
 }

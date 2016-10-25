@@ -28,16 +28,16 @@ extension UIViewController
 {
     public func setLogoImageView() -> () {
         let image = UIImage(named:"360X80logo.png")
-        let imageView = UIImageView(frame:CGRectMake(0, 0, 180, 40))
+        let imageView = UIImageView(frame:CGRect(x: 0, y: 0, width: 180, height: 40))
         
-        imageView.contentMode = UIViewContentMode.ScaleToFill
-        imageView.contentMode = UIViewContentMode.ScaleAspectFit
+        imageView.contentMode = UIViewContentMode.scaleToFill
+        imageView.contentMode = UIViewContentMode.scaleAspectFit
         imageView.image = image
         imageView.backgroundColor = TLColors.mainAppColor()
         navigationItem.titleView = imageView
         
         // Add dummy rightBarButtonItem so that self.navigationItem.titleView does not extend to far to the right
-        let dummyBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.Plain, target: self, action: nil)
+        let dummyBarButtonItem = UIBarButtonItem(title: "", style: UIBarButtonItemStyle.plain, target: self, action: nil)
         
         navigationItem.rightBarButtonItem = dummyBarButtonItem
         // work around to hide rightBarButtonItem
@@ -51,7 +51,7 @@ extension UIViewController
             
             navigationController!.navigationBar.barTintColor = TLColors.mainAppColor()
             navigationController!.navigationBar.tintColor = TLColors.mainAppOppositeColor()
-            navigationController!.navigationBar.translucent = false
+            navigationController!.navigationBar.isTranslucent = false
             navigationController!.navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: TLColors.mainAppOppositeColor()]
             
             navigationController!.navigationItem.rightBarButtonItem = nil
@@ -59,14 +59,14 @@ extension UIViewController
         if self.slidingViewController() != nil {
             slidingViewController().topViewController.view.layer.shadowOpacity = 0.75
             slidingViewController().topViewController.view.layer.shadowRadius = 10.0
-            slidingViewController().topViewController.view.layer.shadowColor = UIColor.blackColor().CGColor
+            slidingViewController().topViewController.view.layer.shadowColor = UIColor.black.cgColor
         }
     }
     
-    public func setNavigationBarColors(navigationBar:UINavigationBar) -> () {
+    public func setNavigationBarColors(_ navigationBar:UINavigationBar) -> () {
         navigationBar.barTintColor = TLColors.mainAppColor()
         navigationBar.tintColor = TLColors.mainAppOppositeColor()
-        navigationBar.translucent = false
+        navigationBar.isTranslucent = false
         navigationBar.titleTextAttributes = [NSForegroundColorAttributeName: TLColors.mainAppOppositeColor()]
         navigationBar.barTintColor = TLColors.mainAppColor()
         view.backgroundColor = TLColors.mainAppColor()

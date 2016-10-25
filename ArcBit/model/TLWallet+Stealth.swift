@@ -24,126 +24,126 @@ import Foundation
 
 extension TLWallet {
     
-    func setStealthAddressServerStatus(accountDict: NSMutableDictionary, serverURL: String, isWatching: Bool) -> () {
-        let stealthAddressArray = accountDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESSES) as! NSMutableArray
-        let stealthAddressServersDict = (stealthAddressArray.objectAtIndex(0) as! NSDictionary).objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_SERVERS) as! NSMutableDictionary
+    func setStealthAddressServerStatus(_ accountDict: NSMutableDictionary, serverURL: String, isWatching: Bool) -> () {
+        let stealthAddressArray = accountDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESSES) as! NSMutableArray
+        let stealthAddressServersDict = (stealthAddressArray.object(at: 0) as! NSDictionary).object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_SERVERS) as! NSMutableDictionary
         
-        if let stealthServerDict = stealthAddressServersDict.objectForKey(serverURL) as? NSMutableDictionary  {
-            stealthServerDict.setObject(isWatching, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_WATCHING)
+        if let stealthServerDict = stealthAddressServersDict.object(forKey: serverURL) as? NSMutableDictionary  {
+            stealthServerDict.setObject(isWatching, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_WATCHING as NSCopying)
         } else {
             let serverAttributes = [
                 TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_WATCHING: isWatching,
             ]
             let serverAttributesDict = NSMutableDictionary(dictionary: serverAttributes)
-            stealthAddressServersDict.setObject(serverAttributesDict, forKey: serverURL)
+            stealthAddressServersDict.setObject(serverAttributesDict, forKey: serverURL as NSCopying)
         }
         
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED()), object: nil, userInfo: nil)
     }
     
-    func setStealthAddressServerStatusHDWallet(accountIdx: Int, serverURL: String, isWatching: Bool) -> () {
+    func setStealthAddressServerStatusHDWallet(_ accountIdx: Int, serverURL: String, isWatching: Bool) -> () {
         let accountDict = getAccountDict(accountIdx)
         setStealthAddressServerStatus(accountDict, serverURL: serverURL, isWatching:isWatching)
     }
     
-    func setStealthAddressServerStatusColdWalletAccount(idx: Int, serverURL: String, isWatching: Bool) -> () {
+    func setStealthAddressServerStatusColdWalletAccount(_ idx: Int, serverURL: String, isWatching: Bool) -> () {
         let accountDict = getColdWalletAccountAtIndex(idx)
         setStealthAddressServerStatus(accountDict, serverURL: serverURL, isWatching: isWatching)
     }
     
-    func setStealthAddressServerStatusImportedAccount(idx: Int, serverURL: String, isWatching: Bool) -> () {
+    func setStealthAddressServerStatusImportedAccount(_ idx: Int, serverURL: String, isWatching: Bool) -> () {
         let accountDict = getImportedAccountAtIndex(idx)
         setStealthAddressServerStatus(accountDict, serverURL: serverURL, isWatching: isWatching)
     }
     
-    func setStealthAddressServerStatusImportedWatchAccount(idx: Int, serverURL: String, isWatching: Bool) -> () {
+    func setStealthAddressServerStatusImportedWatchAccount(_ idx: Int, serverURL: String, isWatching: Bool) -> () {
         let accountDict = getImportedWatchOnlyAccountAtIndex(idx)
         setStealthAddressServerStatus(accountDict, serverURL: serverURL, isWatching: isWatching)
     }
 
     
-    func setStealthAddressLastTxTime(accountDict: NSMutableDictionary, serverURL: String, lastTxTime: UInt64) -> () {
-        let stealthAddressArray = accountDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESSES) as! NSMutableArray
-        let stealthAddressDict = (stealthAddressArray.objectAtIndex(0) as! NSMutableDictionary)
-        stealthAddressDict.setObject(NSNumber(unsignedLongLong: lastTxTime), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LAST_TX_TIME)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
+    func setStealthAddressLastTxTime(_ accountDict: NSMutableDictionary, serverURL: String, lastTxTime: UInt64) -> () {
+        let stealthAddressArray = accountDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESSES) as! NSMutableArray
+        let stealthAddressDict = (stealthAddressArray.object(at: 0) as! NSMutableDictionary)
+        stealthAddressDict.setObject(NSNumber(value: lastTxTime as UInt64), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LAST_TX_TIME as NSCopying)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED()), object: nil, userInfo: nil)
     }
     
-    func setStealthAddressLastTxTimeHDWallet(accountIdx: Int, serverURL: String, lastTxTime: UInt64) -> () {
+    func setStealthAddressLastTxTimeHDWallet(_ accountIdx: Int, serverURL: String, lastTxTime: UInt64) -> () {
         let accountDict = getAccountDict(accountIdx)
         setStealthAddressLastTxTime(accountDict, serverURL: serverURL, lastTxTime: lastTxTime)
     }
     
-    func setStealthAddressLastTxTimeColdWalletAccount(idx: Int, serverURL: String, lastTxTime: UInt64) -> () {
+    func setStealthAddressLastTxTimeColdWalletAccount(_ idx: Int, serverURL: String, lastTxTime: UInt64) -> () {
         let accountDict = getColdWalletAccountAtIndex(idx)
         setStealthAddressLastTxTime(accountDict, serverURL: serverURL, lastTxTime: lastTxTime)
     }
     
-    func setStealthAddressLastTxTimeImportedAccount(idx: Int, serverURL: String, lastTxTime: UInt64) -> () {
+    func setStealthAddressLastTxTimeImportedAccount(_ idx: Int, serverURL: String, lastTxTime: UInt64) -> () {
         let accountDict = getImportedAccountAtIndex(idx)
         setStealthAddressLastTxTime(accountDict, serverURL: serverURL, lastTxTime: lastTxTime)
     }
     
-    func setStealthAddressLastTxTimeImportedWatchAccount(idx: Int, serverURL: String, lastTxTime: UInt64) -> () {
+    func setStealthAddressLastTxTimeImportedWatchAccount(_ idx: Int, serverURL: String, lastTxTime: UInt64) -> () {
         let accountDict = getImportedWatchOnlyAccountAtIndex(idx)
         setStealthAddressLastTxTime(accountDict, serverURL: serverURL, lastTxTime: lastTxTime)
     }
     
     
-    private func addStealthAddressPaymentKey(accountDict: NSMutableDictionary, privateKey: String,
+    fileprivate func addStealthAddressPaymentKey(_ accountDict: NSMutableDictionary, privateKey: String,
         address: String, txid: String, txTime: UInt64, stealthPaymentStatus: TLStealthPaymentStatus) -> () {
         let paymentDict = [
             TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_KEY: privateKey,
             TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS: address,
             TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_TXID: txid,
-            TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_TIME: NSNumber(unsignedLongLong: txTime),
-            TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_CHECK_TIME: NSNumber(unsignedLongLong: 0),
+            TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_TIME: NSNumber(value: txTime as UInt64),
+            TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_CHECK_TIME: NSNumber(value: 0 as UInt64),
             TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS: stealthPaymentStatus.rawValue
-        ]
+        ] as [String : Any]
         
         let stealthAddressPaymentDict = NSMutableDictionary(dictionary: paymentDict)
         let lock = NSLock()
         lock.lock()
-        let stealthAddressArray = accountDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESSES) as! NSMutableArray
-        let stealthAddressPaymentsArray = (stealthAddressArray.objectAtIndex(0) as! NSDictionary).objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_PAYMENTS) as! NSMutableArray
+        let stealthAddressArray = accountDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESSES) as! NSMutableArray
+        let stealthAddressPaymentsArray = (stealthAddressArray.object(at: 0) as! NSDictionary).object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_PAYMENTS) as! NSMutableArray
         var indexToInsert = stealthAddressPaymentsArray.count-1            
-        for ; indexToInsert >= 0; indexToInsert-- {
-            let currentStealthAddressPaymentDict = stealthAddressPaymentsArray.objectAtIndex(indexToInsert) as! NSDictionary
-            if (currentStealthAddressPaymentDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_TIME) as! NSNumber).unsignedLongLongValue < txTime {
+        for ; indexToInsert >= 0; indexToInsert -= 1 {
+            let currentStealthAddressPaymentDict = stealthAddressPaymentsArray.object(at: indexToInsert) as! NSDictionary
+            if (currentStealthAddressPaymentDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_TIME) as! NSNumber).uint64Value < txTime {
                 break
             }
         }
             
-        stealthAddressPaymentsArray.insertObject(stealthAddressPaymentDict, atIndex: indexToInsert+1)
+        stealthAddressPaymentsArray.insert(stealthAddressPaymentDict, at: indexToInsert+1)
         lock.unlock()
             
-        dispatch_async(dispatch_get_main_queue()) {
-            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED()), object: nil, userInfo: nil)
         }
     }
     
-    func addStealthAddressPaymentKeyHDWallet(accountIdx: Int, privateKey: String, address: String,
+    func addStealthAddressPaymentKeyHDWallet(_ accountIdx: Int, privateKey: String, address: String,
         txid: String, txTime: UInt64, stealthPaymentStatus: TLStealthPaymentStatus) -> () {
             let accountDict = getAccountDict(accountIdx)
             addStealthAddressPaymentKey(accountDict, privateKey: privateKey, address: address,
                 txid: txid, txTime: txTime, stealthPaymentStatus: stealthPaymentStatus)
     }
     
-    func addStealthAddressPaymentKeyColdWalletAccount(idx: Int, privateKey: String, address: String,
+    func addStealthAddressPaymentKeyColdWalletAccount(_ idx: Int, privateKey: String, address: String,
                                                          txid: String, txTime: UInt64, stealthPaymentStatus: TLStealthPaymentStatus) -> () {
         let accountDict = getColdWalletAccountAtIndex(idx)
         addStealthAddressPaymentKey(accountDict, privateKey: privateKey, address: address,
                                     txid: txid, txTime: txTime, stealthPaymentStatus: stealthPaymentStatus)
     }
     
-    func addStealthAddressPaymentKeyImportedAccount(idx: Int, privateKey: String, address: String,
+    func addStealthAddressPaymentKeyImportedAccount(_ idx: Int, privateKey: String, address: String,
         txid: String, txTime: UInt64, stealthPaymentStatus: TLStealthPaymentStatus) -> () {
             let accountDict = getImportedAccountAtIndex(idx)
             addStealthAddressPaymentKey(accountDict, privateKey: privateKey, address: address,
                 txid: txid, txTime: txTime, stealthPaymentStatus: stealthPaymentStatus)
     }
     
-    func addStealthAddressPaymentKeyImportedWatchAccount(idx: Int, privateKey: String, address: String,
+    func addStealthAddressPaymentKeyImportedWatchAccount(_ idx: Int, privateKey: String, address: String,
         txid: String, txTime: UInt64, stealthPaymentStatus: TLStealthPaymentStatus) -> () {
             let accountDict = getImportedWatchOnlyAccountAtIndex(idx)
             addStealthAddressPaymentKey(accountDict, privateKey: privateKey, address: address,
@@ -151,146 +151,146 @@ extension TLWallet {
     }
     
     
-    func setStealthPaymentLastCheckTime(accountDict: NSMutableDictionary, txid: String, lastCheckTime: UInt64) -> () {
-        let stealthAddressArray = accountDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESSES) as! NSMutableArray
-        let paymentsArray = (stealthAddressArray.objectAtIndex(0) as! NSDictionary).objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_PAYMENTS) as! NSMutableArray
+    func setStealthPaymentLastCheckTime(_ accountDict: NSMutableDictionary, txid: String, lastCheckTime: UInt64) -> () {
+        let stealthAddressArray = accountDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESSES) as! NSMutableArray
+        let paymentsArray = (stealthAddressArray.object(at: 0) as! NSDictionary).object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_PAYMENTS) as! NSMutableArray
         
         for _payment in paymentsArray {
             let payment = _payment as! NSMutableDictionary
-            if payment.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_TXID) as? String == txid {
-                payment.setObject(NSNumber(unsignedLongLong: lastCheckTime), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_CHECK_TIME)
+            if payment.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_TXID) as? String == txid {
+                payment.setObject(NSNumber(value: lastCheckTime as UInt64), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_CHECK_TIME as NSCopying)
                 break
             }
         }
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED()), object: nil, userInfo: nil)
     }
     
-    func setStealthPaymentLastCheckTimeHDWallet(accountIdx: Int, txid: String, lastCheckTime: UInt64) -> () {
+    func setStealthPaymentLastCheckTimeHDWallet(_ accountIdx: Int, txid: String, lastCheckTime: UInt64) -> () {
         let accountDict = getAccountDict(accountIdx)
         setStealthPaymentLastCheckTime(accountDict, txid: txid, lastCheckTime: lastCheckTime)
     }
     
-    func setStealthPaymentLastCheckTimeColdWalletAccount(idx: Int, txid: String, lastCheckTime: UInt64) -> () {
+    func setStealthPaymentLastCheckTimeColdWalletAccount(_ idx: Int, txid: String, lastCheckTime: UInt64) -> () {
         let accountDict = getColdWalletAccountAtIndex(idx)
         setStealthPaymentLastCheckTime(accountDict, txid: txid, lastCheckTime: lastCheckTime)
     }
     
-    func setStealthPaymentLastCheckTimeImportedAccount(idx: Int, txid: String, lastCheckTime: UInt64) -> () {
+    func setStealthPaymentLastCheckTimeImportedAccount(_ idx: Int, txid: String, lastCheckTime: UInt64) -> () {
         let accountDict = getImportedAccountAtIndex(idx)
         setStealthPaymentLastCheckTime(accountDict, txid: txid, lastCheckTime: lastCheckTime)
     }
     
-    func setStealthPaymentLastCheckTimeImportedWatchAccount(idx: Int, txid: String, lastCheckTime: UInt64) -> () {
+    func setStealthPaymentLastCheckTimeImportedWatchAccount(_ idx: Int, txid: String, lastCheckTime: UInt64) -> () {
         let accountDict = getImportedWatchOnlyAccountAtIndex(idx)
         setStealthPaymentLastCheckTime(accountDict, txid: txid, lastCheckTime: lastCheckTime)
     }
     
-    func setStealthPaymentStatus(accountDict: NSMutableDictionary, txid: String,
+    func setStealthPaymentStatus(_ accountDict: NSMutableDictionary, txid: String,
         stealthPaymentStatus: TLStealthPaymentStatus, lastCheckTime: UInt64) -> () {
-        let stealthAddressArray = accountDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESSES) as! NSMutableArray
-        let paymentsArray = (stealthAddressArray.objectAtIndex(0) as! NSDictionary).objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_PAYMENTS) as! NSMutableArray
+        let stealthAddressArray = accountDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESSES) as! NSMutableArray
+        let paymentsArray = (stealthAddressArray.object(at: 0) as! NSDictionary).object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_PAYMENTS) as! NSMutableArray
         
         for _payment in paymentsArray {
             let payment = _payment as! NSMutableDictionary
-            if payment.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_TXID) as? String == txid {
-                payment.setObject(stealthPaymentStatus.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS)
-                payment.setObject(NSNumber(unsignedLongLong: lastCheckTime), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_CHECK_TIME)
+            if payment.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_TXID) as? String == txid {
+                payment.setObject(stealthPaymentStatus.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS as NSCopying)
+                payment.setObject(NSNumber(value: lastCheckTime as UInt64), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_CHECK_TIME as NSCopying)
                 break
             }
         }
-        dispatch_async(dispatch_get_main_queue()) {
-            NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
+        DispatchQueue.main.async {
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED()), object: nil, userInfo: nil)
         }
     }
     
-    func setStealthPaymentStatusHDWallet(accountIdx: Int, txid: String, stealthPaymentStatus: TLStealthPaymentStatus, lastCheckTime: UInt64) -> () {
+    func setStealthPaymentStatusHDWallet(_ accountIdx: Int, txid: String, stealthPaymentStatus: TLStealthPaymentStatus, lastCheckTime: UInt64) -> () {
         let accountDict = getAccountDict(accountIdx)
         setStealthPaymentStatus(accountDict, txid: txid, stealthPaymentStatus: stealthPaymentStatus, lastCheckTime: lastCheckTime)
     }
     
-    func setStealthPaymentStatusColdWalletAccount(idx: Int, txid: String, stealthPaymentStatus: TLStealthPaymentStatus, lastCheckTime: UInt64) -> () {
+    func setStealthPaymentStatusColdWalletAccount(_ idx: Int, txid: String, stealthPaymentStatus: TLStealthPaymentStatus, lastCheckTime: UInt64) -> () {
         let accountDict = getColdWalletAccountAtIndex(idx)
         setStealthPaymentStatus(accountDict, txid: txid, stealthPaymentStatus: stealthPaymentStatus, lastCheckTime: lastCheckTime)
     }
     
-    func setStealthPaymentStatusImportedAccount(idx: Int, txid: String, stealthPaymentStatus: TLStealthPaymentStatus, lastCheckTime: UInt64) -> () {
+    func setStealthPaymentStatusImportedAccount(_ idx: Int, txid: String, stealthPaymentStatus: TLStealthPaymentStatus, lastCheckTime: UInt64) -> () {
         let accountDict = getImportedAccountAtIndex(idx)
         setStealthPaymentStatus(accountDict, txid: txid, stealthPaymentStatus: stealthPaymentStatus, lastCheckTime: lastCheckTime)
     }
     
-    func setStealthPaymentStatusImportedWatchAccount(idx: Int, txid: String, stealthPaymentStatus: TLStealthPaymentStatus, lastCheckTime: UInt64) -> () {
+    func setStealthPaymentStatusImportedWatchAccount(_ idx: Int, txid: String, stealthPaymentStatus: TLStealthPaymentStatus, lastCheckTime: UInt64) -> () {
         let accountDict = getImportedWatchOnlyAccountAtIndex(idx)
         setStealthPaymentStatus(accountDict, txid: txid, stealthPaymentStatus: stealthPaymentStatus, lastCheckTime: lastCheckTime)
     }
     
 
-    func removeOldStealthPayments(accountDict: NSMutableDictionary) -> () {
-        let stealthAddressArray = accountDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESSES) as! NSMutableArray
-        let stealthAddressPaymentsArray = (stealthAddressArray.objectAtIndex(0) as! NSDictionary).objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_PAYMENTS) as! NSMutableArray
+    func removeOldStealthPayments(_ accountDict: NSMutableDictionary) -> () {
+        let stealthAddressArray = accountDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESSES) as! NSMutableArray
+        let stealthAddressPaymentsArray = (stealthAddressArray.object(at: 0) as! NSDictionary).object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_PAYMENTS) as! NSMutableArray
 
         let startCount = stealthAddressPaymentsArray.count
         var stealthAddressPaymentsArrayCount = stealthAddressPaymentsArray.count
         while (stealthAddressPaymentsArray.count > TLStealthExplorerAPI.STATIC_MEMBERS.STEALTH_PAYMENTS_FETCH_COUNT) {
-            let stealthAddressPaymentDict = stealthAddressPaymentsArray.objectAtIndex(0) as! NSDictionary
-            if (stealthAddressPaymentDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS) as! Int == TLStealthPaymentStatus.Spent.rawValue) {
-                stealthAddressPaymentsArray.removeObjectAtIndex(0)
-                stealthAddressPaymentsArrayCount--
+            let stealthAddressPaymentDict = stealthAddressPaymentsArray.object(at: 0) as! NSDictionary
+            if (stealthAddressPaymentDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS) as! Int == TLStealthPaymentStatus.spent.rawValue) {
+                stealthAddressPaymentsArray.removeObject(at: 0)
+                stealthAddressPaymentsArrayCount -= 1
             } else {
                 break
             }
         }
 
         if startCount != stealthAddressPaymentsArrayCount {
-            dispatch_async(dispatch_get_main_queue()) {
-                NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
+            DispatchQueue.main.async {
+                NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED()), object: nil, userInfo: nil)
             }
         }
     }
     
-    func removeOldStealthPaymentsHDWallet(accountIdx: Int) -> () {
+    func removeOldStealthPaymentsHDWallet(_ accountIdx: Int) -> () {
         let accountDict = getAccountDict(accountIdx)
         removeOldStealthPayments(accountDict)
     }
     
-    func removeOldStealthPaymentsColdWalletAccount(idx: Int) -> () {
+    func removeOldStealthPaymentsColdWalletAccount(_ idx: Int) -> () {
         let accountDict = getColdWalletAccountAtIndex(idx)
         removeOldStealthPayments(accountDict)
     }
     
-    func removeOldStealthPaymentsImportedAccount(idx: Int) -> () {
+    func removeOldStealthPaymentsImportedAccount(_ idx: Int) -> () {
         let accountDict = getImportedAccountAtIndex(idx)
         removeOldStealthPayments(accountDict)
     }
     
-    func removeOldStealthPaymentsImportedWatchAccount(idx: Int) -> () {
+    func removeOldStealthPaymentsImportedWatchAccount(_ idx: Int) -> () {
         let accountDict = getImportedWatchOnlyAccountAtIndex(idx)
         removeOldStealthPayments(accountDict)
     }
     
     
-    func clearAllStealthPayments(accountDict: NSMutableDictionary) -> () {
-        let stealthAddressArray = accountDict.objectForKey(TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESSES) as! NSMutableArray
-        let stealthAddressDict = stealthAddressArray.objectAtIndex(0) as! NSMutableDictionary
-        stealthAddressDict.setObject(NSMutableArray(), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_PAYMENTS)
-        NSNotificationCenter.defaultCenter().postNotificationName(TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED(), object: nil, userInfo: nil)
+    func clearAllStealthPayments(_ accountDict: NSMutableDictionary) -> () {
+        let stealthAddressArray = accountDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESSES) as! NSMutableArray
+        let stealthAddressDict = stealthAddressArray.object(at: 0) as! NSMutableDictionary
+        stealthAddressDict.setObject(NSMutableArray(), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_PAYMENTS as NSCopying)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED()), object: nil, userInfo: nil)
     }
     
-    func clearAllStealthPaymentsFromHDWallet(accountIdx: Int) -> () {
+    func clearAllStealthPaymentsFromHDWallet(_ accountIdx: Int) -> () {
         let accountDict = getAccountDict(accountIdx)
         clearAllStealthPayments(accountDict)
     }
 
-    func clearAllStealthPaymentsFromColdWalletAccount(idx: Int) -> () {
+    func clearAllStealthPaymentsFromColdWalletAccount(_ idx: Int) -> () {
         let accountDict = getColdWalletAccountAtIndex(idx)
         clearAllStealthPayments(accountDict)
     }
     
-    func clearAllStealthPaymentsFromImportedAccount(idx: Int) -> () {
+    func clearAllStealthPaymentsFromImportedAccount(_ idx: Int) -> () {
         let accountDict = getImportedAccountAtIndex(idx)
         clearAllStealthPayments(accountDict)
     }
     
-    func clearAllStealthPaymentsFromImportedWatchAccount(idx: Int) -> () {
+    func clearAllStealthPaymentsFromImportedWatchAccount(_ idx: Int) -> () {
         let accountDict = getImportedWatchOnlyAccountAtIndex(idx)
         clearAllStealthPayments(accountDict)
     }

@@ -24,11 +24,11 @@ import Foundation
 
 @objc class TLTxObject : NSObject
 {
-    private var txDict : NSDictionary
-    private var inputAddressToValueArray : NSMutableArray?
-    private var outputAddressToValueArray : NSMutableArray?
-    private var addresses:[String]? = nil
-    private var txid : String?
+    fileprivate var txDict : NSDictionary
+    fileprivate var inputAddressToValueArray : NSMutableArray?
+    fileprivate var outputAddressToValueArray : NSMutableArray?
+    fileprivate var addresses:[String]? = nil
+    fileprivate var txid : String?
     
     init(dict: NSDictionary) {
         txDict = NSDictionary(dictionary:dict)
@@ -37,40 +37,40 @@ import Foundation
         buildTxObject(txDict)
     }
     
-    private func buildTxObject(tx: NSDictionary) -> (){
+    fileprivate func buildTxObject(_ tx: NSDictionary) -> (){
         inputAddressToValueArray = NSMutableArray()
-        let inputsArray = tx.objectForKey("inputs") as? NSArray
+        let inputsArray = tx.object(forKey: "inputs") as? NSArray
         if (inputsArray != nil) {
             for _input in inputsArray! {
                 let input = _input as! NSDictionary
-                let prevOut = input.objectForKey("prev_out") as? NSDictionary
+                let prevOut = input.object(forKey: "prev_out") as? NSDictionary
                 if (prevOut != nil) {
-                    let addr = prevOut!.objectForKey("addr") as? String
+                    let addr = prevOut!.object(forKey: "addr") as? String
                     
                     let inp = NSMutableDictionary()
                     if (addr != nil) {
-                        inp.setObject(addr!, forKey:"addr")
-                        inp.setObject(prevOut!.objectForKey("value") as! UInt, forKey:"value")
+                        inp.setObject(addr!, forKey:"addr" as NSCopying)
+                        inp.setObject(prevOut!.object(forKey: "value") as! UInt, forKey:"value" as NSCopying)
                     }
-                    inputAddressToValueArray!.addObject(inp)
+                    inputAddressToValueArray!.add(inp)
                 }
             }
         }
         
         outputAddressToValueArray = NSMutableArray()
-        let outsArray = tx.objectForKey("out") as? NSArray
+        let outsArray = tx.object(forKey: "out") as? NSArray
         if (outsArray != nil) {
             for _output in outsArray! {
                 let output = _output as! NSDictionary
-                let addr = output.objectForKey("addr") as? String
+                let addr = output.object(forKey: "addr") as? String
                 let outt = NSMutableDictionary()
                 if (addr != nil) {
-                    outt.setObject(addr!, forKey:"addr")
-                    outt.setObject(output.objectForKey("value") as! UInt, forKey:"value")
+                    outt.setObject(addr!, forKey:"addr" as NSCopying)
+                    outt.setObject(output.object(forKey: "value") as! UInt, forKey:"value" as NSCopying)
                 }
                 
-                outt.setObject(output.objectForKey("script") as! String, forKey:"script")
-                outputAddressToValueArray!.addObject(outt)
+                outt.setObject(output.object(forKey: "script") as! String, forKey:"script" as NSCopying)
+                outputAddressToValueArray!.add(outt)
             }
         }
     }
@@ -84,12 +84,12 @@ import Foundation
         addresses = [String]()
         
         for addressTovalueDict in inputAddressToValueArray! {
-            if let address = (addressTovalueDict as! NSDictionary).objectForKey("addr") as? String {
+            if let address = (addressTovalueDict as! NSDictionary).object(forKey: "addr") as? String {
                 addresses!.append(address)
             }
         }
         for addressTovalueDict in outputAddressToValueArray! {
-            if let address = (addressTovalueDict as! NSDictionary).objectForKey("addr") as? String {
+            if let address = (addressTovalueDict as! NSDictionary).object(forKey: "addr") as? String {
                 addresses!.append(address)
             }
         }
@@ -105,7 +105,7 @@ import Foundation
         addresses.reserveCapacity(inputAddressToValueArray!.count)
         for _input in inputAddressToValueArray! {
             let input = _input as! NSDictionary
-            if let address = input.objectForKey("addr") as? String {
+            if let address = input.object(forKey: "addr") as? String {
                 addresses.append(address)
             }
         }
@@ -117,7 +117,7 @@ import Foundation
         addresses.reserveCapacity(outputAddressToValueArray!.count)
         for _output in outputAddressToValueArray! {
             let output = _output as! NSDictionary
-            if let address = output.objectForKey("addr") as? String {
+            if let address = output.object(forKey: "addr") as? String {
                 addresses.append(address)
             }
         }
@@ -130,7 +130,7 @@ import Foundation
         
         for _output in outputAddressToValueArray! {
             let output = _output as! NSDictionary
-            let script = output.objectForKey("script") as! String
+            let script = output.object(forKey: "script") as! String
             if script.characters.count == 80 {
                 possibleStealthDataScripts.append(script)
             }
@@ -143,60 +143,60 @@ import Foundation
     }
     
     func getHash() -> NSString? {
-        return txDict.objectForKey("hash") as! NSString?
+        return txDict.object(forKey: "hash") as! NSString?
     }
     
     func getTxid() -> (String?) {
         if (txid == nil) {
-            txid = TLWalletUtils.reverseHexString(txDict.objectForKey("hash") as! String)
+            txid = TLWalletUtils.reverseHexString(txDict.object(forKey: "hash") as! String)
         }
         return txid
     }
     
     func getTxUnixTime() -> UInt64 {
-        let timeNumber = txDict.objectForKey("time") as? NSNumber
+        let timeNumber = txDict.object(forKey: "time") as? NSNumber
         if (timeNumber != nil) {
-            return timeNumber!.unsignedLongLongValue
+            return timeNumber!.uint64Value
         }
         return 0
     }
     
-    private func getTxUnixTimeInterval() -> NSTimeInterval {
-        return NSTimeInterval((txDict.objectForKey("time") as! NSNumber).longLongValue)
+    fileprivate func getTxUnixTimeInterval() -> TimeInterval {
+        return TimeInterval((txDict.object(forKey: "time") as! NSNumber).int64Value)
     }
     
     func getTime() -> (String){
         let interval = getTxUnixTimeInterval()
         
         //TODO: specific to insight api, later dont use confirmations but block_height for all apis
-        if (txDict.objectForKey("confirmations") != nil && interval <= 0) {
+        if (txDict.object(forKey: "confirmations") != nil && interval <= 0) {
             return ""
         }
         
-        let transactionDate = NSDate(timeIntervalSince1970:interval)
+        let transactionDate = Date(timeIntervalSince1970:interval)
         
-        let formatterTime = NSDateFormatter()
+        let formatterTime = DateFormatter()
         formatterTime.dateFormat = "@ hh:mm a"
         
-        if (transactionDate.isToday()) {
-            return String(format:"%@ %@", "Today", formatterTime.stringFromDate(transactionDate))
+        if ((transactionDate as NSDate).isToday()) {
+            return String(format:"%@ %@", "Today", formatterTime.string(from: transactionDate))
         } else {
-            let formatterDate = NSDateFormatter()
+            let formatterDate = DateFormatter()
             formatterDate.dateFormat = "EEE dd MMM YYYY"
-            return String(format:"%@ %@", formatterDate.stringFromDate(transactionDate), formatterTime.stringFromDate(transactionDate))
+            return String(format:"%@ %@", formatterDate.string(from: transactionDate), formatterTime.string(from: transactionDate))
         }
     }
     
     func getConfirmations() -> UInt64 {
         //TODO: specific to insight api, later dont use confirmations but block_height for all apis
-        if (txDict.objectForKey("confirmations") as? NSNumber? != nil) {
-            if let conf:NSNumber = txDict.objectForKey("confirmations") as? NSNumber {
-                return UInt64(conf.longLongValue)
+        if (txDict.object(forKey: "confirmations") as? NSNumber? != nil) {
+            if let conf:NSNumber = txDict.object(forKey: "confirmations") as? NSNumber {
+                return UInt64(conf.int64Value)
             }
         }
         
-        if (txDict.objectForKey("block_height") != nil && (txDict.objectForKey("block_height") as! NSNumber).unsignedLongLongValue > 0) {
-            return UInt64(TLBlockchainStatus.instance().blockHeight) - UInt64((txDict.objectForKey("block_height") as! NSNumber).unsignedLongLongValue) + UInt64(1)
+        if (txDict.object(forKey: "block_height") != nil && (txDict.object(forKey: "block_height") as! NSNumber).uint64Value > 0) {
+            return UInt64(TLBlockchainStatus.instance().blockHeight) - UInt64((txDict.object(forKey: "block_height") as! NSNumber).uint64Value) + UInt64(1)
         }
         
         return 0
