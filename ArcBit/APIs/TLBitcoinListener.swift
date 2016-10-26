@@ -64,7 +64,7 @@ import Foundation
         } else {
             DLog("websocket reconnect insight")
             let url = String(format: "%@", TLPreferences.getBlockExplorerURL(TLBlockExplorer.insight)!)
-            self.socket = SocketIOClient(socketURL: URL(string: url)!, options: [.log(false), .forcePolling(true)])
+            self.socket = SocketIOClient(socketURL: URL(string: url)!, config: [.log(true), .forcePolling(true)])
             weak var weakSelf = self
 
             self.socket!.on("connect") {data, ack in
@@ -83,7 +83,7 @@ import Foundation
                 self.consecutiveFailedConnections += 1
             }
             self.socket!.on("error") {data, ack in
-                DLog("socketio error: %@", function: data as AnyObject)
+                DLog("socketio error: \(data as AnyObject)")
             }
             self.socket!.on("block") {data, ack in
                 let dataArray = data as NSArray
@@ -136,29 +136,29 @@ import Foundation
                     return false
                 }
                 
-                //DLog("socketio emit address: %@", function: address)
+                //DLog("socketio emit address: \(address)")
                 self.socket!.emit("unsubscribe", "bitcoind/addresstxid", [address])
                 self.socket!.emit("subscribe", "bitcoind/addresstxid", [address])
                 
                 self.socket!.on("bitcoind/addresstxid") {data, ack in
                     DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
-                        //DLog("socketio on data: %@", function: data)
+                        //DLog("socketio on data: \(data)")
                         let dataArray = data as NSArray
                         let dataDictionary = dataArray.firstObject as! NSDictionary
                         let addr = dataDictionary["address"] as! String
                         //bad api design, this on is not address specific, will call for every subscribe address
                         if (addr == address) {
                             let txHash = dataDictionary["txid"] as! String
-                            //DLog("socketio on address: %@", function: addr)
-                            //DLog("socketio transaction: %@", function: txHash)
+                            //DLog("socketio on address: \(addr)")
+                            //DLog("socketio transaction: \(txHash)")
                             TLBlockExplorerAPI.instance().getTx(txHash, success: {
                                 (txDict: AnyObject?) in
                                 if txDict != nil {
                                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_NEW_UNCONFIRMED_TRANSACTION()), object: txDict!, userInfo: nil)
                                 }
                                 }, failure: {
-                                    (code: NSInteger, status: String!) in
-                            } as! TLNetworking.FailureHandler)
+                                    (code, status) in
+                            })
                         }
                     }
                 }
@@ -220,9 +220,9 @@ import Foundation
         consecutiveFailedConnections += 1
     }
     
-    func webSocket(_ webSocket: SRWebSocket, didReceiveMessage message: AnyObject) {
+    public func webSocket(_ webSocket: SRWebSocket!, didReceiveMessage message: Any!) {
         DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
-            let data = message.data(using: String.Encoding.utf8)
+            let data = (message as AnyObject).data(using: String.Encoding.utf8.rawValue)
             
             let jsonDict = (try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions(rawValue: 0))) as! NSDictionary
             DLog("blockchain.info didReceiveMessage \(jsonDict.description)")
@@ -245,7 +245,7 @@ import Foundation
         self.webSocket!.delegate = nil
         self.webSocket!.close()
         self.webSocket = nil
-        if consecutiveFailedConnections+ < MAX_CONSECUTIVE_FAILED_CONNECTIONS {
+        if consecutiveFailedConnections < MAX_CONSECUTIVE_FAILED_CONNECTIONS {
             self.reconnect()
         }
         consecutiveFailedConnections += 1

@@ -95,13 +95,15 @@ class TLWalletJson {
     }
     
     class func saveWalletJson(_ walletFile: String, date: Date) -> (Bool) {
-        let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true) as NSArray
-        let documentsDirectory: AnyObject = paths.object(at: 0) as AnyObject
-        let filePath = documentsDirectory.appendingPathComponent(TLWalletJson.getWalletJsonFileName())
+
         
+        let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true) as NSArray
+        let documentDirectory = paths.object(at: 0) as! NSString
+        let filePath = documentDirectory.appendingPathComponent(TLWalletJson.getWalletJsonFileName())
+
         var error: NSError? = nil
         do {
-            try walletFile.write(toFile: filePath, atomically: true, encoding: String.Encoding.utf8)
+            try walletFile.write(toFile: filePath, atomically: true, encoding: String.Encoding(rawValue: String.Encoding.utf8.rawValue))
         } catch let error1 as NSError {
             error = error1
         }
@@ -114,8 +116,8 @@ class TLWalletJson {
     
     class func getLocalWalletJSONFile() -> (String?) {
         let paths = NSSearchPathForDirectoriesInDomains(FileManager.SearchPathDirectory.documentDirectory, FileManager.SearchPathDomainMask.userDomainMask, true) as NSArray
-        let documentsDirectory: AnyObject = paths.object(at: 0) as AnyObject
-        let filePath = documentsDirectory.appendingPathComponent(TLWalletJson.getWalletJsonFileName())
+        let documentDirectory = paths.object(at: 0) as! NSString
+        let filePath = documentDirectory.appendingPathComponent(TLWalletJson.getWalletJsonFileName())
         
         let error: NSError? = nil
         if (error != nil) {
@@ -124,7 +126,7 @@ class TLWalletJson {
         }
         
         do {
-            let contents = try NSString(contentsOfFile: filePath, encoding: String.Encoding.utf8)
+            let contents = try NSString(contentsOfFile: filePath, encoding: String.Encoding.utf8.rawValue)
             return contents as String
         } catch _ {
             return nil

@@ -61,21 +61,18 @@ class TLStealthExplorerAPI {
         self.baseURL = baseURL
     }
     
-    func ping(_ success: TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
-        let
-        endPoint = "ping"
-        let parameters = [:]
+    func ping(_ success: @escaping TLNetworking.SuccessHandler, failure: @escaping TLNetworking.FailureHandler) -> () {
+        let endPoint = "ping"
         let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
 
-        self.networking.httpGET(url!, parameters:parameters,
+        self.networking.httpGET(url!, parameters:nil,
             success:success, failure:failure)
     }
 
     func getChallenge() -> NSDictionary {
         let endPoint = "challenge"
-        let parameters = [:]
         let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
-        let jsonDict = self.networking.httpGETSynchronous(url!, parameters: parameters) as! NSDictionary
+        let jsonDict = self.networking.httpGETSynchronous(url!, parameters: nil) as! NSDictionary
         return jsonDict
     }
     
@@ -87,7 +84,7 @@ class TLStealthExplorerAPI {
             "offset":offset
         ] as [String : Any]
         let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
-        let jsonDict = self.networking.httpGETSynchronous(url!, parameters: parameters) as! NSDictionary
+        let jsonDict = self.networking.httpGETSynchronous(url!, parameters: parameters as NSDictionary?) as! NSDictionary
         return jsonDict
     }
     
@@ -99,11 +96,11 @@ class TLStealthExplorerAPI {
             "sig":signature
         ]
         let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
-        let jsonDict = self.networking.httpGETSynchronous(url!, parameters: parameters) as! NSDictionary
+        let jsonDict = self.networking.httpGETSynchronous(url!, parameters: parameters as NSDictionary?) as! NSDictionary
         return jsonDict
     }
     
-    func lookupTx(_ stealthAddress:String, txid:String, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
+    func lookupTx(_ stealthAddress:String, txid:String, success: @escaping TLNetworking.SuccessHandler, failure: @escaping TLNetworking.FailureHandler) -> () {
         let endPoint = "lookuptx"
         let parameters = [
             "addr": stealthAddress,
@@ -111,6 +108,6 @@ class TLStealthExplorerAPI {
         ]
         let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
         
-        self.networking.httpGET(url!, parameters:parameters, success:success, failure:failure)
+        self.networking.httpGET(url!, parameters:parameters as NSDictionary!, success:success, failure:failure)
     }
 }

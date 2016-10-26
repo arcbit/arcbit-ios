@@ -61,18 +61,18 @@ class TLPrompts {
                 cancelButtonTitle: "Cancel".localized,
                 destructiveButtonTitle: nil,
                 otherButtonTitles: ["OK".localized],
-                preShow: {(controller:UIAlertController!) in
+                preShow: {(controller) in
                     func addPromptTextField(_ textField: UITextField!){
                         textField.placeholder = textFieldPlaceholder
                     }
-                    controller.addTextField(configurationHandler: addPromptTextField)
+                    controller!.addTextField(configurationHandler: addPromptTextField)
                 }
                 ,
                 tap: {(alertView, action, buttonIndex) in
-                    if (buttonIndex == alertView.firstOtherButtonIndex) {
-                        let inputedText = (alertView.textFields![0] ).text
+                    if (buttonIndex == alertView!.firstOtherButtonIndex) {
+                        let inputedText = (alertView!.textFields![0] ).text
                         success(inputedText)
-                    } else if (buttonIndex == alertView.cancelButtonIndex) {
+                    } else if (buttonIndex == alertView!.cancelButtonIndex) {
                         failure(true)
                     }
             })
@@ -90,9 +90,9 @@ class TLPrompts {
                 otherButtonTitles: ["OK".localized],
                 
                 tap: {(alertView, action, buttonIndex) in
-                    if (buttonIndex == alertView?.firstOtherButtonIndex) {
+                    if (buttonIndex == alertView!.firstOtherButtonIndex) {
                         success()
-                    } else if (buttonIndex == alertView?.cancelButtonIndex) {
+                    } else if (buttonIndex == alertView!.cancelButtonIndex) {
                         failure(true)
                     }
             })
@@ -205,17 +205,17 @@ class TLPrompts {
             cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
             otherButtonTitles: ["Enter".localized],
-            preShow: {(controller:UIAlertController!) in
+            preShow: {(controller) in
                 func addPromptTextField(_ textField: UITextField!){
                     textField.placeholder = "password".localized
                 }
-                controller.addTextField(configurationHandler: addPromptTextField)
+                controller!.addTextField(configurationHandler: addPromptTextField)
             },
             tap: {(alertView, action, buttonIndex) in
-                if (buttonIndex == alertView.firstOtherButtonIndex) {
+                if (buttonIndex == alertView!.firstOtherButtonIndex) {
                     TLHUDWrapper.showHUDAddedTo(view, labelText: "Decrypting Private Key".localized, animated: true)
                     
-                    let password = (alertView.textFields![0] ).text
+                    let password = (alertView!.textFields![0] ).text
                     
                     DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
                         let privKey = TLCoreBitcoinWrapper.privateKeyFromEncryptedPrivateKey(encryptedPrivKey, password: password!, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)
@@ -234,16 +234,16 @@ class TLPrompts {
                                     otherButtonTitles: ["Retry".localized],
                                     
                                     tap: {(alertView, action, buttonIndex) in
-                                        if (buttonIndex == alertView.firstOtherButtonIndex) {
+                                        if (buttonIndex == alertView!.firstOtherButtonIndex) {
                                             self.promptForEncryptedPrivKeyPassword(vc, view:view, encryptedPrivKey: encryptedPrivKey, success: success, failure: failure)
-                                        } else if (buttonIndex == alertView.cancelButtonIndex) {
+                                        } else if (buttonIndex == alertView!.cancelButtonIndex) {
                                             failure(true)
                                         }
                                 })
                             }
                         }
                     }
-                } else if (buttonIndex == alertView.cancelButtonIndex) {
+                } else if (buttonIndex == alertView!.cancelButtonIndex) {
                     failure(true)
                 }
         })

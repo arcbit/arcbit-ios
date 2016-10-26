@@ -105,19 +105,19 @@ import AVFoundation
             destructiveButtonTitle: nil,
             otherButtonTitles: ["OK".localized],
             
-            preShow: {(controller:UIAlertController!) in
+            preShow: {(controller) in
                 
                 func addPromptTextField(_ textField: UITextField!){
                     textField.placeholder = ""
                     textField.text = "http://"
                 }
                 
-                controller.addTextField(configurationHandler: addPromptTextField)
+                controller!.addTextField(configurationHandler: addPromptTextField)
             }
             ,
             tap: {(alertView, action, buttonIndex) in
-                if (buttonIndex == alertView.firstOtherButtonIndex) {
-                    let candidate = (alertView.textFields![0] ).text
+                if (buttonIndex == alertView!.firstOtherButtonIndex) {
+                    let candidate = (alertView!.textFields![0] ).text
                     
                     let candidateURL = URL(string: candidate!)
                     
@@ -136,7 +136,7 @@ import AVFoundation
                                 self.showPromptForSetBlockExplorerURL()
                         })
                     }
-                } else if (buttonIndex == alertView.cancelButtonIndex) {
+                } else if (buttonIndex == alertView!.cancelButtonIndex) {
                 }
         })
     }
@@ -158,13 +158,13 @@ import AVFoundation
             destructiveButtonTitle: nil,
             otherButtonTitles: ["OK".localized],
             
-            preShow: {(controller:UIAlertController!) in
-                controller.addTextField(configurationHandler: addTextField)
+            preShow: {(controller) in
+                controller!.addTextField(configurationHandler: addTextField)
             }
             ,
             tap: {(alertView, action, buttonIndex) in
-                if (buttonIndex == alertView.firstOtherButtonIndex) {
-                    let feeAmount = (alertView.textFields![0] ).text
+                if (buttonIndex == alertView!.firstOtherButtonIndex) {
+                    let feeAmount = (alertView!.textFields![0] ).text
                     
                     let feeAmountCoin = TLCurrencyFormat.bitcoinAmountStringToCoin(feeAmount!)
                     if (TLWalletUtils.isValidInputTransactionFee(feeAmountCoin)) {
@@ -185,7 +185,7 @@ import AVFoundation
                                 self.showPromptForSetTransactionFee()
                         })
                     }
-                } else if (buttonIndex == alertView.cancelButtonIndex) {
+                } else if (buttonIndex == alertView!.cancelButtonIndex) {
                 }
         })
     }
@@ -331,10 +331,10 @@ import AVFoundation
 
                 // Why give option to back from cloud or local? A user may want to restore from cloud backup if he get a new phone.
                 TLCloudDocumentSyncWrapper.instance().getFileFromCloud(TLPreferences.getCloudBackupWalletFileName()!, completion: {
-                    (cloudDocument: UIDocument!, documentData: Data!, error: NSError!) in
+                    (cloudDocument, documentData, error) in
                     TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                    if (documentData.count != 0) {
-                        let cloudWalletJSONDocumentSavedDate = cloudDocument.fileModificationDate
+                    if (documentData!.count != 0) {
+                        let cloudWalletJSONDocumentSavedDate = cloudDocument!.fileModificationDate
                         let dateFormatter = DateFormatter()
                         dateFormatter.dateStyle = .medium
                         dateFormatter.timeStyle = .medium
@@ -348,10 +348,10 @@ import AVFoundation
                             destructiveButtonTitle: nil,
                             otherButtonTitles: ["Backup local wallet".localized],
                             tap: {(alertView, action, buttonIndex) in
-                                if (buttonIndex == alertView.firstOtherButtonIndex) {
+                                if (buttonIndex == alertView!.firstOtherButtonIndex) {
                                     self.promptToConfirmOverwriteCloudWalletJSONFileWithLocalWalletJSONFile()
-                                } else if (buttonIndex == alertView.cancelButtonIndex) {
-                                    let encryptedWalletJSON = NSString(data: documentData, encoding: String.Encoding.utf8)
+                                } else if (buttonIndex == alertView!.cancelButtonIndex) {
+                                    let encryptedWalletJSON = NSString(data: documentData!, encoding: String.Encoding.utf8.rawValue)
                                     self.promptToConfirmOverwriteLocalWalletJSONFileWithCloudWalletJSONFile(encryptedWalletJSON! as String)
                                 }
                         })

@@ -391,11 +391,11 @@ import Foundation
                         group.leave()
                     }
                     
-                    }, failure: { (code: NSInteger, status: String!) -> () in
+                    }, failure: { (code, status) -> () in
                         if waitForCompletion {
                             group.leave()
                         }
-                } as! TLNetworking.FailureHandler)
+                })
                 
             } else {
                 if waitForCompletion {
@@ -432,12 +432,12 @@ import Foundation
                         group.leave()
                     }
                     
-                    }, failure: { (code: NSInteger, status: String!) -> () in
+                    }, failure: { (code, status) -> () in
                         if waitForCompletion {
                             group.leave()
                         }
                         
-                } as! TLNetworking.FailureHandler)
+                })
                 
             }
         }

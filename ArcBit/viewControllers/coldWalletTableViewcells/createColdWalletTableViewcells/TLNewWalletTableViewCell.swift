@@ -77,7 +77,7 @@ protocol TLNewWalletTableViewCellDelegate {
     
     @IBAction fileprivate func showAccountPublicKeyQRButtonClicked(_ sender:UIButton) {
         let accountPublicKey = self.accountPublicKeyTextView.text
-        if accountPublicKey != nil && !accountPublicKey!.isEmpty && TLHDWalletWrapper.isValidExtendedPublicKey(accountPublicKey) {
+        if accountPublicKey != nil && !accountPublicKey!.isEmpty && TLHDWalletWrapper.isValidExtendedPublicKey(accountPublicKey!) {
             delegate?.didClickShowQRCodeButton(self, data: accountPublicKey!)
         }
     }

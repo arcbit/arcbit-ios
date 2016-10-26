@@ -219,7 +219,7 @@ import CoreData
         
         cell!.amountButton!.titleEdgeInsets = UIEdgeInsetsMake(0.0, 5.0, 0.0, 5.0)
         let txObject = AppDelegate.instance().historySelectedObject!.getTxObject((indexPath as NSIndexPath).row)
-        DLog("txObject hash: %@", function: txObject!.getHash()!)
+        DLog("txObject hash: \(txObject!.getHash()!)")
         cell!.dateLabel!.text = txObject!.getTime()
         
         let amount = TLCurrencyFormat.getProperAmount(AppDelegate.instance().historySelectedObject!.getAccountAmountChangeForTx(txObject!.getHash()! as String)!)

@@ -78,17 +78,17 @@ class TLTxFeeAPI {
     func getDynamicTxFee(_ success:@escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler)-> () {
         self.networking.httpGET(URL(string: "https://bitcoinfees.21.co/api/v1/fees/recommended")!,
                                 parameters:[:], success:{
-                                    (_jsonData: AnyObject!) in
+                                    (_jsonData) in
                                     if let jsonData = _jsonData as? NSDictionary {
                                         self.cachedDynamicFeesTime = Date().timeIntervalSince1970
                                         self.cachedDynamicFees = jsonData
-                                        DLog("TLTxFeeAPI getDynamicTxFee success %@", function: jsonData.description)
+                                        DLog("TLTxFeeAPI getDynamicTxFee success \(jsonData.description)")
                                     } else {
                                         self.cachedDynamicFees = nil
                                     }
                                     success(_jsonData)
             }, failure: {
-                (code: Int, status: String!) in
+                (code, status) in
                 self.cachedDynamicFees = nil
                 DLog("TLTxFeeAPI getDynamicTxFee failure")
                 failure(code, status)

@@ -65,10 +65,10 @@ class TLStealthAddress {
             return false
         }
         
-        let scanPublicKey = (stealthAddressHex as NSString).substring(with: NSMakeRange(4, 66))
-        let spendPublicKey = (stealthAddressHex as NSString).substring(with: NSMakeRange(72, 66))
+        let scanPublicKey = (stealthAddressHex! as NSString).substring(with: NSMakeRange(4, 66))
+        let spendPublicKey = (stealthAddressHex! as NSString).substring(with: NSMakeRange(72, 66))
         
-        let stealthAddr = createStealthAddress(scanPublicKey, spendPublicKey: spendPublicKey, isTestnet: isTestnet)
+        let stealthAddr = createStealthAddress(scanPublicKey as NSString, spendPublicKey: spendPublicKey as NSString, isTestnet: isTestnet)
         return stealthAddress == stealthAddr
     }
     
@@ -158,8 +158,8 @@ class TLStealthAddress {
         data?.getBytes(&bytes, length: (data?.length)!)
         assert(bytes[0] == getMagicByte(isTestnet), "stealth address contains invalid magic byte")
         
-        let scanPublicKey = (stealthAddressHex as NSString).substring(with: NSMakeRange(4, 66))
-        let spendPublicKey = (stealthAddressHex as NSString).substring(with: NSMakeRange(72, 66))
+        let scanPublicKey = (stealthAddressHex! as NSString).substring(with: NSMakeRange(4, 66))
+        let spendPublicKey = (stealthAddressHex! as NSString).substring(with: NSMakeRange(72, 66))
         
         return (scanPublicKey, spendPublicKey)
     }

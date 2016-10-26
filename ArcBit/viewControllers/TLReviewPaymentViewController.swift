@@ -116,13 +116,13 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                                                     destructiveButtonTitle: nil,
                                                     otherButtonTitles: ["OK".localized],
                                                     
-                                                    preShow: {(controller:UIAlertController!) in
-                                                        controller.addTextField(configurationHandler: addTextField)
+                                                    preShow: {(controller) in
+                                                        controller!.addTextField(configurationHandler: addTextField)
             }
             ,
                                                     tap: {(alertView, action, buttonIndex) in
-                                                        if (buttonIndex == alertView.firstOtherButtonIndex) {
-                                                            let feeAmountString = (alertView.textFields![0]).text
+                                                        if (buttonIndex == alertView!.firstOtherButtonIndex) {
+                                                            let feeAmountString = (alertView!.textFields![0]).text
                                                             
                                                             let feeAmount = TLCurrencyFormat.properBitcoinAmountStringToCoin(feeAmountString!)
                                                             
@@ -159,7 +159,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                                                                 TLSendFormData.instance().feeAmount = feeAmount
                                                                 self.updateView()
                                                             }
-                                                        } else if (buttonIndex == alertView.cancelButtonIndex) {
+                                                        } else if (buttonIndex == alertView!.cancelButtonIndex) {
                                                         }
         })
     }
@@ -292,8 +292,8 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
         
         TLPushTxAPI.instance().sendTx(txHex, txHash: txHash, toAddress: toAddress, success: {
-            (jsonData: AnyObject!) in
-            DLog("showPromptReviewTx pushTx: success %@", function: jsonData)
+            (jsonData) in
+            DLog("showPromptReviewTx pushTx: success \(jsonData)")
             
             if TLStealthAddress.isStealthAddress(toAddress, isTestnet:false) == true {
                 // doing stealth payment with push tx insight get wrong hash back??
@@ -311,15 +311,15 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             handlePushTxSuccess()
             
             }, failure: {
-                (code: Int, status: String!) in
+                (code, status) in
                 DLog("showPromptReviewTx pushTx: failure \(code) \(status)")
                 if (code == 200) {
                     handlePushTxSuccess()
                 } else {
-                    TLPrompts.promptErrorMessage("Error".localized, message: status)
+                    TLPrompts.promptErrorMessage("Error".localized, message: status!)
                     self.cancelSend()
                 }
-        } as! TLNetworking.FailureHandler)
+        })
     }
 
     func promptToSignTransaction(_ unSignedTx: String, txInputsAccountHDIdxes:NSArray) {

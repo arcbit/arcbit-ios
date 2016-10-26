@@ -57,7 +57,7 @@ class TLUtils {
     class func JSONStringToDictionary(_ jsonString: String) -> NSDictionary {
         var error: NSError? = nil
         let jsonData = jsonString.data(using: String.Encoding.utf8)
-        let jsonDict:AnyObject?
+        let jsonDict:Any?
         do {
             jsonDict = try JSONSerialization.jsonObject(with: jsonData!,
                         options: JSONSerialization.ReadingOptions.mutableContainers)

@@ -99,7 +99,7 @@ import Foundation
                 let indexes = self.addressToIdxDict.object(forKey: address) as! NSArray
                 for idx in indexes {
                     let importedAddressObject = self.importedAddresses.object(at: idx as! Int) as! TLImportedAddress
-                    let addressBalance = (addressDict.object(forKey: "final_balance") as! NSNumber).uint64Value
+                    let addressBalance = ((addressDict as AnyObject).object(forKey: "final_balance") as! NSNumber).uint64Value
                     importedAddressObject.balance = TLCoin(uint64: addressBalance)
                     importedAddressObject.processTxArray(txArray, shouldUpdateAccountBalance: false)
                     importedAddressObject.setHasFetchedAccountData(true)
@@ -111,7 +111,7 @@ import Foundation
                 object:nil, userInfo:nil)
             
             success()
-            } , failure:{(code:NSInteger, status:String!) in
+            } , failure:{(code, status) in
                 failure()
         })
     }
@@ -145,7 +145,7 @@ import Foundation
             let indexes = (self.addressToIdxDict).object(forKey: address) as! NSArray
             for idx in indexes {
                 let importedAddressObject = self.importedAddresses.object(at: idx as! Int) as! TLImportedAddress
-                let addressBalance = (addressDict.object(forKey: "final_balance") as! NSNumber).uint64Value
+                let addressBalance = ((addressDict as AnyObject).object(forKey: "final_balance") as! NSNumber).uint64Value
                 importedAddressObject.balance = TLCoin(uint64: addressBalance)
                 importedAddressObject.processTxArray(txArray, shouldUpdateAccountBalance: false)
                 importedAddressObject.setHasFetchedAccountData(true)
@@ -173,7 +173,7 @@ import Foundation
         var indexes = self.addressToIdxDict.object(forKey: address!) as! NSMutableArray?
         if (indexes == nil) {
             indexes = NSMutableArray()
-            self.addressToIdxDict.setObject(indexes!, forKey:importedAddressObject.getAddress())
+            self.addressToIdxDict.setObject(indexes!, forKey:importedAddressObject.getAddress() as NSCopying)
         }
         
         indexes!.add(self.importedAddresses.count-1)
@@ -184,7 +184,7 @@ import Foundation
     }
     
     func addImportedWatchAddress(_ address:String) -> (TLImportedAddress) {
-        let importedDict = self.appWallet!.addWatchOnlyAddress(address)
+        let importedDict = self.appWallet!.addWatchOnlyAddress(address as NSString)
         let importedAddressObject = TLImportedAddress(appWallet:self.appWallet!, dict:importedDict)
         self.importedAddresses.add(importedAddressObject)
         
@@ -207,7 +207,7 @@ import Foundation
     func setLabel(_ label:String, positionInWalletArray:Int) -> Bool {
         let importedAddressObject = self.addressToPositionInWalletArrayDict.object(forKey: positionInWalletArray) as! TLImportedAddress
         
-        importedAddressObject.setLabel(label)
+        importedAddressObject.setLabel(label as NSString)
         if (self.accountAddressType == .imported) {
             self.appWallet!.setImportedPrivateKeyLabel(label, idx:positionInWalletArray)
         } else if (self.accountAddressType! == .importedWatch) {

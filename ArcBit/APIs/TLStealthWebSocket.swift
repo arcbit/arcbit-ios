@@ -128,10 +128,10 @@ import Foundation
         consecutiveFailedConnections += 1
     }
     
-    func webSocket(_ webSocket: SRWebSocket, didReceiveMessage message: AnyObject) {
+    public func webSocket(_ webSocket: SRWebSocket!, didReceiveMessage message: Any!) {
         DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
             self.consecutiveFailedConnections = 0
-            let data = message.data(using: String.Encoding.utf8)
+            let data = (message as AnyObject).data(using: String.Encoding.utf8.rawValue)
 
             let jsonDict = (try! JSONSerialization.jsonObject(with: data!, options: JSONSerialization.ReadingOptions(rawValue: 0))) as! NSDictionary
             DLog("StealthWebSocket didReceiveMessage \(jsonDict.description)")

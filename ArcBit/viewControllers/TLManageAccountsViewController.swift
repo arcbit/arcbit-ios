@@ -248,7 +248,7 @@ import UIKit
                 }
                 
                 AppDelegate.instance().pendingOperations.addSetUpImportedAddressesOperation(AppDelegate.instance().importedAddresses!, fetchDataAgain: fetchDataAgain, success: {
-                    for (var i = 0; i < AppDelegate.instance().importedAddresses!.getCount(); i++) {
+                    for i in stride(from: 0, through: AppDelegate.instance().importedAddresses!.getCount(), by: 1) {
                         let indexPath = IndexPath(row: i, section: self.importedAddressSection)
                         if let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell {
                             (cell.accessoryView as! UIActivityIndicatorView).stopAnimating()
@@ -277,7 +277,7 @@ import UIKit
             }
             
             AppDelegate.instance().pendingOperations.addSetUpImportedAddressesOperation(AppDelegate.instance().importedWatchAddresses!, fetchDataAgain: fetchDataAgain, success: {
-                for (var i = 0; i < AppDelegate.instance().importedWatchAddresses!.getCount(); i++) {
+                for i in stride(from: 0, through: AppDelegate.instance().importedWatchAddresses!.getCount(), by: 1) {
                     let indexPath = IndexPath(row: i, section: self.importedWatchAddressSection)
                     if let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell {
                         (cell.accessoryView as! UIActivityIndicatorView).stopAnimating()
@@ -438,16 +438,16 @@ import UIKit
             cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
             otherButtonTitles: ["Save".localized],
-            preShow: {(controller:UIAlertController!) in
-                controller.addTextField(configurationHandler: addTextField)
+            preShow: {(controller) in
+                controller!.addTextField(configurationHandler: addTextField)
             },
             tap: {(alertView, action, buttonIndex) in
-            if (buttonIndex == alertView.firstOtherButtonIndex) {
-                if(alertView.textFields != nil) {
-                    let label = (alertView.textFields![0] ).text
+            if (buttonIndex == alertView!.firstOtherButtonIndex) {
+                if(alertView!.textFields != nil) {
+                    let label = (alertView!.textFields![0] ).text
                     success(label)
                 }
-            } else if (buttonIndex == alertView.cancelButtonIndex) {
+            } else if (buttonIndex == alertView!.cancelButtonIndex) {
                 failure(true)
             }
         })
@@ -465,12 +465,12 @@ import UIKit
             cancelButtonTitle: "Cancel".localized,
             destructiveButtonTitle: nil,
             otherButtonTitles: ["Save".localized],
-            preShow: {(controller:UIAlertController!) in
-                controller.addTextField(configurationHandler: addTextField)
+            preShow: {(controller) in
+                controller!.addTextField(configurationHandler: addTextField)
             },
             tap: {(alertView, action, buttonIndex) in
-                if (buttonIndex == alertView.firstOtherButtonIndex) {
-                    let accountName = (alertView.textFields![0] ).text//alertView.textFieldAtIndex(0)!.text
+                if (buttonIndex == alertView!.firstOtherButtonIndex) {
+                    let accountName = (alertView!.textFields![0] ).text//alertView.textFieldAtIndex(0)!.text
                     
                     if (AppDelegate.instance().accounts!.accountNameExist(accountName!) == true) {
                         UIAlertController.showAlert(in: self,
@@ -480,16 +480,16 @@ import UIKit
                             destructiveButtonTitle: nil,
                             otherButtonTitles: ["Rename".localized],
                             tap: {(alertView, action, buttonIndex) in
-                                if (buttonIndex == alertView.firstOtherButtonIndex) {
+                                if (buttonIndex == alertView!.firstOtherButtonIndex) {
                                     self.promtForNameAccount(success, failure: failure)
-                                } else if (buttonIndex == alertView.cancelButtonIndex) {
+                                } else if (buttonIndex == alertView!.cancelButtonIndex) {
                                     failure(true)
                                 }
                         })
                     } else {
                         success(accountName)
                     }
-                } else if (buttonIndex == alertView.cancelButtonIndex) {
+                } else if (buttonIndex == alertView!.cancelButtonIndex) {
                     failure(true)
                 }
         })
@@ -635,29 +635,29 @@ import UIKit
             destructiveButtonTitle: nil,
             otherButtonTitles: otherButtonTitles as [AnyObject],
             tap: {(actionSheet, action, buttonIndex) in
-                var VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = actionSheet.firstOtherButtonIndex
-                var VIEW_EXTENDED_PRIVATE_KEY_BUTTON_IDX = actionSheet.firstOtherButtonIndex+1
-                var VIEW_ADDRESSES_BUTTON_IDX = actionSheet.firstOtherButtonIndex+2
-                var MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX = actionSheet.firstOtherButtonIndex+3
-                var RENAME_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex+4
-                var ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex+5
+                var VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = actionSheet!.firstOtherButtonIndex
+                var VIEW_EXTENDED_PRIVATE_KEY_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+1
+                var VIEW_ADDRESSES_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+2
+                var MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+3
+                var RENAME_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+4
+                var ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+5
                 if (!TLPreferences.enabledAdvancedMode()) {
                     VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = -1
                     VIEW_EXTENDED_PRIVATE_KEY_BUTTON_IDX = -1
                     MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX = -1
-                    VIEW_ADDRESSES_BUTTON_IDX = actionSheet.firstOtherButtonIndex
-                    RENAME_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex+1
-                    ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex+2
+                    VIEW_ADDRESSES_BUTTON_IDX = actionSheet!.firstOtherButtonIndex
+                    RENAME_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+1
+                    ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+2
                 }
                 
                 if (buttonIndex == VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX) {
-                    self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPubKey(), buttonCopyText: "Copy To Clipboard".localized, vc: self)
+                    self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPubKey() as NSString, buttonCopyText: "Copy To Clipboard".localized, vc: self)
                     self.QRImageModal!.show()
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_EXTENDED_PUBLIC_KEY()), object: accountObject, userInfo: nil)
                     
                     
                 } else if (buttonIndex == VIEW_EXTENDED_PRIVATE_KEY_BUTTON_IDX) {
-                    self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPrivKey()!, buttonCopyText: "Copy To Clipboard".localized, vc: self)
+                    self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPrivKey()! as NSString, buttonCopyText: "Copy To Clipboard".localized, vc: self)
                     self.QRImageModal!.show()
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_EXTENDED_PRIVATE_KEY()),
                         object: accountObject, userInfo: nil)
@@ -683,7 +683,7 @@ import UIKit
                 } else if (buttonIndex == ARCHIVE_ACCOUNT_BUTTON_IDX) {
                     self.promptToArchiveAccountHDWalletAccount(accountObject)
                     
-                } else if (buttonIndex == actionSheet.cancelButtonIndex) {
+                } else if (buttonIndex == actionSheet!.cancelButtonIndex) {
                     
                 }
         })
@@ -704,13 +704,13 @@ import UIKit
                                                     destructiveButtonTitle: nil,
                                                     otherButtonTitles: otherButtons as [AnyObject],
                                                     tap: {(actionSheet, action, buttonIndex) in
-                                                        var VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = actionSheet.firstOtherButtonIndex
-                                                        var VIEW_ADDRESSES_BUTTON_IDX = actionSheet.firstOtherButtonIndex+1
-                                                        var RENAME_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex+2
-                                                        var ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex+3
+                                                        var VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = actionSheet!.firstOtherButtonIndex
+                                                        var VIEW_ADDRESSES_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+1
+                                                        var RENAME_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+2
+                                                        var ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+3
                                         
                                                         if (buttonIndex == VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX) {
-                                                            self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPubKey(),
+                                                            self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPubKey() as NSString,
                                                                 buttonCopyText: "Copy To Clipboard".localized, vc: self)
                                                             self.QRImageModal!.show()
                                                             NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_EXTENDED_PUBLIC_KEY()), object: accountObject, userInfo: nil)
@@ -729,7 +729,7 @@ import UIKit
                                                             })
                                                         } else if (buttonIndex == ARCHIVE_ACCOUNT_BUTTON_IDX) {
                                                             self.promptToArchiveAccount(accountObject)
-                                                        } else if (buttonIndex == actionSheet.cancelButtonIndex) {
+                                                        } else if (buttonIndex == actionSheet!.cancelButtonIndex) {
                                                             
                                                         }
         })
@@ -749,26 +749,26 @@ import UIKit
             destructiveButtonTitle: nil,
             otherButtonTitles: ["View account public key QR code".localized, "View account private key QR code".localized, "View Addresses".localized, "Manually Scan For Forward Transaction".localized, "Edit Account Name".localized, "Archive Account".localized],
             tap: {(actionSheet, action, buttonIndex) in
-                if (buttonIndex == actionSheet.firstOtherButtonIndex) {
-                    self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPubKey(),
+                if (buttonIndex == actionSheet!.firstOtherButtonIndex) {
+                    self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPubKey() as NSString,
                         buttonCopyText: "Copy To Clipboard".localized, vc: self)
                     self.QRImageModal!.show()
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_EXTENDED_PUBLIC_KEY()), object: accountObject, userInfo: nil)
-                } else if (buttonIndex == actionSheet.firstOtherButtonIndex+1) {
-                    self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPrivKey()!,
+                } else if (buttonIndex == actionSheet!.firstOtherButtonIndex+1) {
+                    self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPrivKey()! as NSString,
                         buttonCopyText: "Copy To Clipboard".localized, vc: self)
                     self.QRImageModal!.show()
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_EXTENDED_PRIVATE_KEY()), object: accountObject, userInfo: nil)
                     
-                } else if (buttonIndex == actionSheet.firstOtherButtonIndex+2) {
+                } else if (buttonIndex == actionSheet!.firstOtherButtonIndex+2) {
                     self.showAddressListAccountObject = accountObject
                     self.showAddressListShowBalances = true
                     self.performSegue(withIdentifier: "SegueAddressList", sender: self)
                     
-                } else if (buttonIndex == actionSheet.firstOtherButtonIndex+3) {
+                } else if (buttonIndex == actionSheet!.firstOtherButtonIndex+3) {
                     self.promptInfoAndToManuallyScanForStealthTransactionAccount(accountObject)
                     
-                } else if (buttonIndex == actionSheet.firstOtherButtonIndex+4) {
+                } else if (buttonIndex == actionSheet!.firstOtherButtonIndex+4) {
                     
                     self.promtForNameAccount({
                         (accountName: String!) in
@@ -779,9 +779,9 @@ import UIKit
                         , failure: ({
                             (isCanceled: Bool) in
                         }))}
-                else if (buttonIndex == actionSheet.firstOtherButtonIndex+5) {
+                else if (buttonIndex == actionSheet!.firstOtherButtonIndex+5) {
                     self.promptToArchiveAccount(accountObject)
-                } else if (buttonIndex == actionSheet.cancelButtonIndex) {
+                } else if (buttonIndex == actionSheet!.cancelButtonIndex) {
                 }
         })
     }
@@ -808,17 +808,17 @@ import UIKit
             otherButtonTitles: otherButtons as [AnyObject],
             tap: {(actionSheet, action, buttonIndex) in
                 var CLEAR_ACCOUNT_PRIVATE_KEY_BUTTON_IDX = -1
-                var VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = actionSheet.firstOtherButtonIndex
-                var VIEW_ADDRESSES_BUTTON_IDX = actionSheet.firstOtherButtonIndex+1
-                var RENAME_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex+2
-                var ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex+3
+                var VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = actionSheet!.firstOtherButtonIndex
+                var VIEW_ADDRESSES_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+1
+                var RENAME_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+2
+                var ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+3
 
                 if (accountObject.hasSetExtendedPrivateKeyInMemory()) {
-                    CLEAR_ACCOUNT_PRIVATE_KEY_BUTTON_IDX = actionSheet.firstOtherButtonIndex
-                    VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = actionSheet.firstOtherButtonIndex+1
-                    VIEW_ADDRESSES_BUTTON_IDX = actionSheet.firstOtherButtonIndex+2
-                    RENAME_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex+3
-                    ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex+4
+                    CLEAR_ACCOUNT_PRIVATE_KEY_BUTTON_IDX = actionSheet!.firstOtherButtonIndex
+                    VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+1
+                    VIEW_ADDRESSES_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+2
+                    RENAME_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+3
+                    ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+4
                 }
 
                 if (addClearPrivateKeyButton && buttonIndex == CLEAR_ACCOUNT_PRIVATE_KEY_BUTTON_IDX) {
@@ -826,7 +826,7 @@ import UIKit
                 accountObject.clearExtendedPrivateKeyFromMemory()
                 TLPrompts.promptSuccessMessage(nil, message: "Account private key cleared from memory".localized)
             } else if (buttonIndex == VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX) {
-                self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPubKey(),
+                self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPubKey() as NSString,
                         buttonCopyText: "Copy To Clipboard".localized, vc: self)
                 self.QRImageModal!.show()
                 NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_EXTENDED_PUBLIC_KEY()), object: accountObject, userInfo: nil)
@@ -845,7 +845,7 @@ import UIKit
                 })
             } else if (buttonIndex == ARCHIVE_ACCOUNT_BUTTON_IDX) {
                 self.promptToArchiveAccount(accountObject)
-            } else if (buttonIndex == actionSheet.cancelButtonIndex) {
+            } else if (buttonIndex == actionSheet!.cancelButtonIndex) {
 
             }
         })
@@ -866,10 +866,10 @@ import UIKit
      
         
             if (buttonIndex == actionSheet?.firstOtherButtonIndex) {
-                self.QRImageModal = TLQRImageModal(data: importAddressObject.getAddress(), buttonCopyText: "Copy To Clipboard".localized, vc: self)
+                self.QRImageModal = TLQRImageModal(data: importAddressObject.getAddress() as NSString, buttonCopyText: "Copy To Clipboard".localized, vc: self)
                 self.QRImageModal!.show()
             } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)!+1) {
-                self.QRImageModal = TLQRImageModal(data: importAddressObject.getEitherPrivateKeyOrEncryptedPrivateKey()!, buttonCopyText: "Copy To Clipboard".localized, vc: self)
+                self.QRImageModal = TLQRImageModal(data: importAddressObject.getEitherPrivateKeyOrEncryptedPrivateKey()! as NSString, buttonCopyText: "Copy To Clipboard".localized, vc: self)
 
                 self.QRImageModal!.show()
 
@@ -936,7 +936,7 @@ import UIKit
                 TLPrompts.promptSuccessMessage(nil, message: "Private key cleared from memory".localized)
             }
             if (buttonIndex == VIEW_ADDRESS_BUTTON_IDX) {
-                self.QRImageModal = TLQRImageModal(data: importAddressObject.getAddress(),
+                self.QRImageModal = TLQRImageModal(data: importAddressObject.getAddress() as NSString,
                         buttonCopyText: "Copy To Clipboard".localized, vc: self)
                 self.QRImageModal!.show()
 
@@ -974,12 +974,12 @@ import UIKit
                                                     tap: {(actionSheet, action, buttonIndex) in
                                                         
                                                         if (buttonIndex == actionSheet?.firstOtherButtonIndex) {
-                                                            self.QRImageModal = TLQRImageModal(data: importAddressObject.getAddress(), buttonCopyText: "Copy To Clipboard".localized, vc: self)
+                                                            self.QRImageModal = TLQRImageModal(data: importAddressObject.getAddress() as NSString, buttonCopyText: "Copy To Clipboard".localized, vc: self)
                                                             
                                                             self.QRImageModal!.show()
                                                             
                                                         } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)!+1) {
-                                                            self.QRImageModal = TLQRImageModal(data: importAddressObject.getEitherPrivateKeyOrEncryptedPrivateKey()!, buttonCopyText: "Copy To Clipboard".localized, vc: self)
+                                                            self.QRImageModal = TLQRImageModal(data: importAddressObject.getEitherPrivateKeyOrEncryptedPrivateKey()! as NSString, buttonCopyText: "Copy To Clipboard".localized, vc: self)
                                                             
                                                             self.QRImageModal!.show()
                                                             
@@ -1049,7 +1049,7 @@ import UIKit
                 TLPrompts.promptSuccessMessage(nil, message: "Private key cleared from memory".localized)
             }
             if (buttonIndex == VIEW_ADDRESS_BUTTON_IDX) {
-                self.QRImageModal = TLQRImageModal(data: importAddressObject.getAddress(),
+                self.QRImageModal = TLQRImageModal(data: importAddressObject.getAddress() as NSString,
                         buttonCopyText: "Copy To Clipboard".localized, vc: self)
                 self.QRImageModal!.show()
 
@@ -1191,27 +1191,27 @@ import UIKit
             destructiveButtonTitle: nil,
             otherButtonTitles: otherButtonTitles as [AnyObject],
             tap: {(actionSheet, action, buttonIndex) in
-                var VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = actionSheet.firstOtherButtonIndex + 0
-                var VIEW_EXTENDED_PRIVATE_KEY_BUTTON_IDX = actionSheet.firstOtherButtonIndex + 1
-                var VIEW_ADDRESSES_BUTTON_IDX = actionSheet.firstOtherButtonIndex + 2
-                var RENAME_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex + 3
-                var UNARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex + 4
+                var VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = actionSheet!.firstOtherButtonIndex + 0
+                var VIEW_EXTENDED_PRIVATE_KEY_BUTTON_IDX = actionSheet!.firstOtherButtonIndex + 1
+                var VIEW_ADDRESSES_BUTTON_IDX = actionSheet!.firstOtherButtonIndex + 2
+                var RENAME_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex + 3
+                var UNARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex + 4
                 if (!TLPreferences.enabledAdvancedMode()) {
                     VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = -1
                     VIEW_EXTENDED_PRIVATE_KEY_BUTTON_IDX = -1
-                    VIEW_ADDRESSES_BUTTON_IDX = actionSheet.firstOtherButtonIndex + 0
-                    RENAME_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex + 1
-                    UNARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet.firstOtherButtonIndex + 2
+                    VIEW_ADDRESSES_BUTTON_IDX = actionSheet!.firstOtherButtonIndex + 0
+                    RENAME_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex + 1
+                    UNARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex + 2
                 }
             
             if (buttonIndex == VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX) {
-                self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPubKey(),
+                self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPubKey() as NSString,
                         buttonCopyText: "Copy To Clipboard".localized, vc: self)
                 self.QRImageModal!.show()
                 NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_EXTENDED_PUBLIC_KEY()), object: accountObject, userInfo: nil)
 
             } else if (buttonIndex == VIEW_EXTENDED_PRIVATE_KEY_BUTTON_IDX) {
-                self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPrivKey()!,
+                self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPrivKey()! as NSString,
                         buttonCopyText: "Copy To Clipboard".localized, vc: self)
                 self.QRImageModal!.show()
                 NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_EXTENDED_PRIVATE_KEY()), object: accountObject, userInfo: nil)
@@ -1255,15 +1255,15 @@ import UIKit
             destructiveButtonTitle: nil,
             otherButtonTitles: ["Yes".localized],
             
-            preShow: {(controller:UIAlertController!) in
-                controller.addTextField(configurationHandler: addTextField)
+            preShow: {(controller) in
+                controller!.addTextField(configurationHandler: addTextField)
             }
             ,
             tap: {(alertView, action, buttonIndex) in
-                if (buttonIndex == alertView.firstOtherButtonIndex) {
-                    let txid = (alertView.textFields![0] ).text
+                if (buttonIndex == alertView!.firstOtherButtonIndex) {
+                    let txid = (alertView!.textFields![0] ).text
                     self.manuallyScanForStealthTransactionAccount(accountObject, txid: txid!)
-                } else if (buttonIndex == alertView.cancelButtonIndex) {
+                } else if (buttonIndex == alertView!.cancelButtonIndex) {
                     
                 }
             }
@@ -1284,7 +1284,7 @@ import UIKit
         TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: "Checking Transaction".localized, animated: true)
 
         TLBlockExplorerAPI.instance().getTx(txid, success: {
-            (jsonData: AnyObject?) in
+            (jsonData) in
             let stealthDataScriptAndOutputAddresses = TLStealthWallet.getStealthDataScriptAndOutputAddresses(jsonData as! NSDictionary)
             if stealthDataScriptAndOutputAddresses == nil || stealthDataScriptAndOutputAddresses!.stealthDataScript == nil {
                 TLHUDWrapper.hideHUDForView(self.view, animated: true)
@@ -1302,7 +1302,7 @@ import UIKit
                     TLBlockExplorerAPI.instance().getUnspentOutputs([paymentAddress!], success: {
                         (jsonData2: AnyObject!) in
                         let unspentOutputs = (jsonData2 as! NSDictionary).object(forKey: "unspent_outputs") as! NSArray!
-                        if (unspentOutputs.count > 0) {
+                        if (unspentOutputs!.count > 0) {
                             let privateKey = TLCoreBitcoinWrapper.privateKeyFromSecret(secret, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)
                             let txObject = TLTxObject(dict:jsonData as! NSDictionary)
                             let txTime = txObject.getTxUnixTime()
@@ -1315,9 +1315,9 @@ import UIKit
                             AppDelegate.instance().pendingOperations.addSetUpAccountOperation(accountObject, fetchDataAgain: true, success: {
                                 self.refreshWalletAccounts(false)
                                 
-                                TLStealthExplorerAPI.instance().lookupTx(accountObject.stealthWallet!.getStealthAddress(), txid: txid, success: { (jsonData: AnyObject!) -> () in
-                                    DLog("lookupTx success %@", function: jsonData.description)
-                                }) { (code: Int, status: String!) -> () in
+                                TLStealthExplorerAPI.instance().lookupTx(accountObject.stealthWallet!.getStealthAddress(), txid: txid, success: { (jsonData) -> () in
+                                    DLog("lookupTx success \(jsonData.description)")
+                                }) { (code, status) -> () in
                                     DLog("lookupTx failure code: \(code) \(status)")
                                 }
                             })
@@ -1325,7 +1325,7 @@ import UIKit
                             TLHUDWrapper.hideHUDForView(self.view, animated: true)
                             TLPrompts.promptSuccessMessage("", message: "Funds have been claimed already.".localized)
                         }
-                        }, failure: {(code: Int, status: String!) in
+                        }, failure: {(code, status) in
                             TLHUDWrapper.hideHUDForView(self.view, animated: true)
                             TLPrompts.promptSuccessMessage("", message: "Funds have been claimed already.".localized)
                     })
@@ -1339,7 +1339,7 @@ import UIKit
             }
             
             }, failure: {
-                (code: Int, status: String!) in
+                (code, status) in
                 TLHUDWrapper.hideHUDForView(self.view, animated: true)
                 TLPrompts.promptSuccessMessage("Error".localized, message: "Error fetching Transaction.".localized)
         })
@@ -1501,7 +1501,7 @@ import UIKit
                                                     otherButtonTitles: ["Yes".localized],
                                                     tap: {(alertView, action, buttonIndex) in
                                                         
-                                                        if (buttonIndex == alertView.firstOtherButtonIndex) {
+                                                        if (buttonIndex == alertView!.firstOtherButtonIndex) {
                                                             AppDelegate.instance().coldWalletAccounts!.deleteAccount((indexPath as NSIndexPath).row)
                                                             //*
                                                             self.accountsTableView!.beginUpdates()
@@ -1511,7 +1511,7 @@ import UIKit
                                                             self.accountsTableView!.endUpdates()
                                                             //*/
                                                             self._accountsTableViewReloadDataWrapper()
-                                                        } else if (buttonIndex == alertView.cancelButtonIndex) {
+                                                        } else if (buttonIndex == alertView!.cancelButtonIndex) {
                                                             self.accountsTableView!.isEditing = false
                                                         }
         })
@@ -1527,7 +1527,7 @@ import UIKit
             destructiveButtonTitle: nil,
             otherButtonTitles: ["Yes".localized],
             tap: {(alertView, action, buttonIndex) in
-                if (buttonIndex == alertView.firstOtherButtonIndex) {
+                if (buttonIndex == alertView!.firstOtherButtonIndex) {
                     AppDelegate.instance().importedAccounts!.deleteAccount((indexPath as NSIndexPath).row)
                     
                     self.accountsTableView!.beginUpdates()
@@ -1536,7 +1536,7 @@ import UIKit
                     self.accountsTableView!.deleteRows(at: deleteIndexPaths, with: .fade)
                     self.accountsTableView!.endUpdates()
                     self._accountsTableViewReloadDataWrapper()
-                } else if (buttonIndex == alertView.cancelButtonIndex) {
+                } else if (buttonIndex == alertView!.cancelButtonIndex) {
                     self.accountsTableView!.isEditing = false
                 }
             }
@@ -1554,7 +1554,7 @@ import UIKit
             otherButtonTitles: ["Yes".localized],
             tap: {(alertView, action, buttonIndex) in
                 
-                if (buttonIndex == alertView.firstOtherButtonIndex) {
+                if (buttonIndex == alertView!.firstOtherButtonIndex) {
                     AppDelegate.instance().importedWatchAccounts!.deleteAccount((indexPath as NSIndexPath).row)
                     //*
                     self.accountsTableView!.beginUpdates()
@@ -1564,7 +1564,7 @@ import UIKit
                     self.accountsTableView!.endUpdates()
                     //*/
                     self._accountsTableViewReloadDataWrapper()
-                } else if (buttonIndex == alertView.cancelButtonIndex) {
+                } else if (buttonIndex == alertView!.cancelButtonIndex) {
                     self.accountsTableView!.isEditing = false
                 }
         })
@@ -1581,12 +1581,12 @@ import UIKit
             otherButtonTitles: ["Yes".localized],
             tap: {(alertView, action, buttonIndex) in
         
-            if (buttonIndex == alertView.firstOtherButtonIndex) {
+            if (buttonIndex == alertView!.firstOtherButtonIndex) {
                 self.accountsTableView!.setEditing(true, animated: true)
                 AppDelegate.instance().importedAddresses!.deleteAddress(importedAddressIdx)
                 self._accountsTableViewReloadDataWrapper()
                 self.accountsTableView!.setEditing(false, animated: true)
-            } else if (buttonIndex == alertView.cancelButtonIndex) {
+            } else if (buttonIndex == alertView!.cancelButtonIndex) {
                 self.accountsTableView!.isEditing = false
             }
         })
@@ -1604,12 +1604,12 @@ import UIKit
 
             tap: {(alertView, action, buttonIndex) in
 
-            if (buttonIndex == alertView.firstOtherButtonIndex) {
+            if (buttonIndex == alertView!.firstOtherButtonIndex) {
                 self.accountsTableView!.setEditing(true, animated: true)
                 AppDelegate.instance().importedWatchAddresses!.deleteAddress(importedAddressIdx)
                 self._accountsTableViewReloadDataWrapper()
                 self.accountsTableView!.setEditing(false, animated: true)
-            } else if (buttonIndex == alertView.cancelButtonIndex) {
+            } else if (buttonIndex == alertView!.cancelButtonIndex) {
                 self.accountsTableView!.isEditing = false
             }
         })
@@ -1664,7 +1664,7 @@ import UIKit
                         })
                     }
                     }, catch: {
-                        (exception: NSException!) -> Void in
+                        (exception) -> Void in
                         DispatchQueue.main.async {
                             AppDelegate.instance().coldWalletAccounts!.deleteAccount(AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts() - 1)
                             TLHUDWrapper.hideHUDForView(self.view, animated: true)
@@ -1741,7 +1741,7 @@ import UIKit
                         handleImportAccountSuccess()
                     })
                 }, catch: {
-                        (e: NSException!) -> Void in
+                        (e) -> Void in
                     handleImportAccountFail()
                     
                 }, finally: { () in })
@@ -1802,7 +1802,7 @@ import UIKit
                         })
                     }
                 }, catch: {
-                    (exception: NSException!) -> Void in
+                    (exception) -> Void in
                     DispatchQueue.main.async {
                         AppDelegate.instance().importedWatchAccounts!.deleteAccount(AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts() - 1)
                         TLHUDWrapper.hideHUDForView(self.view, animated: true)

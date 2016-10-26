@@ -100,13 +100,13 @@ import UIKit
     func checkToFetchDynamicFeesAndFillAmountFieldWithWholeBalance() {
         if !AppDelegate.instance().txFeeAPI.haveUpdatedCachedDynamicFees() {
             AppDelegate.instance().txFeeAPI.getDynamicTxFee({
-                (_jsonData: AnyObject!) in
+                (_jsonData) in
                 self.fillAmountFieldWithWholeBalance(true)
                 }, failure: {
-                    (code: Int, status: String!) in
+                    (code, status) in
                     TLPrompts.promptErrorMessage("Error".localized, message: "Unable to query dynamic fees. Falling back on fixed transaction fee. (fee can be configured on review payment)".localized)
                     self.fillAmountFieldWithWholeBalance(false)
-            } as! TLNetworking.FailureHandler)
+            })
         } else {
             self.fillAmountFieldWithWholeBalance(true)
         }
@@ -494,12 +494,12 @@ import UIKit
     fileprivate func checkTofetchFeeThenFinalPromptReviewTx() {
         if TLPreferences.enabledInAppSettingsKitDynamicFee() && !AppDelegate.instance().txFeeAPI.haveUpdatedCachedDynamicFees() {
             AppDelegate.instance().txFeeAPI.getDynamicTxFee({
-                (_jsonData: AnyObject!) in
+                (_jsonData) in
                 self.showFinalPromptReviewTx()
                 }, failure: {
-                    (code: Int, status: String!) in
+                    (code, status) in
                     self.showFinalPromptReviewTx()
-            } as! TLNetworking.FailureHandler)
+            })
         } else {
             self.showFinalPromptReviewTx()
         }
@@ -579,13 +579,13 @@ import UIKit
         func checkToFetchDynamicFees() {
             if !AppDelegate.instance().txFeeAPI.haveUpdatedCachedDynamicFees() {
                 AppDelegate.instance().txFeeAPI.getDynamicTxFee({
-                    (_jsonData: AnyObject!) in
+                    (_jsonData) in
                     showReviewPaymentViewController(true)
                     }, failure: {
-                        (code: Int, status: String!) in
+                        (code, status) in
                         TLPrompts.promptErrorMessage("Error".localized, message: "Unable to query dynamic fees. Falling back on fixed transaction fee. (fee can be configured on review payment)".localized)
                         showReviewPaymentViewController(false)
-                } as! TLNetworking.FailureHandler)
+                })
             } else {
                 showReviewPaymentViewController(true)
             }
@@ -748,12 +748,12 @@ import UIKit
                 
                 if !AppDelegate.instance().txFeeAPI.haveUpdatedCachedDynamicFees() {
                     AppDelegate.instance().txFeeAPI.getDynamicTxFee({
-                        (_jsonData: AnyObject!) in
+                        (_jsonData) in
                         DLog("preFetchUTXOsAndDynamicFees getDynamicTxFee success")
                         }, failure: {
-                            (code: Int, status: String!) in
+                            (code, status) in
                             DLog("preFetchUTXOsAndDynamicFees getDynamicTxFee failure")
-                    } as! TLNetworking.FailureHandler)
+                    })
                 }
                 
                 if !AppDelegate.instance().godSend!.haveUpDatedUTXOs() {

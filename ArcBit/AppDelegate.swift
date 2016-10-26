@@ -619,11 +619,11 @@ import Crashlytics
                     paymentAddress: paymentAddress, txid: txid, txTime: txTime, txObject: txObject)
                 
                     self.respondToStealthPaymentGetTxTries = 0
-                }, failure: { (code: NSInteger, status: String!) -> () in
+                }, failure: { (code, status) -> () in
                     DLog("respondToStealthPayment getTx fail \(txid)")
                     self.respondToStealthPayment(note)
                     self.respondToStealthPaymentGetTxTries += 1
-            } as! TLNetworking.FailureHandler)
+            })
         }
     }
     
@@ -804,7 +804,7 @@ import Crashlytics
     func updateModelWithNewBlock(_ note: Notification) {
         let jsonData = note.object as! NSDictionary
         let blockHeight = jsonData.object(forKey: "height") as! NSNumber
-        DLog("updateModelWithNewBlock: %llu", function: blockHeight)
+        DLog("updateModelWithNewBlock: \(blockHeight)")
         TLBlockchainStatus.instance().blockHeight = blockHeight.uint64Value
         
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_BLOCK()), object:nil, userInfo:nil)
@@ -921,13 +921,13 @@ import Crashlytics
         
         TLBlockExplorerAPI.instance().getBlockHeight({(jsonData:AnyObject!) in
             let blockHeight = (jsonData.object(forKey: "height") as! NSNumber).uint64Value
-            DLog("setBlockHeight: %llu", function: (jsonData.object(forKey: "height") as! NSNumber))
+            DLog("setBlockHeight: \((jsonData.object(forKey: "height") as! NSNumber))")
             TLBlockchainStatus.instance().blockHeight = blockHeight
-            }, failure:{(code:NSInteger, status:String!) in
+            }, failure:{(code, status) in
                 DLog("Error getting block height.")
                 TLPrompts.promptErrorMessage("Network Error".localized,
                     message:String(format:"Error getting block height.".localized))
-        } as! TLNetworking.FailureHandler)
+        })
     }
     
     func refreshHDWalletAccounts(_ isRestoringWallet: Bool) {
@@ -1268,12 +1268,12 @@ import Crashlytics
         if (TLPreferences.getEnableBackupWithiCloud()) {
             if (TLCloudDocumentSyncWrapper.instance().checkCloudAvailability()) {
                 TLCloudDocumentSyncWrapper.instance().saveFile(toCloud: TLPreferences.getCloudBackupWalletFileName()!, content:encryptedWalletJson,
-                    completion:{(cloudDocument: UIDocument!,documentData: Data!, error: NSError?) in
+                    completion:{(cloudDocument, documentData, error) in
                         if error == nil {
-                            self.saveWalletJson(encryptedWalletJson, date:cloudDocument.fileModificationDate!)
+                            self.saveWalletJson(encryptedWalletJson as (NSString), date:cloudDocument!.fileModificationDate!)
                             DLog("saveFileToCloud done")
                         } else {
-                            DLog("saveFileToCloud error %@", function: error!.description)
+                            DLog("saveFileToCloud error \(error!.localizedDescription)")
                         }
                 })
             } else {

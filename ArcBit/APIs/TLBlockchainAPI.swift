@@ -40,15 +40,14 @@ class TLBlockchainAPI {
     
     func getBlockHeight(_ success: @escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler) -> (){
         let endPoint = "q/getblockcount"
-        let parameters = [:]
         let url = URL(string: endPoint, relativeTo:URL(string:self.baseURL))
         
-        self.networking.httpGET(url!, parameters:parameters as NSDictionary,
+        self.networking.httpGET(url!, parameters:nil,
             success: {(jsonData:AnyObject!) in
                 success(jsonData!)
-            }, failure:{(code:NSInteger, status:String!) in
+            }, failure:{(code, status) in
                 if (code == 200) {
-                    success(status)
+                    success(status as AnyObject!)
                 } else {
                     failure(code, status)
                 }

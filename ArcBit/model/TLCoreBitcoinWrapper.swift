@@ -195,9 +195,9 @@ class TLCoreBitcoinWrapper {
 
         
         let txFromHexData = BRTransaction(message: tx?.data, isTestnet: isTestnet)
-        DLog("createSignedSerializedTransactionHex txFromHexData: \(TLWalletUtils.dataToHexString(txFromHexData.data))")
+        DLog("createSignedSerializedTransactionHex txFromHexData: \(TLWalletUtils.dataToHexString(txFromHexData!.data))")
         DLog("createSignedSerializedTransactionHex txFromHexData: \(TLWalletUtils.reverseHexString(TLWalletUtils.dataToHexString(txFromHexData!.txHash)))")
-        DLog("createSignedSerializedTransactionHex txFromHexData: \(txFromHexData.size)")
+        DLog("createSignedSerializedTransactionHex txFromHexData: \(txFromHexData!.size)")
 
         
 //        assert(tx.isSigned, "tx is not signed")

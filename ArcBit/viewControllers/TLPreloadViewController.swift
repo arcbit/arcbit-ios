@@ -94,10 +94,10 @@ import UIKit
             self.walletLoadingActivityIndicatorView!.startAnimating()
             
             TLCloudDocumentSyncWrapper.instance().getFileFromCloud(TLPreferences.getCloudBackupWalletFileName()!, completion: {
-                (cloudDocument: UIDocument!, documentData: Data!, error: NSError?) in
+                (cloudDocument, documentData, error) in
                 var walletPayload: NSDictionary? = nil
                 
-                if (documentData.count == 0) {
+                if (documentData!.count == 0) {
                     self.walletLoadingActivityIndicatorView!.stopAnimating()
                     walletPayload = AppDelegate.instance().getLocalWalletJsonDict()
                     UIAlertController.showAlert(in: self,
@@ -107,20 +107,20 @@ import UIKit
                         destructiveButtonTitle: nil,
                         otherButtonTitles: ["Yes".localized],
                         tap: {(alertView, action, buttonIndex) in
-                            if (buttonIndex == alertView.firstOtherButtonIndex) {
+                            if (buttonIndex == alertView!.firstOtherButtonIndex) {
                                 self.initializeWalletAppAndShowInitialScreenAndGoToMainScreen(walletPayload!)
                                 AppDelegate.instance().saveWalletJsonCloudBackground()
-                            } else if (buttonIndex == alertView.cancelButtonIndex) {
+                            } else if (buttonIndex == alertView!.cancelButtonIndex) {
                             }
                     })
                 } else {
                     if (error == nil) {
-                        let cloudWalletJSONDocumentSavedDate = cloudDocument.fileModificationDate
+                        let cloudWalletJSONDocumentSavedDate = cloudDocument!.fileModificationDate
                         let localWalletJSONDocumentSavedDate = TLPreferences.getLastSavedEncryptedWalletJSONDate()
                         let comparisonResult = cloudWalletJSONDocumentSavedDate!.compare(localWalletJSONDocumentSavedDate)
                         
                         if (comparisonResult == ComparisonResult.orderedDescending || comparisonResult == ComparisonResult.orderedSame) {
-                            let encryptedWalletJSON = NSString(data: documentData, encoding: String.Encoding.utf8)
+                            let encryptedWalletJSON = NSString(data: documentData!, encoding: String.Encoding.utf8.rawValue)
                             let passphrase = TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase()
                             walletPayload = TLWalletJson.getWalletJsonDict((encryptedWalletJSON as! String), password: passphrase)
                             if (walletPayload != nil) {
@@ -144,16 +144,16 @@ import UIKit
                         walletPayload = AppDelegate.instance().getLocalWalletJsonDict()
                         
                         UIAlertController.showAlert(in: self,
-                            withTitle: String(format: "iCloud Error: %@".localized, error!.description),
+                            withTitle: String(format: "iCloud Error: %@".localized, error!.localizedDescription),
                             message: "Do you want to load local wallet file?".localized,
                             cancelButtonTitle: "No".localized,
                             destructiveButtonTitle: nil,
                             otherButtonTitles: ["Yes".localized],
                             
                             tap: {(alertView, action, buttonIndex) in
-                                if (buttonIndex == alertView.firstOtherButtonIndex) {
+                                if (buttonIndex == alertView!.firstOtherButtonIndex) {
                                     self.initializeWalletAppAndShowInitialScreenAndGoToMainScreen(walletPayload!)
-                                } else if (buttonIndex == alertView.cancelButtonIndex) {
+                                } else if (buttonIndex == alertView!.cancelButtonIndex) {
                                 }
                         })
                         

@@ -44,7 +44,7 @@ class TLCrypto {
         }
         
         if (error != nil) {
-            DLog("TLCrypto encrypt error: %@", function: error!.localizedDescription)
+            DLog("TLCrypto encrypt error: \(error!.localizedDescription)")
             NSException(name: NSExceptionName(rawValue: "Error"), reason: "Error encrypting", userInfo: nil).raise()
         }
         

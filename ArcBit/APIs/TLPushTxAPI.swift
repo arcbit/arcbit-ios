@@ -48,8 +48,8 @@ class TLPushTxAPI {
             var pushTxMethod = TLBlockExplorerAPI.instance().insightAPI!.pushTx
             //pushTxMethod = TLBlockrAPI().pushTx
 
-            pushTxMethod(txHex, { (jsonData: AnyObject!) -> () in
-                DLog("TLPushTxAPI pushTxMethod %@", function: jsonData)
+            pushTxMethod(txHex, { (jsonData) -> () in
+                DLog("TLPushTxAPI pushTxMethod \(jsonData)")
 
                 func getTxidFromInsightPushTx(_ jsonData:NSDictionary) -> String {
                     return jsonData.object(forKey: "txid") as! String
@@ -69,21 +69,21 @@ class TLPushTxAPI {
                 //let txid = getTxidFromBlockrPushTx(jsonData as! NSDictionary)
                 //if txid == nil { return }
                 
-                TLStealthExplorerAPI.instance().lookupTx(toAddress, txid: txid, success: { (jsonData: AnyObject!) -> () in
-                    DLog("TLPushTxAPI TLStealthExplorerAPI success %@", function: jsonData.description)
+                TLStealthExplorerAPI.instance().lookupTx(toAddress, txid: txid, success: { (jsonData) -> () in
+                    DLog("TLPushTxAPI TLStealthExplorerAPI success \(jsonData.description)")
                     if let errorCode = (jsonData as! NSDictionary).object(forKey: TLStealthExplorerAPI.STATIC_MEMBERS.SERVER_ERROR_CODE) as? Int {
                         let errorMsg = (jsonData as! NSDictionary).object(forKey: TLStealthExplorerAPI.STATIC_MEMBERS.SERVER_ERROR_MSG) as! String
-                        DLog(String(format: "TLPushTxAPI TLStealthExplorerAPI success failure %ld %@", errorCode, errorMsg))
+                        DLog(String(format: "TLPushTxAPI TLStealthExplorerAPI success failure \(errorCode) \(errorMsg)"))
                         if errorCode == TLStealthExplorerAPI.STATIC_MEMBERS.SEND_TX_ERROR {
-                            DLog("TLPushTxAPI TLStealthExplorerAPI SEND_TX_ERROR %@", function: errorMsg)
+                            DLog("TLPushTxAPI TLStealthExplorerAPI SEND_TX_ERROR \(errorMsg)")
                         }
                         failure(errorCode, errorMsg)
                     } else {
                         DLog("TLPushTxAPI TLStealthExplorerAPI success success")
-                        success(["txid":txid])
+                        success(["txid":txid] as AnyObject)
                     }
                     
-                    }) { (code: Int, status: String!) -> () in
+                    }) { (code, status) -> () in
                         DLog("TLPushTxAPI TLStealthExplorerAPI failure")
                         DLog("TLPushTxAPI TLStealthExplorerAPI failure code: \(code)")
                         DLog("TLPushTxAPI TLStealthExplorerAPI failure status: \(status)")
@@ -93,9 +93,9 @@ class TLPushTxAPI {
                             failure(code, status)
                         }
                 }
-            }) { (code: Int, status: String!) -> () in
+            }) { (code, status) -> () in
                     failure(code, status)
-            } as! (Int, String?) -> ()
+            }
         }
     }
 }

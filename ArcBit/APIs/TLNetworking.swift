@@ -129,23 +129,23 @@ class TLNetworking {
         manager?.reachabilityManager.startMonitoring()
     }
     
-    func httpGETSynchronous(_ url: URL, parameters: NSDictionary) -> AnyObject? {
+    func httpGETSynchronous(_ url: URL, parameters: NSDictionary?) -> AnyObject? {
         var response:AnyObject? = nil
         let semaphore = DispatchSemaphore(value: 0)
 
         DLog("httpGETSynchronous: url \(url.absoluteString)")
         _ = self.getSynchronousManager.get(url.absoluteString,
             parameters: parameters,
-            success:{(operation:AFHTTPRequestOperation!, responseObject:AnyObject!) in
-                response = responseObject
+            success:{(operation, responseObject) in
+                response = responseObject as AnyObject?
                 semaphore.signal()
             },
-            failure:{(operation:AFHTTPRequestOperation!, error:NSError!) in
-                DLog("httpGETSynchronous: requestFailed url %@", function: url.absoluteString)
-                if operation.response != nil {
-                    response = [STATIC_MEMBERS.HTTP_ERROR_CODE: operation.response.statusCode, STATIC_MEMBERS.HTTP_ERROR_MSG:operation.responseString]
+            failure:{(operation, error) in
+                DLog("httpGETSynchronous: requestFailed url \(url.absoluteString)")
+                if operation?.response != nil {
+                    response = [STATIC_MEMBERS.HTTP_ERROR_CODE: operation?.response.statusCode, STATIC_MEMBERS.HTTP_ERROR_MSG:operation?.responseString] as AnyObject
                 } else {
-                    response = [STATIC_MEMBERS.HTTP_ERROR_CODE: "499", STATIC_MEMBERS.HTTP_ERROR_MSG:"No Response"]
+                    response = [STATIC_MEMBERS.HTTP_ERROR_CODE: "499", STATIC_MEMBERS.HTTP_ERROR_MSG:"No Response"] as AnyObject
                 }
                 semaphore.signal()
         })
@@ -155,64 +155,64 @@ class TLNetworking {
         return response
     }
     
-    func httpGET(_ url: URL, parameters: NSDictionary,
+    func httpGET(_ url: URL, parameters: NSDictionary?,
         success: SuccessHandler?, failure: FailureHandler?) -> () {
             
             DLog("httpGET: url \(url.absoluteString)")
             self.getManager.get(url.absoluteString,
                 parameters:parameters,
-                success:{(operation:AFHTTPRequestOperation!, responseObject:AnyObject!) in
+                success:{(operation, responseObject) in
                     if success != nil {
-                        success!(responseObject)
+                        success!(responseObject as AnyObject!)
                     }
                 } ,
-                failure:{(operation:AFHTTPRequestOperation!, error:NSError!) in
-                    DLog("httpGET: requestFailed url %@", function: url.absoluteString)
+                failure:{(operation, error) in
+                    DLog("httpGET: requestFailed url \(url.absoluteString)")
                     if (failure != nil) {
-                        failure!(operation.response == nil ? 0 : operation.response.statusCode, operation.response == nil ? "" : operation.responseString)
+                        failure!(operation?.response == nil ? 0 : (operation?.response.statusCode)!, operation?.response == nil ? "" : operation?.responseString)
                     }
             })
     }
     
-    func httpGETBackground(_ url: URL, parameters: NSDictionary,
+    func httpGETBackground(_ url: URL, parameters: NSDictionary?,
         success: SuccessHandler?, failure: FailureHandler?) -> () {
             
             DLog("httpGETBackground: url \(url.absoluteString)")
             self.getManagerBackground.get(url.absoluteString,
                 parameters:parameters,
-                success:{(operation:AFHTTPRequestOperation!, responseObject:AnyObject!) in
+                success:{(operation, responseObject) in
                     if success != nil {
-                        success!(responseObject)
+                        success!(responseObject as AnyObject!)
                     }
                 } ,
-                failure:{(operation:AFHTTPRequestOperation!, error:NSError!) in
-                    DLog("httpGETBackground: requestFailed url %@", function: url.absoluteString)
+                failure:{(operation, error) in
+                    DLog("httpGETBackground: requestFailed url \(url.absoluteString)")
                     if (failure != nil) {
-                        failure!(operation.response == nil ? 0 : operation.response.statusCode, operation.response == nil ? "" : operation.responseString)
+                        failure!(operation?.response == nil ? 0 : (operation?.response.statusCode)!, operation?.response == nil ? "" : operation?.responseString)
                     }
             })
     }
     
-    func httpPOST(_ url: URL, parameters: NSDictionary,
+    func httpPOST(_ url: URL, parameters: NSDictionary?,
         success: SuccessHandler?, failure: FailureHandler?) -> () {
             
             DLog("httpPOST:function:  url \(url.absoluteString)")
             self.postManager.post(url.absoluteString,
                 parameters:parameters,
-                success:{(operation:AFHTTPRequestOperation!, responseObject:AnyObject!) in
+                success:{(operation, responseObject) in
                     if success != nil {
-                        success!(responseObject)
+                        success!(responseObject as AnyObject!)
                     }
                 },
-                failure:{(operation:AFHTTPRequestOperation!, error:NSError!) in
-                    DLog("httpPOST: requestFailed url %@", function: url.absoluteString)
+                failure:{(operation, error) in
+                    DLog("httpPOST: requestFailed url \(url.absoluteString)")
                     if (failure != nil) {
-                        failure!(operation.response == nil ? 0 : operation.response.statusCode,  operation.response == nil ? "" : operation.responseString)
+                        failure!(operation?.response == nil ? 0 : (operation?.response.statusCode)!, operation?.response == nil ? "" : operation?.responseString)
                     }
             })
     }
     
-    func httpPOSTSynchronous(_ url: URL, parameters: NSDictionary) -> AnyObject? {
+    func httpPOSTSynchronous(_ url: URL, parameters: NSDictionary?) -> AnyObject? {
         var response:AnyObject?
         
         let semaphore = DispatchSemaphore(value: 0)
@@ -220,16 +220,16 @@ class TLNetworking {
         DLog("httpPOSTSynchronous: url \(url.absoluteString)")
         _ = self.postSynchronousManager.post(url.absoluteString,
             parameters: parameters,
-            success:{(operation:AFHTTPRequestOperation!, responseObject:AnyObject!) in
-                response = responseObject
+            success:{(operation, responseObject) in
+                response = responseObject as AnyObject?
                 semaphore.signal()
             },
-            failure:{(operation:AFHTTPRequestOperation!, error:NSError!) in
-                DLog("httpPOSTSynchronous: requestFailed url %@", function: url.absoluteString)
-                if operation.response != nil {
-                    response = [STATIC_MEMBERS.HTTP_ERROR_CODE: operation.response.statusCode, STATIC_MEMBERS.HTTP_ERROR_MSG:operation.responseString]
+            failure:{(operation, error) in
+                DLog("httpPOSTSynchronous: requestFailed url \(url.absoluteString)")
+                if operation?.response != nil {
+                    response = [STATIC_MEMBERS.HTTP_ERROR_CODE: operation?.response.statusCode, STATIC_MEMBERS.HTTP_ERROR_MSG:operation?.responseString] as AnyObject
                 } else {
-                    response = [STATIC_MEMBERS.HTTP_ERROR_CODE: "499", STATIC_MEMBERS.HTTP_ERROR_MSG:"No Response"]
+                    response = [STATIC_MEMBERS.HTTP_ERROR_CODE: "499", STATIC_MEMBERS.HTTP_ERROR_MSG:"No Response"] as AnyObject
                 }
                 semaphore.signal()
         })

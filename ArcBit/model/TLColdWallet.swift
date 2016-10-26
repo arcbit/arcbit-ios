@@ -171,7 +171,7 @@ class TLColdWallet {
             
             for _ in 0...3 {
                 let txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(txData!, privateKeys: privateKeysArray, isTestnet: isTestnet)
-                DLog("createSignedAipGapData txHexAndTxHash: %@", function: txHexAndTxHash.debugDescription as AnyObject)
+                DLog("createSignedAipGapData txHexAndTxHash: \(txHexAndTxHash.debugDescription as AnyObject)")
                 //                break
                 if txHexAndTxHash != nil {
                     //                    return txHexAndTxHash!

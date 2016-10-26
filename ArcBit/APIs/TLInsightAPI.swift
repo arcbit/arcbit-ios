@@ -40,21 +40,20 @@ class TLInsightAPI {
         let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
         self.networking.httpGET(url, parameters: parameters as NSDictionary,
             success: {
-                (jsonData: AnyObject!) in
+                (jsonData) in
                 success(jsonData)
             }, failure: {
-                (code: NSInteger, status: String!) in
+                (code, status) in
                 failure(code, status)
         })
     }
     
     func getUnspentOutputsSynchronous(_ addressArray: NSArray) -> NSDictionary {
         let endPoint = String(format: "%@%@%@", "api/addrs/", addressArray.componentsJoined(by: ","), "/utxo")
-        let parameters = [:]
         
         let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
         
-        let jsonData: AnyObject? = self.networking.httpGETSynchronous(url, parameters: parameters as NSDictionary)
+        let jsonData: AnyObject? = self.networking.httpGETSynchronous(url, parameters: nil)
         
         if jsonData is NSDictionary { // if don't get dict http error, will get array
             return jsonData as! NSDictionary
@@ -67,18 +66,17 @@ class TLInsightAPI {
     
     func getUnspentOutputs(_ addressArray: Array<String>, success: @escaping TLNetworking.SuccessHandler, failure: @escaping TLNetworking.FailureHandler) {
         let endPoint = String(format: "%@%@%@", "api/addrs/", addressArray.joined(separator: ","), "/utxo")
-        let parameters = [:]
         
         let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
-        self.networking.httpGET(nil, parameters: parameters as NSDictionary,
+        self.networking.httpGET(url, parameters: nil,
             success: {
-                (jsonData: AnyObject!) in
+                (jsonData) in
                 
                 let transansformedJsonData = TLInsightAPI.insightUnspentOutputsToBlockchainUnspentOutputs(jsonData as! NSArray) as NSDictionary
                 
                 success(transansformedJsonData)
             }, failure: {
-                (code: NSInteger, status: String!) in
+                (code, status) in
                 failure(code, status)
         })
     }
@@ -123,7 +121,7 @@ class TLInsightAPI {
         
         self.networking.httpGET(url, parameters: parameters as NSDictionary,
             success: {
-                (jsonData: AnyObject!) in
+                (jsonData) in
  
                 let txs = (jsonData as! NSDictionary).object(forKey: "items") as! NSArray
                 let to = ((jsonData as! NSDictionary).object(forKey: "to") as! NSNumber)
@@ -146,12 +144,11 @@ class TLInsightAPI {
     
     func getAddressData(_ address: String, success: @escaping TLNetworking.SuccessHandler, failure: @escaping TLNetworking.FailureHandler) {
         let endPoint = String(format: "%@%@", "api/txs/?address=", address)
-        let parameters = [:]
         
         let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
-        self.networking.httpGET(url, parameters: parameters as NSDictionary,
+        self.networking.httpGET(url, parameters: nil,
             success: {
-                (jsonData: AnyObject!) in
+                (jsonData) in
                 
                 let txs = (jsonData as! NSDictionary!).object(forKey: "txs") as! NSArray
                 let transformedTxs = NSMutableArray(capacity:txs.count)
@@ -171,10 +168,9 @@ class TLInsightAPI {
     
     func getAddressDataSynchronous(_ address: String) -> NSDictionary {
         let endPoint = String(format: "%@%@", "api/txs/?address=", address)
-        let parameters = [:]
         
         let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
-        let jsonData: AnyObject? = self.networking.httpGETSynchronous(url, parameters: parameters as NSDictionary)
+        let jsonData: AnyObject? = self.networking.httpGETSynchronous(url, parameters: nil)
         
         let txs = (jsonData as! NSDictionary!).object(forKey: "txs") as! NSArray
         let transformedTxs = NSMutableArray(capacity:txs.count)
@@ -193,18 +189,16 @@ class TLInsightAPI {
     
     func getTx(_ txHash: String, success: @escaping TLNetworking.SuccessHandler, failure: @escaping TLNetworking.FailureHandler) {
         let endPoint = String(format: "%@%@", "api/tx/", txHash)
-        let parameters = [:]
         
         let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
-        self.networking.httpGET(url, parameters: parameters as NSDictionary, success: success, failure: failure)
+        self.networking.httpGET(url, parameters: nil, success: success, failure: failure)
     }
 
     func getTxBackground(_ txHash: String, success: @escaping TLNetworking.SuccessHandler, failure: @escaping TLNetworking.FailureHandler) {
         let endPoint = String(format: "%@%@", "api/tx/", txHash)
-        let parameters = [:]
         
         let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
-        self.networking.httpGETBackground(url, parameters: parameters as NSDictionary, success: success, failure: failure)
+        self.networking.httpGETBackground(url, parameters: nil, success: success, failure: failure)
     }
 
     
