@@ -501,25 +501,25 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
             self.enableTextField(self.startingAddressIDTextField, enable: true)
 
             var HDAddressIdx = startingAddressID
-            var addressSequence = [Int(TLAddressType.main.rawValue), HDAddressIdx]
+            var addressSequence = [Int(TLAddressType.main.rawValue), HDAddressIdx] as [Any]
             self.addressLabel1.text = "Address ID ".localized + String(HDAddressIdx) + ":"
-            self.addressTextField1.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence, isTestnet: isTestnet)
+            self.addressTextField1.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             addressSequence = [Int(TLAddressType.main.rawValue), HDAddressIdx]
             self.addressLabel2.text = "Address ID ".localized + String(HDAddressIdx) + ":"
-            self.addressTextField2.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence, isTestnet: isTestnet)
+            self.addressTextField2.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             addressSequence = [Int(TLAddressType.main.rawValue), HDAddressIdx]
             self.addressLabel3.text = "Address ID ".localized + String(HDAddressIdx) + ":"
-            self.addressTextField3.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence, isTestnet: isTestnet)
+            self.addressTextField3.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             addressSequence = [Int(TLAddressType.main.rawValue), HDAddressIdx]
             self.addressLabel4.text = "Address ID ".localized + String(HDAddressIdx) + ":"
-            self.addressTextField4.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence, isTestnet: isTestnet)
+            self.addressTextField4.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             addressSequence = [Int(TLAddressType.main.rawValue), HDAddressIdx]
             self.addressLabel5.text = "Address ID ".localized + String(HDAddressIdx) + ":"
-            self.addressTextField5.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence, isTestnet: isTestnet)
+            self.addressTextField5.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence as NSArray, isTestnet: isTestnet)
 
             self.enableButton(self.showAddressQRCodeButton1, enable: true)
             self.enableButton(self.showAddressQRCodeButton2, enable: true)
@@ -528,11 +528,11 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
             self.enableButton(self.showAddressQRCodeButton5, enable: true)
             
             if extendedPrivateKey != nil {
-                self.privateKeyTextField1.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey!, sequence: addressSequence, isTestnet: isTestnet)
-                self.privateKeyTextField2.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey!, sequence: addressSequence, isTestnet: isTestnet)
-                self.privateKeyTextField3.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey!, sequence: addressSequence, isTestnet: isTestnet)
-                self.privateKeyTextField4.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey!, sequence: addressSequence, isTestnet: isTestnet)
-                self.privateKeyTextField5.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey!, sequence: addressSequence, isTestnet: isTestnet)
+                self.privateKeyTextField1.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey! as NSString, sequence: addressSequence as NSArray, isTestnet: isTestnet)
+                self.privateKeyTextField2.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey! as NSString, sequence: addressSequence as NSArray, isTestnet: isTestnet)
+                self.privateKeyTextField3.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey! as NSString, sequence: addressSequence as NSArray, isTestnet: isTestnet)
+                self.privateKeyTextField4.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey! as NSString, sequence: addressSequence as NSArray, isTestnet: isTestnet)
+                self.privateKeyTextField5.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey! as NSString, sequence: addressSequence as NSArray, isTestnet: isTestnet)
                 self.enableButton(self.showPrivateKeyQRCodeButton1, enable: true)
                 self.enableButton(self.showPrivateKeyQRCodeButton2, enable: true)
                 self.enableButton(self.showPrivateKeyQRCodeButton3, enable: true)
@@ -570,25 +570,25 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
             self.enableTextField(self.startingChangeAddressIDTextField, enable: true)
             
             var HDAddressIdx = startingAddressID
-            var addressSequence = [Int(TLAddressType.change.rawValue), HDAddressIdx]
+            var addressSequence = [Int(TLAddressType.change.rawValue), HDAddressIdx] as [Any]
             self.changeAddressLabel1.text = "Change Address ID ".localized + String(HDAddressIdx) + ":"
-            self.changeAddressTextField1.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence, isTestnet: isTestnet)
+            self.changeAddressTextField1.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             addressSequence = [Int(TLAddressType.change.rawValue), HDAddressIdx]
             self.changeAddressLabel2.text = "Change Address ID ".localized + String(HDAddressIdx) + ":"
-            self.changeAddressTextField2.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence, isTestnet: isTestnet)
+            self.changeAddressTextField2.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             addressSequence = [Int(TLAddressType.change.rawValue), HDAddressIdx]
             self.changeAddressLabel3.text = "Change Address ID ".localized + String(HDAddressIdx) + ":"
-            self.changeAddressTextField3.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence, isTestnet: isTestnet)
+            self.changeAddressTextField3.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             addressSequence = [Int(TLAddressType.change.rawValue), HDAddressIdx]
             self.changeAddressLabel4.text = "Change Address ID ".localized + String(HDAddressIdx) + ":"
-            self.changeAddressTextField4.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence, isTestnet: isTestnet)
+            self.changeAddressTextField4.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             addressSequence = [Int(TLAddressType.change.rawValue), HDAddressIdx]
             self.changeAddressLabel5.text = "Change Address ID ".localized + String(HDAddressIdx) + ":"
-            self.changeAddressTextField5.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence, isTestnet: isTestnet)
+            self.changeAddressTextField5.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence as NSArray, isTestnet: isTestnet)
             
             self.enableButton(self.showChangeAddressQRCodeButton1, enable: true)
             self.enableButton(self.showChangeAddressQRCodeButton2, enable: true)
@@ -597,11 +597,11 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
             self.enableButton(self.showChangeAddressQRCodeButton5, enable: true)
             
             if extendedPrivateKey != nil {
-                self.changePrivateKeyTextField1.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey!, sequence: addressSequence, isTestnet: isTestnet)
-                self.changePrivateKeyTextField2.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey!, sequence: addressSequence, isTestnet: isTestnet)
-                self.changePrivateKeyTextField3.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey!, sequence: addressSequence, isTestnet: isTestnet)
-                self.changePrivateKeyTextField4.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey!, sequence: addressSequence, isTestnet: isTestnet)
-                self.changePrivateKeyTextField5.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey!, sequence: addressSequence, isTestnet: isTestnet)
+                self.changePrivateKeyTextField1.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey! as NSString, sequence: addressSequence as NSArray, isTestnet: isTestnet)
+                self.changePrivateKeyTextField2.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey! as NSString, sequence: addressSequence as NSArray, isTestnet: isTestnet)
+                self.changePrivateKeyTextField3.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey! as NSString, sequence: addressSequence as NSArray, isTestnet: isTestnet)
+                self.changePrivateKeyTextField4.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey! as NSString, sequence: addressSequence as NSArray, isTestnet: isTestnet)
+                self.changePrivateKeyTextField5.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey! as NSString, sequence: addressSequence as NSArray, isTestnet: isTestnet)
                 self.enableButton(self.showChangePrivateKeyQRCodeButton1, enable: true)
                 self.enableButton(self.showChangePrivateKeyQRCodeButton2, enable: true)
                 self.enableButton(self.showChangePrivateKeyQRCodeButton3, enable: true)
@@ -631,14 +631,14 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
     
     @IBAction fileprivate func showAccountPublicKeyQRButtonClicked(_ sender:UIButton) {
         let accountPublicKey = self.accountPublicKeyTextView.text
-        if accountPublicKey != nil && !accountPublicKey!.isEmpty && TLHDWalletWrapper.isValidExtendedPublicKey(accountPublicKey) {
+        if accountPublicKey != nil && !accountPublicKey!.isEmpty && TLHDWalletWrapper.isValidExtendedPublicKey(accountPublicKey!) {
             delegate?.didAdvancedNewWalletClickShowQRCodeButton(self, data: accountPublicKey!)
         }
     }
     
     @IBAction fileprivate func showAccountPrivateKeyQRButtonClicked(_ sender:UIButton) {
         let accountPrivateKey = self.accountPrivateKeyTextView.text
-        if accountPrivateKey != nil && !accountPrivateKey!.isEmpty && TLHDWalletWrapper.isValidExtendedPrivateKey(accountPrivateKey) {
+        if accountPrivateKey != nil && !accountPrivateKey!.isEmpty && TLHDWalletWrapper.isValidExtendedPrivateKey(accountPrivateKey!) {
             delegate?.didAdvancedNewWalletClickShowQRCodeButton(self, data: accountPrivateKey!)
         }
     }

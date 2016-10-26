@@ -125,7 +125,7 @@ import UIKit
             var passphrase = textView.text
             passphrase = passphrase?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             
-            if (TLHDWalletWrapper.phraseIsValid(passphrase)) {
+            if (TLHDWalletWrapper.phraseIsValid(passphrase!)) {
                 if (self.isRestoringFromEncryptedWalletJSON) {
                     //try passphrase on EncryptedWalletJSON
                     let encryptedWalletJSONPassphrase = passphrase
@@ -133,7 +133,7 @@ import UIKit
                     if (walletPayload == nil) {
                         TLPrompts.promptErrorMessage("Error".localized, message:"Incorrect passphrase, could not decrypt iCloud wallet backup.".localized)
                     } else {
-                        showPromptToRestoreWallet(passphrase, walletPayload:walletPayload!)
+                        showPromptToRestoreWallet(passphrase!, walletPayload:walletPayload!)
                     }
                 } else {
                     showPromptToRestoreWallet(passphrase!, walletPayload:nil)

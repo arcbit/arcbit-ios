@@ -44,14 +44,15 @@ class TLExchangeRate {
         queue.async {
             self.getExchangeRates({ (jsonData:AnyObject!) in
                 let array = jsonData as! NSArray
-                for(var i = 0; i < array.count; i++) {
+
+                for i in stride(from: 0, through: array.count, by: 1) {
                     let dict = array[i] as! NSDictionary
                     (self.exchangeRateDict!)[dict["code"] as! String] = dict
                 }
                 
                 }, failure: {(code:Int, status:String!) in
                     DLog("getExchangeRates failure: code:\(code) status:\(status)")
-            })
+            } as! (Int, String?) -> ())
         }
     }
     
@@ -63,7 +64,7 @@ class TLExchangeRate {
         }
     }
     
-    fileprivate func getExchangeRates(_ success: TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
+    fileprivate func getExchangeRates(_ success: @escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler) -> () {
         self.networking.httpGET(URL(string: "https://bitpay.com/api/rates")!,
             parameters:[:], success:success, failure:failure)
     }

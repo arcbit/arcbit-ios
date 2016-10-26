@@ -41,9 +41,9 @@ class TLWallet {
         assert(isPrivateExtendedKey == true, "Cant generate stealth address scan key from xpub key")
         let stealthAddressDict = NSMutableDictionary()
         let stealthAddressObject = TLHDWalletWrapper.getStealthAddress(extendKey, isTestnet: self.walletConfig.isTestnet)
-        stealthAddressDict.setObject((stealthAddressObject.object(forKey: "stealthAddress"))!, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESS)
-        stealthAddressDict.setObject((stealthAddressObject.object(forKey: "scanPriv"))!, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESS_SCAN_KEY)
-        stealthAddressDict.setObject((stealthAddressObject.object(forKey: "spendPriv"))!, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESS_SPEND_KEY)
+        stealthAddressDict.setObject((stealthAddressObject.object(forKey: "stealthAddress"))!, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESS as NSCopying)
+        stealthAddressDict.setObject((stealthAddressObject.object(forKey: "scanPriv"))!, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESS_SCAN_KEY as NSCopying)
+        stealthAddressDict.setObject((stealthAddressObject.object(forKey: "spendPriv"))!, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESS_SPEND_KEY as NSCopying)
         stealthAddressDict.setObject(NSMutableDictionary(), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_SERVERS as NSCopying)
         stealthAddressDict.setObject(NSMutableArray(), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_PAYMENTS as NSCopying)
         stealthAddressDict.setObject(NSNumber(value: 0 as UInt64), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LAST_TX_TIME as NSCopying)
@@ -60,7 +60,7 @@ class TLWallet {
             
             if (isPrivateExtendedKey) {
                 let extendedPublickey = TLHDWalletWrapper.getExtendPubKey(extendedKey)
-                account.setObject(extendedPublickey, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PUBLIC_KEY)
+                account.setObject(extendedPublickey, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PUBLIC_KEY as NSCopying)
                 account.setObject(extendedKey, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PRIVATE_KEY as NSCopying)
                 
                 let stealthAddressesArray = NSMutableArray()
@@ -96,9 +96,9 @@ class TLWallet {
                 let mainAddressIdx = i
                 let mainAddressSequence = [TLAddressType.main.rawValue, (mainAddressIdx)]
                 
-                let address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: mainAddressSequence, isTestnet: self.walletConfig.isTestnet)
-                mainAddressDict.setObject(address, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS)
-                mainAddressDict.setObject(TLAddressStatus.active.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS)
+                let address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: mainAddressSequence as NSArray, isTestnet: self.walletConfig.isTestnet)
+                mainAddressDict.setObject(address, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS as NSCopying)
+                mainAddressDict.setObject(TLAddressStatus.active.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS as NSCopying)
                 mainAddressDict.setObject(i, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_INDEX as NSCopying)
                 
                 mainAddressesArray.add(mainAddressDict)
@@ -108,9 +108,9 @@ class TLWallet {
             let changeAddressIdx = 0
             let changeAddressSequence = [TLAddressType.change.rawValue, changeAddressIdx]
             
-            let address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: changeAddressSequence, isTestnet: self.walletConfig.isTestnet)
-            changeAddressDict.setObject(address, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS)
-            changeAddressDict.setObject(TLAddressStatus.active.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS)
+            let address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: changeAddressSequence as NSArray, isTestnet: self.walletConfig.isTestnet)
+            changeAddressDict.setObject(address, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS as NSCopying)
+            changeAddressDict.setObject(TLAddressStatus.active.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS as NSCopying)
             changeAddressDict.setObject(0, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_INDEX as NSCopying)
             
             changeAddressesArray.add(changeAddressDict)
@@ -403,10 +403,10 @@ class TLWallet {
         let mainAddressDict = NSMutableDictionary()
         
         let extendedPublicKey = accountDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PUBLIC_KEY) as! String
-        let address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: mainAddressSequence, isTestnet: self.walletConfig.isTestnet)
+        let address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: mainAddressSequence as NSArray, isTestnet: self.walletConfig.isTestnet)
         
-        mainAddressDict.setObject(address, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS)
-        mainAddressDict.setObject((TLAddressStatus.active.rawValue), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS)
+        mainAddressDict.setObject(address, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS as NSCopying)
+        mainAddressDict.setObject((TLAddressStatus.active.rawValue), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS as NSCopying)
         mainAddressDict.setObject(mainAddressIdx, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_INDEX as NSCopying)
         
         mainAddressesArray.add(mainAddressDict)
@@ -462,9 +462,9 @@ class TLWallet {
         let changeAddressDict = NSMutableDictionary()
         
         let extendedPublicKey = accountDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PUBLIC_KEY) as! String
-        let address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: changeAddressSequence, isTestnet: self.walletConfig.isTestnet)
-        changeAddressDict.setObject(address, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS)
-        changeAddressDict.setObject(TLAddressStatus.active.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS)
+        let address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: changeAddressSequence as NSArray, isTestnet: self.walletConfig.isTestnet)
+        changeAddressDict.setObject(address, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS as NSCopying)
+        changeAddressDict.setObject(TLAddressStatus.active.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS as NSCopying)
         changeAddressDict.setObject(changeAddressIdx, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_INDEX as NSCopying)
         
         changeAddressesArray.add(changeAddressDict)
@@ -858,7 +858,7 @@ class TLWallet {
         let privateKeyDict = importedPrivateKeyArray.object(at: idx) as! NSMutableDictionary
         
         let status = archive ? TLAddressStatus.archived : TLAddressStatus.active
-        privateKeyDict.setObject(status.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS)
+        privateKeyDict.setObject(status.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS as NSCopying)
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED()), object: nil, userInfo: nil)
     }
     
@@ -883,12 +883,12 @@ class TLWallet {
             TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS: address,
             TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL: "",
             TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS: (TLAddressStatus.active.rawValue)
-        ]
+        ] as [String : Any]
         
         let watchOnlyAddressDict = NSMutableDictionary(dictionary: watchOnlyAddress)
         watchOnlyAddressArray.add(watchOnlyAddressDict)
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED()), object: nil, userInfo: nil)
-        return watchOnlyAddress
+        return watchOnlyAddress as (NSDictionary)
     }
     
     func deleteImportedWatchAddress(_ idx: Int) -> () {
@@ -914,7 +914,7 @@ class TLWallet {
         let addressDict = watchOnlyAddressArray.object(at: idx) as! NSMutableDictionary
         
         let status = archive ? TLAddressStatus.archived : TLAddressStatus.active
-        addressDict.setObject(status.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS)
+        addressDict.setObject(status.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS as NSCopying)
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED()), object: nil, userInfo: nil)
     }
     
@@ -1022,7 +1022,7 @@ class TLWallet {
         
         let accountsArray = getAccountsArray().mutableCopy() as! NSMutableArray
         for i in stride(from: 0, through: accountsArray.count, by: 1) {
-            let accountDict: AnyObject = (accountsArray.object(at: i) as AnyObject).mutableCopy()
+            let accountDict: AnyObject = (accountsArray.object(at: i) as AnyObject).mutableCopy()!
             accountsArray.replaceObjects(at: IndexSet(integer: i), with: (NSArray(object: accountDict)) as [AnyObject])
         }
         DLog(String(format: "loadWalletPayload rootDict: 1 \n%@", rootDict!.description))

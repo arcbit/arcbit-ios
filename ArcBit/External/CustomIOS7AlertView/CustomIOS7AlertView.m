@@ -132,7 +132,6 @@ CGFloat buttonSpacerHeight = 0;
 // Default button behaviour
 - (void)customIOS7dialogButtonTouchUpInside: (CustomIOS7AlertView *)alertView clickedButtonAtIndex:(NSInteger)buttonIndex
 {
-    NSLog(@"Button Clicked! %d, %d", buttonIndex, [alertView tag]);
     [self close];
 }
 

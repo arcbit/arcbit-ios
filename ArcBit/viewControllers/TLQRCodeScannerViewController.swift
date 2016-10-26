@@ -91,7 +91,7 @@ import AVFoundation
         }
         if (input == nil) {
             // This should not happen - all devices we support have cameras
-            DLog("QR code scanner problem: %@", function: error!.localizedDescription)
+            DLog("QR code scanner problem: \(error!.localizedDescription)")
             return
         }
         

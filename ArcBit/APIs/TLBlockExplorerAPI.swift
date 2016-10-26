@@ -67,11 +67,11 @@ class TLBlockExplorerAPI {
     }
     
     
-    func getBlockHeight(_ success: @escaping TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> (){
+    func getBlockHeight(_ success: @escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler) -> (){
         if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
             self.blockchainAPI!.getBlockHeight({(height:AnyObject!) in
                 let blockHeight = ["height": NSNumber(value: (height as! NSString).longLongValue as Int64)]
-                success(blockHeight)
+                success(blockHeight as AnyObject!)
                 }, failure:failure)
         }
         else {
@@ -93,7 +93,7 @@ class TLBlockExplorerAPI {
         }
     }
     
-    func getAddressesInfo(_ addressArray:Array<String>, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler)-> () {
+    func getAddressesInfo(_ addressArray:Array<String>, success:@escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler)-> () {
         if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
             self.blockchainAPI!.getAddressesInfo(addressArray, success:success, failure:failure)
         } else {
@@ -101,7 +101,7 @@ class TLBlockExplorerAPI {
         }
     }
     
-    func getUnspentOutputs(_ addressArray:Array<String>, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
+    func getUnspentOutputs(_ addressArray:Array<String>, success:@escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler) -> () {
         if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
             self.blockchainAPI!.getUnspentOutputs(addressArray, success:success, failure:failure)
         } else {
@@ -125,7 +125,7 @@ class TLBlockExplorerAPI {
         }
     }
     
-    func getAddressData(_ address:String, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler) -> () {
+    func getAddressData(_ address:String, success:@escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler) -> () {
         if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
             self.blockchainAPI!.getAddressData(address, success:success, failure:failure)
         } else {
@@ -142,7 +142,7 @@ class TLBlockExplorerAPI {
                 success(transformedTx)
                 }, failure:{(code:NSInteger, status:String!) in
                     failure(code, status)
-            })
+            } as! (Int, String?) -> ())
         }
     }
     
@@ -155,11 +155,11 @@ class TLBlockExplorerAPI {
                 success(transformedTx)
                 }, failure:{(code:NSInteger, status:String!) in
                     failure(code, status)
-            })
+            } as! (Int, String?) -> ())
         }
     }
     
-    func pushTx(_ txHex:String, txHash:String, success:TLNetworking.SuccessHandler, failure:TLNetworking.FailureHandler)-> () {
+    func pushTx(_ txHex:String, txHash:String, success:@escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler)-> () {
         if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
             self.blockchainAPI!.pushTx(txHex, txHash:txHash, success:success, failure:failure)
         } else {

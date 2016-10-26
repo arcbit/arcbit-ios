@@ -106,7 +106,7 @@ import UIKit
                     (code: Int, status: String!) in
                     TLPrompts.promptErrorMessage("Error".localized, message: "Unable to query dynamic fees. Falling back on fixed transaction fee. (fee can be configured on review payment)".localized)
                     self.fillAmountFieldWithWholeBalance(false)
-            })
+            } as! TLNetworking.FailureHandler)
         } else {
             self.fillAmountFieldWithWholeBalance(true)
         }
@@ -499,7 +499,7 @@ import UIKit
                 }, failure: {
                     (code: Int, status: String!) in
                     self.showFinalPromptReviewTx()
-            })
+            } as! TLNetworking.FailureHandler)
         } else {
             self.showFinalPromptReviewTx()
         }
@@ -514,7 +514,7 @@ import UIKit
             return
         }
 
-        DLog("showFinalPromptReviewTx bitcoinAmount %@", function: bitcoinAmount!)
+        DLog("showFinalPromptReviewTx bitcoinAmount \(bitcoinAmount!)")
         let inputtedAmount = TLCurrencyFormat.properBitcoinAmountStringToCoin(bitcoinAmount!)
         
         if (inputtedAmount.equalTo(TLCoin.zero())) {
@@ -585,7 +585,7 @@ import UIKit
                         (code: Int, status: String!) in
                         TLPrompts.promptErrorMessage("Error".localized, message: "Unable to query dynamic fees. Falling back on fixed transaction fee. (fee can be configured on review payment)".localized)
                         showReviewPaymentViewController(false)
-                })
+                } as! TLNetworking.FailureHandler)
             } else {
                 showReviewPaymentViewController(true)
             }
@@ -753,7 +753,7 @@ import UIKit
                         }, failure: {
                             (code: Int, status: String!) in
                             DLog("preFetchUTXOsAndDynamicFees getDynamicTxFee failure")
-                    })
+                    } as! TLNetworking.FailureHandler)
                 }
                 
                 if !AppDelegate.instance().godSend!.haveUpDatedUTXOs() {

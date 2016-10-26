@@ -72,7 +72,7 @@ class TLCurrencyFormat {
         var balance: NSString? = nil
         if (TLPreferences.isDisplayLocalCurrency()) {
             let currency = TLCurrencyFormat.getProperCurrency()
-            balance = TLExchangeRate.instance().fiatAmountStringFromBitcoin(currency, bitcoinAmount: amount)
+            balance = TLExchangeRate.instance().fiatAmountStringFromBitcoin(currency, bitcoinAmount: amount) as NSString?
         } else {
             balance = coinToProperBitcoinAmountString(amount) as NSString?
         }

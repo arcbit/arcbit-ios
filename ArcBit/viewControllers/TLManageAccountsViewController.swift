@@ -2442,7 +2442,7 @@ import UIKit
         }
     }
 
-    func customIOS7dialogButtonTouchUp(inside alertView: AnyObject!, clickedButtonAt buttonIndex: Int) -> () {
+    func customIOS7dialogButtonTouchUp(inside alertView: CustomIOS7AlertView, clickedButtonAt buttonIndex: Int) -> () {
         if (buttonIndex == 0) {
             iToast.makeText("Copied To clipboard".localized).setGravity(iToastGravityCenter).setDuration(1000).show()
             let pasteboard = UIPasteboard.general

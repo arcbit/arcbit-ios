@@ -107,11 +107,13 @@ extension TLWallet {
         let stealthAddressArray = accountDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESSES) as! NSMutableArray
         let stealthAddressPaymentsArray = (stealthAddressArray.object(at: 0) as! NSDictionary).object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_PAYMENTS) as! NSMutableArray
         var indexToInsert = stealthAddressPaymentsArray.count-1            
-        for ; indexToInsert >= 0; indexToInsert -= 1 {
+
+        while indexToInsert >= 0 {
             let currentStealthAddressPaymentDict = stealthAddressPaymentsArray.object(at: indexToInsert) as! NSDictionary
             if (currentStealthAddressPaymentDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_TIME) as! NSNumber).uint64Value < txTime {
                 break
             }
+            indexToInsert -= 1
         }
             
         stealthAddressPaymentsArray.insert(stealthAddressPaymentDict, at: indexToInsert+1)

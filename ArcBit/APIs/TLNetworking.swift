@@ -133,7 +133,7 @@ class TLNetworking {
         var response:AnyObject? = nil
         let semaphore = DispatchSemaphore(value: 0)
 
-        DLog("httpGETSynchronous: url %@", function: url.absoluteString)
+        DLog("httpGETSynchronous: url \(url.absoluteString)")
         _ = self.getSynchronousManager.get(url.absoluteString,
             parameters: parameters,
             success:{(operation:AFHTTPRequestOperation!, responseObject:AnyObject!) in
@@ -158,7 +158,7 @@ class TLNetworking {
     func httpGET(_ url: URL, parameters: NSDictionary,
         success: SuccessHandler?, failure: FailureHandler?) -> () {
             
-            DLog("httpGET: url %@", function: url.absoluteString)
+            DLog("httpGET: url \(url.absoluteString)")
             self.getManager.get(url.absoluteString,
                 parameters:parameters,
                 success:{(operation:AFHTTPRequestOperation!, responseObject:AnyObject!) in
@@ -177,7 +177,7 @@ class TLNetworking {
     func httpGETBackground(_ url: URL, parameters: NSDictionary,
         success: SuccessHandler?, failure: FailureHandler?) -> () {
             
-            DLog("httpGETBackground: url %@", function: url.absoluteString)
+            DLog("httpGETBackground: url \(url.absoluteString)")
             self.getManagerBackground.get(url.absoluteString,
                 parameters:parameters,
                 success:{(operation:AFHTTPRequestOperation!, responseObject:AnyObject!) in
@@ -196,7 +196,7 @@ class TLNetworking {
     func httpPOST(_ url: URL, parameters: NSDictionary,
         success: SuccessHandler?, failure: FailureHandler?) -> () {
             
-            DLog("httpPOST:function:  url %@", function: url.absoluteString)
+            DLog("httpPOST:function:  url \(url.absoluteString)")
             self.postManager.post(url.absoluteString,
                 parameters:parameters,
                 success:{(operation:AFHTTPRequestOperation!, responseObject:AnyObject!) in
@@ -217,7 +217,7 @@ class TLNetworking {
         
         let semaphore = DispatchSemaphore(value: 0)
         
-        DLog("httpPOSTSynchronous: url %@", function: url.absoluteString)
+        DLog("httpPOSTSynchronous: url \(url.absoluteString)")
         _ = self.postSynchronousManager.post(url.absoluteString,
             parameters: parameters,
             success:{(operation:AFHTTPRequestOperation!, responseObject:AnyObject!) in

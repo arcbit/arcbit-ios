@@ -42,17 +42,17 @@ class TLWalletJson {
     }
         
     class func generatePayloadChecksum(_ payload: String) -> String {
-        return TLCrypto.doubleSHA256HashFor(payload)
+        return TLCrypto.doubleSHA256HashFor(payload as NSString)
     }
     
     class func getEncryptedWalletJsonContainer(_ walletJson: NSDictionary, password: String) -> (String) {
         assert(TLHDWalletWrapper.phraseIsValid(password), "phrase is invalid")
         var str = TLUtils.dictionaryToJSONString(false, dict: walletJson)
         //DLog("getEncryptedWalletJsonContainer str: %@", str)
-        let encryptJSONPassword = TLCrypto.doubleSHA256HashFor(password)
+        let encryptJSONPassword = TLCrypto.doubleSHA256HashFor(password as NSString)
         str = TLCrypto.encrypt(str, password: encryptJSONPassword)
-        let walletJsonEncryptedWrapperDict = ["version":1, "payload":str]
-        let walletJsonEncryptedWrapperString = TLUtils.dictionaryToJSONString(true, dict: walletJsonEncryptedWrapperDict)
+        let walletJsonEncryptedWrapperDict = ["version":1, "payload":str] as [String : Any]
+        let walletJsonEncryptedWrapperString = TLUtils.dictionaryToJSONString(true, dict: walletJsonEncryptedWrapperDict as NSDictionary)
         return walletJsonEncryptedWrapperString
     }
     
@@ -88,7 +88,7 @@ class TLWalletJson {
             return nil
         }
         assert(TLHDWalletWrapper.phraseIsValid(password!), "phrase is invalid")
-        let encryptJSONPassword = TLCrypto.doubleSHA256HashFor(password!)
+        let encryptJSONPassword = TLCrypto.doubleSHA256HashFor(password! as NSString)
         let str = TLCrypto.decrypt(encryptedWalletJSONFile!, password: encryptJSONPassword)
         //DLog("getWalletJsonString: %@", str)
         return str
@@ -119,7 +119,7 @@ class TLWalletJson {
         
         let error: NSError? = nil
         if (error != nil) {
-            DLog("TLWalletJson error getWalletJsonString: %@", function: error!.localizedDescription)
+            DLog("TLWalletJson error getWalletJsonString: \(error!.localizedDescription)")
             return nil
         }
         

@@ -324,7 +324,7 @@ import Foundation
             
             let addressesArray = jsonData.object(forKey: "addresses") as! NSArray
             for addressDict in addressesArray {
-                let addressBalance = (addressDict.object(forKey: "final_balance") as! NSNumber).uint64Value
+                let addressBalance = ((addressDict as AnyObject).object(forKey: "final_balance") as! NSNumber).uint64Value
                 self.balance = TLCoin(uint64: addressBalance)
 
                 self.processTxArray((jsonData as! NSDictionary!).object(forKey: "txs") as! NSArray, shouldUpdateAccountBalance: false)
@@ -338,7 +338,7 @@ import Foundation
             success()
             }, failure: {(code:Int, status:String!) in
                 failure()
-            }
+            } as! (Int, String?) -> ()
         )
     }
     
@@ -351,7 +351,7 @@ import Foundation
         let jsonData = TLBlockExplorerAPI.instance().getAddressesInfoSynchronous([importedAddress!])
         let addressesArray = jsonData.object(forKey: "addresses") as! NSArray
         for addressDict in addressesArray {
-            let addressBalance = (addressDict.object(forKey: "final_balance") as! NSNumber).uint64Value
+            let addressBalance = ((addressDict as AnyObject).object(forKey: "final_balance") as! NSNumber).uint64Value
             self.balance = TLCoin(uint64: addressBalance)
             self.processTxArray(jsonData.object(forKey: "txs") as! NSArray, shouldUpdateAccountBalance: false)
         }

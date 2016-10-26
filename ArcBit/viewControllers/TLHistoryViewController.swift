@@ -269,7 +269,7 @@ import CoreData
         cell!.amountButton!.setTitle(String(format: "%@%@", amountTypeString, amount), for: UIControlState())
         
         let confirmations = txObject!.getConfirmations()
-        DLog("confirmations %ld", function: Int(confirmations))
+        DLog("confirmations \(Int(confirmations))")
         
         if (Int(confirmations) > MAX_CONFIRMATIONS_TO_DISPLAY) {
             cell!.confirmationsLabel!.text = String(format: "%llu confirmations".localized, txObject!.getConfirmations()) // label is hidden

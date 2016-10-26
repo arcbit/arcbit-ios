@@ -102,7 +102,7 @@ class TLHDWalletWrapper {
         let spendPriv = (spendKey?.privateKey.hex())! as String
         let spendPublicKey = (spendKey?.compressedPublicKey.hex())! as String
         
-        let stealthAddress = TLStealthAddress.createStealthAddress(scanPublicKey, spendPublicKey:spendPublicKey, isTestnet:isTestnet)
+        let stealthAddress = TLStealthAddress.createStealthAddress(scanPublicKey as NSString, spendPublicKey:spendPublicKey as NSString, isTestnet:isTestnet)
         return ["stealthAddress":stealthAddress, "scanPriv":scanPriv, "spendPriv":spendPriv]
     }
     

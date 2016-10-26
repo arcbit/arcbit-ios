@@ -77,19 +77,20 @@ import Foundation
             self.socket!.on("disconnect") {data, ack in
                 DLog("socketio onDisconnect")
                 NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_TRANSACTION_LISTENER_CLOSE()), object: nil, userInfo: nil)
-                if self.consecutiveFailedConnections++ < self.MAX_CONSECUTIVE_FAILED_CONNECTIONS {
+                if self.consecutiveFailedConnections < self.MAX_CONSECUTIVE_FAILED_CONNECTIONS {
                     self.reconnect()
                 }
+                self.consecutiveFailedConnections += 1
             }
             self.socket!.on("error") {data, ack in
-                DLog("socketio error: %@", function: data)
+                DLog("socketio error: %@", function: data as AnyObject)
             }
             self.socket!.on("block") {data, ack in
                 let dataArray = data as NSArray
-                let firstObject: AnyObject? = dataArray.firstObject
+                let firstObject: AnyObject? = dataArray.firstObject as AnyObject?
                 // data!.debugDescription is lastest block hash
                 // can't use this to update confirmations on transactions because insight tx does not contain blockheight field
-                DLog("socketio received lastest block hash: %@", function: firstObject!.debugDescription ?? "")
+                DLog("socketio received lastest block hash: \(firstObject!.debugDescription)")
                 
             }
 //            socket.on("tx") {data, ack in
@@ -108,7 +109,7 @@ import Foundation
     }
     
     fileprivate func sendWebSocketMessage(_ msg: String) -> Bool {
-        DLog("sendWebSocketMessage msg: %@", function: msg)
+        DLog("sendWebSocketMessage msg: \(msg)")
         if self.isWebSocketOpen() {
             self.webSocket!.send(msg)
             return true
@@ -157,7 +158,7 @@ import Foundation
                                 }
                                 }, failure: {
                                     (code: NSInteger, status: String!) in
-                            })
+                            } as! TLNetworking.FailureHandler)
                         }
                     }
                 }
@@ -208,14 +209,15 @@ import Foundation
     }
     
     func webSocket(_ webSocket:SRWebSocket, didFailWithError error:NSError) -> () {
-        DLog("blockchain.info Websocket didFailWithError %@", function: error.description)
+        DLog("blockchain.info Websocket didFailWithError \(error.description)")
         
         self.webSocket!.delegate = nil
         self.webSocket!.close()
         self.webSocket = nil
-        if consecutiveFailedConnections++ < MAX_CONSECUTIVE_FAILED_CONNECTIONS {
+        if consecutiveFailedConnections < MAX_CONSECUTIVE_FAILED_CONNECTIONS {
             self.reconnect()
         }
+        consecutiveFailedConnections += 1
     }
     
     func webSocket(_ webSocket: SRWebSocket, didReceiveMessage message: AnyObject) {
@@ -243,9 +245,10 @@ import Foundation
         self.webSocket!.delegate = nil
         self.webSocket!.close()
         self.webSocket = nil
-        if consecutiveFailedConnections++ < MAX_CONSECUTIVE_FAILED_CONNECTIONS {
+        if consecutiveFailedConnections+ < MAX_CONSECUTIVE_FAILED_CONNECTIONS {
             self.reconnect()
         }
+        consecutiveFailedConnections += 1
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_TRANSACTION_LISTENER_CLOSE()), object: nil, userInfo: nil)
     }
 }

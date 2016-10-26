@@ -212,7 +212,7 @@ import UIKit
                 }
                 
                 AppDelegate.instance().pendingOperations.addSetUpImportedAddressesOperation(AppDelegate.instance().importedAddresses!, fetchDataAgain: fetchDataAgain, success: {
-                    for (var i = 0; i < AppDelegate.instance().importedAddresses!.getCount(); i++) {
+                    for i in stride(from: 0, through: AppDelegate.instance().importedAddresses!.getCount(), by: 1) {
                         let indexPath = IndexPath(row: i, section: self.importedAddressSection)
                         if let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell {
                             (cell.accessoryView as! UIActivityIndicatorView).stopAnimating()
@@ -241,7 +241,7 @@ import UIKit
             }
             
             AppDelegate.instance().pendingOperations.addSetUpImportedAddressesOperation(AppDelegate.instance().importedWatchAddresses!, fetchDataAgain: fetchDataAgain, success: {
-                for (var i = 0; i < AppDelegate.instance().importedWatchAddresses!.getCount(); i++) {
+                for i in stride(from: 0, through: AppDelegate.instance().importedWatchAddresses!.getCount(), by: 1) {
                     let indexPath = IndexPath(row: i, section: self.importedWatchAddressSection)
                     if let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell {
                         (cell.accessoryView as! UIActivityIndicatorView).stopAnimating()

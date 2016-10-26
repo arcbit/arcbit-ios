@@ -281,7 +281,7 @@ import Foundation
     class func getChallengeAndSign(_ stealthAddress: String, privKey: String, pubKey: String) -> String? {
         if TLStealthWallet.Challenge.needsRefreshing == true {
             let jsonData = TLStealthExplorerAPI.instance().getChallenge()
-            if let _: AnyObject = jsonData[TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE] {
+            if let _: AnyObject = jsonData.object(forKey: TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) as AnyObject? {
                 return nil
             }
             
@@ -298,8 +298,8 @@ import Foundation
     func addOrSetStealthPaymentsWithStatus(_ txidArray: [String], addressArray: [String], txTimeArray: [UInt64], isAddingPayments: Bool, waitForCompletion: Bool) -> () {
         var jsonData:NSDictionary? = nil
         if txidArray.count > 0 {
-            jsonData = TLBlockExplorerAPI.instance().getUnspentOutputsSynchronous(addressArray)
-            if let _: AnyObject = jsonData![TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE] {
+            jsonData = TLBlockExplorerAPI.instance().getUnspentOutputsSynchronous(addressArray as NSArray)
+            if let _: AnyObject = jsonData!.object(forKey: TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) as AnyObject? {
                 let msg = jsonData![TLNetworking.STATIC_MEMBERS.HTTP_ERROR_MSG] as? String
                 if msg != "No free outputs to spend" {
                     
@@ -395,7 +395,7 @@ import Foundation
                         if waitForCompletion {
                             group.leave()
                         }
-                })
+                } as! TLNetworking.FailureHandler)
                 
             } else {
                 if waitForCompletion {
@@ -437,7 +437,7 @@ import Foundation
                             group.leave()
                         }
                         
-                })
+                } as! TLNetworking.FailureHandler)
                 
             }
         }
@@ -530,7 +530,7 @@ import Foundation
             self.accountObject!.addStealthAddressPaymentKey(privateKey, address: expectedAddress, txid: txid, txTime: txTime, stealthPaymentStatus: stealthPaymentStatus)
             return privateKey
         } else {
-            DLog("error key not found for address %@", function: expectedAddress)
+            DLog("error key not found for address \(expectedAddress)")
             return nil
         }
     }
@@ -558,7 +558,7 @@ import Foundation
             
             while true {
                 jsonData = TLStealthExplorerAPI.instance().getStealthPaymentsSynchronous(stealthAddress, signature: signature!, offset: offset)
-                if let _: AnyObject = jsonData![TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE] {
+                if let _: AnyObject = jsonData?.object(forKey: TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) as AnyObject? {
                     return nil
                 }
                 
@@ -607,7 +607,7 @@ import Foundation
         while true {
             let jsonData = TLStealthExplorerAPI.instance().watchStealthAddressSynchronous(stealthAddress, scanPriv: scanPriv, signature: signature!)
             
-            if let _: AnyObject = jsonData[TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE] {
+            if let _: AnyObject = jsonData.object(forKey: TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) as AnyObject? {
                 return false
             }
             
@@ -626,7 +626,7 @@ import Foundation
                     }
                 }
             } else {
-                if let success: AnyObject = jsonData["success"]  {
+                if let success: AnyObject = jsonData.object(forKey: "success") as AnyObject?  {
                     return success as! Bool
                 }
                 

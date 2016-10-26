@@ -37,9 +37,9 @@ class TLPushTxAPI {
     }
     
     func sendTx(_ txHex:String, txHash:String, toAddress:String, success:@escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler)-> () {
-        DLog("TLPushTxAPI pushTx txHex %@ ", function: txHex)
-        DLog("TLPushTxAPI pushTx txHash %@ ", function: txHash)
-        DLog("TLPushTxAPI pushTx toAddress %@ ", function: toAddress)
+        DLog("TLPushTxAPI pushTx txHex \(txHex)")
+        DLog("TLPushTxAPI pushTx txHash \(txHash)")
+        DLog("TLPushTxAPI pushTx toAddress \(toAddress)")
 
         if TLStealthAddress.isStealthAddress(toAddress, isTestnet:false) == false {
             DLog("TLPushTxAPI TLBlockExplorerAPI")
@@ -95,7 +95,7 @@ class TLPushTxAPI {
                 }
             }) { (code: Int, status: String!) -> () in
                     failure(code, status)
-            }
+            } as! (Int, String?) -> ()
         }
     }
 }

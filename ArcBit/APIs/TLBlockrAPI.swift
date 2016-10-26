@@ -40,14 +40,14 @@ class TLBlockrAPI {
         status = success
     }
     */
-    func pushTx(_ txHex: String, success: TLNetworking.SuccessHandler, failure: TLNetworking.FailureHandler) {
+    func pushTx(_ txHex: String, success: @escaping TLNetworking.SuccessHandler, failure: @escaping TLNetworking.FailureHandler) {
         let endPoint = "api/v1/tx/push"
         let parameters = [
             "hex": txHex
         ]
         
         let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
-        self.networking.httpPOST(url, parameters: parameters,
+        self.networking.httpPOST(url, parameters: parameters as NSDictionary,
             success: success, failure: failure)
     }
 }

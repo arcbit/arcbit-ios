@@ -298,10 +298,10 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             if TLStealthAddress.isStealthAddress(toAddress, isTestnet:false) == true {
                 // doing stealth payment with push tx insight get wrong hash back??
                 let txid = (jsonData as! NSDictionary).object(forKey: "txid") as! String
-                DLog("showPromptReviewTx pushTx: success txid %@", function: txid)
-                DLog("showPromptReviewTx pushTx: success txHash %@", function: txHash)
+                DLog("showPromptReviewTx pushTx: success txid \(txid)")
+                DLog("showPromptReviewTx pushTx: success txHash \(txHash)")
                 if txid != txHash {
-                    NSException(name: "API Error", reason:"txid return does not match txid in app", userInfo:nil).raise()
+                    NSException(name: NSExceptionName(rawValue: "API Error"), reason:"txid return does not match txid in app", userInfo:nil).raise()
                 }
             }
             
@@ -319,7 +319,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                     TLPrompts.promptErrorMessage("Error".localized, message: status)
                     self.cancelSend()
                 }
-        })
+        } as! TLNetworking.FailureHandler)
     }
 
     func promptToSignTransaction(_ unSignedTx: String, txInputsAccountHDIdxes:NSArray) {
@@ -337,7 +337,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                 
                 let firstAipGapDataPart = self.airGapDataBase64PartsArray![0]
                 self.airGapDataBase64PartsArray!.remove(at: 0)
-                self.QRImageModal = TLQRImageModal(data: firstAipGapDataPart, buttonCopyText: "Next".localized, vc: self)
+                self.QRImageModal = TLQRImageModal(data: firstAipGapDataPart as NSString, buttonCopyText: "Next".localized, vc: self)
                 self.QRImageModal!.show()
                 
                 }, failure: {
@@ -377,7 +377,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         self.dismiss(animated: true, completion:nil)
     }
     
-    func customIOS7dialogButtonTouchUp(inside alertView: AnyObject, clickedButtonAt buttonIndex: Int) {
+    func customIOS7dialogButtonTouchUp(inside alertView: CustomIOS7AlertView, clickedButtonAt buttonIndex: Int) {
         if (buttonIndex == 0) {
             if self.airGapDataBase64PartsArray?.count > 0 {
                 let nextAipGapDataPart = self.airGapDataBase64PartsArray![0]

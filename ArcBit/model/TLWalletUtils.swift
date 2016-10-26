@@ -67,15 +67,15 @@ class TLWalletUtils {
     }
     
     class func DEFAULT_FEE_AMOUNT_IN_BITCOINS() -> (String) {
-        return TLCurrencyFormat.bitcoinAmountStringToCoin(STATIC_MEMBERS.DEFAULT_FEE_AMOUNT, locale: Locale(localeIdentifier: "en_US")).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.bitcoin)
+        return TLCurrencyFormat.bitcoinAmountStringToCoin(STATIC_MEMBERS.DEFAULT_FEE_AMOUNT, locale: Locale(identifier: "en_US")).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.bitcoin)
     }
     
     class func MAX_FEE_AMOUNT_IN_BITCOINS() -> (String) {
-        return TLCurrencyFormat.bitcoinAmountStringToCoin(STATIC_MEMBERS.MAX_FEE_AMOUNT, locale: Locale(localeIdentifier: "en_US")).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.bitcoin)
+        return TLCurrencyFormat.bitcoinAmountStringToCoin(STATIC_MEMBERS.MAX_FEE_AMOUNT, locale: Locale(identifier: "en_US")).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.bitcoin)
     }
     
     class func MIN_FEE_AMOUNT_IN_BITCOINS() -> (String) {
-        return TLCurrencyFormat.bitcoinAmountStringToCoin(STATIC_MEMBERS.MIN_FEE_AMOUNT, locale: Locale(localeIdentifier: "en_US")).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.bitcoin)
+        return TLCurrencyFormat.bitcoinAmountStringToCoin(STATIC_MEMBERS.MIN_FEE_AMOUNT, locale: Locale(identifier: "en_US")).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.bitcoin)
     }
 
     class func RECEIVE_ICON_IMAGE_NAME() -> (String) {

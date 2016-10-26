@@ -213,14 +213,14 @@ import UIKit
             if((indexPath as NSIndexPath).section == 0) {
                 performSegue(withIdentifier: "SegueAchievements", sender:self)
             } else if((indexPath as NSIndexPath).section == 1) {
-                FAQText = TLHelpDoc.getExplanation((indexPath as NSIndexPath).row)
+                FAQText = TLHelpDoc.getExplanation((indexPath as NSIndexPath).row) as NSString?
                 performSegue(withIdentifier: "SegueText", sender:self)
             } else if((indexPath as NSIndexPath).section == 2) {
                 action = TLHelpDoc.getActionEventToHowToActionTitleDict().object(forKey: eventActionArray!.object(at: (indexPath as NSIndexPath).row)) as! String as NSString?
                 instructions = TLHelpDoc.getBasicActionInstructionStepsArray((indexPath as NSIndexPath).row)
                 performSegue(withIdentifier: "SegueInstructions", sender:self)
             } else if((indexPath as NSIndexPath).section == 3) {
-                FAQText = TLHelpDoc.getAdvanceExplanation((indexPath as NSIndexPath).row)
+                FAQText = TLHelpDoc.getAdvanceExplanation((indexPath as NSIndexPath).row) as NSString?
                 performSegue(withIdentifier: "SegueText", sender:self)
             } else {
                 action = TLHelpDoc.getActionEventToHowToActionTitleDict().object(forKey: eventAdvanceActionArray!.object(at: (indexPath as NSIndexPath).row)) as! String as NSString?
@@ -231,7 +231,7 @@ import UIKit
             if((indexPath as NSIndexPath).section == 0) {
                 performSegue(withIdentifier: "SegueAchievements", sender:self)
             } else if((indexPath as NSIndexPath).section == 1) {
-                FAQText = TLHelpDoc.getExplanation((indexPath as NSIndexPath).row)
+                FAQText = TLHelpDoc.getExplanation((indexPath as NSIndexPath).row) as NSString?
                 performSegue(withIdentifier: "SegueText", sender:self)
             } else {
                 action = TLHelpDoc.getActionEventToHowToActionTitleDict().object(forKey: eventActionArray!.object(at: (indexPath as NSIndexPath).row)) as! String as NSString?

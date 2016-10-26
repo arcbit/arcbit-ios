@@ -79,12 +79,12 @@ import Foundation
     
     func sendMessageSubscribeToStealthAddress(_ stealthAddress: String, signature: String) -> Bool {
         let msgDict = ["op":"addr_sub", "x":["addr":stealthAddress,"sig":signature]] as [String : Any]
-        let msg = TLUtils.dictionaryToJSONString(false, dict: msgDict)
+        let msg = TLUtils.dictionaryToJSONString(false, dict: msgDict as NSDictionary)
         return self.sendMessage(msg)
     }
     
     func sendMessage(_ msg: String) -> Bool {
-        DLog("StealthWebSocket sendMessage: %@", function: msg)
+        DLog("StealthWebSocket sendMessage: \(msg)")
         if self.isWebSocketOpen() {
             self.webSocket!.send(msg)
             return true
@@ -112,19 +112,20 @@ import Foundation
     }
     
     func webSocket(_ webSocket:SRWebSocket, didFailWithError error:NSError) -> () {
-        DLog("StealthWebSocket didFailWithError %@", function: error.description)
+        DLog("StealthWebSocket didFailWithError \(error.description)")
 
         self.webSocket!.delegate = nil
         self.webSocket!.close()
         self.webSocket = nil
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_STEALTH_PAYMENT_LISTENER_CLOSE()), object: nil)
-        if consecutiveFailedConnections++ < MAX_CONSECUTIVE_FAILED_CONNECTIONS {
+        if consecutiveFailedConnections < MAX_CONSECUTIVE_FAILED_CONNECTIONS {
             self.reconnect()
         } else {
             DispatchQueue.main.async {
                 NSObject.cancelPreviousPerformRequests(withTarget: self, selector:#selector(TLStealthWebSocket.sendMessagePing), object:nil)
             }
         }
+        consecutiveFailedConnections += 1
     }
     
     func webSocket(_ webSocket: SRWebSocket, didReceiveMessage message: AnyObject) {
@@ -156,12 +157,13 @@ import Foundation
         self.webSocket!.close()
         self.webSocket = nil
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_STEALTH_PAYMENT_LISTENER_CLOSE()), object: nil)
-        if consecutiveFailedConnections++ < MAX_CONSECUTIVE_FAILED_CONNECTIONS {
+        if consecutiveFailedConnections < MAX_CONSECUTIVE_FAILED_CONNECTIONS {
             self.reconnect()
         } else {
             DispatchQueue.main.async {
                 NSObject.cancelPreviousPerformRequests(withTarget: self, selector:#selector(TLStealthWebSocket.sendMessagePing), object:nil)
             }
         }
+        consecutiveFailedConnections += 1
     }
 }

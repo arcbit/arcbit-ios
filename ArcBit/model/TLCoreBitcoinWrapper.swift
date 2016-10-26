@@ -28,11 +28,11 @@ class TLCoreBitcoinWrapper {
     class func getAddressFromOutputScript(_ scriptHex:String, isTestnet:Bool) -> (String?){
         let scriptData = TLWalletUtils.hexStringToData(scriptHex)!
         let script = BTCScript(data:scriptData)
-        if let address = script.standardAddress {
+        if let address = script?.standardAddress {
             if !isTestnet {
                 return address.string
             } else {
-                return BTCPublicKeyAddressTestnet(data: script.standardAddress.data)!.string
+                return BTCPublicKeyAddressTestnet(data: script?.standardAddress.data)!.string
             }
         }
         
@@ -166,7 +166,7 @@ class TLCoreBitcoinWrapper {
                 tx?.sign(withPrivateKeys: privateKeys as [AnyObject], isTestnet:isTestnet)
             } else {
                 return [
-                    "txHex": TLWalletUtils.dataToHexString(tx.data),
+                    "txHex": TLWalletUtils.dataToHexString(tx!.data),
                 ]
             }
             assert((tx?.isSigned)!, "tx is not signed")
@@ -181,9 +181,9 @@ class TLCoreBitcoinWrapper {
             }
 
             return [
-                "txHex": TLWalletUtils.dataToHexString(tx.data),
-                "txHash": TLWalletUtils.reverseHexString(TLWalletUtils.dataToHexString(tx.txHash)),
-                "txSize": tx.size
+                "txHex": TLWalletUtils.dataToHexString(tx!.data),
+                "txHash": TLWalletUtils.reverseHexString(TLWalletUtils.dataToHexString(tx!.txHash)),
+                "txSize": tx!.size
             ]
     }
 
@@ -191,20 +191,20 @@ class TLCoreBitcoinWrapper {
         let tx = BRTransaction(message: unsignedTx, isTestnet: isTestnet)
 //        let tx = BRTransaction.transactionWithMessage(unsignedTx, isTestnet: isTestnet)
         tx?.sign(withPrivateKeys: privateKeys as [AnyObject], isTestnet:isTestnet)
-        DLog("createSignedSerializedTransactionHex x.isSigned: \(tx.isSigned)")
+        DLog("createSignedSerializedTransactionHex x.isSigned: \(tx?.isSigned)")
 
         
         let txFromHexData = BRTransaction(message: tx?.data, isTestnet: isTestnet)
-        DLog("createSignedSerializedTransactionHex txFromHexData: %@", function: TLWalletUtils.dataToHexString(txFromHexData.data))
-        DLog("createSignedSerializedTransactionHex txFromHexData: %@", function: TLWalletUtils.reverseHexString(TLWalletUtils.dataToHexString(txFromHexData.txHash)))
-        DLog("createSignedSerializedTransactionHex txFromHexData: %@", function: txFromHexData.size)
+        DLog("createSignedSerializedTransactionHex txFromHexData: \(TLWalletUtils.dataToHexString(txFromHexData.data))")
+        DLog("createSignedSerializedTransactionHex txFromHexData: \(TLWalletUtils.reverseHexString(TLWalletUtils.dataToHexString(txFromHexData!.txHash)))")
+        DLog("createSignedSerializedTransactionHex txFromHexData: \(txFromHexData.size)")
 
         
 //        assert(tx.isSigned, "tx is not signed")
         return [
-            "txHex": TLWalletUtils.dataToHexString(tx.data),
-            "txHash": TLWalletUtils.reverseHexString(TLWalletUtils.dataToHexString(tx.txHash)),
-            "txSize": tx.size
+            "txHex": TLWalletUtils.dataToHexString(tx!.data),
+            "txHash": TLWalletUtils.reverseHexString(TLWalletUtils.dataToHexString(tx!.txHash)),
+            "txSize": tx!.size
         ]
     }
 

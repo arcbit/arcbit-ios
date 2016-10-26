@@ -38,7 +38,7 @@ class TLInsightAPI {
             "q": "getTxOutSetInfo"
         ]
         let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
-        self.networking.httpGET(url, parameters: parameters,
+        self.networking.httpGET(url, parameters: parameters as NSDictionary,
             success: {
                 (jsonData: AnyObject!) in
                 success(jsonData)
@@ -54,7 +54,7 @@ class TLInsightAPI {
         
         let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
         
-        let jsonData: AnyObject? = self.networking.httpGETSynchronous(url, parameters: parameters)
+        let jsonData: AnyObject? = self.networking.httpGETSynchronous(url, parameters: parameters as NSDictionary)
         
         if jsonData is NSDictionary { // if don't get dict http error, will get array
             return jsonData as! NSDictionary
@@ -70,7 +70,7 @@ class TLInsightAPI {
         let parameters = [:]
         
         let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
-        self.networking.httpGET(url, parameters: parameters,
+        self.networking.httpGET(nil, parameters: parameters as NSDictionary,
             success: {
                 (jsonData: AnyObject!) in
                 
@@ -90,7 +90,7 @@ class TLInsightAPI {
 
         let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
         
-        let jsonData: AnyObject? = self.networking.httpGETSynchronous(url, parameters: parameters)
+        let jsonData: AnyObject? = self.networking.httpGETSynchronous(url, parameters: parameters as NSDictionary)
 
         if ((jsonData as! NSDictionary).object(forKey: TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) != nil) {
             return jsonData as! NSDictionary
@@ -121,7 +121,7 @@ class TLInsightAPI {
 
         let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
         
-        self.networking.httpGET(url, parameters: parameters,
+        self.networking.httpGET(url, parameters: parameters as NSDictionary,
             success: {
                 (jsonData: AnyObject!) in
  
@@ -130,26 +130,26 @@ class TLInsightAPI {
                 let totalItems = ((jsonData as! NSDictionary).object(forKey: "totalItems") as! NSNumber).uint64Value
                 if to.uint64Value >= totalItems {
                     if allTxs.count == 0 {
-                        let transformedJsonData = TLInsightAPI.insightAddressesTxsToBlockchainMultiaddr(addressArray, txs: txs)
+                        let transformedJsonData = TLInsightAPI.insightAddressesTxsToBlockchainMultiaddr(addressArray as NSArray, txs: txs)
                         success(transformedJsonData)
                     } else {
                         allTxs.addObjects(from: txs as [AnyObject])
-                        let transformedJsonData = TLInsightAPI.insightAddressesTxsToBlockchainMultiaddr(addressArray, txs: allTxs)
+                        let transformedJsonData = TLInsightAPI.insightAddressesTxsToBlockchainMultiaddr(addressArray as NSArray, txs: allTxs)
                         success(transformedJsonData)
                     }
                 } else {
                     allTxs.addObjects(from: txs as [AnyObject])
-                    self.getAddressesInfo(addressArray, allTxs: allTxs, txCountFrom: to.intValue, success: success, failure: failure)
+                    self.getAddressesInfo(addressArray, txCountFrom: to.intValue, allTxs: allTxs, success: success, failure: failure)
                 }
             }, failure: failure)
     }
     
-    func getAddressData(_ address: String, success: @escaping TLNetworking.SuccessHandler, failure: TLNetworking.FailureHandler) {
+    func getAddressData(_ address: String, success: @escaping TLNetworking.SuccessHandler, failure: @escaping TLNetworking.FailureHandler) {
         let endPoint = String(format: "%@%@", "api/txs/?address=", address)
         let parameters = [:]
         
         let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
-        self.networking.httpGET(url, parameters: parameters,
+        self.networking.httpGET(url, parameters: parameters as NSDictionary,
             success: {
                 (jsonData: AnyObject!) in
                 
@@ -163,7 +163,7 @@ class TLInsightAPI {
                 }
                 
                 let transansformedJsonData = NSMutableDictionary()
-                transansformedJsonData.setObject(transformedTxs, forKey:"txs")
+                transansformedJsonData.setObject(transformedTxs, forKey:"txs" as NSCopying)
                 
                 success(transansformedJsonData)
             }, failure: failure)
@@ -174,7 +174,7 @@ class TLInsightAPI {
         let parameters = [:]
         
         let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
-        let jsonData: AnyObject? = self.networking.httpGETSynchronous(url, parameters: parameters)
+        let jsonData: AnyObject? = self.networking.httpGETSynchronous(url, parameters: parameters as NSDictionary)
         
         let txs = (jsonData as! NSDictionary!).object(forKey: "txs") as! NSArray
         let transformedTxs = NSMutableArray(capacity:txs.count)
@@ -191,20 +191,20 @@ class TLInsightAPI {
         return transansformedJsonData
     }
     
-    func getTx(_ txHash: String, success: TLNetworking.SuccessHandler, failure: TLNetworking.FailureHandler) {
+    func getTx(_ txHash: String, success: @escaping TLNetworking.SuccessHandler, failure: @escaping TLNetworking.FailureHandler) {
         let endPoint = String(format: "%@%@", "api/tx/", txHash)
         let parameters = [:]
         
         let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
-        self.networking.httpGET(url, parameters: parameters, success: success, failure: failure)
+        self.networking.httpGET(url, parameters: parameters as NSDictionary, success: success, failure: failure)
     }
 
-    func getTxBackground(_ txHash: String, success: TLNetworking.SuccessHandler, failure: TLNetworking.FailureHandler) {
+    func getTxBackground(_ txHash: String, success: @escaping TLNetworking.SuccessHandler, failure: @escaping TLNetworking.FailureHandler) {
         let endPoint = String(format: "%@%@", "api/tx/", txHash)
         let parameters = [:]
         
         let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
-        self.networking.httpGETBackground(url, parameters: parameters, success: success, failure: failure)
+        self.networking.httpGETBackground(url, parameters: parameters as NSDictionary, success: success, failure: failure)
     }
 
     
@@ -213,14 +213,14 @@ class TLInsightAPI {
         if unspentOutputDict.object(forKey: "scriptPubKey") == nil {
             // got following so far
             // insight bug for txid 1cf031f8ac2896994e57c299e23b4ed35e2d218a7c6877302da0e3292337f530 when tried to do f5b0e820f23a6724f669463a6bf2e03806169b3d7fee7b6d27a642840109823d
-            DLog("no scriptPubKey, insight bug? txid %@", function: unspentOutputDict.object(forKey: "txid") as! String)
+            DLog("no scriptPubKey, insight bug? txid \(unspentOutputDict.object(forKey: "txid") as! String)")
             return nil
         }
         
         let blockchainUnspentOutputDict = NSMutableDictionary()
         let txid = unspentOutputDict.object(forKey: "txid") as! String
         let txHash = TLWalletUtils.reverseHexString(txid)
-        blockchainUnspentOutputDict.setObject(txHash, forKey: "tx_hash")
+        blockchainUnspentOutputDict.setObject(txHash, forKey: "tx_hash" as NSCopying)
         blockchainUnspentOutputDict.setObject(txid, forKey: "tx_hash_big_endian" as NSCopying)
         blockchainUnspentOutputDict.setObject(unspentOutputDict.object(forKey: "vout")!, forKey: "tx_output_n" as NSCopying)
         blockchainUnspentOutputDict.setObject(unspentOutputDict.object(forKey: "scriptPubKey")!, forKey: "script" as NSCopying)
@@ -234,8 +234,8 @@ class TLInsightAPI {
         bitcoinFormatter.roundingMode = .halfUp
         bitcoinFormatter.maximumFractionDigits = 8
         bitcoinFormatter.locale = Locale(identifier: "en_US")
-        let amount = TLCoin(bitcoinAmount: bitcoinFormatter.string(from: amountNumber)!, bitcoinDenomination: TLBitcoinDenomination.bitcoin, locale: Locale(localeIdentifier: "en_US"))
-        blockchainUnspentOutputDict.setObject(NSNumber(value: amount.toUInt64() as UInt64), forKey: "value")
+        let amount = TLCoin(bitcoinAmount: bitcoinFormatter.string(from: amountNumber)!, bitcoinDenomination: TLBitcoinDenomination.bitcoin, locale: Locale(identifier: "en_US"))
+        blockchainUnspentOutputDict.setObject(NSNumber(value: amount.toUInt64() as UInt64), forKey: "value" as NSCopying)
 
 
         let confirmations: AnyObject? = unspentOutputDict.object(forKey: "confirmations") as AnyObject?
@@ -248,14 +248,14 @@ class TLInsightAPI {
         return blockchainUnspentOutputDict
     }
     
-    func pushTx(_ txHex: String, success: TLNetworking.SuccessHandler, failure: TLNetworking.FailureHandler) {
+    func pushTx(_ txHex: String, success: @escaping TLNetworking.SuccessHandler, failure: @escaping TLNetworking.FailureHandler) {
         let endPoint = "api/tx/send"
         let parameters = [
             "rawtx": txHex
         ]
         
         let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
-        self.networking.httpPOST(url, parameters: parameters,
+        self.networking.httpPOST(url, parameters: parameters as NSDictionary,
             success: success, failure: failure)
     }
     
@@ -295,13 +295,16 @@ class TLInsightAPI {
         let transformedTxs = NSMutableArray(capacity: txs.count)
         
         let transansformedAddresses = NSMutableArray(capacity: addressArray.count)
-        for (var i = txs.count - 1; i >= 0; i -= 1) {
+        var i = txs.count - 1
+        while i >= 0 {
             if txs.object(at: i) as! NSObject == NSNull() {
+                i -= 1
                 continue
             }
             let tx = txs.object(at: i) as! NSDictionary
             let transformedTx = TLInsightAPI.insightTxToBlockchainTx(tx)
             if (transformedTx == nil) {
+                i -= 1
                 continue;
             }
             transformedTxs.add(transformedTx!)
@@ -350,6 +353,7 @@ class TLInsightAPI {
                     }
                 }
             }
+            i -= 1
         }
         
         //TODO: need to sort txs because insight does not sort it for you, ask devs to sort array
@@ -478,8 +482,8 @@ class TLInsightAPI {
                 }
 
                 if let value = vout.object(forKey: "value") as? String {
-                    let coinValue = TLCoin(bitcoinAmount: value, bitcoinDenomination: .bitcoin, locale: Locale(localeIdentifier: "en_US"))
-                    aOut.setObject(Int(coinValue.toUInt64()), forKey: "value")
+                    let coinValue = TLCoin(bitcoinAmount: value, bitcoinDenomination: .bitcoin, locale: Locale(identifier: "en_US"))
+                    aOut.setObject(Int(coinValue.toUInt64()), forKey: "value" as NSCopying)
 
                 }
                 outs.add(aOut)

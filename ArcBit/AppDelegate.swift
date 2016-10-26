@@ -278,10 +278,10 @@ import Crashlytics
             let accountName = String(format:"Account %lu".localized, (accountIdx + 1))
             let accountObject = self.accounts!.createNewAccount(accountName, accountType:.normal, preloadStartingAddresses:false)
             
-            DLog("recoverHDWalletaccountName %@", function: accountName)
+            DLog("recoverHDWalletaccountName \(accountName)")
             
             let sumMainAndChangeAddressMaxIdx = accountObject.recoverAccount(false)
-            DLog(String(format: "accountName %@ sumMainAndChangeAddressMaxIdx: %ld", accountName, sumMainAndChangeAddressMaxIdx))
+            DLog(String(format: "accountName \(accountName) sumMainAndChangeAddressMaxIdx: \(sumMainAndChangeAddressMaxIdx)"))
             if sumMainAndChangeAddressMaxIdx > -2 || accountObject.stealthWallet!.checkIfHaveStealthPayments() {
                 consecutiveUnusedAccountCount = 0
             } else {
@@ -357,7 +357,7 @@ import Crashlytics
             TLPreferences.setAppVersion(appVersion)
         } else if appVersion != TLPreferences.getAppVersion() {
             TLUpdateAppData.instance().beforeUpdatedAppVersion = TLPreferences.getAppVersion()
-            DLog("set new appVersion %@", function: appVersion)
+            DLog("set new appVersion \(appVersion)")
             TLPreferences.setAppVersion(appVersion)
             TLPreferences.setDisabledPromptRateApp(false)
         }
@@ -606,7 +606,7 @@ import Crashlytics
         let txid = responseDict.object(forKey: "txid") as! String
         let paymentAddress = responseDict.object(forKey: "addr") as! String
         let txTime = UInt64((responseDict.object(forKey: "time") as! NSNumber).uint64Value)
-        DLog("respondToStealthPayment stealthAddress: %@", function: stealthAddress)
+        DLog("respondToStealthPayment stealthAddress: \(stealthAddress)")
         DLog("respondToStealthPayment respondToStealthPaymentGetTxTries: \(self.respondToStealthPaymentGetTxTries)")
 
         if self.respondToStealthPaymentGetTxTries < self.RESPOND_TO_STEALTH_PAYMENT_GET_TX_TRIES_MAX_TRIES {
@@ -620,10 +620,10 @@ import Crashlytics
                 
                     self.respondToStealthPaymentGetTxTries = 0
                 }, failure: { (code: NSInteger, status: String!) -> () in
-                    DLog("respondToStealthPayment getTx fail %@", function: txid)
+                    DLog("respondToStealthPayment getTx fail \(txid)")
                     self.respondToStealthPayment(note)
-                    self.respondToStealthPaymentGetTxTries++
-            })
+                    self.respondToStealthPaymentGetTxTries += 1
+            } as! TLNetworking.FailureHandler)
         }
     }
     
@@ -663,7 +663,7 @@ import Crashlytics
     
     func updateModelWithNewTransaction(_ note: Notification) {
         let txDict = note.object as! NSDictionary
-        DLog("updateModelWithNewTransaction txDict: %@", function: txDict.debugDescription)
+        DLog("updateModelWithNewTransaction txDict: \(txDict.debugDescription)")
         
         DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).async {
             let txObject = TLTxObject(dict:txDict)
@@ -671,7 +671,7 @@ import Crashlytics
                 // Special case where receiving stealth payment from same sending account. 
                 // Let stealth websocket handle it
                 // Need this cause, must generate private key and add address to account so that the bitcoins can be accounted for.
-                if txObject.getHash() == self.pendingSelfStealthPaymentTxid {
+                if txObject.getHash() as? String == self.pendingSelfStealthPaymentTxid {
                     //self.pendingSelfStealthPaymentTxid = nil
                     return
                 }
@@ -686,7 +686,7 @@ import Crashlytics
                 }
                 for address in addressesInTx {
                     if (accountObject.isAddressPartOfAccount(address )) {
-                        DLog("updateModelWithNewTransaction accounts %@", function: accountObject.getAccountID())
+                        DLog("updateModelWithNewTransaction accounts \(accountObject.getAccountID())")
                         self.handleNewTxForAccount(accountObject, txObject: txObject)
                     }
                 }
@@ -699,7 +699,7 @@ import Crashlytics
                 }
                 for address in addressesInTx {
                     if (accountObject.isAddressPartOfAccount(address)) {
-                        DLog("updateModelWithNewTransaction coldWalletAccounts %@", function: accountObject.getAccountID())
+                        DLog("updateModelWithNewTransaction coldWalletAccounts \(accountObject.getAccountID())")
                         self.handleNewTxForAccount(accountObject, txObject: txObject)
                     }
                 }
@@ -712,7 +712,7 @@ import Crashlytics
                 }
                 for address in addressesInTx {
                     if (accountObject.isAddressPartOfAccount(address)) {
-                        DLog("updateModelWithNewTransaction importedAccounts %@", function: accountObject.getAccountID())
+                        DLog("updateModelWithNewTransaction importedAccounts \(accountObject.getAccountID())")
                         self.handleNewTxForAccount(accountObject, txObject: txObject)
                     }
                 }
@@ -725,7 +725,7 @@ import Crashlytics
                 }
                 for address in addressesInTx {
                     if (accountObject.isAddressPartOfAccount(address)) {
-                        DLog("updateModelWithNewTransaction importedWatchAccounts %@", function: accountObject.getAccountID())
+                        DLog("updateModelWithNewTransaction importedWatchAccounts \(accountObject.getAccountID())")
                         self.handleNewTxForAccount(accountObject, txObject: txObject)
                     }
                 }
@@ -739,7 +739,7 @@ import Crashlytics
                 let address = importedAddress.getAddress()
                 for addr in addressesInTx {
                     if (addr == address) {
-                        DLog("updateModelWithNewTransaction importedAddresses %@", function: address)
+                        DLog("updateModelWithNewTransaction importedAddresses \(address)")
                         self.handleNewTxForImportedAddress(importedAddress, txObject: txObject)
                     }
                 }
@@ -753,7 +753,7 @@ import Crashlytics
                 let address = importedAddress.getAddress()
                 for addr in addressesInTx {
                     if (addr == address) {
-                        DLog("updateModelWithNewTransaction importedWatchAddresses %@", function: address)
+                        DLog("updateModelWithNewTransaction importedWatchAddresses \(address)")
                         self.handleNewTxForImportedAddress(importedAddress, txObject: txObject)
                     }
                 }
@@ -866,7 +866,7 @@ import Crashlytics
             self.justSetupHDWallet = true
             let encryptedWalletJson = TLWalletJson.getEncryptedWalletJsonContainer(self.appWallet.getWalletsJson()!,
                 password:TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase()!)
-            let success = self.saveWalletJson(encryptedWalletJson, date:Date())
+            let success = self.saveWalletJson(encryptedWalletJson as (NSString), date:Date())
             if success {
                 TLPreferences.setHasSetupHDWallet(true)
             } else {
@@ -876,7 +876,7 @@ import Crashlytics
             let masterHex = TLHDWalletWrapper.getMasterHex(passphrase ?? "")
 
             if (walletPayload != nil) {
-                self.appWallet.loadWalletPayload(walletPayload!, masterHex:masterHex)
+                self.appWallet.loadWalletPayload(walletPayload!, masterHex:masterHex as NSString)
             } else {
                 TLPrompts.promptErrorMessage("Error".localized, message:"Error loading wallet JSON file".localized)
                 NSException(name: NSExceptionName(rawValue: "Error".localized), reason: "Error loading wallet JSON file".localized, userInfo: nil).raise()
@@ -927,7 +927,7 @@ import Crashlytics
                 DLog("Error getting block height.")
                 TLPrompts.promptErrorMessage("Network Error".localized,
                     message:String(format:"Error getting block height.".localized))
-        })
+        } as! TLNetworking.FailureHandler)
     }
     
     func refreshHDWalletAccounts(_ isRestoringWallet: Bool) {
@@ -978,7 +978,7 @@ import Crashlytics
     }
     
     func application(_ applcation: UIApplication, didReceive notification: UILocalNotification) {
-        DLog("didReceiveLocalNotification: %@", function: notification.alertBody!)
+        DLog("didReceiveLocalNotification: \(notification.alertBody!)")
         let av = UIAlertView(title:notification.alertBody!,
             message:""                                       ,
             delegate:nil                                       ,
@@ -991,7 +991,7 @@ import Crashlytics
     }
     
     fileprivate func showLocalNotification(_ message: String) {
-        DLog("showLocalNotification: %@", function: message)
+        DLog("showLocalNotification: \(message)")
         let localNotification = UILocalNotification()
         localNotification.soundName = UILocalNotificationDefaultSoundName
         localNotification.fireDate = Date(timeIntervalSinceNow:1)
@@ -1228,7 +1228,7 @@ import Crashlytics
             // when terminating app must save immediately, don't wait to save to iCloud
             let encryptedWalletJson = TLWalletJson.getEncryptedWalletJsonContainer(self.appWallet.getWalletsJson()!,
                 password:TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase()!)
-            self.saveWalletJson(encryptedWalletJson, date:Date())
+            self.saveWalletJson(encryptedWalletJson as (NSString), date:Date())
         }
         self.saveWalletJsonCloud()
     }
@@ -1277,11 +1277,11 @@ import Crashlytics
                         }
                 })
             } else {
-                self.saveWalletJson(encryptedWalletJson, date:Date())
+                self.saveWalletJson(encryptedWalletJson as (NSString), date:Date())
                 DLog("saveFileToCloud ! checkCloudAvailability save local done")
             }
         } else {
-            self.saveWalletJson(encryptedWalletJson, date:Date())
+            self.saveWalletJson(encryptedWalletJson as (NSString), date:Date())
             DLog("saveFileToCloud local done")
         }
         return true
