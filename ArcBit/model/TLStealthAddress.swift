@@ -168,14 +168,14 @@ class TLStealthAddress {
         let scanPublicKeyPoint = BTCCurvePoint(data: BTCDataFromHex(scanPublicKey))
         let ephemeralPrivateKeySecret = BTCBigNumber(string: ephemeralPrivateKey, base: 16)
         let key = BTCKey(curvePoint: scanPublicKeyPoint?.multiply(ephemeralPrivateKeySecret))
-        return key?.compressedPublicKey.sha256().hex()
+        return key?.compressedPublicKey.sha256().map{ String(format: "%02x", $0) }.joined()
     }
     
     class func getSharedSecretForReceiver(_ ephemeralPublicKey: String, scanPrivateKey: String) -> (String?) {
         let ephemeralPublicKeyPoint = BTCCurvePoint(data: BTCDataFromHex(ephemeralPublicKey))
         let scanPrivateKeySecret = BTCBigNumber(string: scanPrivateKey, base: 16)
         let key = BTCKey(curvePoint: ephemeralPublicKeyPoint?.multiply(scanPrivateKeySecret))
-        return key?.compressedPublicKey.sha256().hex()
+        return key?.compressedPublicKey.sha256().map{ String(format: "%02x", $0) }.joined()
     }
     
     class func getPaymentPublicKeyForReceiver(_ scanPrivateKey: String, spendPublicKey: String, ephemeralPublicKey: String) -> (String?) {
@@ -210,7 +210,7 @@ class TLStealthAddress {
     class func addPublicKeys(_ lhsPublicKey:String, rhsPublicKey:String) -> (String) {
         let lhsPoint = BTCCurvePoint(data: BTCDataFromHex(lhsPublicKey))
         let rhsPoint = BTCCurvePoint(data: BTCDataFromHex(rhsPublicKey))
-        return lhsPoint?.add(rhsPoint).data.hex()
+        return lhsPoint!.add(rhsPoint).data.map{ String(format: "%02x", $0) }.joined()
     }
     
     class func addPrivateKeys(_ lhsPrivateKey:String, rhsPrivateKey:String) -> (String) {
