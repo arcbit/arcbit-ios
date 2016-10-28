@@ -38,7 +38,7 @@ class ArcBitTests: XCTestCase {
         let challenge = "0000000000000000104424c7eda87ebd4a690b9efa09abc0ec23f2ae4c64cc4e"
         let key = BTCKey(privateKey: BTCDataFromHex(privKey))
         let signature = key?.signature(forMessage: challenge)
-        NSLog("signature: %@", signature?.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength64Characters))
+        NSLog("signature: %@", signature!.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength64Characters))
         XCTAssertTrue((key?.isValidSignature(signature, forMessage: challenge))!, "")
     }
     func testStealthAddress() {
@@ -54,7 +54,7 @@ class ArcBitTests: XCTestCase {
         
         let isTestNet = false
         
-        let stealthAddress = TLStealthAddress.createStealthAddress(expectedScanPublicKey, spendPublicKey:expectedSpendPublicKey, isTestnet:isTestNet)
+        let stealthAddress = TLStealthAddress.createStealthAddress(expectedScanPublicKey as NSString, spendPublicKey:expectedSpendPublicKey as NSString, isTestnet:isTestNet)
         NSLog("stealthAddress: %@", stealthAddress)
         XCTAssertTrue(stealthAddress == expectedStealthAddress)
         
@@ -113,18 +113,18 @@ class ArcBitTests: XCTestCase {
         XCTAssertTrue(publicKey == paymentAddressPublicKey)
         NSLog("publicKey: %@", publicKey!)
         var key = BTCKey(publicKey:publicKey!.hexToData())
-        NSLog("address: %@", key.address.base58String)
-        XCTAssertTrue(key.address.base58String == "1C6gQ79qKKG21AGCA9USKYWPvu6LzoPH5h")
+        NSLog("address: %@", key!.address.base58String)
+        XCTAssertTrue(key?.address.base58String == "1C6gQ79qKKG21AGCA9USKYWPvu6LzoPH5h")
         
         let secret = TLStealthAddress.getPaymentAddressPrivateKeySecretFromScript(stealthDataScript, scanPrivateKey:scanPrivateKey, spendPrivateKey:spendPrivateKey)
         NSLog("secret: %@", secret!)
         key = BTCKey(privateKey: BTCDataFromHex(secret))
-        key.isPublicKeyCompressed = true
+        key?.isPublicKeyCompressed = true
         
-        NSLog("address: %@", key.address.base58String)
+        NSLog("address: %@", key!.address.base58String)
         
         XCTAssertTrue(secret == paymentAddressPrivateKey)
-        XCTAssertTrue(key.address.base58String == "1C6gQ79qKKG21AGCA9USKYWPvu6LzoPH5h")
+        XCTAssertTrue(key?.address.base58String == "1C6gQ79qKKG21AGCA9USKYWPvu6LzoPH5h")
         
         let nonce:UInt32 = 0xdeadbeef
         let stealthDataScriptAndPaymentAddress = TLStealthAddress.createDataScriptAndPaymentAddress(addr,
@@ -194,39 +194,39 @@ class ArcBitTests: XCTestCase {
         
         let walletConfig = TLWalletConfig(isTestnet: false)
         let mainAddressIndex0 = [0,0]
-        let mainAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:mainAddressIndex0, isTestnet:walletConfig.isTestnet)
+        let mainAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("mainAddress0: %@", mainAddress0)
         XCTAssertTrue("1K7fXZeeQydcUvbsfvkMSQmiacV5sKRYQz" == mainAddress0)
-        TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:mainAddressIndex0, isTestnet:walletConfig.isTestnet)
-        let mainPrivKey0 = TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:mainAddressIndex0, isTestnet:walletConfig.isTestnet)
+        TLHDWalletWrapper.getPrivateKey(extendPrivKey as NSString, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
+        let mainPrivKey0 = TLHDWalletWrapper.getPrivateKey(extendPrivKey as NSString, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("mainPrivKey0: %@", mainPrivKey0)
         XCTAssertTrue("KwJhkmrjjg3AEX5gvccNAHCDcXnQLwzyZshnp5yK7vXz1mHKqDDq" == mainPrivKey0)
         
         let mainAddressIndex1 = [0,1]
-        let mainAddress1 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:mainAddressIndex1, isTestnet:walletConfig.isTestnet)
+        let mainAddress1 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:mainAddressIndex1 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("mainAddress1: %@", mainAddress1)
         XCTAssertTrue("12eQLjACXw6XwfGF9kqBwy9U7Se8qGoBuq" == mainAddress1)
-        TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:mainAddressIndex0, isTestnet:walletConfig.isTestnet)
-        let mainPrivKey1 = TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:mainAddressIndex1, isTestnet:walletConfig.isTestnet)
+        TLHDWalletWrapper.getPrivateKey(extendPrivKey as NSString, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
+        let mainPrivKey1 = TLHDWalletWrapper.getPrivateKey(extendPrivKey as NSString, sequence:mainAddressIndex1 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("mainPrivKey1: %@", mainPrivKey1)
         XCTAssertTrue("KwpCsb3wBGk7E1M9EXcZWZhRoKBoZLNc63RsSP4YspUR53Ndefyr" == mainPrivKey1)
         
         
         let changeAddressIndex0 = [1,0]
-        let changeAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:changeAddressIndex0, isTestnet:walletConfig.isTestnet)
+        let changeAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:changeAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("changeAddress0: %@", changeAddress0)
         XCTAssertTrue("1CvpGn9VxVY1nsWWL3MSWRYaBHdNkCDbmv" == changeAddress0)
-        TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:changeAddressIndex0, isTestnet:walletConfig.isTestnet)
-        let changePrivKey0 = TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:changeAddressIndex0, isTestnet:walletConfig.isTestnet)
+        TLHDWalletWrapper.getPrivateKey(extendPrivKey as NSString, sequence:changeAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
+        let changePrivKey0 = TLHDWalletWrapper.getPrivateKey(extendPrivKey as NSString, sequence:changeAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("changePrivKey0: %@", changePrivKey0)
         XCTAssertTrue("L33guNrQHMXdpFd9jpjo2mQzddwLUgUrNzK3KqAM83D9ZU1H5NDN" == changePrivKey0)
         
         let changeAddressIndex1 = [1,1]
-        let changeAddress1 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:changeAddressIndex1, isTestnet:walletConfig.isTestnet)
+        let changeAddress1 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:changeAddressIndex1 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("changeAddress1: %@", changeAddress1)
         XCTAssertTrue("17vnH8d1fBbjX7GZx727X2Y6dheaid2NUR" == changeAddress1)
-        TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:changeAddressIndex1, isTestnet:walletConfig.isTestnet)
-        let changePrivKey1 = TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:changeAddressIndex1, isTestnet:walletConfig.isTestnet)
+        TLHDWalletWrapper.getPrivateKey(extendPrivKey as NSString, sequence:changeAddressIndex1 as NSArray, isTestnet:walletConfig.isTestnet)
+        let changePrivKey1 = TLHDWalletWrapper.getPrivateKey(extendPrivKey as NSString, sequence:changeAddressIndex1 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("changePrivKey1: %@", changePrivKey1)
         XCTAssertTrue("KwiMiFtWv1PXNN3zV67TC59tWJxPbeagMJU1SSr3uLssAC82UKhf" == changePrivKey1)
     }
@@ -290,11 +290,11 @@ class ArcBitTests: XCTestCase {
         
         let extendPubKey = TLHDWalletWrapper.getExtendPubKey(extendPrivKey)
         let mainAddressIndex0 = [0,0]
-        let mainAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:mainAddressIndex0, isTestnet:walletConfig.isTestnet)
+        let mainAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
         let fromAddress = BTCAddress(base58String: mainAddress0)
         XCTAssertTrue("1K7fXZeeQydcUvbsfvkMSQmiacV5sKRYQz" == mainAddress0)
         let changeAddressIndex0 = [1,0]
-        let changeAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:changeAddressIndex0, isTestnet:walletConfig.isTestnet)
+        let changeAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:changeAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
         XCTAssertTrue("1CvpGn9VxVY1nsWWL3MSWRYaBHdNkCDbmv" == changeAddress0)
 
         var hdWallets = NSMutableArray()
@@ -311,7 +311,7 @@ class ArcBitTests: XCTestCase {
         accountDict.setObject(0, forKey: "account_idx" as NSCopying)
         var changeAdresses = NSMutableArray()
         var changeAdress = NSMutableDictionary()
-        changeAdress.setObject(changeAddress0, forKey: "address")
+        changeAdress.setObject(changeAddress0, forKey: "address" as NSCopying)
         changeAdress.setObject(0, forKey: "index" as NSCopying)
         changeAdress.setObject(1, forKey: "status" as NSCopying)
         changeAdresses.add(changeAdress)
@@ -319,7 +319,7 @@ class ArcBitTests: XCTestCase {
         
         var mainAddresses = NSMutableArray()
         var mainAddress = NSMutableDictionary()
-        mainAddress.setObject(mainAddress0, forKey: "address")
+        mainAddress.setObject(mainAddress0, forKey: "address" as NSCopying)
         mainAddress.setObject(0, forKey: "index" as NSCopying)
         mainAddress.setObject(1, forKey: "status" as NSCopying)
         mainAddresses.add(mainAddress)
@@ -349,8 +349,8 @@ class ArcBitTests: XCTestCase {
         accountDict.setObject(stealthAddresses, forKey: "stealth_addresses" as NSCopying)
         accounts.add(accountDict)
         
-        accountDict.setObject(extendPrivKey, forKey: "xprv")
-        accountDict.setObject(extendPubKey, forKey: "xpub")
+        accountDict.setObject(extendPrivKey, forKey: "xprv" as NSCopying)
+        accountDict.setObject(extendPubKey, forKey: "xpub" as NSCopying)
         
         hdWallet.setObject(accounts, forKey: "accounts" as NSCopying)
         hdWallets.add(hdWallet)
@@ -378,10 +378,10 @@ class ArcBitTests: XCTestCase {
         
         let mockUnspentOutput = { (txid: String, value: UInt64, txOutputN: Int) -> NSDictionary in
             var unspentOutput = NSMutableDictionary()
-            unspentOutput.setObject(TLWalletUtils.reverseHexString(txid), forKey: "tx_hash")
+            unspentOutput.setObject(TLWalletUtils.reverseHexString(txid), forKey: "tx_hash" as NSCopying)
             unspentOutput.setObject(txid, forKey: "tx_hash_big_endian" as NSCopying)
             unspentOutput.setObject(txOutputN, forKey: "tx_output_n" as NSCopying)
-            unspentOutput.setObject(BTCScript(address: fromAddress).hex, forKey: "script")
+            unspentOutput.setObject(BTCScript(address: fromAddress).hex, forKey: "script" as NSCopying)
             unspentOutput.setObject(NSNumber(value: value as UInt64), forKey: "value" as NSCopying)
             unspentOutput.setObject(6, forKey: "confirmations" as NSCopying)
             return unspentOutput
@@ -408,7 +408,7 @@ class ArcBitTests: XCTestCase {
                 accountObject.unspentOutputs!.add(unspentOutput1)
                 accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
                 
-                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts, feeAmount: feeAmount, error: {
+                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
                     (data: String?) in
                 })
                 
@@ -423,20 +423,20 @@ class ArcBitTests: XCTestCase {
 
                 let transaction = BTCTransaction(hex: txHex)
                 
-                XCTAssertTrue(transaction.inputs.count == 2)
-                let input0 = transaction.inputs[0] as! BTCTransactionInput
+                XCTAssertTrue(transaction?.inputs.count == 2)
+                let input0 = transaction?.inputs[0] as! BTCTransactionInput
                 XCTAssertTrue(input0.previousTransactionID == txid0)
                 XCTAssertTrue(input0.outpoint.index == 0)
-                let input1 = transaction.inputs[1] as! BTCTransactionInput
+                let input1 = transaction?.inputs[1] as! BTCTransactionInput
                 XCTAssertTrue(input1.previousTransactionID == txid1)
                 XCTAssertTrue(input1.outpoint.index == 1)
                 
-                XCTAssertTrue(transaction.outputs.count == 2)
-                let output0 = transaction.outputs[0] as! BTCTransactionOutput
+                XCTAssertTrue(transaction?.outputs.count == 2)
+                let output0 = transaction?.outputs[0] as! BTCTransactionOutput
                 XCTAssertTrue(output0.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
                 XCTAssertTrue(output0.value == 100000000)
                 XCTAssertTrue(output0.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
-                let output1 = transaction.outputs[1] as! BTCTransactionOutput
+                let output1 = transaction?.outputs[1] as! BTCTransactionOutput
                 XCTAssertTrue(output1.script.hex == "76a91489c55a3ca6676c9f7f260a6439c83249b747380288ac")
                 XCTAssertTrue(output1.value == 2400000000)
                 XCTAssertTrue(output1.script.standardAddress.base58String == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
@@ -454,7 +454,7 @@ class ArcBitTests: XCTestCase {
                 accountObject.unspentOutputs!.add(unspentOutput0)
                 accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
                 
-                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts, feeAmount: feeAmount, error: {
+                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
                     (data: String?) in
                 })
                 
@@ -469,20 +469,20 @@ class ArcBitTests: XCTestCase {
 
                 let transaction = BTCTransaction(hex: txHex)
                 
-                XCTAssertTrue(transaction.inputs.count == 2)
-                let input0 = transaction.inputs[0] as! BTCTransactionInput
+                XCTAssertTrue(transaction?.inputs.count == 2)
+                let input0 = transaction?.inputs[0] as! BTCTransactionInput
                 XCTAssertTrue(input0.previousTransactionID == txid0)
                 XCTAssertTrue(input0.outpoint.index == 0)
-                let input1 = transaction.inputs[1] as! BTCTransactionInput
+                let input1 = transaction?.inputs[1] as! BTCTransactionInput
                 XCTAssertTrue(input1.previousTransactionID == txid1)
                 XCTAssertTrue(input1.outpoint.index == 1)
                 
-                XCTAssertTrue(transaction.outputs.count == 2)
-                let output0 = transaction.outputs[0] as! BTCTransactionOutput
+                XCTAssertTrue(transaction?.outputs.count == 2)
+                let output0 = transaction?.outputs[0] as! BTCTransactionOutput
                 XCTAssertTrue(output0.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
                 XCTAssertTrue(output0.value == 100000000)
                 XCTAssertTrue(output0.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
-                let output1 = transaction.outputs[1] as! BTCTransactionOutput
+                let output1 = transaction?.outputs[1] as! BTCTransactionOutput
                 XCTAssertTrue(output1.script.hex == "76a91489c55a3ca6676c9f7f260a6439c83249b747380288ac")
                 XCTAssertTrue(output1.value == 2400000000)
                 XCTAssertTrue(output1.script.standardAddress.base58String == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
@@ -563,7 +563,7 @@ class ArcBitTests: XCTestCase {
                 
                 accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
                 
-                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts, feeAmount: feeAmount, error: {
+                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
                     (data: String?) in
                 })
                 
@@ -578,65 +578,65 @@ class ArcBitTests: XCTestCase {
 
                 let transaction = BTCTransaction(hex: txHex)
                 
-                XCTAssertTrue(transaction.inputs.count == 17)
-                let input0 = transaction.inputs[0] as! BTCTransactionInput
+                XCTAssertTrue(transaction?.inputs.count == 17)
+                let input0 = transaction?.inputs[0] as! BTCTransactionInput
                 XCTAssertTrue(input0.previousTransactionID == txid0)
                 XCTAssertTrue(input0.outpoint.index == 0)
-                let input1 = transaction.inputs[1] as! BTCTransactionInput
+                let input1 = transaction?.inputs[1] as! BTCTransactionInput
                 XCTAssertTrue(input1.previousTransactionID == txid1)
                 XCTAssertTrue(input1.outpoint.index == 1)
-                let input2 = transaction.inputs[2] as! BTCTransactionInput
+                let input2 = transaction?.inputs[2] as! BTCTransactionInput
                 XCTAssertTrue(input2.previousTransactionID == txid2)
                 XCTAssertTrue(input2.outpoint.index == 0)
-                let input3 = transaction.inputs[3] as! BTCTransactionInput
+                let input3 = transaction?.inputs[3] as! BTCTransactionInput
                 XCTAssertTrue(input3.previousTransactionID == txid3)
                 XCTAssertTrue(input3.outpoint.index == 1)
-                let input4 = transaction.inputs[4] as! BTCTransactionInput
+                let input4 = transaction?.inputs[4] as! BTCTransactionInput
                 XCTAssertTrue(input4.previousTransactionID == txid4)
                 XCTAssertTrue(input4.outpoint.index == 0)
-                let input5 = transaction.inputs[5] as! BTCTransactionInput
+                let input5 = transaction?.inputs[5] as! BTCTransactionInput
                 XCTAssertTrue(input5.previousTransactionID == txid5)
                 XCTAssertTrue(input5.outpoint.index == 1)
-                let input6 = transaction.inputs[6] as! BTCTransactionInput
+                let input6 = transaction?.inputs[6] as! BTCTransactionInput
                 XCTAssertTrue(input6.previousTransactionID == txid6)
                 XCTAssertTrue(input6.outpoint.index == 1)
-                let input7 = transaction.inputs[7] as! BTCTransactionInput
+                let input7 = transaction?.inputs[7] as! BTCTransactionInput
                 XCTAssertTrue(input7.previousTransactionID == txid7)
                 XCTAssertTrue(input7.outpoint.index == 0)
-                let input8 = transaction.inputs[8] as! BTCTransactionInput
+                let input8 = transaction?.inputs[8] as! BTCTransactionInput
                 XCTAssertTrue(input8.previousTransactionID == txid8)
                 XCTAssertTrue(input8.outpoint.index == 1)
-                let input9 = transaction.inputs[9] as! BTCTransactionInput
+                let input9 = transaction?.inputs[9] as! BTCTransactionInput
                 XCTAssertTrue(input9.previousTransactionID == txid9)
                 XCTAssertTrue(input9.outpoint.index == 0)
-                let input10 = transaction.inputs[10] as! BTCTransactionInput
+                let input10 = transaction?.inputs[10] as! BTCTransactionInput
                 XCTAssertTrue(input10.previousTransactionID == txid10)
                 XCTAssertTrue(input10.outpoint.index == 1)
-                let input11 = transaction.inputs[11] as! BTCTransactionInput
+                let input11 = transaction?.inputs[11] as! BTCTransactionInput
                 XCTAssertTrue(input11.previousTransactionID == txid11)
                 XCTAssertTrue(input11.outpoint.index == 0)
-                let input12 = transaction.inputs[12] as! BTCTransactionInput
+                let input12 = transaction?.inputs[12] as! BTCTransactionInput
                 XCTAssertTrue(input12.previousTransactionID == txid12)
                 XCTAssertTrue(input12.outpoint.index == 0)
-                let input13 = transaction.inputs[13] as! BTCTransactionInput
+                let input13 = transaction?.inputs[13] as! BTCTransactionInput
                 XCTAssertTrue(input13.previousTransactionID == txid13)
                 XCTAssertTrue(input13.outpoint.index == 0)
-                let input14 = transaction.inputs[14] as! BTCTransactionInput
+                let input14 = transaction?.inputs[14] as! BTCTransactionInput
                 XCTAssertTrue(input14.previousTransactionID == txid14)
                 XCTAssertTrue(input14.outpoint.index == 1)
-                let input15 = transaction.inputs[15] as! BTCTransactionInput
+                let input15 = transaction?.inputs[15] as! BTCTransactionInput
                 XCTAssertTrue(input15.previousTransactionID == txid15)
                 XCTAssertTrue(input15.outpoint.index == 0)
-                let input16 = transaction.inputs[16] as! BTCTransactionInput
+                let input16 = transaction?.inputs[16] as! BTCTransactionInput
                 XCTAssertTrue(input16.previousTransactionID == txid16)
                 XCTAssertTrue(input16.outpoint.index == 0)
                 
-                XCTAssertTrue(transaction.outputs.count == 2)
-                let output0 = transaction.outputs[0] as! BTCTransactionOutput
+                XCTAssertTrue(transaction?.outputs.count == 2)
+                let output0 = transaction?.outputs[0] as! BTCTransactionOutput
                 XCTAssertTrue(output0.script.hex == "76a9144a5fba237213a062f6f57978f796390bdcf8d01588ac")
                 XCTAssertTrue(output0.value == 400057456)
                 XCTAssertTrue(output0.script.standardAddress.base58String == "17nFgS1YaDPnXKMPQkZVdNQqZnVqRgBwnZ")
-                let output1 = transaction.outputs[1] as! BTCTransactionOutput
+                let output1 = transaction?.outputs[1] as! BTCTransactionOutput
                 XCTAssertTrue(output1.script.hex == "76a9145be32612930b8323add2212a4ec03c1562084f8488ac")
                 XCTAssertTrue(output1.value == 40000000000)
                 XCTAssertTrue(output1.script.standardAddress.base58String == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
@@ -670,7 +670,7 @@ class ArcBitTests: XCTestCase {
                 
                 accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
                 
-                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts, feeAmount: feeAmount, error: {
+                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
                     (data: String?) in
                 })
                 
@@ -685,66 +685,66 @@ class ArcBitTests: XCTestCase {
 
                 let transaction = BTCTransaction(hex: txHex)
                 
-                XCTAssertTrue(transaction.inputs.count == 17)
-                let input0 = transaction.inputs[0] as! BTCTransactionInput
+                XCTAssertTrue(transaction?.inputs.count == 17)
+                let input0 = transaction?.inputs[0] as! BTCTransactionInput
                 XCTAssertTrue(input0.previousTransactionID == txid0)
                 XCTAssertTrue(input0.outpoint.index == 0)
-                let input1 = transaction.inputs[1] as! BTCTransactionInput
+                let input1 = transaction?.inputs[1] as! BTCTransactionInput
                 XCTAssertTrue(input1.previousTransactionID == txid1)
                 XCTAssertTrue(input1.outpoint.index == 1)
-                let input2 = transaction.inputs[2] as! BTCTransactionInput
+                let input2 = transaction?.inputs[2] as! BTCTransactionInput
                 XCTAssertTrue(input2.previousTransactionID == txid2)
                 XCTAssertTrue(input2.outpoint.index == 0)
-                let input3 = transaction.inputs[3] as! BTCTransactionInput
+                let input3 = transaction?.inputs[3] as! BTCTransactionInput
                 XCTAssertTrue(input3.previousTransactionID == txid3)
                 XCTAssertTrue(input3.outpoint.index == 1)
-                let input4 = transaction.inputs[4] as! BTCTransactionInput
+                let input4 = transaction?.inputs[4] as! BTCTransactionInput
                 XCTAssertTrue(input4.previousTransactionID == txid4)
                 XCTAssertTrue(input4.outpoint.index == 0)
-                let input5 = transaction.inputs[5] as! BTCTransactionInput
+                let input5 = transaction?.inputs[5] as! BTCTransactionInput
                 XCTAssertTrue(input5.previousTransactionID == txid5)
                 XCTAssertTrue(input5.outpoint.index == 1)
-                let input6 = transaction.inputs[6] as! BTCTransactionInput
+                let input6 = transaction?.inputs[6] as! BTCTransactionInput
                 XCTAssertTrue(input6.previousTransactionID == txid6)
                 XCTAssertTrue(input6.outpoint.index == 1)
-                let input7 = transaction.inputs[7] as! BTCTransactionInput
+                let input7 = transaction?.inputs[7] as! BTCTransactionInput
                 XCTAssertTrue(input7.previousTransactionID == txid7)
                 XCTAssertTrue(input7.outpoint.index == 0)
-                let input8 = transaction.inputs[8] as! BTCTransactionInput
+                let input8 = transaction?.inputs[8] as! BTCTransactionInput
                 XCTAssertTrue(input8.previousTransactionID == txid8)
                 XCTAssertTrue(input8.outpoint.index == 1)
-                let input9 = transaction.inputs[9] as! BTCTransactionInput
+                let input9 = transaction?.inputs[9] as! BTCTransactionInput
                 XCTAssertTrue(input9.previousTransactionID == txid9)
                 XCTAssertTrue(input9.outpoint.index == 0)
-                let input10 = transaction.inputs[10] as! BTCTransactionInput
+                let input10 = transaction?.inputs[10] as! BTCTransactionInput
                 XCTAssertTrue(input10.previousTransactionID == txid10)
                 XCTAssertTrue(input10.outpoint.index == 1)
-                let input11 = transaction.inputs[11] as! BTCTransactionInput
+                let input11 = transaction?.inputs[11] as! BTCTransactionInput
                 XCTAssertTrue(input11.previousTransactionID == txid11)
                 XCTAssertTrue(input11.outpoint.index == 0)
-                let input12 = transaction.inputs[12] as! BTCTransactionInput
+                let input12 = transaction?.inputs[12] as! BTCTransactionInput
                 XCTAssertTrue(input12.previousTransactionID == txid12)
                 XCTAssertTrue(input12.outpoint.index == 0)
-                let input13 = transaction.inputs[13] as! BTCTransactionInput
+                let input13 = transaction?.inputs[13] as! BTCTransactionInput
                 XCTAssertTrue(input13.previousTransactionID == txid13)
                 XCTAssertTrue(input13.outpoint.index == 0)
-                let input14 = transaction.inputs[14] as! BTCTransactionInput
+                let input14 = transaction?.inputs[14] as! BTCTransactionInput
                 XCTAssertTrue(input14.previousTransactionID == txid14)
                 XCTAssertTrue(input14.outpoint.index == 1)
-                let input15 = transaction.inputs[15] as! BTCTransactionInput
+                let input15 = transaction?.inputs[15] as! BTCTransactionInput
                 XCTAssertTrue(input15.previousTransactionID == txid15)
                 XCTAssertTrue(input15.outpoint.index == 0)
-                let input16 = transaction.inputs[16] as! BTCTransactionInput
+                let input16 = transaction?.inputs[16] as! BTCTransactionInput
                 XCTAssertTrue(input16.previousTransactionID == txid16)
                 XCTAssertTrue(input16.outpoint.index == 0)
                 
                 
-                XCTAssertTrue(transaction.outputs.count == 2)
-                let output0 = transaction.outputs[0] as! BTCTransactionOutput
+                XCTAssertTrue(transaction?.outputs.count == 2)
+                let output0 = transaction?.outputs[0] as! BTCTransactionOutput
                 XCTAssertTrue(output0.script.hex == "76a9144a5fba237213a062f6f57978f796390bdcf8d01588ac")
                 XCTAssertTrue(output0.value == 400057456)
                 XCTAssertTrue(output0.script.standardAddress.base58String == "17nFgS1YaDPnXKMPQkZVdNQqZnVqRgBwnZ")
-                let output1 = transaction.outputs[1] as! BTCTransactionOutput
+                let output1 = transaction?.outputs[1] as! BTCTransactionOutput
                 XCTAssertTrue(output1.script.hex == "76a9145be32612930b8323add2212a4ec03c1562084f8488ac")
                 XCTAssertTrue(output1.value == 40000000000)
                 XCTAssertTrue(output1.script.standardAddress.base58String == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
@@ -781,7 +781,7 @@ class ArcBitTests: XCTestCase {
                 accountObject.unspentOutputs!.add(unspentOutput1)
                 accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
                 
-                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts,
+                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray,
                     feeAmount: feeAmount, nonce: nonce, ephemeralPrivateKeyHex: ephemeralPrivateKeyHex, error: {
                         (data: String?) in
                 })
@@ -797,24 +797,24 @@ class ArcBitTests: XCTestCase {
 
                 let transaction = BTCTransaction(hex: txHex)
                 
-                XCTAssertTrue(transaction.inputs.count == 2)
-                let input0 = transaction.inputs[0] as! BTCTransactionInput
+                XCTAssertTrue(transaction?.inputs.count == 2)
+                let input0 = transaction?.inputs[0] as! BTCTransactionInput
                 XCTAssertTrue(input0.previousTransactionID == txid0)
                 XCTAssertTrue(input0.outpoint.index == 0)
-                let input1 = transaction.inputs[1] as! BTCTransactionInput
+                let input1 = transaction?.inputs[1] as! BTCTransactionInput
                 XCTAssertTrue(input1.previousTransactionID == txid1)
                 XCTAssertTrue(input1.outpoint.index == 1)
                 
-                XCTAssertTrue(transaction.outputs.count == 3)
-                let output0 = transaction.outputs[0] as! BTCTransactionOutput
+                XCTAssertTrue(transaction?.outputs.count == 3)
+                let output0 = transaction?.outputs[0] as! BTCTransactionOutput
                 XCTAssertTrue(output0.script.hex == "6a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd")
                 XCTAssertTrue(output0.value == 0)
                 XCTAssertTrue(output0.script.standardAddress == nil)
-                let output1 = transaction.outputs[1] as! BTCTransactionOutput
+                let output1 = transaction?.outputs[1] as! BTCTransactionOutput
                 XCTAssertTrue(output1.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
                 XCTAssertTrue(output1.value == 100000000)
                 XCTAssertTrue(output1.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
-                let output2 = transaction.outputs[2] as! BTCTransactionOutput
+                let output2 = transaction?.outputs[2] as! BTCTransactionOutput
                 XCTAssertTrue(output2.script.hex == "76a914d9bbccb1b996061b735b35841d90844c263fbc7388ac")
                 XCTAssertTrue(output2.value == 2400000000)
                 XCTAssertTrue(output2.script.standardAddress.base58String == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
@@ -832,7 +832,7 @@ class ArcBitTests: XCTestCase {
                 accountObject.unspentOutputs!.add(unspentOutput0)
                 accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
                 
-                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts,
+                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray,
                     feeAmount: feeAmount, nonce: nonce, ephemeralPrivateKeyHex: ephemeralPrivateKeyHex, error: {
                         (data: String?) in
                 })
@@ -848,24 +848,24 @@ class ArcBitTests: XCTestCase {
 
                 let transaction = BTCTransaction(hex: txHex)
                 
-                XCTAssertTrue(transaction.inputs.count == 2)
-                let input0 = transaction.inputs[0] as! BTCTransactionInput
+                XCTAssertTrue(transaction?.inputs.count == 2)
+                let input0 = transaction?.inputs[0] as! BTCTransactionInput
                 XCTAssertTrue(input0.previousTransactionID == txid0)
                 XCTAssertTrue(input0.outpoint.index == 0)
-                let input1 = transaction.inputs[1] as! BTCTransactionInput
+                let input1 = transaction?.inputs[1] as! BTCTransactionInput
                 XCTAssertTrue(input1.previousTransactionID == txid1)
                 XCTAssertTrue(input1.outpoint.index == 1)
                 
-                XCTAssertTrue(transaction.outputs.count == 3)
-                let output0 = transaction.outputs[0] as! BTCTransactionOutput
+                XCTAssertTrue(transaction?.outputs.count == 3)
+                let output0 = transaction?.outputs[0] as! BTCTransactionOutput
                 XCTAssertTrue(output0.script.hex == "6a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd")
                 XCTAssertTrue(output0.value == 0)
                 XCTAssertTrue(output0.script.standardAddress == nil)
-                let output1 = transaction.outputs[1] as! BTCTransactionOutput
+                let output1 = transaction?.outputs[1] as! BTCTransactionOutput
                 XCTAssertTrue(output1.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
                 XCTAssertTrue(output1.value == 100000000)
                 XCTAssertTrue(output1.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
-                let output2 = transaction.outputs[2] as! BTCTransactionOutput
+                let output2 = transaction?.outputs[2] as! BTCTransactionOutput
                 XCTAssertTrue(output2.script.hex == "76a914d9bbccb1b996061b735b35841d90844c263fbc7388ac")
                 XCTAssertTrue(output2.value == 2400000000)
                 XCTAssertTrue(output2.script.standardAddress.base58String == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
@@ -949,7 +949,7 @@ class ArcBitTests: XCTestCase {
                 
                 accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
                 
-                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts,
+                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray,
                     feeAmount: feeAmount, nonce: nonce, ephemeralPrivateKeyHex: ephemeralPrivateKeyHex, error: {
                     (data: String?) in
                 })
@@ -965,69 +965,69 @@ class ArcBitTests: XCTestCase {
 
                 let transaction = BTCTransaction(hex: txHex)
                 
-                XCTAssertTrue(transaction.inputs.count == 17)
-                let input0 = transaction.inputs[0] as! BTCTransactionInput
+                XCTAssertTrue(transaction?.inputs.count == 17)
+                let input0 = transaction?.inputs[0] as! BTCTransactionInput
                 XCTAssertTrue(input0.previousTransactionID == txid0)
                 XCTAssertTrue(input0.outpoint.index == 0)
-                let input1 = transaction.inputs[1] as! BTCTransactionInput
+                let input1 = transaction?.inputs[1] as! BTCTransactionInput
                 XCTAssertTrue(input1.previousTransactionID == txid1)
                 XCTAssertTrue(input1.outpoint.index == 1)
-                let input2 = transaction.inputs[2] as! BTCTransactionInput
+                let input2 = transaction?.inputs[2] as! BTCTransactionInput
                 XCTAssertTrue(input2.previousTransactionID == txid2)
                 XCTAssertTrue(input2.outpoint.index == 0)
-                let input3 = transaction.inputs[3] as! BTCTransactionInput
+                let input3 = transaction?.inputs[3] as! BTCTransactionInput
                 XCTAssertTrue(input3.previousTransactionID == txid3)
                 XCTAssertTrue(input3.outpoint.index == 1)
-                let input4 = transaction.inputs[4] as! BTCTransactionInput
+                let input4 = transaction?.inputs[4] as! BTCTransactionInput
                 XCTAssertTrue(input4.previousTransactionID == txid4)
                 XCTAssertTrue(input4.outpoint.index == 0)
-                let input5 = transaction.inputs[5] as! BTCTransactionInput
+                let input5 = transaction?.inputs[5] as! BTCTransactionInput
                 XCTAssertTrue(input5.previousTransactionID == txid5)
                 XCTAssertTrue(input5.outpoint.index == 1)
-                let input6 = transaction.inputs[6] as! BTCTransactionInput
+                let input6 = transaction?.inputs[6] as! BTCTransactionInput
                 XCTAssertTrue(input6.previousTransactionID == txid6)
                 XCTAssertTrue(input6.outpoint.index == 1)
-                let input7 = transaction.inputs[7] as! BTCTransactionInput
+                let input7 = transaction?.inputs[7] as! BTCTransactionInput
                 XCTAssertTrue(input7.previousTransactionID == txid7)
                 XCTAssertTrue(input7.outpoint.index == 0)
-                let input8 = transaction.inputs[8] as! BTCTransactionInput
+                let input8 = transaction?.inputs[8] as! BTCTransactionInput
                 XCTAssertTrue(input8.previousTransactionID == txid8)
                 XCTAssertTrue(input8.outpoint.index == 1)
-                let input9 = transaction.inputs[9] as! BTCTransactionInput
+                let input9 = transaction?.inputs[9] as! BTCTransactionInput
                 XCTAssertTrue(input9.previousTransactionID == txid9)
                 XCTAssertTrue(input9.outpoint.index == 0)
-                let input10 = transaction.inputs[10] as! BTCTransactionInput
+                let input10 = transaction?.inputs[10] as! BTCTransactionInput
                 XCTAssertTrue(input10.previousTransactionID == txid10)
                 XCTAssertTrue(input10.outpoint.index == 1)
-                let input11 = transaction.inputs[11] as! BTCTransactionInput
+                let input11 = transaction?.inputs[11] as! BTCTransactionInput
                 XCTAssertTrue(input11.previousTransactionID == txid11)
                 XCTAssertTrue(input11.outpoint.index == 0)
-                let input12 = transaction.inputs[12] as! BTCTransactionInput
+                let input12 = transaction?.inputs[12] as! BTCTransactionInput
                 XCTAssertTrue(input12.previousTransactionID == txid12)
                 XCTAssertTrue(input12.outpoint.index == 0)
-                let input13 = transaction.inputs[13] as! BTCTransactionInput
+                let input13 = transaction?.inputs[13] as! BTCTransactionInput
                 XCTAssertTrue(input13.previousTransactionID == txid13)
                 XCTAssertTrue(input13.outpoint.index == 0)
-                let input14 = transaction.inputs[14] as! BTCTransactionInput
+                let input14 = transaction?.inputs[14] as! BTCTransactionInput
                 XCTAssertTrue(input14.previousTransactionID == txid14)
                 XCTAssertTrue(input14.outpoint.index == 1)
-                let input15 = transaction.inputs[15] as! BTCTransactionInput
+                let input15 = transaction?.inputs[15] as! BTCTransactionInput
                 XCTAssertTrue(input15.previousTransactionID == txid15)
                 XCTAssertTrue(input15.outpoint.index == 0)
-                let input16 = transaction.inputs[16] as! BTCTransactionInput
+                let input16 = transaction?.inputs[16] as! BTCTransactionInput
                 XCTAssertTrue(input16.previousTransactionID == txid16)
                 XCTAssertTrue(input16.outpoint.index == 0)
                 
-                XCTAssertTrue(transaction.outputs.count == 3)
-                let output0 = transaction.outputs[0] as! BTCTransactionOutput
+                XCTAssertTrue(transaction?.outputs.count == 3)
+                let output0 = transaction?.outputs[0] as! BTCTransactionOutput
                 XCTAssertTrue(output0.script.hex == "6a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd")
                 XCTAssertTrue(output0.value == 0)
                 XCTAssertTrue(output0.script.standardAddress == nil)
-                let output1 = transaction.outputs[1] as! BTCTransactionOutput
+                let output1 = transaction?.outputs[1] as! BTCTransactionOutput
                 XCTAssertTrue(output1.script.hex == "76a914d9bbccb1b996061b735b35841d90844c263fbc7388ac")
                 XCTAssertTrue(output1.value == 400057456)
                 XCTAssertTrue(output1.script.standardAddress.base58String == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
-                let output2 = transaction.outputs[2] as! BTCTransactionOutput
+                let output2 = transaction?.outputs[2] as! BTCTransactionOutput
                 XCTAssertTrue(output2.script.hex == "76a9145be32612930b8323add2212a4ec03c1562084f8488ac")
                 XCTAssertTrue(output2.value == 40000000000)
                 XCTAssertTrue(output2.script.standardAddress.base58String == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
@@ -1061,7 +1061,7 @@ class ArcBitTests: XCTestCase {
                 
                 accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
                 
-                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts,
+                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray,
                     feeAmount: feeAmount, nonce: nonce, ephemeralPrivateKeyHex: ephemeralPrivateKeyHex, error: {
                     (data: String?) in
                 })
@@ -1077,70 +1077,70 @@ class ArcBitTests: XCTestCase {
 
                 let transaction = BTCTransaction(hex: txHex)
                 
-                XCTAssertTrue(transaction.inputs.count == 17)
-                let input0 = transaction.inputs[0] as! BTCTransactionInput
+                XCTAssertTrue(transaction?.inputs.count == 17)
+                let input0 = transaction?.inputs[0] as! BTCTransactionInput
                 XCTAssertTrue(input0.previousTransactionID == txid0)
                 XCTAssertTrue(input0.outpoint.index == 0)
-                let input1 = transaction.inputs[1] as! BTCTransactionInput
+                let input1 = transaction?.inputs[1] as! BTCTransactionInput
                 XCTAssertTrue(input1.previousTransactionID == txid1)
                 XCTAssertTrue(input1.outpoint.index == 1)
-                let input2 = transaction.inputs[2] as! BTCTransactionInput
+                let input2 = transaction?.inputs[2] as! BTCTransactionInput
                 XCTAssertTrue(input2.previousTransactionID == txid2)
                 XCTAssertTrue(input2.outpoint.index == 0)
-                let input3 = transaction.inputs[3] as! BTCTransactionInput
+                let input3 = transaction?.inputs[3] as! BTCTransactionInput
                 XCTAssertTrue(input3.previousTransactionID == txid3)
                 XCTAssertTrue(input3.outpoint.index == 1)
-                let input4 = transaction.inputs[4] as! BTCTransactionInput
+                let input4 = transaction?.inputs[4] as! BTCTransactionInput
                 XCTAssertTrue(input4.previousTransactionID == txid4)
                 XCTAssertTrue(input4.outpoint.index == 0)
-                let input5 = transaction.inputs[5] as! BTCTransactionInput
+                let input5 = transaction?.inputs[5] as! BTCTransactionInput
                 XCTAssertTrue(input5.previousTransactionID == txid5)
                 XCTAssertTrue(input5.outpoint.index == 1)
-                let input6 = transaction.inputs[6] as! BTCTransactionInput
+                let input6 = transaction?.inputs[6] as! BTCTransactionInput
                 XCTAssertTrue(input6.previousTransactionID == txid6)
                 XCTAssertTrue(input6.outpoint.index == 1)
-                let input7 = transaction.inputs[7] as! BTCTransactionInput
+                let input7 = transaction?.inputs[7] as! BTCTransactionInput
                 XCTAssertTrue(input7.previousTransactionID == txid7)
                 XCTAssertTrue(input7.outpoint.index == 0)
-                let input8 = transaction.inputs[8] as! BTCTransactionInput
+                let input8 = transaction?.inputs[8] as! BTCTransactionInput
                 XCTAssertTrue(input8.previousTransactionID == txid8)
                 XCTAssertTrue(input8.outpoint.index == 1)
-                let input9 = transaction.inputs[9] as! BTCTransactionInput
+                let input9 = transaction?.inputs[9] as! BTCTransactionInput
                 XCTAssertTrue(input9.previousTransactionID == txid9)
                 XCTAssertTrue(input9.outpoint.index == 0)
-                let input10 = transaction.inputs[10] as! BTCTransactionInput
+                let input10 = transaction?.inputs[10] as! BTCTransactionInput
                 XCTAssertTrue(input10.previousTransactionID == txid10)
                 XCTAssertTrue(input10.outpoint.index == 1)
-                let input11 = transaction.inputs[11] as! BTCTransactionInput
+                let input11 = transaction?.inputs[11] as! BTCTransactionInput
                 XCTAssertTrue(input11.previousTransactionID == txid11)
                 XCTAssertTrue(input11.outpoint.index == 0)
-                let input12 = transaction.inputs[12] as! BTCTransactionInput
+                let input12 = transaction?.inputs[12] as! BTCTransactionInput
                 XCTAssertTrue(input12.previousTransactionID == txid12)
                 XCTAssertTrue(input12.outpoint.index == 0)
-                let input13 = transaction.inputs[13] as! BTCTransactionInput
+                let input13 = transaction?.inputs[13] as! BTCTransactionInput
                 XCTAssertTrue(input13.previousTransactionID == txid13)
                 XCTAssertTrue(input13.outpoint.index == 0)
-                let input14 = transaction.inputs[14] as! BTCTransactionInput
+                let input14 = transaction?.inputs[14] as! BTCTransactionInput
                 XCTAssertTrue(input14.previousTransactionID == txid14)
                 XCTAssertTrue(input14.outpoint.index == 1)
-                let input15 = transaction.inputs[15] as! BTCTransactionInput
+                let input15 = transaction?.inputs[15] as! BTCTransactionInput
                 XCTAssertTrue(input15.previousTransactionID == txid15)
                 XCTAssertTrue(input15.outpoint.index == 0)
-                let input16 = transaction.inputs[16] as! BTCTransactionInput
+                let input16 = transaction?.inputs[16] as! BTCTransactionInput
                 XCTAssertTrue(input16.previousTransactionID == txid16)
                 XCTAssertTrue(input16.outpoint.index == 0)
                 
                 
-                XCTAssertTrue(transaction.outputs.count == 3)
-                let output0 = transaction.outputs[0] as! BTCTransactionOutput
+                XCTAssertTrue(transaction?.outputs.count == 3)
+                let output0 = transaction?.outputs[0] as! BTCTransactionOutput
                 XCTAssertTrue(output0.script.hex == "6a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd")
                 XCTAssertTrue(output0.value == 0)
                 XCTAssertTrue(output0.script.standardAddress == nil)
-                let output1 = transaction.outputs[1] as! BTCTransactionOutput
+                let output1 = transaction?.outputs[1] as! BTCTransactionOutput
                 XCTAssertTrue(output1.script.hex == "76a914d9bbccb1b996061b735b35841d90844c263fbc7388ac")
                 XCTAssertTrue(output1.value == 400057456)
                 XCTAssertTrue(output1.script.standardAddress.base58String == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
-                let output2 = transaction.outputs[2] as! BTCTransactionOutput
+                let output2 = transaction?.outputs[2] as! BTCTransactionOutput
                 XCTAssertTrue(output2.script.hex == "76a9145be32612930b8323add2212a4ec03c1562084f8488ac")
                 XCTAssertTrue(output2.value == 40000000000)
                 XCTAssertTrue(output2.script.standardAddress.base58String == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
@@ -1174,7 +1174,7 @@ class ArcBitTests: XCTestCase {
                 accountObject.unspentOutputs!.add(unspentOutput1)
                 accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
                 
-                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts, feeAmount: feeAmount, error: {
+                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
                     (data: String?) in
                 })
                 
@@ -1189,20 +1189,20 @@ class ArcBitTests: XCTestCase {
 
                 let transaction = BTCTransaction(hex: txHex)
                 
-                XCTAssertTrue(transaction.inputs.count == 2)
-                let input0 = transaction.inputs[0] as! BTCTransactionInput
+                XCTAssertTrue(transaction?.inputs.count == 2)
+                let input0 = transaction?.inputs[0] as! BTCTransactionInput
                 XCTAssertTrue(input0.previousTransactionID == txid0)
                 XCTAssertTrue(input0.outpoint.index == 0)
-                let input1 = transaction.inputs[1] as! BTCTransactionInput
+                let input1 = transaction?.inputs[1] as! BTCTransactionInput
                 XCTAssertTrue(input1.previousTransactionID == txid1)
                 XCTAssertTrue(input1.outpoint.index == 1)
                 
-                XCTAssertTrue(transaction.outputs.count == 2)
-                let output0 = transaction.outputs[0] as! BTCTransactionOutput
+                XCTAssertTrue(transaction?.outputs.count == 2)
+                let output0 = transaction?.outputs[0] as! BTCTransactionOutput
                 XCTAssertTrue(output0.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
                 XCTAssertTrue(output0.value == 800000000)
                 XCTAssertTrue(output0.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
-                let output1 = transaction.outputs[1] as! BTCTransactionOutput
+                let output1 = transaction?.outputs[1] as! BTCTransactionOutput
                 XCTAssertTrue(output1.script.hex == "76a91482d6e3eb4cb25dfd325b4af06948d3a2e064a5f788ac")
                 XCTAssertTrue(output1.value == 900000000)
                 XCTAssertTrue(output1.script.standardAddress.base58String == changeAddress0)
@@ -1219,7 +1219,7 @@ class ArcBitTests: XCTestCase {
                 accountObject.unspentOutputs!.add(unspentOutput0)
                 accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
                 
-                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts, feeAmount: feeAmount, error: {
+                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
                     (data: String?) in
                 })
                 
@@ -1234,17 +1234,17 @@ class ArcBitTests: XCTestCase {
 
                 let transaction = BTCTransaction(hex: txHex)
                 
-                XCTAssertTrue(transaction.inputs.count == 1)
-                let input0 = transaction.inputs[0] as! BTCTransactionInput
+                XCTAssertTrue(transaction?.inputs.count == 1)
+                let input0 = transaction?.inputs[0] as! BTCTransactionInput
                 XCTAssertTrue(input0.previousTransactionID == txid1)
                 XCTAssertTrue(input0.outpoint.index == 1)
                 
-                XCTAssertTrue(transaction.outputs.count == 2)
-                let output0 = transaction.outputs[0] as! BTCTransactionOutput
+                XCTAssertTrue(transaction?.outputs.count == 2)
+                let output0 = transaction?.outputs[0] as! BTCTransactionOutput
                 XCTAssertTrue(output0.script.hex == "76a91482d6e3eb4cb25dfd325b4af06948d3a2e064a5f788ac")
                 XCTAssertTrue(output0.value == 200000000)
                 XCTAssertTrue(output0.script.standardAddress.base58String == changeAddress0)
-                let output1 = transaction.outputs[1] as! BTCTransactionOutput
+                let output1 = transaction?.outputs[1] as! BTCTransactionOutput
                 XCTAssertTrue(output1.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
                 XCTAssertTrue(output1.value == 800000000)
                 XCTAssertTrue(output1.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
@@ -1278,7 +1278,7 @@ class ArcBitTests: XCTestCase {
                 accountObject.unspentOutputs!.add(unspentOutput1)
                 accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
                 
-                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts, feeAmount: feeAmount, error: {
+                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
                     (data: String?) in
                 })
                 
@@ -1293,20 +1293,20 @@ class ArcBitTests: XCTestCase {
 
                 let transaction = BTCTransaction(hex: txHex)
                 
-                XCTAssertTrue(transaction.inputs.count == 2)
-                let input0 = transaction.inputs[0] as! BTCTransactionInput
+                XCTAssertTrue(transaction?.inputs.count == 2)
+                let input0 = transaction?.inputs[0] as! BTCTransactionInput
                 XCTAssertTrue(input0.previousTransactionID == txid0)
                 XCTAssertTrue(input0.outpoint.index == 0)
-                let input1 = transaction.inputs[1] as! BTCTransactionInput
+                let input1 = transaction?.inputs[1] as! BTCTransactionInput
                 XCTAssertTrue(input1.previousTransactionID == txid1)
                 XCTAssertTrue(input1.outpoint.index == 1)
                 
-                XCTAssertTrue(transaction.outputs.count == 2)
-                let output0 = transaction.outputs[0] as! BTCTransactionOutput
+                XCTAssertTrue(transaction?.outputs.count == 2)
+                let output0 = transaction?.outputs[0] as! BTCTransactionOutput
                 XCTAssertTrue(output0.script.hex == "76a91489c55a3ca6676c9f7f260a6439c83249b747380288ac")
                 XCTAssertTrue(output0.value == 100000000)
                 XCTAssertTrue(output0.script.standardAddress.base58String == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
-                let output1 = transaction.outputs[1] as! BTCTransactionOutput
+                let output1 = transaction?.outputs[1] as! BTCTransactionOutput
                 XCTAssertTrue(output1.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
                 XCTAssertTrue(output1.value == 100000000)
                 XCTAssertTrue(output1.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
@@ -1547,19 +1547,19 @@ class ArcBitTests: XCTestCase {
         let mainAddressIndex0 = [0,0]
         var mainAddress0:String
         var walletConfig = TLWalletConfig(isTestnet: false)
-        mainAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:mainAddressIndex0, isTestnet:walletConfig.isTestnet)
+        mainAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("mainAddress0: %@", mainAddress0)
         XCTAssertTrue("1K7fXZeeQydcUvbsfvkMSQmiacV5sKRYQz" == mainAddress0)
         var mainPrivKey0:String
-        mainPrivKey0 = TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:mainAddressIndex0, isTestnet:walletConfig.isTestnet)
+        mainPrivKey0 = TLHDWalletWrapper.getPrivateKey(extendPrivKey as NSString, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("mainPrivKey0: %@", mainPrivKey0)
         XCTAssertTrue("KwJhkmrjjg3AEX5gvccNAHCDcXnQLwzyZshnp5yK7vXz1mHKqDDq" == mainPrivKey0)
 
         walletConfig = TLWalletConfig(isTestnet: true)
-        mainAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:mainAddressIndex0, isTestnet:walletConfig.isTestnet)
+        mainAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("mainAddress0: %@", mainAddress0)
         XCTAssertTrue("mydcpcjdE14sG35VPVijGKz3Sc5nsbbeo7" == mainAddress0)
-        mainPrivKey0 = TLHDWalletWrapper.getPrivateKey(extendPrivKey, sequence:mainAddressIndex0, isTestnet:walletConfig.isTestnet)
+        mainPrivKey0 = TLHDWalletWrapper.getPrivateKey(extendPrivKey as NSString, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("mainPrivKey0: %@", mainPrivKey0)
         XCTAssertTrue("cMfhDgrbAjjRPxYxK2RVXbhHEm5p1Q6fdurFvWRpd3BzGWQYiFw6" == mainPrivKey0)
     }
