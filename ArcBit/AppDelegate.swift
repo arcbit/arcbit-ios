@@ -876,7 +876,7 @@ import Crashlytics
             let masterHex = TLHDWalletWrapper.getMasterHex(passphrase ?? "")
 
             if (walletPayload != nil) {
-                self.appWallet.loadWalletPayload(walletPayload!, masterHex:masterHex as NSString)
+                self.appWallet.loadWalletPayload(walletPayload!, masterHex:masterHex)
             } else {
                 TLPrompts.promptErrorMessage("Error".localized, message:"Error loading wallet JSON file".localized)
                 NSException(name: NSExceptionName(rawValue: "Error".localized), reason: "Error loading wallet JSON file".localized, userInfo: nil).raise()

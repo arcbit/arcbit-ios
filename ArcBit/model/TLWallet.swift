@@ -952,7 +952,7 @@ class TLWallet {
         for i in stride(from: 0, through: addressBookArray.count, by: 1) {
             let addressBook: NSDictionary = addressBookArray.object(at: i) as! NSDictionary
             if address == addressBook.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String {
-                return addressBook.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL) as! String
+                return addressBook.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL) as? String
             }
         }
         return nil
@@ -1014,16 +1014,16 @@ class TLWallet {
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED()), object: nil, userInfo: nil)
     }
     
-    func loadWalletPayload(_ walletPayload: NSDictionary, masterHex: NSString) -> () {
-        self.masterHex = masterHex as String
+    func loadWalletPayload(_ walletPayload: NSDictionary, masterHex: String) -> () {
+        self.masterHex = masterHex
         
         rootDict = NSMutableDictionary(dictionary: walletPayload)
         let walletDict = getCurrentWallet().mutableCopy() as! NSMutableDictionary
         
         let accountsArray = getAccountsArray().mutableCopy() as! NSMutableArray
         for i in stride(from: 0, through: accountsArray.count, by: 1) {
-            let accountDict: AnyObject = (accountsArray.object(at: i) as AnyObject).mutableCopy()!
-            accountsArray.replaceObjects(at: IndexSet(integer: i), with: (NSArray(object: accountDict)) as [AnyObject])
+            let accountDict: NSMutableDictionary = (accountsArray.object(at: i) as! NSDictionary).mutableCopy() as! NSMutableDictionary
+            accountsArray.replaceObject(at: i, with: accountDict)
         }
         DLog(String(format: "loadWalletPayload rootDict: 1 \n%@", rootDict!.description))
 
