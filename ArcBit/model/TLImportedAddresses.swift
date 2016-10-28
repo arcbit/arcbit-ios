@@ -37,7 +37,7 @@ import Foundation
         self.appWallet = appWallet
         self.accountAddressType = accountAddressType
         
-        for i in stride(from: 0, through: importedAddresses.count, by: 1) {
+        for i in stride(from: 0, to: importedAddresses.count, by: 1) {
             let importedAddressObject = importedAddresses.object(at: i) as! TLImportedAddress
             if (importedAddressObject.isArchived()) {
                 self.archivedImportedAddresses.add(importedAddressObject)
@@ -243,7 +243,7 @@ import Foundation
         indexes!.remove(toMoveIndex)
         
         self.importedAddresses.remove(toMoveAddressObject)
-        for i in stride(from: 0, through: self.archivedImportedAddresses.count, by: 1) {
+        for i in stride(from: 0, to: self.archivedImportedAddresses.count, by: 1) {
             let importedAddressObject = self.archivedImportedAddresses.object(at: i) as! TLImportedAddress
             
             if (importedAddressObject.getPositionInWalletArray() > toMoveAddressObject.getPositionInWalletArray()) {
@@ -260,7 +260,7 @@ import Foundation
         let toMoveAddressObject = self.addressToPositionInWalletArrayDict.object(forKey: positionInWalletArray) as! TLImportedAddress
         
         self.archivedImportedAddresses.remove(toMoveAddressObject)
-        for i in stride(from: 0, through: self.importedAddresses.count, by: 1) {
+        for i in stride(from: 0, to: self.importedAddresses.count, by: 1) {
             let importedAddressObject = self.importedAddresses.object(at: i) as! TLImportedAddress
             if (importedAddressObject.getPositionInWalletArray() > toMoveAddressObject.getPositionInWalletArray()) {
                 self.importedAddresses.insert(toMoveAddressObject, at:i)

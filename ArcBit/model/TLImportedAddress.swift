@@ -336,9 +336,9 @@ import Foundation
                 ,object:self.importedAddress, userInfo:nil)
             
             success()
-            }, failure: {(code:Int, status:String!) in
+            }, failure: {(code, status) in
                 failure()
-            } as! (Int, String?) -> ()
+            }
         )
     }
     

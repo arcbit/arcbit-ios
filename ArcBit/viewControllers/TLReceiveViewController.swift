@@ -259,7 +259,7 @@ import UIKit
         
         var pageCount = 0
 
-        for i in stride(from: 0, through: self.receiveAddresses!.count, by: 1) {
+        for i in stride(from: 0, to: self.receiveAddresses!.count, by: 1) {
             pageCount += 1
             
             var frame = CGRect()
@@ -373,7 +373,7 @@ import UIKit
     fileprivate func updateReceiveAddressArray() {
         let receivingAddressesCount = AppDelegate.instance().receiveSelectedObject!.getReceivingAddressesCount()
         self.receiveAddresses = NSMutableArray(capacity: Int(receivingAddressesCount))
-        for i in stride(from: 0, through: Int(receivingAddressesCount), by: 1) {
+        for i in stride(from: 0, to: Int(receivingAddressesCount), by: 1) {
             let address = AppDelegate.instance().receiveSelectedObject!.getReceivingAddressForSelectedObject(i)
             self.receiveAddresses!.add(address!)
         }

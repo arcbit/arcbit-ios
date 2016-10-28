@@ -196,7 +196,13 @@ import Foundation
         }
         
         if (txDict.object(forKey: "block_height") != nil && (txDict.object(forKey: "block_height") as! NSNumber).uint64Value > 0) {
-            return UInt64(TLBlockchainStatus.instance().blockHeight) - UInt64((txDict.object(forKey: "block_height") as! NSNumber).uint64Value) + UInt64(1)
+            let height = UInt64(TLBlockchainStatus.instance().blockHeight)
+            let txBlockHeight = UInt64((txDict.object(forKey: "block_height") as! NSNumber).uint64Value) + UInt64(1)
+            if txBlockHeight < height {
+                return height - txBlockHeight
+            } else {
+                return 6 //FIXME
+            }
         }
         
         return 0

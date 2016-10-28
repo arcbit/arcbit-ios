@@ -88,7 +88,7 @@ class TLCrypto {
         CC_SHA256(str, CC_LONG(strlen(str)), resultBytes)
         
         let ret = NSMutableString(capacity:Int(CC_SHA256_DIGEST_LENGTH)*2)
-        for i in stride(from: 0, through: Int(CC_SHA256_DIGEST_LENGTH), by: 1) {
+        for i in stride(from: 0, to: Int(CC_SHA256_DIGEST_LENGTH), by: 1) {
             ret.appendFormat("%02x",result[i])
         }
         return ret as String
@@ -106,7 +106,7 @@ class TLCrypto {
         CC_SHA256(result, CC_LONG(CC_SHA256_DIGEST_LENGTH), result2Bytes)
         
         let ret = NSMutableString(capacity:Int(CC_SHA256_DIGEST_LENGTH*2))
-        for i in stride(from: 0, through: Int(CC_SHA256_DIGEST_LENGTH), by: 1) {
+        for i in stride(from: 0, to: Int(CC_SHA256_DIGEST_LENGTH), by: 1) {
             ret.appendFormat("%02x",result2[i])
         }
         return ret as String

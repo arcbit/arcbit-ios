@@ -140,9 +140,9 @@ class TLBlockExplorerAPI {
             self.insightAPI!.getTx(txHash, success:{(jsonData:AnyObject!) in
                 let transformedTx = TLInsightAPI.insightTxToBlockchainTx(jsonData as! NSDictionary)
                 success(transformedTx)
-                }, failure:{(code:NSInteger, status:String!) in
+                }, failure:{(code, status) in
                     failure(code, status)
-            } as! (Int, String?) -> ())
+            })
         }
     }
     
@@ -153,9 +153,9 @@ class TLBlockExplorerAPI {
             self.insightAPI!.getTxBackground(txHash, success:{(jsonData:AnyObject!) in
                 let transformedTx = TLInsightAPI.insightTxToBlockchainTx(jsonData as! NSDictionary)
                 success(transformedTx)
-                }, failure:{(code:NSInteger, status:String!) in
+                }, failure:{(code, status) in
                     failure(code, status)
-            } as! (Int, String?) -> ())
+            })
         }
     }
     

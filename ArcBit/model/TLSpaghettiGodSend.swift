@@ -298,9 +298,9 @@
                     }
                     
                     success()
-                    }, failure:{(code:NSInteger, status:String!) in
+                    }, failure:{(code, status) in
                         failure()
-                    } as! (Int, String?) -> ()
+                    }
                 )
             }
         }
@@ -504,7 +504,7 @@
             }
             
             var stealthOutputScripts:NSMutableArray? = nil
-            for i in stride(from: 0, through: toAddressesAndAmounts.count, by: 1) {
+            for i in stride(from: 0, to: toAddressesAndAmounts.count, by: 1) {
                 let toAddress = (toAddressesAndAmounts.object(at: i) as AnyObject).object(forKey: "address") as! String
                 let amount = (toAddressesAndAmounts.object(at: i) as AnyObject).object(forKey: "amount") as! TLCoin!
                 
@@ -573,7 +573,7 @@
                 let firstTxBytes = (firstTxid as NSData).bytes.bindMemory(to: UInt8.self, capacity: firstTxid.count)
                 let secondTxBytes = (secondTxid as NSData).bytes.bindMemory(to: UInt8.self, capacity: secondTxid.count)
                 
-                for i in stride(from: 0, through: firstTxid.count, by: 1) {
+                for i in stride(from: 0, to: firstTxid.count, by: 1) {
                     if firstTxBytes[i] < secondTxBytes[i] {
                         return ComparisonResult.orderedAscending
                     } else if firstTxBytes[i] > secondTxBytes[i] {
@@ -637,7 +637,7 @@
                     let firstScriptBytes = (firstScriptData as NSData).bytes.bindMemory(to: UInt8.self, capacity: firstScriptData.count)
                     let secondScriptBytes = (secondScriptData as NSData).bytes.bindMemory(to: UInt8.self, capacity: secondScriptData.count)
 
-                    for i in stride(from: 0, through: firstScript.characters.count/2, by: 1) {
+                    for i in stride(from: 0, to: firstScript.characters.count/2, by: 1) {
                         if firstScriptBytes[i] < secondScriptBytes[i] {
                             return ComparisonResult.orderedAscending
                         } else if firstScriptBytes[i] > secondScriptBytes[i] {

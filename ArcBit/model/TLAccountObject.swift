@@ -84,7 +84,7 @@ import Foundation
         } else {
             startIdx = 0
         }
-        for i in stride(from: startIdx, through: addressesArray.count, by: 1) {
+        for i in stride(from: startIdx, to: addressesArray.count, by: 1) {
             let addressDict = addressesArray.object(at: i) as! NSDictionary
             let HDIndex = addressDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_INDEX) as! Int
             let address = addressDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String
@@ -109,7 +109,7 @@ import Foundation
         } else {
             startIdx = 0
         }
-        for i in stride(from: startIdx, through: addressesArray.count, by: 1) {
+        for i in stride(from: startIdx, to: addressesArray.count, by: 1) {
             let addressDict = addressesArray.object(at: i) as! NSDictionary
             let HDIndex = addressDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_INDEX) as! Int
             let address = addressDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String
@@ -128,7 +128,7 @@ import Foundation
         let addressesArray = accountDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MAIN_ADDRESSES) as! NSMutableArray
         let maxAddressIdx = accountDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MIN_MAIN_ADDRESS_IDX) as! Int// - 1
         
-        for i in stride(from: 0, through: maxAddressIdx, by: 1) {
+        for i in stride(from: 0, to: maxAddressIdx, by: 1) {
             let addressDict = addressesArray.object(at: i) as! NSDictionary
             assert(addressDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS) as! Int == Int(TLAddressStatus.archived.rawValue), "")
             let HDIndex = addressDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_INDEX) as! Int
@@ -150,7 +150,7 @@ import Foundation
         let addressesArray = accountDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_CHANGE_ADDRESSES) as! NSMutableArray
         let maxAddressIdx = accountDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MIN_CHANGE_ADDRESS_IDX) as! Int// - 1
         
-        for i in stride(from: 0, through: maxAddressIdx, by: 1) {
+        for i in stride(from: 0, to: maxAddressIdx, by: 1) {
             let addressDict = addressesArray.object(at: i) as! NSDictionary
             let HDIndex = addressDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_INDEX) as! Int
             
@@ -573,7 +573,7 @@ import Foundation
         receivingAddressesArray = [String]()
         
         var addressIdx = 0
-        for i in stride(from: addressIdx, through: mainActiveAddresses.count, by: 1) {
+        for i in stride(from: addressIdx, to: mainActiveAddresses.count, by: 1) {
             let address = mainActiveAddresses[addressIdx]
             if (getNumberOfTransactionsForAddress(address) == 0) {
                 break
@@ -582,7 +582,7 @@ import Foundation
         
         var lookedAtAllAddresses = false
         var receivingAddressesStartIdx = -1
-        for i in stride(from: addressIdx, through: addressIdx + TLAccountObject.MAX_ACCOUNT_WAIT_TO_RECEIVE_ADDRESS(), by: 1) {
+        for i in stride(from: addressIdx, to: addressIdx + TLAccountObject.MAX_ACCOUNT_WAIT_TO_RECEIVE_ADDRESS(), by: 1) {
             if (addressIdx >= getMainActiveAddressesCount()) {
                 lookedAtAllAddresses = true
                 break
@@ -621,7 +621,7 @@ import Foundation
     
     fileprivate func updateChangeAddresses() -> () {
         var addressIdx = 0
-        for i in stride(from: addressIdx, through: changeActiveAddresses.count, by: 1) {
+        for i in stride(from: addressIdx, to: changeActiveAddresses.count, by: 1) {
                 let address = changeActiveAddresses[addressIdx]
             if (getNumberOfTransactionsForAddress(address) == 0) {
                 break
@@ -1024,7 +1024,7 @@ import Foundation
             
             let addressToIdxDict = NSMutableDictionary(capacity: GAP_LIMIT)
             
-            for i in stride(from: lookAheadOffset, through: lookAheadOffset + GAP_LIMIT, by: 1) {
+            for i in stride(from: lookAheadOffset, to: lookAheadOffset + GAP_LIMIT, by: 1) {
                 let address = getNewMainAddress(i)
                 DLog(String(format:"getNewMainAddress HDIdx: %lu address: %@", i, address))
                 addresses.append(address)
@@ -1087,7 +1087,7 @@ import Foundation
             var addresses = [String]()
             addresses.reserveCapacity(GAP_LIMIT)
             let addressToIdxDict = NSMutableDictionary(capacity: GAP_LIMIT)
-            for i in stride(from: lookAheadOffset, through: lookAheadOffset + GAP_LIMIT, by: 1) {
+            for i in stride(from: lookAheadOffset, to: lookAheadOffset + GAP_LIMIT, by: 1) {
                 let address = getNewChangeAddress(i)
                 DLog(String(format:"getNewChangeAddress HDIdx: %lu address: %@", i, address))
                 addresses.append(address)

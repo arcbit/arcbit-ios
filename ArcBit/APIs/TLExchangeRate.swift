@@ -45,14 +45,14 @@ class TLExchangeRate {
             self.getExchangeRates({ (jsonData:AnyObject!) in
                 let array = jsonData as! NSArray
 
-                for i in stride(from: 0, through: array.count, by: 1) {
+                for i in stride(from: 0, to: array.count, by: 1) {
                     let dict = array[i] as! NSDictionary
                     (self.exchangeRateDict!)[dict["code"] as! String] = dict
                 }
                 
-                }, failure: {(code:Int, status:String!) in
+                }, failure: {(code, status) in
                     DLog("getExchangeRates failure: code:\(code) status:\(status)")
-            } as! (Int, String?) -> ())
+            })
         }
     }
     

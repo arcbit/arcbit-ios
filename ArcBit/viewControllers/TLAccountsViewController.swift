@@ -98,7 +98,7 @@ import UIKit
     }
     
     fileprivate func refreshColdWalletAccounts(_ fetchDataAgain: Bool) {
-        for i in stride(from: 0, through: AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts(), by: 1) {
+        for i in stride(from: 0, to: AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts(), by: 1) {
             let accountObject = AppDelegate.instance().coldWalletAccounts!.getAccountObjectForIdx(i)
             let indexPath = IndexPath(row: i, section:coldWalletAccountSection)
             if (!accountObject.hasFetchedAccountData() || fetchDataAgain) {
@@ -132,7 +132,7 @@ import UIKit
     }
     
     fileprivate func refreshImportedAccounts(_ fetchDataAgain: Bool) {
-        for i in stride(from: 0, through: AppDelegate.instance().importedAccounts!.getNumberOfAccounts(), by: 1) {
+        for i in stride(from: 0, to: AppDelegate.instance().importedAccounts!.getNumberOfAccounts(), by: 1) {
             let accountObject = AppDelegate.instance().importedAccounts!.getAccountObjectForIdx(i)
             let indexPath = IndexPath(row: i, section: importedAccountSection)
             if (!accountObject.hasFetchedAccountData() || fetchDataAgain) {
@@ -166,7 +166,7 @@ import UIKit
     }
     
     fileprivate func refreshImportedWatchAccounts(_ fetchDataAgain: Bool) {
-        for i in stride(from: 0, through: AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts(), by: 1) {
+        for i in stride(from: 0, to: AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts(), by: 1) {
             let accountObject = AppDelegate.instance().importedWatchAccounts!.getAccountObjectForIdx(i)
             let indexPath = IndexPath(row: i, section:importedWatchAccountSection)
             if (!accountObject.hasFetchedAccountData() || fetchDataAgain) {
@@ -202,7 +202,7 @@ import UIKit
     fileprivate func refreshImportedAddressBalances(_ fetchDataAgain: Bool) {
         if (AppDelegate.instance().importedAddresses!.getCount() > 0 &&
             (!AppDelegate.instance().importedAddresses!.hasFetchedAddressesData() || fetchDataAgain)) {
-                for i in stride(from: 0, through: AppDelegate.instance().importedAddresses!.getCount(), by: 1) {
+                for i in stride(from: 0, to: AppDelegate.instance().importedAddresses!.getCount(), by: 1) {
                     let indexPath = IndexPath(row: i, section: importedAddressSection)
                     if let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell {
                         (cell.accessoryView as! UIActivityIndicatorView).isHidden = false
@@ -212,7 +212,7 @@ import UIKit
                 }
                 
                 AppDelegate.instance().pendingOperations.addSetUpImportedAddressesOperation(AppDelegate.instance().importedAddresses!, fetchDataAgain: fetchDataAgain, success: {
-                    for i in stride(from: 0, through: AppDelegate.instance().importedAddresses!.getCount(), by: 1) {
+                    for i in stride(from: 0, to: AppDelegate.instance().importedAddresses!.getCount(), by: 1) {
                         let indexPath = IndexPath(row: i, section: self.importedAddressSection)
                         if let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell {
                             (cell.accessoryView as! UIActivityIndicatorView).stopAnimating()
@@ -231,7 +231,7 @@ import UIKit
     
     fileprivate func refreshImportedWatchAddressBalances(_ fetchDataAgain: Bool) {
         if (AppDelegate.instance().importedWatchAddresses!.getCount() > 0 && (!AppDelegate.instance().importedWatchAddresses!.hasFetchedAddressesData() || fetchDataAgain)) {
-            for i in stride(from: 0, through: AppDelegate.instance().importedWatchAddresses!.getCount(), by: 1) {
+            for i in stride(from: 0, to: AppDelegate.instance().importedWatchAddresses!.getCount(), by: 1) {
                 let indexPath = IndexPath(row: i, section: importedWatchAddressSection)
                 if let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell {
                     (cell.accessoryView as! UIActivityIndicatorView).isHidden = false
@@ -241,7 +241,7 @@ import UIKit
             }
             
             AppDelegate.instance().pendingOperations.addSetUpImportedAddressesOperation(AppDelegate.instance().importedWatchAddresses!, fetchDataAgain: fetchDataAgain, success: {
-                for i in stride(from: 0, through: AppDelegate.instance().importedWatchAddresses!.getCount(), by: 1) {
+                for i in stride(from: 0, to: AppDelegate.instance().importedWatchAddresses!.getCount(), by: 1) {
                     let indexPath = IndexPath(row: i, section: self.importedWatchAddressSection)
                     if let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell {
                         (cell.accessoryView as! UIActivityIndicatorView).stopAnimating()
@@ -260,7 +260,7 @@ import UIKit
     }
     
     fileprivate func refreshAccountBalances(_ fetchDataAgain: Bool) {
-        for i in stride(from: 0, through: AppDelegate.instance().accounts!.getNumberOfAccounts(), by: 1) {
+        for i in stride(from: 0, to: AppDelegate.instance().accounts!.getNumberOfAccounts(), by: 1) {
             let accountObject = AppDelegate.instance().accounts!.getAccountObjectForIdx(i)
             let indexPath = IndexPath(row: i, section: accountListSection)
             if (!accountObject.hasFetchedAccountData() || fetchDataAgain) {

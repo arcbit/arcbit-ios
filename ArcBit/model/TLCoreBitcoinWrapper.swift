@@ -156,7 +156,7 @@ class TLCoreBitcoinWrapper {
                 outputAddresses:outputAddresses as [AnyObject], outputAmounts:amounts as [AnyObject], isTestnet:isTestnet)
             
             if (outputScripts != nil) {
-                for i in stride(from: 0, through: outputScripts!.count, by: 1) {
+                for i in stride(from: 0, to: outputScripts!.count, by: 1) {
                     let outputScript = outputScripts!.object(at: i) as! String
                     tx?.insertOutputScript(TLWalletUtils.hexStringToData(outputScript), amount:UInt64(0), isTestnet:isTestnet)
                 }

@@ -36,7 +36,7 @@ import Foundation
         
         self.accountsDict = NSMutableDictionary(capacity: accountsArray.count)
         
-        for i in stride(from: 0, through: self.accountsArray.count, by: 1) {
+        for i in stride(from: 0, to: accountsArray.count, by: 1) {
             let accountObject = accountsArray.object(at: i) as! TLAccountObject
             if (accountObject.isArchived()) {
                 self.archivedAccountsArray.add(accountObject)
@@ -132,7 +132,7 @@ import Foundation
         let toMoveAccountObject = self.accountsDict!.object(forKey: positionInWalletArray) as! TLAccountObject
         
         self.accountsArray.remove(toMoveAccountObject)
-        for i in stride(from: 0, through: self.archivedAccountsArray.count, by: 1) {
+        for i in stride(from: 0, to: self.archivedAccountsArray.count, by: 1) {
             let accountObject = self.archivedAccountsArray.object(at: i) as! TLAccountObject
             
             if (accountObject.getPositionInWalletArray() > toMoveAccountObject.getPositionInWalletArray()) {
@@ -149,7 +149,7 @@ import Foundation
         let toMoveAccountObject = self.accountsDict!.object(forKey: positionInWalletArray) as! TLAccountObject
         
         self.archivedAccountsArray.remove(toMoveAccountObject)
-        for i in stride(from: 0, through: self.accountsArray.count, by: 1) {
+        for i in stride(from: 0, to: self.accountsArray.count, by: 1) {
             let accountObject = self.accountsArray.object(at: i) as! TLAccountObject
             if (accountObject.getPositionInWalletArray() > toMoveAccountObject.getPositionInWalletArray()) {
                 self.accountsArray.insert(toMoveAccountObject, at:i)
