@@ -35,7 +35,6 @@ protocol TLInputColdWalletKeyTableViewCellDelegate {
     
     @IBOutlet var keyInputTextView:UITextView!
     @IBOutlet var statusLabel: UILabel!
-    var accountPublicKey: String?
 
     var delegate: TLInputColdWalletKeyTableViewCellDelegate?
     
@@ -48,6 +47,7 @@ protocol TLInputColdWalletKeyTableViewCellDelegate {
         self.keyInputTextView.layer.borderWidth = 1.0
         self.keyInputTextView.layer.borderColor = UIColor.black.cgColor
         self.keyInputTextView.autocorrectionType = UITextAutocorrectionType.no
+        self.keyInputTextView.autocapitalizationType = .none
         self.keyInputTextView.text = nil
         self.setstatusLabel(false)
     }
@@ -63,10 +63,8 @@ protocol TLInputColdWalletKeyTableViewCellDelegate {
     func setstatusLabel(_ complete:Bool) {
         if complete {
             statusLabel.textColor = UIColor.green
-            statusLabel.text = "Complete".localized
         } else {
             statusLabel.textColor = UIColor.red
-            statusLabel.text = "Incomplete".localized
         }
     }
 }

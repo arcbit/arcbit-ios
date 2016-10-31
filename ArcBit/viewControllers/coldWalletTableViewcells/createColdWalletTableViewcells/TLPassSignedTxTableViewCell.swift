@@ -46,6 +46,8 @@ protocol TLPassSignedTxTableViewCellDelegate {
         super.awakeFromNib()
         self.passButtonButton.backgroundColor = TLColors.mainAppColor()
         self.passButtonButton.setTitleColor(TLColors.mainAppOppositeColor(), for:UIControlState())
+        self.passButtonButton.isEnabled = false
+        self.passButtonButton.alpha = 0.5
     }
     
     class func cellHeight() -> CGFloat {

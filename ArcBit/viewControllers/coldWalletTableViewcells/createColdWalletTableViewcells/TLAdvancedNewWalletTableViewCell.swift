@@ -110,6 +110,7 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
         self.mnemonicTextView.layer.borderWidth = 1.0
         self.mnemonicTextView.layer.borderColor = UIColor.black.cgColor
         self.mnemonicTextView.autocorrectionType = UITextAutocorrectionType.no
+        self.mnemonicTextView.autocapitalizationType = .none
         self.newWalletButton.backgroundColor = TLColors.mainAppColor()
         self.newWalletButton.setTitleColor(TLColors.mainAppOppositeColor(), for:UIControlState())
         self.newWalletButton.titleLabel!.adjustsFontSizeToFitWidth = true

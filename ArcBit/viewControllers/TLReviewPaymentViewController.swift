@@ -61,15 +61,30 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     @IBOutlet weak var totalAmountLabel: UILabel!
     @IBOutlet weak var totalFiatAmountLabel: UILabel!
     @IBOutlet weak var sendButton: UIButton!
+    weak var reviewPaymentViewController: TLReviewPaymentViewController?
     fileprivate lazy var showedPromptedForSentPaymentTxHashSet:NSMutableSet = NSMutableSet()
     fileprivate var QRImageModal: TLQRImageModal?
     fileprivate var airGapDataBase64PartsArray: Array<String>?
     var sendTimer:Timer?
     var sendTxHash:String?
-    var inputedToAddress: String? = nil
-    var inputedToAmount: TLCoin? = nil
+    var toAddress:String?
+    var toAmount:TLCoin?
     var amountMovedFromAccount: TLCoin? = nil
+    var realToAddresses: Array<String>? = nil
+    
 
+    
+    private var scannedSignedTxAirGapDataPartsDict = [Int:String]()
+    private var totalExpectedParts:Int = 0
+    private var scannedSignedTxAirGapData:String? = nil
+    
+    private var shouldPromptToScanSignedTxAirGapData = false
+    private var shouldPromptToBroadcastSignedTx = false
+    private var signedAirGapTxHex:String? = nil
+    private var signedAirGapTxHash:String? = nil
+    
+    
+    
     override var preferredStatusBarStyle : (UIStatusBarStyle) {
         return UIStatusBarStyle.lightContent
     }
@@ -83,8 +98,17 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             ,selector:#selector(TLReviewPaymentViewController.finishSend(_:)),
              name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION()), object:nil)
         updateView()
+        self.reviewPaymentViewController = self
     }
-    
+    override func viewWillAppear(_ animated: Bool) {
+        if self.shouldPromptToScanSignedTxAirGapData {
+            self.promptToScanSignedTxAirGapData()
+        } else if self.shouldPromptToBroadcastSignedTx {
+            self.shouldPromptToBroadcastSignedTx = false
+            self.promptToBroadcastColdWalletAccountSignedTx(self.signedAirGapTxHex!, txHash: self.signedAirGapTxHash!)
+        }
+    }
+
     func updateView() {
         self.fromLabel.text = TLSendFormData.instance().fromLabel
         self.toLabel.text = TLSendFormData.instance().getAddress()
@@ -165,8 +189,6 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     func showPromptPaymentSent(_ txHash: String, address: String, amount: TLCoin) {
-        self.inputedToAddress = nil
-        self.inputedToAmount = nil
         DLog("showPromptPaymentSent \(txHash)")
         let msg = String(format:"Sent %@ to %@".localized, TLCurrencyFormat.getProperAmount(amount), address)
         TLHUDWrapper.hideHUDForView(self.view, animated: true)
@@ -191,7 +213,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
         if !self.showedPromptedForSentPaymentTxHashSet.contains(self.sendTxHash!) {
             self.showedPromptedForSentPaymentTxHashSet.add(self.sendTxHash!)
-            self.showPromptPaymentSent(self.sendTxHash!, address: inputedToAddress!, amount: inputedToAmount!)
+            self.showPromptPaymentSent(self.sendTxHash!, address: self.toAddress!, amount: self.toAmount!)
         }
     }
     
@@ -202,17 +224,13 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             DLog("finishSend 2 \(webSocketNotifiedTxHash)")
             self.showedPromptedForSentPaymentTxHashSet.add(webSocketNotifiedTxHash!)
             sendTimer?.invalidate()
-            self.showPromptPaymentSent(webSocketNotifiedTxHash!, address: inputedToAddress!, amount: inputedToAmount!)
+            self.showPromptPaymentSent(webSocketNotifiedTxHash!, address: self.toAddress!, amount: self.toAmount!)
         }
     }
 
     func initiateSend() {
-        let inputtedAmount = TLSendFormData.instance().toAmount!
-        let feeAmount = TLSendFormData.instance().feeAmount!
-        let toAddress = TLSendFormData.instance().getAddress()
-        
         let unspentOutputsSum = AppDelegate.instance().godSend!.getCurrentFromUnspentOutputsSum()
-        if (unspentOutputsSum.less(inputtedAmount)) {
+        if (unspentOutputsSum.less(TLSendFormData.instance().toAmount!)) {
             // can only happen if unspentOutputsSum is for some reason less then the balance computed from the transactions, which it shouldn't
             cancelSend()
             let unspentOutputsSumString = TLCurrencyFormat.coinToProperBitcoinAmountString(unspentOutputsSum)
@@ -221,22 +239,22 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
         
         let toAddressesAndAmount = NSMutableDictionary()
-        toAddressesAndAmount.setObject(toAddress!, forKey: "address" as NSCopying)
-        toAddressesAndAmount.setObject(inputtedAmount, forKey: "amount" as NSCopying)
+        toAddressesAndAmount.setObject(TLSendFormData.instance().getAddress()!, forKey: "address" as NSCopying)
+        toAddressesAndAmount.setObject(TLSendFormData.instance().toAmount!, forKey: "amount" as NSCopying)
         let toAddressesAndAmounts = NSArray(objects: toAddressesAndAmount)
         
         let signTx = !AppDelegate.instance().godSend!.isColdWalletAccount()
         let ret = AppDelegate.instance().godSend!.createSignedSerializedTransactionHex(toAddressesAndAmounts,
-                                                                                       feeAmount: feeAmount,
+                                                                                       feeAmount: TLSendFormData.instance().feeAmount!,
                                                                                        signTx: signTx,
                                                                                        error: {
                                                                                         (data: String?) in
                                                                                         self.cancelSend()
-                                                                                        TLPrompts.promptErrorMessage("Error".localized, message: data! ?? "")
+                                                                                        TLPrompts.promptErrorMessage("Error".localized, message: data ?? "")
         })
         
         let txHexAndTxHash = ret.0
-        let realToAddress = ret.1
+        self.realToAddresses = ret.1
         
         if txHexAndTxHash == nil {
             cancelSend()
@@ -258,33 +276,34 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             self.promptToSignTransaction(txHex!, txInputsAccountHDIdxes:txInputsAccountHDIdxes!)
             return;
         }
-        
         let txHash = txHexAndTxHash!.object(forKey: "txHash") as? String
-        
-        
-        if (toAddress == AppDelegate.instance().godSend!.getStealthAddress()) {
+        prepAndBroadcastTx(txHex!, txHash: txHash!)
+    }
+
+    func prepAndBroadcastTx(_ txHex: String, txHash: String) {
+        if (TLSendFormData.instance().getAddress() == AppDelegate.instance().godSend!.getStealthAddress()) {
             AppDelegate.instance().pendingSelfStealthPaymentTxid = txHash
         }
         
-        if AppDelegate.instance().godSend!.isPaymentToOwnAccount(toAddress!) {
-            self.amountMovedFromAccount = feeAmount
+        if AppDelegate.instance().godSend!.isPaymentToOwnAccount(TLSendFormData.instance().getAddress()!) {
+            self.amountMovedFromAccount = TLSendFormData.instance().feeAmount!
         } else {
-            self.amountMovedFromAccount = inputtedAmount.add(feeAmount)
+            self.amountMovedFromAccount = TLSendFormData.instance().toAmount!.add(TLSendFormData.instance().feeAmount!)
         }
         
-        for address in realToAddress {
+        for address in self.realToAddresses! {
             TLTransactionListener.instance().listenToIncomingTransactionForAddress(address)
         }
         
         TLSendFormData.instance().beforeSendBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
-        self.inputedToAddress = toAddress
-        self.inputedToAmount = inputtedAmount
         self.sendTxHash = txHash
+        self.toAddress = TLSendFormData.instance().getAddress()
+        self.toAmount = TLSendFormData.instance().toAmount
         DLog("showPromptReviewTx txHex: \(txHex)")
         DLog("showPromptReviewTx txHash: \(txHash)")
-        broadcastTx(txHex!, txHash: txHash!, toAddress: toAddress!)
+        broadcastTx(txHex, txHash: txHash, toAddress: TLSendFormData.instance().getAddress()!)
     }
-
+    
     func broadcastTx(_ txHex: String, txHash: String, toAddress: String) {
         let handlePushTxSuccess = { () -> () in
             NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_SEND_PAYMENT()),
@@ -322,6 +341,16 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         })
     }
 
+    func showNextSignedTxPartQRCode() {
+        if self.airGapDataBase64PartsArray == nil {
+            return
+        }
+        let nextAipGapDataPart = self.airGapDataBase64PartsArray![0]
+        self.airGapDataBase64PartsArray!.remove(at: 0)
+        self.QRImageModal = TLQRImageModal(data: nextAipGapDataPart as NSString, buttonCopyText: "Next".localized, vc: self)
+        self.QRImageModal!.show()
+    }
+    
     func promptToSignTransaction(_ unSignedTx: String, txInputsAccountHDIdxes:NSArray) {
         let extendedPublicKey = AppDelegate.instance().godSend!.getExtendedPubKey()
         if let airGapDataBase64 = TLColdWallet.createSerializedAipGapData(unSignedTx, extendedPublicKey: extendedPublicKey!, txInputsAccountHDIdxes: txInputsAccountHDIdxes) {
@@ -329,17 +358,10 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             self.airGapDataBase64PartsArray = TLColdWallet.splitStringToAray(airGapDataBase64)
             DLog("airGapDataBase64PartsArray \(airGapDataBase64PartsArray)")
 
-            
-            let signedAirGapData = TLColdWallet.createSignedAipGapData(airGapDataBase64, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)
-            
+                    
             TLPrompts.promtForOKCancel(self, title: "Spending from a cold wallet account".localized, message: "Transaction needs to be authorize by an offline and airgap device. Send transaction to an offline device for authorization?", success: {
                 () in
-                
-                let firstAipGapDataPart = self.airGapDataBase64PartsArray![0]
-                self.airGapDataBase64PartsArray!.remove(at: 0)
-                self.QRImageModal = TLQRImageModal(data: firstAipGapDataPart as NSString, buttonCopyText: "Next".localized, vc: self)
-                self.QRImageModal!.show()
-                
+                self.showNextSignedTxPartQRCode()
                 }, failure: {
                     (isCancelled: Bool) in
             })
@@ -355,12 +377,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
     
     @IBAction func sendButtonClicked(_ sender: AnyObject) {
-        TLHUDWrapper.showHUDAddedTo(self.view, labelText: "Sending".localized, animated: true)
-        // relying on websocket to know when a payment has been sent can be unreliable, so cancel after a certain time
-        let TIME_TO_WAIT_TO_HIDE_HUD_AND_REFRESH_ACCOUNT = 13.0
-        sendTimer = Timer.scheduledTimer(timeInterval: TIME_TO_WAIT_TO_HIDE_HUD_AND_REFRESH_ACCOUNT, target: self,
-                                               selector: #selector(retryFinishSend), userInfo: nil, repeats: false)
-
+        self.startSendTimer()
         if !AppDelegate.instance().godSend!.haveUpDatedUTXOs() {
             AppDelegate.instance().godSend!.getAndSetUnspentOutputs({
                 self.initiateSend()
@@ -376,21 +393,103 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     @IBAction fileprivate func cancel(_ sender:AnyObject) {
         self.dismiss(animated: true, completion:nil)
     }
+
+    func startSendTimer() {
+        TLHUDWrapper.showHUDAddedTo(self.view, labelText: "Sending".localized, animated: true)
+        // relying on websocket to know when a payment has been sent can be unreliable, so cancel after a certain time
+        let TIME_TO_WAIT_TO_HIDE_HUD_AND_REFRESH_ACCOUNT = 13.0
+        sendTimer = Timer.scheduledTimer(timeInterval: TIME_TO_WAIT_TO_HIDE_HUD_AND_REFRESH_ACCOUNT, target: self,
+                                         selector: #selector(retryFinishSend), userInfo: nil, repeats: false)
+    }
+
+    func promptToBroadcastColdWalletAccountSignedTx(_ txHex: String, txHash: String) {
+        TLPrompts.promptAlertController(self, title: "Send authorized payment?".localized,
+                                        message: "", okText: "Send".localized, cancelTx: "Cancel".localized, success: {
+                                            () in
+                                            self.startSendTimer()
+                                            self.prepAndBroadcastTx(txHex, txHash: txHash)
+            }, failure: {
+                (isCancelled: Bool) in
+        })
+    }
+
+    func didClickScanSignedTxButton() {
+        scanSignedTx(success: { () in
+            DLog("didClickScanSignedTxButton success");
+            
+            if self.totalExpectedParts != 0 && self.scannedSignedTxAirGapDataPartsDict.count == self.totalExpectedParts {
+                self.shouldPromptToScanSignedTxAirGapData = false
+
+                self.scannedSignedTxAirGapData = ""
+                for i in stride(from: 1, through: self.totalExpectedParts, by: 1) {
+                    let dataPart = self.scannedSignedTxAirGapDataPartsDict[i]
+                    self.scannedSignedTxAirGapData = self.scannedSignedTxAirGapData! + dataPart!
+                }
+                self.scannedSignedTxAirGapDataPartsDict = [Int:String]()
+                DLog("didClickScanSignedTxButton self.scannedSignedTxAirGapData \(self.scannedSignedTxAirGapData)");
+
+                if let signedTxData = TLColdWallet.getSignedTxData(self.scannedSignedTxAirGapData!) {
+                    DLog("didClickScanSignedTxButton signedTxData \(signedTxData)");
+                    let txHex = signedTxData["txHex"] as! String
+                    let txHash = signedTxData["txHash"] as! String
+                    let txSize = signedTxData["txSize"] as! Int
+                    DLog("didClickScanSignedTxButton txHex \(txHex)");
+                    DLog("didClickScanSignedTxButton txHash \(txHash)");
+                    DLog("didClickScanSignedTxButton txSize \(txSize)");
+
+                    self.signedAirGapTxHex = txHex
+                    self.signedAirGapTxHash = txHash
+                    self.shouldPromptToBroadcastSignedTx = true
+                }
+            } else {
+                self.shouldPromptToScanSignedTxAirGapData = true
+            }
+            
+            }, error: {
+                () in
+                DLog("didClickScanSignedTxButton error");
+        })
+    }
     
+    func scanSignedTx(success: @escaping (TLWalletUtils.Success), error: @escaping (TLWalletUtils.Error)) {
+        AppDelegate.instance().showColdWalletSpendReaderControllerFromViewController(self, success: {
+            (data: String!) in
+            let ret = TLColdWallet.parseScannedPart(data)
+            let dataPart = ret.0
+            let partNumber = ret.1
+            let totalParts = ret.2
+
+            self.totalExpectedParts = totalParts
+            self.scannedSignedTxAirGapDataPartsDict[partNumber] = dataPart
+
+            DLog("scanSignedTx \(dataPart) \(partNumber) \(totalParts)");
+            success()
+            }, error: {
+                (data: String?) in
+                error()
+        })
+    }
+
+    func promptToScanSignedTxAirGapData() {
+        let msg = "\(self.scannedSignedTxAirGapDataPartsDict.count)/\(self.totalExpectedParts)" + " parts scanned.".localized
+        TLPrompts.promptAlertController(self, title: "Scan next part".localized, message: msg,
+                                        okText: "Scan".localized, cancelTx: "Cancel".localized, success: { () in
+                                            self.didClickScanSignedTxButton()
+            }, failure: {
+                (isCancelled: Bool) in
+        })
+    }
+
     func customIOS7dialogButtonTouchUp(inside alertView: CustomIOS7AlertView, clickedButtonAt buttonIndex: Int) {
         if (buttonIndex == 0) {
             if self.airGapDataBase64PartsArray?.count > 0 {
-                let nextAipGapDataPart = self.airGapDataBase64PartsArray![0]
-                self.airGapDataBase64PartsArray!.remove(at: 0)
-                self.QRImageModal = TLQRImageModal(data: nextAipGapDataPart as NSString, buttonCopyText: "Next".localized, vc: self)
-                self.QRImageModal!.show()
+                self.showNextSignedTxPartQRCode()
             } else {
                 TLPrompts.promptAlertController(self, title: "Finished Passing Transaction Data".localized,
                                                 message: "Now authorize the transaction on your air gap device. When you have done so click continue on this device to scan the authorized transaction data and make your payment.".localized,
                                                 okText: "Continue".localized, cancelTx: "Cancel".localized, success: {
                                                     () in
-
-                    
+                                                    self.didClickScanSignedTxButton()
                     }, failure: {
                         (isCancelled: Bool) in
                 })

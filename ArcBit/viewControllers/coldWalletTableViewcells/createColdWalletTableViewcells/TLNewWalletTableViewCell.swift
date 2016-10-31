@@ -26,6 +26,8 @@ import UIKit
 
 protocol TLNewWalletTableViewCellDelegate {
     func didClickShowQRCodeButton(_ cell: TLNewWalletTableViewCell, data: String)
+    func didClickMnemonicInfoButton(_ cell: TLNewWalletTableViewCell)
+    func didClickAccountInfoButton(_ cell: TLNewWalletTableViewCell)
 }
 
 @objc(TLNewWalletTableViewCell) class TLNewWalletTableViewCell:UITableViewCell {
@@ -51,6 +53,7 @@ protocol TLNewWalletTableViewCellDelegate {
         self.mnemonicTextView.layer.borderColor = UIColor.black.cgColor
         self.mnemonicTextView.text = nil
         self.mnemonicTextView.autocorrectionType = UITextAutocorrectionType.no
+        self.mnemonicTextView.autocapitalizationType = .none
         self.newWalletButton.backgroundColor = TLColors.mainAppColor()
         self.newWalletButton.setTitleColor(TLColors.mainAppOppositeColor(), for:UIControlState())
         self.newWalletButton.titleLabel!.adjustsFontSizeToFitWidth = true
@@ -62,10 +65,20 @@ protocol TLNewWalletTableViewCellDelegate {
         self.accountPublicKeyTextView.isUserInteractionEnabled = false
         self.showAccountPublicKeyQRButton.backgroundColor = TLColors.mainAppColor()
         self.showAccountPublicKeyQRButton.setTitleColor(TLColors.mainAppOppositeColor(), for:UIControlState())
+        self.showAccountPublicKeyQRButton.alpha = 0.5
+        self.showAccountPublicKeyQRButton.isEnabled = false
     }
     
     class func cellHeight() -> CGFloat {
-        return 287
+        return 303
+    }
+    
+    @IBAction func clickedMnemonicInfoButton(_ sender: AnyObject) {
+        delegate?.didClickMnemonicInfoButton(self)
+    }
+    
+    @IBAction func clickedAccountInfoButton(_ sender: AnyObject) {
+        delegate?.didClickAccountInfoButton(self)
     }
     
     @IBAction fileprivate func newWalletButtonClicked(_ sender:UIButton) {

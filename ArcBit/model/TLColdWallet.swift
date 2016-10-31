@@ -23,6 +23,12 @@
 import Foundation
 
 class TLColdWallet {
+    
+    enum TLColdWalletError: Error {
+        case InvalidKey(String)
+        case MisMatchExtendedPublicKey(String)
+    }
+    
     static let SPLIT_SUB_STRING_LENGTH = 100
     static let AIR_GAP_DATA_VERSION = "1"
     static let AIR_GAP_DATA_TRANSPORT_VERSION = "1"
@@ -31,21 +37,21 @@ class TLColdWallet {
         static var instance:TLSpaghettiGodSend?
     }
 
-    class func dictionaryToJsonString(_ dict: NSDictionary) -> String? {
-        do {
-            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions.prettyPrinted)
-            // here "jsonData" is the dictionary encoded in JSON data
-            
-            let JSONString = NSString(data: jsonData, encoding: String.Encoding.ascii.rawValue)
-            
-            DLog("theJSONText:  \(JSONString)")
-            return JSONString as? String
-            
-        } catch let error as NSError {
-            DLog("error:  \(error)")
-        }
-        return nil
-    }
+//    class func dictionaryToJsonString(_ dict: NSDictionary) -> String? {
+//        do {
+//            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions.prettyPrinted)
+//            // here "jsonData" is the dictionary encoded in JSON data
+//
+//            let JSONString = NSString(data: jsonData, encoding: String.Encoding.ascii.rawValue)
+//
+//            DLog("theJSONText:  \(JSONString)")
+//            return JSONString as? String
+//
+//        } catch let error as NSError {
+//            DLog("error:  \(error)")
+//        }
+//        return nil
+//    }
 
     class func createAipGapData(_ unSignedTx: String, extendedPublicKey: String, txInputsAccountHDIdxes:NSArray) -> String? {
         let data = TLWalletUtils.hexStringToData(unSignedTx)
@@ -58,7 +64,7 @@ class TLColdWallet {
                 "tx_inputs_account_hd_idxes": txInputsAccountHDIdxes //[["idx":123, "is_change":false], ["idx":124, "is_change":true]]
             ] as [String : Any]
             
-            return dictionaryToJsonString(dataDictionaryToAirGapPass as NSDictionary)
+            return TLUtils.dictionaryToJSONString(false, dict: dataDictionaryToAirGapPass as NSDictionary)
         }
         return nil
     }
@@ -75,15 +81,16 @@ class TLColdWallet {
 //        let SPLIT_SUB_STRING_LENGTH = 268
         let SPLIT_SUB_STRING_LENGTH = 100
         let nsString = str as NSString
+        var partCount = 0
         while true {
 //            DLog("bbbbb \(idx) \(SUB_STRING_LENGTH)")
             let subString:String
             
             
-            
+            partCount += 1
             if idx+SPLIT_SUB_STRING_LENGTH >= str.characters.count {
                 subString = nsString.substring(with: NSRange(location: idx, length: nsString.length-idx))
-                partsArray.append(subString)
+                partsArray.append(subString+":"+String(partCount))
                 
 //                if subString.characters.count == SPLIT_SUB_STRING_LENGTH {
 //                    partsArray.append("")
@@ -91,7 +98,7 @@ class TLColdWallet {
                 break
             } else {
                 subString = nsString.substring(with: NSRange(location: idx, length: SPLIT_SUB_STRING_LENGTH))
-                partsArray.append(subString)
+                partsArray.append(subString+":"+String(partCount))
             }
             
 //            if idx+SPLIT_SUB_STRING_LENGTH >= str.characters.count {
@@ -126,9 +133,22 @@ class TLColdWallet {
 //            DLog("ccccc \(partsArray)")
             idx += SPLIT_SUB_STRING_LENGTH
         }
+        for i in stride(from: 0, to: partsArray.count, by: 1) {
+            partsArray[i] = partsArray[i]+"."+String(partCount)
+        }
         return partsArray
     }
     
+    class func parseScannedPart(_ str: String) -> (String, Int, Int) {
+        let parts = str.components(separatedBy: ":")
+        let data = parts[0]
+        let partCountAndTotal = parts[1]
+        let partCountAndTotalArray = partCountAndTotal.components(separatedBy: ".")
+        let partCount = partCountAndTotalArray[0]
+        let totalParts = partCountAndTotalArray[1]
+        return (data, Int(partCount)!, Int(totalParts)!)
+    }
+
     class func convertDataToDictionary(_ data: Data) -> [String:AnyObject]? {
         do {
             return try JSONSerialization.jsonObject(with: data, options: []) as? [String:AnyObject]
@@ -138,7 +158,18 @@ class TLColdWallet {
         return nil
     }
     
-    class func createSignedAipGapData(_ aipGapDataBase64: String, isTestnet:Bool) -> String? {
+    class func createSerializedSignedAipGapData(_ aipGapDataBase64: String, mnemonicOrExtendedPrivateKey: String, isTestnet:Bool) throws -> String? {
+        if let signedTxHexAndTxHash = try createSignedAipGapData(aipGapDataBase64, mnemonicOrExtendedPrivateKey: mnemonicOrExtendedPrivateKey, isTestnet: isTestnet) {
+            DLog("createSerializedSignedAipGapData signedTxHexAndTxHash \(signedTxHexAndTxHash)");
+            
+            let aipGapDataJSONString = TLUtils.dictionaryToJSONString(false, dict: signedTxHexAndTxHash)
+            let data = aipGapDataJSONString.data(using: String.Encoding.utf8)
+            return data?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
+        }
+        return nil
+    }
+
+    class func createSignedAipGapData(_ aipGapDataBase64: String, mnemonicOrExtendedPrivateKey: String, isTestnet:Bool) throws -> NSDictionary? {
         let data = Data(base64Encoded: aipGapDataBase64, options: NSData.Base64DecodingOptions(rawValue: 0))
         if data == nil {
             return nil
@@ -151,16 +182,28 @@ class TLColdWallet {
             let txInputsAccountHDIdxes = result["tx_inputs_account_hd_idxes"] as! NSArray
             
             let accountIdx = TLHDWalletWrapper.getAccountIdxForExtendedKey(extendedPublicKey)
-            let mnemonic = "merit wrong glass error pond response eye impulse welcome ring super message"
-            let masterHex = TLHDWalletWrapper.getMasterHex(mnemonic)
-            let extendedPrivateKey = TLHDWalletWrapper.getExtendPrivKey(masterHex, accountIdx: UInt(accountIdx))
+            
+            let mnemonicExtendedPrivateKey:String
+            if TLHDWalletWrapper.phraseIsValid(mnemonicOrExtendedPrivateKey) {
+                let masterHex = TLHDWalletWrapper.getMasterHex(mnemonicOrExtendedPrivateKey)
+                mnemonicExtendedPrivateKey = TLHDWalletWrapper.getExtendPrivKey(masterHex, accountIdx: UInt(accountIdx))
+            } else if TLHDWalletWrapper.isValidExtendedPrivateKey(mnemonicOrExtendedPrivateKey) {
+                mnemonicExtendedPrivateKey = mnemonicOrExtendedPrivateKey
+            } else {
+                throw TLColdWalletError.InvalidKey("")
+            }
+            let mnemonicExtendedPublicKey = TLHDWalletWrapper.getExtendPubKey(mnemonicExtendedPrivateKey)
+            if extendedPublicKey != mnemonicExtendedPublicKey {
+                throw TLColdWalletError.MisMatchExtendedPublicKey("")
+            }
+            
             let privateKeysArray = NSMutableArray(capacity: txInputsAccountHDIdxes.count)
             for _txInputsAccountHDIdx in txInputsAccountHDIdxes {
                 let txInputsAccountHDIdx = _txInputsAccountHDIdx as! NSDictionary
                 let HDIndexNumber = txInputsAccountHDIdx["idx"] as! Int
                 let isChange = txInputsAccountHDIdx["is_change"] as! Bool
                 let addressSequence = [isChange ? Int(TLAddressType.change.rawValue) : Int(TLAddressType.main.rawValue), HDIndexNumber]
-                let privateKey = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey as NSString, sequence: addressSequence as NSArray, isTestnet: isTestnet)
+                let privateKey = TLHDWalletWrapper.getPrivateKey(mnemonicExtendedPrivateKey as NSString, sequence: addressSequence as NSArray, isTestnet: isTestnet)
                 privateKeysArray.add(privateKey)
             }
             
@@ -174,9 +217,27 @@ class TLColdWallet {
                 DLog("createSignedAipGapData txHexAndTxHash: \(txHexAndTxHash.debugDescription as AnyObject)")
                 //                break
                 if txHexAndTxHash != nil {
-                    //                    return txHexAndTxHash!
+                    return txHexAndTxHash!
                 }
             }
+        }
+        return nil
+    }
+    
+    
+    class func getSignedTxData(_ aipGapDataBase64: String) -> NSDictionary? {
+        let data = Data(base64Encoded: aipGapDataBase64, options: NSData.Base64DecodingOptions(rawValue: 0))
+        if data == nil {
+            return nil
+        }
+        if let result = convertDataToDictionary(data!) {
+            let txHex = result["txHex"] as! String
+            let txHash = result["txHash"] as! String
+            let txSize = result["txSize"] as! Int
+            DLog("getSignedTxData txHex:  \(txHex)")
+            DLog("getSignedTxData txHash:  \(txHash)")
+            DLog("getSignedTxData txSize:  \(txSize)")
+            return result as NSDictionary?
         }
         return nil
     }

@@ -344,7 +344,7 @@
                                 <rect key="frame" x="0.0" y="120" width="375" height="44"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="dVx-U1-lNi" id="IPQ-FO-cJx">
-                                    <frame key="frameInset" width="375" height="43"/>
+                                    <frame key="frameInset" width="375" height="44"/>
                                     <autoresizingMask key="autoresizingMask"/>
                                 </tableViewCellContentView>
                             </tableViewCell>
@@ -521,10 +521,10 @@
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AccountCellIdentifier" rowHeight="74" id="4fe-7w-ZA5" customClass="TLAccountTableViewCell">
-                                        <rect key="frame" x="0.0" y="56" width="383" height="74"/>
+                                        <rect key="frame" x="0.0" y="56" width="1000" height="74"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="4fe-7w-ZA5" id="FMb-eo-NCl">
-                                            <frame key="frameInset" width="383" height="73"/>
+                                            <frame key="frameInset" width="1000" height="74"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="dar-hs-w7H">
@@ -598,10 +598,10 @@
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AddressCellIdentifier" rowHeight="74" id="U73-UR-amK" customClass="TLAddressTableViewCell">
-                                        <rect key="frame" x="0.0" y="120" width="383" height="74"/>
+                                        <rect key="frame" x="0.0" y="120" width="1000" height="74"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="U73-UR-amK" id="bch-iq-M6a">
-                                            <frame key="frameInset" width="383" height="73"/>
+                                            <frame key="frameInset" width="1000" height="74"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Koj-wy-VOb">
@@ -771,10 +771,10 @@
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" accessoryType="disclosureIndicator" indentationWidth="10" reuseIdentifier="HowToCellIdentifier" id="Am4-8X-AGA">
-                                        <rect key="frame" x="0.0" y="120" width="1000" height="44"/>
+                                        <rect key="frame" x="0.0" y="120" width="383" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Am4-8X-AGA" id="xS9-eV-erc">
-                                            <frame key="frameInset" width="818" height="43"/>
+                                            <frame key="frameInset" width="350" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1059,7 +1059,7 @@
                                         <rect key="frame" x="0.0" y="22" width="383" height="105"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jqH-vD-QNO" id="YAA-Lk-eXe">
-                                            <frame key="frameInset" width="383" height="104"/>
+                                            <frame key="frameInset" width="383" height="105"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="date" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="RAj-d0-yzE">
@@ -1198,10 +1198,10 @@
                                 </constraints>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" rowHeight="60" id="LH8-Ai-giv">
-                                        <rect key="frame" x="0.0" y="56" width="383" height="60"/>
+                                        <rect key="frame" x="0.0" y="56" width="1000" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="LH8-Ai-giv" id="n5j-aa-ndl">
-                                            <frame key="frameInset" width="383" height="59"/>
+                                            <frame key="frameInset" width="1000" height="60"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -1340,10 +1340,10 @@
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AccountCellIdentifier" rowHeight="74" id="54o-mf-3YT" customClass="TLAccountTableViewCell">
-                                        <rect key="frame" x="0.0" y="120" width="383" height="74"/>
+                                        <rect key="frame" x="0.0" y="120" width="1000" height="74"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="54o-mf-3YT" id="jjK-9K-Lnr">
-                                            <frame key="frameInset" width="383" height="73"/>
+                                            <frame key="frameInset" width="1000" height="74"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalCompressionResistancePriority="749" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P5j-13-Jpg">
@@ -1830,11 +1830,11 @@
                                         <rect key="frame" x="0.0" y="120" width="383" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Ba1-Hr-xBU" id="zfZ-aF-zTE">
-                                            <frame key="frameInset" width="350" height="43"/>
+                                            <frame key="frameInset" width="350" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="2WH-yM-ULb">
-                                                    <frame key="frameInset" minX="15" width="333" height="43"/>
+                                                    <frame key="frameInset" minX="15" width="333" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2229,11 +2229,11 @@
                                         <rect key="frame" x="0.0" y="120" width="383" height="44"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PpG-Ye-r6b" id="U3a-oF-zp5">
-                                            <frame key="frameInset" width="350" height="43"/>
+                                            <frame key="frameInset" width="350" height="44"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" multipleTouchEnabled="YES" contentMode="left" text="Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" id="J2q-P7-aOq">
-                                                    <frame key="frameInset" minX="15" width="333" height="43"/>
+                                                    <frame key="frameInset" minX="15" width="333" height="43.5"/>
                                                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="16"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2283,18 +2283,17 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="141" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="r4T-KL-Txa">
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" allowsSelection="NO" rowHeight="303" sectionHeaderHeight="10" sectionFooterHeight="10" translatesAutoresizingMaskIntoConstraints="NO" id="r4T-KL-Txa">
                                 <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewWalletCellIdentifier" rowHeight="295" id="MLB-fr-01h" customClass="TLNewWalletTableViewCell">
-                                        <rect key="frame" x="0.0" y="120" width="383" height="295"/>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="NewWalletCellIdentifier" rowHeight="303" id="MLB-fr-01h" customClass="TLNewWalletTableViewCell">
+                                        <rect key="frame" x="0.0" y="120" width="383" height="303"/>
                                         <autoresizingMask key="autoresizingMask"/>
-                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" ambiguous="YES" tableViewCell="MLB-fr-01h" id="mHy-BX-xwD">
-                                            <frame key="frameInset" width="383" height="294"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="MLB-fr-01h" id="mHy-BX-xwD">
+                                            <frame key="frameInset" width="383" height="302"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Mnemonic:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aYW-ME-0t8">
-                                                    <frame key="frameInset" width="1000" height="1000"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Mnemonic:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aYW-ME-0t8">
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="iXa-km-jiT"/>
                                                         <constraint firstAttribute="width" constant="85" id="vQp-l8-yxi"/>
@@ -2303,8 +2302,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" text="street ankle life mass ready viable worth renew stove panther immense camera" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="h73-3F-Pi3">
-                                                    <frame key="frameInset" width="1000" height="1000"/>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="street ankle life mass ready viable worth renew stove panther immense camera" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="h73-3F-Pi3">
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="49" id="X5Z-gj-282"/>
@@ -2312,8 +2310,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Account ID:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lpn-HN-00K">
-                                                    <frame key="frameInset" width="1000" height="1000"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" preservesSuperviewLayoutMargins="YES" text="Account ID:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lpn-HN-00K">
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="85" id="4kj-hW-vW1"/>
                                                         <constraint firstAttribute="height" constant="21" id="TNT-mj-Tq3"/>
@@ -2328,8 +2325,7 @@
                                                         </mask>
                                                     </variation>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" ambiguous="YES" misplaced="YES" text="Account Public Key:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xa4-b8-Sm0">
-                                                    <frame key="frameInset" width="1000" height="1000"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Account Public Key:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xa4-b8-Sm0">
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="I16-V8-GZ6"/>
                                                     </constraints>
@@ -2337,8 +2333,7 @@
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" text="xpub6CUHPUqLTj2pxbrab2gdy7XYKiAoy47PFRBkgf8YiBHD3UzJH6WqQSmLXAndZbFuJnU4tWgBWjRjSxyk6AHN5JpVsUMu4E9MwNCGgFNibDd" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="CZC-KE-fwt">
-                                                    <frame key="frameInset" width="1000" height="1000"/>
+                                                <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="xpub6CUHPUqLTj2pxbrab2gdy7XYKiAoy47PFRBkgf8YiBHD3UzJH6WqQSmLXAndZbFuJnU4tWgBWjRjSxyk6AHN5JpVsUMu4E9MwNCGgFNibDd" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="CZC-KE-fwt">
                                                     <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="49" id="gJj-TC-bVp"/>
@@ -2346,8 +2341,7 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
-                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0" borderStyle="line" placeholder="0" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="o2h-Yp-N8m">
-                                                    <frame key="frameInset" width="1000" height="1000"/>
+                                                <textField opaque="NO" clipsSubviews="YES" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" text="0" borderStyle="line" placeholder="0" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="o2h-Yp-N8m">
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="NAl-Lj-gBc"/>
                                                         <constraint firstAttribute="width" constant="97" id="XAW-Th-OtW"/>
@@ -2355,13 +2349,12 @@
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
-                                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pDU-E2-HeJ">
-                                                    <frame key="frameInset" width="1000" height="1000"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pDU-E2-HeJ">
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="90" id="LFU-bI-Kdy"/>
                                                         <constraint firstAttribute="height" constant="30" id="VhV-bJ-GBi"/>
                                                     </constraints>
-                                                    <state key="normal" title="Show QR"/>
+                                                    <state key="normal" title="QR Code"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                                     </userDefinedRuntimeAttributes>
@@ -2369,8 +2362,7 @@
                                                         <action selector="showAccountPublicKeyQRButtonClicked:" destination="MLB-fr-01h" eventType="touchUpInside" id="ph8-mp-cZr"/>
                                                     </connections>
                                                 </button>
-                                                <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="imI-wQ-7jn">
-                                                    <frame key="frameInset" width="1000" height="1000"/>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="imI-wQ-7jn">
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="6Ap-hR-kyk"/>
                                                         <constraint firstAttribute="width" constant="90" id="KR7-wH-iTh"/>
@@ -2383,6 +2375,16 @@
                                                         <action selector="newWalletButtonClicked:" destination="MLB-fr-01h" eventType="touchUpInside" id="jFh-Sd-Ev2"/>
                                                     </connections>
                                                 </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Yea-0b-EAs">
+                                                    <connections>
+                                                        <action selector="clickedAccountInfoButton:" destination="MLB-fr-01h" eventType="touchUpInside" id="n2y-4Q-5Zb"/>
+                                                    </connections>
+                                                </button>
+                                                <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6v0-hc-QVK">
+                                                    <connections>
+                                                        <action selector="clickedMnemonicInfoButton:" destination="MLB-fr-01h" eventType="touchUpInside" id="W7Z-Xp-QI6"/>
+                                                    </connections>
+                                                </button>
                                             </subviews>
                                             <constraints>
                                                 <constraint firstItem="xa4-b8-Sm0" firstAttribute="trailing" secondItem="o2h-Yp-N8m" secondAttribute="trailing" id="0UG-hm-f7o"/>
@@ -2392,13 +2394,16 @@
                                                 <constraint firstItem="imI-wQ-7jn" firstAttribute="top" secondItem="h73-3F-Pi3" secondAttribute="bottom" constant="8" id="8bV-vj-3gV"/>
                                                 <constraint firstItem="o2h-Yp-N8m" firstAttribute="top" secondItem="imI-wQ-7jn" secondAttribute="bottom" constant="8" id="GgZ-Q3-ngS"/>
                                                 <constraint firstItem="h73-3F-Pi3" firstAttribute="trailing" secondItem="mHy-BX-xwD" secondAttribute="trailingMargin" constant="-8" id="HtV-F1-BD4"/>
+                                                <constraint firstItem="6v0-hc-QVK" firstAttribute="centerY" secondItem="aYW-ME-0t8" secondAttribute="centerY" id="Kgr-rh-cyA"/>
+                                                <constraint firstItem="6v0-hc-QVK" firstAttribute="leading" secondItem="aYW-ME-0t8" secondAttribute="trailing" constant="12" id="PCX-PH-VPO"/>
                                                 <constraint firstItem="lpn-HN-00K" firstAttribute="centerY" secondItem="o2h-Yp-N8m" secondAttribute="centerY" id="PRC-Gb-h2c"/>
-                                                <constraint firstItem="pDU-E2-HeJ" firstAttribute="top" secondItem="CZC-KE-fwt" secondAttribute="bottom" constant="8" id="Pnp-Iz-enW"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="pDU-E2-HeJ" secondAttribute="trailing" constant="8" id="Rka-fg-6Ai"/>
+                                                <constraint firstItem="pDU-E2-HeJ" firstAttribute="top" secondItem="CZC-KE-fwt" secondAttribute="bottom" constant="8" id="Sfr-Fp-xY9"/>
+                                                <constraint firstItem="Yea-0b-EAs" firstAttribute="leading" secondItem="o2h-Yp-N8m" secondAttribute="trailing" constant="16" id="U1b-hk-ylK"/>
                                                 <constraint firstItem="lpn-HN-00K" firstAttribute="leading" secondItem="mHy-BX-xwD" secondAttribute="leadingMargin" constant="8" id="U4b-bU-pAd"/>
                                                 <constraint firstItem="CZC-KE-fwt" firstAttribute="leading" secondItem="mHy-BX-xwD" secondAttribute="leadingMargin" constant="8" id="Wc2-tK-AIY"/>
                                                 <constraint firstItem="aYW-ME-0t8" firstAttribute="leading" secondItem="mHy-BX-xwD" secondAttribute="leadingMargin" constant="8" id="Xm5-jd-6bG"/>
-                                                <constraint firstItem="pDU-E2-HeJ" firstAttribute="bottom" secondItem="mHy-BX-xwD" secondAttribute="bottomMargin" id="bQH-Ec-NkQ"/>
+                                                <constraint firstItem="Yea-0b-EAs" firstAttribute="centerY" secondItem="o2h-Yp-N8m" secondAttribute="centerY" id="cKg-0Z-BJs"/>
                                                 <constraint firstItem="xa4-b8-Sm0" firstAttribute="leading" secondItem="mHy-BX-xwD" secondAttribute="leadingMargin" constant="8" id="gbN-dU-ymF"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="CZC-KE-fwt" secondAttribute="trailing" constant="8" id="hoW-72-vWn"/>
                                                 <constraint firstItem="CZC-KE-fwt" firstAttribute="top" secondItem="xa4-b8-Sm0" secondAttribute="bottom" constant="8" id="o1T-Na-MJG"/>
@@ -2433,7 +2438,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2OQ-5d-E90" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1146" y="4993"/>
+            <point key="canvasLocation" x="1144.8" y="4992.9535232383814"/>
         </scene>
         <!--Spend Cold Wallet View Controller-->
         <scene sceneID="Pwp-YH-Xhr">
@@ -2454,7 +2459,7 @@
                                         <rect key="frame" x="0.0" y="120" width="383" height="88"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="nQd-wB-1CD" id="0JE-Yp-wOJ">
-                                            <frame key="frameInset" width="383" height="87"/>
+                                            <frame key="frameInset" width="383" height="88"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Step 1: Scan transaction to authorize" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1EF-AG-Tuv">
@@ -2521,7 +2526,7 @@
                                         <rect key="frame" x="0.0" y="208" width="383" height="151"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="KE5-bX-FLO" id="HZ5-aJ-D8k">
-                                            <frame key="frameInset" width="383" height="150"/>
+                                            <frame key="frameInset" width="383" height="151"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <textView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" text="street ankle life mass ready viable worth renew stove panther immense camera" textAlignment="natural" translatesAutoresizingMaskIntoConstraints="NO" id="8T4-K7-DEy">
@@ -2549,7 +2554,7 @@
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Incomplete" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="BDz-V2-QTc">
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Incomplete" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" minimumFontSize="9" translatesAutoresizingMaskIntoConstraints="NO" id="BDz-V2-QTc">
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="6uE-0u-goP"/>
                                                     </constraints>
@@ -2565,6 +2570,7 @@
                                                 <constraint firstItem="wNi-jF-drF" firstAttribute="top" secondItem="HZ5-aJ-D8k" secondAttribute="topMargin" constant="8" id="J0B-PP-I1V"/>
                                                 <constraint firstItem="8T4-K7-DEy" firstAttribute="top" secondItem="wNi-jF-drF" secondAttribute="bottom" constant="8" id="RX6-G0-eS5"/>
                                                 <constraint firstItem="9sL-6M-fQO" firstAttribute="top" secondItem="HZ5-aJ-D8k" secondAttribute="topMargin" constant="8" id="XZF-Ym-Qhg"/>
+                                                <constraint firstAttribute="trailingMargin" secondItem="BDz-V2-QTc" secondAttribute="trailing" constant="8" id="ZPQ-qJ-fuM"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="8T4-K7-DEy" secondAttribute="trailing" constant="8" id="ajy-7C-DDe"/>
                                                 <constraint firstItem="wNi-jF-drF" firstAttribute="leading" secondItem="9sL-6M-fQO" secondAttribute="trailing" constant="8" id="fqR-CJ-Gaf"/>
                                                 <constraint firstItem="8T4-K7-DEy" firstAttribute="leading" secondItem="HZ5-aJ-D8k" secondAttribute="leadingMargin" constant="8" id="mlN-u2-uWW"/>
@@ -2587,7 +2593,7 @@
                                         <rect key="frame" x="0.0" y="359" width="383" height="88"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="PUg-nv-QF4" id="cUw-h4-8NZ">
-                                            <frame key="frameInset" width="383" height="87"/>
+                                            <frame key="frameInset" width="383" height="88"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Step 3: Pass authorized transaction data" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qhi-3j-THU">
@@ -2659,7 +2665,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7EJ-pg-ggA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1153" y="5669"/>
+            <point key="canvasLocation" x="1152.8" y="5668.5157421289359"/>
         </scene>
         <!--Brain Wallet View Controller-->
         <scene sceneID="8xC-Dy-v2F">
@@ -2680,7 +2686,7 @@
                                         <rect key="frame" x="0.0" y="120" width="383" height="61"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="XIR-M6-suE" id="n13-8g-bNz">
-                                            <frame key="frameInset" width="383" height="60"/>
+                                            <frame key="frameInset" width="383" height="61"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <segmentedControl opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" translatesAutoresizingMaskIntoConstraints="NO" id="Whz-q3-zSQ">
@@ -2723,10 +2729,10 @@
                                         </connections>
                                     </tableViewCell>
                                     <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="AdvancedNewWalletCellIdentifier" rowHeight="1359" id="jeP-rT-Q8B" customClass="TLAdvancedNewWalletTableViewCell">
-                                        <rect key="frame" x="0.0" y="181" width="383" height="1359"/>
+                                        <rect key="frame" x="0.0" y="180.5" width="383" height="1359"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="jeP-rT-Q8B" id="Tn6-7E-O4W">
-                                            <frame key="frameInset" width="383" height="1358"/>
+                                            <frame key="frameInset" width="383" height="1359"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Starting Receiving Address ID:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="wHc-Lm-EHM">
@@ -2854,7 +2860,7 @@
                                                         <constraint firstAttribute="height" constant="30" id="hXF-9l-dMa"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="9"/>
-                                                    <state key="normal" title="Show QR"/>
+                                                    <state key="normal" title="QR Code"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                                     </userDefinedRuntimeAttributes>
@@ -2875,7 +2881,7 @@
                                                         <constraint firstAttribute="width" constant="48" id="yOB-3e-ScM"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="9"/>
-                                                    <state key="normal" title="Show QR"/>
+                                                    <state key="normal" title="QR Code"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                                     </userDefinedRuntimeAttributes>
@@ -2912,7 +2918,7 @@
                                                         <constraint firstAttribute="width" constant="48" id="EQe-BF-AP9"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="9"/>
-                                                    <state key="normal" title="Show QR"/>
+                                                    <state key="normal" title="QR Code"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                                     </userDefinedRuntimeAttributes>
@@ -2933,7 +2939,7 @@
                                                         <constraint firstAttribute="width" constant="48" id="SqH-0y-TSV"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="9"/>
-                                                    <state key="normal" title="Show QR"/>
+                                                    <state key="normal" title="QR Code"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                                     </userDefinedRuntimeAttributes>
@@ -2970,7 +2976,7 @@
                                                         <constraint firstAttribute="height" constant="30" id="uyi-Jn-O8I"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="9"/>
-                                                    <state key="normal" title="Show QR"/>
+                                                    <state key="normal" title="QR Code"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                                     </userDefinedRuntimeAttributes>
@@ -2991,7 +2997,7 @@
                                                         <constraint firstAttribute="width" constant="48" id="r6p-MY-Xzi"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="9"/>
-                                                    <state key="normal" title="Show QR"/>
+                                                    <state key="normal" title="QR Code"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                                     </userDefinedRuntimeAttributes>
@@ -3028,7 +3034,7 @@
                                                         <constraint firstAttribute="width" constant="48" id="ztH-I5-HDM"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="9"/>
-                                                    <state key="normal" title="Show QR"/>
+                                                    <state key="normal" title="QR Code"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                                     </userDefinedRuntimeAttributes>
@@ -3049,7 +3055,7 @@
                                                         <constraint firstAttribute="width" constant="48" id="fNt-KB-PgQ"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="9"/>
-                                                    <state key="normal" title="Show QR"/>
+                                                    <state key="normal" title="QR Code"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                                     </userDefinedRuntimeAttributes>
@@ -3086,7 +3092,7 @@
                                                         <constraint firstAttribute="height" constant="30" id="6wi-fX-uhh"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="9"/>
-                                                    <state key="normal" title="Show QR"/>
+                                                    <state key="normal" title="QR Code"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                                     </userDefinedRuntimeAttributes>
@@ -3107,7 +3113,7 @@
                                                         <constraint firstAttribute="width" constant="48" id="mFX-wR-pnY"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="9"/>
-                                                    <state key="normal" title="Show QR"/>
+                                                    <state key="normal" title="QR Code"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                                     </userDefinedRuntimeAttributes>
@@ -3175,7 +3181,7 @@
                                                         <constraint firstAttribute="height" constant="30" id="ia7-8q-otC"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="9"/>
-                                                    <state key="normal" title="Show QR"/>
+                                                    <state key="normal" title="QR Code"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                                     </userDefinedRuntimeAttributes>
@@ -3196,7 +3202,7 @@
                                                         <constraint firstAttribute="width" constant="48" id="gRB-3h-U01"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="9"/>
-                                                    <state key="normal" title="Show QR"/>
+                                                    <state key="normal" title="QR Code"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                                     </userDefinedRuntimeAttributes>
@@ -3233,7 +3239,7 @@
                                                         <constraint firstAttribute="height" constant="30" id="ivv-WD-J9a"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="9"/>
-                                                    <state key="normal" title="Show QR"/>
+                                                    <state key="normal" title="QR Code"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                                     </userDefinedRuntimeAttributes>
@@ -3254,7 +3260,7 @@
                                                         <constraint firstAttribute="width" constant="48" id="uWn-xb-Tda"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="9"/>
-                                                    <state key="normal" title="Show QR"/>
+                                                    <state key="normal" title="QR Code"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                                     </userDefinedRuntimeAttributes>
@@ -3291,7 +3297,7 @@
                                                         <constraint firstAttribute="height" constant="30" id="p5g-DS-gtL"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="9"/>
-                                                    <state key="normal" title="Show QR"/>
+                                                    <state key="normal" title="QR Code"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                                     </userDefinedRuntimeAttributes>
@@ -3312,7 +3318,7 @@
                                                         <constraint firstAttribute="width" constant="48" id="wKt-b3-FZs"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="9"/>
-                                                    <state key="normal" title="Show QR"/>
+                                                    <state key="normal" title="QR Code"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                                     </userDefinedRuntimeAttributes>
@@ -3349,7 +3355,7 @@
                                                         <constraint firstAttribute="height" constant="30" id="y60-3Z-vka"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="9"/>
-                                                    <state key="normal" title="Show QR"/>
+                                                    <state key="normal" title="QR Code"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                                     </userDefinedRuntimeAttributes>
@@ -3370,7 +3376,7 @@
                                                         <constraint firstAttribute="height" constant="30" id="zWq-cQ-N5a"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="9"/>
-                                                    <state key="normal" title="Show QR"/>
+                                                    <state key="normal" title="QR Code"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                                     </userDefinedRuntimeAttributes>
@@ -3407,7 +3413,7 @@
                                                         <constraint firstAttribute="width" constant="48" id="jiT-J3-uqw"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="9"/>
-                                                    <state key="normal" title="Show QR"/>
+                                                    <state key="normal" title="QR Code"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                                     </userDefinedRuntimeAttributes>
@@ -3495,7 +3501,7 @@
                                                         <constraint firstAttribute="height" constant="30" id="4Ah-Md-ECc"/>
                                                         <constraint firstAttribute="width" constant="90" id="6a6-nr-Uu2"/>
                                                     </constraints>
-                                                    <state key="normal" title="Show QR"/>
+                                                    <state key="normal" title="QR Code"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                                     </userDefinedRuntimeAttributes>
@@ -3548,7 +3554,7 @@
                                                         <constraint firstAttribute="height" constant="30" id="6Mj-CH-DIi"/>
                                                         <constraint firstAttribute="width" constant="90" id="GQJ-bY-T0i"/>
                                                     </constraints>
-                                                    <state key="normal" title="Show QR"/>
+                                                    <state key="normal" title="QR Code"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                                     </userDefinedRuntimeAttributes>
@@ -3562,7 +3568,7 @@
                                                         <constraint firstAttribute="height" constant="30" id="dMU-0J-wGc"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="9"/>
-                                                    <state key="normal" title="Show QR"/>
+                                                    <state key="normal" title="QR Code"/>
                                                     <userDefinedRuntimeAttributes>
                                                         <userDefinedRuntimeAttribute type="string" keyPath="layer.cornerRadius" value="5"/>
                                                     </userDefinedRuntimeAttributes>
@@ -3828,7 +3834,7 @@
                                         <rect key="frame" x="0.0" y="1540" width="383" height="48"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="Neq-5X-SLy" id="c5h-CL-q8e">
-                                            <frame key="frameInset" width="383" height="47"/>
+                                            <frame key="frameInset" width="383" height="48"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
                                     </tableViewCell>
@@ -3860,7 +3866,7 @@
         <image name="upload.png" width="26" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
-        <segue reference="LPu-4e-rku"/>
         <segue reference="s7I-Xo-HUH"/>
+        <segue reference="jbc-qB-Ba2"/>
     </inferredMetricsTieBreakers>
 </document>

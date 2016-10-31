@@ -83,6 +83,19 @@ import UIKit
         self.QRImageModal = TLQRImageModal(data: data as NSString, buttonCopyText: "Copy To Clipboard".localized, vc: self)
         self.QRImageModal!.show()
     }
+    func didClickMnemonicInfoButton(_ cell: TLNewWalletTableViewCell) {
+        dismissKeyboard()
+        TLPrompts.promtForOK(self, title:"", message: "Info Text".localized, success: {
+            () in
+        })
+    }
+    
+    func didClickAccountInfoButton(_ cell: TLNewWalletTableViewCell) {
+        dismissKeyboard()
+        TLPrompts.promtForOK(self, title:"", message: "Info Text".localized, success: {
+            () in
+        })
+    }
     
     func textFieldDidBeginEditing(_ textField: UITextField) {
 //        var frame:CGRect = CGRectMake(textField.frame.origin.x, textField.frame.origin.y, textField.frame.size.width, textField.frame.size.height)

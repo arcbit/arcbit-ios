@@ -47,7 +47,7 @@ protocol TLScanUnsignedTxTableViewCellDelegate {
         super.awakeFromNib()
         self.scanButtonButton.backgroundColor = TLColors.mainAppColor()
         self.scanButtonButton.setTitleColor(TLColors.mainAppOppositeColor(), for:UIControlState())
-        self.setstatusLabel(false)
+        self.setstatusLabel(0, totalParts: 0)
     }
     
     class func cellHeight() -> CGFloat {
@@ -62,13 +62,16 @@ protocol TLScanUnsignedTxTableViewCellDelegate {
         delegate?.didClickScanButton(self)
     }
     
-    func setstatusLabel(_ complete:Bool) {
-        if complete {
-            statusLabel.textColor = UIColor.green
-            statusLabel.text = "Complete".localized
-        } else {
+    func setstatusLabel(_ partsScanned: Int, totalParts: Int) {
+        if partsScanned == 0 && totalParts == 0 {
             statusLabel.textColor = UIColor.red
             statusLabel.text = "Incomplete".localized
+        } else if partsScanned < totalParts {
+            statusLabel.textColor = UIColor.red
+            statusLabel.text = "\(partsScanned)/\(totalParts) " + "Complete".localized
+        } else {
+            statusLabel.textColor = UIColor.green
+            statusLabel.text = "\(partsScanned)/\(totalParts) " + "Complete".localized
         }
     }
 }
