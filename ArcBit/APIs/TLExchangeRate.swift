@@ -60,7 +60,7 @@ class TLExchangeRate {
         if (self.exchangeRateDict == nil || self.exchangeRateDict![currency] == nil) {
             return 0
         } else {
-            return ((self.exchangeRateDict![currency] as! NSMutableDictionary)["rate"] as! Double)
+            return ((self.exchangeRateDict![currency] as! NSDictionary)["rate"] as! Double)
         }
     }
     
