@@ -162,14 +162,20 @@ class TLCoreBitcoinWrapper {
                 }
             }
         
-            if signTx {
-                tx?.sign(withPrivateKeys: privateKeys as [AnyObject], isTestnet:isTestnet)
-            } else {
+            if !signTx {
+                let inputHexScripts = NSMutableArray(capacity: tx!.inputScripts.count)
+                for script in tx!.inputScripts {
+                    inputHexScripts.add(TLWalletUtils.dataToHexString(script as! Data))
+                }
                 return [
+                    "inputScripts": inputHexScripts,
                     "txHex": TLWalletUtils.dataToHexString(tx!.data),
                 ]
             }
+        
+            tx?.sign(withPrivateKeys: privateKeys as [AnyObject], isTestnet:isTestnet)
             assert((tx?.isSigned)!, "tx is not signed")
+
             let txFromHexData = BRTransaction(message: tx?.data, isTestnet: isTestnet)
 
             var expectedOutputCount = outputAddresses.count
@@ -187,25 +193,16 @@ class TLCoreBitcoinWrapper {
             ]
     }
 
-    class func createSignedSerializedTransactionHex(_ unsignedTx:Data, privateKeys:NSArray, isTestnet:Bool) -> NSDictionary? {
+    class func createSignedSerializedTransactionHex(_ unsignedTx:Data, inputScripts:NSArray, privateKeys:NSArray, isTestnet:Bool) -> NSDictionary? {
         let tx = BRTransaction(message: unsignedTx, isTestnet: isTestnet)
-//        let tx = BRTransaction.transactionWithMessage(unsignedTx, isTestnet: isTestnet)
-        tx?.sign(withPrivateKeys: privateKeys as [AnyObject], isTestnet:isTestnet)
-        DLog("createSignedSerializedTransactionHex x.isSigned: \(tx?.isSigned)")
-
-        
-        let txFromHexData = BRTransaction(message: tx?.data, isTestnet: isTestnet)
-        DLog("createSignedSerializedTransactionHex txFromHexData: \(TLWalletUtils.dataToHexString(txFromHexData!.data))")
-        DLog("createSignedSerializedTransactionHex txFromHexData: \(TLWalletUtils.reverseHexString(TLWalletUtils.dataToHexString(txFromHexData!.txHash)))")
-        DLog("createSignedSerializedTransactionHex txFromHexData: \(txFromHexData!.size)")
-
-        
-//        assert(tx.isSigned, "tx is not signed")
-        return [
-            "txHex": TLWalletUtils.dataToHexString(tx!.data),
-            "txHash": TLWalletUtils.reverseHexString(TLWalletUtils.dataToHexString(tx!.txHash)),
-            "txSize": tx!.size
-        ]
+        let inputHashes = tx!.inputHashes as NSArray
+        let inputIndexes = tx!.inputIndexes as NSArray
+        let outputAmounts = tx!.outputAmounts as NSArray
+        let outputAddresses = tx!.outputAddresses as NSArray
+        let txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(inputHashes, inputIndexes:inputIndexes, inputScripts:inputScripts,
+                                                                                       outputAddresses:outputAddresses, outputAmounts:outputAmounts, privateKeys:privateKeys,
+                                                                                       outputScripts:nil, signTx: true, isTestnet: isTestnet)
+        return txHexAndTxHash
     }
 
 }

@@ -248,8 +248,8 @@ class ArcBitTests: XCTestCase {
     func testCreateSignedSerializeTransactionHex() {
         NSLog("testCreateSignedSerializeTransactionHex")
         
-        let hash = TLWalletUtils.reverseHexString("935c6975aa65f95cb55616ace8c8bede83b010f7191c0a6d385be1c95992870d").hexToData()
-        let script = "76a9149a1c78a507689f6f54b847ad1cef1e614ee23f1e88ac".hexToData()
+        let hash = TLWalletUtils.hexStringToData(TLWalletUtils.reverseHexString("935c6975aa65f95cb55616ace8c8bede83b010f7191c0a6d385be1c95992870d"))!
+        let script = TLWalletUtils.hexStringToData("76a9149a1c78a507689f6f54b847ad1cef1e614ee23f1e88ac")!
         let address = "1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV"
         let privateKey = "L4rK1yDtCWekvXuE6oXD9jCYfFNV2cWRpVuPLBcCU2z8TrisoyY1"
         let txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex([hash], inputIndexes:[0], inputScripts:[script],
@@ -309,6 +309,9 @@ class ArcBitTests: XCTestCase {
         var accounts = NSMutableArray()
         var accountDict = NSMutableDictionary()
         accountDict.setObject(0, forKey: "account_idx" as NSCopying)
+        accountDict.setObject(extendPubKey, forKey: "xpub" as NSCopying)
+        accountDict.setObject(extendPrivKey, forKey: "xpriv" as NSCopying)
+
         var changeAdresses = NSMutableArray()
         var changeAdress = NSMutableDictionary()
         changeAdress.setObject(changeAddress0, forKey: "address" as NSCopying)
@@ -375,7 +378,7 @@ class ArcBitTests: XCTestCase {
         
         let accountObject = accountsArray.object(at: 0) as! TLAccountObject
         godSend.setOnlyFromAccount(accountObject)
-        
+
         let mockUnspentOutput = { (txid: String, value: UInt64, txOutputN: Int) -> NSDictionary in
             var unspentOutput = NSMutableDictionary()
             unspentOutput.setObject(TLWalletUtils.reverseHexString(txid), forKey: "tx_hash" as NSCopying)
@@ -1318,12 +1321,136 @@ class ArcBitTests: XCTestCase {
             
             testCreateSignedSerializedTransactionHexAndBIP69_6_1()
         }
+        
+        func testColdWallet_1() -> () {
+            let feeAmount = TLCoin(bitcoinAmount: "0.00000", bitcoinDenomination: TLBitcoinDenomination.bitcoin)
+            let toAddress = "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv"
+            let toAddress2 = "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5"
+            let toAmount = TLCoin(bitcoinAmount: "1", bitcoinDenomination: TLBitcoinDenomination.bitcoin)
+            let toAmount2 = TLCoin(bitcoinAmount: "24", bitcoinDenomination: TLBitcoinDenomination.bitcoin)
+            
+            let txid0 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
+            let txid1 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
+            
+            let unspentOutput0 = mockUnspentOutput(txid0, 100000000, 0)
+            let unspentOutput1 = mockUnspentOutput(txid1, 2400000000, 1)
+            
+            func testColdWallet_1_1() -> () {
+                let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount], ["address": toAddress2, "amount": toAmount2]]
+                
+                accountObject.unspentOutputs = NSMutableArray(capacity: 2)
+                accountObject.unspentOutputs!.add(unspentOutput0)
+                accountObject.unspentOutputs!.add(unspentOutput1)
+                accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
+                
+                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, signTx: false, error: {
+                    (data: String?) in
+                })
+                
+                let txHexAndTxHash = ret.0
+                let realToAddresses = ret.1
+                let txInputsAccountHDIdxes = ret.2
+                let unSignedTx = txHexAndTxHash!.object(forKey: "txHex") as! String
+                let inputScripts = txHexAndTxHash!.object(forKey: "inputScripts") as! NSArray
+
+                
+                let unsignedTxAirGapDataBase64 = TLColdWallet.createSerializedAipGapData(unSignedTx, extendedPublicKey: extendPubKey, inputScripts: inputScripts, txInputsAccountHDIdxes: txInputsAccountHDIdxes!)
+                NSLog("testColdWallet_1_1 unsignedTxAirGapDataBase64 \(unsignedTxAirGapDataBase64)");
+
+                
+                let unsignedTxAirGapDataBase64PartsArray = TLColdWallet.splitStringToAray(unsignedTxAirGapDataBase64!)
+                //Pass unsigned tx here ----------------------------------------------------------------------------------------
+                var passedUnsignedTxairGapDataBase64 = ""
+                for unsignedTxAirGapDataBase64Part in unsignedTxAirGapDataBase64PartsArray {
+                    let ret = TLColdWallet.parseScannedPart(unsignedTxAirGapDataBase64Part)
+                    let dataPart = ret.0
+                    //let partNumber = ret.1 // unused in test
+                    //let totalParts = ret.2 // unused in test
+                    passedUnsignedTxairGapDataBase64 += dataPart
+                }
+
+                do {
+                    let serializedSignedAipGapData = try TLColdWallet.createSerializedSignedAipGapData(passedUnsignedTxairGapDataBase64,
+                                                                                                       mnemonicOrExtendedPrivateKey: backupPassphrase,
+                                                                                                       isTestnet: false)
+                    NSLog("testColdWallet_1_1 serializedSignedAipGapData \(serializedSignedAipGapData)");
+                    
+                    
+                    
+                    let signedTxAirGapDataBase64PartsArray = TLColdWallet.splitStringToAray(serializedSignedAipGapData!)
+                    //Pass signed tx here ----------------------------------------------------------------------------------------
+                    var passedSignedTxairGapDataBase64 = ""
+                    for signedTxAirGapDataBase64Part in signedTxAirGapDataBase64PartsArray {
+                        let ret = TLColdWallet.parseScannedPart(signedTxAirGapDataBase64Part)
+                        let dataPart = ret.0
+                        //let partNumber = ret.1 // unused in test
+                        //let totalParts = ret.2 // unused in test
+                        passedSignedTxairGapDataBase64 += dataPart
+                    }
+                    
+                    
+                    
+                    let signedTxData = TLColdWallet.getSignedTxData(passedSignedTxairGapDataBase64)
+                    NSLog("testColdWallet_1_1 signedTxData \(signedTxData)");
+                    let txHex = signedTxData!["txHex"] as! String
+                    let txHash = signedTxData!["txHash"] as! String
+//                    let txSize = signedTxData!["txSize"] as! Int
+                    let txSize = signedTxData!["txSize"] as! NSNumber
+                    NSLog("testColdWallet_1_1 txHex \(txHex)");
+                    NSLog("testColdWallet_1_1 txHash \(txHash)");
+                    NSLog("testColdWallet_1_1 txSize \(txSize)");
+                    
+                    
+                    
+                    XCTAssertTrue(txHash == "fbacfede55dc6a779782ba8fa22813860b7ef07d82c3abebb8f290b3141bf965")
+                    XCTAssertTrue(txHex == "010000000255605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835000000006a4730440220449b1f95687bf469fb954bcdbbc0ae362fe9bd6ba88c5b4dd227d9a5c37eb82a02203440bf6b4178786913a197344d0999a7d98d246099dcddf4bf9b24473a4e7a9a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff55605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835010000006a47304402201f6a4a87d0584157471210c1e126e64e52f565e950feb80045fc855829df3da4022059fd75fe51262aa7b7f214534357ed2786a9b3dcb12493112027711aebc8478a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff0200e1f505000000001976a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac00180d8f000000001976a91489c55a3ca6676c9f7f260a6439c83249b747380288ac00000000")
+                    XCTAssertTrue(txSize.uintValue == 376)
+                    
+                    let transaction = BTCTransaction(hex: txHex)
+                    
+                    XCTAssertTrue(transaction?.inputs.count == 2)
+                    let input0 = transaction?.inputs[0] as! BTCTransactionInput
+                    XCTAssertTrue(input0.previousTransactionID == txid0)
+                    XCTAssertTrue(input0.outpoint.index == 0)
+                    let input1 = transaction?.inputs[1] as! BTCTransactionInput
+                    XCTAssertTrue(input1.previousTransactionID == txid1)
+                    XCTAssertTrue(input1.outpoint.index == 1)
+                    
+                    XCTAssertTrue(transaction?.outputs.count == 2)
+                    let output0 = transaction?.outputs[0] as! BTCTransactionOutput
+                    XCTAssertTrue(output0.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
+                    XCTAssertTrue(output0.value == 100000000)
+                    XCTAssertTrue(output0.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
+                    let output1 = transaction?.outputs[1] as! BTCTransactionOutput
+                    XCTAssertTrue(output1.script.hex == "76a91489c55a3ca6676c9f7f260a6439c83249b747380288ac")
+                    XCTAssertTrue(output1.value == 2400000000)
+                    XCTAssertTrue(output1.script.standardAddress.base58String == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
+                    
+                    XCTAssertTrue(realToAddresses.count == 2)
+                    XCTAssertTrue(realToAddresses[0] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
+                    XCTAssertTrue(realToAddresses[1] == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
+                    
+                    
+                    
+                } catch TLColdWallet.TLColdWalletError.InvalidKey(let error) {
+                    NSLog("testColdWallet_1_1 InvalidKey \(error)");
+                } catch TLColdWallet.TLColdWalletError.MisMatchExtendedPublicKey(let error) {
+                    NSLog("testColdWallet_1_1 MisMatchExtendedPublicKey \(error)");
+                } catch {
+                    NSLog("testColdWallet_1_1 error \(error)");
+                }
+            }
+
+            testColdWallet_1_1()
+        }
+        
         testCreateSignedSerializedTransactionHexAndBIP69_1()
         testCreateSignedSerializedTransactionHexAndBIP69_2()
         testCreateSignedSerializedTransactionHexAndBIP69_3()
         testCreateSignedSerializedTransactionHexAndBIP69_4()
         testCreateSignedSerializedTransactionHexAndBIP69_5()
         testCreateSignedSerializedTransactionHexAndBIP69_6()
+        testColdWallet_1()
     }
     
     func testCoin() {

@@ -112,11 +112,9 @@ import UIKit
         }
         
         do {
-            //keyText = "merit wrong glass error pond response eye impulse welcome ring super message"
             let serializedSignedAipGapData = try TLColdWallet.createSerializedSignedAipGapData(self.scannedUnsignedTxAirGapData!,
                                                                                                mnemonicOrExtendedPrivateKey: keyText!,
                                                                                                isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)
-            DLog("didClickScanButton serializedSignedAipGapData \(serializedSignedAipGapData)");
             self.airGapDataBase64PartsArray = TLColdWallet.splitStringToAray(serializedSignedAipGapData!)
             self.savedAirGapDataBase64PartsArray = TLColdWallet.splitStringToAray(serializedSignedAipGapData!)
             self.inputColdWalletKeyTableViewCell?.statusLabel.text = "Complete".localized
@@ -124,7 +122,7 @@ import UIKit
             self.passSignedTxTableViewCell?.passButtonButton.isEnabled = true
             self.passSignedTxTableViewCell?.passButtonButton.alpha = 1.0
         } catch TLColdWallet.TLColdWalletError.InvalidKey(let error) {
-            DLog("InvalidKey \(error)");
+            DLog("TLColdWallet InvalidKey \(error)");
             self.airGapDataBase64PartsArray = nil
             self.savedAirGapDataBase64PartsArray = nil
             self.inputColdWalletKeyTableViewCell?.statusLabel.text = "Invalid passphrase".localized
@@ -132,7 +130,7 @@ import UIKit
             self.passSignedTxTableViewCell?.passButtonButton.isEnabled = false
             self.passSignedTxTableViewCell?.passButtonButton.alpha = 0.5
         } catch TLColdWallet.TLColdWalletError.MisMatchExtendedPublicKey(let error) {
-            DLog("MisMatchExtendedPublicKey \(error)");
+            DLog("TLColdWallet MisMatchExtendedPublicKey \(error)");
             self.airGapDataBase64PartsArray = nil
             self.savedAirGapDataBase64PartsArray = nil
             self.inputColdWalletKeyTableViewCell?.statusLabel.text = "Passphrase does not match the transaction".localized
@@ -140,7 +138,7 @@ import UIKit
             self.passSignedTxTableViewCell?.passButtonButton.isEnabled = false
             self.passSignedTxTableViewCell?.passButtonButton.alpha = 0.5
         } catch {
-            DLog("errorerror \(error)");
+            DLog("TLColdWallet error \(error)");
         }
     }
 

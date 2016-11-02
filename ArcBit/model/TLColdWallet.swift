@@ -53,7 +53,7 @@ class TLColdWallet {
 //        return nil
 //    }
 
-    class func createAipGapData(_ unSignedTx: String, extendedPublicKey: String, txInputsAccountHDIdxes:NSArray) -> String? {
+    class func createAipGapData(_ unSignedTx: String, extendedPublicKey: String, inputScripts:NSArray, txInputsAccountHDIdxes:NSArray) -> String? {
         let data = TLWalletUtils.hexStringToData(unSignedTx)
         if let base64Encoded = data?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) {
             
@@ -61,6 +61,7 @@ class TLColdWallet {
                 "v": AIR_GAP_DATA_VERSION,
                 "account_public_key": extendedPublicKey,
                 "unsigned_tx_base64": base64Encoded,
+                "input_scripts": inputScripts, //inputScripts in hex
                 "tx_inputs_account_hd_idxes": txInputsAccountHDIdxes //[["idx":123, "is_change":false], ["idx":124, "is_change":true]]
             ] as [String : Any]
             
@@ -69,8 +70,8 @@ class TLColdWallet {
         return nil
     }
 
-    class func createSerializedAipGapData(_ unSignedTx: String, extendedPublicKey: String, txInputsAccountHDIdxes:NSArray) -> String? {
-        let aipGapDataJSONString = TLColdWallet.createAipGapData(unSignedTx, extendedPublicKey: extendedPublicKey, txInputsAccountHDIdxes: txInputsAccountHDIdxes)
+    class func createSerializedAipGapData(_ unSignedTx: String, extendedPublicKey: String, inputScripts:NSArray, txInputsAccountHDIdxes:NSArray) -> String? {
+        let aipGapDataJSONString = TLColdWallet.createAipGapData(unSignedTx, extendedPublicKey: extendedPublicKey, inputScripts: inputScripts, txInputsAccountHDIdxes: txInputsAccountHDIdxes)
         let data = aipGapDataJSONString?.data(using: String.Encoding.utf8)
         return data?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
     }
@@ -212,8 +213,15 @@ class TLColdWallet {
             //                .map({ NSString(data: $0, encoding: NSUTF8StringEncoding) })
             DLog("Decoded:  \(txData!)")
             
+            
+            let inputHexScriptsArray = result["input_scripts"] as! NSArray
+            let inputScriptsArray = NSMutableArray(capacity: inputHexScriptsArray.count)
+            for hexScript in inputHexScriptsArray {
+                inputScriptsArray.add(TLWalletUtils.hexStringToData(hexScript as! String)!)
+            }
+
             for _ in 0...3 {
-                let txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(txData!, privateKeys: privateKeysArray, isTestnet: isTestnet)
+                let txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(txData!, inputScripts: inputScriptsArray, privateKeys: privateKeysArray, isTestnet: isTestnet)
                 DLog("createSignedAipGapData txHexAndTxHash: \(txHexAndTxHash.debugDescription as AnyObject)")
                 //                break
                 if txHexAndTxHash != nil {

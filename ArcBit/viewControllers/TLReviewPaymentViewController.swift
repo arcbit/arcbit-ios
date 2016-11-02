@@ -273,7 +273,8 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         if AppDelegate.instance().godSend!.isColdWalletAccount() {
             cancelSend()
             let txInputsAccountHDIdxes = ret.2
-            self.promptToSignTransaction(txHex!, txInputsAccountHDIdxes:txInputsAccountHDIdxes!)
+            let inputScripts = txHexAndTxHash!.object(forKey: "inputScripts") as! NSArray
+            self.promptToSignTransaction(txHex!, inputScripts:inputScripts, txInputsAccountHDIdxes:txInputsAccountHDIdxes!)
             return;
         }
         let txHash = txHexAndTxHash!.object(forKey: "txHash") as? String
@@ -351,14 +352,11 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         self.QRImageModal!.show()
     }
     
-    func promptToSignTransaction(_ unSignedTx: String, txInputsAccountHDIdxes:NSArray) {
+    func promptToSignTransaction(_ unSignedTx: String, inputScripts:NSArray, txInputsAccountHDIdxes:NSArray) {
         let extendedPublicKey = AppDelegate.instance().godSend!.getExtendedPubKey()
-        if let airGapDataBase64 = TLColdWallet.createSerializedAipGapData(unSignedTx, extendedPublicKey: extendedPublicKey!, txInputsAccountHDIdxes: txInputsAccountHDIdxes) {
-            DLog("airGapDataBase64 0000 \(airGapDataBase64)")
+        if let airGapDataBase64 = TLColdWallet.createSerializedAipGapData(unSignedTx, extendedPublicKey: extendedPublicKey!, inputScripts: inputScripts, txInputsAccountHDIdxes: txInputsAccountHDIdxes) {
             self.airGapDataBase64PartsArray = TLColdWallet.splitStringToAray(airGapDataBase64)
             DLog("airGapDataBase64PartsArray \(airGapDataBase64PartsArray)")
-
-                    
             TLPrompts.promtForOKCancel(self, title: "Spending from a cold wallet account".localized, message: "Transaction needs to be authorize by an offline and airgap device. Send transaction to an offline device for authorization?", success: {
                 () in
                 self.showNextSignedTxPartQRCode()
@@ -432,7 +430,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                     DLog("didClickScanSignedTxButton signedTxData \(signedTxData)");
                     let txHex = signedTxData["txHex"] as! String
                     let txHash = signedTxData["txHash"] as! String
-                    let txSize = signedTxData["txSize"] as! Int
+                    let txSize = signedTxData["txSize"] as! NSNumber
                     DLog("didClickScanSignedTxButton txHex \(txHex)");
                     DLog("didClickScanSignedTxButton txHash \(txHash)");
                     DLog("didClickScanSignedTxButton txSize \(txSize)");
