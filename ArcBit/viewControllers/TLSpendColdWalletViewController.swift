@@ -82,11 +82,28 @@ import UIKit
     
     func didClickScanUnsignedTxInfoButton(_ cell: TLScanUnsignedTxTableViewCell) {
         dismissKeyboard()
-//        TLPrompts.promtForOK(self, title:"", message: "Info Text".localized, success: {
-//            () in
-//        })
+        let msg = "On your primary online device, when you want to make a payment from a cold wallet account, simply do it as would normally would on a normal account. When you click 'Send' on the Review Payment screen, instead of the payment going out immediately, you will be prompt to pass the unauthorized transaction data. Then on your secondary offline device, within this screen click 'Scan' to import the transaction so it can be authorized.".localized
+        TLPrompts.promtForOK(self, title:"", message: msg, success: {
+            () in
+        })
     }
 
+    func didClickInputColdWalletKeyInfoButton(_ cell: TLInputColdWalletKeyTableViewCell) {
+        dismissKeyboard()
+        let msg = "Input the 12 word passphrase/mnemonic that belongs to the cold wallet account that you want to make a payment from. This is the passphrase that was used to generate your account public key that was generated in the 'Create Cold Wallet' section found in the previous screen.".localized
+        TLPrompts.promtForOK(self, title:"", message: msg, success: {
+            () in
+        })
+    }
+    
+    func didClickPassSignedTxInfoButton(_ cell: TLPassSignedTxTableViewCell) {
+        dismissKeyboard()
+        let msg = "Once the transaction has been authorized by completing the above two steps, pass the authorized transaction back to your primary online device to finalize your payment.".localized
+        TLPrompts.promtForOK(self, title:"", message: msg, success: {
+            () in
+        })
+    }
+    
     func checkToCreateSignedTx() {
         let keyText = self.inputColdWalletKeyTableViewCell?.keyInputTextView.text
         if keyText == nil || keyText!.isEmpty {
@@ -183,13 +200,6 @@ import UIKit
                 error()
         })
     }
-
-    func didClickInputColdWalletKeyInfoButton(_ cell: TLInputColdWalletKeyTableViewCell) {
-        dismissKeyboard()
-        TLPrompts.promtForOK(self, title:"", message: "Input the 12 word mnemonic to authorize this transaction".localized, success: {
-            () in
-        })
-    }
     
     func showNextSignedTxPartQRCode() {
         if self.airGapDataBase64PartsArray == nil {
@@ -212,13 +222,6 @@ import UIKit
             
             }, failure: {
                 (isCancelled: Bool) in
-        })
-    }
-    
-    func didClickPassSignedTxInfoButton(_ cell: TLPassSignedTxTableViewCell) {
-        dismissKeyboard()
-        TLPrompts.promtForOK(self, title:"", message: "Info Text".localized, success: {
-            () in
         })
     }
     

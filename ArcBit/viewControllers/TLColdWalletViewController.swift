@@ -36,6 +36,7 @@ import UIKit
     
     struct STATIC_MEMBERS {
         static let kColdWalletSection = "kColdWalletSection"
+        static let kColdWalletOverViewRow = "kColdWalletOverViewRow"
         static let kColdWalletCreateRow = "kColdWalletCreateRow"
         static let kColdWalletSpendtRow = "kColdWalletSpendtRow"
 
@@ -65,7 +66,7 @@ import UIKit
         } else {
             self.sectionArray = [STATIC_MEMBERS.kColdWalletSection]
         }
-        self.coldWalletRowArray = [STATIC_MEMBERS.kColdWalletCreateRow, STATIC_MEMBERS.kColdWalletSpendtRow]
+        self.coldWalletRowArray = [STATIC_MEMBERS.kColdWalletOverViewRow, STATIC_MEMBERS.kColdWalletCreateRow, STATIC_MEMBERS.kColdWalletSpendtRow]
         self.seeHDWalletDataRowArray = [STATIC_MEMBERS.kSeeHDWalletDataRow]
 
         
@@ -131,7 +132,9 @@ import UIKit
         let sectionType = self.sectionArray![(indexPath as NSIndexPath).section]
         if(sectionType == STATIC_MEMBERS.kColdWalletSection) {
             let row = self.coldWalletRowArray![(indexPath as NSIndexPath).row]
-            if row == STATIC_MEMBERS.kColdWalletCreateRow {
+            if row == STATIC_MEMBERS.kColdWalletOverViewRow {
+                cell!.textLabel!.text = "Cold Wallet Overview".localized
+            } else if row == STATIC_MEMBERS.kColdWalletCreateRow {
                 cell!.textLabel!.text = "Create Cold Wallet".localized
             } else if row == STATIC_MEMBERS.kColdWalletSpendtRow {
                 cell!.textLabel!.text = "Spend From Cold Wallet Account".localized
@@ -150,7 +153,12 @@ import UIKit
         let sectionType = self.sectionArray![(indexPath as NSIndexPath).section]
         if(sectionType == STATIC_MEMBERS.kColdWalletSection) {
             let row = self.coldWalletRowArray![(indexPath as NSIndexPath).row]
-            if row == STATIC_MEMBERS.kColdWalletCreateRow {
+            if row == STATIC_MEMBERS.kColdWalletOverViewRow {
+                let msg = "The cold wallet feature will allow you to create accounts which offer more security then normal online wallets. You will need 2 devices to use this feature. Your normal day to day device that is connected to the internet and a secondary device that is not connected to the internet (Your secondary device would need to be online once to download the ArcBit app. Afterwards keep the secondary device offline for maximal security). This feature allows you to authorize bitcoin payments from an offline device so that the keys to your bitcoins will never need to be store on your online device. Follow the step by step instructions by clicking the info buttons within the below sections.".localized
+                TLPrompts.promtForOK(self, title:"".localized, message: msg, success: {
+                    () in
+                })
+            } else if row == STATIC_MEMBERS.kColdWalletCreateRow {
                 performSegue(withIdentifier: "SegueCreateColdWallet", sender:self)
             } else if row == STATIC_MEMBERS.kColdWalletSpendtRow {
                 performSegue(withIdentifier: "SegueSpendColdWallet", sender:self)
