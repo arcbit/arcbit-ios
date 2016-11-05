@@ -573,21 +573,21 @@ import Foundation
         receivingAddressesArray = [String]()
         
         var addressIdx = 0
-        for i in stride(from: addressIdx, to: mainActiveAddresses.count, by: 1) {
+        while addressIdx < mainActiveAddresses.count {
             let address = mainActiveAddresses[addressIdx]
             if (getNumberOfTransactionsForAddress(address) == 0) {
                 break
             }
+            addressIdx += 1
         }
         
         var lookedAtAllAddresses = false
         var receivingAddressesStartIdx = -1
-        for i in stride(from: addressIdx, to: addressIdx + TLAccountObject.MAX_ACCOUNT_WAIT_TO_RECEIVE_ADDRESS(), by: 1) {
+        while addressIdx < addressIdx + TLAccountObject.MAX_ACCOUNT_WAIT_TO_RECEIVE_ADDRESS() {
             if (addressIdx >= getMainActiveAddressesCount()) {
                 lookedAtAllAddresses = true
                 break
             }
-            
             let address = mainActiveAddresses[addressIdx]
             if (getNumberOfTransactionsForAddress(address) == 0) {
                 receivingAddressesArray.append(address)
@@ -599,6 +599,7 @@ import Foundation
                 addressIdx - receivingAddressesStartIdx >= TLAccountObject.MAX_ACCOUNT_WAIT_TO_RECEIVE_ADDRESS()) {
                     break
             }
+            addressIdx += 1
         }
         
         while (lookedAtAllAddresses && receivingAddressesArray.count < TLAccountObject.MAX_ACCOUNT_WAIT_TO_RECEIVE_ADDRESS()) {
