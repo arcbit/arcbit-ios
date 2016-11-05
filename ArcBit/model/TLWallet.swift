@@ -602,8 +602,8 @@ class TLWallet {
             assert(self.masterHex != nil, "")
             let hdWalletDict = getHDWallet()
             let accountsArray = getAccountsArray()
-            let maxAccountIDCreated = hdWalletDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MAX_ACCOUNTS_CREATED) as! UInt
-            let extendPrivKey = TLHDWalletWrapper.getExtendPrivKey(self.masterHex!, accountIdx: maxAccountIDCreated)
+            let maxAccountIDCreated = hdWalletDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MAX_ACCOUNTS_CREATED) as! Int
+            let extendPrivKey = TLHDWalletWrapper.getExtendPrivKey(self.masterHex!, accountIdx: UInt(maxAccountIDCreated))
             let accountDict = createAccountDictWithPreload(accountName, extendedKey: extendPrivKey,
                 isPrivateExtendedKey: true, accountIdx: Int(maxAccountIDCreated), preloadStartingAddresses: preloadStartingAddresses)
             accountsArray.add(accountDict)
