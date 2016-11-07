@@ -53,7 +53,7 @@ class TLColdWallet {
 //        return nil
 //    }
 
-    class func createAipGapData(_ unSignedTx: String, extendedPublicKey: String, inputScripts:NSArray, txInputsAccountHDIdxes:NSArray) -> String? {
+    class func createUnsignedTxAipGapData(_ unSignedTx: String, extendedPublicKey: String, inputScripts:NSArray, txInputsAccountHDIdxes:NSArray) -> String? {
         let data = TLWalletUtils.hexStringToData(unSignedTx)
         if let base64Encoded = data?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) {
             
@@ -70,8 +70,8 @@ class TLColdWallet {
         return nil
     }
 
-    class func createSerializedAipGapData(_ unSignedTx: String, extendedPublicKey: String, inputScripts:NSArray, txInputsAccountHDIdxes:NSArray) -> String? {
-        let aipGapDataJSONString = TLColdWallet.createAipGapData(unSignedTx, extendedPublicKey: extendedPublicKey, inputScripts: inputScripts, txInputsAccountHDIdxes: txInputsAccountHDIdxes)
+    class func createSerializedUnsignedTxAipGapData(_ unSignedTx: String, extendedPublicKey: String, inputScripts:NSArray, txInputsAccountHDIdxes:NSArray) -> String? {
+        let aipGapDataJSONString = TLColdWallet.createUnsignedTxAipGapData(unSignedTx, extendedPublicKey: extendedPublicKey, inputScripts: inputScripts, txInputsAccountHDIdxes: txInputsAccountHDIdxes)
         let data = aipGapDataJSONString?.data(using: String.Encoding.utf8)
         return data?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
     }
@@ -159,9 +159,9 @@ class TLColdWallet {
         return nil
     }
     
-    class func createSerializedSignedAipGapData(_ aipGapDataBase64: String, mnemonicOrExtendedPrivateKey: String, isTestnet:Bool) throws -> String? {
-        if let signedTxHexAndTxHash = try createSignedAipGapData(aipGapDataBase64, mnemonicOrExtendedPrivateKey: mnemonicOrExtendedPrivateKey, isTestnet: isTestnet) {
-            DLog("createSerializedSignedAipGapData signedTxHexAndTxHash \(signedTxHexAndTxHash)");
+    class func createSerializedSignedTxAipGapData(_ aipGapDataBase64: String, mnemonicOrExtendedPrivateKey: String, isTestnet:Bool) throws -> String? {
+        if let signedTxHexAndTxHash = try createSignedTxAipGapData(aipGapDataBase64, mnemonicOrExtendedPrivateKey: mnemonicOrExtendedPrivateKey, isTestnet: isTestnet) {
+            DLog("createSerializedSignedTxAipGapData signedTxHexAndTxHash \(signedTxHexAndTxHash)");
             
             let aipGapDataJSONString = TLUtils.dictionaryToJSONString(false, dict: signedTxHexAndTxHash)
             let data = aipGapDataJSONString.data(using: String.Encoding.utf8)
@@ -170,13 +170,13 @@ class TLColdWallet {
         return nil
     }
 
-    class func createSignedAipGapData(_ aipGapDataBase64: String, mnemonicOrExtendedPrivateKey: String, isTestnet:Bool) throws -> NSDictionary? {
+    class func createSignedTxAipGapData(_ aipGapDataBase64: String, mnemonicOrExtendedPrivateKey: String, isTestnet:Bool) throws -> NSDictionary? {
         let data = Data(base64Encoded: aipGapDataBase64, options: NSData.Base64DecodingOptions(rawValue: 0))
         if data == nil {
             return nil
         }
         if let result = convertDataToDictionary(data!) {
-            DLog("createSignedAipGapData:  \(result)")
+            DLog("createSignedTxAipGapData:  \(result)")
             let extendedPublicKey = result["account_public_key"] as! String
             
             
@@ -222,7 +222,7 @@ class TLColdWallet {
 
             for _ in 0...3 {
                 let txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(txData!, inputScripts: inputScriptsArray, privateKeys: privateKeysArray, isTestnet: isTestnet)
-                DLog("createSignedAipGapData txHexAndTxHash: \(txHexAndTxHash.debugDescription as AnyObject)")
+                DLog("createSignedTxAipGapData txHexAndTxHash: \(txHexAndTxHash.debugDescription as AnyObject)")
                 //                break
                 if txHexAndTxHash != nil {
                     return txHexAndTxHash!

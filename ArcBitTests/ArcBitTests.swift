@@ -1354,7 +1354,7 @@ class ArcBitTests: XCTestCase {
                 let inputScripts = txHexAndTxHash!.object(forKey: "inputScripts") as! NSArray
 
                 
-                let unsignedTxAirGapDataBase64 = TLColdWallet.createSerializedAipGapData(unSignedTx, extendedPublicKey: extendPubKey, inputScripts: inputScripts, txInputsAccountHDIdxes: txInputsAccountHDIdxes!)
+                let unsignedTxAirGapDataBase64 = TLColdWallet.createSerializedUnsignedTxAipGapData(unSignedTx, extendedPublicKey: extendPubKey, inputScripts: inputScripts, txInputsAccountHDIdxes: txInputsAccountHDIdxes!)
                 NSLog("testColdWallet_1_1 unsignedTxAirGapDataBase64 \(unsignedTxAirGapDataBase64)");
 
                 
@@ -1370,7 +1370,7 @@ class ArcBitTests: XCTestCase {
                 }
 
                 do {
-                    let serializedSignedAipGapData = try TLColdWallet.createSerializedSignedAipGapData(passedUnsignedTxairGapDataBase64,
+                    let serializedSignedAipGapData = try TLColdWallet.createSerializedSignedTxAipGapData(passedUnsignedTxairGapDataBase64,
                                                                                                        mnemonicOrExtendedPrivateKey: backupPassphrase,
                                                                                                        isTestnet: false)
                     NSLog("testColdWallet_1_1 serializedSignedAipGapData \(serializedSignedAipGapData)");

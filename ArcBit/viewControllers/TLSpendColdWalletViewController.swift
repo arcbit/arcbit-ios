@@ -129,7 +129,7 @@ import UIKit
         }
         
         do {
-            let serializedSignedAipGapData = try TLColdWallet.createSerializedSignedAipGapData(self.scannedUnsignedTxAirGapData!,
+            let serializedSignedAipGapData = try TLColdWallet.createSerializedSignedTxAipGapData(self.scannedUnsignedTxAirGapData!,
                                                                                                mnemonicOrExtendedPrivateKey: keyText!,
                                                                                                isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)
             self.airGapDataBase64PartsArray = TLColdWallet.splitStringToAray(serializedSignedAipGapData!)

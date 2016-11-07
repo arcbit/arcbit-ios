@@ -354,7 +354,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     
     func promptToSignTransaction(_ unSignedTx: String, inputScripts:NSArray, txInputsAccountHDIdxes:NSArray) {
         let extendedPublicKey = AppDelegate.instance().godSend!.getExtendedPubKey()
-        if let airGapDataBase64 = TLColdWallet.createSerializedAipGapData(unSignedTx, extendedPublicKey: extendedPublicKey!, inputScripts: inputScripts, txInputsAccountHDIdxes: txInputsAccountHDIdxes) {
+        if let airGapDataBase64 = TLColdWallet.createSerializedUnsignedTxAipGapData(unSignedTx, extendedPublicKey: extendedPublicKey!, inputScripts: inputScripts, txInputsAccountHDIdxes: txInputsAccountHDIdxes) {
             self.airGapDataBase64PartsArray = TLColdWallet.splitStringToAray(airGapDataBase64)
             DLog("airGapDataBase64PartsArray \(airGapDataBase64PartsArray)")
             TLPrompts.promtForOKCancel(self, title: "Spending from a cold wallet account".localized, message: "Transaction needs to be authorize by an offline and airgap device. Send transaction to an offline device for authorization?", success: {
