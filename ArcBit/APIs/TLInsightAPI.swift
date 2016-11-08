@@ -218,19 +218,8 @@ class TLInsightAPI {
         blockchainUnspentOutputDict.setObject(txid, forKey: "tx_hash_big_endian" as NSCopying)
         blockchainUnspentOutputDict.setObject(unspentOutputDict.object(forKey: "vout")!, forKey: "tx_output_n" as NSCopying)
         blockchainUnspentOutputDict.setObject(unspentOutputDict.object(forKey: "scriptPubKey")!, forKey: "script" as NSCopying)
-        let amountNumber = unspentOutputDict.object(forKey: "amount") as! NSNumber
-        
-        
-        // Insight API should really return unspent output amount in satoshi's
-        // amountNumber is a decimal number ie 0.09942 which could end up being 0.09941999999999999, so need to fix with code below
-        let bitcoinFormatter = NumberFormatter()
-        bitcoinFormatter.numberStyle = .decimal
-        bitcoinFormatter.roundingMode = .halfUp
-        bitcoinFormatter.maximumFractionDigits = 8
-        bitcoinFormatter.locale = Locale(identifier: "en_US")
-        let amount = TLCoin(bitcoinAmount: bitcoinFormatter.string(from: amountNumber)!, bitcoinDenomination: TLBitcoinDenomination.bitcoin, locale: Locale(identifier: "en_US"))
-        blockchainUnspentOutputDict.setObject(NSNumber(value: amount.toUInt64() as UInt64), forKey: "value" as NSCopying)
-
+        let value = (unspentOutputDict.object(forKey: "satoshis") as! NSNumber).uint64Value
+        blockchainUnspentOutputDict.setObject(value, forKey: "value" as NSCopying)
 
         let confirmations: AnyObject? = unspentOutputDict.object(forKey: "confirmations") as AnyObject?
         if (confirmations != nil) {
