@@ -263,13 +263,12 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
         self.updateWalletKeys()
     }
 
-    func didUpdateMnemonic(_ mnemonicPassphrase: String, accountID: UInt? = nil) {
-//    func didUpdateMnemonic(mnemonicPassphrase: String) {
+    func didUpdateMnemonic(_ mnemonicPassphrase: String, accountID: Int? = nil) {
         if TLHDWalletWrapper.phraseIsValid(mnemonicPassphrase) {
             let masterHex = TLHDWalletWrapper.getMasterHex(mnemonicPassphrase)
-            var HDAccountID:UInt? = 0
+            var HDAccountID:Int? = 0
             if accountID == nil {
-                HDAccountID = UInt(self.accountIDTextField.text!)
+                HDAccountID = Int(self.accountIDTextField.text!)
                 if HDAccountID == nil {
                     HDAccountID = 0
                 }
@@ -278,10 +277,10 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
             }
 
             self.updateAccountIDTextField(true)
-            let extendedPublicKey = TLHDWalletWrapper.getExtendPubKeyFromMasterHex(masterHex, accountIdx: HDAccountID!)
+            let extendedPublicKey = TLHDWalletWrapper.getExtendPubKeyFromMasterHex(masterHex, accountIdx: UInt(HDAccountID!))
             self.accountPublicKeyTextView.text = extendedPublicKey
             self.updateAccountPublicKeyTextView(extendedPublicKey)
-            let extendedPrivateKey = TLHDWalletWrapper.getExtendPrivKey(masterHex, accountIdx: HDAccountID!)
+            let extendedPrivateKey = TLHDWalletWrapper.getExtendPrivKey(masterHex, accountIdx: UInt(HDAccountID!))
             self.accountPrivateKeyTextView.text = extendedPrivateKey
             self.updateAccountPrivateKeyTextView(extendedPrivateKey)
   
@@ -459,10 +458,10 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
         self.changeAddressTextField5.text = nil
     }
     
-    func updateAddressFieldsWithStartingAddressID(_ startingAddressID: UInt? = nil) {
-        var addressID:UInt? = 0
+    func updateAddressFieldsWithStartingAddressID(_ startingAddressID: Int? = nil) {
+        var addressID:Int? = 0
         if startingAddressID == nil {
-            addressID = UInt(self.startingAddressIDTextField.text!)
+            addressID = Int(self.startingAddressIDTextField.text!)
             if addressID == nil {
                 addressID = 0
             }
@@ -472,10 +471,10 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
         updateAddressFields(addressID!)
     }
 
-    func updateChangeAddressFieldsWithStartingAddressID(_ startingAddressID: UInt? = nil) {
-        var addressID:UInt? = 0
+    func updateChangeAddressFieldsWithStartingAddressID(_ startingAddressID: Int? = nil) {
+        var addressID:Int? = 0
         if startingAddressID == nil {
-            addressID = UInt(self.startingChangeAddressIDTextField.text!)
+            addressID = Int(self.startingChangeAddressIDTextField.text!)
             if addressID == nil {
                 addressID = 0
             }
@@ -485,7 +484,7 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
         updateChangeAddressFields(addressID!)
     }
     
-    func updateAddressFields(_ startingAddressID: UInt) {
+    func updateAddressFields(_ startingAddressID: Int) {
         var extendedPrivateKey:String? = nil
         var extendedPublicKey:String? = nil
         if self.coldWalletKeyType == .mnemonic {
@@ -554,7 +553,7 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
         }
     }
     
-    func updateChangeAddressFields(_ startingAddressID: UInt) {
+    func updateChangeAddressFields(_ startingAddressID: Int) {
         var extendedPrivateKey:String? = nil
         var extendedPublicKey:String? = nil
         if self.coldWalletKeyType == .mnemonic {

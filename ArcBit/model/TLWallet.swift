@@ -234,12 +234,12 @@ class TLWallet {
     func updateMainAddressStatus(_ accountDict: NSMutableDictionary, addressIdx: Int,
         addressStatus: TLAddressStatus) -> () {
             
-            let minMainAddressIdx = accountDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MIN_MAIN_ADDRESS_IDX) as! UInt
+            let minMainAddressIdx = accountDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MIN_MAIN_ADDRESS_IDX) as! Int
             
             DLog("updateMainAddressStatus accountIdx \(accountDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_IDX) as! Int)")
             DLog("updateMainAddressStatus minMainAddressIdx \(minMainAddressIdx) addressIdx: \(addressIdx)")
             
-            assert(UInt(addressIdx) == minMainAddressIdx, "addressIdx != minMainAddressIdx")
+            assert(Int(addressIdx) == minMainAddressIdx, "addressIdx != minMainAddressIdx")
             accountDict.setObject((minMainAddressIdx+1), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MIN_MAIN_ADDRESS_IDX as NSCopying)
             
             let mainAddressesArray = accountDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MAIN_ADDRESSES) as! NSMutableArray
@@ -289,12 +289,12 @@ class TLWallet {
     func updateChangeAddressStatus(_ accountDict: NSMutableDictionary, addressIdx: Int,
         addressStatus: TLAddressStatus) -> () {
             
-            let minChangeAddressIdx = accountDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MIN_CHANGE_ADDRESS_IDX) as! UInt
+            let minChangeAddressIdx = accountDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MIN_CHANGE_ADDRESS_IDX) as! Int
             
             DLog("updateChangeAddressStatus accountIdx \(accountDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_ACCOUNT_IDX) as! Int)")
             DLog("updateChangeAddressStatus minChangeAddressIdx \(minChangeAddressIdx) addressIdx: \(addressIdx)")
             
-            assert(UInt(addressIdx) == minChangeAddressIdx, "addressIdx != minChangeAddressIdx")
+            assert(Int(addressIdx) == minChangeAddressIdx, "addressIdx != minChangeAddressIdx")
             accountDict.setObject((minChangeAddressIdx + 1), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MIN_CHANGE_ADDRESS_IDX as NSCopying)
             
             let changeAddressesArray = accountDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_CHANGE_ADDRESSES) as! NSMutableArray

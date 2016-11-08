@@ -352,7 +352,7 @@ class TLInsightAPI {
         
         //TODO: need to sort txs because insight does not sort it for you, ask devs to sort array
         let sortedtransformedTxs = transformedTxs.sortedArray(comparator: {
-            (a:AnyObject!, b:AnyObject!) -> ComparisonResult in
+            (a, b) -> ComparisonResult in
             
             let first = (a as! NSDictionary).object(forKey: "time") as! Int
             if (first == 0) {
@@ -371,7 +371,7 @@ class TLInsightAPI {
                 return ComparisonResult.orderedSame
             }
             return ComparisonResult.orderedAscending
-        } as! (Any, Any) -> ComparisonResult)
+        })
         
         for _key in transansformedAddressesDict {
             let key = _key.key as! String

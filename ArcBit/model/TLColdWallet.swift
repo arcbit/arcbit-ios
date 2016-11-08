@@ -239,12 +239,6 @@ class TLColdWallet {
             return nil
         }
         if let result = convertDataToDictionary(data!) {
-            let txHex = result["txHex"] as! String
-            let txHash = result["txHash"] as! String
-            let txSize = result["txSize"] as! Int
-            DLog("getSignedTxData txHex:  \(txHex)")
-            DLog("getSignedTxData txHash:  \(txHash)")
-            DLog("getSignedTxData txSize:  \(txSize)")
             return result as NSDictionary?
         }
         return nil

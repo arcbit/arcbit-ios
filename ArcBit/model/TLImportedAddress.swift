@@ -112,7 +112,7 @@ import Foundation
         
         var unspentOutputsSumTemp:UInt64 = 0
         for unspentOutput in unspentOutputs as! [NSDictionary] {
-            let amount = unspentOutput.object(forKey: "value") as! UInt
+            let amount = unspentOutput.object(forKey: "value") as! NSNumber
             unspentOutputsSumTemp += UInt64(amount)
         }
         

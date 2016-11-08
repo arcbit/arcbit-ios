@@ -50,7 +50,7 @@ import Foundation
                     let inp = NSMutableDictionary()
                     if (addr != nil) {
                         inp.setObject(addr!, forKey:"addr" as NSCopying)
-                        inp.setObject(prevOut!.object(forKey: "value") as! UInt, forKey:"value" as NSCopying)
+                        inp.setObject(prevOut!.object(forKey: "value") as! Int, forKey:"value" as NSCopying)
                     }
                     inputAddressToValueArray!.add(inp)
                 }
@@ -66,7 +66,7 @@ import Foundation
                 let outt = NSMutableDictionary()
                 if (addr != nil) {
                     outt.setObject(addr!, forKey:"addr" as NSCopying)
-                    outt.setObject(output.object(forKey: "value") as! UInt, forKey:"value" as NSCopying)
+                    outt.setObject(output.object(forKey: "value") as! Int, forKey:"value" as NSCopying)
                 }
                 
                 outt.setObject(output.object(forKey: "script") as! String, forKey:"script" as NSCopying)

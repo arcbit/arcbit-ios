@@ -287,13 +287,13 @@ import AVFoundation
     func settingDidChange(_ info: Notification) {
         let userInfo = (info as NSNotification).userInfo! as NSDictionary
         if ((info.object as! String) == "enablecoldwallet") {
-            let enabled = (userInfo.object(forKey: "enablecoldwallet")) as! Int == 1
+            let enabled = (userInfo.object(forKey: "enablecoldwallet")) as! Bool
             TLPreferences.setEnableColdWallet(enabled)
         } else if ((info.object as! String) == "enableadvancemode") {
-            let enabled = (userInfo.object(forKey: "enableadvancemode")) as! Int == 1
+            let enabled = (userInfo.object(forKey: "enableadvancemode")) as! Bool
             TLPreferences.setAdvancedMode(enabled)
         } else if ((info.object as! String) == "canrestoredeletedapp") {
-            let enabled = (userInfo.object(forKey: "canrestoredeletedapp")) as! Int == 1
+            let enabled = (userInfo.object(forKey: "canrestoredeletedapp")) as! Bool
             
             TLPreferences.setInAppSettingsCanRestoreDeletedApp(!enabled) // make sure below code completes firstbefore enabling
             if enabled {
@@ -314,13 +314,13 @@ import AVFoundation
             TLPreferences.setInAppSettingsCanRestoreDeletedApp(enabled)
             TLPreferences.setCanRestoreDeletedApp(enabled)
         } else if ((info.object as! String) == "enablesoundnotification") {
-            let enabled = (userInfo.object(forKey: "enablesoundnotification") as! Int) == 1
+            let enabled = userInfo.object(forKey: "enablesoundnotification") as! Bool
             if (enabled) {
                 AudioServicesPlaySystemSound(1016)
             }
             
         } else if ((info.object as! String) == "enablebackupwithicloud") {
-            let enabled = (userInfo.object(forKey: "enablebackupwithicloud") as! Int) == 1
+            let enabled = userInfo.object(forKey: "enablebackupwithicloud") as! Bool
             if (enabled) {
                 if !TLCloudDocumentSyncWrapper.instance().checkCloudAvailability() {
                     // don't need own alert message, OS will give warning for you
@@ -365,7 +365,7 @@ import AVFoundation
                 TLPreferences.setEnableBackupWithiCloud(false)
             }
         } else if ((info.object as! String) == "enablepincode") {
-            let enabled = (userInfo.object(forKey: "enablepincode") as! Int) == 1
+            let enabled = userInfo.object(forKey: "enablepincode") as! Bool
             TLPreferences.setEnablePINCode(enabled)
             if (!LTHPasscodeViewController.doesPasscodeExist()) {
                 self.showLockViewForEnablingPasscode()
@@ -373,7 +373,7 @@ import AVFoundation
                 self.showLockViewForTurningPasscodeOff()
             }
         } else if ((info.object as! String) == "displaylocalcurrency") {
-            let enabled = (userInfo.object(forKey: "displaylocalcurrency") as! Int) == 1
+            let enabled = userInfo.object(forKey: "displaylocalcurrency") as! Bool
             TLPreferences.setDisplayLocalCurrency(enabled)
         } else if ((info.object as! String) == "dynamicfeeoption") {
         } else if ((info.object as! String) == "enabledynamicfee") {
@@ -385,7 +385,7 @@ import AVFoundation
             let bitcoindisplayIdx = userInfo.object(forKey: "bitcoindisplay") as! String
             TLPreferences.setBitcoinDisplay(bitcoindisplayIdx)
         } else if ((info.object as! String) == "stealthaddressdefault") {
-            let enabled = (userInfo.object(forKey: "stealthaddressdefault") as! Int) == 1
+            let enabled = userInfo.object(forKey: "stealthaddressdefault") as! Bool
             TLPreferences.setEnabledStealthAddressDefault(enabled)
         } else if ((info.object as! String) == "blockexplorerapi") {
             let blockexplorerAPIIdx = userInfo.object(forKey: "blockexplorerapi") as! String
