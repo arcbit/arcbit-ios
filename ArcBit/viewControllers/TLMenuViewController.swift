@@ -109,7 +109,7 @@ import UIKit
                 name = "Accounts".localized
                 break
             case 4:
-                imageName = TLWalletUtils.ACCOUNT_ICON_IMAGE_NAME()
+                imageName = TLWalletUtils.VAULT_ICON_IMAGE_NAME()
                 name = "Cold Wallet".localized
                 break
             case 5:

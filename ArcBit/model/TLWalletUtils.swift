@@ -107,6 +107,10 @@ class TLWalletUtils {
         return STATIC_MEMBERS.SETTINGS_ICON_IMAGE_NAME
     }
     
+    class func VAULT_ICON_IMAGE_NAME() -> (String) {
+        return STATIC_MEMBERS.VAULT_ICON_IMAGE_NAME
+    }
+    
     struct STATIC_MEMBERS {
         static let APP_NAME = "ArcBit Wallet"
         
@@ -126,7 +130,8 @@ class TLWalletUtils {
         static let LINK_ICON_IMAGE_NAME = "link.png"
         static let SETTINGS_ICON_IMAGE_NAME = "settings.png"
         static let SELECT_ACCOUNT_ICON_IMAGE_NAME = "arrow-right7.png"
-        
+        static let VAULT_ICON_IMAGE_NAME = "vault.png"
+
         static let BITCOIN_URI_BASE = "bitcoin:"
         static let BITCOIN_ISO_CODE = "BTC"
         static let BITCOIN_SYMBOL = "B"
