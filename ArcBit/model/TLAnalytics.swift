@@ -100,7 +100,10 @@ class TLAnalytics: NSObject {
         NotificationCenter.default.addObserver(self
             ,selector:#selector(TLAnalytics.updateViewAccountAddressInWeb(_:)),
             name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_ACCOUNT_ADDRESS_IN_WEB()), object:nil)
-        
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLAnalytics.updateViewEnableAdvancedMode(_:)),
+             name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ENABLE_ADVANCE_MODE()), object:nil)
+
         NotificationCenter.default.addObserver(self
             ,selector:#selector(TLAnalytics.updateImportAccount(_:)),
             name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_IMPORT_ACCOUNT()), object:nil)
@@ -258,6 +261,10 @@ class TLAnalytics: NSObject {
     
     func updateViewAccountAddressInWeb(_ notification: Notification) -> () {
         updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_VIEW_ACCOUNT_ADDRESS_IN_WEB())
+    }
+    
+    func updateViewEnableAdvancedMode(_ notification: Notification) -> () {
+        updateUserAnalyticsWithEvent(TLNotificationEvents.EVENT_ENABLE_ADVANCE_MODE())
     }
     
     

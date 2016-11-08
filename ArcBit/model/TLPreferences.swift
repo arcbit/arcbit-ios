@@ -481,6 +481,9 @@ class TLPreferences
         UserDefaults.standard.set(enabled ,forKey:CLASS_STATIC.PREFERENCE_WALLET_ADVANCE_MODE)
         UserDefaults.standard.synchronize()
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_ADVANCE_MODE_TOGGLED()), object:enabled)
+        if enabled {
+            NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_ENABLE_ADVANCE_MODE()), object:enabled)
+        }
     }
     
     class func isEnablePINCode() -> (Bool) {
