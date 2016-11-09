@@ -65,9 +65,11 @@ import UIKit
         FAQArray = TLHelpDoc.getFAQArray()
         advancedFAQArray = TLHelpDoc.getAdvanceFAQArray()
         if (TLPreferences.enabledAdvancedMode()) {
-            self.sectionArray = [STATIC_MEMBERS.kAchievementsSection, STATIC_MEMBERS.kFAQSection, STATIC_MEMBERS.kHowToSection, STATIC_MEMBERS.kAdvancedFAQSection, STATIC_MEMBERS.kAdvancedHowToFAQSection]
+            //self.sectionArray = [STATIC_MEMBERS.kAchievementsSection, STATIC_MEMBERS.kFAQSection, STATIC_MEMBERS.kHowToSection, STATIC_MEMBERS.kAdvancedFAQSection, STATIC_MEMBERS.kAdvancedHowToFAQSection]
+            self.sectionArray = [STATIC_MEMBERS.kFAQSection, STATIC_MEMBERS.kHowToSection, STATIC_MEMBERS.kAdvancedFAQSection, STATIC_MEMBERS.kAdvancedHowToFAQSection]
         } else {
-            self.sectionArray = [STATIC_MEMBERS.kAchievementsSection, STATIC_MEMBERS.kFAQSection, STATIC_MEMBERS.kHowToSection]
+            //self.sectionArray = [STATIC_MEMBERS.kAchievementsSection, STATIC_MEMBERS.kFAQSection, STATIC_MEMBERS.kHowToSection]
+            self.sectionArray = [STATIC_MEMBERS.kFAQSection, STATIC_MEMBERS.kHowToSection]
         }
 
         self.navigationController!.view.addGestureRecognizer(self.slidingViewController().panGesture)
