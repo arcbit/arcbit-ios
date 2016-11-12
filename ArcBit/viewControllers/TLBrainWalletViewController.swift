@@ -134,8 +134,8 @@ import UIKit
             let newString = nsString.replacingCharacters(in: range, with: string)
             
             var addressID:Int = 0
-            if let HDAccountID = Int(newString) {
-                addressID = HDAccountID
+            if let addrID = Int(newString) {
+                addressID = addrID
             }
             self.advancedNewWalletTableViewCell?.updateAddressFieldsWithStartingAddressID(addressID)
         } else if textField == self.advancedNewWalletTableViewCell?.startingChangeAddressIDTextField {
@@ -143,8 +143,8 @@ import UIKit
             let newString = nsString.replacingCharacters(in: range, with: string)
             
             var addressID:Int = 0
-            if let HDAccountID = Int(newString) {
-                addressID = HDAccountID
+            if let addrID = Int(newString) {
+                addressID = addrID
             }
             self.advancedNewWalletTableViewCell?.updateChangeAddressFieldsWithStartingAddressID(addressID)
         }

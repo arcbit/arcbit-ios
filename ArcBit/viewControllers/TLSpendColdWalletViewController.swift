@@ -138,6 +138,13 @@ import UIKit
             self.inputColdWalletKeyTableViewCell?.setstatusLabel(true)
             self.passSignedTxTableViewCell?.passButtonButton.isEnabled = true
             self.passSignedTxTableViewCell?.passButtonButton.alpha = 1.0
+        } catch TLColdWallet.TLColdWalletError.InvalidScannedData(let error) { //shouldn't happen, if user scanned correct QR codes
+            DLog("TLColdWallet InvalidScannedData \(error)");
+            self.airGapDataBase64PartsArray = nil
+            self.savedAirGapDataBase64PartsArray = nil
+            self.scanUnsignedTxTableViewCell?.setInvalidScannedData()
+            self.passSignedTxTableViewCell?.passButtonButton.isEnabled = false
+            self.passSignedTxTableViewCell?.passButtonButton.alpha = 0.5
         } catch TLColdWallet.TLColdWalletError.InvalidKey(let error) {
             DLog("TLColdWallet InvalidKey \(error)");
             self.airGapDataBase64PartsArray = nil

@@ -61,7 +61,12 @@ protocol TLScanUnsignedTxTableViewCellDelegate {
     @IBAction fileprivate func scanButtonClicked(_ sender:UIButton) {
         delegate?.didClickScanButton(self)
     }
-    
+
+    func setInvalidScannedData() {
+        statusLabel.textColor = UIColor.red
+        statusLabel.text = "Invalid scanned data".localized
+    }
+
     func setstatusLabel(_ partsScanned: Int, totalParts: Int) {
         if partsScanned == 0 && totalParts == 0 {
             statusLabel.textColor = UIColor.red

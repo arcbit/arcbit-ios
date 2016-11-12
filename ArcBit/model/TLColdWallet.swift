@@ -25,6 +25,7 @@ import Foundation
 class TLColdWallet {
     
     enum TLColdWalletError: Error {
+        case InvalidScannedData(String)
         case InvalidKey(String)
         case MisMatchExtendedPublicKey(String)
     }
@@ -171,8 +172,9 @@ class TLColdWallet {
     }
 
     class func createSignedTxAipGapData(_ aipGapDataBase64: String, mnemonicOrExtendedPrivateKey: String, isTestnet:Bool) throws -> NSDictionary? {
-        let data = Data(base64Encoded: aipGapDataBase64, options: NSData.Base64DecodingOptions(rawValue: 0))
+        let data = Data(base64Encoded: aipGapDataBase64, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters)
         if data == nil {
+            throw TLColdWalletError.InvalidScannedData("")
             return nil
         }
         if let result = convertDataToDictionary(data!) {
@@ -209,7 +211,7 @@ class TLColdWallet {
             }
             
             let base64UnsignedTx = result["unsigned_tx_base64"] as! String
-            let txData = Data(base64Encoded: base64UnsignedTx, options: NSData.Base64DecodingOptions(rawValue: 0))
+            let txData = Data(base64Encoded: base64UnsignedTx, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters)
             //                .map({ NSString(data: $0, encoding: NSUTF8StringEncoding) })
             DLog("Decoded:  \(txData!)")
             
@@ -234,7 +236,7 @@ class TLColdWallet {
     
     
     class func getSignedTxData(_ aipGapDataBase64: String) -> NSDictionary? {
-        let data = Data(base64Encoded: aipGapDataBase64, options: NSData.Base64DecodingOptions(rawValue: 0))
+        let data = Data(base64Encoded: aipGapDataBase64, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters)
         if data == nil {
             return nil
         }
