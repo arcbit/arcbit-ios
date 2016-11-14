@@ -11,10 +11,6 @@
 		C004134A1ACEFAF200505F31 /* TLOperationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00413491ACEFAF200505F31 /* TLOperationsManager.swift */; };
 		C004134B1ACEFCB700505F31 /* TLOperationsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C00413491ACEFAF200505F31 /* TLOperationsManager.swift */; };
 		C01681A21DB0B1D9004D5FD7 /* TLBrainWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01681A11DB0B1D9004D5FD7 /* TLBrainWalletViewController.swift */; };
-		C01681A41DB1EF8F004D5FD7 /* TLColdWalletSelectWayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01681A31DB1EF8F004D5FD7 /* TLColdWalletSelectWayTableViewCell.swift */; };
-		C01681A61DB45CAD004D5FD7 /* TLScanUnsignedTxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01681A51DB45CAD004D5FD7 /* TLScanUnsignedTxTableViewCell.swift */; };
-		C01681A81DB47741004D5FD7 /* TLInputColdWalletKeyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01681A71DB47741004D5FD7 /* TLInputColdWalletKeyTableViewCell.swift */; };
-		C01681AA1DB47D8B004D5FD7 /* TLPassSignedTxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01681A91DB47D8B004D5FD7 /* TLPassSignedTxTableViewCell.swift */; };
 		C01681AC1DBD9ED8004D5FD7 /* TLColdWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01681AB1DBD9ED8004D5FD7 /* TLColdWallet.swift */; };
 		C0378C931AF4A1850083206F /* AssetsLibrary.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0378C921AF4A1850083206F /* AssetsLibrary.framework */; };
 		C0378C951AF4A18A0083206F /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C0378C941AF4A18A0083206F /* CoreText.framework */; };
@@ -257,14 +253,18 @@
 		C0C3BDED1AC11BD2001AC6CD /* TLWallet+Stealth.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C3BDEB1AC0F7AA001AC6CD /* TLWallet+Stealth.swift */; };
 		C0C61C5A1AF15BEF00F9F71F /* TransitionDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C61C591AF15BEF00F9F71F /* TransitionDelegate.swift */; };
 		C0C61C5E1AF15E6100F9F71F /* TransparentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0C61C5D1AF15E6100F9F71F /* TransparentViewController.swift */; };
-		C0D061851DAB4E2500573B90 /* TLAdvancedNewWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D061841DAB4E2500573B90 /* TLAdvancedNewWalletTableViewCell.swift */; };
 		C0D20A921D5963FF008F70F2 /* TLTxFeeAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D20A911D5963FF008F70F2 /* TLTxFeeAPI.swift */; };
 		C0D20A931D5966AB008F70F2 /* TLTxFeeAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D20A911D5963FF008F70F2 /* TLTxFeeAPI.swift */; };
+		C0D5A6141DD8FA1300849E2C /* TLAdvancedNewWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D5A60D1DD8FA1300849E2C /* TLAdvancedNewWalletTableViewCell.swift */; };
+		C0D5A6151DD8FA1300849E2C /* TLColdWalletSelectWayTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D5A60E1DD8FA1300849E2C /* TLColdWalletSelectWayTableViewCell.swift */; };
+		C0D5A6161DD8FA1300849E2C /* TLNewWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D5A60F1DD8FA1300849E2C /* TLNewWalletTableViewCell.swift */; };
+		C0D5A6171DD8FA1300849E2C /* TLInputColdWalletKeyTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D5A6111DD8FA1300849E2C /* TLInputColdWalletKeyTableViewCell.swift */; };
+		C0D5A6181DD8FA1300849E2C /* TLPassSignedTxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D5A6121DD8FA1300849E2C /* TLPassSignedTxTableViewCell.swift */; };
+		C0D5A6191DD8FA1300849E2C /* TLScanUnsignedTxTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D5A6131DD8FA1300849E2C /* TLScanUnsignedTxTableViewCell.swift */; };
 		C0D7B2DB1B16FDA10096E599 /* live.cer in Resources */ = {isa = PBXBuildFile; fileRef = C0D7B2DA1B16FDA10096E599 /* live.cer */; };
 		C0D8A36B1DAA126700497D31 /* TLColdWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D8A36A1DAA126700497D31 /* TLColdWalletViewController.swift */; };
 		C0D8A36D1DAA16C900497D31 /* TLCreateColdWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D8A36C1DAA16C900497D31 /* TLCreateColdWalletViewController.swift */; };
-		C0D8A36F1DAA183D00497D31 /* TLSpendColdWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D8A36E1DAA183D00497D31 /* TLSpendColdWalletViewController.swift */; };
-		C0D8A3741DAAC8B300497D31 /* TLNewWalletTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D8A3721DAAC8B300497D31 /* TLNewWalletTableViewCell.swift */; };
+		C0D8A36F1DAA183D00497D31 /* TLAuthorizeColdWalletPaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D8A36E1DAA183D00497D31 /* TLAuthorizeColdWalletPaymentViewController.swift */; };
 		C0E5393D1AD454FD00651FE4 /* TLHelpDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E5393C1AD454FD00651FE4 /* TLHelpDoc.swift */; };
 		C0E5393E1AD4555C00651FE4 /* TLHelpDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E5393C1AD454FD00651FE4 /* TLHelpDoc.swift */; };
 		C0EE6D6A1B1B7E6000982692 /* 360X80logo.png in Resources */ = {isa = PBXBuildFile; fileRef = C0EE6D681B1B7E6000982692 /* 360X80logo.png */; };
@@ -302,10 +302,6 @@
 		BABE2B037811FC35D025CD09 /* libPods-ArcBitTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ArcBitTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C00413491ACEFAF200505F31 /* TLOperationsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLOperationsManager.swift; sourceTree = "<group>"; };
 		C01681A11DB0B1D9004D5FD7 /* TLBrainWalletViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLBrainWalletViewController.swift; sourceTree = "<group>"; };
-		C01681A31DB1EF8F004D5FD7 /* TLColdWalletSelectWayTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLColdWalletSelectWayTableViewCell.swift; sourceTree = "<group>"; };
-		C01681A51DB45CAD004D5FD7 /* TLScanUnsignedTxTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLScanUnsignedTxTableViewCell.swift; sourceTree = "<group>"; };
-		C01681A71DB47741004D5FD7 /* TLInputColdWalletKeyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLInputColdWalletKeyTableViewCell.swift; sourceTree = "<group>"; };
-		C01681A91DB47D8B004D5FD7 /* TLPassSignedTxTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLPassSignedTxTableViewCell.swift; sourceTree = "<group>"; };
 		C01681AB1DBD9ED8004D5FD7 /* TLColdWallet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLColdWallet.swift; sourceTree = "<group>"; };
 		C01A489E1B4F9E6E004D7FA0 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
 		C02D3B111B4A45F500B3B7F0 /* ArcBit copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "ArcBit copy-Info.plist"; path = "/Users/timothylee/git/arcbit-ios/ArcBit copy-Info.plist"; sourceTree = "<absolute>"; };
@@ -547,13 +543,17 @@
 		C0C3BDEB1AC0F7AA001AC6CD /* TLWallet+Stealth.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "TLWallet+Stealth.swift"; sourceTree = "<group>"; };
 		C0C61C591AF15BEF00F9F71F /* TransitionDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransitionDelegate.swift; sourceTree = "<group>"; };
 		C0C61C5D1AF15E6100F9F71F /* TransparentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransparentViewController.swift; sourceTree = "<group>"; };
-		C0D061841DAB4E2500573B90 /* TLAdvancedNewWalletTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLAdvancedNewWalletTableViewCell.swift; sourceTree = "<group>"; };
 		C0D20A911D5963FF008F70F2 /* TLTxFeeAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLTxFeeAPI.swift; sourceTree = "<group>"; };
+		C0D5A60D1DD8FA1300849E2C /* TLAdvancedNewWalletTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLAdvancedNewWalletTableViewCell.swift; sourceTree = "<group>"; };
+		C0D5A60E1DD8FA1300849E2C /* TLColdWalletSelectWayTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLColdWalletSelectWayTableViewCell.swift; sourceTree = "<group>"; };
+		C0D5A60F1DD8FA1300849E2C /* TLNewWalletTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLNewWalletTableViewCell.swift; sourceTree = "<group>"; };
+		C0D5A6111DD8FA1300849E2C /* TLInputColdWalletKeyTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLInputColdWalletKeyTableViewCell.swift; sourceTree = "<group>"; };
+		C0D5A6121DD8FA1300849E2C /* TLPassSignedTxTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLPassSignedTxTableViewCell.swift; sourceTree = "<group>"; };
+		C0D5A6131DD8FA1300849E2C /* TLScanUnsignedTxTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLScanUnsignedTxTableViewCell.swift; sourceTree = "<group>"; };
 		C0D7B2DA1B16FDA10096E599 /* live.cer */ = {isa = PBXFileReference; lastKnownFileType = file; path = live.cer; sourceTree = "<group>"; };
 		C0D8A36A1DAA126700497D31 /* TLColdWalletViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLColdWalletViewController.swift; sourceTree = "<group>"; };
 		C0D8A36C1DAA16C900497D31 /* TLCreateColdWalletViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLCreateColdWalletViewController.swift; sourceTree = "<group>"; };
-		C0D8A36E1DAA183D00497D31 /* TLSpendColdWalletViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLSpendColdWalletViewController.swift; sourceTree = "<group>"; };
-		C0D8A3721DAAC8B300497D31 /* TLNewWalletTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLNewWalletTableViewCell.swift; sourceTree = "<group>"; };
+		C0D8A36E1DAA183D00497D31 /* TLAuthorizeColdWalletPaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLAuthorizeColdWalletPaymentViewController.swift; sourceTree = "<group>"; };
 		C0E5393C1AD454FD00651FE4 /* TLHelpDoc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLHelpDoc.swift; sourceTree = "<group>"; };
 		C0EE6D681B1B7E6000982692 /* 360X80logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 360X80logo.png; sourceTree = "<group>"; };
 		C0EE6D691B1B7E6000982692 /* 1200X1200logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1200X1200logo.png; sourceTree = "<group>"; };
@@ -1098,8 +1098,8 @@
 		C0A1908A1ABF53A100BED648 /* viewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				C0D8A3701DAAC8B300497D31 /* coldWalletTableViewcells */,
-				C0D8A36E1DAA183D00497D31 /* TLSpendColdWalletViewController.swift */,
+				C0D5A60B1DD8FA1300849E2C /* tableViewCells */,
+				C0D8A36E1DAA183D00497D31 /* TLAuthorizeColdWalletPaymentViewController.swift */,
 				C0D8A36C1DAA16C900497D31 /* TLCreateColdWalletViewController.swift */,
 				C01681A11DB0B1D9004D5FD7 /* TLBrainWalletViewController.swift */,
 				C0D8A36A1DAA126700497D31 /* TLColdWalletViewController.swift */,
@@ -1172,33 +1172,33 @@
 			path = SocketRocket;
 			sourceTree = "<group>";
 		};
-		C0D8A3701DAAC8B300497D31 /* coldWalletTableViewcells */ = {
+		C0D5A60B1DD8FA1300849E2C /* tableViewCells */ = {
 			isa = PBXGroup;
 			children = (
-				C0D8A3711DAAC8B300497D31 /* createColdWalletTableViewcells */,
-				C0D8A3731DAAC8B300497D31 /* spendColdWalletTableViewcells */,
+				C0D5A60C1DD8FA1300849E2C /* createColdWalletTableViewCells */,
+				C0D5A6101DD8FA1300849E2C /* spendColdWalletTableViewCells */,
 			);
-			path = coldWalletTableViewcells;
+			path = tableViewCells;
 			sourceTree = "<group>";
 		};
-		C0D8A3711DAAC8B300497D31 /* createColdWalletTableViewcells */ = {
+		C0D5A60C1DD8FA1300849E2C /* createColdWalletTableViewCells */ = {
 			isa = PBXGroup;
 			children = (
-				C0D061841DAB4E2500573B90 /* TLAdvancedNewWalletTableViewCell.swift */,
-				C01681A31DB1EF8F004D5FD7 /* TLColdWalletSelectWayTableViewCell.swift */,
-				C01681A51DB45CAD004D5FD7 /* TLScanUnsignedTxTableViewCell.swift */,
-				C0D8A3721DAAC8B300497D31 /* TLNewWalletTableViewCell.swift */,
-				C01681A71DB47741004D5FD7 /* TLInputColdWalletKeyTableViewCell.swift */,
-				C01681A91DB47D8B004D5FD7 /* TLPassSignedTxTableViewCell.swift */,
+				C0D5A60D1DD8FA1300849E2C /* TLAdvancedNewWalletTableViewCell.swift */,
+				C0D5A60E1DD8FA1300849E2C /* TLColdWalletSelectWayTableViewCell.swift */,
+				C0D5A60F1DD8FA1300849E2C /* TLNewWalletTableViewCell.swift */,
 			);
-			path = createColdWalletTableViewcells;
+			path = createColdWalletTableViewCells;
 			sourceTree = "<group>";
 		};
-		C0D8A3731DAAC8B300497D31 /* spendColdWalletTableViewcells */ = {
+		C0D5A6101DD8FA1300849E2C /* spendColdWalletTableViewCells */ = {
 			isa = PBXGroup;
 			children = (
+				C0D5A6111DD8FA1300849E2C /* TLInputColdWalletKeyTableViewCell.swift */,
+				C0D5A6121DD8FA1300849E2C /* TLPassSignedTxTableViewCell.swift */,
+				C0D5A6131DD8FA1300849E2C /* TLScanUnsignedTxTableViewCell.swift */,
 			);
-			path = spendColdWalletTableViewcells;
+			path = spendColdWalletTableViewCells;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -1515,25 +1515,25 @@
 				C09506EE1DBF27B000F70FA1 /* SocketClientManager.swift in Sources */,
 				C09506F51DBF27B000F70FA1 /* SocketEventHandler.swift in Sources */,
 				C0A190D41ABF53A100BED648 /* IASKSpecifier.m in Sources */,
+				C0D5A6161DD8FA1300849E2C /* TLNewWalletTableViewCell.swift in Sources */,
 				C0A190FF1ABF53A100BED648 /* TLWalletUtils.swift in Sources */,
 				C0A1930F1ABF744E00BED648 /* TLNetworking.swift in Sources */,
 				C0A190FE1ABF53A100BED648 /* TLWalletJson.swift in Sources */,
-				C01681A81DB47741004D5FD7 /* TLInputColdWalletKeyTableViewCell.swift in Sources */,
-				C0D061851DAB4E2500573B90 /* TLAdvancedNewWalletTableViewCell.swift in Sources */,
 				C0AB0A331AC52A8400B456DB /* TLPushTxAPI.swift in Sources */,
-				C01681A41DB1EF8F004D5FD7 /* TLColdWalletSelectWayTableViewCell.swift in Sources */,
 				C0D8A36B1DAA126700497D31 /* TLColdWalletViewController.swift in Sources */,
 				C0A190C41ABF53A100BED648 /* NSData+Bitcoin.m in Sources */,
 				C0A191201ABF53A100BED648 /* TLRestoreWalletViewController.swift in Sources */,
+				C0D5A6191DD8FA1300849E2C /* TLScanUnsignedTxTableViewCell.swift in Sources */,
 				C0A190F31ABF53A100BED648 /* TLHDWalletWrapper.swift in Sources */,
 				C0A190D21ABF53A100BED648 /* IASKSettingsStoreFile.m in Sources */,
 				C09506F31DBF27B000F70FA1 /* SocketEngineSpec.swift in Sources */,
+				C0D5A6141DD8FA1300849E2C /* TLAdvancedNewWalletTableViewCell.swift in Sources */,
 				C0A190DA1ABF53A100BED648 /* IASKTextField.m in Sources */,
 				C0A1930A1ABF744E00BED648 /* TLBlockchainAPI.swift in Sources */,
 				C0A190DC1ABF53A100BED648 /* JNKeychain.m in Sources */,
 				C0A190E11ABF53A100BED648 /* NSDate-Utilities.m in Sources */,
 				C0D20A921D5963FF008F70F2 /* TLTxFeeAPI.swift in Sources */,
-				C0D8A36F1DAA183D00497D31 /* TLSpendColdWalletViewController.swift in Sources */,
+				C0D8A36F1DAA183D00497D31 /* TLAuthorizeColdWalletPaymentViewController.swift in Sources */,
 				C0A192F81ABF744300BED648 /* TLUtils.swift in Sources */,
 				C01681A21DB0B1D9004D5FD7 /* TLBrainWalletViewController.swift in Sources */,
 				C0A190DD1ABF53A100BED648 /* KeychainItemWrapper.m in Sources */,
@@ -1583,6 +1583,7 @@
 				C0A192EC1ABF742D00BED648 /* TLAchievements.swift in Sources */,
 				C0A191211ABF53A100BED648 /* TLHelpViewController.swift in Sources */,
 				C0F278C81C41EA1A0013DC1A /* TLCurrencyFormat.swift in Sources */,
+				C0D5A6151DD8FA1300849E2C /* TLColdWalletSelectWayTableViewCell.swift in Sources */,
 				C09506EB1DBF27AF00F70FA1 /* SocketAckEmitter.swift in Sources */,
 				C0A190EF1ABF53A100BED648 /* TLAccounts.swift in Sources */,
 				C0A190F21ABF53A100BED648 /* TLCoreBitcoinWrapper.swift in Sources */,
@@ -1590,7 +1591,6 @@
 				C0A193111ABF744E00BED648 /* TLStealthWebSocket.swift in Sources */,
 				C0A1930E1ABF744E00BED648 /* TLInsightAPI.swift in Sources */,
 				F338F9581B79718900C02F74 /* TLCrypto.swift in Sources */,
-				C0D8A3741DAAC8B300497D31 /* TLNewWalletTableViewCell.swift in Sources */,
 				C09506F01DBF27B000F70FA1 /* SocketEngineClient.swift in Sources */,
 				C0A191181ABF53A100BED648 /* UINavigationController+StatusBarStyle.swift in Sources */,
 				C09506FD1DBF27B000F70FA1 /* SocketPacket.swift in Sources */,
@@ -1610,13 +1610,14 @@
 				C0B4E7891AFAAEA200DC9B65 /* SRWebSocket+Helpers.m in Sources */,
 				C0A190C21ABF53A100BED648 /* BRKey.m in Sources */,
 				C0A190EE1ABF53A100BED648 /* TLAccountObject.swift in Sources */,
+				C0D5A6171DD8FA1300849E2C /* TLInputColdWalletKeyTableViewCell.swift in Sources */,
 				C0A191241ABF53A100BED648 /* TLManageAccountsViewController.swift in Sources */,
 				C0A193151ABF74A700BED648 /* TLAccountTableViewCell.swift in Sources */,
 				C0A190E91ABF53A100BED648 /* UIAlertConrtoller+Blocks.m in Sources */,
 				C0A191291ABF53A100BED648 /* TLReceiveViewController.swift in Sources */,
 				C0C61C5E1AF15E6100F9F71F /* TransparentViewController.swift in Sources */,
-				C01681A61DB45CAD004D5FD7 /* TLScanUnsignedTxTableViewCell.swift in Sources */,
 				C0A192FB1ABF744300BED648 /* TLNotificationEvents.swift in Sources */,
+				C0D5A6181DD8FA1300849E2C /* TLPassSignedTxTableViewCell.swift in Sources */,
 				F3DAAD661BB1D9EC000488F0 /* TLWalletJSONKeys.swift in Sources */,
 				C0A190D71ABF53A100BED648 /* IASKPSTitleValueSpecifierViewCell.m in Sources */,
 				C09506F11DBF27B000F70FA1 /* SocketEnginePacketType.swift in Sources */,
@@ -1625,7 +1626,6 @@
 				C0607FCD1AEEB3CD007203F8 /* TLStealthServerConfig.swift in Sources */,
 				C0A190DF1ABF53A100BED648 /* LTHKeychainUtils.m in Sources */,
 				C09506FE1DBF27B000F70FA1 /* SocketParsable.swift in Sources */,
-				C01681AA1DB47D8B004D5FD7 /* TLPassSignedTxTableViewCell.swift in Sources */,
 				C09506F41DBF27B000F70FA1 /* SocketEngineWebsocket.swift in Sources */,
 				C0A190FB1ABF53A100BED648 /* TLSuggestions.swift in Sources */,
 				C0A190F71ABF53A100BED648 /* TLSendFormData.swift in Sources */,

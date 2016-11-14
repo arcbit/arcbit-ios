@@ -83,10 +83,10 @@ import UIKit
     override func prepare(for segue: UIStoryboardSegue, sender:Any!) -> () {
         if (segue.identifier == "SegueCreateColdWallet") {
             let vc = segue.destination
-            vc.navigationItem.title = "Create".localized
+            vc.navigationItem.title = "Create Cold Wallet".localized
         } else if (segue.identifier == "SegueSpendColdWallet") {
             let vc = segue.destination
-            vc.navigationItem.title = "Spend".localized
+            vc.navigationItem.title = "Authorize Payment".localized
         } else if (segue.identifier == "SegueSpendColdWallet") {
             let vc = segue.destination
             vc.navigationItem.title = "".localized
@@ -137,7 +137,7 @@ import UIKit
             } else if row == STATIC_MEMBERS.kColdWalletCreateRow {
                 cell!.textLabel!.text = "Create Cold Wallet".localized
             } else if row == STATIC_MEMBERS.kColdWalletSpendtRow {
-                cell!.textLabel!.text = "Spend From Cold Wallet Account".localized
+                cell!.textLabel!.text = "Authorize Cold Wallet Account Payment".localized
             }
         } else if(sectionType == STATIC_MEMBERS.kSeeHDWalletDataSection) {
             let row = self.seeHDWalletDataRowArray![(indexPath as NSIndexPath).row]

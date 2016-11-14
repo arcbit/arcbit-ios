@@ -1356,9 +1356,10 @@ class ArcBitTests: XCTestCase {
                 
                 let unsignedTxAirGapDataBase64 = TLColdWallet.createSerializedUnsignedTxAipGapData(unSignedTx, extendedPublicKey: extendPubKey, inputScripts: inputScripts, txInputsAccountHDIdxes: txInputsAccountHDIdxes!)
                 NSLog("testColdWallet_1_1 unsignedTxAirGapDataBase64 \(unsignedTxAirGapDataBase64)");
+                XCTAssertTrue(unsignedTxAirGapDataBase64 == "eyJ2IjoiMSIsImFjY291bnRfcHVibGljX2tleSI6InhwdWI2RDFoNjV6cTlGUjJwbXZRTkI2RmlpajI0ZFl4cEpmSGltWXhpYm1meEJmZ3pmcG9iVlNqUXdjdkZQcjdwVEFUUmlzcHJjMll3WVlXaXlzVUV2SjF1OWl1QVFLTU5zaUxuMlBQU3J0VkZ0NiIsInVuc2lnbmVkX3R4X2Jhc2U2NCI6IkFRQUFBQUpWWUYzRzljUGNGSXR0cFlSQ3NMTE5RaXZqaGVxeTYrcEJHZTZjSm8wb05RQUFBQUFBXC9cL1wvXC9cLzFWZ1hjYjF3OXdVaTIybGhFS3dzczFDSytPRjZyTHI2a0VaN3B3bWpTZzFBUUFBQUFEXC9cL1wvXC9cL0FnRGg5UVVBQUFBQUdYYXBGTWN3RmZwaTJYTHJzN0pCXC9veVRabGV4UDZ2WGlLd0FHQTJQQUFBQUFCbDJxUlNKeFZvOHBtZHNuMzhtQ21RNXlESkp0MGM0QW9pc0FBQUFBQT09IiwidHhfaW5wdXRzX2FjY291bnRfaGRfaWR4ZXMiOlt7ImlzX2NoYW5nZSI6ZmFsc2UsImlkeCI6MH0seyJpc19jaGFuZ2UiOmZhbHNlLCJpZHgiOjB9XSwiaW5wdXRfc2NyaXB0cyI6WyI3NmE5MTRjNmI0ZWJhOTcyYzIyN2FjMDQ1OGRiYTk1MWI0ODEyMzFlNGQ1ZmQ3ODhhYyIsIjc2YTkxNGM2YjRlYmE5NzJjMjI3YWMwNDU4ZGJhOTUxYjQ4MTIzMWU0ZDVmZDc4OGFjIl19")
 
                 
-                let unsignedTxAirGapDataBase64PartsArray = TLColdWallet.splitStringToAray(unsignedTxAirGapDataBase64!)
+                let unsignedTxAirGapDataBase64PartsArray = TLColdWallet.splitStringToArray(unsignedTxAirGapDataBase64!)
                 //Pass unsigned tx here ----------------------------------------------------------------------------------------
                 var passedUnsignedTxairGapDataBase64 = ""
                 for unsignedTxAirGapDataBase64Part in unsignedTxAirGapDataBase64PartsArray {
@@ -1368,16 +1369,18 @@ class ArcBitTests: XCTestCase {
                     //let totalParts = ret.2 // unused in test
                     passedUnsignedTxairGapDataBase64 += dataPart
                 }
+                XCTAssertTrue(passedUnsignedTxairGapDataBase64 == unsignedTxAirGapDataBase64)
 
                 do {
                     let serializedSignedAipGapData = try TLColdWallet.createSerializedSignedTxAipGapData(passedUnsignedTxairGapDataBase64,
                                                                                                        mnemonicOrExtendedPrivateKey: backupPassphrase,
                                                                                                        isTestnet: false)
                     NSLog("testColdWallet_1_1 serializedSignedAipGapData \(serializedSignedAipGapData)");
+                    XCTAssertTrue(serializedSignedAipGapData == "eyJ0eEhleCI6IjAxMDAwMDAwMDI1NTYwNWRjNmY1YzNkYzE0OGI2ZGE1ODQ0MmIwYjJjZDQyMmJlMzg1ZWFiMmViZWE0MTE5ZWU5YzI2OGQyODM1MDAwMDAwMDA2YTQ3MzA0NDAyMjA0NDliMWY5NTY4N2JmNDY5ZmI5NTRiY2RiYmMwYWUzNjJmZTliZDZiYTg4YzViNGRkMjI3ZDlhNWMzN2ViODJhMDIyMDM0NDBiZjZiNDE3ODc4NjkxM2ExOTczNDRkMDk5OWE3ZDk4ZDI0NjA5OWRjZGRmNGJmOWIyNDQ3M2E0ZTdhOWEwMTIxMDI3ZWNiYTllYmM0Njk5ZGY3ZjU1N2M0ZTE4MTkyZWZiNWM5N2IxZmY0ZWNkY2ViYjRlMjFiYjdkMWZlZDIyMDNhZmZmZmZmZmY1NTYwNWRjNmY1YzNkYzE0OGI2ZGE1ODQ0MmIwYjJjZDQyMmJlMzg1ZWFiMmViZWE0MTE5ZWU5YzI2OGQyODM1MDEwMDAwMDA2YTQ3MzA0NDAyMjAxZjZhNGE4N2QwNTg0MTU3NDcxMjEwYzFlMTI2ZTY0ZTUyZjU2NWU5NTBmZWI4MDA0NWZjODU1ODI5ZGYzZGE0MDIyMDU5ZmQ3NWZlNTEyNjJhYTdiN2YyMTQ1MzQzNTdlZDI3ODZhOWIzZGNiMTI0OTMxMTIwMjc3MTFhZWJjODQ3OGEwMTIxMDI3ZWNiYTllYmM0Njk5ZGY3ZjU1N2M0ZTE4MTkyZWZiNWM5N2IxZmY0ZWNkY2ViYjRlMjFiYjdkMWZlZDIyMDNhZmZmZmZmZmYwMjAwZTFmNTA1MDAwMDAwMDAxOTc2YTkxNGM3MzAxNWZhNjJkOTcyZWJiM2IyNDFmZThjOTM2NjU3YjEzZmFiZDc4OGFjMDAxODBkOGYwMDAwMDAwMDE5NzZhOTE0ODljNTVhM2NhNjY3NmM5ZjdmMjYwYTY0MzljODMyNDliNzQ3MzgwMjg4YWMwMDAwMDAwMCIsInR4SGFzaCI6ImZiYWNmZWRlNTVkYzZhNzc5NzgyYmE4ZmEyMjgxMzg2MGI3ZWYwN2Q4MmMzYWJlYmI4ZjI5MGIzMTQxYmY5NjUiLCJ0eFNpemUiOjM3Nn0=")
                     
                     
                     
-                    let signedTxAirGapDataBase64PartsArray = TLColdWallet.splitStringToAray(serializedSignedAipGapData!)
+                    let signedTxAirGapDataBase64PartsArray = TLColdWallet.splitStringToArray(serializedSignedAipGapData!)
                     //Pass signed tx here ----------------------------------------------------------------------------------------
                     var passedSignedTxairGapDataBase64 = ""
                     for signedTxAirGapDataBase64Part in signedTxAirGapDataBase64PartsArray {
@@ -1387,20 +1390,13 @@ class ArcBitTests: XCTestCase {
                         //let totalParts = ret.2 // unused in test
                         passedSignedTxairGapDataBase64 += dataPart
                     }
-                    
-                    
+                    XCTAssertTrue(passedSignedTxairGapDataBase64 == serializedSignedAipGapData)
+
                     
                     let signedTxData = TLColdWallet.getSignedTxData(passedSignedTxairGapDataBase64)
-                    NSLog("testColdWallet_1_1 signedTxData \(signedTxData)");
                     let txHex = signedTxData!["txHex"] as! String
                     let txHash = signedTxData!["txHash"] as! String
-//                    let txSize = signedTxData!["txSize"] as! Int
                     let txSize = signedTxData!["txSize"] as! NSNumber
-                    NSLog("testColdWallet_1_1 txHex \(txHex)");
-                    NSLog("testColdWallet_1_1 txHash \(txHash)");
-                    NSLog("testColdWallet_1_1 txSize \(txSize)");
-                    
-                    
                     
                     XCTAssertTrue(txHash == "fbacfede55dc6a779782ba8fa22813860b7ef07d82c3abebb8f290b3141bf965")
                     XCTAssertTrue(txHex == "010000000255605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835000000006a4730440220449b1f95687bf469fb954bcdbbc0ae362fe9bd6ba88c5b4dd227d9a5c37eb82a02203440bf6b4178786913a197344d0999a7d98d246099dcddf4bf9b24473a4e7a9a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff55605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835010000006a47304402201f6a4a87d0584157471210c1e126e64e52f565e950feb80045fc855829df3da4022059fd75fe51262aa7b7f214534357ed2786a9b3dcb12493112027711aebc8478a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff0200e1f505000000001976a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac00180d8f000000001976a91489c55a3ca6676c9f7f260a6439c83249b747380288ac00000000")
@@ -1433,11 +1429,8 @@ class ArcBitTests: XCTestCase {
                     
                     
                 } catch TLColdWallet.TLColdWalletError.InvalidKey(let error) {
-                    NSLog("testColdWallet_1_1 InvalidKey \(error)");
                 } catch TLColdWallet.TLColdWalletError.MisMatchExtendedPublicKey(let error) {
-                    NSLog("testColdWallet_1_1 MisMatchExtendedPublicKey \(error)");
                 } catch {
-                    NSLog("testColdWallet_1_1 error \(error)");
                 }
             }
 

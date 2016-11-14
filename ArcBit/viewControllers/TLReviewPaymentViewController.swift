@@ -342,7 +342,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         })
     }
 
-    func showNextSignedTxPartQRCode() {
+    func showNextUnsignedTxPartQRCode() {
         if self.airGapDataBase64PartsArray == nil {
             return
         }
@@ -355,11 +355,11 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     func promptToSignTransaction(_ unSignedTx: String, inputScripts:NSArray, txInputsAccountHDIdxes:NSArray) {
         let extendedPublicKey = AppDelegate.instance().godSend!.getExtendedPubKey()
         if let airGapDataBase64 = TLColdWallet.createSerializedUnsignedTxAipGapData(unSignedTx, extendedPublicKey: extendedPublicKey!, inputScripts: inputScripts, txInputsAccountHDIdxes: txInputsAccountHDIdxes) {
-            self.airGapDataBase64PartsArray = TLColdWallet.splitStringToAray(airGapDataBase64)
+            self.airGapDataBase64PartsArray = TLColdWallet.splitStringToArray(airGapDataBase64)
             DLog("airGapDataBase64PartsArray \(airGapDataBase64PartsArray)")
             TLPrompts.promtForOKCancel(self, title: "Spending from a cold wallet account".localized, message: "Transaction needs to be authorize by an offline and airgap device. Send transaction to an offline device for authorization?", success: {
                 () in
-                self.showNextSignedTxPartQRCode()
+                self.showNextUnsignedTxPartQRCode()
                 }, failure: {
                     (isCancelled: Bool) in
             })
@@ -481,7 +481,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     func customIOS7dialogButtonTouchUp(inside alertView: CustomIOS7AlertView, clickedButtonAt buttonIndex: Int) {
         if (buttonIndex == 0) {
             if self.airGapDataBase64PartsArray?.count > 0 {
-                self.showNextSignedTxPartQRCode()
+                self.showNextUnsignedTxPartQRCode()
             } else {
                 TLPrompts.promptAlertController(self, title: "Finished Passing Transaction Data".localized,
                                                 message: "Now authorize the transaction on your air gap device. When you have done so click continue on this device to scan the authorized transaction data and make your payment.".localized,

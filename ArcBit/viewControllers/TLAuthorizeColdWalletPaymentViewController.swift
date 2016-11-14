@@ -1,5 +1,5 @@
 //
-//  TLSpendColdWalletViewController.swift
+//  TLAuthorizeColdWalletPaymentViewController.swift
 //  ArcBit
 //
 //  Created by Timothy Lee on 3/14/15.
@@ -25,7 +25,7 @@
 import Foundation
 import UIKit
 
-@objc(TLSpendColdWalletViewController) class  TLSpendColdWalletViewController : UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, TLScanUnsignedTxTableViewCellDelegate, TLInputColdWalletKeyTableViewCellDelegate, TLPassSignedTxTableViewCellDelegate, CustomIOS7AlertViewDelegate {
+@objc(TLAuthorizeColdWalletPaymentViewController) class  TLAuthorizeColdWalletPaymentViewController : UIViewController, UITableViewDataSource, UITableViewDelegate, UITextViewDelegate, TLScanUnsignedTxTableViewCellDelegate, TLInputColdWalletKeyTableViewCellDelegate, TLPassSignedTxTableViewCellDelegate, CustomIOS7AlertViewDelegate {
     
     struct STATIC_MEMBERS {
         static let kInstuctionsSection = "kInstuctionsSection"
@@ -109,22 +109,22 @@ import UIKit
         if keyText == nil || keyText!.isEmpty {
             self.inputColdWalletKeyTableViewCell?.statusLabel.text = "Incomplete".localized
             self.inputColdWalletKeyTableViewCell?.setstatusLabel(false)
-            self.passSignedTxTableViewCell?.passButtonButton.isEnabled = false
-            self.passSignedTxTableViewCell?.passButtonButton.alpha = 0.5
+            self.passSignedTxTableViewCell?.passButton.isEnabled = false
+            self.passSignedTxTableViewCell?.passButton.alpha = 0.5
             return
         }
         if !TLHDWalletWrapper.phraseIsValid(keyText!) && !TLHDWalletWrapper.isValidExtendedPrivateKey(keyText!) {
             self.inputColdWalletKeyTableViewCell?.statusLabel.text = "Invalid passphrase".localized
             self.inputColdWalletKeyTableViewCell?.setstatusLabel(false)
-            self.passSignedTxTableViewCell?.passButtonButton.isEnabled = false
-            self.passSignedTxTableViewCell?.passButtonButton.alpha = 0.5
+            self.passSignedTxTableViewCell?.passButton.isEnabled = false
+            self.passSignedTxTableViewCell?.passButton.alpha = 0.5
             return
         }
         if self.scannedUnsignedTxAirGapData == nil {
             self.inputColdWalletKeyTableViewCell?.statusLabel.text = "Complete step 1".localized
             self.inputColdWalletKeyTableViewCell?.setstatusLabel(false)
-            self.passSignedTxTableViewCell?.passButtonButton.isEnabled = false
-            self.passSignedTxTableViewCell?.passButtonButton.alpha = 0.5
+            self.passSignedTxTableViewCell?.passButton.isEnabled = false
+            self.passSignedTxTableViewCell?.passButton.alpha = 0.5
             return
         }
         
@@ -132,35 +132,38 @@ import UIKit
             let serializedSignedAipGapData = try TLColdWallet.createSerializedSignedTxAipGapData(self.scannedUnsignedTxAirGapData!,
                                                                                                mnemonicOrExtendedPrivateKey: keyText!,
                                                                                                isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)
-            self.airGapDataBase64PartsArray = TLColdWallet.splitStringToAray(serializedSignedAipGapData!)
-            self.savedAirGapDataBase64PartsArray = TLColdWallet.splitStringToAray(serializedSignedAipGapData!)
+            self.airGapDataBase64PartsArray = TLColdWallet.splitStringToArray(serializedSignedAipGapData!)
+            DLog("checkToCreateSignedTx serializedSignedAipGapData \(serializedSignedAipGapData)");
+            DLog("checkToCreateSignedTx airGapDataBase64PartsArray \(self.airGapDataBase64PartsArray)");
+            self.savedAirGapDataBase64PartsArray = TLColdWallet.splitStringToArray(serializedSignedAipGapData!)
+            
             self.inputColdWalletKeyTableViewCell?.statusLabel.text = "Complete".localized
             self.inputColdWalletKeyTableViewCell?.setstatusLabel(true)
-            self.passSignedTxTableViewCell?.passButtonButton.isEnabled = true
-            self.passSignedTxTableViewCell?.passButtonButton.alpha = 1.0
+            self.passSignedTxTableViewCell?.passButton.isEnabled = true
+            self.passSignedTxTableViewCell?.passButton.alpha = 1.0
         } catch TLColdWallet.TLColdWalletError.InvalidScannedData(let error) { //shouldn't happen, if user scanned correct QR codes
             DLog("TLColdWallet InvalidScannedData \(error)");
             self.airGapDataBase64PartsArray = nil
             self.savedAirGapDataBase64PartsArray = nil
             self.scanUnsignedTxTableViewCell?.setInvalidScannedData()
-            self.passSignedTxTableViewCell?.passButtonButton.isEnabled = false
-            self.passSignedTxTableViewCell?.passButtonButton.alpha = 0.5
+            self.passSignedTxTableViewCell?.passButton.isEnabled = false
+            self.passSignedTxTableViewCell?.passButton.alpha = 0.5
         } catch TLColdWallet.TLColdWalletError.InvalidKey(let error) {
             DLog("TLColdWallet InvalidKey \(error)");
             self.airGapDataBase64PartsArray = nil
             self.savedAirGapDataBase64PartsArray = nil
             self.inputColdWalletKeyTableViewCell?.statusLabel.text = "Invalid passphrase".localized
             self.inputColdWalletKeyTableViewCell?.setstatusLabel(false)
-            self.passSignedTxTableViewCell?.passButtonButton.isEnabled = false
-            self.passSignedTxTableViewCell?.passButtonButton.alpha = 0.5
+            self.passSignedTxTableViewCell?.passButton.isEnabled = false
+            self.passSignedTxTableViewCell?.passButton.alpha = 0.5
         } catch TLColdWallet.TLColdWalletError.MisMatchExtendedPublicKey(let error) {
             DLog("TLColdWallet MisMatchExtendedPublicKey \(error)");
             self.airGapDataBase64PartsArray = nil
             self.savedAirGapDataBase64PartsArray = nil
             self.inputColdWalletKeyTableViewCell?.statusLabel.text = "Passphrase does not match the transaction".localized
             self.inputColdWalletKeyTableViewCell?.setstatusLabel(false)
-            self.passSignedTxTableViewCell?.passButtonButton.isEnabled = false
-            self.passSignedTxTableViewCell?.passButtonButton.alpha = 0.5
+            self.passSignedTxTableViewCell?.passButton.isEnabled = false
+            self.passSignedTxTableViewCell?.passButton.alpha = 0.5
         } catch {
             DLog("TLColdWallet error \(error)");
         }
@@ -213,6 +216,7 @@ import UIKit
             return
         }
         let nextAipGapDataPart = self.airGapDataBase64PartsArray![0]
+        DLog("showNextSignedTxPartQRCode \(nextAipGapDataPart)");
         self.airGapDataBase64PartsArray!.remove(at: 0)
         self.QRImageModal = TLQRImageModal(data: nextAipGapDataPart as NSString, buttonCopyText: "Next".localized, vc: self)
         self.QRImageModal!.show()

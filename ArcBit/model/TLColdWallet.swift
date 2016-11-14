@@ -38,22 +38,6 @@ class TLColdWallet {
         static var instance:TLSpaghettiGodSend?
     }
 
-//    class func dictionaryToJsonString(_ dict: NSDictionary) -> String? {
-//        do {
-//            let jsonData = try JSONSerialization.data(withJSONObject: dict, options: JSONSerialization.WritingOptions.prettyPrinted)
-//            // here "jsonData" is the dictionary encoded in JSON data
-//
-//            let JSONString = NSString(data: jsonData, encoding: String.Encoding.ascii.rawValue)
-//
-//            DLog("theJSONText:  \(JSONString)")
-//            return JSONString as? String
-//
-//        } catch let error as NSError {
-//            DLog("error:  \(error)")
-//        }
-//        return nil
-//    }
-
     class func createUnsignedTxAipGapData(_ unSignedTx: String, extendedPublicKey: String, inputScripts:NSArray, txInputsAccountHDIdxes:NSArray) -> String? {
         let data = TLWalletUtils.hexStringToData(unSignedTx)
         if let base64Encoded = data?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0)) {
@@ -77,15 +61,13 @@ class TLColdWallet {
         return data?.base64EncodedString(options: NSData.Base64EncodingOptions(rawValue: 0))
     }
 
-    class func splitStringToAray(_ str: String) -> Array<String> {
+    class func splitStringToArray(_ str: String) -> Array<String> {
         var partsArray = [String]()
         var idx = 0
-//        let SPLIT_SUB_STRING_LENGTH = 268
         let SPLIT_SUB_STRING_LENGTH = 100
         let nsString = str as NSString
         var partCount = 0
         while true {
-//            DLog("bbbbb \(idx) \(SUB_STRING_LENGTH)")
             let subString:String
             
             
@@ -93,46 +75,13 @@ class TLColdWallet {
             if idx+SPLIT_SUB_STRING_LENGTH >= str.characters.count {
                 subString = nsString.substring(with: NSRange(location: idx, length: nsString.length-idx))
                 partsArray.append(subString+":"+String(partCount))
-                
-//                if subString.characters.count == SPLIT_SUB_STRING_LENGTH {
-//                    partsArray.append("")
-//                }
+
                 break
             } else {
                 subString = nsString.substring(with: NSRange(location: idx, length: SPLIT_SUB_STRING_LENGTH))
                 partsArray.append(subString+":"+String(partCount))
             }
-            
-//            if idx+SPLIT_SUB_STRING_LENGTH >= str.characters.count {
-//                subString = nsString.substringWithRange(NSRange(location: idx, length: nsString.length-idx))
-//                let airGapDataPart = [
-//                    "v": AIR_GAP_DATA_TRANSPORT_VERSION, //version
-//                    "d": subString, //data
-//                    "l": 1, //last
-//                ]
-//                let JSONString = dictionaryToJsonString(airGapDataPart)
-//                let data = JSONString!.dataUsingEncoding(NSUTF8StringEncoding)
-//                let base64DataPart = data!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
-//                
-//                partsArray.append(base64DataPart)
-//                break
-//            } else {
-//                subString = nsString.substringWithRange(NSRange(location: idx, length: SPLIT_SUB_STRING_LENGTH))
-//                let airGapDataPart = [
-//                    "v": AIR_GAP_DATA_TRANSPORT_VERSION, //version
-//                    "d": subString, //data
-//                    "l": 0, //last
-//                ]
-//                let JSONString = dictionaryToJsonString(airGapDataPart)
-//                let data = JSONString!.dataUsingEncoding(NSUTF8StringEncoding)
-//                let base64DataPart = data!.base64EncodedStringWithOptions(NSDataBase64EncodingOptions(rawValue: 0))
-//                
-//                partsArray.append(base64DataPart)
-//            }
-//            
-            
-            
-//            DLog("ccccc \(partsArray)")
+
             idx += SPLIT_SUB_STRING_LENGTH
         }
         for i in stride(from: 0, to: partsArray.count, by: 1) {
@@ -185,17 +134,21 @@ class TLColdWallet {
             let txInputsAccountHDIdxes = result["tx_inputs_account_hd_idxes"] as! NSArray
             
             let accountIdx = TLHDWalletWrapper.getAccountIdxForExtendedKey(extendedPublicKey)
-            
+            DLog("createSignedTxAipGapData accountIdx extendedPublicKey:  \(accountIdx) \(extendedPublicKey)")
+
             let mnemonicExtendedPrivateKey:String
             if TLHDWalletWrapper.phraseIsValid(mnemonicOrExtendedPrivateKey) {
                 let masterHex = TLHDWalletWrapper.getMasterHex(mnemonicOrExtendedPrivateKey)
                 mnemonicExtendedPrivateKey = TLHDWalletWrapper.getExtendPrivKey(masterHex, accountIdx: UInt(accountIdx))
+                DLog("createSignedTxAipGapData xxxx1 : \(mnemonicExtendedPrivateKey)")
             } else if TLHDWalletWrapper.isValidExtendedPrivateKey(mnemonicOrExtendedPrivateKey) {
                 mnemonicExtendedPrivateKey = mnemonicOrExtendedPrivateKey
+                DLog("createSignedTxAipGapData xxxx2 : \(mnemonicExtendedPrivateKey)")
             } else {
                 throw TLColdWalletError.InvalidKey("")
             }
             let mnemonicExtendedPublicKey = TLHDWalletWrapper.getExtendPubKey(mnemonicExtendedPrivateKey)
+            DLog("createSignedTxAipGapData xxxx3 :  \(extendedPublicKey) \(mnemonicExtendedPublicKey)")
             if extendedPublicKey != mnemonicExtendedPublicKey {
                 throw TLColdWalletError.MisMatchExtendedPublicKey("")
             }

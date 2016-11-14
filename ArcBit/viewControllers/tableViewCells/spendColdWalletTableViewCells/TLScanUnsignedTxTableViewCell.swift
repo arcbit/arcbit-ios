@@ -34,7 +34,7 @@ protocol TLScanUnsignedTxTableViewCellDelegate {
         super.init(coder: aDecoder)
     }
     
-    @IBOutlet var scanButtonButton:UIButton!
+    @IBOutlet var scanButton:UIButton!
     @IBOutlet var statusLabel: UILabel!
 
     var delegate: TLScanUnsignedTxTableViewCellDelegate?
@@ -45,8 +45,8 @@ protocol TLScanUnsignedTxTableViewCellDelegate {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        self.scanButtonButton.backgroundColor = TLColors.mainAppColor()
-        self.scanButtonButton.setTitleColor(TLColors.mainAppOppositeColor(), for:UIControlState())
+        self.scanButton.backgroundColor = TLColors.mainAppColor()
+        self.scanButton.setTitleColor(TLColors.mainAppOppositeColor(), for:UIControlState())
         self.setstatusLabel(0, totalParts: 0)
     }
     
