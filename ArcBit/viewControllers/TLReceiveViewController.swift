@@ -100,7 +100,7 @@ import UIKit
         
         if (AppDelegate.instance().justSetupHDWallet) {
             AppDelegate.instance().justSetupHDWallet = false
-            TLPrompts.promptSuccessMessage("Welcome!".localized, message: "Start using the app now by depositing your Bitcoins here.".localized)
+            TLPrompts.promptSuccessMessage("Welcome!".localized, message: "Welcome to ArcBit, a user only controlled Bitcoin wallet. Start using the app now by depositing your Bitcoins here.".localized)
         }
         
         self.refreshSelectedAccount(false)
