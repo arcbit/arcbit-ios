@@ -218,7 +218,7 @@ import UIKit
             var address = ""
             var balance = ""
             if ((indexPath as NSIndexPath).section == 0) {
-                if self.accountObject!.getAccountType() != .importedWatch {
+                if self.accountObject!.getAccountType() != .importedWatch && self.accountObject!.getAccountType() != .coldWallet {
                     if (self.accountObject!.stealthWallet!.getStealthAddressPaymentsCount() == 0) {
                         address = TL_STRING_NONE_CURRENTLY
                     } else {
