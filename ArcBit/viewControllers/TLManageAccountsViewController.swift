@@ -694,7 +694,11 @@ import UIKit
         let accountHDIndex = accountObject.getAccountHDIndex()
         let title = String(format: "Account ID: %u".localized, accountHDIndex)
         let otherButtons:[String]
-        otherButtons = ["View account public key QR code".localized, "View Addresses".localized, "Edit Account Name".localized, "Archive Account".localized]
+        if (TLPreferences.enabledAdvancedMode()) {
+            otherButtons = ["View account public key QR code".localized, "View Addresses".localized, "Edit Account Name".localized, "Archive Account".localized]
+        } else {
+            otherButtons = ["View Addresses".localized, "Edit Account Name".localized, "Archive Account".localized]
+        }
         
         UIAlertController.showAlert(in: self,
                                                     withTitle: title,
@@ -708,7 +712,13 @@ import UIKit
                                                         var VIEW_ADDRESSES_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+1
                                                         var RENAME_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+2
                                                         var ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+3
-                                        
+                                                        if (!TLPreferences.enabledAdvancedMode()) {
+                                                            VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = -1
+                                                            VIEW_ADDRESSES_BUTTON_IDX = actionSheet!.firstOtherButtonIndex
+                                                            RENAME_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+1
+                                                            ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+2
+                                                        }
+                                                        
                                                         if (buttonIndex == VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX) {
                                                             self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPubKey() as NSString,
                                                                 buttonCopyText: "Copy To Clipboard".localized, vc: self)
@@ -1969,7 +1979,7 @@ import UIKit
                                                                     (data: String?) in
                                                             })
                                                         } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 1) {
-                                                            TLPrompts.promtForInputText(self, title: "Cold Wallet Account", message: "Input account public key", textFieldPlaceholder: nil, success: {
+                                                            TLPrompts.promtForInputText(self, title: "Cold Wallet Account".localized, message: "Input account public key".localized, textFieldPlaceholder: nil, success: {
                                                                 (inputText: String!) in
                                                                 self.importColdWalletAccount(inputText)
                                                                 }, failure: {
@@ -2433,7 +2443,7 @@ import UIKit
                 self.promptArchivedAccountsActionSheet((indexPath as NSIndexPath).row)
                 return nil
             } else if ((indexPath as NSIndexPath).section == archivedColdWalletAccountSection) {
-                self.promptArchivedImportedAccountsActionSheet(indexPath, accountType: .imported)
+                self.promptArchivedImportedAccountsActionSheet(indexPath, accountType: .coldWallet)
                 return nil
             } else {
                 self.doAccountAction((indexPath as NSIndexPath).row)
