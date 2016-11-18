@@ -444,7 +444,7 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
         self.enableTextField(self.changePrivateKeyTextField4, enable: false)
         self.enableTextField(self.changePrivateKeyTextField5, enable: false)
         
-        self.startingAddressIDTextField.text = nil
+        self.startingChangeAddressIDTextField.text = nil
         
         self.changePrivateKeyTextField1.text = nil
         self.changeAddressTextField1.text = nil
