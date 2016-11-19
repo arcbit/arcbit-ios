@@ -379,6 +379,13 @@ import UIKit
                     TLPreferences.setDisabledPromptShowWebWallet(true)
                 }, failure: { (Bool) -> () in
             })
+        } else if TLSuggestions.instance().conditionToPromptTryColdWallet() {
+            TLPreferences.setEnableColdWallet(true)
+               let msg = "With an ArcBit cold wallet feature, you can create wallets and make payments offline without exposing your private keys to an internet connected device. This feature is great for storing large amounts of bitcoins or for the security conscious minded. Check out this feature in the cold wallet section in the side menu.".localized
+            TLPrompts.promtForOK(self, title:"Try our new cold wallet feature!", message:msg, success: {
+                () in
+                TLPreferences.setDisabledPromptShowTryColdWallet(true)
+            })
         }
         self.navigationController!.view.addGestureRecognizer(self.slidingViewController().panGesture)
     }

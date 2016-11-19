@@ -74,6 +74,7 @@ class TLPreferences
         static let PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE = "pref-encrypted-backup-passphrase"
         static let PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE_KEY = "pref-encrypted-backup-passphrase-key"
         static let PREFERENCE_ENABLED_PROMPT_SHOW_WEB_WALLET = "pref-enabled-prompt-show-web-wallet"
+        static let PREFERENCE_ENABLED_PROMPT_SHOW_TRY_COLD_WALLET = "pref-enabled-prompt-show-try-cold-wallet"
         static let PREFERENCE_ENABLED_PROMPT_RATE_APP = "pref-enabled-prompt-rate-app"
         static let PREFERENCE_RATED_ONCE = "pref-rated-once"
     }
@@ -94,15 +95,12 @@ class TLPreferences
         }
     }
     
-    class func getInstallDate() -> (String?) {
-        let joined = UserDefaults.standard.object(forKey: CLASS_STATIC.PREFERENCE_INSTALL_DATE) as! Date?
-        if(joined == nil) {
+    class func getInstallDate() -> (Date?) {
+        let joinedDate = UserDefaults.standard.object(forKey: CLASS_STATIC.PREFERENCE_INSTALL_DATE) as! Date?
+        if(joinedDate == nil) {
             return nil
         }
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "yyyyMMdd"
-        
-        return dateFormatter.string(from: joined!)
+        return joinedDate
     }
     
     class func getAppVersion() -> String {
@@ -528,6 +526,15 @@ class TLPreferences
     
     class func setDisabledPromptShowWebWallet(_ disabled:Bool) -> () {
         UserDefaults.standard.set(disabled ,forKey:CLASS_STATIC.PREFERENCE_ENABLED_PROMPT_SHOW_WEB_WALLET)
+        UserDefaults.standard.synchronize()
+    }
+    
+    class func disabledPromptShowTryColdWallet() -> (Bool) {
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.PREFERENCE_ENABLED_PROMPT_SHOW_TRY_COLD_WALLET)
+    }
+    
+    class func setDisabledPromptShowTryColdWallet(_ disabled:Bool) -> () {
+        UserDefaults.standard.set(disabled ,forKey:CLASS_STATIC.PREFERENCE_ENABLED_PROMPT_SHOW_TRY_COLD_WALLET)
         UserDefaults.standard.synchronize()
     }
     

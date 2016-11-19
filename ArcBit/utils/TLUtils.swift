@@ -42,6 +42,13 @@ class TLUtils {
         return "ArcBit"
     }
     
+    class func daysSinceDate(_ date: Date) -> Int {
+        let nowDate:Date = Date()
+        let calendar: Calendar = Calendar.current
+        let dateComponents = calendar.dateComponents([Calendar.Component.day], from: calendar.startOfDay(for: date), to: calendar.startOfDay(for: nowDate))
+        return dateComponents.day!
+    }
+    
     class func dictionaryToJSONString(_ prettyPrint: Bool, dict: NSDictionary) -> String {
         let jsonData: Data?
         do {

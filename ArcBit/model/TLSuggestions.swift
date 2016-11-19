@@ -29,9 +29,10 @@ class TLSuggestions {
     
     // use prime numbers to avoid multiple prompts to be displayed at once
     let VIEW_SEND_SCREEN_GAP_COUNT_TO_SHOW_SUGGESTION_TO_BACKUP_WALLET_PASSPHRASE = 3
+    let VIEW_SEND_SCREEN_GAP_COUNT_TO_SHOW_WEB_WALLET = 31
+    let VIEW_SEND_SCREEN_GAP_COUNT_TO_SHOW_TRY_COLD_WALLET = 37
     let VIEW_SEND_SCREEN_GAP_COUNT_TO_SHOW_RATE_APP_ONCE = 47
     let VIEW_SEND_SCREEN_GAP_COUNT_TO_SHOW_RATE_APP = 89
-    let VIEW_SEND_SCREEN_GAP_COUNT_TO_SHOW_WEB_WALLET = 31
 
     let ENABLE_SUGGESTED_ENABLE_PIN  = "enableSuggestedEnablePin"
     let ENABLE_SUGGESTED_BACKUP_WALLET_PASSPHRASE = "enableSuggestBackUpWalletPassphrase"
@@ -118,8 +119,25 @@ class TLSuggestions {
         let userAnalyticsDict = NSMutableDictionary(dictionary:TLPreferences.getAnalyticsDict() ?? NSDictionary())
         let viewSendScreenCount = userAnalyticsDict.object(forKey: TLNotificationEvents.EVENT_VIEW_SEND_SCREEN()) as! Int? ?? 0
         if !TLPreferences.disabledPromptShowWebWallet() &&
-        viewSendScreenCount > 0 &&
-        viewSendScreenCount % VIEW_SEND_SCREEN_GAP_COUNT_TO_SHOW_WEB_WALLET == 0 {
+            viewSendScreenCount > 0 &&
+            viewSendScreenCount % VIEW_SEND_SCREEN_GAP_COUNT_TO_SHOW_WEB_WALLET == 0 {
+            return true
+        } else {
+            return false
+        }
+    }
+    
+    func conditionToPromptTryColdWallet() -> (Bool) {
+        let userAnalyticsDict = NSMutableDictionary(dictionary:TLPreferences.getAnalyticsDict() ?? NSDictionary())
+        let viewSendScreenCount = userAnalyticsDict.object(forKey: TLNotificationEvents.EVENT_VIEW_SEND_SCREEN()) as! Int? ?? 0
+        if TLPreferences.getInstallDate() == nil {
+            return false
+        }
+        if !TLPreferences.disabledPromptShowTryColdWallet() &&
+            !TLPreferences.enabledColdWallet() &&
+            TLUtils.daysSinceDate(TLPreferences.getInstallDate()!) > -1 && // 60 days
+            viewSendScreenCount > 0 &&
+            viewSendScreenCount % VIEW_SEND_SCREEN_GAP_COUNT_TO_SHOW_TRY_COLD_WALLET == 0 {
             return true
         } else {
             return false
