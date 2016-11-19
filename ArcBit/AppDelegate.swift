@@ -351,10 +351,25 @@ import Crashlytics
         
         self.justSetupHDWallet = false
         let appVersion = Bundle.main.infoDictionary!["CFBundleShortVersionString"] as! String
-        if (TLPreferences.getInstallDate() != nil) {
-            TLPreferences.setHasSetupHDWallet(false)
-            TLPreferences.setInstallDate()
-            TLPreferences.setAppVersion(appVersion)
+        if (TLPreferences.getInstallDate() == nil) {
+            
+            // before version 1.4.0, install date was not getting set properly, this fixes things
+            if TLPreferences.getAppVersion() == "0" {
+                TLPreferences.setHasSetupHDWallet(false)
+                TLPreferences.setInstallDate()
+                DLog("set InstallDate \(TLPreferences.getInstallDate())")
+                TLPreferences.setAppVersion(appVersion)
+            } else {
+                TLPreferences.setInstallDate()
+                DLog("set fake InstallDate \(TLPreferences.getInstallDate())")
+                if appVersion != TLPreferences.getAppVersion() {
+                    TLUpdateAppData.instance().beforeUpdatedAppVersion = TLPreferences.getAppVersion()
+                    DLog("set new appVersion \(appVersion)")
+                    TLPreferences.setAppVersion(appVersion)
+                    TLPreferences.setDisabledPromptRateApp(false)
+                }
+            }
+            
         } else if appVersion != TLPreferences.getAppVersion() {
             TLUpdateAppData.instance().beforeUpdatedAppVersion = TLPreferences.getAppVersion()
             DLog("set new appVersion \(appVersion)")
