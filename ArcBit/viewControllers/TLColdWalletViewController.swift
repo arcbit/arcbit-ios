@@ -131,6 +131,7 @@ import UIKit
         }
         let sectionType = self.sectionArray![(indexPath as NSIndexPath).section]
         if(sectionType == STATIC_MEMBERS.kColdWalletSection) {
+            cell!.textLabel!.font = cell!.textLabel!.font.withSize(15)
             let row = self.coldWalletRowArray![(indexPath as NSIndexPath).row]
             if row == STATIC_MEMBERS.kColdWalletOverViewRow {
                 cell!.textLabel!.text = "Cold Wallet Overview".localized

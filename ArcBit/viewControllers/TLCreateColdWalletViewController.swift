@@ -93,7 +93,7 @@ import UIKit
     
     func didClickAccountInfoButton(_ cell: TLNewWalletTableViewCell) {
         dismissKeyboard()
-        let msg = "Input an account ID and click 'QR Code'. Then on your primary online device, enable Cold Wallet in settings also. Then go to the accounts screen and click 'Import Cold Wallet Account' and scan the Account Public Key QR Code. Afterwards use this cold wallet account as you would a normal account and deposits bitcoins into it. When you want to make a payment from a cold wallet account, go to the next section in the previous screen and follow the step by step instructions there.".localized
+        let msg = "Input an account ID and click 'QR Code'. Then on your primary online device, enable Cold Wallet in settings. Then go to the accounts screen and click 'Import Cold Wallet Account' and scan the Account Public Key QR Code. Afterwards use this cold wallet account as you would a normal account and deposits bitcoins into it. When you want to make a payment from a cold wallet account, go to the next section in the previous screen and follow the step by step instructions there.".localized
         TLPrompts.promtForOK(self, title:"", message: msg, success: {
             () in
         })
