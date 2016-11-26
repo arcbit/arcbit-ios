@@ -40,7 +40,8 @@ class TLPreferences
         static let INAPPSETTINGS_KIT_DISPLAY_LOCAL_CURRENCY = "displaylocalcurrency"
         static let INAPPSETTINGS_KIT_ENABLE_DYNAMIC_FEE = "enabledynamicfee"
         static let INAPPSETTINGS_KIT_DYNAMIC_FEE_OPTION = "dynamicfeeoption"
-        
+        static let INAPPSETTINGS_KIT_ENABLE_COLD_WALLET = "enablecoldwallet"
+
         static let PREFERENCE_INSTALL_DATE = "pref-install-date"
         static let PREFERENCE_APP_VERSION = "pref-app-version"
         static let PREFERENCE_PUSH_NOTIFICTION = "pref-push-notification"
@@ -468,6 +469,15 @@ class TLPreferences
     
     class func setEnableColdWallet(_ enabled:Bool) -> () {
         UserDefaults.standard.set(enabled ,forKey:CLASS_STATIC.PREFERENCE_WALLET_COLD_WALLET)
+        UserDefaults.standard.synchronize()
+    }
+    
+    class func enabledInAppSettingsKitColdWallet() -> (Bool) {
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_ENABLE_COLD_WALLET)
+    }
+    
+    class func setEnableInAppSettingsKitColdWallet(_ enabled:Bool) -> () {
+        UserDefaults.standard.set(enabled ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_ENABLE_COLD_WALLET)
         UserDefaults.standard.synchronize()
     }
     

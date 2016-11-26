@@ -135,7 +135,7 @@ class TLSuggestions {
         }
         if !TLPreferences.disabledPromptShowTryColdWallet() &&
             !TLPreferences.enabledColdWallet() &&
-            TLUtils.daysSinceDate(TLPreferences.getInstallDate()!) > -1 && // 60 days
+            TLUtils.daysSinceDate(TLPreferences.getInstallDate()!) > 60 && // 60 days
             viewSendScreenCount > 0 &&
             viewSendScreenCount % VIEW_SEND_SCREEN_GAP_COUNT_TO_SHOW_TRY_COLD_WALLET == 0 {
             return true
