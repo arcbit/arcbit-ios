@@ -388,6 +388,7 @@ import UIKit
                 TLPreferences.setDisabledPromptShowTryColdWallet(true)
             })
         } else if TLSuggestions.instance().conditionToPromptCheckoutAndroidWallet() {
+            TLPreferences.setDisabledPromptCheckoutAndroidWallet(true)
             TLPrompts.promptAlertController(self, title: "Check out the new ArcBit Android Wallet!".localized,
                                             message: "".localized, okText: "Go".localized, cancelTx: "No thanks".localized,
                                             success: { () -> () in
@@ -395,7 +396,6 @@ import UIKit
                                                 if (UIApplication.shared.canOpenURL(url!)) {
                                                     UIApplication.shared.openURL(url!);
                                                 }
-                                                TLPreferences.setDisabledPromptCheckoutAndroidWallet(true)
             }, failure: { (Bool) -> () in
             })
         }
