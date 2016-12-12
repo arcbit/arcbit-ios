@@ -133,7 +133,7 @@ import UIKit
     }
     
     func numberOfSections(in tableView:UITableView) -> Int {
-        return 4
+        return 5
     }
     
     func tableView(_ tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
@@ -142,6 +142,8 @@ import UIKit
         } else if section == 1 {
             return "ArcBit Brain Wallet".localized
         } else if section == 2 {
+            return "ArcBit Android Wallet".localized
+        } else if section == 3 {
             return "Other Links".localized
         } else {
             return "Email Support".localized
@@ -152,6 +154,8 @@ import UIKit
         if section == 0 || section == 1 {
             return 2
         } else if section == 2 {
+            return 1
+        } else if section == 3 {
             return 2
         } else {
             return 1
@@ -181,6 +185,8 @@ import UIKit
                 cell!.textLabel!.text = "View ArcBit Brain Wallet Details".localized
             }
         } else if (indexPath as NSIndexPath).section == 2 {
+            cell!.textLabel?.text = "Check out the ArcBit Android Wallet".localized
+        } else if (indexPath as NSIndexPath).section == 3 {
             if (indexPath as NSIndexPath).row == 0 {
                 cell!.imageView?.image = UIImage(named: "home3")
                 cell!.textLabel?.text = "Visit our home page".localized
@@ -219,6 +225,11 @@ import UIKit
                 performSegue(withIdentifier: "SegueText2", sender:self)
             }
         } else if((indexPath as NSIndexPath).section == 2) {
+            let url = URL(string: "https://play.google.com/store/apps/details?id=com.arcbit.arcbit&hl=en");
+            if (UIApplication.shared.canOpenURL(url!)) {
+                UIApplication.shared.openURL(url!);
+            }
+        } else if((indexPath as NSIndexPath).section == 3) {
             if (indexPath as NSIndexPath).row == 0 {
                 let url = URL(string: "http://arcbit.io/");
                 if (UIApplication.shared.canOpenURL(url!)) {
