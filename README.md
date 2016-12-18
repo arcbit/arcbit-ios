@@ -7,6 +7,7 @@ https://itunes.apple.com/app/arcbit-bitcoin-wallet/id999487888
 
 #####Features:
 - No signup required
+- Cold wallet storage and spending
 - Encrypted iCloud backup support
 - Single recovery passphrase that works forever
 - Private keys never leave your device
