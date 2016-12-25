@@ -109,14 +109,17 @@ extension TLWallet {
         var indexToInsert = stealthAddressPaymentsArray.count-1            
 
         while indexToInsert >= 0 {
-            let currentStealthAddressPaymentDict = stealthAddressPaymentsArray.object(at: indexToInsert) as! NSDictionary
-            if (currentStealthAddressPaymentDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_TIME) as! NSNumber).uint64Value < txTime {
-                break
+            if let currentStealthAddressPaymentDict = stealthAddressPaymentsArray.object(at: indexToInsert) as? NSDictionary {
+                if (currentStealthAddressPaymentDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_TIME) as! NSNumber).uint64Value < txTime {
+                    break
+                }
             }
             indexToInsert -= 1
         }
-            
-        stealthAddressPaymentsArray.insert(stealthAddressPaymentDict, at: indexToInsert+1)
+        
+        if stealthAddressPaymentDict != nil {
+            stealthAddressPaymentsArray.insert(stealthAddressPaymentDict, at: indexToInsert+1)
+        }
         lock.unlock()
             
         DispatchQueue.main.async {
@@ -233,12 +236,16 @@ extension TLWallet {
         let startCount = stealthAddressPaymentsArray.count
         var stealthAddressPaymentsArrayCount = stealthAddressPaymentsArray.count
         while (stealthAddressPaymentsArray.count > TLStealthExplorerAPI.STATIC_MEMBERS.STEALTH_PAYMENTS_FETCH_COUNT) {
-            let stealthAddressPaymentDict = stealthAddressPaymentsArray.object(at: 0) as! NSDictionary
-            if (stealthAddressPaymentDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS) as! Int == TLStealthPaymentStatus.spent.rawValue) {
+            if let stealthAddressPaymentDict = stealthAddressPaymentsArray.object(at: 0) as? NSDictionary {
+                if (stealthAddressPaymentDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS) as! Int == TLStealthPaymentStatus.spent.rawValue) {
+                    stealthAddressPaymentsArray.removeObject(at: 0)
+                    stealthAddressPaymentsArrayCount -= 1
+                } else {
+                    break
+                }
+            } else {
                 stealthAddressPaymentsArray.removeObject(at: 0)
                 stealthAddressPaymentsArrayCount -= 1
-            } else {
-                break
             }
         }
 

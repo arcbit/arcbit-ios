@@ -1526,7 +1526,7 @@ import Foundation
             let accountIdx = self.getAccountIdxNumber()
             self.appWallet!.addStealthAddressPaymentKeyHDWallet(accountIdx, privateKey:privateKey,
                 address:address, txid:txid, txTime: txTime, stealthPaymentStatus: stealthPaymentStatus)
-        } else if (accountType == TLAccountType.imported) {
+        } else if (accountType == TLAccountType.coldWallet) {
             self.appWallet!.addStealthAddressPaymentKeyColdWalletAccount(self.getPositionInWalletArray(),
                 privateKey:privateKey, address:address, txid:txid, txTime: txTime, stealthPaymentStatus: stealthPaymentStatus)
         } else if (accountType == TLAccountType.imported) {

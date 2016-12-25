@@ -154,37 +154,37 @@ import Foundation
 
     
         for i in stride(from: 0, to: paymentsArray.count, by: 1) {
-            let paymentDict = paymentsArray.object(at: i) as! NSDictionary
-
-            let address = paymentDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String
-            let txid = paymentDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_TXID) as! String
-            let privateKey = paymentDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_KEY) as! String
-            if isSetup {
-                self.paymentTxid2PaymentAddressDict[txid] = address
-                self.paymentAddress2PrivateKeyDict[address] = privateKey
-            }
-            
-            let stealthPaymentStatus = paymentDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS) as! Int
-
-            if isSetup {
-                if stealthPaymentStatus == TLStealthPaymentStatus.unspent.rawValue {
-                    self.unspentPaymentAddress2PaymentTxid[address] = txid
+            if let paymentDict = paymentsArray.object(at: i) as? NSDictionary {
+                let address = paymentDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String
+                let txid = paymentDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_TXID) as! String
+                let privateKey = paymentDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_KEY) as! String
+                if isSetup {
+                    self.paymentTxid2PaymentAddressDict[txid] = address
+                    self.paymentAddress2PrivateKeyDict[address] = privateKey
                 }
-            }
-            
-            // dont check to remove last STEALTH_PAYMENTS_FETCH_COUNT payment addresses
-            if i >= paymentsArray.count - Int(TLStealthExplorerAPI.STATIC_MEMBERS.STEALTH_PAYMENTS_FETCH_COUNT) {
-                continue
-            }
-            
-            if stealthPaymentStatus == TLStealthPaymentStatus.claimed.rawValue || stealthPaymentStatus == TLStealthPaymentStatus.unspent.rawValue {
-                 
-                let lastCheckTime = UInt64((paymentDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_CHECK_TIME) as! NSNumber).uint64Value)
-               
-                if (nowTime - lastCheckTime) > STATIC_MEMBERS.TIME_TO_WAIT_TO_CHECK_FOR_SPENT_TX {
-                    possiblyClaimedTxidArray.append(txid)
-                    possiblyClaimedAddressArray.append(address)
-                    possiblyClaimedTxTimeArray.append(lastCheckTime)
+                
+                let stealthPaymentStatus = paymentDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS) as! Int
+                
+                if isSetup {
+                    if stealthPaymentStatus == TLStealthPaymentStatus.unspent.rawValue {
+                        self.unspentPaymentAddress2PaymentTxid[address] = txid
+                    }
+                }
+                
+                // dont check to remove last STEALTH_PAYMENTS_FETCH_COUNT payment addresses
+                if i >= paymentsArray.count - Int(TLStealthExplorerAPI.STATIC_MEMBERS.STEALTH_PAYMENTS_FETCH_COUNT) {
+                    continue
+                }
+                
+                if stealthPaymentStatus == TLStealthPaymentStatus.claimed.rawValue || stealthPaymentStatus == TLStealthPaymentStatus.unspent.rawValue {
+                    
+                    let lastCheckTime = UInt64((paymentDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_CHECK_TIME) as! NSNumber).uint64Value)
+                    
+                    if (nowTime - lastCheckTime) > STATIC_MEMBERS.TIME_TO_WAIT_TO_CHECK_FOR_SPENT_TX {
+                        possiblyClaimedTxidArray.append(txid)
+                        possiblyClaimedAddressArray.append(address)
+                        possiblyClaimedTxTimeArray.append(lastCheckTime)
+                    }
                 }
             }
         }
@@ -290,7 +290,7 @@ import Foundation
         }
         
         let challenge = TLStealthWallet.Challenge.challenge
-        
+
         DLog("getChallengeAndSign \(challenge)")
         return TLCoreBitcoinWrapper.getSignature(privKey, message: challenge);
     }

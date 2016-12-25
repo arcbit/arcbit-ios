@@ -203,7 +203,7 @@ import Crashlytics
             let accountObject = self.accounts!.getAccountObjectForIdx(sendFromIndex)
             self.receiveSelectedObject!.setSelectedAccount(accountObject)
         } else if (sendFromType == .coldWalletAccount) {
-            let accountObject = self.accounts!.getAccountObjectForIdx(sendFromIndex)
+            let accountObject = self.coldWalletAccounts!.getAccountObjectForIdx(sendFromIndex)
             self.receiveSelectedObject!.setSelectedAccount(accountObject)
         } else if (sendFromType == .importedAccount) {
             let accountObject = self.importedAccounts!.getAccountObjectForIdx(sendFromIndex)
@@ -225,10 +225,11 @@ import Crashlytics
             let accountObject = self.accounts!.getAccountObjectForIdx(sendFromIndex)
             self.historySelectedObject!.setSelectedAccount(accountObject)
         } else if (sendFromType == .coldWalletAccount) {
-            let accountObject = self.accounts!.getAccountObjectForIdx(sendFromIndex)
+            let accountObject = self.coldWalletAccounts!.getAccountObjectForIdx(sendFromIndex)
             self.historySelectedObject!.setSelectedAccount(accountObject)
         } else if (sendFromType == .importedAccount) {
             let accountObject = self.importedAccounts!.getAccountObjectForIdx(sendFromIndex)
+            self.historySelectedObject!.setSelectedAccount(accountObject)
         } else if (sendFromType == .importedWatchAccount) {
             let accountObject = self.importedWatchAccounts!.getAccountObjectForIdx(sendFromIndex)
             self.historySelectedObject!.setSelectedAccount(accountObject)
