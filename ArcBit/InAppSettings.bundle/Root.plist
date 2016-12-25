@@ -541,21 +541,6 @@
                 <key>File</key>
                 <string>Advanced</string>
             </dict>
-            
-            <dict>
-                <key>Title</key>
-                <string>EMPTY</string>
-                <key>Type</key>
-                <string>PSGroupSpecifier</string>
-            </dict>
-            <dict>
-                <key>Type</key>
-                <string>PSChildPaneSpecifier</string>
-                <key>Title</key>
-                <string>ARCBIT_CONTRIBUTORS_LIST</string>
-                <key>File</key>
-                <string>contributors</string>
-            </dict>
 
         </array>
         <key>StringsTable</key>
