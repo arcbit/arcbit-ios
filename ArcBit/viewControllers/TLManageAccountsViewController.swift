@@ -2123,8 +2123,8 @@ import UIKit
         var IMPORT_COLD_WALLET_ACCOUNT_BUTTON_IDX = -1
         if TLPreferences.enabledColdWallet() {
             IMPORT_COLD_WALLET_ACCOUNT_BUTTON_IDX = count
+            count +=  1
         }
-        count +=  1
         let IMPORT_ACCOUNT_BUTTON_IDX = count
         count +=  1
         let IMPORT_WATCH_ACCOUNT_BUTTON_IDX = count
