@@ -1357,7 +1357,7 @@ import UIKit
     
     fileprivate func promptInfoAndToManuallyScanForStealthTransactionAccount(_ accountObject: TLAccountObject) -> () {
         if (TLSuggestions.instance().enabledShowManuallyScanTransactionForStealthTxInfo()) {
-            TLPrompts.promtForOK(self, title:"", message: "This feature allows you to manually input a transaction id and see if the corresponding transaction contains a forwarding payment to your reusable address. If so, then the funds will be added to your wallet. Normally the app will discover forwarding payments automatically for you, but if you believe a payment is missing you can use this feature.".localized, success: {
+            TLPrompts.promtForOK(self, title:"", message: "This feature allows you to manually input a transaction id and see if the corresponding transaction contains a reusable address payment to your reusable address. If so, then the funds will be added to your wallet. Normally the app will discover reusable address payments automatically for you, but if you believe a payment is missing you can use this feature.".localized, success: {
                 () in
                 self.promptToManuallyScanForStealthTransactionAccount(accountObject)
                 TLSuggestions.instance().setEnabledShowManuallyScanTransactionForStealthTxInfo(false)
