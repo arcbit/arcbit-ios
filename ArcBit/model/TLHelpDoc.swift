@@ -229,7 +229,7 @@ class TLHelpDoc {
                 [
                     "Go to the side menu".localized,
                     "Click ‘Settings’".localized,
-                    "Click ‘Advanced options’".localized,
+                    "Click ‘Advanced settings’".localized,
                     "Toggle ’Enable advanced mode’".localized,
                 ],
             ]
@@ -269,7 +269,7 @@ class TLHelpDoc {
                 [
                     "Go to the side menu".localized,
                     "Click ‘Settings’".localized,
-                    "Click ‘Advanced options’".localized,
+                    "Click ‘Advanced settings’".localized,
                     "Click ‘blockexplorer API type’".localized,
                     "Select and click a blockexplorer API".localized,
                     "Quit and re-enter app".localized,
