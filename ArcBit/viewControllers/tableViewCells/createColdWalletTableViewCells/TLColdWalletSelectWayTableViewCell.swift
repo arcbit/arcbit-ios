@@ -55,9 +55,9 @@ protocol TLColdWalletSelectKeyTypeTableViewCellDelegate {
         }
         self.coldWalletSelectSegmentedControl.setTitleTextAttributes(attr as! [AnyHashable: Any] , for: UIControlState())
      
-        self.coldWalletSelectSegmentedControl.setTitle("Mnemonic", forSegmentAt: 0)
-        self.coldWalletSelectSegmentedControl.setTitle("Account Private Key", forSegmentAt: 1)
-        self.coldWalletSelectSegmentedControl.setTitle("Account Public Key", forSegmentAt: 2)
+        self.coldWalletSelectSegmentedControl.setTitle(TLDisplayStrings.MNEMONIC_STRING(), forSegmentAt: 0)
+        self.coldWalletSelectSegmentedControl.setTitle(TLDisplayStrings.ACCOUNT_PRIVATE_KEY_STRING(), forSegmentAt: 1)
+        self.coldWalletSelectSegmentedControl.setTitle(TLDisplayStrings.ACCOUNT_PUBLIC_KEY_STRING(), forSegmentAt: 2)
     }
     
     class func cellHeight() -> CGFloat {
@@ -66,7 +66,6 @@ protocol TLColdWalletSelectKeyTypeTableViewCellDelegate {
     
     @IBAction func coldWalletKeyTypeValueChanged(_ sender: UISegmentedControl) {
         let selectedIndex = sender.selectedSegmentIndex
-        DLog("selectedIndex: \(selectedIndex)")
         delegate?.didSelectColdWalletKeyType(self, keyType: TLColdWalletKeyType(rawValue: selectedIndex)!)
     }
 }

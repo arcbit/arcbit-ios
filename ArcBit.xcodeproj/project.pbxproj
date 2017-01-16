@@ -21,6 +21,11 @@
 		C05C398C1AD0712B00AADE55 /* TLCloudDocumentSyncWrapper.m in Sources */ = {isa = PBXBuildFile; fileRef = C05C398A1AD0710B00AADE55 /* TLCloudDocumentSyncWrapper.m */; };
 		C0607FCD1AEEB3CD007203F8 /* TLStealthServerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0607FCC1AEEB3CD007203F8 /* TLStealthServerConfig.swift */; };
 		C0607FCE1AEEB716007203F8 /* TLStealthServerConfig.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0607FCC1AEEB3CD007203F8 /* TLStealthServerConfig.swift */; };
+		C0649CA31E256B52007E3965 /* TLAccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0649CA01E256B52007E3965 /* TLAccountTableViewCell.swift */; };
+		C0649CA41E256B52007E3965 /* TLAddressTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0649CA11E256B52007E3965 /* TLAddressTableViewCell.swift */; };
+		C0649CA51E256B52007E3965 /* TLTransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0649CA21E256B52007E3965 /* TLTransactionTableViewCell.swift */; };
+		C0649CA71E256E16007E3965 /* TLDisplayStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0649CA61E256E16007E3965 /* TLDisplayStrings.swift */; };
+		C0649CA81E25969D007E3965 /* TLDisplayStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0649CA61E256E16007E3965 /* TLDisplayStrings.swift */; };
 		C09506EB1DBF27AF00F70FA1 /* SocketAckEmitter.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09506D31DBF27AF00F70FA1 /* SocketAckEmitter.swift */; };
 		C09506EC1DBF27B000F70FA1 /* SocketAckManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09506D41DBF27AF00F70FA1 /* SocketAckManager.swift */; };
 		C09506ED1DBF27B000F70FA1 /* SocketAnyEvent.swift in Sources */ = {isa = PBXBuildFile; fileRef = C09506D51DBF27AF00F70FA1 /* SocketAnyEvent.swift */; };
@@ -203,9 +208,6 @@
 		C0A1930F1ABF744E00BED648 /* TLNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193061ABF744E00BED648 /* TLNetworking.swift */; };
 		C0A193101ABF744E00BED648 /* TLStealthServerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193071ABF744E00BED648 /* TLStealthServerAPI.swift */; };
 		C0A193111ABF744E00BED648 /* TLStealthWebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193081ABF744E00BED648 /* TLStealthWebSocket.swift */; };
-		C0A193151ABF74A700BED648 /* TLAccountTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193121ABF74A700BED648 /* TLAccountTableViewCell.swift */; };
-		C0A193161ABF74A700BED648 /* TLAddressTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193131ABF74A700BED648 /* TLAddressTableViewCell.swift */; };
-		C0A193171ABF74A700BED648 /* TLTransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193141ABF74A700BED648 /* TLTransactionTableViewCell.swift */; };
 		C0A1931A1ABF751800BED648 /* BreadWalletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A193191ABF751800BED648 /* BreadWalletTests.m */; };
 		C0A1931C1ABF81CB00BED648 /* TLStealthAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190641ABF53A100BED648 /* TLStealthAddress.swift */; };
 		C0A1931D1ABF81D100BED648 /* TLWalletJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190691ABF53A100BED648 /* TLWalletJson.swift */; };
@@ -313,6 +315,10 @@
 		C05C39891AD0710B00AADE55 /* TLCloudDocumentSyncWrapper.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TLCloudDocumentSyncWrapper.h; sourceTree = "<group>"; };
 		C05C398A1AD0710B00AADE55 /* TLCloudDocumentSyncWrapper.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TLCloudDocumentSyncWrapper.m; sourceTree = "<group>"; };
 		C0607FCC1AEEB3CD007203F8 /* TLStealthServerConfig.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStealthServerConfig.swift; sourceTree = "<group>"; };
+		C0649CA01E256B52007E3965 /* TLAccountTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLAccountTableViewCell.swift; sourceTree = "<group>"; };
+		C0649CA11E256B52007E3965 /* TLAddressTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLAddressTableViewCell.swift; sourceTree = "<group>"; };
+		C0649CA21E256B52007E3965 /* TLTransactionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLTransactionTableViewCell.swift; sourceTree = "<group>"; };
+		C0649CA61E256E16007E3965 /* TLDisplayStrings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLDisplayStrings.swift; sourceTree = "<group>"; };
 		C09506D31DBF27AF00F70FA1 /* SocketAckEmitter.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketAckEmitter.swift; sourceTree = "<group>"; };
 		C09506D41DBF27AF00F70FA1 /* SocketAckManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketAckManager.swift; sourceTree = "<group>"; };
 		C09506D51DBF27AF00F70FA1 /* SocketAnyEvent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SocketAnyEvent.swift; sourceTree = "<group>"; };
@@ -520,9 +526,6 @@
 		C0A193061ABF744E00BED648 /* TLNetworking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLNetworking.swift; sourceTree = "<group>"; };
 		C0A193071ABF744E00BED648 /* TLStealthServerAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStealthServerAPI.swift; sourceTree = "<group>"; };
 		C0A193081ABF744E00BED648 /* TLStealthWebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStealthWebSocket.swift; sourceTree = "<group>"; };
-		C0A193121ABF74A700BED648 /* TLAccountTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLAccountTableViewCell.swift; sourceTree = "<group>"; };
-		C0A193131ABF74A700BED648 /* TLAddressTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLAddressTableViewCell.swift; sourceTree = "<group>"; };
-		C0A193141ABF74A700BED648 /* TLTransactionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLTransactionTableViewCell.swift; sourceTree = "<group>"; };
 		C0A193181ABF751700BED648 /* ArcBitTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ArcBitTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		C0A193191ABF751800BED648 /* BreadWalletTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BreadWalletTests.m; sourceTree = "<group>"; };
 		C0A6AD741C42E80F00B8C22B /* TLLinksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLLinksViewController.swift; sourceTree = "<group>"; };
@@ -647,6 +650,16 @@
 				C05C398A1AD0710B00AADE55 /* TLCloudDocumentSyncWrapper.m */,
 			);
 			path = TLCloudDocumentSyncWrapper;
+			sourceTree = "<group>";
+		};
+		C0649C9F1E256B52007E3965 /* walletTableViewCells */ = {
+			isa = PBXGroup;
+			children = (
+				C0649CA01E256B52007E3965 /* TLAccountTableViewCell.swift */,
+				C0649CA11E256B52007E3965 /* TLAddressTableViewCell.swift */,
+				C0649CA21E256B52007E3965 /* TLTransactionTableViewCell.swift */,
+			);
+			path = walletTableViewCells;
 			sourceTree = "<group>";
 		};
 		C09506D11DBF27AF00F70FA1 /* socket.io-client-swift-8.0.2 */ = {
@@ -1040,6 +1053,7 @@
 		C0A190581ABF53A100BED648 /* model */ = {
 			isa = PBXGroup;
 			children = (
+				C0649CA61E256E16007E3965 /* TLDisplayStrings.swift */,
 				C0A192E91ABF742D00BED648 /* TLAchievements.swift */,
 				C0A192EA1ABF742D00BED648 /* TLAnalytics.swift */,
 				C0A192EB1ABF742D00BED648 /* TLPreferences.swift */,
@@ -1103,9 +1117,6 @@
 				C0D8A36C1DAA16C900497D31 /* TLCreateColdWalletViewController.swift */,
 				C01681A11DB0B1D9004D5FD7 /* TLBrainWalletViewController.swift */,
 				C0D8A36A1DAA126700497D31 /* TLColdWalletViewController.swift */,
-				C0A193121ABF74A700BED648 /* TLAccountTableViewCell.swift */,
-				C0A193131ABF74A700BED648 /* TLAddressTableViewCell.swift */,
-				C0A193141ABF74A700BED648 /* TLTransactionTableViewCell.swift */,
 				C0A1908B1ABF53A100BED648 /* TLAccountsViewController.swift */,
 				C0A1908C1ABF53A100BED648 /* TLAchievementsViewController.swift */,
 				C0A1908D1ABF53A100BED648 /* TLAddressBookViewController.swift */,
@@ -1175,6 +1186,7 @@
 		C0D5A60B1DD8FA1300849E2C /* tableViewCells */ = {
 			isa = PBXGroup;
 			children = (
+				C0649C9F1E256B52007E3965 /* walletTableViewCells */,
 				C0D5A60C1DD8FA1300849E2C /* createColdWalletTableViewCells */,
 				C0D5A6101DD8FA1300849E2C /* spendColdWalletTableViewCells */,
 			);
@@ -1508,6 +1520,7 @@
 				C0A190FC1ABF53A100BED648 /* TLTxObject.swift in Sources */,
 				C0A192FD1ABF744300BED648 /* TLPrompts.swift in Sources */,
 				C09506F71DBF27B000F70FA1 /* SocketIOClient.swift in Sources */,
+				C0649CA41E256B52007E3965 /* TLAddressTableViewCell.swift in Sources */,
 				C09506ED1DBF27B000F70FA1 /* SocketAnyEvent.swift in Sources */,
 				C0A190C31ABF53A100BED648 /* BRTransaction.m in Sources */,
 				C0A191221ABF53A100BED648 /* TLHistoryViewController.swift in Sources */,
@@ -1526,6 +1539,7 @@
 				C0D5A6191DD8FA1300849E2C /* TLScanUnsignedTxTableViewCell.swift in Sources */,
 				C0A190F31ABF53A100BED648 /* TLHDWalletWrapper.swift in Sources */,
 				C0A190D21ABF53A100BED648 /* IASKSettingsStoreFile.m in Sources */,
+				C0649CA31E256B52007E3965 /* TLAccountTableViewCell.swift in Sources */,
 				C09506F31DBF27B000F70FA1 /* SocketEngineSpec.swift in Sources */,
 				C0D5A6141DD8FA1300849E2C /* TLAdvancedNewWalletTableViewCell.swift in Sources */,
 				C0A190DA1ABF53A100BED648 /* IASKTextField.m in Sources */,
@@ -1554,7 +1568,6 @@
 				C0A190E01ABF53A100BED648 /* LTHPasscodeViewController.m in Sources */,
 				C09506EF1DBF27B000F70FA1 /* SocketEngine.swift in Sources */,
 				C0A190C61ABF53A100BED648 /* NSMutableData+Bitcoin.m in Sources */,
-				C0A193171ABF74A700BED648 /* TLTransactionTableViewCell.swift in Sources */,
 				C046DD5F1D6E271000B39580 /* TLReviewPaymentViewController.swift in Sources */,
 				C0A190F11ABF53A100BED648 /* TLCoin.swift in Sources */,
 				C09506F91DBF27B000F70FA1 /* SocketIOClientOption.swift in Sources */,
@@ -1570,11 +1583,11 @@
 				C0A190C11ABF53A100BED648 /* BRKey+BIP38.m in Sources */,
 				C0A191261ABF53A100BED648 /* TLPassPhraseViewController.swift in Sources */,
 				C0A193091ABF744E00BED648 /* TLBitcoinListener.swift in Sources */,
+				C0649CA71E256E16007E3965 /* TLDisplayStrings.swift in Sources */,
 				C0A192F91ABF744300BED648 /* TLColors.swift in Sources */,
 				C0A190E31ABF53A100BED648 /* QR_Encode.cpp in Sources */,
 				C0A190CE1ABF53A100BED648 /* IASKAppSettingsWebViewController.m in Sources */,
 				C09506FF1DBF27B000F70FA1 /* SocketStringReader.swift in Sources */,
-				C0A193161ABF74A700BED648 /* TLAddressTableViewCell.swift in Sources */,
 				C0A6AD751C42E80F00B8C22B /* TLLinksViewController.swift in Sources */,
 				C0A190E51ABF53A100BED648 /* QREncoder.mm in Sources */,
 				C0A191281ABF53A100BED648 /* TLQRCodeScannerViewController.swift in Sources */,
@@ -1612,12 +1625,12 @@
 				C0A190EE1ABF53A100BED648 /* TLAccountObject.swift in Sources */,
 				C0D5A6171DD8FA1300849E2C /* TLInputColdWalletKeyTableViewCell.swift in Sources */,
 				C0A191241ABF53A100BED648 /* TLManageAccountsViewController.swift in Sources */,
-				C0A193151ABF74A700BED648 /* TLAccountTableViewCell.swift in Sources */,
 				C0A190E91ABF53A100BED648 /* UIAlertConrtoller+Blocks.m in Sources */,
 				C0A191291ABF53A100BED648 /* TLReceiveViewController.swift in Sources */,
 				C0C61C5E1AF15E6100F9F71F /* TransparentViewController.swift in Sources */,
 				C0A192FB1ABF744300BED648 /* TLNotificationEvents.swift in Sources */,
 				C0D5A6181DD8FA1300849E2C /* TLPassSignedTxTableViewCell.swift in Sources */,
+				C0649CA51E256B52007E3965 /* TLTransactionTableViewCell.swift in Sources */,
 				F3DAAD661BB1D9EC000488F0 /* TLWalletJSONKeys.swift in Sources */,
 				C0A190D71ABF53A100BED648 /* IASKPSTitleValueSpecifierViewCell.m in Sources */,
 				C09506F11DBF27B000F70FA1 /* SocketEnginePacketType.swift in Sources */,
@@ -1657,6 +1670,7 @@
 				C03ECBF71B54A104005D4B0F /* TLStringLocalized.swift in Sources */,
 				C0D20A931D5966AB008F70F2 /* TLTxFeeAPI.swift in Sources */,
 				C09507141DC1D1D200F70FA1 /* SocketLogger.swift in Sources */,
+				C0649CA81E25969D007E3965 /* TLDisplayStrings.swift in Sources */,
 				C095070C1DC1D1BA00F70FA1 /* SocketEngineSpec.swift in Sources */,
 				C09507131DC1D1D000F70FA1 /* SocketIOClientStatus.swift in Sources */,
 				C0A1932B1ABF82AF00BED648 /* TLSelectedObject.swift in Sources */,

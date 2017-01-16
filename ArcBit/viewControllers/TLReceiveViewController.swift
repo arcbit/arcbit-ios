@@ -40,9 +40,9 @@ import UIKit
     
     fileprivate var pageControlBeingUsed = false
     fileprivate var receiveAddresses: NSMutableArray?
-    let newAddressInfoText = "New addresses will be automatically generated and cycled for you as you use your current available addresses.".localized
-    let importedWatchAccountStealthAddressInfoText = "Imported Watch Only Accounts can't see reusable address payments, thus this accounts' reusable address is not available. If you want see the reusable address for this account import the account private key that corresponds to this accounts public key.".localized
-    let coldWalletAccountStealthAddressInfoText = "Cold Wallet Accounts can't see reusable address payments, thus this accounts' reusable address is not available.".localized
+    let newAddressInfoText = TLDisplayStrings.NEW_ADDRESSES_WILL_BE_AUTOMATICALLY_GENERATED_DESC_STRING()
+    let importedWatchAccountStealthAddressInfoText = TLDisplayStrings.IMPORTED_WATCH_ONLY_ACCOUNTS_REUSABLE_ADDRESS_INFO_DESC_STRING()
+    let coldWalletAccountStealthAddressInfoText = TLDisplayStrings.IMPORTED_COLD_WALLET_ACCOUNTS_REUSABLE_ADDRESS_INFO_DESC_STRING()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -100,7 +100,7 @@ import UIKit
         
         if (AppDelegate.instance().justSetupHDWallet) {
             AppDelegate.instance().justSetupHDWallet = false
-            TLPrompts.promptSuccessMessage("Welcome!".localized, message: "Welcome to ArcBit, a user only controlled Bitcoin wallet. Start using the app now by depositing your Bitcoins here.".localized)
+            TLPrompts.promptSuccessMessage(TLDisplayStrings.WELCOME_EXCLAMATION_STRING(), message: TLDisplayStrings.WELCOME_DESC_STRING())
         }
         
         self.refreshSelectedAccount(false)
@@ -175,7 +175,7 @@ import UIKit
         let address = self.receiveAddresses!.object(at: self.receiveAddressesPageControl!.currentPage) as! String
         let pasteboard = UIPasteboard.general
         pasteboard.string = address
-        iToast.makeText("Copied To clipboard".localized).setGravity(iToastGravityCenter).setDuration(1000).show()
+        iToast.makeText(TLDisplayStrings.COPIED_TO_CLIPBOARD_STRING()).setGravity(iToastGravityCenter).setDuration(1000).show()
     }
     
     @IBAction fileprivate func scrollViewClicked(_ sender: AnyObject) {
@@ -186,7 +186,7 @@ import UIKit
         let address = self.receiveAddresses!.object(at: self.receiveAddressesPageControl!.currentPage) as! String
         let pasteboard = UIPasteboard.general
         pasteboard.string = address
-        iToast.makeText("Copied To clipboard".localized).setGravity(iToastGravityCenter).setDuration(1000).show()
+        iToast.makeText(TLDisplayStrings.COPIED_TO_CLIPBOARD_STRING()).setGravity(iToastGravityCenter).setDuration(1000).show()
     }
     
     fileprivate func getAddressInfoLabel(_ frame: CGRect, text: String) -> UILabel {
@@ -330,7 +330,7 @@ import UIKit
                     let infoLabel = UILabel(frame: UIEdgeInsetsInsetRect(infoLabelFrame, labelEdgeInsets))
                     infoLabel.textColor = TLColors.mainAppOppositeColor()
                     infoLabel.font = UIFont.boldSystemFont(ofSize: addressLabel.font.pointSize - 5)
-                    infoLabel.text = "Reusable Address:".localized
+                    infoLabel.text = TLDisplayStrings.REUSABLE_ADDRESS_COLON_STRING()
                     pageView.addSubview(infoLabel)
                     //QRCodeImageView.backgroundColor = UIColor.orangeColor()
                 }
@@ -448,7 +448,7 @@ import UIKit
     override func prepare(for segue: UIStoryboardSegue, sender: Any!) -> () {
         if(segue.identifier == "selectAccount") {
             let vc = segue.destination 
-            vc.navigationItem.title = "Select Account".localized
+            vc.navigationItem.title = TLDisplayStrings.SELECT_ACCOUNT_STRING()
             NotificationCenter.default.addObserver(self, selector: #selector(TLReceiveViewController.onAccountSelected(_:)), name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ACCOUNT_SELECTED()), object: nil)
         }
     }

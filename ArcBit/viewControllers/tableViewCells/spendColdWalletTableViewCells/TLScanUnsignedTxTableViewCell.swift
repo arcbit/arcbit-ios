@@ -64,19 +64,19 @@ protocol TLScanUnsignedTxTableViewCellDelegate {
 
     func setInvalidScannedData() {
         statusLabel.textColor = UIColor.red
-        statusLabel.text = "Invalid scanned data".localized
+        statusLabel.text = TLDisplayStrings.INVALID_SCANNED_DATA_STRING()
     }
 
     func setstatusLabel(_ partsScanned: Int, totalParts: Int) {
         if partsScanned == 0 && totalParts == 0 {
             statusLabel.textColor = UIColor.red
-            statusLabel.text = "Incomplete".localized
+            statusLabel.text = TLDisplayStrings.INCOMPLETE_STRING()
         } else if partsScanned < totalParts {
             statusLabel.textColor = UIColor.red
-            statusLabel.text = "\(partsScanned)/\(totalParts) " + "Complete".localized
+            statusLabel.text = "\(partsScanned)/\(totalParts) " + TLDisplayStrings.COMPLETE_STRING()
         } else {
             statusLabel.textColor = UIColor.green
-            statusLabel.text = "\(partsScanned)/\(totalParts) " + "Complete".localized
+            statusLabel.text = "\(partsScanned)/\(totalParts) " + TLDisplayStrings.COMPLETE_STRING()
         }
     }
 }

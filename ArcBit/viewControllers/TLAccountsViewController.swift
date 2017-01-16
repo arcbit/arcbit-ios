@@ -86,7 +86,7 @@ import UIKit
     fileprivate func checkToRecoverAccounts() {
         if (AppDelegate.instance().aAccountNeedsRecovering()) {
             TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController!.view,
-                labelText: "Recovering Accounts".localized, animated: true)
+                labelText: TLDisplayStrings.RECOVERING_ACCOUNTS_STRING(), animated: true)
             DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
                 AppDelegate.instance().checkToRecoverAccounts()
                 DispatchQueue.main.async {
@@ -430,22 +430,22 @@ import UIKit
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         if (TLPreferences.enabledAdvancedMode()) {
             if (section == accountListSection) {
-                return "Accounts".localized
+                return TLDisplayStrings.ACCOUNTS_STRING()
             } else if (section == coldWalletAccountSection) {
-                return "Cold Wallet Accounts".localized
+                return TLDisplayStrings.COLD_WALLET_ACCOUNTS_STRING()
             } else if (section == importedAccountSection) {
-                return "Imported Accounts".localized
+                return TLDisplayStrings.IMPORTED_ACCOUNTS_STRING()
             } else if (section == importedWatchAccountSection) {
-                return "Imported Watch Accounts".localized
+                return TLDisplayStrings.IMPORTED_WATCH_ACCOUNTS_STRING()
             } else if (section == importedAddressSection) {
-                return "Imported Addresses".localized
+                return TLDisplayStrings.IMPORTED_ADDRESSES_STRING()
             } else if (section == importedWatchAddressSection) {
-                return "Imported Watch Addresses".localized
+                return TLDisplayStrings.IMPORTED_WATCH_ADDRESSES_STRING()
             } else {
             }
         } else {
             if (section == accountListSection) {
-                return "Accounts".localized
+                return TLDisplayStrings.ACCOUNTS_STRING()
             } else {
             }
         }

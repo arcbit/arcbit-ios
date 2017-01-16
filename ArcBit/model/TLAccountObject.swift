@@ -266,7 +266,7 @@ import Foundation
     }
     
     func getDefaultNameAccount() -> String {
-        return "Default Account Name".localized
+        return TLDisplayStrings.DEFAULT_ACCOUNT_NAME_STRING()
     }
     
     

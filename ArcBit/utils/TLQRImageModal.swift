@@ -24,9 +24,6 @@ import Foundation
 import UIKit
 
 @objc class TLQRImageModal:NSObject {
-    struct STATIC_MEMBERS {
-        static var DISMISS_TEXT = "Dismiss".localized
-    }
     
     fileprivate let alertView:CustomIOS7AlertView
     let QRcodeDisplayData:String
@@ -77,7 +74,7 @@ import UIKit
         containerView.addSubview(titleLabel)
         
         alertView.containerView = containerView
-        alertView.buttonTitles = [buttonCopyText, STATIC_MEMBERS.DISMISS_TEXT]
+        alertView.buttonTitles = [buttonCopyText, TLDisplayStrings.DISMISS_STRING()]
         
         //TODO: refactor, find cleaner way to do this
         if (vc is TLManageAccountsViewController) {
@@ -104,7 +101,7 @@ import UIKit
         for subview in alertView.dialogView.subviews {
             if (subview is UIButton) {
                 let button = subview as! UIButton
-                if (button.titleLabel!.text == STATIC_MEMBERS.DISMISS_TEXT) {
+                if (button.titleLabel!.text == TLDisplayStrings.DISMISS_STRING()) {
                     button.sendActions(for: .touchUpInside)
                 }
             }

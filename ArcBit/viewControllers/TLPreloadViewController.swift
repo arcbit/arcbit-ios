@@ -47,17 +47,17 @@ import UIKit
         if (TLPreferences.canRestoreDeletedApp() && !TLPreferences.hasSetupHDWallet() && passphrase != nil) {
             // is fresh app but not first time installing
             UIAlertController.showAlert(in: self,
-                withTitle: "Backup passphrase found in keychain".localized,
-                message: "Do you want to restore from your backup passphrase or start a fresh app?".localized,
-                cancelButtonTitle: "Restore".localized,
+                withTitle: TLDisplayStrings.BACKUP_PASSPHRASE_FOUND_IN_KEYCHAIN_STRING(),
+                message: TLDisplayStrings.BACKUP_PASSPHRASE_FOUND_IN_KEYCHAIN_DESC_STRING(),
+                cancelButtonTitle: TLDisplayStrings.RESTORE_STRING(),
                 destructiveButtonTitle: nil,
-                otherButtonTitles: ["Start fresh".localized],
+                otherButtonTitles: [TLDisplayStrings.START_FRESH_STRING()],
                 tap: {(alertView, action, buttonIndex) in
                     if (buttonIndex == alertView?.firstOtherButtonIndex) {
                         self.initializeWalletAppAndShowInitialScreenAndGoToMainScreen(nil)
                     } else if (buttonIndex == alertView?.cancelButtonIndex) {
                         
-                        TLHUDWrapper.showHUDAddedTo(self.view, labelText: "Restoring Wallet".localized, animated: true)
+                        TLHUDWrapper.showHUDAddedTo(self.view, labelText: TLDisplayStrings.RESTORING_WALLET_STRING(), animated: true)
                         AppDelegate.instance().saveWalletJSONEnabled = false
 
                         DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
@@ -101,11 +101,11 @@ import UIKit
                     self.walletLoadingActivityIndicatorView!.stopAnimating()
                     walletPayload = AppDelegate.instance().getLocalWalletJsonDict()
                     UIAlertController.showAlert(in: self,
-                        withTitle: "iCloud backup not found".localized,
-                        message: "Do you want to load and backup your current local wallet file?".localized,
-                        cancelButtonTitle: "No".localized,
+                        withTitle: TLDisplayStrings.ICLOUD_BACKUP_NOT_FOUND_STRING(),
+                        message: TLDisplayStrings.ICLOUD_BACKUP_NOT_FOUND_DESC_STRING(),
+                        cancelButtonTitle: TLDisplayStrings.NO_STRING(),
                         destructiveButtonTitle: nil,
-                        otherButtonTitles: ["Yes".localized],
+                        otherButtonTitles: [TLDisplayStrings.YES_STRING()],
                         tap: {(alertView, action, buttonIndex) in
                             if (buttonIndex == alertView!.firstOtherButtonIndex) {
                                 self.initializeWalletAppAndShowInitialScreenAndGoToMainScreen(walletPayload!)
@@ -128,7 +128,7 @@ import UIKit
                             } else {
                                 // Should not happen, this means somehow I pulled an icloud backup wallet that is different then the local wallet,
                                 // but the code that makes each icloud backup file name unique for each device should fix that issue.
-                                TLPrompts.promptErrorMessage("Error".localized, message: "Cannot decrypt iCloud backup wallet.".localized)
+                                TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.CANNOT_DECRYPT_ICLOUD_BACKUP_WALLET_STRING())
                             }
                         } else {
                             // Should not happen, this is because I always do local backup after icloud backup.
@@ -144,11 +144,11 @@ import UIKit
                         walletPayload = AppDelegate.instance().getLocalWalletJsonDict()
                         
                         UIAlertController.showAlert(in: self,
-                            withTitle: String(format: "iCloud Error: %@".localized, error!.localizedDescription),
-                            message: "Do you want to load local wallet file?".localized,
-                            cancelButtonTitle: "No".localized,
+                            withTitle: String(format: TLDisplayStrings.ICLOUD_ERROR_COLON_X_STRING(), error!.localizedDescription),
+                            message: TLDisplayStrings.DO_YOU_WANT_TO_LOAD_LOCAL_WALLET_FILE_STRING(),
+                            cancelButtonTitle: TLDisplayStrings.NO_STRING(),
                             destructiveButtonTitle: nil,
-                            otherButtonTitles: ["Yes".localized],
+                            otherButtonTitles: [TLDisplayStrings.YES_STRING()],
                             
                             tap: {(alertView, action, buttonIndex) in
                                 if (buttonIndex == alertView!.firstOtherButtonIndex) {

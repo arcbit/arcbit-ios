@@ -83,13 +83,13 @@ import UIKit
     override func prepare(for segue: UIStoryboardSegue, sender:Any!) -> () {
         if (segue.identifier == "SegueCreateColdWallet") {
             let vc = segue.destination
-            vc.navigationItem.title = "Create Cold Wallet".localized
+            vc.navigationItem.title = TLDisplayStrings.CREATE_COLD_WALLET_STRING()
         } else if (segue.identifier == "SegueSpendColdWallet") {
             let vc = segue.destination
-            vc.navigationItem.title = "Authorize Payment".localized
+            vc.navigationItem.title = TLDisplayStrings.AUTHORIZE_PAYMENT_STRING()
         } else if (segue.identifier == "SegueSpendColdWallet") {
             let vc = segue.destination
-            vc.navigationItem.title = "".localized
+            vc.navigationItem.title = ""
         }
     }
     
@@ -114,11 +114,11 @@ import UIKit
     func tableView(_ tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
         let sectionType = self.sectionArray![section]
         if(sectionType == STATIC_MEMBERS.kColdWalletSection) {
-            return "Cold Wallet".localized
+            return TLDisplayStrings.COLD_WALLET_STRING()
         } else if(sectionType == STATIC_MEMBERS.kSeeHDWalletDataSection) {
-            return "See Internal Wallet Data (Advanced)".localized
+            return TLDisplayStrings.SEE_INTERNAL_WALLET_DATA_STRING()
         }
-        return "".localized
+        return ""
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath:IndexPath) -> UITableViewCell{
@@ -134,16 +134,16 @@ import UIKit
             cell!.textLabel!.font = cell!.textLabel!.font.withSize(15)
             let row = self.coldWalletRowArray![(indexPath as NSIndexPath).row]
             if row == STATIC_MEMBERS.kColdWalletOverViewRow {
-                cell!.textLabel!.text = "Cold Wallet Overview".localized
+                cell!.textLabel!.text = TLDisplayStrings.COLD_WALLET_OVERVIEW_STRING()
             } else if row == STATIC_MEMBERS.kColdWalletCreateRow {
-                cell!.textLabel!.text = "Create Cold Wallet".localized
+                cell!.textLabel!.text = TLDisplayStrings.CREATE_COLD_WALLET_STRING()
             } else if row == STATIC_MEMBERS.kColdWalletSpendtRow {
-                cell!.textLabel!.text = "Authorize Cold Wallet Account Payment".localized
+                cell!.textLabel!.text = TLDisplayStrings.AUTHORIZE_COLD_WALLET_ACCOUNT_PAYMENT_STRING()
             }
         } else if(sectionType == STATIC_MEMBERS.kSeeHDWalletDataSection) {
             let row = self.seeHDWalletDataRowArray![(indexPath as NSIndexPath).row]
             if row == STATIC_MEMBERS.kSeeHDWalletDataRow {
-                cell!.textLabel!.text = "See Internal Wallet Data".localized
+                cell!.textLabel!.text = TLDisplayStrings.SEE_INTERNAL_WALLET_DATA_STRING()
             }
         }
 
@@ -155,8 +155,8 @@ import UIKit
         if(sectionType == STATIC_MEMBERS.kColdWalletSection) {
             let row = self.coldWalletRowArray![(indexPath as NSIndexPath).row]
             if row == STATIC_MEMBERS.kColdWalletOverViewRow {
-                let msg = "The cold wallet feature will allow you to create accounts which offer better security then normal online wallets. You will need 2 devices to use this feature. Your normal day to day device that is connected to the internet and a secondary device that is not connected to the internet (Your secondary device would need to be online once to download the ArcBit app. Afterwards keep the secondary device offline for maximal security). This feature allows you to authorize bitcoin payments from an offline device so that the keys to your bitcoins will never need to be store on your online device. Follow the step by step instructions by clicking the info buttons within the below sections.".localized
-                TLPrompts.promtForOK(self, title:"".localized, message: msg, success: {
+                let msg = TLDisplayStrings.COLD_WALLET_OVERVIEW_DESC_STRING()
+                TLPrompts.promtForOK(self, title:"", message: msg, success: {
                     () in
                 })
             } else if row == STATIC_MEMBERS.kColdWalletCreateRow {

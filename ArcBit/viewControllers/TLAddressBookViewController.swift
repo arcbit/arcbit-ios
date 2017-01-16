@@ -58,12 +58,12 @@ import UIKit
     
     fileprivate func promptAddToAddressBookActionSheet() -> () {
         UIAlertController.showAlert(in: self,
-            withTitle: "Create new contact".localized,
+            withTitle: TLDisplayStrings.CREATE_NEW_CONTACT_STRING(),
             message:"",
             preferredStyle: .actionSheet,
-            cancelButtonTitle: "Cancel".localized,
+            cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Add via QR Code".localized, "Add via Text Input".localized],
+            otherButtonTitles: [TLDisplayStrings.ADD_VIA_QR_CODE_STRING(), TLDisplayStrings.ADD_VIA_TEXT_INPUT_STRING()],
             
             tap: {(actionSheet, action, buttonIndex) in
                 if (buttonIndex == actionSheet?.firstOtherButtonIndex) {
@@ -74,7 +74,7 @@ import UIKit
                             (data: String?) in
                     })
                 } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 1) {
-                    TLPrompts.promtForInputText(self, title: "Input address".localized, message: "", textFieldPlaceholder: "address".localized, success: {(inputText: String!) in
+                    TLPrompts.promtForInputText(self, title: TLDisplayStrings.INPUT_ADDRESS_STRING(), message: "", textFieldPlaceholder: TLDisplayStrings.ADDRESS_STRING(), success: {(inputText: String!) in
                         self.processAddressBookAddress(inputText)
                         }, failure: {
                             (isCanceled: Bool) in
@@ -90,7 +90,7 @@ import UIKit
         if (TLCoreBitcoinWrapper.isValidAddress(address, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
             if (TLCoreBitcoinWrapper.isAddressVersion0(address, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
                 if (TLSuggestions.instance().enabledSuggestDontAddNormalAddressToAddressBook()) {
-                    TLPrompts.promtForOKCancel(self, title: "Warning".localized, message: "It is not recommended that you use a regular bitcoin address for multiple payments, but instead you should import a reusable address. Add address anyways?".localized, success: {
+                    TLPrompts.promtForOKCancel(self, title: TLDisplayStrings.WARNING_STRING(), message: TLDisplayStrings.ADD_ADDRESS_TO_CONTACT_WARNING_DESC_STRING(), success: {
                         () in
                         self.promptForLabel(address)
                         TLSuggestions.instance().setEnableSuggestDontAddNormalAddressToAddressBook(false)
@@ -105,12 +105,12 @@ import UIKit
             }
         }
         else {
-            TLPrompts.promptErrorMessage("Invalid Address".localized, message: "")
+            TLPrompts.promptErrorMessage(TLDisplayStrings.INVALID_ADDRESS_STRING(), message: "")
         }
     }
     
     fileprivate func promptForLabel(_ address: String) -> () {
-        TLPrompts.promtForInputText(self, title: "Input label for address".localized, message: "", textFieldPlaceholder: "label".localized, success: {
+        TLPrompts.promtForInputText(self, title: TLDisplayStrings.INPUT_LABEL_FOR_ADDRESS_STRING(), message: "", textFieldPlaceholder: TLDisplayStrings.LABEL_STRING(), success: {
             (inputText: String!) in
             AppDelegate.instance().appWallet.addAddressBookEntry(address, label: inputText)
             NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_ADD_TO_ADDRESS_BOOK()), object: nil, userInfo: nil)
@@ -187,7 +187,7 @@ import UIKit
             (action: UITableViewRowAction, indexPath: IndexPath) in
             tableView.isEditing = false
             
-            TLPrompts.promtForInputText(self, title: "Edit address label".localized, message: "Input label for address".localized, textFieldPlaceholder: "address".localized, success: {
+            TLPrompts.promtForInputText(self, title: TLDisplayStrings.EDIT_ADDRESS_LABEL_STRING(), message: TLDisplayStrings.INPUT_LABEL_FOR_ADDRESS_STRING(), textFieldPlaceholder: TLDisplayStrings.ADDRESS_STRING(), success: {
                 (inputText: String!) in
                 AppDelegate.instance().appWallet.editAddressBookEntry((indexPath as NSIndexPath).row, label: inputText)
                 NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_EDIT_ENTRY_ADDRESS_BOOK()), object: nil, userInfo: nil)
@@ -198,11 +198,11 @@ import UIKit
         })
         moreAction.backgroundColor = UIColor.lightGray
         
-        let deleteAction = UITableViewRowAction(style:UITableViewRowActionStyle.default, title: "Delete".localized, handler: {
+        let deleteAction = UITableViewRowAction(style:UITableViewRowActionStyle.default, title: TLDisplayStrings.DELETE_STRING(), handler: {
             (action: UITableViewRowAction, indexPath: IndexPath) in
             tableView.isEditing = false
             
-            TLPrompts.promtForOKCancel(self, title: "Delete address".localized, message: "Are you sure you want to delete this address?".localized, success: {
+            TLPrompts.promtForOKCancel(self, title: TLDisplayStrings.DELETE_ADDRESS_STRING(), message: TLDisplayStrings.DELETE_ADDRESS_DESC_STRING(), success: {
                 () in
                 AppDelegate.instance().appWallet.deleteAddressBookEntry((indexPath as NSIndexPath).row)
                 NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_DELETE_ENTRY_ADDRESS_BOOK()), object: nil, userInfo: nil)

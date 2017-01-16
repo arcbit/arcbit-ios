@@ -67,7 +67,7 @@ import UIKit
         
         let button   = UIButton(frame: CGRect(x: 0, y: 0, width: 80, height: 30))
         button.backgroundColor = TLColors.mainAppColor()
-        button.setTitle("Status", for: UIControlState())
+        button.setTitle(TLDisplayStrings.STATUS_STRING(), for: UIControlState())
         button.setTitleColor(TLColors.mainAppColor(), for: UIControlState())
         button.addTarget(self, action: #selector(TLLinksViewController.rightBarButtonClicked), for: UIControlEvents.touchUpInside)
         let rightBarButtonItem = UIBarButtonItem(customView: button)
@@ -81,8 +81,8 @@ import UIKit
             let av = UIAlertView(title: "Web Socket Server status",
                 message: "Up: \(TLStealthWebSocket.instance().isWebSocketOpen())",
                 delegate: nil,
-                cancelButtonTitle: "Cancel".localized,
-                otherButtonTitles: "OK".localized)
+                cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
+                otherButtonTitles: TLDisplayStrings.OK_STRING())
             av.show()
         }
     }
@@ -94,10 +94,10 @@ import UIKit
     func showEmailSupportViewController() {
         let mc = MFMailComposeViewController()
         mc.mailComposeDelegate = self
-        mc.setSubject(String(format: "%@ iOS Support".localized, TLWalletUtils.APP_NAME()))
+        mc.setSubject(String(format: "%@ iOS Support", TLWalletUtils.APP_NAME()))
         let message = "Dear ArcBit Support,\n\n\n\n--\nApp Version: \(TLPreferences .getAppVersion())\nSystem: \(UIDevice.current.systemName) \(UIDevice.current.systemVersion)\n"
         DLog(message);
-        mc.setMessageBody(message.localized, isHTML: false)
+        mc.setMessageBody(message, isHTML: false)
         mc.setToRecipients(["support@arcbit.zendesk.com"])
         self.present(mc, animated: true, completion: nil)
     }
@@ -115,15 +115,12 @@ import UIKit
         if (segue.identifier == "SegueText2") {
             if (self.selectedSection == "webwallet") {
                 let vc = segue.destination as! TLTextViewViewController
-                vc.navigationItem.title = "ArcBit Web Wallet".localized
-                let detail1 = "\tArcBit Web Wallet is a Chrome extension. It has all the features of the mobile wallet plus more. Highlights include the ability to create multiple wallets instead of just one, and a new non-cumbersome way to generate wallets, store and spend bitcoins all from cold storage! ArcBit's new way to manage your cold storage bitcoins also offers a more compelling reason to use ArcBit's watch only account feature. Now you can safely watch the balance of your cold storage bitcoins by enabling advance mode in ArcBit and importing your cold storage account public keys.\n".localized
-                let detail2 = "\tUse ArcBit Web Wallet in whatever way you wish. You can create a new wallet, or you can input your current 12 word backup passphrase to manage the same bitcoins across different devices. Check out the ArcBit Web Wallet in the Chrome Web Store for more details!\n".localized
-                vc.text = detail1 + "\n" + detail2
+                vc.navigationItem.title = TLDisplayStrings.ARCBIT_WEB_WALLET_STRING()
+                vc.text = TLDisplayStrings.ARCBIT_WEB_WALLET_DESC_STRING()
             } else if (self.selectedSection == "brainwallet") {
                 let vc = segue.destination as! TLTextViewViewController
-                vc.navigationItem.title = "ArcBit Brain Wallet".localized
-                let detail1 = "\tWith the Arcbit Brain Wallet you can safely spend your bitcoins without ever having your private keys be exposed to the internet. It can be use in conjuction with your Arcbit Wallet or as a stand alone wallet. Visit the link in the previous sceen and then checkout the overview section to see how easy it is to use the ArcBit Brain Wallet.\n".localized
-                vc.text = detail1 + "\n"
+                vc.navigationItem.title = TLDisplayStrings.ARCBIT_BRAIN_WALLET_STRING()
+                vc.text = TLDisplayStrings.ARCBIT_BRAIN_WALLET_STRING_DESC_STRING()
             }
         }
     }
@@ -138,15 +135,15 @@ import UIKit
     
     func tableView(_ tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
         if section == 0 {
-            return "ArcBit Web Wallet".localized
+            return TLDisplayStrings.ARCBIT_WEB_WALLET_STRING()
         } else if section == 1 {
-            return "ArcBit Brain Wallet".localized
+            return TLDisplayStrings.ARCBIT_BRAIN_WALLET_STRING()
         } else if section == 2 {
-            return "ArcBit Android Wallet".localized
+            return TLDisplayStrings.ARCBIT_ANDROID_WALLET_STRING()
         } else if section == 3 {
-            return "Other Links".localized
+            return TLDisplayStrings.OTHER_LINKS_STRING()
         } else {
-            return "Email Support".localized
+            return TLDisplayStrings.EMAIL_SUPPORT_STRING()
         }
     }
     
@@ -174,30 +171,30 @@ import UIKit
         
         if (indexPath as NSIndexPath).section == 0 {
             if (indexPath as NSIndexPath).row == 0 {
-                cell!.textLabel?.text = "Check out the ArcBit Web Wallet".localized
+                cell!.textLabel?.text = TLDisplayStrings.CHECK_OUT_THE_ARCBIT_WEB_WALLET_STRING()
             } else {
-                cell!.textLabel!.text = "View ArcBit Web Wallet Details".localized
+                cell!.textLabel?.text = TLDisplayStrings.VIEW_ARCBIT_WEB_WALLET_DETAILS_STRING()
             }
         } else if (indexPath as NSIndexPath).section == 1 {
             if (indexPath as NSIndexPath).row == 0 {
-                cell!.textLabel?.text = "Check out the ArcBit Brain Wallet".localized
+                cell!.textLabel?.text = TLDisplayStrings.CHECK_OUT_THE_ARCBIT_BRAIN_WALLET_STRING()
             } else {
-                cell!.textLabel!.text = "View ArcBit Brain Wallet Details".localized
+                cell!.textLabel?.text = TLDisplayStrings.VIEW_ARCBIT_BRAIN_WALLET_DETAILS_STRING()
             }
         } else if (indexPath as NSIndexPath).section == 2 {
-            cell!.textLabel?.text = "Check out the ArcBit Android Wallet".localized
+            cell!.textLabel?.text = TLDisplayStrings.CHECK_OUT_THE_ARCBIT_ANDROID_WALLET_STRING()
         } else if (indexPath as NSIndexPath).section == 3 {
             if (indexPath as NSIndexPath).row == 0 {
                 cell!.imageView?.image = UIImage(named: "home3")
-                cell!.textLabel?.text = "Visit our home page".localized
+                cell!.textLabel?.text = TLDisplayStrings.VISIT_OUR_HOME_PAGE_STRING()
             } else {
                 cell!.imageView?.image = UIImage(named: "twitter")
-                cell!.textLabel?.text = "Follow us on Twitter".localized
+                cell!.textLabel?.text = TLDisplayStrings.FOLLOW_US_ON_TWITTER_STRING()
             }
         } else {
             cell!.accessoryType = UITableViewCellAccessoryType.none
             cell!.imageView?.image = UIImage(named: "lifebuoy")
-            cell!.textLabel?.text = "Email Support".localized
+            cell!.textLabel?.text = TLDisplayStrings.EMAIL_SUPPORT_STRING()
         }
 
         return cell!

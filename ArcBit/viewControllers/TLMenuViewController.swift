@@ -54,9 +54,9 @@ import UIKit
     override func viewWillAppear(_ animated:Bool) {
         super.viewWillAppear(animated)
         if TLPreferences.enabledColdWallet() {
-            menuItems = ["Send".localized, "Receive".localized, "History".localized, "Accounts".localized, "Cold Wallet".localized, "Help".localized, "Links".localized, "Settings".localized]
+            menuItems = [TLDisplayStrings.SEND_STRING(), TLDisplayStrings.RECEIVE_STRING(), TLDisplayStrings.HISTORY_STRING(), TLDisplayStrings.ACCOUNTS_STRING(), TLDisplayStrings.COLD_WALLET_STRING(), TLDisplayStrings.HELP_STRING(), TLDisplayStrings.MORE_STRING(), TLDisplayStrings.SETTINGS_STRING()]
         } else {
-            menuItems = ["Send".localized, "Receive".localized, "History".localized, "Accounts".localized, "Help".localized, "Links".localized, "Settings".localized]
+            menuItems = [TLDisplayStrings.SEND_STRING(), TLDisplayStrings.RECEIVE_STRING(), TLDisplayStrings.HISTORY_STRING(), TLDisplayStrings.ACCOUNTS_STRING(), TLDisplayStrings.HELP_STRING(), TLDisplayStrings.MORE_STRING(), TLDisplayStrings.SETTINGS_STRING()]
         }
         self.tableView!.reloadData()
     }
@@ -94,66 +94,66 @@ import UIKit
             switch ((indexPath as NSIndexPath).row) {
             case 0:
                 imageName = TLWalletUtils.SEND_ICON_IMAGE_NAME()
-                name = "Send".localized
+                name = TLDisplayStrings.SEND_STRING()
                 break
             case 1:
                 imageName = TLWalletUtils.RECEIVE_ICON_IMAGE_NAME()
-                name = "Receive".localized
+                name = TLDisplayStrings.RECEIVE_STRING()
                 break
             case 2:
                 imageName = TLWalletUtils.HISTORY_ICON_IMAGE_NAME()
-                name = "History".localized
+                name = TLDisplayStrings.HISTORY_STRING()
                 break
             case 3:
                 imageName = TLWalletUtils.ACCOUNT_ICON_IMAGE_NAME()
-                name = "Accounts".localized
+                name = TLDisplayStrings.ACCOUNTS_STRING()
                 break
             case 4:
                 imageName = TLWalletUtils.VAULT_ICON_IMAGE_NAME()
-                name = "Cold Wallet".localized
+                name = TLDisplayStrings.COLD_WALLET_STRING()
                 break
             case 5:
                 imageName = TLWalletUtils.HELP_ICON_IMAGE_NAME()
-                name = "Help".localized
+                name = TLDisplayStrings.HELP_STRING()
                 break
             case 6:
                 imageName = TLWalletUtils.LINK_ICON_IMAGE_NAME()
-                name = "More".localized
+                name = TLDisplayStrings.MORE_STRING()
                 break
             default:
                 imageName = TLWalletUtils.SETTINGS_ICON_IMAGE_NAME()
-                name = "Settings".localized
+                name = TLDisplayStrings.SETTINGS_STRING()
                 break
             }
         } else {
             switch ((indexPath as NSIndexPath).row) {
             case 0:
                 imageName = TLWalletUtils.SEND_ICON_IMAGE_NAME()
-                name = "Send".localized
+                name = TLDisplayStrings.SEND_STRING()
                 break
             case 1:
                 imageName = TLWalletUtils.RECEIVE_ICON_IMAGE_NAME()
-                name = "Receive".localized
+                name = TLDisplayStrings.RECEIVE_STRING()
                 break
             case 2:
                 imageName = TLWalletUtils.HISTORY_ICON_IMAGE_NAME()
-                name = "History".localized
+                name = TLDisplayStrings.HISTORY_STRING()
                 break
             case 3:
                 imageName = TLWalletUtils.ACCOUNT_ICON_IMAGE_NAME()
-                name = "Accounts".localized
+                name = TLDisplayStrings.ACCOUNTS_STRING()
                 break
             case 4:
                 imageName = TLWalletUtils.HELP_ICON_IMAGE_NAME()
-                name = "Help".localized
+                name = TLDisplayStrings.HELP_STRING()
                 break
             case 5:
                 imageName = TLWalletUtils.LINK_ICON_IMAGE_NAME()
-                name = "More".localized
+                name = TLDisplayStrings.MORE_STRING()
                 break
             default:
                 imageName = TLWalletUtils.SETTINGS_ICON_IMAGE_NAME()
-                name = "Settings".localized
+                name = TLDisplayStrings.SETTINGS_STRING()
                 break
             }
         }

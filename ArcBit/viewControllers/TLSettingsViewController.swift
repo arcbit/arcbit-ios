@@ -50,7 +50,7 @@ import AVFoundation
     override func viewDidAppear(_ animated: Bool) -> () {
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_SETTINGS_SCREEN()), object: nil)
         if (AppDelegate.instance().giveExitAppNoticeForBlockExplorerAPIToTakeEffect) {
-            TLPrompts.promptSuccessMessage("Notice".localized, message: "You must close the app in order for the API change to take effect.".localized)
+            TLPrompts.promptSuccessMessage(TLDisplayStrings.NOTICE_STRING(), message: TLDisplayStrings.CLOSE_APP_FOR_API_CHANGE_TO_TAKE_EFFECT_STRING())
             AppDelegate.instance().giveExitAppNoticeForBlockExplorerAPIToTakeEffect = false
         }
     }
@@ -98,12 +98,12 @@ import AVFoundation
     
     fileprivate func showPromptForSetBlockExplorerURL() {
         UIAlertController.showAlert(in: self,
-            withTitle: "Set Block Explorer URL".localized,
+            withTitle: TLDisplayStrings.SET_BLOCK_EXPLORER_URL_STRING(),
             message: "",
             preferredStyle: .alert,
-            cancelButtonTitle: "Cancel".localized,
+            cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["OK".localized],
+            otherButtonTitles: [TLDisplayStrings.OK_STRING()],
             
             preShow: {(controller) in
                 
@@ -124,12 +124,12 @@ import AVFoundation
                     if (candidateURL != nil && candidateURL!.host != nil) {
                         TLPreferences.setInAppSettingsKitBlockExplorerURL(candidateURL!.absoluteString)
                         TLPreferences.setBlockExplorerURL(TLPreferences.getBlockExplorerAPI(), value: candidateURL!.absoluteString)
-                        TLPrompts.promptSuccessMessage("Notice".localized, message: "You must exit and kill this app in order for this to take effect.".localized)
+                        TLPrompts.promptSuccessMessage(TLDisplayStrings.NOTICE_STRING(), message: TLDisplayStrings.KILL_THIS_APP_DESC_STRING())
                     } else {
                         UIAlertController.showAlert(in: self,
-                            withTitle:  "Invalid URL".localized,
-                            message: "Enter something like https://example.com".localized,
-                            cancelButtonTitle: "OK".localized,
+                            withTitle:  TLDisplayStrings.INVALID_URL_STRING(),
+                            message: TLDisplayStrings.ENTER_SOMETHING_LIKE_STRING(),
+                            cancelButtonTitle: TLDisplayStrings.OK_STRING(),
                             destructiveButtonTitle: nil,
                             otherButtonTitles: nil,
                             tap: {(alertView, action, buttonIndex) in
@@ -142,21 +142,21 @@ import AVFoundation
     }
     
     fileprivate func showPromptForSetTransactionFee() {
-        let msg = String(format: "Input a recommended amount. Somewhere between %@ and %@ BTC".localized, TLWalletUtils.MIN_FEE_AMOUNT_IN_BITCOINS(), TLWalletUtils.MAX_FEE_AMOUNT_IN_BITCOINS())
+        let msg = String(format: TLDisplayStrings.INPUT_A_RECOMMENDED_AMOUNT_STRING(), TLWalletUtils.MIN_FEE_AMOUNT_IN_BITCOINS(), TLWalletUtils.MAX_FEE_AMOUNT_IN_BITCOINS())
         
         func addTextField(_ textField: UITextField!){
-            textField.placeholder = "fee amount".localized
+            textField.placeholder = TLDisplayStrings.FEE_AMOUNT_STRING()
             textField.keyboardType = .decimalPad
         }
         
         UIAlertController.showAlert(in: self,
-            withTitle: "Transaction Fee".localized,
+            withTitle: TLDisplayStrings.TRANSACTION_FEE_STRING(),
             
             message: msg,
             preferredStyle: .alert,
-            cancelButtonTitle: "Cancel".localized,
+            cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["OK".localized],
+            otherButtonTitles: [TLDisplayStrings.OK_STRING()],
             
             preShow: {(controller) in
                 controller!.addTextField(configurationHandler: addTextField)
@@ -172,9 +172,9 @@ import AVFoundation
                         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_CHANGE_AUTOMATIC_TX_FEE()), object: nil)
                         
                     } else {
-                        let msg = String(format: "Too low a transaction fee can cause transactions to take a long time to confirm. Continue anyways?".localized)
+                        let msg = String(format: TLDisplayStrings.NON_RECOMMENDED_AMOUNT_TRANSACTION_FEE_DESC_STRING())
                         
-                        TLPrompts.promtForOKCancel(self, title: "Non-recommended Amount Transaction Fee".localized, message: msg, success: {
+                        TLPrompts.promtForOKCancel(self, title: TLDisplayStrings.NON_RECOMMENDED_AMOUNT_TRANSACTION_FEE_STRING(), message: msg, success: {
                             () in
                             let amount = TLCurrencyFormat.bitcoinAmountStringToCoin(feeAmount!)
                             TLPreferences.setInAppSettingsKitTransactionFee(amount.bigIntegerToBitcoinAmountString(.bitcoin))
@@ -235,11 +235,11 @@ import AVFoundation
     
     fileprivate func promptToConfirmOverwriteCloudWalletJSONFileWithLocalWalletJSONFile() {
         UIAlertController.showAlert(in: self,
-            withTitle: "iCloud backup will be lost. Are you sure you want to backup your local wallet to iCloud?".localized,
+            withTitle: TLDisplayStrings.BACKUP_IYOUR_LOCAL_WALLET_TO_ICLOUD_STRING(),
             message: "",
-            cancelButtonTitle: "No".localized,
+            cancelButtonTitle: TLDisplayStrings.NO_STRING(),
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Yes".localized],
+            otherButtonTitles: [TLDisplayStrings.YES_STRING()],
             
             tap: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView?.firstOtherButtonIndex) {
@@ -255,11 +255,11 @@ import AVFoundation
     
     fileprivate func promptToConfirmOverwriteLocalWalletJSONFileWithCloudWalletJSONFile(_ encryptedWalletJSON: String) {
         UIAlertController.showAlert(in: self,
-            withTitle: "Local wallet will be lost. Are you sure you want to restore wallet from iCloud?".localized,
+            withTitle: TLDisplayStrings.RESTORE_WALLET_FROM_ICLOUD_STRING(),
             message: "",
-            cancelButtonTitle: "No".localized,
+            cancelButtonTitle: TLDisplayStrings.NO_STRING(),
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Yes".localized],
+            otherButtonTitles: [TLDisplayStrings.YES_STRING()],
             
             tap: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView?.firstOtherButtonIndex) {
@@ -339,14 +339,14 @@ import AVFoundation
                         dateFormatter.dateStyle = .medium
                         dateFormatter.timeStyle = .medium
                         
-                        let msg = String(format: "Your iCloud backup was last saved on %@. Do you want to restore your wallet from iCloud or backup your local wallet to iCloud?".localized, dateFormatter.string(from: cloudWalletJSONDocumentSavedDate!))
+                        let msg = String(format: TLDisplayStrings.YOUR_ICLOUD_BACKUP_WAS_LAST_SAVED_ON_X_DATE_STRING(), dateFormatter.string(from: cloudWalletJSONDocumentSavedDate!))
 
                         UIAlertController.showAlert(in: self,
-                            withTitle: "iCloud backup found".localized,
+                            withTitle: TLDisplayStrings.ICLOUD_BACKUP_FOUND_STRING(),
                             message: msg,
-                            cancelButtonTitle: "Restore from iCloud".localized,
+                            cancelButtonTitle: TLDisplayStrings.RESTORE_FROM_ICLOUD_STRING(),
                             destructiveButtonTitle: nil,
-                            otherButtonTitles: ["Backup local wallet".localized],
+                            otherButtonTitles: [TLDisplayStrings.BACKUP_LOCAL_WALLET_STRING()],
                             tap: {(alertView, action, buttonIndex) in
                                 if (buttonIndex == alertView!.firstOtherButtonIndex) {
                                     self.promptToConfirmOverwriteCloudWalletJSONFileWithLocalWalletJSONFile()

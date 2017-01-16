@@ -58,13 +58,13 @@ import UIKit
         let passphrase = TLWalletPassphrase.getDecryptedWalletPassphrase()
         self.passPhraseTextView!.text = (passphrase)
         if (!TLPreferences.enabledAdvancedMode()) {
-            self.backupPassphraseExplanation!.text = "Write down the 12 word passphrase below and keep it safe. You can restore your entire wallets' bitcoins with this single passphrase. The passphrase is also known as the seed or mnemonic.".localized
+            self.backupPassphraseExplanation!.text = TLDisplayStrings.BACKUP_PASSPHRASE_EXPLANATION_STRING()
             self.masterSeedHexTitleLabel!.isHidden = true
             self.masterSeedHexTitleExplanation!.isHidden = true
             self.masterSeedHexTextView!.isHidden = true
             self.masterSeedHexTextView!.text = ("")
         } else {
-            self.backupPassphraseExplanation!.text = "Write down the 12 word passphrase below and keep it safe. You can restore your entire wallets' bitcoins (excluding imports) with this single passphrase. The passphrase is also known as the seed or mnemonic.".localized
+            self.backupPassphraseExplanation!.text = TLDisplayStrings.BACKUP_PASSPHRASE_ADVANCED_EXPLANATION_STRING()
             self.masterSeedHexTitleLabel!.isHidden = false
             self.masterSeedHexTitleExplanation!.isHidden = false
             self.masterSeedHexTextView!.isHidden = false
@@ -74,11 +74,11 @@ import UIKit
     }
     
     func passPhraseTextViewTapped(_ sender:AnyObject) {
-        TLPrompts.promptSuccessMessage("", message:"The backup passphrase is not selectable on purpose, It is not recommended that you copy it to your clipboard or paste it anywhere on a device that connects to the internet. Instead the backup passphrase should be memorized or written down on a piece of paper.".localized)
+        TLPrompts.promptSuccessMessage("", message:TLDisplayStrings.BACKUP_PASSPHRASE_IS_NOT_SELECTABLE_DESC_STRING())
     }
     
     func masterSeedHexTextViewTapped(_ sender:AnyObject) {
-        TLPrompts.promptSuccessMessage("", message:"The master seed hex is not selectable on purpose, It is not recommended that you copy it to your clipboard or paste it anywhere on a device that connects to the internet.".localized)
+        TLPrompts.promptSuccessMessage("", message:TLDisplayStrings.MASTER_SEED_HEX_IS_NOT_SELECTABLE_DESC_STRING())
     }
     
     override func viewDidAppear(_ animated:Bool) -> () {

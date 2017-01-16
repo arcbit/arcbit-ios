@@ -196,7 +196,7 @@ import CoreData
     override func prepare(for segue: UIStoryboardSegue, sender: Any!) -> () {
         if (segue.identifier == "selectAccount") {
             let vc = segue.destination 
-            vc.navigationItem.title = "Select Account".localized
+            vc.navigationItem.title = TLDisplayStrings.SELECT_ACCOUNT_STRING()
             
             NotificationCenter.default.addObserver(self
                 , selector: #selector(TLHistoryViewController.onAccountSelected(_:)),
@@ -261,7 +261,7 @@ import CoreData
         } else {
             cell!.amountButton!.backgroundColor = UIColor.gray
             if (txTag == nil) {
-                cell!.descriptionLabel!.text = String(format: "Intra account transfer".localized)
+                cell!.descriptionLabel!.text = String(format: TLDisplayStrings.INTERNAL_ACCOUNT_TRANSFER_STRING())
             } else {
                 cell!.descriptionLabel!.text = txTag
             }
@@ -272,7 +272,7 @@ import CoreData
         DLog("confirmations \(Int(confirmations))")
         
         if (Int(confirmations) > MAX_CONFIRMATIONS_TO_DISPLAY) {
-            cell!.confirmationsLabel!.text = String(format: "%llu confirmations".localized, txObject!.getConfirmations()) // label is hidden
+            cell!.confirmationsLabel!.text = String(format: TLDisplayStrings.X_CONFIRMATIONS_STRING(), txObject!.getConfirmations()) // label is hidden
             cell!.confirmationsLabel!.backgroundColor = UIColor.green
             cell!.confirmationsLabel!.isHidden = true
         } else {
@@ -288,11 +288,11 @@ import CoreData
             }
             
             if (confirmations == 0) {
-                cell!.confirmationsLabel!.text = String(format: "unconfirmed".localized)
+                cell!.confirmationsLabel!.text = String(format: TLDisplayStrings.UNCONFIRMED_STRING())
             } else if (confirmations == 1) {
-                cell!.confirmationsLabel!.text = String(format: "%llu confirmation".localized, txObject!.getConfirmations())
+                cell!.confirmationsLabel!.text = String(format: TLDisplayStrings.X_CONFIRMATION_STRING(), txObject!.getConfirmations())
             } else {
-                cell!.confirmationsLabel!.text = String(format: "%llu confirmations".localized, txObject!.getConfirmations())
+                cell!.confirmationsLabel!.text = String(format: TLDisplayStrings.X_CONFIRMATIONS_STRING(), txObject!.getConfirmations())
             }
             cell!.confirmationsLabel!.isHidden = false
         }
@@ -313,13 +313,13 @@ import CoreData
     }
     
     fileprivate func promptTransactionActionSheet(_ txHash: NSString) {
-        let otherButtonTitles = ["View in web".localized, "Label Transaction".localized, "Copy Transaction ID to Clipboard".localized]
+        let otherButtonTitles = [TLDisplayStrings.VIEW_IN_WEB_STRING(), TLDisplayStrings.LABEL_TRANSACTION_STRING(), TLDisplayStrings.COPY_TRANSACTION_ID_TO_CLIPBOARD_STRING()]
         
         UIAlertController.showAlert(in: self,
-            withTitle: String(format: "Transaction ID: %@".localized, txHash),
+            withTitle: String(format: TLDisplayStrings.TRANSACTION_ID_COLON_X_STRING(), txHash),
             message:"",
             preferredStyle: .actionSheet,
-            cancelButtonTitle: "Cancel".localized,
+            cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
             destructiveButtonTitle: nil,
             otherButtonTitles: otherButtonTitles as [AnyObject],
             tap: {(actionSheet, action, buttonIndex) in
@@ -328,7 +328,7 @@ import CoreData
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_TRANSACTION_IN_WEB()),
                         object: nil, userInfo: nil)
                 } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 1) {
-                    TLPrompts.promtForInputText(self, title:"Edit Transaction tag".localized, message: "", textFieldPlaceholder: "tag".localized, success: {
+                    TLPrompts.promtForInputText(self, title:TLDisplayStrings.EDIT_TRANSACTION_TAG_STRING(), message: "", textFieldPlaceholder: TLDisplayStrings.TAG_STRING(), success: {
                         (inputText: String!) in
                         if (inputText == "") {
                             AppDelegate.instance().appWallet.deleteTransactionTag(txHash as String)
@@ -344,14 +344,14 @@ import CoreData
                 } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 2) {
                     let pasteboard = UIPasteboard.general
                     pasteboard.string = txHash as String
-                    iToast.makeText("Copied To clipboard".localized).setGravity(iToastGravityCenter).setDuration(1000).show()
+                    iToast.makeText(TLDisplayStrings.COPIED_TO_CLIPBOARD_STRING()).setGravity(iToastGravityCenter).setDuration(1000).show()
                 } else if (buttonIndex == actionSheet?.cancelButtonIndex) {
                 }
         })
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let moreAction = UITableViewRowAction(style: .default, title: "More".localized, handler: {
+        let moreAction = UITableViewRowAction(style: .default, title: TLDisplayStrings.MORE_STRING(), handler: {
             (action: UITableViewRowAction, indexPath: IndexPath) in
             tableView.isEditing = false
             let txObject = AppDelegate.instance().historySelectedObject!.getTxObject((indexPath as NSIndexPath).row)

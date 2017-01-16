@@ -92,7 +92,7 @@ import UIKit
     
     func didAdvancedNewWalletClickShowQRCodeButton(_ cell: TLAdvancedNewWalletTableViewCell, data: String) {
         dismissKeyboard()
-        self.QRImageModal = TLQRImageModal(data: data as NSString, buttonCopyText: "Copy To Clipboard".localized, vc: self)
+        self.QRImageModal = TLQRImageModal(data: data as NSString, buttonCopyText: TLDisplayStrings.COPY_TO_CLIPBOARD_STRING(), vc: self)
         self.QRImageModal!.show()
     }
     
@@ -217,11 +217,11 @@ import UIKit
     func tableView(_ tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
         let section = self.sectionArray![section]
         if(section == STATIC_MEMBERS.kInstuctionsSection) {
-            return "".localized
+            return ""
         } else if(section == STATIC_MEMBERS.kCreateNewWalletSection) {
-            return "".localized
+            return ""
         }
-        return "".localized
+        return ""
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section:Int) -> Int {
@@ -288,7 +288,7 @@ import UIKit
     
     func customIOS7dialogButtonTouchUp(inside alertView: CustomIOS7AlertView, clickedButtonAt buttonIndex: Int) {
         if (buttonIndex == 0) {
-            iToast.makeText("Copied To clipboard".localized).setGravity(iToastGravityCenter).setDuration(1000).show()
+            iToast.makeText(TLDisplayStrings.COPY_TO_CLIPBOARD_STRING()).setGravity(iToastGravityCenter).setDuration(1000).show()
             
             let pasteboard = UIPasteboard.general
             pasteboard.string = self.QRImageModal!.QRcodeDisplayData

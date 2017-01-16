@@ -82,7 +82,7 @@ import UIKit
     
     func didClickScanUnsignedTxInfoButton(_ cell: TLScanUnsignedTxTableViewCell) {
         dismissKeyboard()
-        let msg = "On your primary online device, when you want to make a payment from a cold wallet account, simply do it as would normally would on a normal account. When you click 'Send' on the Review Payment screen, instead of the payment going out immediately, you will be prompt to pass the unauthorized transaction data. Then on your secondary offline device, within this screen click 'Scan' to import the transaction so it can be authorized.".localized
+        let msg = TLDisplayStrings.SCAN_UNSIGNED_TX_INFO_STRING()
         TLPrompts.promtForOK(self, title:"", message: msg, success: {
             () in
         })
@@ -90,7 +90,7 @@ import UIKit
 
     func didClickInputColdWalletKeyInfoButton(_ cell: TLInputColdWalletKeyTableViewCell) {
         dismissKeyboard()
-        let msg = "Input the 12 word passphrase/mnemonic that belongs to the cold wallet account that you want to make a payment from. This is the passphrase that was used to generate your account public key that was generated in the 'Create Cold Wallet' section found in the previous screen.".localized
+        let msg = TLDisplayStrings.INPUT_COLD_WALLET_KEY_INFO_STRING()
         TLPrompts.promtForOK(self, title:"", message: msg, success: {
             () in
         })
@@ -98,7 +98,7 @@ import UIKit
     
     func didClickPassSignedTxInfoButton(_ cell: TLPassSignedTxTableViewCell) {
         dismissKeyboard()
-        let msg = "Once the transaction has been authorized by completing the above two steps, pass the authorized transaction back to your primary online device to finalize your payment.".localized
+        let msg = TLDisplayStrings.PASS_SIGNED_TX_INFO_STRING()
         TLPrompts.promtForOK(self, title:"", message: msg, success: {
             () in
         })
@@ -107,21 +107,21 @@ import UIKit
     func checkToCreateSignedTx() {
         let keyText = self.inputColdWalletKeyTableViewCell?.keyInputTextView.text
         if keyText == nil || keyText!.isEmpty {
-            self.inputColdWalletKeyTableViewCell?.statusLabel.text = "Incomplete".localized
+            self.inputColdWalletKeyTableViewCell?.statusLabel.text = TLDisplayStrings.INCOMPLETE_STRING()
             self.inputColdWalletKeyTableViewCell?.setstatusLabel(false)
             self.passSignedTxTableViewCell?.passButton.isEnabled = false
             self.passSignedTxTableViewCell?.passButton.alpha = 0.5
             return
         }
         if !TLHDWalletWrapper.phraseIsValid(keyText!) && !TLHDWalletWrapper.isValidExtendedPrivateKey(keyText!) {
-            self.inputColdWalletKeyTableViewCell?.statusLabel.text = "Invalid passphrase".localized
+            self.inputColdWalletKeyTableViewCell?.statusLabel.text = TLDisplayStrings.INVALID_PASSPHRASE_STRING()
             self.inputColdWalletKeyTableViewCell?.setstatusLabel(false)
             self.passSignedTxTableViewCell?.passButton.isEnabled = false
             self.passSignedTxTableViewCell?.passButton.alpha = 0.5
             return
         }
         if self.scannedUnsignedTxAirGapData == nil {
-            self.inputColdWalletKeyTableViewCell?.statusLabel.text = "Complete step 1".localized
+            self.inputColdWalletKeyTableViewCell?.statusLabel.text = TLDisplayStrings.COMPLETE_STEP_1_STRING()
             self.inputColdWalletKeyTableViewCell?.setstatusLabel(false)
             self.passSignedTxTableViewCell?.passButton.isEnabled = false
             self.passSignedTxTableViewCell?.passButton.alpha = 0.5
@@ -133,39 +133,33 @@ import UIKit
                                                                                                mnemonicOrExtendedPrivateKey: keyText!,
                                                                                                isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)
             self.airGapDataBase64PartsArray = TLColdWallet.splitStringToArray(serializedSignedAipGapData!)
-            DLog("checkToCreateSignedTx serializedSignedAipGapData \(serializedSignedAipGapData)");
-            DLog("checkToCreateSignedTx airGapDataBase64PartsArray \(self.airGapDataBase64PartsArray)");
             self.savedAirGapDataBase64PartsArray = TLColdWallet.splitStringToArray(serializedSignedAipGapData!)
             
-            self.inputColdWalletKeyTableViewCell?.statusLabel.text = "Complete".localized
+            self.inputColdWalletKeyTableViewCell?.statusLabel.text = TLDisplayStrings.COMPLETE_STRING()
             self.inputColdWalletKeyTableViewCell?.setstatusLabel(true)
             self.passSignedTxTableViewCell?.passButton.isEnabled = true
             self.passSignedTxTableViewCell?.passButton.alpha = 1.0
         } catch TLColdWallet.TLColdWalletError.InvalidScannedData(let error) { //shouldn't happen, if user scanned correct QR codes
-            DLog("TLColdWallet InvalidScannedData \(error)");
             self.airGapDataBase64PartsArray = nil
             self.savedAirGapDataBase64PartsArray = nil
             self.scanUnsignedTxTableViewCell?.setInvalidScannedData()
             self.passSignedTxTableViewCell?.passButton.isEnabled = false
             self.passSignedTxTableViewCell?.passButton.alpha = 0.5
         } catch TLColdWallet.TLColdWalletError.InvalidKey(let error) {
-            DLog("TLColdWallet InvalidKey \(error)");
             self.airGapDataBase64PartsArray = nil
             self.savedAirGapDataBase64PartsArray = nil
-            self.inputColdWalletKeyTableViewCell?.statusLabel.text = "Invalid passphrase".localized
+            self.inputColdWalletKeyTableViewCell?.statusLabel.text = TLDisplayStrings.INVALID_PASSPHRASE_STRING()
             self.inputColdWalletKeyTableViewCell?.setstatusLabel(false)
             self.passSignedTxTableViewCell?.passButton.isEnabled = false
             self.passSignedTxTableViewCell?.passButton.alpha = 0.5
         } catch TLColdWallet.TLColdWalletError.MisMatchExtendedPublicKey(let error) {
-            DLog("TLColdWallet MisMatchExtendedPublicKey \(error)");
             self.airGapDataBase64PartsArray = nil
             self.savedAirGapDataBase64PartsArray = nil
-            self.inputColdWalletKeyTableViewCell?.statusLabel.text = "Passphrase does not match the transaction".localized
+            self.inputColdWalletKeyTableViewCell?.statusLabel.text = TLDisplayStrings.PASSPHRASE_DOES_NOT_MATCH_THE_TRANSACTION_STRING()
             self.inputColdWalletKeyTableViewCell?.setstatusLabel(false)
             self.passSignedTxTableViewCell?.passButton.isEnabled = false
             self.passSignedTxTableViewCell?.passButton.alpha = 0.5
         } catch {
-            DLog("TLColdWallet error \(error)");
         }
     }
 
@@ -173,8 +167,6 @@ import UIKit
         dismissKeyboard()
     
         scanUnsignedTx(success: { () in
-            DLog("didClickScanButton success");
-            
             if self.totalExpectedParts != 0 && self.scannedUnsignedTxAirGapDataPartsDict.count == self.totalExpectedParts {
                 self.scannedUnsignedTxAirGapData = ""
                 for i in stride(from: 1, through: self.totalExpectedParts, by: 1) {
@@ -182,12 +174,10 @@ import UIKit
                     self.scannedUnsignedTxAirGapData = self.scannedUnsignedTxAirGapData! + dataPart!
                 }
                 self.scannedUnsignedTxAirGapDataPartsDict = [Int:String]()
-                DLog("didClickScanButton self.scannedUnsignedTxAirGapData \(self.scannedUnsignedTxAirGapData)");
                 self.checkToCreateSignedTx()
             }
             }, error: {
                 () in
-                DLog("didClickScanButton error");
         })
     }
     
@@ -203,7 +193,6 @@ import UIKit
             self.scannedUnsignedTxAirGapDataPartsDict[partNumber] = dataPart
             
             self.scanUnsignedTxTableViewCell?.setstatusLabel(self.scannedUnsignedTxAirGapDataPartsDict.count, totalParts: totalParts)
-            DLog("scanUnsignedTx \(dataPart) \(partNumber) \(totalParts)");
             success()
             }, error: {
                 (data: String?) in
@@ -216,9 +205,8 @@ import UIKit
             return
         }
         let nextAipGapDataPart = self.airGapDataBase64PartsArray![0]
-        DLog("showNextSignedTxPartQRCode \(nextAipGapDataPart)");
         self.airGapDataBase64PartsArray!.remove(at: 0)
-        self.QRImageModal = TLQRImageModal(data: nextAipGapDataPart as NSString, buttonCopyText: "Next".localized, vc: self)
+        self.QRImageModal = TLQRImageModal(data: nextAipGapDataPart as NSString, buttonCopyText: TLDisplayStrings.NEXT_STRING(), vc: self)
         self.QRImageModal!.show()
     }
 
@@ -227,7 +215,7 @@ import UIKit
         if self.airGapDataBase64PartsArray == nil {
             return
         }
-        TLPrompts.promtForOKCancel(self, title: "Transaction authorized".localized, message: "Transaction needs to be passed back to your online device in order for the payment to be sent", success: {
+        TLPrompts.promtForOKCancel(self, title: TLDisplayStrings.TRANSACTION_AUTHORIZED_STRING(), message: "Transaction needs to be passed back to your online device in order for the payment to be sent", success: {
             () in
                 self.showNextSignedTxPartQRCode()
             
@@ -266,11 +254,11 @@ import UIKit
     func tableView(_ tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
         let section = self.sectionArray![section]
         if(section == STATIC_MEMBERS.kInstuctionsSection) {
-            return "".localized
+            return ""
         } else if(section == STATIC_MEMBERS.kSpendColdWalletSection) {
-            return "".localized
+            return ""
         }
-        return "".localized
+        return ""
     }
     
     
@@ -378,8 +366,8 @@ import UIKit
             if self.airGapDataBase64PartsArray!.count > 0 {
                 self.showNextSignedTxPartQRCode()
             } else {
-                TLPrompts.promtForOK(self, title: "Finished Passing Transaction Data".localized,
-                                     message: "Now authorize the transaction on your air gap device. When you have done so click continue on this device to scan the authorized transaction data and make your payment.".localized, success: {
+                TLPrompts.promtForOK(self, title: TLDisplayStrings.FINISHED_PASSING_TRANSACTION_DATA_STRING(),
+                                     message: TLDisplayStrings.FINISHED_PASSING_TRANSACTION_DATA_DESC_STRING(), success: {
                                         () in
                                         self.airGapDataBase64PartsArray = self.savedAirGapDataBase64PartsArray
                                         //for part in self.savedAirGapDataBase64PartsArray! {

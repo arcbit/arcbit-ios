@@ -72,7 +72,7 @@ import UIKit
     }
     
     fileprivate func setAllCoinsBarButton() {
-        let allBarButtonItem = UIBarButtonItem(title: "Use all funds".localized, style: UIBarButtonItemStyle.plain, target: self, action: #selector(TLSendViewController.checkToFetchUTXOsAndDynamicFeesAndFillAmountFieldWithWholeBalance))
+        let allBarButtonItem = UIBarButtonItem(title: TLDisplayStrings.USE_ALL_FUNDS_STRING(), style: UIBarButtonItemStyle.plain, target: self, action: #selector(TLSendViewController.checkToFetchUTXOsAndDynamicFeesAndFillAmountFieldWithWholeBalance))
         navigationItem.rightBarButtonItem = allBarButtonItem
     }
     
@@ -87,7 +87,7 @@ import UIKit
                 AppDelegate.instance().godSend!.getAndSetUnspentOutputs({
                     self.checkToFetchDynamicFeesAndFillAmountFieldWithWholeBalance()
                     }, failure: {
-                        TLPrompts.promptErrorMessage("Error".localized, message: "Error fetching unspent outputs. Try again later.".localized)
+                        TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.ERROR_FETCHING_UNSPENT_OUTPUTS_TRY_AGAIN_LATER_STRING())
                 })
             } else {
                 self.checkToFetchDynamicFeesAndFillAmountFieldWithWholeBalance()
@@ -104,7 +104,7 @@ import UIKit
                 self.fillAmountFieldWithWholeBalance(true)
                 }, failure: {
                     (code, status) in
-                    TLPrompts.promptErrorMessage("Error".localized, message: "Unable to query dynamic fees. Falling back on fixed transaction fee. (fee can be configured on review payment)".localized)
+                    TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.UNABLE_TO_QUERY_DYNAMIC_FEES_STRING())
                     self.fillAmountFieldWithWholeBalance(false)
             })
         } else {
@@ -179,7 +179,7 @@ import UIKit
         if TLUtils.isIPhone5() || TLUtils.isIPhone4() {
             let keyboardDoneButtonView = UIToolbar()
             keyboardDoneButtonView.sizeToFit()
-            let item = UIBarButtonItem(title: "Done", style: UIBarButtonItemStyle.plain, target: self, action: #selector(TLSendViewController.dismissKeyboard) )
+            let item = UIBarButtonItem(title: TLDisplayStrings.DONE_STRING(), style: UIBarButtonItemStyle.plain, target: self, action: #selector(TLSendViewController.dismissKeyboard) )
             let toolbarButtons = [item]
             keyboardDoneButtonView.setItems(toolbarButtons, animated: false)
             self.amountTextField!.inputAccessoryView = keyboardDoneButtonView
@@ -329,12 +329,12 @@ import UIKit
                     }
 
                     if (!TLCoreBitcoinWrapper.isValidPrivateKey(privKey, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
-                        TLPrompts.promptErrorMessage("Error".localized, message: "Invalid private key".localized)
+                        TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.INVALID_PRIVATE_KEY_STRING())
                     } else {
                         let importedAddress = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLImportedAddress?
                         let success = importedAddress!.setPrivateKeyInMemory(privKey)
                         if (!success) {
-                            TLPrompts.promptSuccessMessage("Error".localized, message: "Private key does not match imported address".localized)
+                            TLPrompts.promptSuccessMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.PRIVATE_KEY_DOES_NOT_MATCH_IMPORTED_ADDRESS_STRING())
                         } else {
                             self._reviewPaymentClicked()
                         }
@@ -355,8 +355,8 @@ import UIKit
         if (!TLPreferences.getInAppSettingsKitEnablePinCode() && TLSuggestions.instance().conditionToPromptToSuggestEnablePinSatisfied()) {
             TLSuggestions.instance().promptToSuggestEnablePin(self)
         } else if TLSuggestions.instance().conditionToPromptRateAppSatisfied() {
-            TLPrompts.promptAlertController(self, title: "Like using ArcBit?".localized,
-                message: "Rate us in the App Store!".localized, okText: "Rate Now".localized, cancelTx: "Not now".localized,
+            TLPrompts.promptAlertController(self, title: TLDisplayStrings.LIKE_USING_ARCBIT_STRING(),
+                message: TLDisplayStrings.RATE_US_IN_THE_APP_STORE_STRING(), okText: TLDisplayStrings.RATE_NOW_STRING(), cancelTx: TLDisplayStrings.NOT_NOW_STRING(),
                 success: { () -> () in
                     let url = URL(string: "https://itunes.apple.com/app/id999487888");
                     if (UIApplication.shared.canOpenURL(url!)) {
@@ -369,8 +369,8 @@ import UIKit
                 }, failure: { (Bool) -> () in
             })
         } else if TLSuggestions.instance().conditionToPromptShowWebWallet() {
-            TLPrompts.promptAlertController(self, title: "Check out the ArcBit Web Wallet!".localized,
-                message: "Use ArcBit on your browser to complement the mobile app. The web wallet has all the features that the mobile wallet has plus more! Including a new easy way to store and spend Bitcoins from cold storage!".localized, okText: "Go".localized, cancelTx: "Not now".localized,
+            TLPrompts.promptAlertController(self, title: TLDisplayStrings.CHECK_OUT_THE_ARCBIT_WEB_WALLET_EXCLAMATION_STRING(),
+                message: TLDisplayStrings.CHECK_OUT_THE_ARCBIT_WEB_WALLET_DESC_STRING(), okText: TLDisplayStrings.GO_STRING(), cancelTx: TLDisplayStrings.NOT_NOW_STRING(),
                 success: { () -> () in
                     let url = URL(string: "https://chrome.google.com/webstore/detail/arcbit-bitcoin-wallet/dkceiphcnbfahjbomhpdgjmphnpgogfk");
                     if (UIApplication.shared.canOpenURL(url!)) {
@@ -382,15 +382,15 @@ import UIKit
         } else if TLSuggestions.instance().conditionToPromptTryColdWallet() {
             TLPreferences.setEnableColdWallet(true)
             TLPreferences.setEnableInAppSettingsKitColdWallet(true)
-               let msg = "With an ArcBit cold wallet feature, you can create wallets and make payments offline without exposing your private keys to an internet connected device. This feature is great for storing large amounts of bitcoins or for the security conscious minded. Check out this feature in the cold wallet section in the side menu.".localized
-            TLPrompts.promtForOK(self, title:"Try our new cold wallet feature!", message:msg, success: {
+               let msg = TLDisplayStrings.TRY_OUR_NEW_COLD_WALLET_FEATURE_DESC_STRING()
+            TLPrompts.promtForOK(self, title:TLDisplayStrings.TRY_OUR_NEW_COLD_WALLET_FEATURE_STRING(), message:msg, success: {
                 () in
                 TLPreferences.setDisabledPromptShowTryColdWallet(true)
             })
         } else if TLSuggestions.instance().conditionToPromptCheckoutAndroidWallet() {
             TLPreferences.setDisabledPromptCheckoutAndroidWallet(true)
-            TLPrompts.promptAlertController(self, title: "Check out the new ArcBit Android Wallet!".localized,
-                                            message: "".localized, okText: "Go".localized, cancelTx: "No thanks".localized,
+            TLPrompts.promptAlertController(self, title: TLDisplayStrings.CHECK_OUT_THE_NEW_ARCBIT_ANDROID_WALLET_EXCLAMATION_STRING(),
+                                            message: "", okText: TLDisplayStrings.GO_STRING(), cancelTx: TLDisplayStrings.NO_THANKS_STRING(),
                                             success: { () -> () in
                                                 let url = URL(string: "https://play.google.com/store/apps/details?id=com.arcbit.arcbit&hl=en");
                                                 if (UIApplication.shared.canOpenURL(url!)) {
@@ -499,10 +499,10 @@ import UIKit
             TLSendFormData.instance().setAddress(address)
             return true
         } else {
-            let av = UIAlertView(title: "Invalid Bitcoin Address".localized,
+            let av = UIAlertView(title: TLDisplayStrings.INVALID_BITCOIN_ADDRESS_STRING(),
                 message: "",
                 delegate: nil,
-                cancelButtonTitle: "OK".localized
+                cancelButtonTitle: TLDisplayStrings.OK_STRING()
             )
             
             av.show()
@@ -529,7 +529,7 @@ import UIKit
         let toAddress = self.toAddressTextField!.text
     
         if (!TLCoreBitcoinWrapper.isValidAddress(toAddress!, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
-            TLPrompts.promptErrorMessage("Error".localized, message: "You must provide a valid bitcoin address.".localized)
+            TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.YOU_MUST_PROVIDE_A_VALID_BITCOIN_ADDRESS_STRING())
             return
         }
 
@@ -537,7 +537,7 @@ import UIKit
         let inputtedAmount = TLCurrencyFormat.properBitcoinAmountStringToCoin(bitcoinAmount!)
         
         if (inputtedAmount.equalTo(TLCoin.zero())) {
-            TLPrompts.promptErrorMessage("Error".localized, message: "Amount entered must be greater then zero.".localized)
+            TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.AMOUNT_ENTERED_MUST_BE_GREATER_THEN_ZERO_STRING())
             return
         }
         
@@ -582,8 +582,8 @@ import UIKit
             let amountNeeded = inputtedAmount.add(fee)
             let accountBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
             if (amountNeeded.greater(accountBalance)) {
-                let msg = String(format: "You have %@ %@, but %@ is needed. (This includes the transactions fee)".localized, TLCurrencyFormat.coinToProperBitcoinAmountString(accountBalance), TLCurrencyFormat.getBitcoinDisplay(), TLCurrencyFormat.coinToProperBitcoinAmountString(amountNeeded))
-                TLPrompts.promptErrorMessage("Insufficient Balance".localized, message: msg)
+                let msg = String(format: TLDisplayStrings.YOU_HAVE_X_Y_BUT_Z_IS_NEEDED_STRING(), TLCurrencyFormat.coinToProperBitcoinAmountString(accountBalance), TLCurrencyFormat.getBitcoinDisplay(), TLCurrencyFormat.coinToProperBitcoinAmountString(amountNeeded))
+                TLPrompts.promptErrorMessage(TLDisplayStrings.INSUFFICIENT_BALANCE_STRING(), message: msg)
                 return
             }
             
@@ -602,7 +602,7 @@ import UIKit
                     showReviewPaymentViewController(true)
                     }, failure: {
                         (code, status) in
-                        TLPrompts.promptErrorMessage("Error".localized, message: "Unable to query dynamic fees. Falling back on fixed transaction fee. (fee can be configured on review payment)".localized)
+                        TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.UNABLE_TO_QUERY_DYNAMIC_FEES_STRING())
                         showReviewPaymentViewController(false)
                 })
             } else {
@@ -615,7 +615,7 @@ import UIKit
                 AppDelegate.instance().godSend!.getAndSetUnspentOutputs({
                     checkToFetchDynamicFees()
                     }, failure: {
-                        TLPrompts.promptErrorMessage("Error".localized, message: "Error fetching unspent outputs. Try again later.".localized)
+                        TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.ERROR_FETCHING_UNSPENT_OUTPUTS_TRY_AGAIN_LATER_STRING())
                 })
             } else {
                 checkToFetchDynamicFees()
@@ -627,12 +627,12 @@ import UIKit
     
     fileprivate func handleTempararyImportPrivateKey(_ privateKey: String) {
         if (!TLCoreBitcoinWrapper.isValidPrivateKey(privateKey, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
-            TLPrompts.promptErrorMessage("Error".localized, message: "Invalid private key".localized)
+            TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.INVALID_PRIVATE_KEY_STRING())
         } else {
             let importedAddress = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLImportedAddress?
             let success = importedAddress!.setPrivateKeyInMemory(privateKey)
             if (!success) {
-                TLPrompts.promptSuccessMessage("Error".localized, message: "Private key does not match imported address".localized)
+                TLPrompts.promptSuccessMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.PRIVATE_KEY_DOES_NOT_MATCH_IMPORTED_ADDRESS_STRING())
             } else {
                 self.checkTofetchFeeThenFinalPromptReviewTx()
             }
@@ -645,11 +645,11 @@ import UIKit
             TLPrompts.promptForTempararyImportExtendedPrivateKey(self, success: {
                 (data: String!) in
                 if (!TLHDWalletWrapper.isValidExtendedPrivateKey(data)) {
-                    TLPrompts.promptErrorMessage("Error".localized, message: "Invalid account private key".localized)
+                    TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.INVALID_ACCOUNT_PRIVATE_KEY_STRING())
                 } else {
                     let success = accountObject.setExtendedPrivateKeyInMemory(data)
                     if (!success) {
-                        TLPrompts.promptErrorMessage("Error".localized, message: "Account private key does not match imported account public key".localized)
+                        TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.ACCOUNT_PRIVATE_KEY_DOES_NOT_MATCH_STRING())
                     } else {
                         self.checkTofetchFeeThenFinalPromptReviewTx()
                     }
@@ -685,7 +685,7 @@ import UIKit
                 let importedAddress = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLImportedAddress?
                 let success = importedAddress!.setPrivateKeyInMemory(privKey)
                 if (!success) {
-                    TLPrompts.promptSuccessMessage("Error".localized, message: "Private key does not match imported address".localized)
+                    TLPrompts.promptSuccessMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.PRIVATE_KEY_DOES_NOT_MATCH_IMPORTED_ADDRESS_STRING())
                 } else {
                     self.checkTofetchFeeThenFinalPromptReviewTx()
                 }
@@ -724,12 +724,12 @@ import UIKit
         if (data.hasPrefix("bitcoin:")) {
             let parsedBitcoinURI = TLWalletUtils.parseBitcoinURI(data)
             if parsedBitcoinURI == nil {
-                TLPrompts.promptErrorMessage("Error".localized, message: "URL does not contain an address.".localized)
+                TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.URL_DOES_NOT_CONTAIN_AN_ADDRESS_STRING())
                 return
             }
             let address = parsedBitcoinURI!.object(forKey: "address") as! String?
             if (address == nil) {
-                TLPrompts.promptErrorMessage("Error".localized, message: "URL does not contain an address.".localized)
+                TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.URL_DOES_NOT_CONTAIN_AN_ADDRESS_STRING())
                 return
             }
             
@@ -753,7 +753,7 @@ import UIKit
     override func prepare(for segue: UIStoryboardSegue, sender: Any!) -> () {
         if (segue.identifier == "selectAccount") {
             let vc = segue.destination 
-            vc.navigationItem.title = "Select Account".localized
+            vc.navigationItem.title = TLDisplayStrings.SELECT_ACCOUNT_STRING()
             NotificationCenter.default.addObserver(self, selector: #selector(TLSendViewController.onAccountSelected(_:)),
                 name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ACCOUNT_SELECTED()), object: nil)
         }
@@ -823,8 +823,8 @@ import UIKit
         if toAddress != nil && TLStealthAddress.isStealthAddress(toAddress!, isTestnet: false) {
             func checkToShowStealthPaymentDelayInfo() {
                 if TLSuggestions.instance().enabledShowStealthPaymentDelayInfo() && TLBlockExplorerAPI.STATIC_MEMBERS.blockExplorerAPI == .blockchain {
-                    let msg = "Sending payment to a reusable address might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For reusable address payments to show up faster, configure your app to use the Insight API in advance settings.".localized
-                    TLPrompts.promtForOK(self, title:"Warning".localized, message:msg, success: {
+                    let msg = TLDisplayStrings.REUSABLE_ADDRESS_BLOCKCHAIN_API_WARNING_STRING()
+                    TLPrompts.promtForOK(self, title:TLDisplayStrings.WARNING_STRING(), message:msg, success: {
                         () in
                         TLSuggestions.instance().setEnableShowStealthPaymentDelayInfo(false)
                     })
@@ -834,8 +834,8 @@ import UIKit
             }
             
             if TLSuggestions.instance().enabledShowStealthPaymentNote() {
-                let msg = "You are making a payment to a reusable address. Make sure that the receiver can see the payment made to them. (All ArcBit reusable addresses are compatible with other ArcBit wallets)".localized
-                TLPrompts.promtForOK(self, title:"Note".localized, message:msg, success: {
+                let msg = TLDisplayStrings.STEALTH_PAYMENT_NOTE_STRING()
+                TLPrompts.promtForOK(self, title:TLDisplayStrings.NOTE_STRING(), message:msg, success: {
                     () in
                     self._reviewPaymentClicked()
                     TLSuggestions.instance().setEnableShowStealthPaymentNote(false)

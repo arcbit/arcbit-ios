@@ -80,12 +80,12 @@ import UIKit
     
     func didClickShowQRCodeButton(_ cell: TLNewWalletTableViewCell, data: String) {
         dismissKeyboard()
-        self.QRImageModal = TLQRImageModal(data: data as NSString, buttonCopyText: "Copy To Clipboard".localized, vc: self)
+        self.QRImageModal = TLQRImageModal(data: data as NSString, buttonCopyText: TLDisplayStrings.COPY_TO_CLIPBOARD_STRING(), vc: self)
         self.QRImageModal!.show()
     }
     func didClickMnemonicInfoButton(_ cell: TLNewWalletTableViewCell) {
         dismissKeyboard()
-        let msg = "First make sure you are using your secondary offline device for this screen (as mentioned in the overview in the previous screen). Click 'New Wallet' and write down or memorized the generated 12 word passphrase. This passphrase can recover and generate all your accounts and the bitcoins associated with it, so keep it safe and to yourself. Also instead of creating a new wallet, you can also input an existing 12 word passphrase that was generated here to create additional accounts.".localized
+        let msg = ""
         TLPrompts.promtForOK(self, title:"", message: msg, success: {
             () in
         })
@@ -93,7 +93,7 @@ import UIKit
     
     func didClickAccountInfoButton(_ cell: TLNewWalletTableViewCell) {
         dismissKeyboard()
-        let msg = "Input an account ID and click 'QR Code'. Then on your primary online device, enable Cold Wallet in settings. Then go to the accounts screen and click 'Import Cold Wallet Account' and scan the Account Public Key QR Code. Afterwards use this cold wallet account as you would a normal account and deposits bitcoins into it. When you want to make a payment from a cold wallet account, go to the next section in the previous screen and follow the step by step instructions there.".localized
+        let msg = TLDisplayStrings.MNEMONIC_INFO_STRING()
         TLPrompts.promtForOK(self, title:"", message: msg, success: {
             () in
         })
@@ -183,11 +183,11 @@ import UIKit
     func tableView(_ tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
         let section = self.sectionArray![section]
         if(section == STATIC_MEMBERS.kInstuctionsSection) {
-            return "".localized
+            return ""
         } else if(section == STATIC_MEMBERS.kCreateNewWalletSection) {
-            return "".localized
+            return ""
         }
-        return "".localized
+        return ""
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section:Int) -> Int {
@@ -233,11 +233,7 @@ import UIKit
         return UITableViewCell(style:UITableViewCellStyle.default,
                                reuseIdentifier:"DefaultCellIdentifier")
     }
-//    
-//    func tableView(tableView:UITableView, willSelectRowAtIndexPath indexPath:NSIndexPath) -> NSIndexPath? {
-//        return nil
-//    }
-    
+
     func keyboardWillShow(_ sender: Notification) {
         let kbSize = ((sender as NSNotification).userInfo![UIKeyboardFrameEndUserInfoKey]! as AnyObject).cgRectValue!.size
         
@@ -270,7 +266,7 @@ import UIKit
     
     func customIOS7dialogButtonTouchUp(inside alertView: CustomIOS7AlertView, clickedButtonAt buttonIndex: Int) {
         if (buttonIndex == 0) {
-            iToast.makeText("Copied To clipboard".localized).setGravity(iToastGravityCenter).setDuration(1000).show()
+            iToast.makeText(TLDisplayStrings.COPY_TO_CLIPBOARD_STRING()).setGravity(iToastGravityCenter).setDuration(1000).show()
             
             let pasteboard = UIPasteboard.general
             pasteboard.string = self.QRImageModal!.QRcodeDisplayData

@@ -50,7 +50,7 @@ import UIKit
     }
     
     func tableView(_ tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
-        return "Steps".localized
+        return TLDisplayStrings.STEPS_STRING()
     }
         
     func tableView(_ tableView: UITableView, numberOfRowsInSection section:Int) -> Int {

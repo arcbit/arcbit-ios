@@ -276,7 +276,7 @@ import Crashlytics
         let MAX_CONSECUTIVE_UNUSED_ACCOUNT_LOOK_AHEAD_COUNT = 4
         
         while (true) {
-            let accountName = String(format:"Account %lu".localized, (accountIdx + 1))
+            let accountName = String(format:TLDisplayStrings.ACCOUNT_X_STRING(), (accountIdx + 1))
             let accountObject = self.accounts!.createNewAccount(accountName, accountType:.normal, preloadStartingAddresses:false)
             
             DLog("recoverHDWalletaccountName \(accountName)")
@@ -297,7 +297,7 @@ import Crashlytics
         
         DLog("recoverHDWallet getNumberOfAccounts: \(self.accounts!.getNumberOfAccounts())")
         if (self.accounts!.getNumberOfAccounts() == 0) {
-            self.accounts!.createNewAccount("Account 1".localized, accountType:.normal)
+            self.accounts!.createNewAccount(TLDisplayStrings.ACCOUNT_1_STRING(), accountType:.normal)
         } else if (self.accounts!.getNumberOfAccounts() > 1) {
             while (self.accounts!.getNumberOfAccounts() > 1 && consecutiveUnusedAccountCount > 0) {
                 self.accounts!.popTopAccount()
@@ -886,7 +886,7 @@ import Crashlytics
             if success {
                 TLPreferences.setHasSetupHDWallet(true)
             } else {
-                NSException(name: NSExceptionName(rawValue: "Error".localized), reason: "Error saving wallet JSON file".localized, userInfo: nil).raise()
+                NSException(name: NSExceptionName(rawValue: "Error"), reason: "Error saving wallet JSON file", userInfo: nil).raise()
             }
         } else {
             let masterHex = TLHDWalletWrapper.getMasterHex(passphrase ?? "")
@@ -894,8 +894,8 @@ import Crashlytics
             if (walletPayload != nil) {
                 self.appWallet.loadWalletPayload(walletPayload!, masterHex:masterHex)
             } else {
-                TLPrompts.promptErrorMessage("Error".localized, message:"Error loading wallet JSON file".localized)
-                NSException(name: NSExceptionName(rawValue: "Error".localized), reason: "Error loading wallet JSON file".localized, userInfo: nil).raise()
+                TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message:TLDisplayStrings.ERROR_LOADING_WALLET_JSON_FILE_STRING())
+                NSException(name: NSExceptionName(rawValue: "Error"), reason: "Error loading wallet JSON file", userInfo: nil).raise()
             }
         }
         
@@ -930,8 +930,8 @@ import Crashlytics
         let baseURL = URL(string:blockExplorerURL)
         TLNetworking.isReachable(baseURL!, reachable:{(reachable: TLDOMAINREACHABLE) in
             if (reachable == TLDOMAINREACHABLE.notreachable) {
-                TLPrompts.promptErrorMessage("Network Error".localized,
-                    message:String(format:"%@ servers not reachable.".localized, blockExplorerURL))
+                TLPrompts.promptErrorMessage(TLDisplayStrings.NETWORK_ERROR_STRING(),
+                    message:String(format:TLDisplayStrings.X_SERVERS_NOT_REACHABLE_STRING(), blockExplorerURL))
             }
         })
         
@@ -941,8 +941,8 @@ import Crashlytics
             TLBlockchainStatus.instance().blockHeight = blockHeight
             }, failure:{(code, status) in
                 DLog("Error getting block height.")
-                TLPrompts.promptErrorMessage("Network Error".localized,
-                    message:String(format:"Error getting block height.".localized))
+                TLPrompts.promptErrorMessage(TLDisplayStrings.NETWORK_ERROR_STRING(),
+                    message:String(format:TLDisplayStrings.ERROR_GETTING_BLOCK_HEIGHT_STRING()))
         })
     }
     
@@ -999,7 +999,7 @@ import Crashlytics
             message:""                                       ,
             delegate:nil                                       ,
             cancelButtonTitle:nil                               ,
-            otherButtonTitles:"OK".localized)
+            otherButtonTitles:TLDisplayStrings.OK_STRING())
         
         av.show()
         AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
@@ -1026,10 +1026,10 @@ import Crashlytics
     fileprivate func promptAppNotAllowedCamera() {
         let displayName = TLUtils.defaultAppName()
         
-        let av = UIAlertView(title: String(format:"%@ is not allowed to access the camera".localized, displayName),
-            message: String(format:"\nallow camera access in\n Settings->Privacy->Camera->%@".localized, displayName),
+        let av = UIAlertView(title: String(format:TLDisplayStrings.X_NOT_ALLOWED_TO_ACCESS_THE_CAMERA_STRING(), displayName),
+            message: String(format:TLDisplayStrings.ALLOW_CAMERA_ACCESS_IN_STRING(), displayName),
             delegate:nil      ,
-            cancelButtonTitle:"OK".localized)
+            cancelButtonTitle:TLDisplayStrings.OK_STRING())
         
         av.show()
     }
@@ -1308,7 +1308,7 @@ import Crashlytics
         
         if (!success) {
             DispatchQueue.main.async {
-                TLPrompts.promptErrorMessage("Error".localized, message:"Local back up to wallet failed!".localized)
+                TLPrompts.promptErrorMessage(TLDisplayStrings.LOCAL_BACK_UP_TO_WALLET_FAILED_STRING(), message:TLDisplayStrings.LOCAL_BACK_UP_TO_WALLET_FAILED_STRING())
             }
         }
         

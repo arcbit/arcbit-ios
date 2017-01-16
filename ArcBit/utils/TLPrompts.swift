@@ -58,9 +58,9 @@ class TLPrompts {
                 withTitle: title,
                 message: message,
                 preferredStyle: .alert,
-                cancelButtonTitle: "Cancel".localized,
+                cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
                 destructiveButtonTitle: nil,
-                otherButtonTitles: ["OK".localized],
+                otherButtonTitles: [TLDisplayStrings.OK_STRING()],
                 preShow: {(controller) in
                     func addPromptTextField(_ textField: UITextField!){
                         textField.placeholder = textFieldPlaceholder
@@ -85,9 +85,9 @@ class TLPrompts {
             UIAlertController.showAlert(in: vc,
                 withTitle: title,
                 message: message,
-                cancelButtonTitle: "Cancel".localized,
+                cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
                 destructiveButtonTitle: nil,
-                otherButtonTitles: ["OK".localized],
+                otherButtonTitles: [TLDisplayStrings.OK_STRING()],
                 
                 tap: {(alertView, action, buttonIndex) in
                     if (buttonIndex == alertView!.firstOtherButtonIndex) {
@@ -106,7 +106,7 @@ class TLPrompts {
                 message: message,
                 cancelButtonTitle: nil,
                 destructiveButtonTitle: nil,
-                otherButtonTitles: ["OK".localized],
+                otherButtonTitles: [TLDisplayStrings.OK_STRING()],
                 
                 tap: {(alertView, action, buttonIndex) in
                     success()
@@ -116,23 +116,23 @@ class TLPrompts {
     
     class func promptForTempararyImportPrivateKey(_ viewController: UIViewController, success: @escaping TLWalletUtils.SuccessWithString, error: @escaping TLWalletUtils.ErrorWithString) -> () {
         UIAlertController.showAlert(in: viewController,
-            withTitle: "Private key missing".localized,
-            message: "Do you want to temporary import your private key?".localized,
-            cancelButtonTitle: "NO".localized,
+            withTitle: TLDisplayStrings.PRIVATE_KEY_MISSING_STRING(),
+            message: TLDisplayStrings.DO_YOU_WANT_TO_TEMPORARY_IMPORT_YOUR_PRIVATE_KEY_STRING(),
+            cancelButtonTitle: TLDisplayStrings.NO_STRING(),
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["YES".localized],
+            otherButtonTitles: [TLDisplayStrings.YES_STRING()],
             tap: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView?.firstOtherButtonIndex) {
                     UIAlertController.showAlert(in: viewController,
-                        withTitle: "Temporary import via text or QR code?".localized,
+                        withTitle: TLDisplayStrings.TEMPORARY_IMPORT_VIA_TEXT_OR_QR_CODE_STRING(),
                         message: "",
                         cancelButtonTitle: nil,
                         destructiveButtonTitle: nil,
-                        otherButtonTitles:["text".localized, "QR code".localized],
+                        otherButtonTitles:[TLDisplayStrings.TEXT_STRING(), TLDisplayStrings.QR_CODE_STRING()],
                         
                         tap: {(alertView, action, buttonIndex) in
                             if (buttonIndex == alertView?.firstOtherButtonIndex) {
-                                TLPrompts.promtForInputText(viewController, title: "Temporary import private key".localized, message: "Input private key".localized, textFieldPlaceholder: nil, success: {
+                                TLPrompts.promtForInputText(viewController, title: TLDisplayStrings.TEMPORARY_IMPORT_PRIVATE_KEY_STRING(), message: TLDisplayStrings.INPUT_PRIVATE_KEY_STRING(), textFieldPlaceholder: nil, success: {
                                     (inputText: String!) in
                                     success(inputText)
                                     }, failure: {
@@ -159,23 +159,23 @@ class TLPrompts {
     
     class func promptForTempararyImportExtendedPrivateKey(_ viewController: UIViewController, success: @escaping TLWalletUtils.SuccessWithString, error: @escaping TLWalletUtils.ErrorWithString) -> () {
         UIAlertController.showAlert(in: viewController,
-            withTitle:  "Account private key missing".localized,
-            message: "Do you want to temporary import your account private key?".localized,
-            cancelButtonTitle: "NO".localized,
+            withTitle:  TLDisplayStrings.ACCOUNT_PRIVATE_KEY_MISSING_STRING(),
+            message: TLDisplayStrings.ASK_TEMPORARY_IMPORT_ACCOUNT_PRIVATE_KEY_STRING(),
+            cancelButtonTitle: TLDisplayStrings.NO_STRING(),
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["YES".localized],
+            otherButtonTitles: [TLDisplayStrings.YES_STRING()],
             tap: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView?.firstOtherButtonIndex) {
                     UIAlertController.showAlert(in: viewController,
-                        withTitle: "Temporary import via text or QR code?".localized,
+                        withTitle: TLDisplayStrings.TEMPORARY_IMPORT_VIA_TEXT_OR_QR_CODE_STRING(),
                         message: "",
                         cancelButtonTitle: nil,
                         destructiveButtonTitle: nil,
-                        otherButtonTitles: ["text".localized, "QR code".localized],
+                        otherButtonTitles:[TLDisplayStrings.TEXT_STRING(), TLDisplayStrings.QR_CODE_STRING()],
                         
                         tap: {(alertView, action, buttonIndex) in
                             if (buttonIndex == alertView?.firstOtherButtonIndex) {
-                                TLPrompts.promtForInputText(viewController, title:"Temporary import account private key".localized, message: "Input account private key".localized, textFieldPlaceholder: nil, success: {
+                                TLPrompts.promtForInputText(viewController, title:TLDisplayStrings.TEMPORARY_IMPORT_ACCOUNT_PRIVATE_KEY_STRING(), message: TLDisplayStrings.INPUT_ACCOUNT_PRIVATE_KEY_STRING(), textFieldPlaceholder: nil, success: {
                                     (inputText: String!) in
                                     success(inputText)
                                     }, failure: {
@@ -199,21 +199,21 @@ class TLPrompts {
     
     class func promptForEncryptedPrivKeyPassword(_ vc:UIViewController, view: UIView, encryptedPrivKey: String, success: @escaping UserInputCallback, failure: @escaping Failure) -> () {
         UIAlertController.showAlert(in: vc,
-            withTitle: "Enter password for encrypted private key".localized,
+            withTitle: TLDisplayStrings.ENTER_PASSWORD_FOR_ENCRYPTED_PRIVATE_KEY_STRING(),
             message: "",
             preferredStyle: .alert,
-            cancelButtonTitle: "Cancel".localized,
+            cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
             destructiveButtonTitle: nil,
-            otherButtonTitles: ["Enter".localized],
+            otherButtonTitles: [TLDisplayStrings.OK_STRING()],
             preShow: {(controller) in
                 func addPromptTextField(_ textField: UITextField!){
-                    textField.placeholder = "password".localized
+                    textField.placeholder = TLDisplayStrings.PASSWORD_STRING()
                 }
                 controller!.addTextField(configurationHandler: addPromptTextField)
             },
             tap: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView!.firstOtherButtonIndex) {
-                    TLHUDWrapper.showHUDAddedTo(view, labelText: "Decrypting Private Key".localized, animated: true)
+                    TLHUDWrapper.showHUDAddedTo(view, labelText: TLDisplayStrings.DECRYPTING_PRIVATE_KEY_STRING(), animated: true)
                     
                     let password = (alertView!.textFields![0] ).text
                     
@@ -226,12 +226,12 @@ class TLPrompts {
                                 success(privKey)
                             } else {
                                 UIAlertController.showAlert(in: vc,
-                                    withTitle: "Passphrase is invalid".localized,
+                                    withTitle: TLDisplayStrings.PASSPHRASE_IS_INVALID_STRING(),
                                     message: "",
-                                    cancelButtonTitle: "Cancel".localized,
+                                    cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
                                     destructiveButtonTitle: nil,
                                     
-                                    otherButtonTitles: ["Retry".localized],
+                                    otherButtonTitles: [TLDisplayStrings.RETRY_STRING()],
                                     
                                     tap: {(alertView, action, buttonIndex) in
                                         if (buttonIndex == alertView!.firstOtherButtonIndex) {
@@ -254,7 +254,7 @@ class TLPrompts {
             message: message,
             delegate: nil,
             cancelButtonTitle: nil,
-            otherButtonTitles: "OK".localized)
+            otherButtonTitles: TLDisplayStrings.OK_STRING())
         
         av.show()
     }
@@ -264,7 +264,7 @@ class TLPrompts {
             message: message,
             delegate: nil,
             cancelButtonTitle: nil,
-            otherButtonTitles: "OK".localized)
+            otherButtonTitles: TLDisplayStrings.OK_STRING())
         
         av.show()
     }

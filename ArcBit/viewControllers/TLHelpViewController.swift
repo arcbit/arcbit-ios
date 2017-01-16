@@ -91,14 +91,14 @@ import UIKit
     override func prepare(for segue: UIStoryboardSegue, sender:Any!) -> () {
         if (segue.identifier == "SegueAchievements") {
             let vc = segue.destination 
-            vc.navigationItem.title = "Achievements".localized
+            vc.navigationItem.title = TLDisplayStrings.ACHIEVEMENTS_STRING()
         } else if (segue.identifier == "SegueText") {
             let vc = segue.destination as! TLTextViewViewController
-            vc.navigationItem.title = "Explanation".localized
+            vc.navigationItem.title = TLDisplayStrings.EXPLANATION_STRING()
             vc.text = FAQText as? String
         } else if (segue.identifier == "SegueInstructions") {
             let vc = segue.destination as! TLInstructionsViewController
-            vc.navigationItem.title = "Instructions".localized
+            vc.navigationItem.title = TLDisplayStrings.INSTRUCTIONS_STRING()
             vc.action = action as? String
             vc.actionInstructionsSteps = instructions
         }
@@ -115,15 +115,15 @@ import UIKit
     func tableView(_ tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
         let sectionType = self.sectionArray![section]
         if(sectionType == STATIC_MEMBERS.kAchievementsSection) {
-            return "Achievements".localized
+            return TLDisplayStrings.ACHIEVEMENTS_STRING()
         } else if(sectionType == STATIC_MEMBERS.kFAQSection) {
-            return "FAQ".localized
+            return TLDisplayStrings.FAQ_STRING()
         } else if(sectionType == STATIC_MEMBERS.kHowToSection) {
-            return "How To:".localized
+            return TLDisplayStrings.HOW_TO_COLON_STRING()
         } else if(sectionType == STATIC_MEMBERS.kAdvancedFAQSection) {
-            return "Advance FAQ".localized
+            return TLDisplayStrings.ADVANCE_FAQ_STRING()
         } else if(sectionType == STATIC_MEMBERS.kAdvancedHowToFAQSection) {
-            return "Advance how To:".localized
+            return TLDisplayStrings.ADVANCE_HOW_TO_COLON_STRING_STRING()
         }
         return nil
     }
@@ -155,7 +155,7 @@ import UIKit
         cell!.textLabel!.numberOfLines = 0
         let sectionType = self.sectionArray![(indexPath as NSIndexPath).section]
         if(sectionType == STATIC_MEMBERS.kAchievementsSection) {
-            cell!.textLabel!.text = "View Achievements".localized
+            cell!.textLabel!.text = TLDisplayStrings.VIEW_ACHIEVEMENTS_STRING()
         } else if(sectionType == STATIC_MEMBERS.kFAQSection) {
             cell!.textLabel!.text = FAQArray!.object(at: (indexPath as NSIndexPath).row) as? String
         } else if(sectionType == STATIC_MEMBERS.kHowToSection) {

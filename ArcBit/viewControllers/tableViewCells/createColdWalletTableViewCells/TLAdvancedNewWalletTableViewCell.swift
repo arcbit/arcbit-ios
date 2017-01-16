@@ -502,23 +502,23 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
 
             var HDAddressIdx = startingAddressID
             let addressSequence1 = [Int(TLAddressType.main.rawValue), HDAddressIdx] as [Any]
-            self.addressLabel1.text = "Address ID ".localized + String(HDAddressIdx) + ":"
+            self.addressLabel1.text = TLDisplayStrings.ADDRESS_ID_STRING() + String(HDAddressIdx) + ":"
             self.addressTextField1.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence1 as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             let addressSequence2 = [Int(TLAddressType.main.rawValue), HDAddressIdx]
-            self.addressLabel2.text = "Address ID ".localized + String(HDAddressIdx) + ":"
+            self.addressLabel2.text = TLDisplayStrings.ADDRESS_ID_STRING() + String(HDAddressIdx) + ":"
             self.addressTextField2.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence2 as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             let addressSequence3 = [Int(TLAddressType.main.rawValue), HDAddressIdx]
-            self.addressLabel3.text = "Address ID ".localized + String(HDAddressIdx) + ":"
+            self.addressLabel3.text = TLDisplayStrings.ADDRESS_ID_STRING() + String(HDAddressIdx) + ":"
             self.addressTextField3.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence3 as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             let addressSequence4 = [Int(TLAddressType.main.rawValue), HDAddressIdx]
-            self.addressLabel4.text = "Address ID ".localized + String(HDAddressIdx) + ":"
+            self.addressLabel4.text = TLDisplayStrings.ADDRESS_ID_STRING() + String(HDAddressIdx) + ":"
             self.addressTextField4.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence4 as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             let addressSequence5 = [Int(TLAddressType.main.rawValue), HDAddressIdx]
-            self.addressLabel5.text = "Address ID ".localized + String(HDAddressIdx) + ":"
+            self.addressLabel5.text = TLDisplayStrings.ADDRESS_ID_STRING() + String(HDAddressIdx) + ":"
             self.addressTextField5.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence5 as NSArray, isTestnet: isTestnet)
 
             self.enableButton(self.showAddressQRCodeButton1, enable: true)
@@ -571,23 +571,23 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
             
             var HDAddressIdx = startingAddressID
             let addressSequence1 = [Int(TLAddressType.change.rawValue), HDAddressIdx] as [Any]
-            self.changeAddressLabel1.text = "Change Address ID ".localized + String(HDAddressIdx) + ":"
+            self.changeAddressLabel1.text = TLDisplayStrings.CHANGE_ADDRESS_ID_STRING() + String(HDAddressIdx) + ":"
             self.changeAddressTextField1.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence1 as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             let addressSequence2 = [Int(TLAddressType.change.rawValue), HDAddressIdx]
-            self.changeAddressLabel2.text = "Change Address ID ".localized + String(HDAddressIdx) + ":"
+            self.changeAddressLabel2.text = TLDisplayStrings.CHANGE_ADDRESS_ID_STRING() + String(HDAddressIdx) + ":"
             self.changeAddressTextField2.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence2 as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             let addressSequence3 = [Int(TLAddressType.change.rawValue), HDAddressIdx]
-            self.changeAddressLabel3.text = "Change Address ID ".localized + String(HDAddressIdx) + ":"
+            self.changeAddressLabel3.text = TLDisplayStrings.CHANGE_ADDRESS_ID_STRING() + String(HDAddressIdx) + ":"
             self.changeAddressTextField3.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence3 as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             let addressSequence4 = [Int(TLAddressType.change.rawValue), HDAddressIdx]
-            self.changeAddressLabel4.text = "Change Address ID ".localized + String(HDAddressIdx) + ":"
+            self.changeAddressLabel4.text = TLDisplayStrings.CHANGE_ADDRESS_ID_STRING() + String(HDAddressIdx) + ":"
             self.changeAddressTextField4.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence4 as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             let addressSequence5 = [Int(TLAddressType.change.rawValue), HDAddressIdx]
-            self.changeAddressLabel5.text = "Change Address ID ".localized + String(HDAddressIdx) + ":"
+            self.changeAddressLabel5.text = TLDisplayStrings.CHANGE_ADDRESS_ID_STRING() + String(HDAddressIdx) + ":"
             self.changeAddressTextField5.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence5 as NSArray, isTestnet: isTestnet)
             
             self.enableButton(self.showChangeAddressQRCodeButton1, enable: true)
