@@ -365,5 +365,139 @@ class TLDisplayStrings {
     class func WARNING_STRING() -> String { return "Warning".localized }
     class func CANCEL_STRING() -> String { return "Cancel".localized }
     class func COPY_TO_CLIPBOARD_STRING() -> String { return "Copy To Clipboard".localized }
+
+    
+    //------------------------------------------------------------------------------------------------------------
+    // TLHelpDoc
+    
+    class func TRANSACTION_CONFIRMATIONS_STRING() -> String { return "Transaction confirmations".localized }
+    class func HIERARCHICAL_DETERMINISTIC_WALLET_STRING() -> String { return "Hierarchical Deterministic Wallet".localized }
+    class func REUSABLE_ADDRESSES_STRING() -> String { return "Reusable Addresses".localized }
+    class func CREATE_NEW_ACCOUNT_STRING() -> String { return "Create New Account".localized }
+    class func IMPORT_COLD_WALLET_ACCOUNT_STRING() -> String { return "Import Cold Wallet Account".localized }
+    class func IMPORT_WATCH_ONLY_ACCOUNT_STRING() -> String { return "Import Watch Only Account".localized }
+    class func IMPORT_WATCH_ONLY_ADDRESS_STRING() -> String { return "Import Watch Only Address".localized }
+    class func SEND_PAYMENT_STRING() -> String { return "Send Payment".localized }
+    class func RECEIVE_PAYMENT_STRING() -> String { return "Receive Payment".localized }
+    class func RECEIVE_PAYMENT_FROM_REUSABLE_ADDRESS_STRING() -> String { return "Receive Payment From Reusable Address".localized }
+    class func VIEW_HISTORY_STRING() -> String { return "View History".localized }
+    class func BACK_UP_PASSPHRASE_STRING() -> String { return "Back Up Passphrase".localized }
+    class func START_RESTORE_ANOTHER_WALLET_STRING() -> String { return "Start/Restore Another Wallet".localized }
+    class func ADD_CONTACTS_ENTRY_STRING() -> String { return "Add Contacts Entry".localized }
+    class func EDIT_CONTACTS_ENTRY_STRING() -> String { return "Edit Contacts Entry".localized }
+    class func DELETE_CONTACTS_ENTRY_STRING() -> String { return "Delete Contacts Entry".localized }
+    class func SEND_TO_ADDRESS_IN_CONTACTS_STRING() -> String { return "Send To Address In Contacts".localized }
+    class func TAG_TRANSACTION_STRING() -> String { return "Tag transaction".localized }
+    class func TOGGLE_AUTOMATIC_TRANSACTION_FEE_STRING() -> String { return "Toggle Automatic Transaction Fee".localized }
+    class func CHANGE_AUTOMATIC_TRANSACTION_FEE_STRING() -> String { return "Change Automatic Transaction Fee".localized }
+    class func VIEW_ACCOUNT_ADDRESSES_STRING() -> String { return "View Account Addresses".localized }
+    class func VIEW_ACCOUNT_ADDRESS_IN_WEB_STRING() -> String { return "View Account Address In Web".localized }
+    class func VIEW_TRANSACTION_IN_WEB_STRING() -> String { return "View Transaction In Web".localized }
+    class func ENABLE_ADVANCED_MODE_STRING() -> String { return "Enable advanced mode".localized }
+    class func IMPORT_PRIVATE_ENCRYPTED_KEY_STRING() -> String { return "Import Private/Encrypted Key".localized }
+    class func CHANGE_BLOCKEXPLORER_TYPE_STRING() -> String { return "Change Blockexplorer Type".localized }
+    class func VIEW_ACCOUNT_PUBLIC_KEY_STRING() -> String { return "View Account Public Key".localized }
+    class func VIEW_ACCOUNT_PRIVATE_KEY_STRING() -> String { return "View Account Private Key".localized }
+    class func VIEW_PRIVATE_KEY_STRING() -> String { return "View Private Key".localized }
+    class func VIEW_ACCOUNT_ADDRESS_STRING() -> String { return "View Account Address".localized }
+
+    class func GO_TO_THE_SIDE_MENU_STRING() -> String { return "Go to the side menu".localized }
+    class func CLICK_SEND_STRING() -> String { return "Click ‘Send’".localized }
+    class func FILL_ADDRESS_FIELD_STRING() -> String { return "Fill address field".localized }
+    class func INPUT_AMOUNT_STRING() -> String { return "Input amount".localized }
+    class func CLICK_REVIEW_PAYMENT_STRING() -> String { return "Click ‘Review Payment’".localized }
+    class func CLICK_RECEIVE_STRING() -> String { return "Click ’Receive’".localized }
+    class func CLICK_THE_BUTTON_WITH_THE_ARROW_STRING() -> String { return "Click the button with the arrow".localized }
+    class func SELECT_AND_CLICK_AN_ACCOUNT_TO_RECEIVE_FROM_STRING() -> String { return "Select and click an account to receive from".localized }
+    class func HAVE_SENDER_SCAN_QR_CODE_STRING() -> String { return "Have sender scan QR code".localized }
+    class func HAVE_SENDER_SEND_YOU_PAYMENT_STRING() -> String { return "Have sender send you payment".localized }
+    class func SWIPE_UNTIL_YOU_SEE_THE_REUSABLE_ADDRESS_STRING() -> String { return "Swipe to the right on the QR Code Image until you see the reusable address".localized }
+    class func CLICK_HISTORY_STRING() -> String { return "Click ‘History’".localized }
+    class func SELECT_AND_CLICK_AN_ACCOUNT_TO_VIEW_TRANSACTION_HISTORY_STRING() -> String { return "Select and click an account to view it’s transaction history".localized }
+    class func CLICK_ACCOUNTS_STRING() -> String { return "Click ‘Accounts’".localized }
+    class func SCROLL_DOWN_TO_THE_SECTION_ACCOUNT_ACTIONS_STRING() -> String { return "Scroll down to the section ‘Account Actions’".localized }
+    class func CLICK_CREATE_NEW_ACCOUNT_STRING() -> String { return "Click ‘Create New Account’".localized }
+    class func SELECT_AND_CLICK_AN_ACCOUNT_STRING() -> String { return "Select and click an account".localized }
+    class func CLICK_EDIT_ACCOUNT_NAME_STRING() -> String { return "Click ‘Edit Account Name’".localized }
+    class func INPUT_NEW_ACCOUNT_NAME_STRING() -> String { return "Input new account name".localized }
+    class func CLICK_ARCHIVE_ACCOUNT_STRING() -> String { return "Click ‘Archive Account’".localized }
+    class func CLICK_SETTINGS_STRING() -> String { return "Click ‘Settings’".localized }
+    class func CLICK_ENABLE_PIN_CODE_STRING() -> String { return "Click ‘Enable PIN Code’".localized }
+    class func ENTER_PIN_CODE_STRING() -> String { return "Enter Pin Code".localized }
+    class func CONFIRM_PIN_CODE_STRING() -> String { return "Confirm Pin Code".localized }
+    class func CLICK_SHOW_BACKUP_PASSPHRASE_STRING() -> String { return "Click ‘Show Backup Passphrase’".localized }
+    class func WRITE_DOWN_BACKUP_PASSPHRASE_STRING() -> String { return "Write down backup passphrase".localized }
+    class func CLICK_RESTORE_WALLET_STRING() -> String { return "Click ‘Restore Wallet’".localized }
+    class func ENTER_BACKUP_PASSPHRASE_STRING() -> String { return "Enter backup passphrase".localized }
+    class func CLICK_DONE_STRING() -> String { return "Click ‘Done’".localized }
+    class func CLICK_RESTORE_STRING() -> String { return "Click ‘Restore’".localized }
+    class func SWIPE_RIGHT_ON_AN_ADDRESS_STRING() -> String { return "Swipe right on an address".localized }
+    class func CLICK_EDIT_STRING() -> String { return "Click ‘Edit’".localized }
+    class func INPUT_A_NEW_LABEL_STRING() -> String { return "Input a new label".localized }
+    class func CLICK_THE_CONTACTS_BUTTON_STRING() -> String { return "Click the ‘Contacts’ button".localized }
+    class func CLICK_THE_PLUS_BUTTON_AT_THE_TOP_RIGHT_STRING() -> String { return "Click the plus button at the top right".localized }
+    class func INPUT_A_BITCOIN_ADDRESS_STRING() -> String { return "Input a bitcoin address".localized }
+    class func INPUT_A_LABEL_STRING() -> String { return "Input a label".localized }
+    class func CLICK_DELETE_STRING() -> String { return "Click ‘Delete’".localized }
+    class func CLICK_AN_ADDRESS_STRING() -> String { return "Click an address".localized }
+    class func SELECT_AND_CLICK_A_TRANSACTION_STRING() -> String { return "Select and click a transaction".localized }
+    class func CLICK_LABEL_TRANSACTION_STRING() -> String { return "Click ‘Label transaction’".localized }
+    class func INPUT_LABEL_STRING() -> String { return "Input label".localized }
+    class func TOGGLE_ENABLE_TRANSACTION_FEE_STRING() -> String { return "Toggle ‘Enable Transaction Fee’".localized }
+    class func ENABLE_TRANSACTION_FEE_STRING() -> String { return "Enable Transaction Fee".localized }
+    class func CLICK_SET_TRANSACTION_FEE_STRING() -> String { return "Click ‘Set Transaction Fee’".localized }
+    class func INPUT_TRANSACTION_FEE_IN_BITCOINS_STRING() -> String { return "Input transaction fee in bitcoins".localized }
+    class func CLICK_VIEW_ADDRESSES_STRING() -> String { return "Click ‘View Addresses’".localized }
+    class func SELECT_AND_CLICK_AN_ADDRESS_STRING() -> String { return "Select and click an address".localized }
+    class func CLICK_VIEW_ADDRESS_QR_CODE_STRING() -> String { return "Click ‘View address QR code’".localized }
+    class func CLICK_VIEW_IN_WEB_STRING() -> String { return "Click ‘View in web’".localized }
+    class func CLICK_ADVANCED_SETTINGS_STRING() -> String { return "Click ‘Advanced settings’".localized }
+    class func TOGGLE_ENABLE_ADVANCED_MODE_STRING() -> String { return "Toggle ’Enable advanced mode’".localized }
+    class func CLICK_IMPORT_ACCOUNT_STRING() -> String { return "Click ‘Import Account’".localized }
+    class func CLICK_IMPORT_WATCH_ONLY_ACCOUNT_STRING() -> String { return "Click ‘Import Watch Only Account’".localized }
+    class func CLICK_IMPORT_PRIVATE_KEY_STRING() -> String { return "Click ‘Import Private Key’".localized }
+    class func CLICK_IMPORT_WATCH_ONLY_ADDRESS_STRING() -> String { return "Click ‘Import Watch Only Address’".localized }
+    class func CLICK_BLOCKEXPLORER_API_TYPE_STRING() -> String { return "Click ‘blockexplorer API type’".localized }
+    class func SELECT_AND_CLICK_A_BLOCKEXPLORER_API_STRING() -> String { return "Select and click a blockexplorer API".localized }
+    class func QUIT_AND_RE_ENTER_APP_STRING() -> String { return "Quit and re-enter app".localized }
+    class func CLICK_VIEW_ACCOUNT_PUBLIC_KEY_QR_CODE_STRING() -> String { return "Click ‘View account public key QR code’".localized }
+    class func CLICK_VIEW_ACCOUNT_PRIVATE_KEY_QR_CODE_STRING() -> String { return "Click ‘View account private key QR code’".localized }
+    class func CLICK_VIEW_PRIVATE_KEY_QR_CODE_STRING() -> String { return "Click ‘View private key QR code’".localized }
+
+    class func WHAT_IS_BITCOIN_STRING() -> String { return "What is Bitcoin?".localized }
+    class func WHAT_ARE_THE_BENEFITS_AND_ADVANTAGES_OF_BITCOIN_STRING() -> String { return "What are the benefits and advantages of Bitcoin?".localized }
+    class func HOW_DO_I_GET_BITCOINS_STRING() -> String { return "How do I get bitcoins?".localized }
+    class func WHAT_IS_A_BITCOIN_WALLET_STRING() -> String { return "What is a bitcoin wallet?".localized }
+    class func HOW_DOES_ARCBIT_WALLET_WORK_STRING() -> String { return "How does ArcBit Wallet work?".localized }
+    class func WHAT_MAKES_ARCBIT_DIFFERENT_FROM_OTHER_BITCOIN_WALLETS_STRING() -> String { return "What makes ArcBit different from other bitcoin wallets?".localized }
+    class func WHAT_ARE_TRANSACTION_CONFIRMATIONS_STRING() -> String { return "What are transaction confirmations?".localized }
+    class func WHAT_ARE_ACCOUNTS_STRING() -> String { return "What are accounts?".localized }
+    class func WHAT_ARE_REUSABLE_ADDRESSES_STRING() -> String { return "What are reusable addresses?".localized }
+    class func WHAT_IS_ARCBITS_COLD_WALLET_FEATURE_STRING() -> String { return "What is ArcBit's cold wallet feature?".localized }
+    
+    class func WHAT_IS_BITCOIN_DESC_STRING() -> String { return "Bitcoin, uppercase 'B', is an online payment system invented in 2008, and released as open-source software in 2009 by a programmer name Satoshi Nakamoto. The system is decentralized and peer-to-peer, users can transact directly without needing an intermediary.\nBitcoin is also a platform where other decentralized applications can be built on top of. Bitcoin, lowercase 'b' is the currency unit that Bitcoin uses.".localized }
+    class func WHAT_ARE_THE_BENEFITS_AND_ADVANTAGES_OF_BITCOIN_DESC_STRING() -> String { return "Bitcoin allows you to send money to anyone, anywhere in world that has an internet connections with minimum to zero fees, with no middlemen.".localized }
+    class func HOW_DO_I_GET_BITCOINS_DESC_STRING() -> String { return "Bitcoins can be purchase from various bitcoin exchanges. ArcBit is not a bitcoin exchange. ArcBit is a bitcoin wallet. After you purchase some bitcoins from an exchange, you can move it to a bitcoin wallet.".localized }
+    class func WHAT_IS_A_BITCOIN_WALLET_DESC_STRING() -> String { return "A bitcoin wallet is a software application that allows people to send, receive and manage their bitcoins.\nBe aware of how other bitcoin applications store your bitcoins' private keys, which are needed to spend your bitcoins.\nThere are generally three different ways applications can your store your bitcoins.\n1.\nThe banking model where your bitcoin private keys are held for you by someone else.\n2.\nThe security box model where your bitcoin private keys are stored encrypted on someone else’s servers.\n3.\nThe wallet model where your bitcoin private keys are stored only on your device.".localized }
+    class func HOW_DOES_ARCBIT_WALLET_WORK_DESC_STRING() -> String { return "ArcBit used the the bitcoin wallet model (See the section ’What is a bitcoin wallet?’ to understand the 3 different security models of bitcoin software). However if you use iCloud to back up your wallet, you will be using the security box model. It is recommended that you do not use iCloud, and be responsible for your bitcoins yourself, but for those who don’t want to remember a simple backup passphrase, iCloud backup is a good alternative.".localized }
+    class func WHAT_MAKES_ARCBIT_DIFFERENT_FROM_OTHER_BITCOIN_WALLETS_DESC_STRING() -> String { return "Here are some features that no other mobile bitcoin wallet supports.\n- Reusable address support\n- Ability to import individual account (extended) keys\n- iCloud backup support\n- Over 150 local currencies supported".localized }
+    class func WHAT_ARE_TRANSACTION_CONFIRMATIONS_DESC_STRING() -> String { return "After a transaction is broadcast to the Bitcoin network, it may be included in a block that is published to the network. When that happens it is said that the transaction has been mined at a depth of 1 block. With each subsequent block that is found, the number of blocks deep is increased by one. To be secure against double spending, a transaction should not be considered as confirmed until it is a certain number of blocks deep.\nA good rule of thumb is that 1 confirmations is good for small value amounts of bitcoins, and a user should wait for more confirmations for larger value amounts.\nArcBit will display the confirmation number up until the 6th confirmation.".localized }
+    class func WHAT_ARE_ACCOUNTS_DESC_STRING() -> String { return "An account is a collection of bitcoin addresses. With accounts, you will no longer have to manage bitcoin addresses directly anymore. Since address reuse results in a loss of privacy for people using Bitcoin, ArcBit’s HD wallet account system will automatically handle the cycling of bitcoin addresses for you, so that you don’t use the same bitcoin address more then once.\nEach account also has a reusable address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a reusable address.\nYou can create an unlimited amount of accounts with ArcBit. See the help section on how to create a new account in ArcBit.".localized }
+    class func WHAT_ARE_REUSABLE_ADDRESSES_DESC_STRING() -> String { return "Some people has compared bitcoin addresses to a bank routing number. It is a good analogy, however bitcoin addresses are public. So if you reuse the same bitcoin address for multiple payments like you would a routing number, people will be able to figure out how much bitcoins you have. Thus it is recommended that you only use one address per payment.\nThis causes usability issues because making the user use a new address whenever receiving a payment is cumbersome.\nStealth/reusable addresses provides a better solution. When you give a sender a reusable address, the sender will derive a one time regular bitcoin address from the reusable address. Then the sender will send a payment to that regular bitcoin address. Now you can give many people just one reusable address and have them all send you payments without letting other people know how much bitcoins you have.\nA reusable address looks sometime like this vJmxthatTBXibYe9aZavx18iAT9gyiJETGkhwPX2WbHQGuzX83YvQXynD2t8yHU4Xjfonu5x9m6B4yxquytFP1c2CRbVR9mecxesvE. A reusable address is a lot longer then a regular bitcoin address, it is 102 characters in length.\nReusable addresses are great, however there are no other mobile bitcoin wallets but ArcBit that supports reusable addresses for now. Which is why ArcBit support receiving payments from both regular bitcoin addresses and reusable addresses.\nFor each account, you have one reusable address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a reusable address.".localized }
+    class func WHAT_IS_ARCBITS_COLD_WALLET_FEATURE_DESC_STRING() -> String { return "The cold wallet feature will allow you to create accounts which offer better security then normal online wallets. You will need 2 devices to use this feature. Your normal day to day device that is connected to the internet and a secondary device that is not connected to the internet (Your secondary device would need to be online once to download the ArcBit app. Afterwards keep the secondary device offline for maximal security). This feature allows you to authorize bitcoin payments from an offline device so that the keys to your bitcoins will never need to be store on your online device. You can enable the cold wallet feature by going into advanced settings.".localized }
+    
+    class func WHAT_ARE_ACCOUNT_EXTENDED_KEYS_STRING() -> String { return "What are Account/Extended Keys?".localized }
+    class func IMPORT_FEATURE_STRING() -> String { return "Import Feature".localized }
+    class func IMPORTING_AN_ACCOUNT_STRING() -> String { return "Importing an Account".localized }
+    class func IMPORTING_A_WATCH_ONLY_ACCOUNT_STRING() -> String { return "Importing a Watch Only Account".localized }
+    class func IMPORTING_A_PRIVATE_KEY_STRING() -> String { return "Importing a Private Key".localized }
+    class func IMPORTING_A_WATCH_ONLY_ADDRESS_STRING() -> String { return "Importing a Watch Only Address".localized }
+    
+    class func WHAT_ARE_ACCOUNT_EXTENDED_KEYS_DESC_STRING() -> String { return "Each account has a public and private account/extended key. Accounts keys should be kept secret as they are used to view the account's transactions, and spend the accounts bitcoins.".localized }
+    class func IMPORT_FEATURE_DESC_STRING() -> String { return "In advanced mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you back up imported keys and addresses separately.".localized }
+    class func IMPORTING_AN_ACCOUNT_DESC_STRING() -> String { return "An account private key begins with the letters 'xprv'. You can see, spend and recover the transactions and bitcoins of an entire account from an account private key.".localized }
+    class func IMPORTING_A_WATCH_ONLY_ACCOUNT_DESC_STRING() -> String { return "An account public key begins with the letters 'xpub'. You can see the transactions and bitcoins of an entire account from an account private key, with the exception of reusable address payments. Future releases will address this issue.\nYou can however temporary import the corresponding account private key for this accounts' account public key to spend your watch only accounts' bitcoins. Simply go the send screen and select a watch only account to spend from and you will be prompt to temporary import your account's private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen.".localized }
+    class func IMPORTING_A_PRIVATE_KEY_DESC_STRING() -> String { return "A private key begins with an 'L', 'K', or '5'.\nBIP 38 encrypted private keys can also be imported. They can either be imported encrypted or unencrypted. If you choose to import it encrypted, you will need to input the password each time you spend from your encrypted private key.".localized }
+    class func IMPORTING_A_WATCH_ONLY_ADDRESS_DESC_STRING() -> String { return "A bitcoin address typically begins with a '1' or '3'. You can see the transactions, and track the balance of an address, but you cannot spend from just an imported address.\nYou can however temporary import this watch only addresses' private key to spend its bitcoins. Simply go the send screen and select a watch only address to spend from and you will be prompt to temporary import your addresses' private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen.".localized }
 }
 

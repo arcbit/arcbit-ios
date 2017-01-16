@@ -32,48 +32,48 @@ class TLHelpDoc {
         static var _howToDoAdvanceAchievementsArray: NSArray?
         static var _eventsArray: NSArray?
         
-        static let FAQ_TRANSACTION_CONFIRMATIONS = "Transaction confirmations".localized
-        static let FAQ_HD_WALLET = "HD Wallet".localized
-        static let FAQ_STEALTH_ADDRESS = "Stealth/Reusable Addresses".localized
+        static let FAQ_TRANSACTION_CONFIRMATIONS = TLDisplayStrings.TRANSACTION_CONFIRMATIONS_STRING()
+        static let FAQ_HD_WALLET = TLDisplayStrings.HIERARCHICAL_DETERMINISTIC_WALLET_STRING()
+        static let FAQ_STEALTH_ADDRESS = TLDisplayStrings.REUSABLE_ADDRESSES_STRING()
         
-        static let ACCOUNT_ACTION_CREATE_NEW_ACCOUNT = "Create New Account".localized
-        static let ACCOUNT_ACTION_IMPORT_COLD_WALLET_ACCOUNT = "Import Cold Wallet Account".localized
-        static let ACCOUNT_ACTION_IMPORT_ACCOUNT = "Import Account".localized
-        static let ACCOUNT_ACTION_IMPORT_WATCH_ONLY_ACCOUNT = "Import Watch Only Account".localized
-        static let ACCOUNT_ACTION_IMPORT_PRIVATE_KEY = "Import Private Key".localized
-        static let ACCOUNT_ACTION_IMPORT_WATCH_ONLY_ADDRESS = "Import Watch Only Address".localized
+        static let ACCOUNT_ACTION_CREATE_NEW_ACCOUNT = TLDisplayStrings.CREATE_NEW_ACCOUNT_STRING()
+        static let ACCOUNT_ACTION_IMPORT_COLD_WALLET_ACCOUNT = TLDisplayStrings.IMPORT_COLD_WALLET_ACCOUNT_STRING()
+        static let ACCOUNT_ACTION_IMPORT_ACCOUNT = TLDisplayStrings.IMPORT_ACCOUNT_STRING()
+        static let ACCOUNT_ACTION_IMPORT_WATCH_ONLY_ACCOUNT = TLDisplayStrings.IMPORT_WATCH_ONLY_ACCOUNT_STRING()
+        static let ACCOUNT_ACTION_IMPORT_PRIVATE_KEY = TLDisplayStrings.IMPORT_PRIVATE_KEY_STRING()
+        static let ACCOUNT_ACTION_IMPORT_WATCH_ONLY_ADDRESS = TLDisplayStrings.IMPORT_WATCH_ONLY_ADDRESS_STRING()
         
-        static let ACTION_SEND_PAYMENT = "Send Payment".localized
-        static let ACTION_RECEIVE_PAYMENT = "Receive Payment".localized
-        static let ACTION_RECEIVE_PAYMENT_FROM_STEALTH_ADDRESS = "Receive Payment From Reusable Address".localized
-        static let ACTION_VIEW_HISTORY = "View History".localized
-        static let ACTION_CREATE_NEW_ACCOUNT = "Create New Account".localized
-        static let ACTION_EDIT_ACCOUNT_NAME = "Edit Account Name".localized
-        static let ACTION_ARCHIVE_ACCOUNT = "Archive Account".localized
-        static let ACTION_ENABLE_PIN_CODE = "Enable PIN Code".localized
-        static let ACTION_BACKUP_PASSPHRASE = "Back Up Passphrase".localized
-        static let ACTION_RESTORE_WALLET = "Start/Restore Another Wallet".localized
-        static let ACTION_ADD_TO_ADDRESS_BOOK = "Add Contacts Entry".localized
-        static let ACTION_EDIT_ENTRY_ADDRESS_BOOK = "Edit Contacts Entry".localized
-        static let ACTION_DELETE_ENTRY_ADDRESS_BOOK = "Delete Contacts Entry".localized
-        static let ACTION_SEND_TO_ADDRESS_IN_ADDRESS_BOOK = "Send To Address In Contacts".localized
-        static let ACTION_TAG_TRANSACTION = "Tag transaction".localized
-        static let ACTION_TOGGLE_AUTOMATIC_TX_FEE = "Toggle Automatic Transaction Fee".localized
-        static let ACTION_CHANGE_AUTOMATIC_TX_FEE = "Change Automatic Transaction Fee".localized
-        static let ACTION_VIEW_ACCOUNT_ADDRESSES = "View Account Addresses".localized
-        static let ACTION_VIEW_ACCOUNT_ADDRESS_IN_WEB = "View Account Address In Web".localized
-        static let ACTION_VIEW_TRANSACTION_IN_WEB = "View Transaction In Web".localized
-        static let ACTION_ENABLE_ADVANCE_MODE = "Enable advanced mode".localized
+        static let ACTION_SEND_PAYMENT = TLDisplayStrings.SEND_PAYMENT_STRING()
+        static let ACTION_RECEIVE_PAYMENT = TLDisplayStrings.RECEIVE_PAYMENT_STRING()
+        static let ACTION_RECEIVE_PAYMENT_FROM_STEALTH_ADDRESS = TLDisplayStrings.RECEIVE_PAYMENT_FROM_REUSABLE_ADDRESS_STRING()
+        static let ACTION_VIEW_HISTORY = TLDisplayStrings.VIEW_HISTORY_STRING()
+        static let ACTION_CREATE_NEW_ACCOUNT = TLDisplayStrings.CREATE_NEW_ACCOUNT_STRING()
+        static let ACTION_EDIT_ACCOUNT_NAME = TLDisplayStrings.EDIT_ACCOUNT_NAME_STRING()
+        static let ACTION_ARCHIVE_ACCOUNT = TLDisplayStrings.ARCHIVE_ACCOUNT_STRING()
+        static let ACTION_ENABLE_PIN_CODE = TLDisplayStrings.ENABLE_PIN_CODE_STRING()
+        static let ACTION_BACKUP_PASSPHRASE = TLDisplayStrings.BACK_UP_PASSPHRASE_STRING()
+        static let ACTION_RESTORE_WALLET = TLDisplayStrings.START_RESTORE_ANOTHER_WALLET_STRING()
+        static let ACTION_ADD_TO_ADDRESS_BOOK = TLDisplayStrings.ADD_CONTACTS_ENTRY_STRING()
+        static let ACTION_EDIT_ENTRY_ADDRESS_BOOK = TLDisplayStrings.EDIT_CONTACTS_ENTRY_STRING()
+        static let ACTION_DELETE_ENTRY_ADDRESS_BOOK = TLDisplayStrings.DELETE_CONTACTS_ENTRY_STRING()
+        static let ACTION_SEND_TO_ADDRESS_IN_ADDRESS_BOOK = TLDisplayStrings.SEND_TO_ADDRESS_IN_CONTACTS_STRING()
+        static let ACTION_TAG_TRANSACTION = TLDisplayStrings.TAG_TRANSACTION_STRING()
+        static let ACTION_TOGGLE_AUTOMATIC_TX_FEE = TLDisplayStrings.TOGGLE_AUTOMATIC_TRANSACTION_FEE_STRING()
+        static let ACTION_CHANGE_AUTOMATIC_TX_FEE = TLDisplayStrings.CHANGE_AUTOMATIC_TRANSACTION_FEE_STRING()
+        static let ACTION_VIEW_ACCOUNT_ADDRESSES = TLDisplayStrings.VIEW_ACCOUNT_ADDRESSES_STRING()
+        static let ACTION_VIEW_ACCOUNT_ADDRESS_IN_WEB = TLDisplayStrings.VIEW_ACCOUNT_ADDRESS_IN_WEB_STRING()
+        static let ACTION_VIEW_TRANSACTION_IN_WEB = TLDisplayStrings.VIEW_TRANSACTION_IN_WEB_STRING()
+        static let ACTION_ENABLE_ADVANCE_MODE = TLDisplayStrings.ENABLE_ADVANCED_MODE_STRING()
         
-        static let ACTION_IMPORT_ACCOUNT = "Import Account".localized
-        static let ACTION_IMPORT_WATCH_ONLY_ACCOUNT = "Import Watch Only Account".localized
-        static let ACTION_IMPORT_PRIVATE_KEY = "Import Private/Encrypted Key".localized
-        static let ACTION_IMPORT_WATCH_ONLY_ADDRESS = "Import Watch Only Address".localized
-        static let ACTION_CHANGE_BLOCKEXPLORER_TYPE = "Change Blockexplorer Type".localized
-        static let ACTION_VIEW_EXTENDED_PUBLIC_KEY = "View Account Public Key".localized
-        static let ACTION_VIEW_EXTENDED_PRIVATE_KEY = "View Account Private Key".localized
-        static let ACTION_VIEW_ACCOUNT_PRIVATE_KEY = "View Private Key".localized
-        static let ACTION_VIEW_ACCOUNT_ADDRESS = "View Account Address".localized
+        static let ACTION_IMPORT_ACCOUNT = TLDisplayStrings.IMPORT_ACCOUNT_STRING()
+        static let ACTION_IMPORT_WATCH_ONLY_ACCOUNT = TLDisplayStrings.IMPORT_WATCH_ONLY_ACCOUNT_STRING()
+        static let ACTION_IMPORT_PRIVATE_KEY = TLDisplayStrings.IMPORT_PRIVATE_ENCRYPTED_KEY_STRING()
+        static let ACTION_IMPORT_WATCH_ONLY_ADDRESS = TLDisplayStrings.IMPORT_WATCH_ONLY_ADDRESS_STRING()
+        static let ACTION_CHANGE_BLOCKEXPLORER_TYPE = TLDisplayStrings.CHANGE_BLOCKEXPLORER_TYPE_STRING()
+        static let ACTION_VIEW_EXTENDED_PUBLIC_KEY = TLDisplayStrings.VIEW_ACCOUNT_PUBLIC_KEY_STRING()
+        static let ACTION_VIEW_EXTENDED_PRIVATE_KEY = TLDisplayStrings.VIEW_ACCOUNT_PRIVATE_KEY_STRING()
+        static let ACTION_VIEW_ACCOUNT_PRIVATE_KEY = TLDisplayStrings.VIEW_PRIVATE_KEY_STRING()
+        static let ACTION_VIEW_ACCOUNT_ADDRESS = TLDisplayStrings.VIEW_ACCOUNT_ADDRESS_STRING()
         
     }
     
@@ -81,157 +81,157 @@ class TLHelpDoc {
         if (STATIC_MEMBERS._actionEventToInstructionStepsTitleArray == nil) {
             STATIC_MEMBERS._actionEventToInstructionStepsTitleArray = [
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Send’".localized,
-                    "Fill address field".localized,
-                    "Input amount".localized,
-                    "Click ‘Review Payment’".localized,
-                    "Click ’Send’".localized,
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_SEND_STRING(),
+                    TLDisplayStrings.FILL_ADDRESS_FIELD_STRING(),
+                    TLDisplayStrings.INPUT_AMOUNT_STRING(),
+                    TLDisplayStrings.CLICK_REVIEW_PAYMENT_STRING(),
+                    TLDisplayStrings.CLICK_SEND_STRING(),
                 ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Receive’".localized,
-                    "Click the button with the arrow".localized,
-                    "Select and click an account to receive from".localized,
-                    "Have sender scan QR code".localized,
-                    "Have sender send you payment".localized,
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_RECEIVE_STRING(),
+                    TLDisplayStrings.CLICK_THE_BUTTON_WITH_THE_ARROW_STRING(),
+                    TLDisplayStrings.SELECT_AND_CLICK_AN_ACCOUNT_TO_RECEIVE_FROM_STRING(),
+                    TLDisplayStrings.HAVE_SENDER_SCAN_QR_CODE_STRING(),
+                    TLDisplayStrings.HAVE_SENDER_SEND_YOU_PAYMENT_STRING(),
                 ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Receive’".localized,
-                    "Click the button with the arrow".localized,
-                    "Select and click an account to receive from".localized,
-                    "Have sender scan QR code".localized,
-                    "Swipe to the right on the QR Code Image until you see the reusable address".localized,
-                    "Have sender send you payment".localized,
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_RECEIVE_STRING(),
+                    TLDisplayStrings.CLICK_THE_BUTTON_WITH_THE_ARROW_STRING(),
+                    TLDisplayStrings.SELECT_AND_CLICK_AN_ACCOUNT_TO_RECEIVE_FROM_STRING(),
+                    TLDisplayStrings.HAVE_SENDER_SCAN_QR_CODE_STRING(),
+                    TLDisplayStrings.SWIPE_UNTIL_YOU_SEE_THE_REUSABLE_ADDRESS_STRING(),
+                    TLDisplayStrings.HAVE_SENDER_SEND_YOU_PAYMENT_STRING(),
                 ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘History’".localized,
-                    "Click the button with the arrow".localized,
-                    "Select and click an account to view it’s transaction history".localized,
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_HISTORY_STRING(),
+                    TLDisplayStrings.CLICK_THE_BUTTON_WITH_THE_ARROW_STRING(),
+                    TLDisplayStrings.SELECT_AND_CLICK_AN_ACCOUNT_TO_VIEW_TRANSACTION_HISTORY_STRING(),
                 ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Accounts’".localized,
-                    "Scroll down to the section ‘Account Actions’".localized,
-                    "Click ‘Create New Account’".localized,
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_ACCOUNTS_STRING(),
+                    TLDisplayStrings.SCROLL_DOWN_TO_THE_SECTION_ACCOUNT_ACTIONS_STRING(),
+                    TLDisplayStrings.CLICK_CREATE_NEW_ACCOUNT_STRING(),
                 ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Accounts’".localized,
-                    "Select and click an account".localized,
-                    "Click ‘Edit Account Name’".localized,
-                    "Input new account name".localized,
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_ACCOUNTS_STRING(),
+                    TLDisplayStrings.SELECT_AND_CLICK_AN_ACCOUNT_STRING(),
+                    TLDisplayStrings.CLICK_EDIT_ACCOUNT_NAME_STRING(),
+                    TLDisplayStrings.INPUT_NEW_ACCOUNT_NAME_STRING(),
                 ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Accounts’".localized,
-                    "Select and click an account".localized,
-                    "Click ‘Archive Account’".localized,
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_ACCOUNTS_STRING(),
+                    TLDisplayStrings.SELECT_AND_CLICK_AN_ACCOUNT_STRING(),
+                    TLDisplayStrings.CLICK_ARCHIVE_ACCOUNT_STRING(),
                 ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Settings’".localized,
-                    "Click ‘Enable PIN Code’".localized,
-                    "Enter Pin Code".localized,
-                    "Confirm Pin Code".localized,
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_SETTINGS_STRING(),
+                    TLDisplayStrings.CLICK_ENABLE_PIN_CODE_STRING(),
+                    TLDisplayStrings.ENTER_PIN_CODE_STRING(),
+                    TLDisplayStrings.CONFIRM_PIN_CODE_STRING(),
                 ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Settings’".localized,
-                    "Click ‘Show Backup Passphrase’".localized,
-                    "Write down backup passphrase".localized,
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_SETTINGS_STRING(),
+                    TLDisplayStrings.CLICK_SHOW_BACKUP_PASSPHRASE_STRING(),
+                    TLDisplayStrings.WRITE_DOWN_BACKUP_PASSPHRASE_STRING(),
                 ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Settings’".localized,
-                    "Click ‘Restore Wallet’".localized,
-                    "Enter backup passphrase".localized,
-                    "Click ‘Done’".localized,
-                    "Click ‘Restore’".localized,
-                ],
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_SETTINGS_STRING(),
+                    TLDisplayStrings.CLICK_RESTORE_WALLET_STRING(),
+                    TLDisplayStrings.ENTER_BACKUP_PASSPHRASE_STRING(),
+                    TLDisplayStrings.CLICK_DONE_STRING(),
+                    TLDisplayStrings.CLICK_RESTORE_STRING(),
+                    ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Send’".localized,
-                    "Click the ‘Contacts’ button".localized,
-                    "Click the plus button at the top right".localized,
-                    "Input a bitcoin address".localized,
-                    "Input a label".localized,
-                ],
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_SEND_STRING(),
+                    TLDisplayStrings.CLICK_THE_CONTACTS_BUTTON_STRING(),
+                    TLDisplayStrings.CLICK_THE_PLUS_BUTTON_AT_THE_TOP_RIGHT_STRING(),
+                    TLDisplayStrings.INPUT_A_BITCOIN_ADDRESS_STRING(),
+                    TLDisplayStrings.INPUT_A_LABEL_STRING(),
+                    ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Send’".localized,
-                    "Swipe right on an address".localized,
-                    "Click ‘Edit’".localized,
-                    "Input a new label".localized,
-                ],
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_SEND_STRING(),
+                    TLDisplayStrings.SWIPE_RIGHT_ON_AN_ADDRESS_STRING(),
+                    TLDisplayStrings.CLICK_EDIT_STRING(),
+                    TLDisplayStrings.INPUT_A_NEW_LABEL_STRING(),
+                    ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Send’".localized,
-                    "Click the ‘Contacts’ button".localized,
-                    "Swipe right on an address".localized,
-                    "Click ‘Delete’".localized,
-                ],
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_SEND_STRING(),
+                    TLDisplayStrings.CLICK_THE_CONTACTS_BUTTON_STRING(),
+                    TLDisplayStrings.SWIPE_RIGHT_ON_AN_ADDRESS_STRING(),
+                    TLDisplayStrings.CLICK_DELETE_STRING(),
+                    ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Send’".localized,
-                    "Click the ‘Contacts’ button".localized,
-                    "Click an address".localized,
-                ],
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_SEND_STRING(),
+                    TLDisplayStrings.CLICK_THE_CONTACTS_BUTTON_STRING(),
+                    TLDisplayStrings.CLICK_AN_ADDRESS_STRING(),
+                    ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘History’".localized,
-                    "Select and click a transaction".localized,
-                    "Click ‘Label transaction’".localized,
-                    "Input label".localized,
-                ],
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_HISTORY_STRING(),
+                    TLDisplayStrings.SELECT_AND_CLICK_A_TRANSACTION_STRING(),
+                    TLDisplayStrings.CLICK_LABEL_TRANSACTION_STRING(),
+                    TLDisplayStrings.INPUT_LABEL_STRING(),
+                    ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Settings’".localized,
-                    "Toggle ‘Enable Transaction Fee’".localized,
-                ],
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_SETTINGS_STRING(),
+                    TLDisplayStrings.TOGGLE_ENABLE_TRANSACTION_FEE_STRING(),
+                    ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Settings’".localized,
-                    "Enable Transaction Fee".localized,
-                    "Click ‘Set Transaction Fee’".localized,
-                    "Input transaction fee in bitcoins".localized,
-                ],
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_SETTINGS_STRING(),
+                    TLDisplayStrings.ENABLE_TRANSACTION_FEE_STRING(),
+                    TLDisplayStrings.CLICK_SET_TRANSACTION_FEE_STRING(),
+                    TLDisplayStrings.INPUT_TRANSACTION_FEE_IN_BITCOINS_STRING(),
+                    ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Accounts’".localized,
-                    "Select and click an account".localized,
-                    "Click ‘View Addresses’".localized,
-                ],
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_ACCOUNTS_STRING(),
+                    TLDisplayStrings.SELECT_AND_CLICK_AN_ACCOUNT_STRING(),
+                    TLDisplayStrings.CLICK_VIEW_ADDRESSES_STRING(),
+                    ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Accounts’".localized,
-                    "Select and click an account".localized,
-                    "Click ‘View Addresses’".localized,
-                    "Select and click an address".localized,
-                    "Click ‘View address QR code’".localized,
-                ],
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_ACCOUNTS_STRING(),
+                    TLDisplayStrings.SELECT_AND_CLICK_AN_ACCOUNT_STRING(),
+                    TLDisplayStrings.CLICK_VIEW_ADDRESSES_STRING(),
+                    TLDisplayStrings.SELECT_AND_CLICK_AN_ADDRESS_STRING(),
+                    TLDisplayStrings.CLICK_VIEW_ADDRESS_QR_CODE_STRING(),
+                    ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘History’".localized,
-                    "Select and click a transaction".localized,
-                    "Click ‘View in web’".localized,
-                ],
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_HISTORY_STRING(),
+                    TLDisplayStrings.SELECT_AND_CLICK_A_TRANSACTION_STRING(),
+                    TLDisplayStrings.CLICK_VIEW_IN_WEB_STRING(),
+                    ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Accounts’".localized,
-                    "Select and click an account".localized,
-                    "Click ‘View Addresses’".localized,
-                    "Select and click an address".localized,
-                    "Click ‘View in web’".localized,
-                ],
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_ACCOUNTS_STRING(),
+                    TLDisplayStrings.SELECT_AND_CLICK_AN_ACCOUNT_STRING(),
+                    TLDisplayStrings.CLICK_VIEW_ADDRESSES_STRING(),
+                    TLDisplayStrings.SELECT_AND_CLICK_AN_ADDRESS_STRING(),
+                    TLDisplayStrings.CLICK_VIEW_IN_WEB_STRING(),
+                    ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Settings’".localized,
-                    "Click ‘Advanced settings’".localized,
-                    "Toggle ’Enable advanced mode’".localized,
-                ],
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_SETTINGS_STRING(),
+                    TLDisplayStrings.CLICK_ADVANCED_SETTINGS_STRING(),
+                    TLDisplayStrings.TOGGLE_ENABLE_ADVANCED_MODE_STRING(),
+                    ],
             ]
         }
         return STATIC_MEMBERS._actionEventToInstructionStepsTitleArray!.object(at: idx) as! NSArray
@@ -243,56 +243,56 @@ class TLHelpDoc {
         if (STATIC_MEMBERS._advanceActionInstructionStepsArray == nil) {
             STATIC_MEMBERS._advanceActionInstructionStepsArray = [
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Accounts’".localized,
-                    "Scroll down to the section ‘Account Actions’".localized,
-                    "Click ‘Import Account’".localized,
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_ACCOUNTS_STRING(),
+                    TLDisplayStrings.SCROLL_DOWN_TO_THE_SECTION_ACCOUNT_ACTIONS_STRING(),
+                    TLDisplayStrings.CLICK_IMPORT_ACCOUNT_STRING(),
                 ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Accounts’".localized,
-                    "Scroll down to the section ‘Account Actions’".localized,
-                    "Click ‘Import Watch Only Account’".localized,
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_ACCOUNTS_STRING(),
+                    TLDisplayStrings.SCROLL_DOWN_TO_THE_SECTION_ACCOUNT_ACTIONS_STRING(),
+                    TLDisplayStrings.CLICK_IMPORT_WATCH_ONLY_ACCOUNT_STRING(),
                 ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Accounts’".localized,
-                    "Scroll down to the section ‘Account Actions’".localized,
-                    "Click ‘Import Private Key’".localized,
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_ACCOUNTS_STRING(),
+                    TLDisplayStrings.SCROLL_DOWN_TO_THE_SECTION_ACCOUNT_ACTIONS_STRING(),
+                    TLDisplayStrings.CLICK_IMPORT_PRIVATE_KEY_STRING(),
                 ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Accounts’".localized,
-                    "Scroll down to the section ‘Account Actions’".localized,
-                    "Click ‘Import Watch Only Address’".localized,
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_ACCOUNTS_STRING(),
+                    TLDisplayStrings.SCROLL_DOWN_TO_THE_SECTION_ACCOUNT_ACTIONS_STRING(),
+                    TLDisplayStrings.CLICK_IMPORT_WATCH_ONLY_ADDRESS_STRING(),
                 ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Settings’".localized,
-                    "Click ‘Advanced settings’".localized,
-                    "Click ‘blockexplorer API type’".localized,
-                    "Select and click a blockexplorer API".localized,
-                    "Quit and re-enter app".localized,
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_SETTINGS_STRING(),
+                    TLDisplayStrings.CLICK_ADVANCED_SETTINGS_STRING(),
+                    TLDisplayStrings.CLICK_BLOCKEXPLORER_API_TYPE_STRING(),
+                    TLDisplayStrings.SELECT_AND_CLICK_A_BLOCKEXPLORER_API_STRING(),
+                    TLDisplayStrings.QUIT_AND_RE_ENTER_APP_STRING(),
                 ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Accounts’".localized,
-                    "Select and click an account".localized,
-                    "Click ‘View account public key QR code’".localized,
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_ACCOUNTS_STRING(),
+                    TLDisplayStrings.SELECT_AND_CLICK_AN_ACCOUNT_STRING(),
+                    TLDisplayStrings.CLICK_VIEW_ACCOUNT_PUBLIC_KEY_QR_CODE_STRING(),
                 ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Accounts’".localized,
-                    "Select and click an account".localized,
-                    "Click ‘View account private key QR code’".localized,
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_ACCOUNTS_STRING(),
+                    TLDisplayStrings.SELECT_AND_CLICK_AN_ACCOUNT_STRING(),
+                    TLDisplayStrings.CLICK_VIEW_ACCOUNT_PRIVATE_KEY_QR_CODE_STRING(),
                 ],
                 [
-                    "Go to the side menu".localized,
-                    "Click ‘Accounts’".localized,
-                    "Select and click an account".localized,
-                    "Click ‘View Addresses’".localized,
-                    "Select and click an address".localized,
-                    "Click ‘View private key QR code’".localized,
+                    TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
+                    TLDisplayStrings.CLICK_ACCOUNTS_STRING(),
+                    TLDisplayStrings.SELECT_AND_CLICK_AN_ACCOUNT_STRING(),
+                    TLDisplayStrings.CLICK_VIEW_ADDRESSES_STRING(),
+                    TLDisplayStrings.SELECT_AND_CLICK_AN_ADDRESS_STRING(),
+                    TLDisplayStrings.CLICK_VIEW_PRIVATE_KEY_QR_CODE_STRING(),
                 ],
             ]
         }
@@ -435,16 +435,16 @@ class TLHelpDoc {
         var _faqArray: NSArray?
         if (_faqArray == nil) {
             _faqArray = [
-                "What is Bitcoin?".localized,
-                "What are the benefits and advantages of Bitcoin?".localized,
-                "How do I get bitcoins?".localized,
-                "What is a bitcoin wallet?".localized,
-                "How does ArcBit Wallet work?".localized,
-                "What makes ArcBit different from other bitcoin wallets?".localized,
-                "What are transaction confirmations?".localized,
-                "What are accounts?".localized,
-                "What are reusable addresses?".localized,
-                "What is ArcBit's cold wallet feature?".localized,
+                TLDisplayStrings.WHAT_IS_BITCOIN_STRING(),
+                TLDisplayStrings.WHAT_ARE_THE_BENEFITS_AND_ADVANTAGES_OF_BITCOIN_STRING(),
+                TLDisplayStrings.HOW_DO_I_GET_BITCOINS_STRING(),
+                TLDisplayStrings.WHAT_IS_A_BITCOIN_WALLET_STRING(),
+                TLDisplayStrings.HOW_DOES_ARCBIT_WALLET_WORK_STRING(),
+                TLDisplayStrings.WHAT_MAKES_ARCBIT_DIFFERENT_FROM_OTHER_BITCOIN_WALLETS_STRING(),
+                TLDisplayStrings.WHAT_ARE_TRANSACTION_CONFIRMATIONS_STRING(),
+                TLDisplayStrings.WHAT_ARE_ACCOUNTS_STRING(),
+                TLDisplayStrings.WHAT_ARE_REUSABLE_ADDRESSES_STRING(),
+                TLDisplayStrings.WHAT_IS_ARCBITS_COLD_WALLET_FEATURE_STRING(),
             ]
         }
         return _faqArray!
@@ -453,16 +453,16 @@ class TLHelpDoc {
     class func getExplanation(_ idx: Int) -> String {
         if (STATIC_MEMBERS._explanationArray == nil) {
             STATIC_MEMBERS._explanationArray = [
-                "Bitcoin, uppercase 'B', is an online payment system invented in 2008, and released as open-source software in 2009 by a programmer name Satoshi Nakamoto. The system is decentralized and peer-to-peer, users can transact directly without needing an intermediary.\nBitcoin is also a platform where other decentralized applications can be built on top of. Bitcoin, lowercase 'b' is the currency unit that Bitcoin uses.".localized,
-                "Bitcoin allows you to send money to anyone, anywhere in world that has an internet connections with minimum to zero fees, with no middlemen.".localized,
-                "Bitcoins can be purchase from various bitcoin exchanges. ArcBit is not a bitcoin exchange. ArcBit is a bitcoin wallet. After you purchase some bitcoins from an exchange, you can move it to a bitcoin wallet.".localized,
-                "A bitcoin wallet is a software application that allows people to send, receive and manage their bitcoins.\nBe aware of how other bitcoin applications store your bitcoins' private keys, which are needed to spend your bitcoins.\nThere are generally three different ways applications can your store your bitcoins.\n1.\nThe banking model where your bitcoin private keys are held for you by someone else.\n2.\nThe security box model where your bitcoin private keys are stored encrypted on someone else’s servers.\n3.\nThe wallet model where your bitcoin private keys are stored only on your device.".localized,
-                "ArcBit used the the bitcoin wallet model (See the section ’What is a bitcoin wallet?’ to understand the 3 different security models of bitcoin software). However if you use iCloud to back up your wallet, you will be using the security box model. It is recommended that you do not use iCloud, and be responsible for your bitcoins yourself, but for those who don’t want to remember a simple backup passphrase, iCloud backup is a good alternative.".localized,
-                "Here are some features that no other mobile bitcoin wallet supports.\n- Reusable address support\n- Ability to import individual account (extended) keys\n- iCloud backup support\n- Over 150 local currencies supported".localized,
-                "After a transaction is broadcast to the Bitcoin network, it may be included in a block that is published to the network. When that happens it is said that the transaction has been mined at a depth of 1 block. With each subsequent block that is found, the number of blocks deep is increased by one. To be secure against double spending, a transaction should not be considered as confirmed until it is a certain number of blocks deep.\nA good rule of thumb is that 1 confirmations is good for small value amounts of bitcoins, and a user should wait for more confirmations for larger value amounts.\nArcBit will display the confirmation number up until the 6th confirmation.".localized,
-                "An account is a collection of bitcoin addresses. With accounts, you will no longer have to manage bitcoin addresses directly anymore. Since address reuse results in a loss of privacy for people using Bitcoin, ArcBit’s HD wallet account system will automatically handle the cycling of bitcoin addresses for you, so that you don’t use the same bitcoin address more then once.\nEach account also has a reusable address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a reusable address.\nYou can create an unlimited amount of accounts with ArcBit. See the help section on how to create a new account in ArcBit.".localized,
-                "Some people has compared bitcoin addresses to a bank routing number. It is a good analogy, however bitcoin addresses are public. So if you reuse the same bitcoin address for multiple payments like you would a routing number, people will be able to figure out how much bitcoins you have. Thus it is recommended that you only use one address per payment.\nThis causes usability issues because making the user use a new address whenever receiving a payment is cumbersome.\nStealth/reusable addresses provides a better solution. When you give a sender a reusable address, the sender will derive a one time regular bitcoin address from the reusable address. Then the sender will send a payment to that regular bitcoin address. Now you can give many people just one reusable address and have them all send you payments without letting other people know how much bitcoins you have.\nA reusable address looks sometime like this vJmxthatTBXibYe9aZavx18iAT9gyiJETGkhwPX2WbHQGuzX83YvQXynD2t8yHU4Xjfonu5x9m6B4yxquytFP1c2CRbVR9mecxesvE. A reusable address is a lot longer then a regular bitcoin address, it is 102 characters in length.\nReusable addresses are great, however there are no other mobile bitcoin wallets but ArcBit that supports reusable addresses for now. Which is why ArcBit support receiving payments from both regular bitcoin addresses and reusable addresses.\nFor each account, you have one reusable address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a reusable address.".localized,
-                "The cold wallet feature will allow you to create accounts which offer better security then normal online wallets. You will need 2 devices to use this feature. Your normal day to day device that is connected to the internet and a secondary device that is not connected to the internet (Your secondary device would need to be online once to download the ArcBit app. Afterwards keep the secondary device offline for maximal security). This feature allows you to authorize bitcoin payments from an offline device so that the keys to your bitcoins will never need to be store on your online device. You can enable the cold wallet feature by going into advanced settings.".localized,
+                TLDisplayStrings.WHAT_IS_BITCOIN_DESC_STRING(),
+                TLDisplayStrings.WHAT_ARE_THE_BENEFITS_AND_ADVANTAGES_OF_BITCOIN_DESC_STRING(),
+                TLDisplayStrings.HOW_DO_I_GET_BITCOINS_DESC_STRING(),
+                TLDisplayStrings.WHAT_IS_A_BITCOIN_WALLET_DESC_STRING(),
+                TLDisplayStrings.HOW_DOES_ARCBIT_WALLET_WORK_DESC_STRING(),
+                TLDisplayStrings.WHAT_MAKES_ARCBIT_DIFFERENT_FROM_OTHER_BITCOIN_WALLETS_DESC_STRING(),
+                TLDisplayStrings.WHAT_ARE_TRANSACTION_CONFIRMATIONS_DESC_STRING(),
+                TLDisplayStrings.WHAT_ARE_ACCOUNTS_DESC_STRING(),
+                TLDisplayStrings.WHAT_ARE_REUSABLE_ADDRESSES_DESC_STRING(),
+                TLDisplayStrings.WHAT_IS_ARCBITS_COLD_WALLET_FEATURE_DESC_STRING(),
             ]
         }
         return STATIC_MEMBERS._explanationArray!.object(at: idx) as! String
@@ -472,12 +472,12 @@ class TLHelpDoc {
         var _faqArray: NSArray?
         if (_faqArray == nil) {
             _faqArray = [
-                "What are Account/Extended Keys?".localized,
-                "Import Feature".localized,
-                "Importing an Account".localized,
-                "Importing a Watch Only Account".localized,
-                "Importing a Private Key".localized,
-                "Importing a Watch Only Address".localized,
+                TLDisplayStrings.WHAT_ARE_ACCOUNT_EXTENDED_KEYS_STRING(),
+                TLDisplayStrings.IMPORT_FEATURE_STRING(),
+                TLDisplayStrings.IMPORTING_AN_ACCOUNT_STRING(),
+                TLDisplayStrings.IMPORTING_A_WATCH_ONLY_ACCOUNT_STRING(),
+                TLDisplayStrings.IMPORTING_A_PRIVATE_KEY_STRING(),
+                TLDisplayStrings.IMPORTING_A_WATCH_ONLY_ADDRESS_STRING(),
             ]
         }
         return _faqArray!
@@ -486,12 +486,12 @@ class TLHelpDoc {
     class func getAdvanceExplanation(_ idx: Int) -> String {
         if (STATIC_MEMBERS._advanceExplanationArray == nil) {
             STATIC_MEMBERS._advanceExplanationArray = [
-                "Each account has a public and private account/extended key. Accounts keys should be kept secret as they are used to view the account's transactions, and spend the accounts bitcoins.".localized,
-                "In advanced mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you back up imported keys and addresses separately.".localized,
-                "An account private key begins with the letters 'xprv'. You can see, spend and recover the transactions and bitcoins of an entire account from an account private key.".localized,
-                "An account public key begins with the letters 'xpub'. You can see the transactions and bitcoins of an entire account from an account private key, with the exception of reusable address payments. Future releases will address this issue.\nYou can however temporary import the corresponding account private key for this accounts' account public key to spend your watch only accounts' bitcoins. Simply go the send screen and select a watch only account to spend from and you will be prompt to temporary import your account's private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen.".localized,
-                "A private key begins with an 'L', 'K', or '5'.\nBIP 38 encrypted private keys can also be imported. They can either be imported encrypted or unencrypted. If you choose to import it encrypted, you will need to input the password each time you spend from your encrypted private key.".localized,
-                "A bitcoin address typically begins with a '1' or '3'. You can see the transactions, and track the balance of an address, but you cannot spend from just an imported address.\nYou can however temporary import this watch only addresses' private key to spend its bitcoins. Simply go the send screen and select a watch only address to spend from and you will be prompt to temporary import your addresses' private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen.".localized,
+                TLDisplayStrings.WHAT_ARE_ACCOUNT_EXTENDED_KEYS_DESC_STRING(),
+                TLDisplayStrings.IMPORT_FEATURE_DESC_STRING(),
+                TLDisplayStrings.IMPORTING_AN_ACCOUNT_DESC_STRING(),
+                TLDisplayStrings.IMPORTING_A_WATCH_ONLY_ACCOUNT_DESC_STRING(),
+                TLDisplayStrings.IMPORTING_A_PRIVATE_KEY_DESC_STRING(),
+                TLDisplayStrings.IMPORTING_A_WATCH_ONLY_ADDRESS_DESC_STRING(),
             ]
         }
         
