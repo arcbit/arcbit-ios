@@ -1648,7 +1648,7 @@ import UIKit
                     
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_IMPORT_COLD_WALLET_ACCOUNT()),
                         object: nil)
-                    // don't need to call do accountObject.getAccountData like in importAccount() cause watch only account does not see stealth payments. yet
+                    // don't need to call do accountObject.getAccountData like in importAccount() cause watch account does not see stealth payments. yet
                     DispatchQueue.main.async {
                         TLHUDWrapper.hideHUDForView(self.view, animated: true)
                         self.promtForNameAccount({
@@ -1786,7 +1786,7 @@ import UIKit
 
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_IMPORT_WATCH_ONLY_ACCOUNT()),
                         object: nil)
-                    // don't need to call do accountObject.getAccountData like in importAccount() cause watch only account does not see stealth payments. yet
+                    // don't need to call do accountObject.getAccountData like in importAccount() cause watch account does not see stealth payments. yet
                     DispatchQueue.main.async {
                         TLHUDWrapper.hideHUDForView(self.view, animated: true)
                         self.promtForNameAccount({
