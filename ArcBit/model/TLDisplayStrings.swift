@@ -305,7 +305,7 @@ class TLDisplayStrings {
     class func SCAN_NEXT_PART_STRING() -> String { return "Scan next part".localized }
     class func SCAN_STRING() -> String { return "Scan".localized }
     class func NEW_ADDRESSES_WILL_BE_AUTOMATICALLY_GENERATED_DESC_STRING() -> String { return "New addresses will be automatically generated and cycled for you as you use your current available addresses.".localized }
-    class func IMPORTED_WATCH_ONLY_ACCOUNTS_REUSABLE_ADDRESS_INFO_DESC_STRING() -> String { return "Imported Watch Only Accounts can't see reusable address payments, thus this accounts' reusable address is not available. If you want see the reusable address for this account import the account private key that corresponds to this accounts public key.".localized }
+    class func IMPORTED_WATCH_ONLY_ACCOUNTS_REUSABLE_ADDRESS_INFO_DESC_STRING() -> String { return "Imported Watch Accounts can't see reusable address payments, thus this accounts' reusable address is not available. If you want see the reusable address for this account import the account private key that corresponds to this accounts public key.".localized }
     class func IMPORTED_COLD_WALLET_ACCOUNTS_REUSABLE_ADDRESS_INFO_DESC_STRING() -> String { return "Cold Wallet Accounts can't see reusable address payments, thus this accounts' reusable address is not available.".localized }
     class func WELCOME_EXCLAMATION_STRING() -> String { return "Welcome!".localized }
     class func WELCOME_DESC_STRING() -> String { return "Welcome to ArcBit, a user only controlled Bitcoin wallet. Start using the app now by depositing your Bitcoins here.".localized }
@@ -375,8 +375,8 @@ class TLDisplayStrings {
     class func REUSABLE_ADDRESSES_STRING() -> String { return "Reusable Addresses".localized }
     class func CREATE_NEW_ACCOUNT_STRING() -> String { return "Create New Account".localized }
     class func IMPORT_COLD_WALLET_ACCOUNT_STRING() -> String { return "Import Cold Wallet Account".localized }
-    class func IMPORT_WATCH_ONLY_ACCOUNT_STRING() -> String { return "Import Watch Only Account".localized }
-    class func IMPORT_WATCH_ONLY_ADDRESS_STRING() -> String { return "Import Watch Only Address".localized }
+    class func IMPORT_WATCH_ONLY_ACCOUNT_STRING() -> String { return "Import Watch Account".localized }
+    class func IMPORT_WATCH_ONLY_ADDRESS_STRING() -> String { return "Import Watch Address".localized }
     class func SEND_PAYMENT_STRING() -> String { return "Send Payment".localized }
     class func RECEIVE_PAYMENT_STRING() -> String { return "Receive Payment".localized }
     class func RECEIVE_PAYMENT_FROM_REUSABLE_ADDRESS_STRING() -> String { return "Receive Payment From Reusable Address".localized }
@@ -454,9 +454,9 @@ class TLDisplayStrings {
     class func CLICK_ADVANCED_SETTINGS_STRING() -> String { return "Click ‘Advanced settings’".localized }
     class func TOGGLE_ENABLE_ADVANCED_MODE_STRING() -> String { return "Toggle ’Enable advanced mode’".localized }
     class func CLICK_IMPORT_ACCOUNT_STRING() -> String { return "Click ‘Import Account’".localized }
-    class func CLICK_IMPORT_WATCH_ONLY_ACCOUNT_STRING() -> String { return "Click ‘Import Watch Only Account’".localized }
+    class func CLICK_IMPORT_WATCH_ONLY_ACCOUNT_STRING() -> String { return "Click ‘Import Watch Account’".localized }
     class func CLICK_IMPORT_PRIVATE_KEY_STRING() -> String { return "Click ‘Import Private Key’".localized }
-    class func CLICK_IMPORT_WATCH_ONLY_ADDRESS_STRING() -> String { return "Click ‘Import Watch Only Address’".localized }
+    class func CLICK_IMPORT_WATCH_ONLY_ADDRESS_STRING() -> String { return "Click ‘Import Watch Address’".localized }
     class func CLICK_BLOCKEXPLORER_API_TYPE_STRING() -> String { return "Click ‘blockexplorer API type’".localized }
     class func SELECT_AND_CLICK_A_BLOCKEXPLORER_API_STRING() -> String { return "Select and click a blockexplorer API".localized }
     class func QUIT_AND_RE_ENTER_APP_STRING() -> String { return "Quit and re-enter app".localized }
@@ -489,9 +489,9 @@ class TLDisplayStrings {
     class func WHAT_ARE_ACCOUNT_EXTENDED_KEYS_STRING() -> String { return "What are Account/Extended Keys?".localized }
     class func IMPORT_FEATURE_STRING() -> String { return "Import Feature".localized }
     class func IMPORTING_AN_ACCOUNT_STRING() -> String { return "Importing an Account".localized }
-    class func IMPORTING_A_WATCH_ONLY_ACCOUNT_STRING() -> String { return "Importing a Watch Only Account".localized }
+    class func IMPORTING_A_WATCH_ONLY_ACCOUNT_STRING() -> String { return "Importing a Watch Account".localized }
     class func IMPORTING_A_PRIVATE_KEY_STRING() -> String { return "Importing a Private Key".localized }
-    class func IMPORTING_A_WATCH_ONLY_ADDRESS_STRING() -> String { return "Importing a Watch Only Address".localized }
+    class func IMPORTING_A_WATCH_ONLY_ADDRESS_STRING() -> String { return "Importing a Watch Address".localized }
     
     class func WHAT_ARE_ACCOUNT_EXTENDED_KEYS_DESC_STRING() -> String { return "Each account has a public and private account/extended key. Accounts keys should be kept secret as they are used to view the account's transactions, and spend the accounts bitcoins.".localized }
     class func IMPORT_FEATURE_DESC_STRING() -> String { return "In advanced mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you back up imported keys and addresses separately.".localized }

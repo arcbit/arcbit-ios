@@ -30,7 +30,7 @@
 
 "Archived Change Addresses" = "Archived Change Addresses";
 
-"Imported Watch Only Accounts can't see reusable address payments" = "Imported Watch Only Accounts can't see reusable address payments";
+"Imported Watch Accounts can't see reusable address payments" = "Imported Watch Accounts can't see reusable address payments";
 
 "None currently" = "None currently";
 
@@ -379,7 +379,7 @@
 
 "New addresses will be automatically generated and cycled for you as you use your current available addresses." = "New addresses will be automatically generated and cycled for you as you use your current available addresses.";
 
-"Imported Watch Only Accounts can't see reusable address payments, thus this accounts' reusable address is not available. If you want see the reusable address for this account import the account private key that corresponds to this accounts public key." = "Imported Watch Only Accounts can't see reusable address payments, thus this accounts' reusable address is not available. If you want see the reusable address for this account import the account private key that corresponds to this accounts public key.";
+"Imported Watch Accounts can't see reusable address payments, thus this accounts' reusable address is not available. If you want see the reusable address for this account import the account private key that corresponds to this accounts public key." = "Imported Watch Accounts can't see reusable address payments, thus this accounts' reusable address is not available. If you want see the reusable address for this account import the account private key that corresponds to this accounts public key.";
 
 "Welcome!" = "Welcome!";
 
@@ -533,9 +533,9 @@
 
 "Create New Account" = "Create New Account";
 
-"Import Watch Only Account" = "Import Watch Only Account";
+"Import Watch Account" = "Import Watch Account";
 
-"Import Watch Only Address" = "Import Watch Only Address";
+"Import Watch Address" = "Import Watch Address";
 
 "Send Payment" = "Send Payment";
 
@@ -689,11 +689,11 @@
 
 "Click ‘Import Account’" = "Click ‘Import Account’";
 
-"Click ‘Import Watch Only Account’" = "Click ‘Import Watch Only Account’";
+"Click ‘Import Watch Account’" = "Click ‘Import Watch Account’";
 
 "Click ‘Import Private Key’" = "Click ‘Import Private Key’";
 
-"Click ‘Import Watch Only Address’" = "Click ‘Import Watch Only Address’";
+"Click ‘Import Watch Address’" = "Click ‘Import Watch Address’";
 
 "Click ‘blockexplorer API type’" = "Click ‘blockexplorer API type’";
 
@@ -749,11 +749,11 @@
 
 "Importing an Account" = "Importing an Account";
 
-"Importing a Watch Only Account" = "Importing a Watch Only Account";
+"Importing a Watch Account" = "Importing a Watch Account";
 
 "Importing a Private Key" = "Importing a Private Key";
 
-"Importing a Watch Only Address" = "Importing a Watch Only Address";
+"Importing a Watch Address" = "Importing a Watch Address";
 
 "Each account has a public and private account/extended key. Accounts keys should be kept secret as they are used to view the account's transactions, and spend the accounts bitcoins." = "Each account has a public and private account/extended key. Accounts keys should be kept secret as they are used to view the account's transactions, and spend the accounts bitcoins.";
 
