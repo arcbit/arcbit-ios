@@ -158,7 +158,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                                                             }
                                                             
                                                             if (TLWalletUtils.isTransactionFeeTooLow(feeAmount)) {
-                                                                let msg = String(format: TLDisplayStrings.TOO_LOW_A_TRANSACTION_FEE_DESC_STRING())
+                                                                let msg = String(format: TLDisplayStrings.NON_RECOMMENDED_AMOUNT_TRANSACTION_FEE_DESC_STRING())
                                                                 
                                                                 TLPrompts.promtForOKCancel(self, title: TLDisplayStrings.NON_RECOMMENDED_AMOUNT_TRANSACTION_FEE_STRING(), message: msg, success: {
                                                                     () in
