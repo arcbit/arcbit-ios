@@ -394,7 +394,7 @@ class TLDisplayStrings {
     class func TRANSACTION_ID_COLON_X_STRING() -> String { return "Transaction ID: %@".localized }
     class func TRANSACTION_AUTHORIZED_STRING() -> String { return "Transaction authorized".localized }
     class func TRANSACTION_CONFIRMATIONS_STRING() -> String { return "Transaction confirmations".localized }
-    class func FEE_INFO_DESC_STRING() -> String { return "Transaction fees impact how quickly the Bitcoin mining network will confirm your transactions, and depend on the current network conditions.".localized }
+    class func FEE_INFO_DESC_STRING() -> String { return "Transaction fees impact how quickly the Bitcoin network will confirm your transactions. Higher fees means faster confirmation times. Default fee behavior can be configured in settings.".localized }
     class func SPENDING_FROM_A_COLD_WALLET_ACCOUNT_DESC_STRING() -> String { return "Transaction needs to be authorize by an offline and airgap device. Send transaction to an offline device for authorization?".localized }
     class func TRANSACTION_AUTHORIZED_DESC_STRING() -> String { return "Transaction needs to be passed back to your online device in order for the payment to be sent".localized }
     class func TRY_AGAIN_STRING() -> String { return "Try Again".localized }

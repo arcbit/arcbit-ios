@@ -100,12 +100,20 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         updateView()
         self.reviewPaymentViewController = self
     }
+    
     override func viewWillAppear(_ animated: Bool) {
         if self.shouldPromptToScanSignedTxAirGapData {
             self.promptToScanSignedTxAirGapData()
         } else if self.shouldPromptToBroadcastSignedTx {
             self.shouldPromptToBroadcastSignedTx = false
             self.promptToBroadcastColdWalletAccountSignedTx(self.signedAirGapTxHex!, txHash: self.signedAirGapTxHash!)
+        }
+    }
+
+    override func viewDidAppear(_ animated: Bool) {
+        if (!TLPreferences.disabledShowFeeExplanationInfo()) {
+            TLPrompts.promptSuccessMessage(TLDisplayStrings.TRANSACTION_FEES_STRING(), message: TLDisplayStrings.FEE_INFO_DESC_STRING())
+            TLPreferences.setDisableShowFeeExplanationInfo(true);
         }
     }
 

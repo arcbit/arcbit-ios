@@ -44,7 +44,7 @@ class TLHDWalletWrapper {
     class func phraseIsValid(_ phrase:String) -> (Bool){
         return BTCMnemonic(words: phrase.components(separatedBy: " "), password: nil, wordListType: .english) != nil
     }
-    
+
     class func getMasterHex(_ mnemonic: String) -> String {
         assert(phraseIsValid(mnemonic), "mnemonic is invalid")
         let mnemonicData = mnemonic.data(using: String.Encoding.utf8)

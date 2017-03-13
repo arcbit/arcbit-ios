@@ -59,6 +59,7 @@ class TLSuggestions {
         suggestions = NSMutableDictionary(dictionary:TLPreferences.getSuggestionsDict() ?? NSDictionary())
     }
     
+    //Deprecated, just use TLPreferences, see method disabledShowFeeExplanationInfo/setDisableShowFeeExplanationInfo
     func enabledAllSuggestions() -> () {
         suggestions = NSMutableDictionary(dictionary:[
             ENABLE_SUGGESTED_ENABLE_PIN : true,
