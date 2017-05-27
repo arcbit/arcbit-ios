@@ -86,6 +86,10 @@ import CoreData
             , selector: #selector(TLHistoryViewController.updateTransactionsTableView(_:)),
             name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_BLOCK()), object: nil)
         
+        NotificationCenter.default.addObserver(self
+            , selector: #selector(TLHistoryViewController.updateTransactionsTableView(_:)),
+              name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_EXCHANGE_RATE_UPDATED()), object: nil)
+
         self.transactionsTableView!.delegate = self
         self.transactionsTableView!.dataSource = self
         self.transactionsTableView!.tableFooterView = UIView(frame: CGRect.zero)

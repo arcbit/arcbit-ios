@@ -1234,6 +1234,7 @@ import Crashlytics
     }
     
     func applicationWillEnterForeground(_ application: UIApplication) {
+        TLExchangeRate.instance().updateExchangeRate()
     }   
     
     func applicationDidBecomeActive(_ application: UIApplication) {

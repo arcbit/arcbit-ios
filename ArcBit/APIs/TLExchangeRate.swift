@@ -40,21 +40,25 @@ class TLExchangeRate {
     init() {
         self.networking = TLNetworking()
         self.exchangeRateDict = NSMutableDictionary()
+        updateExchangeRate()
+    }
+    
+    func updateExchangeRate() {
         let queue = DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background)
         queue.async {
             self.getExchangeRates({ (jsonData:AnyObject!) in
                 let array = jsonData as! NSArray
-
+                
                 for i in stride(from: 0, to: array.count, by: 1) {
                     let dict = array[i] as! NSDictionary
                     (self.exchangeRateDict!)[dict["code"] as! String] = dict
                 }
-                
-                }, failure: {(code, status) in
-                    DLog("getExchangeRates failure: code:\(code) status:\(status)")
+                NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_EXCHANGE_RATE_UPDATED()),
+                                                object: nil)
+            }, failure: {(code, status) in
+                DLog("getExchangeRates failure: code:\(code) status:\(status)")
             })
-        }
-    }
+        }    }
     
     fileprivate func getExchangeRate(_ currency:String) -> (Double) {
         if (self.exchangeRateDict == nil || self.exchangeRateDict![currency] == nil) {

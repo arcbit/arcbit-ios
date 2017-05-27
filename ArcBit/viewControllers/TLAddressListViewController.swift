@@ -44,7 +44,10 @@ import UIKit
         NotificationCenter.default.addObserver(self,
             selector: #selector(TLAddressListViewController.reloadAddressListTableView(_:)),
             name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED()), object: nil)
-        
+        NotificationCenter.default.addObserver(self,
+                                               selector: #selector(TLAddressListViewController.reloadAddressListTableView(_:)),
+                                               name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_EXCHANGE_RATE_UPDATED()), object: nil)
+
         self.addressListTableView!.delegate = self
         self.addressListTableView!.dataSource = self
         self.addressListTableView!.tableFooterView = UIView(frame: CGRect.zero)

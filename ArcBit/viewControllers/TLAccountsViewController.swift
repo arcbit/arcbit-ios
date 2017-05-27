@@ -58,6 +58,9 @@ import UIKit
         NotificationCenter.default.addObserver(self, selector: #selector(TLAccountsViewController.accountsTableViewReloadDataWrapper(_:)),
             name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ADVANCE_MODE_TOGGLED()), object: nil)
         
+        NotificationCenter.default.addObserver(self, selector: #selector(TLAccountsViewController.accountsTableViewReloadDataWrapper(_:)),
+                                               name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_EXCHANGE_RATE_UPDATED()), object: nil)
+
         NotificationCenter.default.addObserver(self, selector: #selector(TLAccountsViewController.accountsTableViewReloadDataWrapper(_:)), name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION()), object: nil)
         
         accountRefreshControl = UIRefreshControl()

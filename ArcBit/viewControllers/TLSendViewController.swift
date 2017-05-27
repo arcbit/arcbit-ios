@@ -229,6 +229,10 @@ import UIKit
         NotificationCenter.default.addObserver(self
             ,selector:#selector(TLSendViewController.clearSendForm(_:)),
              name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_SEND_PAYMENT()), object:nil)
+        NotificationCenter.default.addObserver(self
+            ,selector:#selector(TLSendViewController.updateAccountBalanceView(_:)),
+             name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_EXCHANGE_RATE_UPDATED()), object:nil)
+
         
         self.updateSendForm()
         

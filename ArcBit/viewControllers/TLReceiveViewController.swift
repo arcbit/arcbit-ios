@@ -72,26 +72,24 @@ import UIKit
 
         NotificationCenter.default.addObserver(self, selector: #selector(TLReceiveViewController.updateReceiveViewController(_:)),
             name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ADVANCE_MODE_TOGGLED()), object: nil)
-        
         NotificationCenter.default.addObserver(self, selector: #selector(TLReceiveViewController.updateViewToNewSelectedObject),
             name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_UPDATED_RECEIVING_ADDRESSES()), object: nil)
-        
         NotificationCenter.default.addObserver(self
             , selector: #selector(TLReceiveViewController.updateViewToNewSelectedObjectAndAlertNewText),
             name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION()), object: nil)
-        
         NotificationCenter.default.addObserver(self
             , selector: #selector(TLReceiveViewController.updateViewToNewSelectedObject),
             name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED()), object: nil)
-        
         NotificationCenter.default.addObserver(self
             , selector: #selector(TLReceiveViewController.updateViewToNewSelectedObject),
             name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_FETCHED_ADDRESSES_DATA()), object: nil)
-
-        
         NotificationCenter.default.addObserver(self
             , selector: #selector(TLReceiveViewController.updateViewToNewSelectedObject),
             name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED()), object: nil)
+        NotificationCenter.default.addObserver(self
+            , selector: #selector(TLReceiveViewController.updateViewToNewSelectedObject),
+              name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_EXCHANGE_RATE_UPDATED()), object: nil)
+        
         
         self.receiveAddressesScrollView!.delegate = self
         
