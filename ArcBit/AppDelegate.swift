@@ -496,17 +496,18 @@ import Crashlytics
         for i in stride(from: 0, to: accounts.getNumberOfAccounts(), by: 1) {
             let accountObject = self.accounts!.getAccountObjectForIdx(i)
             if accountObject.hasFetchedAccountData() &&
-                accountObject.stealthWallet != nil && accountObject.stealthWallet!.isListeningToStealthPayment == false {
-                    let addrAndSignature = accountObject.stealthWallet!.getStealthAddressAndSignatureFromChallenge(challenge)
+                accountObject.stealthWallet != nil && accountObject.stealthWallet?.isListeningToStealthPayment == false {
+                if let addrAndSignature = accountObject.stealthWallet?.getStealthAddressAndSignatureFromChallenge(challenge){
                     TLStealthWebSocket.instance().sendMessageSubscribeToStealthAddress(addrAndSignature.0, signature: addrAndSignature.1)
+                }
             }
         }
-        
-        for i in stride(from: 0, to: self.importedAccounts!.getNumberOfAccounts(), by: 1) {
-            let accountObject = self.importedAccounts!.getAccountObjectForIdx(i)
-            if accountObject.hasFetchedAccountData() &&
-                accountObject.stealthWallet != nil && accountObject.stealthWallet!.isListeningToStealthPayment == false {
-                    let addrAndSignature = accountObject.stealthWallet!.getStealthAddressAndSignatureFromChallenge(challenge)
+        guard let importedAccounts = importedAccounts else { return }
+        for i in stride(from: 0, to: importedAccounts.getNumberOfAccounts(), by: 1) {
+            let accountObject = importedAccounts.getAccountObjectForIdx(i)
+            if let stealthWallet = accountObject.stealthWallet, accountObject.hasFetchedAccountData() &&
+                stealthWallet.isListeningToStealthPayment == false {
+                    let addrAndSignature = stealthWallet.getStealthAddressAndSignatureFromChallenge(challenge)
                     TLStealthWebSocket.instance().sendMessageSubscribeToStealthAddress(addrAndSignature.0, signature: addrAndSignature.1)
             }
         }
