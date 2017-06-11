@@ -466,14 +466,14 @@ import Crashlytics
         for i in stride(from: 0, to: accounts.getNumberOfAccounts(), by: 1) {
             let accountObject = accounts.getAccountObjectForIdx(i)
             if accountObject.stealthWallet != nil {
-                accountObject.stealthWallet.isListeningToStealthPayment = false
+                accountObject.stealthWallet?.isListeningToStealthPayment = false
             }
         }
         
         for i in stride(from: 0, to: self.importedAccounts!.getNumberOfAccounts(), by: 1) {
             let accountObject = self.importedAccounts!.getAccountObjectForIdx(i)
             if accountObject.stealthWallet != nil {
-                accountObject.stealthWallet!.isListeningToStealthPayment = false
+                accountObject.stealthWallet?.isListeningToStealthPayment = false
             }
         }
     }
@@ -492,8 +492,8 @@ import Crashlytics
         if (!self.isAccountsAndImportsLoaded || !TLStealthWebSocket.instance().isWebSocketOpen()) {
             return
         }
-
-        for i in stride(from: 0, to: self.accounts!.getNumberOfAccounts(), by: 1) {
+        guard let accounts = accounts else { return }
+        for i in stride(from: 0, to: accounts.getNumberOfAccounts(), by: 1) {
             let accountObject = self.accounts!.getAccountObjectForIdx(i)
             if accountObject.hasFetchedAccountData() &&
                 accountObject.stealthWallet != nil && accountObject.stealthWallet!.isListeningToStealthPayment == false {
