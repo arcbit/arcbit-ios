@@ -258,17 +258,17 @@ import Crashlytics
     
     func recoverHDWallet(_ mnemonic: String, shouldRefreshApp: Bool = true) {
         if shouldRefreshApp {
-            self.refreshApp(mnemonic)
+            refreshApp(mnemonic)
         } else {
             let masterHex = TLHDWalletWrapper.getMasterHex(mnemonic)
-            self.appWallet.createInitialWalletPayload(mnemonic, masterHex:masterHex)
+            appWallet.createInitialWalletPayload(mnemonic, masterHex:masterHex)
             
-            self.accounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getAccountObjectArray(), accountType:.hdWallet)
-            self.coldWalletAccounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getColdWalletAccountArray(), accountType:.coldWallet)
-            self.importedAccounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getImportedAccountArray(), accountType:.imported)
-            self.importedWatchAccounts = TLAccounts(appWallet: self.appWallet, accountsArray:self.appWallet.getWatchOnlyAccountArray(), accountType:.importedWatch)
-            self.importedAddresses = TLImportedAddresses(appWallet: self.appWallet, importedAddresses:self.appWallet.getImportedPrivateKeyArray(), accountAddressType:.imported)
-            self.importedWatchAddresses = TLImportedAddresses(appWallet: self.appWallet, importedAddresses:self.appWallet.getWatchOnlyAddressArray(), accountAddressType:.importedWatch)
+            accounts = TLAccounts(appWallet: appWallet, accountsArray:appWallet.getAccountObjectArray(), accountType:.hdWallet)
+            coldWalletAccounts = TLAccounts(appWallet: appWallet, accountsArray:appWallet.getColdWalletAccountArray(), accountType:.coldWallet)
+            importedAccounts = TLAccounts(appWallet: appWallet, accountsArray:appWallet.getImportedAccountArray(), accountType:.imported)
+            importedWatchAccounts = TLAccounts(appWallet: appWallet, accountsArray: appWallet.getWatchOnlyAccountArray(), accountType:.importedWatch)
+            importedAddresses = TLImportedAddresses(appWallet: appWallet, importedAddresses: appWallet.getImportedPrivateKeyArray(), accountAddressType:.imported)
+            importedWatchAddresses = TLImportedAddresses(appWallet: appWallet, importedAddresses: appWallet.getWatchOnlyAddressArray(), accountAddressType:.importedWatch)
         }
         
         var accountIdx = 0
@@ -277,7 +277,7 @@ import Crashlytics
         
         while (true) {
             let accountName = String(format:TLDisplayStrings.ACCOUNT_X_STRING(), (accountIdx + 1))
-            let accountObject = self.accounts!.createNewAccount(accountName, accountType:.normal, preloadStartingAddresses:false)
+            let accountObject = accounts!.createNewAccount(accountName, accountType:.normal, preloadStartingAddresses:false)
             
             DLog("recoverHDWalletaccountName \(accountName)")
             
@@ -462,10 +462,11 @@ import Crashlytics
     }
     
     func setAccountsListeningToStealthPaymentsToFalse() {
-        for i in stride(from: 0, to: self.accounts!.getNumberOfAccounts(), by: 1) {
-            let accountObject = self.accounts!.getAccountObjectForIdx(i)
+        guard let accounts = accounts else { return }
+        for i in stride(from: 0, to: accounts.getNumberOfAccounts(), by: 1) {
+            let accountObject = accounts.getAccountObjectForIdx(i)
             if accountObject.stealthWallet != nil {
-                accountObject.stealthWallet!.isListeningToStealthPayment = false
+                accountObject.stealthWallet.isListeningToStealthPayment = false
             }
         }
         
