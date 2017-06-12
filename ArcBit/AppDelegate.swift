@@ -232,11 +232,11 @@ import Crashlytics
             let importedAddress = importedAddresses.getAddressObjectAtIdx(sendFromIndex)
             receiveSelectedObject.setSelectedAddress(importedAddress)
         case .importedWatchAddress:
-            guard let importedWatchAddresses = importedWatchAccounts,
+            guard let importedWatchAddresses = importedWatchAddresses,
                 let receiveSelectedObject = receiveSelectedObject else { return }
             let importedAddress = importedWatchAddresses.getAddressObjectAtIdx(sendFromIndex)
             receiveSelectedObject.setSelectedAddress(importedAddress)
-
+        }
     }
     
     func updateHistorySelectedObject(_ sendFromType: TLSendFromType, sendFromIndex: Int) {
