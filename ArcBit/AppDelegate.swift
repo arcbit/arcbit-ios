@@ -209,25 +209,34 @@ import Crashlytics
     }
     
     func updateReceiveSelectedObject(_ sendFromType: TLSendFromType, sendFromIndex: Int) {
-        if (sendFromType == .hdWallet) {
-            let accountObject = self.accounts!.getAccountObjectForIdx(sendFromIndex)
-            self.receiveSelectedObject!.setSelectedAccount(accountObject)
-        } else if (sendFromType == .coldWalletAccount) {
-            let accountObject = self.coldWalletAccounts!.getAccountObjectForIdx(sendFromIndex)
-            self.receiveSelectedObject!.setSelectedAccount(accountObject)
-        } else if (sendFromType == .importedAccount) {
-            let accountObject = self.importedAccounts!.getAccountObjectForIdx(sendFromIndex)
-            self.receiveSelectedObject!.setSelectedAccount(accountObject)
-        } else if (sendFromType == .importedWatchAccount) {
-            let accountObject = self.importedWatchAccounts!.getAccountObjectForIdx(sendFromIndex)
-            self.receiveSelectedObject!.setSelectedAccount(accountObject)
-        } else if (sendFromType == .importedAddress) {
-            let importedAddress = self.importedAddresses!.getAddressObjectAtIdx(sendFromIndex)
-            self.receiveSelectedObject!.setSelectedAddress(importedAddress)
-        } else if (sendFromType == .importedWatchAddress) {
-            let importedAddress = self.importedWatchAddresses!.getAddressObjectAtIdx(sendFromIndex)
-            self.receiveSelectedObject!.setSelectedAddress(importedAddress)
-        }
+        switch sendFromType {
+        case .hdWallet:
+            guard let accounts = accounts, let receiveSelectedObject = receiveSelectedObject else { return }
+            let accountObject = accounts.getAccountObjectForIdx(sendFromIndex)
+            receiveSelectedObject.setSelectedAccount(accountObject)
+        case .coldWalletAccount:
+            guard let coldWalletAccounts = coldWalletAccounts, let receiveSelectedObject = receiveSelectedObject else { return }
+            let accountObject = coldWalletAccounts.getAccountObjectForIdx(sendFromIndex)
+            receiveSelectedObject.setSelectedAccount(accountObject)
+        case .importedAccount:
+            guard let importedAccounts = importedAccounts, let receiveSelectedObject = receiveSelectedObject else { return }
+            let accountObject = importedAccounts.getAccountObjectForIdx(sendFromIndex)
+            receiveSelectedObject.setSelectedAccount(accountObject)
+        case .importedWatchAccount:
+            guard let importedWatchAccounts = importedWatchAccounts, let receiveSelectedObject = receiveSelectedObject else { return }
+            let accountObject = importedWatchAccounts.getAccountObjectForIdx(sendFromIndex)
+            receiveSelectedObject.setSelectedAccount(accountObject)
+        case .importedAddress:
+            guard let importedAddresses = importedAddresses,
+                let receiveSelectedObject = receiveSelectedObject else { return }
+            let importedAddress = importedAddresses.getAddressObjectAtIdx(sendFromIndex)
+            receiveSelectedObject.setSelectedAddress(importedAddress)
+        case .importedWatchAddress:
+            guard let importedWatchAddresses = importedWatchAccounts,
+                let receiveSelectedObject = receiveSelectedObject else { return }
+            let importedAddress = importedWatchAddresses.getAddressObjectAtIdx(sendFromIndex)
+            receiveSelectedObject.setSelectedAddress(importedAddress)
+
     }
     
     func updateHistorySelectedObject(_ sendFromType: TLSendFromType, sendFromIndex: Int) {
