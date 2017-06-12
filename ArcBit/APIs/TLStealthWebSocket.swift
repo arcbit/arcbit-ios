@@ -77,7 +77,7 @@ import Foundation
         return self.sendMessage(msg)
     }
     
-    func sendMessageSubscribeToStealthAddress(_ stealthAddress: String, signature: String) -> Bool {
+    @discardableResult func sendMessageSubscribeToStealthAddress(_ stealthAddress: String, signature: String) -> Bool {
         let msgDict = ["op":"addr_sub", "x":["addr":stealthAddress,"sig":signature]] as [String : Any]
         let msg = TLUtils.dictionaryToJSONString(false, dict: msgDict as NSDictionary)
         return self.sendMessage(msg)
