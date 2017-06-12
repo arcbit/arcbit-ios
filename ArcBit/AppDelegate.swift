@@ -70,7 +70,7 @@ import Crashlytics
     }
     
     func aAccountNeedsRecovering() -> Bool {
-        guard let accounts = AppDelegate.instance().accounts else { return }
+        guard let accounts = AppDelegate.instance().accounts else { return false }
         for i in stride(from: 0, to: accounts.getNumberOfAccounts(), by: 1) {
             let accountObject = accounts.getAccountObjectForIdx(i)
             if (accountObject.needsRecovering()) {
@@ -78,7 +78,7 @@ import Crashlytics
             }
         }
         
-        guard let coldWalletAccounts = AppDelegate.instance().coldWalletAccounts else { return }
+        guard let coldWalletAccounts = AppDelegate.instance().coldWalletAccounts else { return false }
         
         for i in stride(from: 0, to: coldWalletAccounts.getNumberOfAccounts(), by: 1) {
             let accountObject = coldWalletAccounts.getAccountObjectForIdx(i)
@@ -87,7 +87,7 @@ import Crashlytics
             }
         }
         
-        guard let importedAccounts = AppDelegate.instance().importedAccounts else { return }
+        guard let importedAccounts = AppDelegate.instance().importedAccounts else { return false }
         for i in stride(from: 0, to: importedAccounts.getNumberOfAccounts(), by: 1) {
             let accountObject = importedAccounts.getAccountObjectForIdx(i)
             if (accountObject.needsRecovering()) {
@@ -95,7 +95,7 @@ import Crashlytics
             }
         }
         
-        guard let importedWatchAccounts = AppDelegate.instance().importedWatchAccounts else { return }
+        guard let importedWatchAccounts = AppDelegate.instance().importedWatchAccounts else { return false }
         
         for i in stride(from: 0, to: importedWatchAccounts.getNumberOfAccounts(), by: 1) {
             let accountObject = importedWatchAccounts.getAccountObjectForIdx(i)
@@ -149,7 +149,7 @@ import Crashlytics
         var sendFromIndex = Int(TLPreferences.getSendFromIndex())
         
         if (sendFromType == .hdWallet) {
-            if let accounts = accounts, endFromIndex > accounts.getNumberOfAccounts() - 1 {
+            if let accounts = accounts, sendFromIndex > accounts.getNumberOfAccounts() - 1 {
                 sendFromType = TLSendFromType.hdWallet
                 sendFromIndex = 0
             }
@@ -180,7 +180,7 @@ import Crashlytics
             }
         }
         
-        self.updateGodSend(sendFromType, sendFromIndex:sendFromIndex)
+        updateGodSend(sendFromType, sendFromIndex:sendFromIndex)
     }
     
     func updateGodSend(_ sendFromType: TLSendFromType, sendFromIndex: Int) {
