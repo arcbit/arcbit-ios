@@ -1,8 +1,8 @@
 //
-//  SocketAckEmitter.swift
+//  SocketEngineClient.swift
 //  Socket.IO-Client-Swift
 //
-//  Created by Erik Little on 9/16/15.
+//  Created by Erik Little on 3/19/15.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -21,27 +21,36 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
+//
 
 import Foundation
 
-public final class SocketAckEmitter : NSObject {
-    let socket: SocketIOClient
-    let ackNum: Int
-    
-    init(socket: SocketIOClient, ackNum: Int) {
-        self.socket = socket
-        self.ackNum = ackNum
-    }
-    
-    public func with(_ items: SocketData...) {
-        guard ackNum != -1 else { return }
-        
-        socket.emitAck(ackNum, with: items)
-    }
-    
-    public func with(_ items: [Any]) {
-        guard ackNum != -1 else { return }
-        
-        socket.emitAck(ackNum, with: items)
-    }
+/// Declares that a type will be a delegate to an engine.
+@objc public protocol SocketEngineClient {
+    // MARK: Methods
+
+    /// Called when the engine errors.
+    ///
+    /// - parameter reason: The reason the engine errored.
+    func engineDidError(reason: String)
+
+    /// Called when the engine closes.
+    ///
+    /// - parameter reason: The reason that the engine closed.
+    func engineDidClose(reason: String)
+
+    /// Called when the engine opens.
+    ///
+    /// - parameter reason: The reason the engine opened.
+    func engineDidOpen(reason: String)
+
+    /// Called when the engine has a message that must be parsed.
+    ///
+    /// - parameter msg: The message that needs parsing.
+    func parseEngineMessage(_ msg: String)
+
+    /// Called when the engine receives binary data.
+    ///
+    /// - parameter data: The data the engine received.
+    func parseEngineBinaryData(_ data: Data)
 }

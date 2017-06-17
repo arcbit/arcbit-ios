@@ -1,8 +1,8 @@
 //
-//  SocketEnginePacketType.swift
+//  SocketAnyEvent.swift
 //  Socket.IO-Client-Swift
 //
-//  Created by Erik Little on 10/7/15.
+//  Created by Erik Little on 3/28/15.
 //
 //  Permission is hereby granted, free of charge, to any person obtaining a copy
 //  of this software and associated documentation files (the "Software"), to deal
@@ -21,10 +21,26 @@
 //  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 //  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 //  THE SOFTWARE.
-//
 
 import Foundation
 
-@objc public enum SocketEnginePacketType : Int {
-    case open, close, ping, pong, message, upgrade, noop
+/// Represents some event that was received.
+public final class SocketAnyEvent : NSObject {
+    // MARK: Properties
+
+    /// The event name.
+    public let event: String
+
+    /// The data items for this event.
+    public let items: [Any]?
+
+    /// The description of this event.
+    override public var description: String {
+        return "SocketAnyEvent: Event: \(event) items: \(String(describing: items))"
+    }
+
+    init(event: String, items: [Any]?) {
+        self.event = event
+        self.items = items
+    }
 }

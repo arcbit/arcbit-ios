@@ -64,7 +64,7 @@ import Foundation
         } else {
             DLog("websocket reconnect insight")
             let url = String(format: "%@", TLPreferences.getBlockExplorerURL(TLBlockExplorer.insight)!)
-            self.socket = SocketIOClient(socketURL: URL(string: url)!, config: [.log(true), .forcePolling(true)])
+            self.socket = SocketIOClient(socketURL: URL(string: url)!, config: [.log(false), .forcePolling(true)])
             weak var weakSelf = self
 
             self.socket!.on("connect") {data, ack in
@@ -72,7 +72,7 @@ import Foundation
                 self.consecutiveFailedConnections = 0
                 weakSelf!.socketIsConnected = true
                 NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_TRANSACTION_LISTENER_OPEN()), object: nil, userInfo: nil)
-//                weakSelf!.socket!.emit("subscribe", "inv")
+                weakSelf!.socket!.emit("subscribe", "inv")
             }
             self.socket!.on("disconnect") {data, ack in
                 DLog("socketio onDisconnect")
@@ -93,7 +93,7 @@ import Foundation
                 DLog("socketio received lastest block hash: \(firstObject!.debugDescription)")
                 
             }
-//            socket.on("tx") {data, ack in
+//            self.socket!.on("tx") {data, ack in
 //                DLog("socketio__ tx \(data)")
 //            }
             self.socket!.connect()
@@ -142,7 +142,7 @@ import Foundation
                 
                 self.socket!.on("bitcoind/addresstxid") {data, ack in
                     DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
-                        //DLog("socketio on data: \(data)")
+                        DLog("socketio on data: \(data)")
                         let dataArray = data as NSArray
                         let dataDictionary = dataArray.firstObject as! NSDictionary
                         let addr = dataDictionary["address"] as! String

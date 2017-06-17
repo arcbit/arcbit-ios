@@ -22,12 +22,12 @@
 
 import Foundation
 
-protocol SocketParsable : SocketIOClientSpec {
+protocol SocketParsable {
     func parseBinaryData(_ data: Data)
     func parseSocketMessage(_ message: String)
 }
 
-extension SocketParsable {
+extension SocketParsable where Self: SocketIOClientSpec {
     private func isCorrectNamespace(_ nsp: String) -> Bool {
         return nsp == self.nsp
     }
@@ -107,9 +107,7 @@ extension SocketParsable {
             }
         }
         
-        
-        
-        var dataArray = message[message.characters.index(reader.currentIndex, offsetBy: 1)..<message.endIndex]
+        var dataArray = String(message.utf16[message.utf16.index(reader.currentIndex, offsetBy: 1)..<message.utf16.endIndex])!
         
         if type == .error && !dataArray.hasPrefix("[") && !dataArray.hasSuffix("]") {
             dataArray = "[" + dataArray + "]"
