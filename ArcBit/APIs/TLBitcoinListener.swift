@@ -51,30 +51,27 @@ import Foundation
     func reconnect() -> () {
         if (blockExplorerAPI == TLBlockExplorer.blockchain) {
             DLog("websocket reconnect blockchain.info")
-            if (self.webSocket != nil) {
-                self.webSocket!.delegate = nil
-                self.webSocket!.close()
-            }
+            self.webSocket?.delegate = nil
+            self.webSocket?.close()
             
             self.webSocket = SRWebSocket(urlRequest: URLRequest(url: URL(string: "wss://ws.blockchain.info/inv")!))
+
+            self.webSocket?.delegate = self
             
-            self.webSocket!.delegate = self
-            
-            self.webSocket!.open()
+            self.webSocket?.open()
         } else {
             DLog("websocket reconnect insight")
             let url = String(format: "%@", TLPreferences.getBlockExplorerURL(TLBlockExplorer.insight)!)
             self.socket = SocketIOClient(socketURL: URL(string: url)!, config: [.log(false), .forcePolling(true)])
             weak var weakSelf = self
-
-            self.socket!.on("connect") {data, ack in
+            self.socket?.on("connect") {data, ack in
                 DLog("socketio onConnect")
                 self.consecutiveFailedConnections = 0
                 weakSelf!.socketIsConnected = true
                 NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_TRANSACTION_LISTENER_OPEN()), object: nil, userInfo: nil)
                 weakSelf!.socket!.emit("subscribe", "inv")
             }
-            self.socket!.on("disconnect") {data, ack in
+            self.socket?.on("disconnect") {data, ack in
                 DLog("socketio onDisconnect")
                 NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_TRANSACTION_LISTENER_CLOSE()), object: nil, userInfo: nil)
                 if self.consecutiveFailedConnections < self.MAX_CONSECUTIVE_FAILED_CONNECTIONS {
@@ -82,10 +79,10 @@ import Foundation
                 }
                 self.consecutiveFailedConnections += 1
             }
-            self.socket!.on("error") {data, ack in
+            self.socket?.on("error") {data, ack in
                 DLog("socketio error: \(data as AnyObject)")
             }
-            self.socket!.on("block") {data, ack in
+            self.socket?.on("block") {data, ack in
                 let dataArray = data as NSArray
                 let firstObject: AnyObject? = dataArray.firstObject as AnyObject?
                 // data!.debugDescription is lastest block hash
@@ -93,16 +90,17 @@ import Foundation
                 DLog("socketio received lastest block hash: \(firstObject!.debugDescription)")
                 
             }
-//            self.socket!.on("tx") {data, ack in
+//            self.socket?.on("tx") {data, ack in
 //                DLog("socketio__ tx \(data)")
 //            }
-            self.socket!.connect()
+            self.socket?.connect()
         }
     }
     
     func isWebSocketOpen() -> Bool {
         if (blockExplorerAPI == TLBlockExplorer.blockchain) {
-            return self.webSocket != nil && self.webSocket!.readyState.rawValue == SR_OPEN.rawValue
+            guard let webSocket = self.webSocket else { return false }
+            return webSocket.readyState.rawValue == SR_OPEN.rawValue
         } else {
             return self.socketIsConnected
         }
@@ -111,7 +109,7 @@ import Foundation
     fileprivate func sendWebSocketMessage(_ msg: String) -> Bool {
         DLog("sendWebSocketMessage msg: \(msg)")
         if self.isWebSocketOpen() {
-            self.webSocket!.send(msg)
+            self.webSocket?.send(msg)
             return true
         } else {
             DLog("Websocket Error: not connect to websocket server")
@@ -132,15 +130,13 @@ import Foundation
             }
         } else {
             if (self.socketIsConnected) {
-                if self.socket == nil {
-                    return false
-                }
-                
+                guard let socket = self.socket else { return false }
+
                 //DLog("socketio emit address: \(address)")
-                self.socket!.emit("unsubscribe", "bitcoind/addresstxid", [address])
-                self.socket!.emit("subscribe", "bitcoind/addresstxid", [address])
+                socket.emit("unsubscribe", "bitcoind/addresstxid", [address])
+                socket.emit("subscribe", "bitcoind/addresstxid", [address])
                 
-                self.socket!.on("bitcoind/addresstxid") {data, ack in
+                socket.on("bitcoind/addresstxid") {data, ack in
                     DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
                         DLog("socketio on data: \(data)")
                         let dataArray = data as NSArray
@@ -153,8 +149,8 @@ import Foundation
                             //DLog("socketio transaction: \(txHash)")
                             TLBlockExplorerAPI.instance().getTx(txHash, success: {
                                 (txDict: AnyObject?) in
-                                if txDict != nil {
-                                    NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_NEW_UNCONFIRMED_TRANSACTION()), object: txDict!, userInfo: nil)
+                                if let txDict = txDict {
+                                    NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_NEW_UNCONFIRMED_TRANSACTION()), object: txDict, userInfo: nil)
                                 }
                                 }, failure: {
                                     (code, status) in
@@ -172,7 +168,7 @@ import Foundation
     func close() -> () {
         if (blockExplorerAPI == TLBlockExplorer.blockchain) {
             DLog("closing blockchain.info websocket")
-            self.webSocket!.close()
+            self.webSocket?.close()
         } else {
             DLog("closing socketio")
             self.socket?.disconnect()
@@ -180,9 +176,7 @@ import Foundation
     }
     
     fileprivate func keepAlive() -> () {
-        if (keepAliveTimer != nil) {
-            keepAliveTimer!.invalidate()
-        }
+        keepAliveTimer?.invalidate()
         keepAliveTimer = nil
         keepAliveTimer = Timer.scheduledTimer(timeInterval: SEND_EMPTY_PACKET_TIME_INTERVAL,
             target: self,
@@ -211,8 +205,8 @@ import Foundation
     func webSocket(_ webSocket:SRWebSocket, didFailWithError error:NSError) -> () {
         DLog("blockchain.info Websocket didFailWithError \(error.description)")
         
-        self.webSocket!.delegate = nil
-        self.webSocket!.close()
+        self.webSocket?.delegate = nil
+        self.webSocket?.close()
         self.webSocket = nil
         if consecutiveFailedConnections < MAX_CONSECUTIVE_FAILED_CONNECTIONS {
             self.reconnect()
@@ -242,8 +236,8 @@ import Foundation
             DLog("blockchain.info Websocket didCloseWithCode With Error \(code) \(reason)")
         }
         
-        self.webSocket!.delegate = nil
-        self.webSocket!.close()
+        self.webSocket?.delegate = nil
+        self.webSocket?.close()
         self.webSocket = nil
         if consecutiveFailedConnections < MAX_CONSECUTIVE_FAILED_CONNECTIONS {
             self.reconnect()
