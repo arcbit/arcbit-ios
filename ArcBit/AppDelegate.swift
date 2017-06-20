@@ -920,16 +920,15 @@ import Crashlytics
             ,selector:#selector(AppDelegate.respondToStealthPayment(_:)),
             name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_RECEIVED_STEALTH_PAYMENT()), object:nil)
     
-        guard let passphrase = TLWalletPassphrase.getDecryptedWalletPassphrase() else { return }
+        var passphrase = TLWalletPassphrase.getDecryptedWalletPassphrase()
 
         if !TLPreferences.hasSetupHDWallet() {
             if (recoverHDWalletIfNewlyInstalledApp) {
-                recoverHDWallet(passphrase)
+                self.recoverHDWallet(passphrase!)
             } else {
-                guard let passphrase = TLHDWalletWrapper.generateMnemonicPassphrase() else { return }
-                refreshApp(passphrase)
-                guard let accounts = accounts else { return }
-                let accountObject = accounts.createNewAccount("Account 1", accountType:.normal, preloadStartingAddresses:true)
+                passphrase = TLHDWalletWrapper.generateMnemonicPassphrase()
+                self.refreshApp(passphrase!)
+                let accountObject = self.accounts!.createNewAccount("Account 1", accountType:.normal, preloadStartingAddresses:true)
                 accountObject.updateAccountNeedsRecovering(false)
                 AppDelegate.instance().updateGodSend(TLSendFromType.hdWallet, sendFromIndex:0)
                 AppDelegate.instance().updateReceiveSelectedObject(TLSendFromType.hdWallet, sendFromIndex:0)
@@ -1109,9 +1108,12 @@ import Crashlytics
             if let data = data, TLCoreBitcoinWrapper.isBIP38EncryptedKey(data, isTestnet: self.appWallet.walletConfig.isTestnet) {
                 self.scannedEncryptedPrivateKey = data
             }
-                
             else {
-                success(["privateKey": data ?? "nil"])
+                guard let data = data else {
+                    error("No Data")
+                    return
+                }
+                success(["privateKey": data])
             }
             
             }, error:{(e: String?) in
@@ -1341,7 +1343,7 @@ import Crashlytics
     }
     
     func printOutWalletJSON() {
-        guard walletJson = appWallet.getWalletsJson() else { return }
+        guard let walletJson = appWallet.getWalletsJson() else { return }
         DLog("printOutWalletJSON:\n\(walletJson)")
     }
     
