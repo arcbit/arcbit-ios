@@ -117,7 +117,7 @@ import Foundation
         }
     }
     
-    func listenToIncomingTransactionForAddress(_ address: String) -> Bool {
+    @discardableResult func listenToIncomingTransactionForAddress(_ address: String) -> Bool {
         //DLog("listen address: %@", address)
         if (blockExplorerAPI == TLBlockExplorer.blockchain) {
             if self.isWebSocketOpen() {

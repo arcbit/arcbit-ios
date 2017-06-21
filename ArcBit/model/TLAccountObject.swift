@@ -251,7 +251,7 @@ import Foundation
         return self.fetchedAccountData
     }
     
-    func renameAccount(_ accountName: String) -> (Bool) {
+    @discardableResult func renameAccount(_ accountName: String) -> (Bool) {
         accountDict!.setObject(accountName, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_NAME as NSCopying)
         return true
     }

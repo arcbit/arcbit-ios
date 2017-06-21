@@ -49,7 +49,7 @@ import Foundation
         }
     }
     
-    func addAccountWithExtendedKey(_ extendedKey:String) -> TLAccountObject {
+    @discardableResult func addAccountWithExtendedKey(_ extendedKey:String) -> TLAccountObject {
         assert(accountType != TLAccountType.hdWallet, "accountType == TLAccountTypeHDWallet")
         let accountObject:TLAccountObject
         
@@ -80,7 +80,7 @@ import Foundation
         return true
     }
     
-    func renameAccount(_ accountIdxNumber:Int, accountName:String) -> (Bool){
+    @discardableResult func renameAccount(_ accountIdxNumber:Int, accountName:String) -> (Bool){
         if (accountType == TLAccountType.hdWallet) {
             let accountObject = self.accountsDict!.object(forKey: accountIdxNumber) as! TLAccountObject
             accountObject.renameAccount(accountName)
@@ -189,7 +189,7 @@ import Foundation
         return getAccountWithAccountName(accountName) == nil ? false : true
     }
     
-    func createNewAccount(_ accountName:String, accountType:TLAccount) -> TLAccountObject {
+    @discardableResult func createNewAccount(_ accountName:String, accountType:TLAccount) -> TLAccountObject {
         let accountObject = self.appWallet!.createNewAccount(accountName, accountType:TLAccount.normal,
             preloadStartingAddresses:true)
         accountObject.updateAccountNeedsRecovering(false)
@@ -203,7 +203,7 @@ import Foundation
         return accountObject
     }
     
-    func popTopAccount() -> (Bool){
+    @discardableResult func popTopAccount() -> (Bool){
         if (self.accountsArray.count <= 0) {
             return false
         }
