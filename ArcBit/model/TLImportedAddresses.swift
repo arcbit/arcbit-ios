@@ -165,7 +165,7 @@ import Foundation
         let importedAddressObject = TLImportedAddress(appWallet:self.appWallet!, dict:importedPrivateKeyDict)
         self.importedAddresses.add(importedAddressObject)
         
-        importedAddressObject.setPositionInWalletArray(self.importedAddresses.count - 1)
+        importedAddressObject.setPositionInWalletArray(self.importedAddresses.count + self.archivedImportedAddresses.count - 1)
         self.addressToPositionInWalletArrayDict.setObject(importedAddressObject, forKey:importedAddressObject.getPositionInWalletArrayNumber())
         
         let address = TLCoreBitcoinWrapper.getAddress(privateKey, isTestnet: self.appWallet!.walletConfig.isTestnet)
@@ -178,7 +178,7 @@ import Foundation
         
         indexes!.add(self.importedAddresses.count-1)
         
-        setLabel(importedAddressObject.getDefaultAddressLabel()!, positionInWalletArray:self.importedAddresses.count-1)
+        setLabel(importedAddressObject.getDefaultAddressLabel()!, positionInWalletArray:importedAddressObject.getPositionInWalletArray())
         
         return importedAddressObject
     }
@@ -188,7 +188,7 @@ import Foundation
         let importedAddressObject = TLImportedAddress(appWallet:self.appWallet!, dict:importedDict)
         self.importedAddresses.add(importedAddressObject)
         
-        importedAddressObject.setPositionInWalletArray(self.importedAddresses.count - 1)
+        importedAddressObject.setPositionInWalletArray(self.importedAddresses.count + self.archivedImportedAddresses.count - 1)
         self.addressToPositionInWalletArrayDict.setObject(importedAddressObject, forKey:importedAddressObject.getPositionInWalletArrayNumber())
         
         var indexes = self.addressToIdxDict.object(forKey: address) as? NSMutableArray
@@ -199,12 +199,12 @@ import Foundation
         
         indexes!.add(self.importedAddresses.count-1)
         
-        setLabel(importedAddressObject.getDefaultAddressLabel()!, positionInWalletArray:self.importedAddresses.count-1)
+        setLabel(importedAddressObject.getDefaultAddressLabel()!, positionInWalletArray:importedAddressObject.getPositionInWalletArray())
         
         return importedAddressObject
     }
     
-    func setLabel(_ label:String, positionInWalletArray:Int) -> Bool {
+    func setLabel(_ label:String, positionInWalletArray:Int) {
         let importedAddressObject = self.addressToPositionInWalletArrayDict.object(forKey: positionInWalletArray) as! TLImportedAddress
         
         importedAddressObject.setLabel(label as NSString)
@@ -213,8 +213,6 @@ import Foundation
         } else if (self.accountAddressType! == .importedWatch) {
             self.appWallet!.setWatchOnlyAddressLabel(label, idx:positionInWalletArray)
         }
-        
-        return true
     }
     
     func archiveAddress(_ positionInWalletArray:Int) -> () {
