@@ -1002,9 +1002,9 @@ import Crashlytics
             DLog("setBlockHeight: \((jsonData.object(forKey: "height") as! NSNumber))")
             TLBlockchainStatus.instance().blockHeight = blockHeight
             }, failure:{(code, status) in
-                //DLog("Error getting block height.")
-                //TLPrompts.promptErrorMessage(TLDisplayStrings.NETWORK_ERROR_STRING(),
-                //    message:String(format:TLDisplayStrings.ERROR_GETTING_BLOCK_HEIGHT_STRING()))
+                DLog("Error getting block height.")
+//                TLPrompts.promptErrorMessage(TLDisplayStrings.NETWORK_ERROR_STRING(),
+//                    message:String(format:TLDisplayStrings.ERROR_GETTING_BLOCK_HEIGHT_STRING()))
         })
     }
     
