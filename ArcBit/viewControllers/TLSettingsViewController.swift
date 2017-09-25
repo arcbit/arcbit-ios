@@ -32,14 +32,14 @@ import AVFoundation
     override func viewDidLoad() {
         super.viewDidLoad()
         setColors()
-        
         AppDelegate.instance().setSettingsPasscodeViewColors()
 
         AppDelegate.instance().giveExitAppNoticeForBlockExplorerAPIToTakeEffect = false
         
         LTHPasscodeViewController.sharedUser().delegate = self
+        self.neverShowPrivacySettings = true
         self.delegate = self
-        
+
         TLPreferences.setInAppSettingsKitEnableBackupWithiCloud(TLPreferences.getEnableBackupWithiCloud())
         
         NotificationCenter.default.addObserver(self, selector: #selector(TLSettingsViewController.settingDidChange(_:)), name: NSNotification.Name(rawValue: kIASKAppSettingChanged), object: nil)
@@ -286,13 +286,17 @@ import AVFoundation
     
     func settingDidChange(_ info: Notification) {
         let userInfo = (info as NSNotification).userInfo! as NSDictionary
-        if ((info.object as! String) == "enablecoldwallet") {
+        for key1 in userInfo.allKeys {
+            guard let didChangeKey = key1 as? String else {
+                return
+            }
+        if (didChangeKey == "enablecoldwallet") {
             let enabled = (userInfo.object(forKey: "enablecoldwallet")) as! Bool
             TLPreferences.setEnableColdWallet(enabled)
-        } else if ((info.object as! String) == "enableadvancemode") {
+        } else if (didChangeKey == "enableadvancemode") {
             let enabled = (userInfo.object(forKey: "enableadvancemode")) as! Bool
             TLPreferences.setAdvancedMode(enabled)
-        } else if ((info.object as! String) == "canrestoredeletedapp") {
+        } else if (didChangeKey == "canrestoredeletedapp") {
             let enabled = (userInfo.object(forKey: "canrestoredeletedapp")) as! Bool
             
             TLPreferences.setInAppSettingsCanRestoreDeletedApp(!enabled) // make sure below code completes firstbefore enabling
@@ -313,13 +317,13 @@ import AVFoundation
             }
             TLPreferences.setInAppSettingsCanRestoreDeletedApp(enabled)
             TLPreferences.setCanRestoreDeletedApp(enabled)
-        } else if ((info.object as! String) == "enablesoundnotification") {
+        } else if (didChangeKey == "enablesoundnotification") {
             let enabled = userInfo.object(forKey: "enablesoundnotification") as! Bool
             if (enabled) {
                 AudioServicesPlaySystemSound(1016)
             }
             
-        } else if ((info.object as! String) == "enablebackupwithicloud") {
+        } else if (didChangeKey == "enablebackupwithicloud") {
             let enabled = userInfo.object(forKey: "enablebackupwithicloud") as! Bool
             if (enabled) {
                 if !TLCloudDocumentSyncWrapper.instance().checkCloudAvailability() {
@@ -364,7 +368,7 @@ import AVFoundation
             } else {
                 TLPreferences.setEnableBackupWithiCloud(false)
             }
-        } else if ((info.object as! String) == "enablepincode") {
+        } else if (didChangeKey == "enablepincode") {
             let enabled = userInfo.object(forKey: "enablepincode") as! Bool
             TLPreferences.setEnablePINCode(enabled)
             if (!LTHPasscodeViewController.doesPasscodeExist()) {
@@ -372,22 +376,22 @@ import AVFoundation
             } else {
                 self.showLockViewForTurningPasscodeOff()
             }
-        } else if ((info.object as! String) == "displaylocalcurrency") {
+        } else if (didChangeKey == "displaylocalcurrency") {
             let enabled = userInfo.object(forKey: "displaylocalcurrency") as! Bool
             TLPreferences.setDisplayLocalCurrency(enabled)
-        } else if ((info.object as! String) == "dynamicfeeoption") {
-        } else if ((info.object as! String) == "enabledynamicfee") {
+        } else if (didChangeKey == "dynamicfeeoption") {
+        } else if (didChangeKey == "enabledynamicfee") {
             self.updateHiddenKeys()
-        } else if ((info.object as! String) == "currency") {
+        } else if (didChangeKey == "currency") {
             let currencyIdx = userInfo.object(forKey: "currency") as! String
             TLPreferences.setCurrency(currencyIdx)
-        } else if ((info.object as! String) == "bitcoindisplay") {
+        } else if (didChangeKey == "bitcoindisplay") {
             let bitcoindisplayIdx = userInfo.object(forKey: "bitcoindisplay") as! String
             TLPreferences.setBitcoinDisplay(bitcoindisplayIdx)
-        } else if ((info.object as! String) == "stealthaddressdefault") {
+        } else if (didChangeKey == "stealthaddressdefault") {
             let enabled = userInfo.object(forKey: "stealthaddressdefault") as! Bool
             TLPreferences.setEnabledStealthAddressDefault(enabled)
-        } else if ((info.object as! String) == "blockexplorerapi") {
+        } else if (didChangeKey == "blockexplorerapi") {
             let blockexplorerAPIIdx = userInfo.object(forKey: "blockexplorerapi") as! String
             TLPreferences.setBlockExplorerAPI(blockexplorerAPIIdx)
             TLPreferences.resetBlockExplorerAPIURL()
@@ -396,6 +400,7 @@ import AVFoundation
             AppDelegate.instance().giveExitAppNoticeForBlockExplorerAPIToTakeEffect = true
             
             NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_CHANGE_BLOCKEXPLORER_TYPE()), object: nil)
+        }
         }
     }
     

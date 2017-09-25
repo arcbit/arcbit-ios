@@ -36,8 +36,7 @@
     return self;
 }
 
-- (void)loadView
-{
+- (void)loadView {
     self.webView = [[UIWebView alloc] init];
     self.webView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
     self.webView.delegate = self;
@@ -45,16 +44,14 @@
     self.view = self.webView;
 }
 
-- (void)viewWillAppear:(BOOL)animated {  
+- (void)viewWillAppear:(BOOL)animated {
+	[super viewWillAppear:animated];
+	
 	UIActivityIndicatorView *activityIndicatorView = [[UIActivityIndicatorView alloc] initWithFrame:CGRectMake(0, 0, 40, 20)];
 	activityIndicatorView.activityIndicatorViewStyle = UIActivityIndicatorViewStyleWhite;
 	[activityIndicatorView startAnimating];
 	self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithCustomView:activityIndicatorView];
 	[self.webView loadRequest:[NSURLRequest requestWithURL:self.url]];
-}
-
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation {
-    return YES;
 }
 
 - (void)webViewDidFinishLoad:(UIWebView *)webView {
@@ -126,7 +123,7 @@
 		[mailViewController setToRecipients:toRecipients];
 
 		mailViewController.navigationBar.barStyle = self.navigationController.navigationBar.barStyle;
-		mailViewController.navigationBar.tintColor = self.navigationController.navigationBar.tintColor;
+		IASK_IF_IOS7_OR_GREATER(mailViewController.navigationBar.tintColor = self.navigationController.navigationBar.tintColor;);
 		mailViewController.navigationBar.titleTextAttributes =  self.navigationController.navigationBar.titleTextAttributes;
 
 		UIStatusBarStyle savedStatusBarStyle = [UIApplication sharedApplication].statusBarStyle;
