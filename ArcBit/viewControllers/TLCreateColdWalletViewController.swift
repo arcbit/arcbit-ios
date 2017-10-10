@@ -85,7 +85,7 @@ import UIKit
     }
     func didClickMnemonicInfoButton(_ cell: TLNewWalletTableViewCell) {
         dismissKeyboard()
-        let msg = ""
+        let msg = TLDisplayStrings.MNEMONIC_INFO_STRING()
         TLPrompts.promtForOK(self, title:"", message: msg, success: {
             () in
         })
@@ -93,7 +93,7 @@ import UIKit
     
     func didClickAccountInfoButton(_ cell: TLNewWalletTableViewCell) {
         dismissKeyboard()
-        let msg = TLDisplayStrings.MNEMONIC_INFO_STRING()
+        let msg = TLDisplayStrings.ACCOUNT_ID_INFO_STRING()
         TLPrompts.promtForOK(self, title:"", message: msg, success: {
             () in
         })
