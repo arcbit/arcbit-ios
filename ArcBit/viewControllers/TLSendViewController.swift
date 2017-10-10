@@ -21,6 +21,7 @@
 //   MA 02110-1301  USA
 
 import UIKit
+import StoreKit
 
 @objc(TLSendViewController) class TLSendViewController: UIViewController, UITextFieldDelegate, UITabBarDelegate {
     
@@ -359,19 +360,23 @@ import UIKit
         if (!TLPreferences.getInAppSettingsKitEnablePinCode() && TLSuggestions.instance().conditionToPromptToSuggestEnablePinSatisfied()) {
             TLSuggestions.instance().promptToSuggestEnablePin(self)
         } else if TLSuggestions.instance().conditionToPromptRateAppSatisfied() {
-            TLPrompts.promptAlertController(self, title: TLDisplayStrings.LIKE_USING_ARCBIT_STRING(),
-                message: TLDisplayStrings.RATE_US_IN_THE_APP_STORE_STRING(), okText: TLDisplayStrings.RATE_NOW_STRING(), cancelTx: TLDisplayStrings.NOT_NOW_STRING(),
-                success: { () -> () in
-                    let url = URL(string: "https://itunes.apple.com/app/id999487888");
-                    if (UIApplication.shared.canOpenURL(url!)) {
-                        UIApplication.shared.openURL(url!);
-                    }
-                    TLPreferences.setDisabledPromptRateApp(true)
-                    if !TLPreferences.hasRatedOnce() {
-                        TLPreferences.setHasRatedOnce()
-                    }
+            if  #available(iOS 10.3, *) {
+                SKStoreReviewController.requestReview()
+            } else {
+                TLPrompts.promptAlertController(self, title: TLDisplayStrings.LIKE_USING_ARCBIT_STRING(),
+                                                message: TLDisplayStrings.RATE_US_IN_THE_APP_STORE_STRING(), okText: TLDisplayStrings.RATE_NOW_STRING(), cancelTx: TLDisplayStrings.NOT_NOW_STRING(),
+                                                success: { () -> () in
+                                                    let url = URL(string: "https://itunes.apple.com/app/id999487888");
+                                                    if (UIApplication.shared.canOpenURL(url!)) {
+                                                        UIApplication.shared.openURL(url!);
+                                                    }
+                                                    TLPreferences.setDisabledPromptRateApp(true)
+                                                    if !TLPreferences.hasRatedOnce() {
+                                                        TLPreferences.setHasRatedOnce()
+                                                    }
                 }, failure: { (Bool) -> () in
-            })
+                })
+            }
         } else if TLSuggestions.instance().conditionToPromptShowWebWallet() {
             TLPrompts.promptAlertController(self, title: TLDisplayStrings.CHECK_OUT_THE_ARCBIT_WEB_WALLET_EXCLAMATION_STRING(),
                 message: TLDisplayStrings.CHECK_OUT_THE_ARCBIT_WEB_WALLET_DESC_STRING(), okText: TLDisplayStrings.GO_STRING(), cancelTx: TLDisplayStrings.NOT_NOW_STRING(),
