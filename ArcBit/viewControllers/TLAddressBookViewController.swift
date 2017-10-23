@@ -202,7 +202,7 @@ import UIKit
             (action: UITableViewRowAction, indexPath: IndexPath) in
             tableView.isEditing = false
             
-            TLPrompts.promtForOKCancel(self, title: TLDisplayStrings.DELETE_ADDRESS_STRING(), message: TLDisplayStrings.DELETE_ADDRESS_DESC_STRING(), success: {
+            TLPrompts.promtForOKCancel(self, title: TLDisplayStrings.DELETE_ADDRESS_STRING(), message: TLDisplayStrings.ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_ACCOUNT_STRING(), success: {
                 () in
                 AppDelegate.instance().appWallet.deleteAddressBookEntry((indexPath as NSIndexPath).row)
                 NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_DELETE_ENTRY_ADDRESS_BOOK()), object: nil, userInfo: nil)

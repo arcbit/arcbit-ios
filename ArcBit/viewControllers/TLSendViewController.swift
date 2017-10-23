@@ -546,7 +546,7 @@ import StoreKit
         let inputtedAmount = TLCurrencyFormat.properBitcoinAmountStringToCoin(bitcoinAmount!)
         
         if (inputtedAmount.equalTo(TLCoin.zero())) {
-            TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.AMOUNT_ENTERED_MUST_BE_GREATER_THEN_ZERO_STRING())
+            TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.INVALID_AMOUNT_STRING())
             return
         }
         
@@ -592,7 +592,7 @@ import StoreKit
             let accountBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
             if (amountNeeded.greater(accountBalance)) {
                 let msg = String(format: TLDisplayStrings.YOU_HAVE_X_Y_BUT_Z_IS_NEEDED_STRING(), TLCurrencyFormat.coinToProperBitcoinAmountString(accountBalance), TLCurrencyFormat.getBitcoinDisplay(), TLCurrencyFormat.coinToProperBitcoinAmountString(amountNeeded))
-                TLPrompts.promptErrorMessage(TLDisplayStrings.INSUFFICIENT_BALANCE_STRING(), message: msg)
+                TLPrompts.promptErrorMessage(TLDisplayStrings.INSUFFICIENT_FUNDS_STRING(), message: msg)
                 return
             }
             

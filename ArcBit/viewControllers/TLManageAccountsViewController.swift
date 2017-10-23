@@ -760,7 +760,7 @@ import UIKit
             preferredStyle: .actionSheet,
             cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
             destructiveButtonTitle: nil,
-            otherButtonTitles: [TLDisplayStrings.VIEW_ACCOUNT_PUBLIC_KEY_QR_CODE_STRING(), TLDisplayStrings.VIEW_ACCOUNT_PRIVATE_KEY_QR_CODE_STRING(), TLDisplayStrings.VIEW_ADDRESSES_STRING(), TLDisplayStrings.MANUALLY_SCAN_FOR_FORWARD_TRANSACTION_STRING(), TLDisplayStrings.EDIT_ACCOUNT_NAME_STRING(), TLDisplayStrings.ARCHIVE_ACCOUNT_STRING()],
+            otherButtonTitles: [TLDisplayStrings.VIEW_ACCOUNT_PUBLIC_KEY_QR_CODE_STRING(), TLDisplayStrings.VIEW_ACCOUNT_PRIVATE_KEY_QR_CODE_STRING(), TLDisplayStrings.VIEW_ADDRESSES_STRING(), TLDisplayStrings.SCAN_REUSABLE_ADDRESS_PAYMENT_STRING(), TLDisplayStrings.EDIT_ACCOUNT_NAME_STRING(), TLDisplayStrings.ARCHIVE_ACCOUNT_STRING()],
             tap: {(actionSheet, action, buttonIndex) in
                 if (buttonIndex == actionSheet!.firstOtherButtonIndex) {
                     self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPubKey() as NSString,
@@ -1290,7 +1290,7 @@ import UIKit
         }
         
         if txid.characters.count != 64 || TLWalletUtils.hexStringToData(txid) == nil {
-            TLPrompts.promptErrorMessage(TLDisplayStrings.INPUTED_TXID_IS_INVALID_STRING(), message: TLDisplayStrings.TXID_MUST_BE_A_64_CHARACTER_HEXADECIMAL_STRING())
+            TLPrompts.promptErrorMessage(TLDisplayStrings.INVALID_TRANSACTION_ID(), message: TLDisplayStrings.TXID_MUST_BE_A_64_CHARACTER_HEXADECIMAL_STRING())
             return
         }
 
@@ -1610,7 +1610,7 @@ import UIKit
 
         UIAlertController.showAlert(in: self,
             withTitle:  String(format: TLDisplayStrings.DELETE_X_STRING(), importedAddressObject.getLabel()),
-            message: TLDisplayStrings.ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_WATCH_ONLY_ADDRESS_STRING(),
+            message: TLDisplayStrings.ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_ACCOUNT_STRING(),
             cancelButtonTitle: TLDisplayStrings.NO_STRING(),
             destructiveButtonTitle: nil,
             otherButtonTitles: [TLDisplayStrings.YES_STRING()],
@@ -1905,7 +1905,7 @@ import UIKit
         })
 
         let address = importedAddressObject.getAddress()
-        let msg = String(format: TLDisplayStrings.ADDRESS_X_IMPORTED_STRING(), address)
+        let msg = String(format: TLDisplayStrings.IMPORTED_ADDRESS_STRING())
         let av = UIAlertView(title: msg,
                 message: "",
                 delegate: nil,
@@ -1950,7 +1950,7 @@ import UIKit
                     }
             })
             
-            let av = UIAlertView(title: String(format: TLDisplayStrings.ADDRESS_X_IMPORTED_STRING(), address),
+            let av = UIAlertView(title: String(format: TLDisplayStrings.ACCOUNT_X_IMPORTED_STRING()),
                 message: "",
                 delegate: nil,
                 cancelButtonTitle: TLDisplayStrings.OK_STRING())
@@ -2108,7 +2108,7 @@ import UIKit
                             (data: String?) in
                     })
                 } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 1) {
-                    TLPrompts.promtForInputText(self, title: TLDisplayStrings.IMPORT_WATCH_ADDRESS_STRING(), message: TLDisplayStrings.INPUT_WATCH_ADDRESS_STRING(), textFieldPlaceholder: nil, success: {
+                    TLPrompts.promtForInputText(self, title: TLDisplayStrings.IMPORT_WATCH_ADDRESS_STRING(), message: "", textFieldPlaceholder: nil, success: {
                         (inputText: String!) in
                         self.checkAndImportWatchAddress(inputText)
                         }, failure: {
@@ -2154,19 +2154,19 @@ import UIKit
             })
         } else if (accountSelectIdx == IMPORT_COLD_WALLET_ACCOUNT_BUTTON_IDX) {
             if (AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts() + AppDelegate.instance().importedAccounts!.getNumberOfAccounts() + AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts() >= MAX_IMPORTED_ACCOUNTS) {
-                TLPrompts.promptErrorMessage(TLDisplayStrings.MAXIMUM_IMPORTED_ACCOUNTS_REACHED_STRING(), message: TLDisplayStrings.MAXIMUM_IMPORTED_ACCOUNTS_REACHED_DESC_STRING())
+                TLPrompts.promptErrorMessage(TLDisplayStrings.MAXIMUM_ACCOUNTS_REACHED_STRING(), message: TLDisplayStrings.MAXIMUM_IMPORTED_ACCOUNTS_REACHED_DESC_STRING())
                 return
             }
             self.promptColdWalletAccountActionSheet()
         } else if (accountSelectIdx == IMPORT_ACCOUNT_BUTTON_IDX) {
             if (AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts() + AppDelegate.instance().importedAccounts!.getNumberOfAccounts() + AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts() >= MAX_IMPORTED_ACCOUNTS) {
-                TLPrompts.promptErrorMessage(TLDisplayStrings.MAXIMUM_IMPORTED_ACCOUNTS_REACHED_STRING(), message: TLDisplayStrings.MAXIMUM_IMPORTED_ACCOUNTS_REACHED_DESC_STRING())
+                TLPrompts.promptErrorMessage(TLDisplayStrings.MAXIMUM_ACCOUNTS_REACHED_STRING(), message: TLDisplayStrings.MAXIMUM_IMPORTED_ACCOUNTS_REACHED_DESC_STRING())
                 return
             }
             self.promptImportAccountActionSheet()
         } else if (accountSelectIdx == IMPORT_WATCH_ACCOUNT_BUTTON_IDX) {
             if (AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts() + AppDelegate.instance().importedAccounts!.getNumberOfAccounts() + AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts() >= MAX_IMPORTED_ACCOUNTS) {
-                TLPrompts.promptErrorMessage(TLDisplayStrings.MAXIMUM_IMPORTED_ACCOUNTS_REACHED_STRING(), message: TLDisplayStrings.MAXIMUM_IMPORTED_ACCOUNTS_REACHED_DESC_STRING())
+                TLPrompts.promptErrorMessage(TLDisplayStrings.MAXIMUM_ACCOUNTS_REACHED_STRING(), message: TLDisplayStrings.MAXIMUM_IMPORTED_ACCOUNTS_REACHED_DESC_STRING())
                 return
             }
             self.promptImportWatchAccountActionSheet()

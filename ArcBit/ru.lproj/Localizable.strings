@@ -46,9 +46,9 @@
 
 "Do not use the QR code from here to receive bitcoins. Go to the Receive screen to get a QR code to receive bitcoins." = "Do not use the QR code from here to receive bitcoins. Go to the Receive screen to get a QR code to receive bitcoins.";
 
-"It is not recommended that you manually manage an accounts' private key yourself. A leak of a private key can lead to the compromise of your accounts' bitcoins." = "It is not recommended that you manually manage an accounts' private key yourself. A leak of a private key can lead to the compromise of your accounts' bitcoins.";
+"It is not recommended that you manually manage private keys yourself. A leak of a private key can lead to the compromise of your accounts." = "It is not recommended that you manually manage private keys yourself. A leak of a private key can lead to the compromise of your accounts.";
 
-"Copy To Clipboard" = "Copy To Clipboard";
+"Copy" = "Copy";
 
 "Error" = "Error";
 
@@ -76,13 +76,13 @@
 
 "Achievement List" = "Achievement List";
 
-"Advance Achievement List" = "Advance Achievement List";
+"Advanced Achievement List" = "Advanced Achievement List";
 
 "Input address" = "Input address";
 
-"Add via QR Code" = "Add via QR Code";
+"Import with QR Code" = "Import with QR Code";
 
-"Add via Text Input" = "Add via Text Input";
+"Import with text input" = "Import with text input";
 
 "It is not recommended that you use a regular bitcoin address for multiple payments, but instead you should import a reusable address. Add address anyways?" = "It is not recommended that you use a regular bitcoin address for multiple payments, but instead you should import a reusable address. Add address anyways?";
 
@@ -126,9 +126,9 @@
 
 "How To:" = "How To:";
 
-"Advance FAQ" = "Advance FAQ";
+"Advanced FAQ" = "Advanced FAQ";
 
-"Advance how To:" = "Advance how To:";
+"Advanced how To:" = "Advanced how To:";
 
 "Features" = "Features";
 
@@ -150,7 +150,7 @@
 
 "Transaction ID: %@" = "Transaction ID: %@";
 
-"Edit Transaction tag" = "Edit Transaction tag";
+"Edit Transaction label" = "Edit Transaction label";
 
 "tag" = "tag";
 
@@ -192,7 +192,7 @@
 
 "Archive Account" = "Archive Account";
 
-"Manually Scan For Forward Transaction" = "Manually Scan For Forward Transaction";
+"Scan For Reusable Address Payment" = "Scan For Reusable Address Payment";
 
 "Clear account private key from memory" = "Clear account private key from memory";
 
@@ -224,7 +224,7 @@
 
 "Transaction %@ already accounted for." = "Transaction %@ already accounted for.";
 
-"Inputed Txid is invalid" = "Inputed Txid is invalid";
+"Invalid transaction ID" = "Invalid transaction ID";
 
 "Txid must be a 64 character hex string." = "Txid must be a 64 character hex string.";
 
@@ -254,7 +254,7 @@
 
 "Archive address" = "Archive address";
 
-"Are you sure you want to archive address %@" = "Are you sure you want to archive address %@";
+"Are you sure you want to archive address %@?" = "Are you sure you want to archive address %@?";
 
 "Unarchive address" = "Unarchive address";
 
@@ -291,7 +291,7 @@
 
 "Invalid private key" = "Invalid private key";
 
-"Address %@ imported" = "Address %@ imported";
+"Imported Address" = "Imported Address";
 
 "Cannot import reusable address" = "Cannot import reusable address";
 
@@ -318,8 +318,6 @@
 "Maximum accounts reached" = "Maximum accounts reached";
 
 "You need to archive an account in order to create a new one." = "You need to archive an account in order to create a new one.";
-
-"Maximum imported accounts and watch accounts reached." = "Maximum imported accounts and watch accounts reached.";
 
 "You need to archive an imported account or imported watch account in order to import a new one." = "You need to archive an imported account or imported watch account in order to import a new one.";
 
@@ -359,7 +357,7 @@
 
 "Backup passphrase found in keychain" = "Backup passphrase found in keychain";
 
-"Do you want to restore from your backup passphrase or start a fresh app?" = "Do you want to restore from your backup passphrase or start a fresh app?";
+"Do you want to restore from your backup passphrase or start a new wallet?" = "Do you want to restore from your backup passphrase or start a new wallet?";
 
 "Restore" = "Restore";
 
@@ -403,11 +401,11 @@
 
 "You must provide a valid bitcoin address." = "You must provide a valid bitcoin address.";
 
-"Amount entered must be greater then zero." = "Amount entered must be greater then zero.";
+"Invalid amount" = "Invalid amount";
 
 "You have %@ %@, but %@ is needed. (This includes the transactions fee)" = "You have %@ %@, but %@ is needed. (This includes the transactions fee)";
 
-"Insufficient Balance" = "Insufficient Balance";
+"Insufficient Funds" = "Insufficient Funds";
 
 "To: %@\nAmount:\n%@ %@\n%@ %@\nfee: %@ %@" = "To: %@\nAmount:\n%@ %@\n%@ %@\nfee: %@ %@";
 
@@ -477,7 +475,7 @@
 
 "password" = "password";
 
-"Decrypting Private Key" = "Decrypting Private Key";
+"Decrypting" = "Decrypting";
 
 "Passphrase is invalid" = "Passphrase is invalid";
 
@@ -519,9 +517,9 @@
 
 "Write down or memorize your 12 word wallet backup passphrase. You can view it by clicking \"Show backup passphrase\" in Settings. Your wallet backup passphrase is needed to recover your bitcoins." = "Write down or memorize your 12 word wallet backup passphrase. You can view it by clicking \"Show backup passphrase\" in Settings. Your wallet backup passphrase is needed to recover your bitcoins.";
 
-"Insufficient Funds. Account contains bitcoin dust. You can only send up to %@ %@ for now." = "Insufficient Funds. Account contains bitcoin dust. You can only send up to %@ %@ for now.";
+"Insufficient Funds. Account contains bitcoin dust. You can only send up to %@ for now." = "Insufficient Funds. Account contains bitcoin dust. You can only send up to %@ for now.";
 
-"Insufficient Funds. Account balance is %@ %@ when %@ %@ is required." = "Insufficient Funds. Account balance is %@ %@ when %@ %@ is required.";
+"Insufficient Funds. Account balance is %@ when %@ is required." = "Insufficient Funds. Account balance is %@ when %@ is required.";
 
 "Cannot create transactions with outputs less then %@ bitcoins." = "Cannot create transactions with outputs less then %@ bitcoins.";
 
@@ -551,9 +549,9 @@
 
 "Add Contacts Entry" = "Add Contacts Entry";
 
-"Edit Contacts Entry" = "Edit Contacts Entry";
+"Edit Contact Name" = "Edit Contact Name";
 
-"Delete Contacts Entry" = "Delete Contacts Entry";
+"Delete Contact" = "Delete Contact";
 
 "Send To Address In Contacts" = "Send To Address In Contacts";
 
@@ -629,7 +627,7 @@
 
 "Click ‘Enable PIN Code’" = "Click ‘Enable PIN Code’";
 
-"Enter Pin Code" = "Enter Pin Code";
+"Enter PIN" = "Enter PIN";
 
 "Confirm Pin Code" = "Confirm Pin Code";
 
@@ -755,7 +753,7 @@
 
 "Importing a Watch Address" = "Importing a Watch Address";
 
-"Each account has a public and private account/extended key. Accounts keys should be kept secret as they are used to view the account's transactions, and spend the accounts bitcoins." = "Each account has a public and private account/extended key. Accounts keys should be kept secret as they are used to view the account's transactions, and spend the accounts bitcoins.";
+"Each account has a public and private account key. Accounts keys should be kept secret as they are used to view the account's transactions, and spend the accounts bitcoins." = "Each account has a public and private account key. Accounts keys should be kept secret as they are used to view the account's transactions, and spend the accounts bitcoins.";
 
 "In advanced mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you back up imported keys and addresses separately." = "In advanced mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you back up imported keys and addresses separately.";
 

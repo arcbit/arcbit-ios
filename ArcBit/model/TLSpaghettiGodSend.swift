@@ -494,12 +494,12 @@
                     DLog("createSignedSerializedTransactionHex dustCoinAmount \(dustCoinAmount.toString())")
                     DLog("createSignedSerializedTransactionHex valueNeeded \(valueNeeded.toString())")
                     let amountCanSendString = TLCurrencyFormat.coinToProperBitcoinAmountString(valueNeeded.subtract(dustCoinAmount))
-                    error(String(format: TLDisplayStrings.INSUFFICIENT_FUNDS_ACCOUNT_CONTAINS_BITCOIN_DUST_STRING(), amountCanSendString, TLCurrencyFormat.getBitcoinDisplay()))
+                    error(String(format: TLDisplayStrings.INSUFFICIENT_FUNDS_ACCOUNT_CONTAINS_BITCOIN_DUST_STRING(), "\(amountCanSendString) \(TLCurrencyFormat.getBitcoinDisplay())"))
                     return (nil, realToAddresses, nil)
                 }
                 let valueSelectedString = TLCurrencyFormat.coinToProperBitcoinAmountString(valueSelected)
                 let valueNeededString = TLCurrencyFormat.coinToProperBitcoinAmountString(valueNeeded)
-                error(String(format: TLDisplayStrings.INSUFFICIENT_FUNDS_ACCOUNT_BALANCE_IS_STRING(), valueSelectedString, TLCurrencyFormat.getBitcoinDisplay(), valueNeededString, TLCurrencyFormat.getBitcoinDisplay()))
+                error(String(format: TLDisplayStrings.INSUFFICIENT_FUNDS_ACCOUNT_BALANCE_IS_STRING(), "\(valueSelectedString) \(TLCurrencyFormat.getBitcoinDisplay())", "\(valueNeededString) \(TLCurrencyFormat.getBitcoinDisplay())"))
                 return (nil, realToAddresses, nil)
             }
             

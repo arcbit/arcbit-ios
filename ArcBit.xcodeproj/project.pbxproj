@@ -555,6 +555,8 @@
 		C0AE41B01F788BD700682CDE /* IASKTextViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IASKTextViewCell.m; sourceTree = "<group>"; };
 		C0B4E7871AFAAEA200DC9B65 /* SRWebSocket+Helpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "SRWebSocket+Helpers.h"; sourceTree = "<group>"; };
 		C0B4E7881AFAAEA200DC9B65 /* SRWebSocket+Helpers.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "SRWebSocket+Helpers.m"; sourceTree = "<group>"; };
+		C0B56BC11F51F30B00E4CA87 /* es */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = es; path = es.lproj/Localizable.strings; sourceTree = "<group>"; };
+		C0B56BC21F51F6BC00E4CA87 /* zh-Hans-CN */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hans-CN"; path = "zh-Hans-CN.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		C0BD70021B4E2BE300A5788D /* Base */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = Base; path = Base.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C0BD70041B4E2BE600A5788D /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C0BD70051B4E2C4F00A5788D /* TLStringLocalized.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStringLocalized.swift; sourceTree = "<group>"; };
@@ -1848,6 +1850,8 @@
 			children = (
 				C0BD70021B4E2BE300A5788D /* Base */,
 				C0BD70041B4E2BE600A5788D /* ru */,
+				C0B56BC11F51F30B00E4CA87 /* es */,
+				C0B56BC21F51F6BC00E4CA87 /* zh-Hans-CN */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

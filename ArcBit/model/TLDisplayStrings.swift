@@ -51,18 +51,18 @@ class TLDisplayStrings {
     class func ACTIVE_CHANGE_ADDRESSES_STRING() -> String { return "Active Change Addresses".localized }
     class func ACTIVE_MAIN_ADDRESSES_STRING() -> String { return "Active Main Addresses".localized }
     class func ADD_CONTACTS_ENTRY_STRING() -> String { return "Add Contacts Entry".localized }
-    class func ADD_VIA_QR_CODE_STRING() -> String { return "Add via QR Code".localized }
-    class func ADD_VIA_TEXT_INPUT_STRING() -> String { return "Add via Text Input".localized }
+    class func ADD_VIA_QR_CODE_STRING() -> String { return "Import with QR Code".localized }
+    class func ADD_VIA_TEXT_INPUT_STRING() -> String { return "Import with text input".localized }
     class func ADDRESS_STRING() -> String { return "Address".localized }
-    class func ADDRESS_X_IMPORTED_STRING() -> String { return "Address %@ imported".localized }
+    class func IMPORTED_ADDRESS_STRING() -> String { return "Imported Address".localized }
     class func ADDRESS_ID_STRING() -> String { return "Address ID ".localized }
     class func ADDRESS_ID_X_STRING_STRING() -> String { return "Address ID: %lu".localized }
     class func ADDRESSES_STRING() -> String { return "Addresses".localized }
-    class func ADVANCE_ACHIEVEMENT_LIST_STRING() -> String { return "Advance Achievement List".localized }
-    class func ADVANCE_FAQ_STRING() -> String { return "Advance FAQ".localized }
-    class func ADVANCE_HOW_TO_COLON_STRING_STRING() -> String { return "Advance how To:".localized }
+    class func ADVANCE_ACHIEVEMENT_LIST_STRING() -> String { return "Advanced Achievement List".localized }
+    class func ADVANCE_FAQ_STRING() -> String { return "Advanced FAQ".localized }
+    class func ADVANCE_HOW_TO_COLON_STRING_STRING() -> String { return "Advanced how To:".localized }
     class func WHAT_ARE_TRANSACTION_CONFIRMATIONS_DESC_STRING() -> String { return "After a transaction is broadcast to the Bitcoin network, it may be included in a block that is published to the network. When that happens it is said that the transaction has been mined at a depth of 1 block. With each subsequent block that is found, the number of blocks deep is increased by one. To be secure against double spending, a transaction should not be considered as confirmed until it is a certain number of blocks deep.\nA good rule of thumb is that 1 confirmations is good for small value amounts of bitcoins, and a user should wait for more confirmations for larger value amounts.\nArcBit will display the confirmation number up until the 6th confirmation.".localized }
-    class func AMOUNT_ENTERED_MUST_BE_GREATER_THEN_ZERO_STRING() -> String { return "Amount entered must be greater then zero.".localized }
+    class func INVALID_AMOUNT_STRING() -> String { return "Invalid amount".localized }
     class func WHAT_ARE_ACCOUNTS_DESC_STRING() -> String { return "An account is a collection of bitcoin addresses. With accounts, you will no longer have to manage bitcoin addresses directly anymore. Since address reuse results in a loss of privacy for people using Bitcoin, ArcBit’s HD wallet account system will automatically handle the cycling of bitcoin addresses for you, so that you don’t use the same bitcoin address more then once.\nEach account also has a reusable address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a reusable address.\nYou can create an unlimited amount of accounts with ArcBit. See the help section on how to create a new account in ArcBit.".localized }
     class func IMPORTING_AN_ACCOUNT_DESC_STRING() -> String { return "An account private key begins with the letters 'xprv'. You can see, spend and recover the transactions and bitcoins of an entire account from an account private key.".localized }
     class func IMPORTING_A_WATCH_ONLY_ACCOUNT_DESC_STRING() -> String { return "An account public key begins with the letters 'xpub'. You can see the transactions and bitcoins of an entire account from an account private key, with the exception of reusable address payments. Future releases will address this issue.\nYou can however temporary import the corresponding account private key for this accounts' account public key to spend your watch accounts' bitcoins. Simply go the send screen and select a watch account to spend from and you will be prompt to temporary import your account's private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen.".localized }
@@ -81,10 +81,8 @@ class TLDisplayStrings {
     class func ARCHIVED_IMPORTED_WATCH_ADDRESSES_STRING() -> String { return "Archived Imported Watch Addresses".localized }
     class func ARCHIVED_MAIN_ADDRESSES_STRING() -> String { return "Archived Main Addresses".localized }
     class func ARE_YOU_SURE_YOU_WANT_TO_ARCHIVE_ACCOUNT_X_STRING() -> String { return "Are you sure you want to archive account %@?".localized }
-    class func ARE_YOU_SURE_YOU_WANT_TO_ARCHIVE_ADDRESS_X_STRING() -> String { return "Are you sure you want to archive address %@".localized }
+    class func ARE_YOU_SURE_YOU_WANT_TO_ARCHIVE_ADDRESS_X_STRING() -> String { return "Are you sure you want to archive address %@?".localized }
     class func ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_ACCOUNT_STRING() -> String { return "Are you sure you want to delete this account?".localized }
-    class func DELETE_ADDRESS_DESC_STRING() -> String { return "Are you sure you want to delete this address?".localized }
-    class func ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_WATCH_ONLY_ADDRESS_STRING() -> String { return "Are you sure you want to delete this watch address?".localized }
     class func ARE_YOU_SURE_YOU_WANT_TO_UNARCHIVE_ACCOUNT_X_STRING() -> String { return "Are you sure you want to unarchive account %@".localized }
     class func ARE_YOU_SURE_YOU_WANT_TO_UNARCHIVE_ADDRESS_X_STRING() -> String { return "Are you sure you want to unarchive address %@?".localized }
     class func AUTHORIZE_COLD_WALLET_ACCOUNT_PAYMENT_STRING() -> String { return "Authorize Cold Wallet Account Payment".localized }
@@ -159,31 +157,31 @@ class TLDisplayStrings {
     class func CONFIRM_PIN_CODE_STRING() -> String { return "Confirm Pin Code".localized }
     class func CONTINUE_STRING() -> String { return "Continue".localized }
     class func COPIED_TO_CLIPBOARD_STRING() -> String { return "Copied To clipboard".localized }
-    class func COPY_TO_CLIPBOARD_STRING() -> String { return "Copy To Clipboard".localized }
+    class func COPY_TO_CLIPBOARD_STRING() -> String { return "Copy".localized }
     class func COPY_TRANSACTION_ID_TO_CLIPBOARD_STRING() -> String { return "Copy Transaction ID to Clipboard".localized }
     class func CREATE_COLD_WALLET_STRING() -> String { return "Create Cold Wallet".localized }
     class func CREATE_NEW_ACCOUNT_STRING() -> String { return "Create New Account".localized }
     class func CREATE_NEW_CONTACT_STRING() -> String { return "Create new contact".localized }
-    class func DECRYPTING_PRIVATE_KEY_STRING() -> String { return "Decrypting Private Key".localized }
+    class func DECRYPTING_PRIVATE_KEY_STRING() -> String { return "Decrypting".localized }
     class func DEFAULT_ACCOUNT_NAME_STRING() -> String { return "Default Account Name".localized }
     class func DELETE_STRING() -> String { return "Delete".localized }
     class func DELETE_X_STRING() -> String { return "Delete %@".localized }
     class func DELETE_ACCOUNT_STRING() -> String { return "Delete Account".localized }
-    class func DELETE_CONTACTS_ENTRY_STRING() -> String { return "Delete Contacts Entry".localized }
+    class func DELETE_CONTACTS_ENTRY_STRING() -> String { return "Delete Contact".localized }
     class func DELETE_ADDRESS_STRING() -> String { return "Delete address".localized }
     class func DONT_MANAGE_INDIVIDUAL_ACCOUNT_ADDRESS_WARNING_DESC_STRING() -> String { return "Do not use the QR code from here to receive bitcoins. Go to the Receive screen to get a QR code to receive bitcoins.".localized }
     class func ICLOUD_BACKUP_NOT_FOUND_DESC_STRING() -> String { return "Do you want to load and backup your current local wallet file?".localized }
     class func DO_YOU_WANT_TO_LOAD_LOCAL_WALLET_FILE_STRING() -> String { return "Do you want to load local wallet file?".localized }
-    class func BACKUP_PASSPHRASE_FOUND_IN_KEYCHAIN_DESC_STRING() -> String { return "Do you want to restore from your backup passphrase or start a fresh app?".localized }
+    class func BACKUP_PASSPHRASE_FOUND_IN_KEYCHAIN_DESC_STRING() -> String { return "Do you want to restore from your backup passphrase or start a new wallet?".localized }
     class func ASK_TEMPORARY_IMPORT_ACCOUNT_PRIVATE_KEY_STRING() -> String { return "Do you want to temporary import your account private key?".localized }
     class func DO_YOU_WANT_TO_TEMPORARY_IMPORT_YOUR_PRIVATE_KEY_STRING() -> String { return "Do you want to temporary import your private key?".localized }
     class func DONT_REMIND_ME_STRING() -> String { return "Don't remind me".localized }
     class func DONE_STRING() -> String { return "Done".localized }
-    class func WHAT_ARE_ACCOUNT_EXTENDED_KEYS_DESC_STRING() -> String { return "Each account has a public and private account/extended key. Accounts keys should be kept secret as they are used to view the account's transactions, and spend the accounts bitcoins.".localized }
+    class func WHAT_ARE_ACCOUNT_EXTENDED_KEYS_DESC_STRING() -> String { return "Each account has a public and private account key. Accounts keys should be kept secret as they are used to view the account's transactions, and spend the accounts bitcoins.".localized }
     class func EDIT_ACCOUNT_NAME_STRING() -> String { return "Edit Account Name".localized }
-    class func EDIT_CONTACTS_ENTRY_STRING() -> String { return "Edit Contacts Entry".localized }
+    class func EDIT_CONTACTS_ENTRY_STRING() -> String { return "Edit Contact Name".localized }
     class func EDIT_LABEL_STRING() -> String { return "Edit Label".localized }
-    class func EDIT_TRANSACTION_TAG_STRING() -> String { return "Edit Transaction tag".localized }
+    class func EDIT_TRANSACTION_TAG_STRING() -> String { return "Edit Transaction label".localized }
     class func EDIT_ADDRESS_LABEL_STRING() -> String { return "Edit address label".localized }
     class func EMAIL_SUPPORT_STRING() -> String { return "Email Support".localized }
     class func ENABLE_PIN_CODE_TO_BETTER_SECURE_WALLET_STRING() -> String { return "Enable PIN code in settings to better secure your wallet.".localized }
@@ -193,7 +191,7 @@ class TLDisplayStrings {
     class func ENCOUNTERED_ERROR_CREATING_TRANSACTION_TRY_AGAIN_STRING() -> String { return "Encountered error creating transaction. Please try again.".localized }
     class func ENCRYPTED_STRING() -> String { return "Encrypted".localized }
     class func ENTER_LABEL_STRING() -> String { return "Enter Label".localized }
-    class func ENTER_PIN_CODE_STRING() -> String { return "Enter Pin Code".localized }
+    class func ENTER_PIN_CODE_STRING() -> String { return "Enter PIN".localized }
     class func ENTER_BACKUP_PASSPHRASE_STRING() -> String { return "Enter backup passphrase".localized }
     class func ENTER_PASSPHRASE_FOR_ICLOUD_BACKUP_WALLET_STRING() -> String { return "Enter passphrase for your iCloud backup wallet.".localized }
     class func ENTER_PASSWORD_FOR_ENCRYPTED_PRIVATE_KEY_STRING() -> String { return "Enter password for encrypted private key".localized }
@@ -204,7 +202,6 @@ class TLDisplayStrings {
     class func ERROR_FETCHING_UNSPENT_OUTPUTS_TRY_AGAIN_STRING() -> String { return "Error fetching unspent outputs. Try again.".localized }
     class func ERROR_GETTING_BLOCK_HEIGHT_STRING() -> String { return "Error getting block height.".localized }
     class func ERROR_IMPORTING_ACCOUNT_STRING() -> String { return "Error importing account".localized }
-    class func ERROR_IMPORTING_COLD_WALLET_ACCOUNT_STRING() -> String { return "Error importing cold wallet account".localized }
     class func ERROR_LOADING_WALLET_JSON_FILE_STRING() -> String { return "Error loading wallet JSON file".localized }
     class func EXPLANATION_STRING() -> String { return "Explanation".localized }
     class func FAQ_STRING() -> String { return "FAQ".localized }
@@ -265,16 +262,14 @@ class TLDisplayStrings {
     class func INPUT_LABEL_FOR_ADDRESS_STRING() -> String { return "Input label for address".localized }
     class func INPUT_NEW_ACCOUNT_NAME_STRING() -> String { return "Input new account name".localized }
     class func INPUT_PRIVATE_KEY_STRING() -> String { return "Input private key".localized }
-    class func INPUT_COLD_WALLET_KEY_INFO_STRING() -> String { return "Input the 12 word passphrase/mnemonic that belongs to the cold wallet account that you want to make a payment from. This is the passphrase that was used to generate your account public key that was generated in the 'Create Cold Wallet' section found in the previous screen.".localized }
+    class func INPUT_COLD_WALLET_KEY_INFO_STRING() -> String { return "Enter the 12 word passphrase that belongs to the cold wallet account that you want to make a payment from. This is the passphrase that was used to generate your account public key that was generated in the \'Create Cold Wallet\' section found in the previous screen.".localized }
     class func INPUT_TRANSACTION_FEE_IN_BITCOINS_STRING() -> String { return "Input transaction fee in bitcoins".localized }
-    class func INPUT_WATCH_ADDRESS_STRING() -> String { return "Input watch address".localized }
     class func INPUT_YOUR_CUSTOM_FEE_IN_X_STRING() -> String { return "Input your custom fee in %@".localized }
-    class func INPUTED_TXID_IS_INVALID_STRING() -> String { return "Inputed txid is invalid".localized }
+    class func INVALID_TRANSACTION_ID() -> String { return "Invalid transaction ID".localized }
     class func INSTRUCTIONS_STRING() -> String { return "Instructions".localized }
-    class func INSUFFICIENT_BALANCE_STRING() -> String { return "Insufficient Balance".localized }
     class func INSUFFICIENT_FUNDS_STRING() -> String { return "Insufficient Funds".localized }
-    class func INSUFFICIENT_FUNDS_ACCOUNT_BALANCE_IS_STRING() -> String { return "Insufficient Funds. Account balance is %@ %@ when %@ %@ is required.".localized }
-    class func INSUFFICIENT_FUNDS_ACCOUNT_CONTAINS_BITCOIN_DUST_STRING() -> String { return "Insufficient Funds. Account contains bitcoin dust. You can only send up to %@ %@ for now.".localized }
+    class func INSUFFICIENT_FUNDS_ACCOUNT_BALANCE_IS_STRING() -> String { return "Insufficient Funds. Account balance is %@ when %@ is required.".localized }
+    class func INSUFFICIENT_FUNDS_ACCOUNT_CONTAINS_BITCOIN_DUST_STRING() -> String { return "Insufficient Funds. Account contains bitcoin dust. You can only send up to %@ for now.".localized }
     class func INTERNAL_ACCOUNT_TRANSFER_STRING() -> String { return "Internal account transfer".localized }
     class func INVALID_ADDRESS_STRING() -> String { return "Invalid Address".localized }
     class func INVALID_BITCOIN_ADDRESS_STRING() -> String { return "Invalid Bitcoin Address".localized }
@@ -285,16 +280,15 @@ class TLDisplayStrings {
     class func INVALID_PASSPHRASE_STRING() -> String { return "Invalid passphrase".localized }
     class func INVALID_PRIVATE_KEY_STRING() -> String { return "Invalid private key".localized }
     class func INVALID_SCANNED_DATA_STRING() -> String { return "Invalid scanned data".localized }
-    class func DONT_MANAGE_INDIVIDUAL_ACCOUNT_PRIVATE_KEY_WARNING_DESC_STRING() -> String { return "It is not recommended that you manually manage an accounts' private key yourself. A leak of a private key can lead to the compromise of your accounts' bitcoins.".localized }
+    class func DONT_MANAGE_INDIVIDUAL_ACCOUNT_PRIVATE_KEY_WARNING_DESC_STRING() -> String { return "It is not recommended that you manually manage private keys yourself. A leak of a private key can lead to the compromise of your accounts.".localized }
     class func ADD_ADDRESS_TO_CONTACT_WARNING_DESC_STRING() -> String { return "It is not recommended that you use a regular bitcoin address for multiple payments, but instead you should import a reusable address. Add address anyways?".localized }
     class func LABEL_STRING() -> String { return "Label".localized }
     class func LABEL_TRANSACTION_STRING() -> String { return "Label Transaction".localized }
     class func LIKE_USING_ARCBIT_STRING() -> String { return "Like using ArcBit?".localized }
     class func LOCAL_BACK_UP_TO_WALLET_FAILED_STRING() -> String { return "Local back up to wallet failed!".localized }
     class func RESTORE_WALLET_FROM_ICLOUD_STRING() -> String { return "Local wallet will be lost. Are you sure you want to restore wallet from iCloud?".localized }
-    class func MANUALLY_SCAN_FOR_FORWARD_TRANSACTION_STRING() -> String { return "Manually Scan For Forward Transaction".localized }
+    class func SCAN_REUSABLE_ADDRESS_PAYMENT_STRING() -> String { return "Scan For Reusable Address Payment".localized }
     class func MAXIMUM_ACCOUNTS_REACHED_STRING() -> String { return "Maximum accounts reached".localized }
-    class func MAXIMUM_IMPORTED_ACCOUNTS_REACHED_STRING() -> String { return "Maximum imported accounts reached.".localized }
     class func MAXIMUM_IMPORTED_ADDRESSES_AND_PRIVATE_KEYS_REACHED_STRING() -> String { return "Maximum imported addresses and private keys reached.".localized }
     class func MNEMONIC_STRING() -> String { return "Mnemonic".localized }
     class func MORE_STRING() -> String { return "More".localized }

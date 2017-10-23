@@ -161,7 +161,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                                                             let amountNeeded = TLSendFormData.instance().toAmount!.add(feeAmount)
                                                             let sendFromBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
                                                             if (amountNeeded.greater(sendFromBalance)) {
-                                                                TLPrompts.promptErrorMessage(TLDisplayStrings.INSUFFICIENT_BALANCE_STRING(), message: TLDisplayStrings.YOUR_NEW_TRANSACTION_FEE_IS_TOO_HIGH_STRING())
+                                                                TLPrompts.promptErrorMessage(TLDisplayStrings.INSUFFICIENT_FUNDS_STRING(), message: TLDisplayStrings.YOUR_NEW_TRANSACTION_FEE_IS_TOO_HIGH_STRING())
                                                                 return
                                                             }
                                                             
