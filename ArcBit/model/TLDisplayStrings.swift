@@ -253,7 +253,6 @@ class TLDisplayStrings {
     class func INPUT_A_BITCOIN_ADDRESS_STRING() -> String { return "Input a bitcoin address".localized }
     class func INPUT_A_LABEL_STRING() -> String { return "Input a label".localized }
     class func INPUT_A_NEW_LABEL_STRING() -> String { return "Input a new label".localized }
-    class func INPUT_A_RECOMMENDED_AMOUNT_STRING() -> String { return "Input a recommended amount. Somewhere between %@ and %@ BTC".localized }
     class func INPUT_ACCOUNT_PRIVATE_KEY_STRING() -> String { return "Input account private key".localized }
     class func INPUT_ACCOUNT_PUBLIC_KEY_STRING() -> String { return "Input account public key".localized }
     class func INPUT_ADDRESS_STRING() -> String { return "Input address".localized }
@@ -294,12 +293,8 @@ class TLDisplayStrings {
     class func NEW_ADDRESSES_WILL_BE_AUTOMATICALLY_GENERATED_DESC_STRING() -> String { return "New addresses will be automatically generated and cycled for you as you use your current available addresses.".localized }
     class func NEXT_STRING() -> String { return "Next".localized }
     class func NO_STRING() -> String { return "No".localized }
-    class func NO_THANKS_STRING() -> String { return "No thanks".localized }
-    class func NON_RECOMMENDED_AMOUNT_TRANSACTION_FEE_STRING() -> String { return "Non-recommended Amount Transaction Fee".localized }
     class func NONE_CURRENTLY_STRING() -> String { return "None currently".localized }
     class func NOT_NOW_STRING() -> String { return "Not now".localized }
-    class func NOTE_STRING() -> String { return "Note".localized }
-    class func NOTICE_STRING() -> String { return "Notice".localized }
     class func FINISHED_PASSING_TRANSACTION_DATA_DESC_STRING() -> String { return "Now authorize the transaction on your air gap device. When you have done so click continue on this device to scan the authorized transaction data and make your payment.".localized }
     class func OK_STRING() -> String { return "OK".localized }
     class func SCAN_UNSIGNED_TX_INFO_STRING() -> String { return "On your primary online device, when you want to make a payment from a cold wallet account, simply do it as would normally would on a normal account. When you click 'Send' on the Review Payment screen, instead of the payment going out immediately, you will be prompt to pass the unauthorized transaction data. Then on your secondary offline device, within this screen click 'Scan' to import the transaction so it can be authorized.".localized }
@@ -351,6 +346,7 @@ class TLDisplayStrings {
     class func REUSABLE_ADDRESS_BLOCKCHAIN_API_WARNING_STRING() -> String { return "Sending payment to a reusable address might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For reusable address payments to show up faster, configure your app to use the Insight API in advance settings.".localized }
     class func SENT_X_TO_Y_STRING() -> String { return "Sent %@ to %@".localized }
     class func SET_BLOCK_EXPLORER_URL_STRING() -> String { return "Set Block Explorer URL".localized }
+    class func SET_TRANSACTION_FEE_IN_X_STRING() -> String { return "Set Transaction Fee in %@".localized }
     class func SETTINGS_STRING() -> String { return "Settings".localized }
     class func SOME_FUNDS_MAY_BE_PENDING_CONFIRMATION_DESC_STRING() -> String { return "Some funds may be pending confirmation and cannot be spent yet. (Check your account history) Account only has a spendable balance of %@ %@".localized }
     class func WHAT_ARE_REUSABLE_ADDRESSES_DESC_STRING() -> String { return "Some people has compared bitcoin addresses to a bank routing number. It is a good analogy, however bitcoin addresses are public. So if you reuse the same bitcoin address for multiple payments like you would a routing number, people will be able to figure out how much bitcoins you have. Thus it is recommended that you only use one address per payment.\nThis causes usability issues because making the user use a new address whenever receiving a payment is cumbersome.\nStealth/reusable addresses provides a better solution. When you give a sender a reusable address, the sender will derive a one time regular bitcoin address from the reusable address. Then the sender will send a payment to that regular bitcoin address. Now you can give many people just one reusable address and have them all send you payments without letting other people know how much bitcoins you have.\nA reusable address looks sometime like this vJmxthatTBXibYe9aZavx18iAT9gyiJETGkhwPX2WbHQGuzX83YvQXynD2t8yHU4Xjfonu5x9m6B4yxquytFP1c2CRbVR9mecxesvE. A reusable address is a lot longer then a regular bitcoin address, it is 102 characters in length.\nReusable addresses are great, however there are no other mobile bitcoin wallets but ArcBit that supports reusable addresses for now. Which is why ArcBit support receiving payments from both regular bitcoin addresses and reusable addresses.\nFor each account, you have one reusable address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a reusable address.".localized }

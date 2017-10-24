@@ -165,32 +165,9 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                                                                 return
                                                             }
                                                             
-                                                            if (TLWalletUtils.isTransactionFeeTooLow(feeAmount)) {
-                                                                let msg = String(format: TLDisplayStrings.NON_RECOMMENDED_AMOUNT_TRANSACTION_FEE_DESC_STRING())
-                                                                
-                                                                TLPrompts.promtForOKCancel(self, title: TLDisplayStrings.NON_RECOMMENDED_AMOUNT_TRANSACTION_FEE_STRING(), message: msg, success: {
-                                                                    () in
-                                                                    TLSendFormData.instance().feeAmount = feeAmount
-                                                                    self.updateView()
-                                                                    }, failure: {
-                                                                        (isCancelled: Bool) in
-                                                                        self.showPromptForSetTransactionFee()
-                                                                })
-                                                            } else if (TLWalletUtils.isTransactionFeeTooHigh(feeAmount)) {
-                                                                let msg = String(format: TLDisplayStrings.YOUR_TRANSACTION_FEE_IS_VERY_HIGH_CONTINUE_ANYWAYS_STRING())
-                                                                
-                                                                TLPrompts.promtForOKCancel(self, title: TLDisplayStrings.NON_RECOMMENDED_AMOUNT_TRANSACTION_FEE_STRING(), message: msg, success: {
-                                                                    () in
-                                                                    TLSendFormData.instance().feeAmount = feeAmount
-                                                                    self.updateView()
-                                                                    }, failure: {
-                                                                        (isCancelled: Bool) in
-                                                                        self.showPromptForSetTransactionFee()
-                                                                })
-                                                            } else {
-                                                                TLSendFormData.instance().feeAmount = feeAmount
-                                                                self.updateView()
-                                                            }
+                                                            TLSendFormData.instance().feeAmount = feeAmount
+                                                            self.updateView()
+
                                                         } else if (buttonIndex == alertView!.cancelButtonIndex) {
                                                         }
         })

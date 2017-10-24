@@ -417,8 +417,6 @@
 
 "Sending payment to a reusable addresses might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For reusable address payments to show up faster, configure your app to use the Insight API in advance settings." = "Sending payment to a reusable addresses might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For reusable address payments to show up faster, configure your app to use the Insight API in advance settings.";
 
-"Notice" = "Notice";
-
 "You must close the app in order for the API change to take effect." = "You must close the app in order for the API change to take effect.";
 
 "%@ Support" = "%@ Support";
@@ -438,8 +436,6 @@
 "fee amount" = "fee amount";
 
 "Too low a transaction fee can cause transactions to take a long time to confirm. Continue anyways?" = "Too low a transaction fee can cause transactions to take a long time to confirm. Continue anyways?";
-
-"Non-recommended Amount Transaction Fee" = "Non-recommended Amount Transaction Fee";
 
 "iCloud backup will be lost. Are you sure you want to backup your local wallet to iCloud?" = "iCloud backup will be lost. Are you sure you want to backup your local wallet to iCloud?";
 
@@ -494,6 +490,8 @@
 "Error getting block height." = "Error getting block height.";
 
 "Sent %@ to %@" = "Sent %@ to %@";
+
+"Set Transaction Fee in" = "Set Transaction Fee in %@";
 
 "%@ is not allowed to access the camera" = "%@ is not allowed to access the camera";
 

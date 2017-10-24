@@ -50,7 +50,7 @@ import AVFoundation
     override func viewDidAppear(_ animated: Bool) -> () {
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_SETTINGS_SCREEN()), object: nil)
         if (AppDelegate.instance().giveExitAppNoticeForBlockExplorerAPIToTakeEffect) {
-            TLPrompts.promptSuccessMessage(TLDisplayStrings.NOTICE_STRING(), message: TLDisplayStrings.CLOSE_APP_FOR_API_CHANGE_TO_TAKE_EFFECT_STRING())
+            TLPrompts.promptSuccessMessage("", message: TLDisplayStrings.CLOSE_APP_FOR_API_CHANGE_TO_TAKE_EFFECT_STRING())
             AppDelegate.instance().giveExitAppNoticeForBlockExplorerAPIToTakeEffect = false
         }
     }
@@ -124,7 +124,7 @@ import AVFoundation
                     if (candidateURL != nil && candidateURL!.host != nil) {
                         TLPreferences.setInAppSettingsKitBlockExplorerURL(candidateURL!.absoluteString)
                         TLPreferences.setBlockExplorerURL(TLPreferences.getBlockExplorerAPI(), value: candidateURL!.absoluteString)
-                        TLPrompts.promptSuccessMessage(TLDisplayStrings.NOTICE_STRING(), message: TLDisplayStrings.KILL_THIS_APP_DESC_STRING())
+                        TLPrompts.promptSuccessMessage("", message: TLDisplayStrings.KILL_THIS_APP_DESC_STRING())
                     } else {
                         UIAlertController.showAlert(in: self,
                             withTitle:  TLDisplayStrings.INVALID_URL_STRING(),
@@ -142,7 +142,7 @@ import AVFoundation
     }
     
     fileprivate func showPromptForSetTransactionFee() {
-        let msg = String(format: TLDisplayStrings.INPUT_A_RECOMMENDED_AMOUNT_STRING(), TLWalletUtils.MIN_FEE_AMOUNT_IN_BITCOINS(), TLWalletUtils.MAX_FEE_AMOUNT_IN_BITCOINS())
+        let msg = String(format: TLDisplayStrings.SET_TRANSACTION_FEE_IN_X_STRING(), TLCurrencyFormat.getBitcoinDisplay())
         
         func addTextField(_ textField: UITextField!){
             textField.placeholder = TLDisplayStrings.FEE_AMOUNT_STRING()
@@ -167,24 +167,8 @@ import AVFoundation
                     let feeAmount = (alertView!.textFields![0] ).text
                     
                     let feeAmountCoin = TLCurrencyFormat.bitcoinAmountStringToCoin(feeAmount!)
-                    if (TLWalletUtils.isValidInputTransactionFee(feeAmountCoin)) {
-                        TLPreferences.setInAppSettingsKitTransactionFee(feeAmountCoin.bigIntegerToBitcoinAmountString(.bitcoin))
-                        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_CHANGE_AUTOMATIC_TX_FEE()), object: nil)
-                        
-                    } else {
-                        let msg = String(format: TLDisplayStrings.NON_RECOMMENDED_AMOUNT_TRANSACTION_FEE_DESC_STRING())
-                        
-                        TLPrompts.promtForOKCancel(self, title: TLDisplayStrings.NON_RECOMMENDED_AMOUNT_TRANSACTION_FEE_STRING(), message: msg, success: {
-                            () in
-                            let amount = TLCurrencyFormat.bitcoinAmountStringToCoin(feeAmount!)
-                            TLPreferences.setInAppSettingsKitTransactionFee(amount.bigIntegerToBitcoinAmountString(.bitcoin))
-                            NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_CHANGE_AUTOMATIC_TX_FEE()), object: nil)
-                            
-                            }, failure: {
-                                (isCancelled: Bool) in
-                                self.showPromptForSetTransactionFee()
-                        })
-                    }
+                    TLPreferences.setInAppSettingsKitTransactionFee(feeAmountCoin.bigIntegerToBitcoinAmountString(.bitcoin))
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_CHANGE_AUTOMATIC_TX_FEE()), object: nil)
                 } else if (buttonIndex == alertView!.cancelButtonIndex) {
                 }
         })

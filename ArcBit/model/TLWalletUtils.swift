@@ -69,14 +69,6 @@ class TLWalletUtils {
     class func DEFAULT_FEE_AMOUNT_IN_BITCOINS() -> (String) {
         return TLCurrencyFormat.bitcoinAmountStringToCoin(STATIC_MEMBERS.DEFAULT_FEE_AMOUNT, locale: Locale(identifier: "en_US")).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.bitcoin)
     }
-    
-    class func MAX_FEE_AMOUNT_IN_BITCOINS() -> (String) {
-        return TLCurrencyFormat.bitcoinAmountStringToCoin(STATIC_MEMBERS.MAX_FEE_AMOUNT, locale: Locale(identifier: "en_US")).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.bitcoin)
-    }
-    
-    class func MIN_FEE_AMOUNT_IN_BITCOINS() -> (String) {
-        return TLCurrencyFormat.bitcoinAmountStringToCoin(STATIC_MEMBERS.MIN_FEE_AMOUNT, locale: Locale(identifier: "en_US")).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.bitcoin)
-    }
 
     class func RECEIVE_ICON_IMAGE_NAME() -> (String) {
         return STATIC_MEMBERS.RECEIVE_ICON_IMAGE_NAME
@@ -137,11 +129,6 @@ class TLWalletUtils {
         static let BITCOIN_SYMBOL = "B"
         
         static let DEFAULT_FEE_AMOUNT = "0.0001"
-        
-        //use to prevent user input error of too high a fee
-        static let MAX_FEE_AMOUNT = "0.01"
-        //use to prevent user input error of too low a fee
-        static let MIN_FEE_AMOUNT = "0.0001"
     }
     
     class func ENABLE_STEALTH_ADDRESS() -> (Bool) {
@@ -158,35 +145,6 @@ class TLWalletUtils {
     
     class func reverseHexString(_ txHashHex: String) -> String {
         return dataToHexString((hexStringToData(txHashHex)! as NSData).reverse())
-    }
-    
-    class func isTransactionFeeTooLow(_ amount: TLCoin) -> Bool {
-        let minFeeAmount = TLCoin(bitcoinAmount: MIN_FEE_AMOUNT_IN_BITCOINS(), bitcoinDenomination: TLBitcoinDenomination.bitcoin)
-        if (amount.less(minFeeAmount)) {
-            return true
-        }
-        return false
-    }
-    
-    class func isTransactionFeeTooHigh(_ amount: TLCoin) -> Bool {
-        let maxFeeAmount = TLCoin(bitcoinAmount: MAX_FEE_AMOUNT_IN_BITCOINS(), bitcoinDenomination: TLBitcoinDenomination.bitcoin)
-        if (amount.greater(maxFeeAmount)) {
-            return true
-        }
-        return false
-    }
-    
-    class func isValidInputTransactionFee(_ amount: TLCoin) -> Bool {
-        let maxFeeAmount = TLCoin(bitcoinAmount: MAX_FEE_AMOUNT_IN_BITCOINS(), bitcoinDenomination: TLBitcoinDenomination.bitcoin)
-        let minFeeAmount = TLCoin(bitcoinAmount: MIN_FEE_AMOUNT_IN_BITCOINS(), bitcoinDenomination: TLBitcoinDenomination.bitcoin)
-        if (amount.greater(maxFeeAmount)) {
-            return false
-        }
-        if (amount.less(minFeeAmount)) {
-            return false
-        }
-        
-        return true
     }
     
     class func getBitcoinURI(_ address: String, amount: TLCoin,

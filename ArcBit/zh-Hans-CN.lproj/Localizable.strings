@@ -523,39 +523,31 @@
 
 "Maximum accounts reached" = "达到最大的帐户数量";
 
-"More" = "More";
+"More" = "更多";
 
-"Network Error" = "Network Error";
+"Network Error" = "网络错误";
 
-"New addresses will be automatically generated and cycled for you as you use your current available addresses." = "New addresses will be automatically generated and cycled for you as you use your current available addresses.";
+"New addresses will be automatically generated and cycled for you as you use your current available addresses." = "您使用当前可用地址的时候将为您自动生成新地址并循环。";
 
-"Next" = "Next";
+"Next" = "下一个";
 
-"No" = "No";
+"No" = "没有";
 
-"No thanks" = "No thanks";
+"None currently" = "目前无";
 
-"Non-recommended Amount Transaction Fee" = "Non-recommended Amount Transaction Fee";
+"Not now" = "不是现在";
 
-"None currently" = "None currently";
-
-"Not now" = "Not now";
-
-"Note" = "Note";
-
-"Notice" = "Notice";
-
-"Now authorize the transaction on your air gap device. When you have done so click continue on this device to scan the authorized transaction data and make your payment." = "Now authorize the transaction on your air gap device. When you have done so click continue on this device to scan the authorized transaction data and make your payment.";
+"Now authorize the transaction on your air gap device. When you have done so click continue on this device to scan the authorized transaction data and make your payment." = "现在，在您的空气隔离的设备上授权此交易。完成后，在此设备上单击继续以扫描授权的交易数据并进行付款。";
 
 "OK" = "OK";
 
-"On your primary online device, when you want to make a payment from a cold wallet account, simply do it as would normally would on a normal account. When you click 'Send' on the Review Payment screen, instead of the payment going out immediately, you will be prompt to pass the unauthorized transaction data. Then on your secondary offline device, within this screen click 'Scan' to import the transaction so it can be authorized." = "On your primary online device, when you want to make a payment from a cold wallet account, simply do it as would normally would on a normal account. When you click 'Send' on the Review Payment screen, instead of the payment going out immediately, you will be prompt to pass the unauthorized transaction data. Then on your secondary offline device, within this screen click 'Scan' to import the transaction so it can be authorized.";
+"On your primary online device, when you want to make a payment from a cold wallet account, simply do it as would normally would on a normal account. When you click 'Send' on the Review Payment screen, instead of the payment going out immediately, you will be prompt to pass the unauthorized transaction data. Then on your secondary offline device, within this screen click 'Scan' to import the transaction so it can be authorized." = "在您的主要在线设备上，当您想通过冷钱包帐户付款时，只需按照通常在正常帐户中的方式进行付款。当您在“审核付款”屏幕上点击“发送”时，系统会提示您传递未经授权的交易数据，而不是立即付款。然后在您的辅助离线设备上，在此屏幕中单击“扫描”以导入交易，以便可以授权";
 
-"Once the transaction has been authorized by completing the above two steps, pass the authorized transaction back to your primary online device to finalize your payment." = "Once the transaction has been authorized by completing the above two steps, pass the authorized transaction back to your primary online device to finalize your payment.";
+"Once the transaction has been authorized by completing the above two steps, pass the authorized transaction back to your primary online device to finalize your payment." = "一旦该交易已通过以上两个步骤完成授权，将已授权交易送回主联机设备来完成付款。";
 
-"Other Links" = "Other Links";
+"Other Links" = "其它链接";
 
-"Passphrase does not match the transaction" = "Passphrase does not match the transaction";
+"Passphrase does not match the transaction" = "密码不匹配的交易";
 
 "Passphrase is invalid" = "Passphrase is invalid";
 
@@ -644,6 +636,8 @@
 "Sending payment to a reusable address might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For reusable address payments to show up faster, configure your app to use the Insight API in advance settings." = "Sending payment to a reusable address might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For reusable address payments to show up faster, configure your app to use the Insight API in advance settings.";
 
 "Sent %@ to %@" = "Sent %@ to %@";
+
+"Set Transaction Fee in" = "Set Transaction Fee in %@";
 
 "Set Block Explorer URL" = "Set Block Explorer URL";
 
