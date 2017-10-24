@@ -289,8 +289,6 @@ class TLDisplayStrings {
     class func RESTORE_WALLET_FROM_ICLOUD_STRING() -> String { return "Local wallet will be lost. Are you sure you want to restore wallet from iCloud?".localized }
     class func SCAN_REUSABLE_ADDRESS_PAYMENT_STRING() -> String { return "Scan For Reusable Address Payment".localized }
     class func MAXIMUM_ACCOUNTS_REACHED_STRING() -> String { return "Maximum accounts reached".localized }
-    class func MAXIMUM_IMPORTED_ADDRESSES_AND_PRIVATE_KEYS_REACHED_STRING() -> String { return "Maximum imported addresses and private keys reached.".localized }
-    class func MNEMONIC_STRING() -> String { return "Mnemonic".localized }
     class func MORE_STRING() -> String { return "More".localized }
     class func NETWORK_ERROR_STRING() -> String { return "Network Error".localized }
     class func NEW_ADDRESSES_WILL_BE_AUTOMATICALLY_GENERATED_DESC_STRING() -> String { return "New addresses will be automatically generated and cycled for you as you use your current available addresses.".localized }

@@ -321,8 +321,6 @@
 
 "You need to archive an imported account or imported watch account in order to import a new one." = "You need to archive an imported account or imported watch account in order to import a new one.";
 
-"Maximum imported addresses and private keys reached." = "Maximum imported addresses and private keys reached.";
-
 "You need to archive an imported private key or address in order to import a new one." = "You need to archive an imported private key or address in order to import a new one.";
 
 "Archived Accounts" = "Archived Accounts";

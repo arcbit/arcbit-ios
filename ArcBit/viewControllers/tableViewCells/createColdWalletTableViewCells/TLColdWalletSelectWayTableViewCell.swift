@@ -55,7 +55,7 @@ protocol TLColdWalletSelectKeyTypeTableViewCellDelegate {
         }
         self.coldWalletSelectSegmentedControl.setTitleTextAttributes(attr as! [AnyHashable: Any] , for: UIControlState())
      
-        self.coldWalletSelectSegmentedControl.setTitle(TLDisplayStrings.MNEMONIC_STRING(), forSegmentAt: 0)
+        self.coldWalletSelectSegmentedControl.setTitle(TLDisplayStrings.BACK_UP_PASSPHRASE_STRING(), forSegmentAt: 0)
         self.coldWalletSelectSegmentedControl.setTitle(TLDisplayStrings.ACCOUNT_PRIVATE_KEY_STRING(), forSegmentAt: 1)
         self.coldWalletSelectSegmentedControl.setTitle(TLDisplayStrings.ACCOUNT_PUBLIC_KEY_STRING(), forSegmentAt: 2)
     }

@@ -2171,16 +2171,8 @@ import UIKit
             }
             self.promptImportWatchAccountActionSheet()
         } else if (accountSelectIdx == IMPORT_PRIVATE_KEY_BUTTON_IDX) {
-            if (AppDelegate.instance().importedAddresses!.getCount() + AppDelegate.instance().importedWatchAddresses!.getCount() >= MAX_IMPORTED_ADDRESSES) {
-                TLPrompts.promptErrorMessage(TLDisplayStrings.MAXIMUM_IMPORTED_ADDRESSES_AND_PRIVATE_KEYS_REACHED_STRING(), message: TLDisplayStrings.MAXIMUM_IMPORTED_ADDRESSES_AND_PRIVATE_KEYS_REACHED_DESC_STRING())
-                return
-            }
             self.promptImportPrivateKeyActionSheet()
         } else if (accountSelectIdx == IMPORT_WATCH_ADDRESS_BUTTON_IDX) {
-            if (AppDelegate.instance().importedAddresses!.getCount() + AppDelegate.instance().importedWatchAddresses!.getCount() >= MAX_IMPORTED_ADDRESSES) {
-                TLPrompts.promptErrorMessage(TLDisplayStrings.MAXIMUM_IMPORTED_ADDRESSES_AND_PRIVATE_KEYS_REACHED_STRING(), message: TLDisplayStrings.MAXIMUM_IMPORTED_ADDRESSES_AND_PRIVATE_KEYS_REACHED_DESC_STRING())
-                return
-            }
             self.promptImportWatchAddressActionSheet()
         }
     }
