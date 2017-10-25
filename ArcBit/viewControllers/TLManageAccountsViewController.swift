@@ -119,7 +119,7 @@ import UIKit
 
     func checkToRecoverAccounts() {
         if (AppDelegate.instance().aAccountNeedsRecovering()) {
-            TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: TLDisplayStrings.RECOVERING_ACCOUNTS_STRING(), animated: true)
+            TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: TLDisplayStrings.RESTORING_WALLET_STRING(), animated: true)
             DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
                 AppDelegate.instance().checkToRecoverAccounts()
                 DispatchQueue.main.async {

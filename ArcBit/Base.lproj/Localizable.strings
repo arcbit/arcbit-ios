@@ -62,8 +62,6 @@
 
 "Payment Index: %lu" = "Payment Index: %lu";
 
-"Recovering Accounts" = "Recovering Accounts";
-
 "Accounts" = "Accounts";
 
 "Imported Accounts" = "Imported Accounts";
@@ -387,7 +385,7 @@
 
 "Input desired transaction fee in %@ %@" = "Input desired transaction fee in %@ %@";
 
-"Private key does not match imported address" = "Private key does not match imported address";
+"Private key does not match address" = "Private key does not match address";
 
 "Sending" = "Sending";
 
@@ -471,7 +469,7 @@
 
 "Decrypting" = "Decrypting";
 
-"Passphrase is invalid" = "Passphrase is invalid";
+"Invalid Passphrase" = "Invalid Passphrase";
 
 "Retry" = "Retry";
 

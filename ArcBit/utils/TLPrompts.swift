@@ -226,7 +226,7 @@ class TLPrompts {
                                 success(privKey)
                             } else {
                                 UIAlertController.showAlert(in: vc,
-                                    withTitle: TLDisplayStrings.PASSPHRASE_IS_INVALID_STRING(),
+                                    withTitle: TLDisplayStrings.INVALID_PASSPHRASE_STRING(),
                                     message: "",
                                     cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
                                     destructiveButtonTitle: nil,

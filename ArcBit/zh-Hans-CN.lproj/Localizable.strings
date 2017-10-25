@@ -497,7 +497,7 @@
 
 "Invalid backup passphrase" = "无效的备份密码";
 
-"Invalid passphrase" = "无效的密码";
+"Invalid Passphrase" = "口令无效";
 
 "Invalid private key" = "无效私钥";
 
@@ -549,35 +549,31 @@
 
 "Passphrase does not match the transaction" = "密码不匹配的交易";
 
-"Passphrase is invalid" = "Passphrase is invalid";
+"Password" = "密码";
 
-"Password" = "Password";
+"Payment Index: %lu" = "付款指数： %lu";
 
-"Payment Index: %lu" = "Payment Index: %lu";
+"Private key cleared from memory" = "从内存中清除账户私钥";
 
-"Private key cleared from memory" = "Private key cleared from memory";
+"Private key does not match address" = "私钥不匹配地址";
 
-"Private key does not match imported address" = "Private key does not match imported address";
+"Private key missing" = "私钥缺失";
 
-"Private key missing" = "Private key missing";
-
-"QR code" = "QR code";
+"QR code" = "QR二维码";
 
 "Quit and re-enter app" = "Quit and re-enter app";
 
-"Rate Now" = "Rate Now";
+"Rate" = "率";
 
-"Rate us in the App Store!" = "Rate us in the App Store!";
+"Rate us in the App Store!" = "在App商店给我们评分！";
 
-"Receive" = "Receive";
+"Receive" = "接收";
 
 "Receive Payment" = "Receive Payment";
 
 "Receive Payment From Reusable Address" = "Receive Payment From Reusable Address";
 
-"Recovering Accounts" = "Recovering Accounts";
-
-"Remind me Later" = "Remind me Later";
+"Remind me Later" = "稍后提醒我";
 
 "Rename" = "Rename";
 

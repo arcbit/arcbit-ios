@@ -339,7 +339,7 @@ import StoreKit
                         let importedAddress = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLImportedAddress?
                         let success = importedAddress!.setPrivateKeyInMemory(privKey)
                         if (!success) {
-                            TLPrompts.promptSuccessMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.PRIVATE_KEY_DOES_NOT_MATCH_IMPORTED_ADDRESS_STRING())
+                            TLPrompts.promptSuccessMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.PRIVATE_KEY_DOES_NOT_MATCH_ADDRESS_STRING())
                         } else {
                             self._reviewPaymentClicked()
                         }
@@ -364,7 +364,7 @@ import StoreKit
                 SKStoreReviewController.requestReview()
             } else {
                 TLPrompts.promptAlertController(self, title: TLDisplayStrings.LIKE_USING_ARCBIT_STRING(),
-                                                message: TLDisplayStrings.RATE_US_IN_THE_APP_STORE_STRING(), okText: TLDisplayStrings.RATE_NOW_STRING(), cancelTx: TLDisplayStrings.NOT_NOW_STRING(),
+                                                message: TLDisplayStrings.RATE_US_IN_THE_APP_STORE_STRING(), okText: TLDisplayStrings.RATE_STRING(), cancelTx: TLDisplayStrings.NOT_NOW_STRING(),
                                                 success: { () -> () in
                                                     let url = URL(string: "https://itunes.apple.com/app/id999487888");
                                                     if (UIApplication.shared.canOpenURL(url!)) {
@@ -641,7 +641,7 @@ import StoreKit
             let importedAddress = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLImportedAddress?
             let success = importedAddress!.setPrivateKeyInMemory(privateKey)
             if (!success) {
-                TLPrompts.promptSuccessMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.PRIVATE_KEY_DOES_NOT_MATCH_IMPORTED_ADDRESS_STRING())
+                TLPrompts.promptSuccessMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.PRIVATE_KEY_DOES_NOT_MATCH_ADDRESS_STRING())
             } else {
                 self.checkTofetchFeeThenFinalPromptReviewTx()
             }
@@ -694,7 +694,7 @@ import StoreKit
                 let importedAddress = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLImportedAddress?
                 let success = importedAddress!.setPrivateKeyInMemory(privKey)
                 if (!success) {
-                    TLPrompts.promptSuccessMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.PRIVATE_KEY_DOES_NOT_MATCH_IMPORTED_ADDRESS_STRING())
+                    TLPrompts.promptSuccessMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.PRIVATE_KEY_DOES_NOT_MATCH_ADDRESS_STRING())
                 } else {
                     self.checkTofetchFeeThenFinalPromptReviewTx()
                 }

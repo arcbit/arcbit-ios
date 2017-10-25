@@ -301,20 +301,18 @@ class TLDisplayStrings {
     class func PASS_SIGNED_TX_INFO_STRING() -> String { return "Once the transaction has been authorized by completing the above two steps, pass the authorized transaction back to your primary online device to finalize your payment.".localized }
     class func OTHER_LINKS_STRING() -> String { return "Other Links".localized }
     class func PASSPHRASE_DOES_NOT_MATCH_THE_TRANSACTION_STRING() -> String { return "Passphrase does not match the transaction".localized }
-    class func PASSPHRASE_IS_INVALID_STRING() -> String { return "Passphrase is invalid".localized }
     class func PASSWORD_STRING() -> String { return "Password".localized }
     class func PAYMENT_INDEX_X_STRING() -> String { return "Payment Index: %lu".localized }
     class func PRIVATE_KEY_CLEARED_FROM_MEMORY_STRING() -> String { return "Private key cleared from memory".localized }
-    class func PRIVATE_KEY_DOES_NOT_MATCH_IMPORTED_ADDRESS_STRING() -> String { return "Private key does not match imported address".localized }
+    class func PRIVATE_KEY_DOES_NOT_MATCH_ADDRESS_STRING() -> String { return "Private key does not match address".localized }
     class func PRIVATE_KEY_MISSING_STRING() -> String { return "Private key missing".localized }
     class func QR_CODE_STRING() -> String { return "QR code".localized }
     class func QUIT_AND_RE_ENTER_APP_STRING() -> String { return "Quit and re-enter app".localized }
-    class func RATE_NOW_STRING() -> String { return "Rate Now".localized }
+    class func RATE_STRING() -> String { return "Rate".localized }
     class func RATE_US_IN_THE_APP_STORE_STRING() -> String { return "Rate us in the App Store!".localized }
     class func RECEIVE_STRING() -> String { return "Receive".localized }
     class func RECEIVE_PAYMENT_STRING() -> String { return "Receive Payment".localized }
     class func RECEIVE_PAYMENT_FROM_REUSABLE_ADDRESS_STRING() -> String { return "Receive Payment From Reusable Address".localized }
-    class func RECOVERING_ACCOUNTS_STRING() -> String { return "Recovering Accounts".localized }
     class func REMIND_ME_LATER_STRING() -> String { return "Remind me Later".localized }
     class func RENAME_STRING() -> String { return "Rename".localized }
     class func RESTORE_STRING() -> String { return "Restore".localized }
