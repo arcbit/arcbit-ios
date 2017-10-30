@@ -165,6 +165,7 @@ import StoreKit
         sendTabBarItem?.title = TLDisplayStrings.SEND_STRING()
         let receiveTabBarItem = self.tabBar?.items?[1]
         receiveTabBarItem?.title = TLDisplayStrings.RECEIVE_STRING()
+        self.toAddressTextField?.placeholder = TLDisplayStrings.ADDRESS_STRING()
 
         self.toLabel.text = TLDisplayStrings.TO_COLON_STRING()
         self.fromLabel.text = TLDisplayStrings.FROM_COLON_STRING()

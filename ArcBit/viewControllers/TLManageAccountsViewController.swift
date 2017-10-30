@@ -1941,7 +1941,7 @@ import UIKit
                                                     preferredStyle: .actionSheet,
                                                     cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
                                                     destructiveButtonTitle: nil,
-                                                    otherButtonTitles: [TLDisplayStrings.IMPORT_VIA_QR_CODE_STRING(), TLDisplayStrings.IMPORT_VIA_TEXT_INPUT_STRING()],
+                                                    otherButtonTitles: [TLDisplayStrings.IMPORT_WITH_QR_CODE_STRING(), TLDisplayStrings.IMPORT_WITH_TEXT_INPUT_STRING()],
                                                     tap: {(actionSheet, action, buttonIndex) in
                                                         if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 0) {
                                                             AppDelegate.instance().showExtendedPublicKeyReaderController(self, success: {
@@ -1969,7 +1969,7 @@ import UIKit
             preferredStyle: .actionSheet,
             cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
             destructiveButtonTitle: nil,
-            otherButtonTitles: [TLDisplayStrings.IMPORT_VIA_QR_CODE_STRING(), TLDisplayStrings.IMPORT_VIA_TEXT_INPUT_STRING()],
+            otherButtonTitles: [TLDisplayStrings.IMPORT_WITH_QR_CODE_STRING(), TLDisplayStrings.IMPORT_WITH_TEXT_INPUT_STRING()],
             tap: {(actionSheet, action, buttonIndex) in
             if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 0) {
                 AppDelegate.instance().showExtendedPrivateKeyReaderController(self, success: {
@@ -1998,7 +1998,7 @@ import UIKit
             preferredStyle: .actionSheet,
             cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
             destructiveButtonTitle: nil,
-            otherButtonTitles: [TLDisplayStrings.IMPORT_VIA_QR_CODE_STRING(), TLDisplayStrings.IMPORT_VIA_TEXT_INPUT_STRING()],
+            otherButtonTitles: [TLDisplayStrings.IMPORT_WITH_QR_CODE_STRING(), TLDisplayStrings.IMPORT_WITH_TEXT_INPUT_STRING()],
             tap: {(actionSheet, action, buttonIndex) in
                 if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 0) {
                     AppDelegate.instance().showExtendedPublicKeyReaderController(self, success: {
@@ -2026,7 +2026,7 @@ import UIKit
             preferredStyle: .actionSheet,
             cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
             destructiveButtonTitle: nil,
-            otherButtonTitles: [TLDisplayStrings.IMPORT_VIA_QR_CODE_STRING(), TLDisplayStrings.IMPORT_VIA_TEXT_INPUT_STRING()],
+            otherButtonTitles: [TLDisplayStrings.IMPORT_WITH_QR_CODE_STRING(), TLDisplayStrings.IMPORT_WITH_TEXT_INPUT_STRING()],
             tap: {(actionSheet, action, buttonIndex) in
                 if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 0) {
                     AppDelegate.instance().showPrivateKeyReaderController(self, success: {
@@ -2067,7 +2067,7 @@ import UIKit
             preferredStyle: .actionSheet,
             cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
             destructiveButtonTitle: nil,
-            otherButtonTitles: [TLDisplayStrings.IMPORT_VIA_QR_CODE_STRING(), TLDisplayStrings.IMPORT_VIA_TEXT_INPUT_STRING()],
+            otherButtonTitles: [TLDisplayStrings.IMPORT_WITH_QR_CODE_STRING(), TLDisplayStrings.IMPORT_WITH_TEXT_INPUT_STRING()],
             tap: {(actionSheet, action, buttonIndex) in
                 if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 0) {
                     AppDelegate.instance().showAddressReaderControllerFromViewController(self, success: {

@@ -78,7 +78,7 @@
 
 "Input address" = "Input address";
 
-"Import with QR Code" = "Import with QR Code";
+"Import via QR code" = "Import via QR code";
 
 "Import with text input" = "Import with text input";
 
@@ -290,10 +290,6 @@
 "Cannot import reusable address" = "Cannot import reusable address";
 
 "Import Account" = "Import Account";
-
-"Import via QR code" = "Import via QR code";
-
-"Import via text input" = "Import via text input";
 
 "Input account private key" = "Input account private key";
 
@@ -740,6 +736,15 @@
 "\tArcBit Web Wallet is a Chrome extension. It has all the features of the mobile wallet plus more. Highlights include the ability to create multiple wallets instead of just one, and a new non-cumbersome way to generate wallets, store and spend bitcoins all from cold storage! ArcBit's new way to manage your cold storage bitcoins also offers a more compelling reason to use ArcBit's watch account feature. Now you can safely watch the balance of your cold storage bitcoins by enabling advance mode in ArcBit and importing your cold storage account public keys.\n\tUse ArcBit Web Wallet in whatever way you wish. You can create a new wallet, or you can input your current 12 word backup passphrase to manage the same bitcoins across different devices. Check out the ArcBit Web Wallet in the Chrome Web Store for more details!\n" = "\tArcBit Web Wallet is a Chrome extension. It has all the features of the mobile wallet plus more. Highlights include the ability to create multiple wallets instead of just one, and a new non-cumbersome way to generate wallets, store and spend bitcoins all from cold storage! ArcBit's new way to manage your cold storage bitcoins also offers a more compelling reason to use ArcBit's watch account feature. Now you can safely watch the balance of your cold storage bitcoins by enabling advance mode in ArcBit and importing your cold storage account public keys.\n\tUse ArcBit Web Wallet in whatever way you wish. You can create a new wallet, or you can input your current 12 word backup passphrase to manage the same bitcoins across different devices. Check out the ArcBit Web Wallet in the Chrome Web Store for more details!\n";
 
 "" = "";
+
+"Confirm Payment" = "Confirm Payment";
+"Fee:" = "Fee:";
+"Total:" = "Total:";
+"Customize Fee" = "Customize Fee";
+"Enter a wallet backup passphrase to wipe the current wallet and start/restore another." = "Enter a wallet backup passphrase to wipe the current wallet and start/restore another.";
+"Passphrase" = "Passphrase";
+"Restore Wallet" = "Restore Wallet";
+"Wallet backup passphrase" = "Wallet backup passphrase";
 
 "From:" = "From:";
 "Amount:" = "Amount:";

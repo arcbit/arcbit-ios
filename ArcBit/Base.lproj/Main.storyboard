@@ -538,6 +538,7 @@
                         <outlet property="masterSeedHexTitleLabel" destination="6BY-dx-fLW" id="JNN-PK-EzT"/>
                         <outlet property="navigationBar" destination="R5o-dM-wOC" id="bnO-vn-qBc"/>
                         <outlet property="passPhraseTextView" destination="p18-DP-CtY" id="gX5-Bq-bpb"/>
+                        <outlet property="walletBackupPassphraseLabel" destination="C32-6S-BC5" id="Gpu-FV-JQC"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="mfJ-qD-End" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -2282,16 +2283,22 @@
                         </constraints>
                     </view>
                     <connections>
+                        <outlet property="customizeFeeButton" destination="bta-AA-vWW" id="oOG-y4-Cus"/>
                         <outlet property="feeAmountFiatLabel" destination="ict-FH-day" id="Y4T-EO-oj8"/>
                         <outlet property="feeAmountLabel" destination="jQ2-VE-bsm" id="HLW-JR-N9z"/>
+                        <outlet property="feeAmountTitleLabel" destination="6dK-Su-wIf" id="DGf-Uh-OUT"/>
                         <outlet property="fiatUnitLabel" destination="Va3-CW-hze" id="fmo-lm-VBa"/>
                         <outlet property="fromLabel" destination="PqG-LI-SgL" id="6BW-6S-5jY"/>
+                        <outlet property="fromTitleLabel" destination="u6a-ff-Ab7" id="rLc-Ec-MuT"/>
                         <outlet property="navigationBar" destination="U2m-ef-UaP" id="JR3-gi-gya"/>
                         <outlet property="sendButton" destination="XID-Gh-hGj" id="hcm-Yg-NTz"/>
                         <outlet property="toAmountFiatLabel" destination="NfN-kQ-zfd" id="a1y-b3-BuG"/>
                         <outlet property="toAmountLabel" destination="UKQ-n4-f8s" id="rPI-P9-SUU"/>
+                        <outlet property="toAmountTitleLabel" destination="yRL-oX-vHz" id="SnR-0J-br0"/>
                         <outlet property="toLabel" destination="Wyl-JC-mUk" id="qeQ-3J-84v"/>
+                        <outlet property="toTitleLabel" destination="dLL-tj-JB2" id="Y9P-Gd-Vu2"/>
                         <outlet property="totalAmountLabel" destination="bc0-yo-6Ao" id="Cs6-BY-YXp"/>
+                        <outlet property="totalAmountTitleLabel" destination="cV8-uv-FpY" id="L1Q-FR-cbR"/>
                         <outlet property="totalFiatAmountLabel" destination="NGS-uf-qMF" id="mhF-Gp-h2F"/>
                         <outlet property="unitLabel" destination="7FD-gV-OIx" id="VCN-8n-HSh"/>
                     </connections>

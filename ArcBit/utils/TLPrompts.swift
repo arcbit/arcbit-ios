@@ -129,7 +129,7 @@ class TLPrompts {
                                                 preferredStyle: .actionSheet,
                                                 cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
                                                 destructiveButtonTitle: nil,
-                                                otherButtonTitles: [TLDisplayStrings.IMPORT_VIA_QR_CODE_STRING(), TLDisplayStrings.IMPORT_VIA_TEXT_INPUT_STRING()],
+                                                otherButtonTitles: [TLDisplayStrings.IMPORT_WITH_QR_CODE_STRING(), TLDisplayStrings.IMPORT_WITH_TEXT_INPUT_STRING()],
                                                 tap: {(actionSheet, action, buttonIndex) in
                                                     if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 0) {
                                                         AppDelegate.instance().showPrivateKeyReaderController(viewController, success: {
@@ -173,7 +173,7 @@ class TLPrompts {
                                                 preferredStyle: .actionSheet,
                                                 cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
                                                 destructiveButtonTitle: nil,
-                                                otherButtonTitles: [TLDisplayStrings.IMPORT_VIA_QR_CODE_STRING(), TLDisplayStrings.IMPORT_VIA_TEXT_INPUT_STRING()],
+                                                otherButtonTitles: [TLDisplayStrings.IMPORT_WITH_QR_CODE_STRING(), TLDisplayStrings.IMPORT_WITH_TEXT_INPUT_STRING()],
                                                 tap: {(actionSheet, action, buttonIndex) in
                                                     if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 0) {
                                                         AppDelegate.instance().showExtendedPrivateKeyReaderController(viewController, success: {

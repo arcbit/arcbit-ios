@@ -406,7 +406,7 @@
 
 "Import private key encrypted or unencrypted?" = "导入私钥加密的或未加密的？";
 
-"Import with QR Code" = "导入与QR码";
+"Import via QR code" = "导入与QR码";
 
 "Import with text input" = "导入与文本输入";
 
@@ -822,6 +822,15 @@
 "iCloud backup not found" = "未找到iCloud备份";
 
 "iCloud backup will be lost. Are you sure you want to backup your local wallet to iCloud?" = "iCloud备份将丢失。您确定要将当地的钱包备份到iCloud吗？";
+
+"Confirm Payment" = "确认付款";
+"Fee:" = "费用:";
+"Total:" = "总:";
+"Customize Fee" = "定制费用";
+"Enter a wallet backup passphrase to wipe the current wallet and start/restore another." = "输入一个钱包备份密码以擦拭目前的钱包并启动或还原另一个。";
+"Passphrase" = "密码";
+"Restore Wallet" = "恢复钱包";
+"Wallet backup passphrase" = "钱包备份密码";
 
 "From:" = "从：";
 "Amount:" = "量：";

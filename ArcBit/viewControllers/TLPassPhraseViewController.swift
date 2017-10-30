@@ -29,6 +29,7 @@ import UIKit
     }
     
     @IBOutlet fileprivate var navigationBar:UINavigationBar?
+    @IBOutlet weak var walletBackupPassphraseLabel: UILabel!
     @IBOutlet fileprivate var  backupPassphraseExplanation:UILabel?
     @IBOutlet fileprivate var passPhraseTextView:UITextView?
     @IBOutlet fileprivate var masterSeedHexTitleLabel:UILabel?
@@ -42,7 +43,9 @@ import UIKit
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationBarColors(self.navigationBar!)
-        
+        self.navigationBar?.topItem?.title = TLDisplayStrings.PASSPHRASE_STRING()
+        self.walletBackupPassphraseLabel?.text = TLDisplayStrings.WALLET_BACKUP_PASSPHRASE_STRING()
+
         self.passPhraseTextView!.isSelectable = false
         self.masterSeedHexTextView!.isSelectable = false
         let passPhraseTextViewGestureRecognizer = UITapGestureRecognizer(target: self, action:#selector(TLPassPhraseViewController.passPhraseTextViewTapped(_:)))
@@ -57,20 +60,20 @@ import UIKit
         
         let passphrase = TLWalletPassphrase.getDecryptedWalletPassphrase()
         self.passPhraseTextView!.text = (passphrase)
-        if (!TLPreferences.enabledAdvancedMode()) {
+//        if (!TLPreferences.enabledAdvancedMode()) {
             self.backupPassphraseExplanation!.text = TLDisplayStrings.BACKUP_PASSPHRASE_EXPLANATION_STRING()
             self.masterSeedHexTitleLabel!.isHidden = true
             self.masterSeedHexTitleExplanation!.isHidden = true
             self.masterSeedHexTextView!.isHidden = true
             self.masterSeedHexTextView!.text = ("")
-        } else {
-            self.backupPassphraseExplanation!.text = TLDisplayStrings.BACKUP_PASSPHRASE_ADVANCED_EXPLANATION_STRING()
-            self.masterSeedHexTitleLabel!.isHidden = false
-            self.masterSeedHexTitleExplanation!.isHidden = false
-            self.masterSeedHexTextView!.isHidden = false
-            let masterHex = TLHDWalletWrapper.getMasterHex(passphrase ?? "")
-            self.masterSeedHexTextView!.text = (masterHex)
-        }
+//        } else {
+//            self.backupPassphraseExplanation!.text = TLDisplayStrings.BACKUP_PASSPHRASE_ADVANCED_EXPLANATION_STRING()
+//            self.masterSeedHexTitleLabel!.isHidden = false
+//            self.masterSeedHexTitleExplanation!.isHidden = false
+//            self.masterSeedHexTextView!.isHidden = false
+//            let masterHex = TLHDWalletWrapper.getMasterHex(passphrase ?? "")
+//            self.masterSeedHexTextView!.text = (masterHex)
+//        }
     }
     
     func passPhraseTextViewTapped(_ sender:AnyObject) {

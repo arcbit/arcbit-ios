@@ -50,8 +50,6 @@ class TLDisplayStrings {
     class func ACTIVE_CHANGE_ADDRESSES_STRING() -> String { return "Active Change Addresses".localized }
     class func ACTIVE_MAIN_ADDRESSES_STRING() -> String { return "Active Main Addresses".localized }
     class func ADD_CONTACTS_ENTRY_STRING() -> String { return "Add Contacts Entry".localized }
-    class func ADD_VIA_QR_CODE_STRING() -> String { return "Import with QR Code".localized }
-    class func ADD_VIA_TEXT_INPUT_STRING() -> String { return "Import with text input".localized }
     class func ADDRESS_STRING() -> String { return "Address".localized }
     class func IMPORTED_ADDRESS_STRING() -> String { return "Imported Address".localized }
     class func ADDRESS_ID_STRING() -> String { return "Address ID ".localized }
@@ -232,8 +230,8 @@ class TLDisplayStrings {
     class func IMPORT_WATCH_ONLY_ACCOUNT_STRING() -> String { return "Import Watch Only Account".localized }
     class func IMPORT_WATCH_ONLY_ADDRESS_STRING() -> String { return "Import Watch Only Address".localized }
     class func IMPORT_PRIVATE_KEY_ENCRYPTED_OR_UNENCRYPTED_STRING() -> String { return "Import private key encrypted or unencrypted?".localized }
-    class func IMPORT_VIA_QR_CODE_STRING() -> String { return "Import via QR code".localized }
-    class func IMPORT_VIA_TEXT_INPUT_STRING() -> String { return "Import via text input".localized }
+    class func IMPORT_WITH_QR_CODE_STRING() -> String { return "Import via QR code".localized }
+    class func IMPORT_WITH_TEXT_INPUT_STRING() -> String { return "Import with text input".localized }
     class func IMPORTED_ACCOUNTS_STRING() -> String { return "Imported Accounts".localized }
     class func IMPORTED_ADDRESSES_STRING() -> String { return "Imported Addresses".localized }
     class func IMPORTED_WATCH_ACCOUNTS_STRING() -> String { return "Imported Watch Accounts".localized }
@@ -438,6 +436,14 @@ class TLDisplayStrings {
     class func ICLOUD_BACKUP_NOT_FOUND_STRING() -> String { return "iCloud backup not found".localized }
     class func BACKUP_IYOUR_LOCAL_WALLET_TO_ICLOUD_STRING() -> String { return "iCloud backup will be lost. Are you sure you want to backup your local wallet to iCloud?".localized }
     
+    class func CONFIRM_PAYMENT_STRING() -> String { return "Confirm Payment".localized }
+    class func FEE_COLON_STRING() -> String { return "Fee:".localized }
+    class func TOTAL_COLON_STRING() -> String { return "Total:".localized }
+    class func CUSTOMIZE_FEE_STRING() -> String { return "Customize Fee".localized }
+    class func ENTER_A_WALLET_BACKUP_PASSPHRASE_STRING() -> String { return "Enter a wallet backup passphrase to wipe the current wallet and start/restore another.".localized }
+    class func PASSPHRASE_STRING() -> String { return "Passphrase".localized }
+    class func RESTORE_WALLET_STRING() -> String { return "Restore Wallet".localized }
+    class func WALLET_BACKUP_PASSPHRASE_STRING() -> String { return "Wallet backup passphrase".localized }
     
     class func FROM_COLON_STRING() -> String { return "From:".localized }
     class func AMOUNT_COLON_STRING() -> String { return "Amount:".localized }

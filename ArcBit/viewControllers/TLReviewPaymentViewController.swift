@@ -50,6 +50,13 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
     
     @IBOutlet weak var navigationBar:UINavigationBar?
+    
+    @IBOutlet weak var fromTitleLabel: UILabel!
+    @IBOutlet weak var toTitleLabel: UILabel!
+    @IBOutlet weak var toAmountTitleLabel: UILabel!
+    @IBOutlet weak var feeAmountTitleLabel: UILabel!
+    @IBOutlet weak var totalAmountTitleLabel: UILabel!
+
     @IBOutlet weak var fromLabel: UILabel!
     @IBOutlet weak var toLabel: UILabel!
     @IBOutlet weak var unitLabel: UILabel!
@@ -60,6 +67,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     @IBOutlet weak var feeAmountFiatLabel: UILabel!
     @IBOutlet weak var totalAmountLabel: UILabel!
     @IBOutlet weak var totalFiatAmountLabel: UILabel!
+    @IBOutlet weak var customizeFeeButton: UIButton!
     @IBOutlet weak var sendButton: UIButton!
     weak var reviewPaymentViewController: TLReviewPaymentViewController?
     fileprivate lazy var showedPromptedForSentPaymentTxHashSet:NSMutableSet = NSMutableSet()
@@ -92,6 +100,17 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationBarColors(self.navigationBar!)
+        
+        self.navigationBar?.topItem?.title = TLDisplayStrings.CONFIRM_PAYMENT_STRING()
+        self.fromTitleLabel.text = TLDisplayStrings.FROM_COLON_STRING()
+        self.toTitleLabel.text = TLDisplayStrings.TO_COLON_STRING()
+        self.toAmountTitleLabel.text = TLDisplayStrings.AMOUNT_COLON_STRING()
+        self.feeAmountTitleLabel.text = TLDisplayStrings.FEE_COLON_STRING()
+        self.totalAmountTitleLabel.text = TLDisplayStrings.TOTAL_COLON_STRING()
+
+        self.customizeFeeButton.setTitle(TLDisplayStrings.CUSTOMIZE_FEE_STRING(), for: .normal)
+        self.sendButton.setTitle(TLDisplayStrings.SEND_STRING(), for: .normal)
+        
         self.sendButton.backgroundColor = TLColors.mainAppColor()
         self.sendButton.setTitleColor(TLColors.mainAppOppositeColor(), for: UIControlState())
         NotificationCenter.default.addObserver(self

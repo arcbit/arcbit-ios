@@ -43,7 +43,9 @@ import UIKit
     override func viewDidLoad() {
         super.viewDidLoad()
         setNavigationBarColors(self.navigationBar!)
-        
+        self.navigationBar?.topItem?.title = TLDisplayStrings.RESTORE_WALLET_STRING()
+        self.restoreWalletDescriptionLabel!.text = TLDisplayStrings.ENTER_A_WALLET_BACKUP_PASSPHRASE_STRING()
+
         if (self.isRestoringFromEncryptedWalletJSON) {
             self.restoreWalletDescriptionLabel!.text = TLDisplayStrings.ENTER_PASSPHRASE_FOR_ICLOUD_BACKUP_WALLET_STRING()
         }
