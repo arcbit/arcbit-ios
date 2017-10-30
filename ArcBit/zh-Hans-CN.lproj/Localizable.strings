@@ -631,7 +631,7 @@
 
 "Sent %@ to %@" = "已发送%@到%@";
 
-"Set Transaction Fee in" = "在%@中设置交易费";
+"Set Transaction Fee in %@" = "在%@中设置交易费";
 
 "Change Block Explorer URL" = "更改阻止浏览器网址";
 

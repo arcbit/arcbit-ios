@@ -465,7 +465,7 @@
 
 "Sent %@ to %@" = "Sent %@ to %@";
 
-"Set Transaction Fee in" = "Set Transaction Fee in %@";
+"Set Transaction Fee in %@" = "Set Transaction Fee in %@";
 
 "%@ is not allowed to access the camera" = "%@ is not allowed to access the camera";
 
