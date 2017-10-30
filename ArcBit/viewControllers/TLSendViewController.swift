@@ -46,7 +46,10 @@ import StoreKit
     @IBOutlet fileprivate var accountBalanceLabel: UILabel?
     @IBOutlet fileprivate var balanceActivityIndicatorView: UIActivityIndicatorView?
     @IBOutlet fileprivate var fromViewContainer: UIView?
-    @IBOutlet fileprivate var fromLabel: UILabel?
+    @IBOutlet fileprivate var fromLabel: UILabel!
+    @IBOutlet fileprivate var toLabel: UILabel!
+    @IBOutlet fileprivate var amountLabel: UILabel!
+
     @IBOutlet fileprivate var tabBar: UITabBar?
     fileprivate var tapGesture: UITapGestureRecognizer?
 
@@ -105,7 +108,7 @@ import StoreKit
                 self.fillAmountFieldWithWholeBalance(true)
                 }, failure: {
                     (code, status) in
-                    TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.UNABLE_TO_QUERY_DYNAMIC_FEES_STRING())
+                    TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.UNABLE_TO_GET_DYNAMIC_FEES_STRING())
                     self.fillAmountFieldWithWholeBalance(false)
             })
         } else {
@@ -157,11 +160,26 @@ import StoreKit
         self.updateSendForm()
     }
     
+    func setupLabels() {
+        let sendTabBarItem = self.tabBar?.items?[0]
+        sendTabBarItem?.title = TLDisplayStrings.SEND_STRING()
+        let receiveTabBarItem = self.tabBar?.items?[1]
+        receiveTabBarItem?.title = TLDisplayStrings.RECEIVE_STRING()
+
+        self.toLabel.text = TLDisplayStrings.TO_COLON_STRING()
+        self.fromLabel.text = TLDisplayStrings.FROM_COLON_STRING()
+        self.amountLabel.text = TLDisplayStrings.AMOUNT_COLON_STRING()
+        self.scanQRButton?.setTitle(TLDisplayStrings.SCAN_QR_STRING(), for: .normal)
+        self.addressBookButton?.setTitle(TLDisplayStrings.CONTACTS_STRING(), for: .normal)
+        self.reviewPaymentButton?.setTitle(TLDisplayStrings.REVIEW_PAYMENT_STRING(), for: .normal)
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setColors()
         
         self.setLogoImageView()
+        self.setupLabels()
         
         self.bottomView!.backgroundColor = TLColors.mainAppColor()
         
@@ -538,7 +556,7 @@ import StoreKit
         let toAddress = self.toAddressTextField!.text
     
         if (!TLCoreBitcoinWrapper.isValidAddress(toAddress!, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
-            TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.YOU_MUST_PROVIDE_A_VALID_BITCOIN_ADDRESS_STRING())
+            TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.INVALID_ADDRESS_STRING())
             return
         }
 
@@ -591,7 +609,7 @@ import StoreKit
             let amountNeeded = inputtedAmount.add(fee)
             let accountBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
             if (amountNeeded.greater(accountBalance)) {
-                let msg = String(format: TLDisplayStrings.YOU_HAVE_X_Y_BUT_Z_IS_NEEDED_STRING(), TLCurrencyFormat.coinToProperBitcoinAmountString(accountBalance), TLCurrencyFormat.getBitcoinDisplay(), TLCurrencyFormat.coinToProperBitcoinAmountString(amountNeeded))
+                let msg = String(format: TLDisplayStrings.YOU_HAVE_X_Y_BUT_Z_IS_NEEDED_STRING(), "\(TLCurrencyFormat.coinToProperBitcoinAmountString(accountBalance)) \(TLCurrencyFormat.getBitcoinDisplay())", TLCurrencyFormat.coinToProperBitcoinAmountString(amountNeeded))
                 TLPrompts.promptErrorMessage(TLDisplayStrings.INSUFFICIENT_FUNDS_STRING(), message: msg)
                 return
             }
@@ -611,7 +629,7 @@ import StoreKit
                     showReviewPaymentViewController(true)
                     }, failure: {
                         (code, status) in
-                        TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.UNABLE_TO_QUERY_DYNAMIC_FEES_STRING())
+                        TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.UNABLE_TO_GET_DYNAMIC_FEES_STRING())
                         showReviewPaymentViewController(false)
                 })
             } else {

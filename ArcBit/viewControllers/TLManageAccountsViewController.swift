@@ -30,8 +30,6 @@ import UIKit
     }
 
     let MAX_ACTIVE_CREATED_ACCOUNTS = 8
-    let MAX_IMPORTED_ACCOUNTS = 12
-    let MAX_IMPORTED_ADDRESSES = 32
     @IBOutlet fileprivate var accountsTableView: UITableView?
     fileprivate var QRImageModal: TLQRImageModal?
     fileprivate var accountActionsArray: NSArray?
@@ -473,25 +471,8 @@ import UIKit
             },
             tap: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView!.firstOtherButtonIndex) {
-                    let accountName = (alertView!.textFields![0] ).text//alertView.textFieldAtIndex(0)!.text
-                    
-                    if (AppDelegate.instance().accounts!.accountNameExist(accountName!) == true) {
-                        UIAlertController.showAlert(in: self,
-                            withTitle: TLDisplayStrings.ACCOUNT_NAME_IS_TAKEN_STRING(),
-                            message: "",
-                            cancelButtonTitle: TLDisplayStrings.SAVE_STRING(),
-                            destructiveButtonTitle: nil,
-                            otherButtonTitles: [TLDisplayStrings.RENAME_STRING()],
-                            tap: {(alertView, action, buttonIndex) in
-                                if (buttonIndex == alertView!.firstOtherButtonIndex) {
-                                    self.promtForNameAccount(success, failure: failure)
-                                } else if (buttonIndex == alertView!.cancelButtonIndex) {
-                                    failure(true)
-                                }
-                        })
-                    } else {
-                        success(accountName)
-                    }
+                    let accountName = (alertView!.textFields![0]).text
+                    success(accountName)
                 } else if (buttonIndex == alertView!.cancelButtonIndex) {
                     failure(true)
                 }
@@ -1165,11 +1146,6 @@ import UIKit
                             (isCanceled: Bool) in
                         }))
                 } else if (buttonIndex == UNARCHIVE_ACCOUNT_BUTTON_IDX) {
-                    if (AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts() + AppDelegate.instance().importedAccounts!.getNumberOfAccounts() + AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts() >= self.MAX_IMPORTED_ACCOUNTS) {
-                        TLPrompts.promptErrorMessage(TLDisplayStrings.MAXIMUM_ACCOUNTS_REACHED_STRING(), message: TLDisplayStrings.MAXIMUM_ACCOUNTS_REACHED_UNARCHIVE_DESC_STRING())
-                        return
-                    }
-                    
                     self.promptToUnarchiveAccount(accountObject!)
                 } else if (buttonIndex == DELETE_ACCOUNT_BUTTON_IDX) {
                     if (accountType == .coldWallet) {
@@ -1242,15 +1218,8 @@ import UIKit
                     (isCanceled: Bool) in
                 }))
             } else if (buttonIndex == UNARCHIVE_ACCOUNT_BUTTON_IDX) {
-                if (AppDelegate.instance().accounts!.getNumberOfAccounts() >= self.MAX_ACTIVE_CREATED_ACCOUNTS) {
-                    TLPrompts.promptErrorMessage(TLDisplayStrings.MAXIMUM_ACCOUNTS_REACHED_STRING(), message: TLDisplayStrings.MAXIMUM_ACCOUNTS_REACHED_UNARCHIVE_DESC_STRING())
-                    return
-                }
-
                 self.promptToUnarchiveAccount(accountObject)
-
             } else if (buttonIndex == actionSheet!.cancelButtonIndex) {
-
             }
         })
     }
@@ -1290,7 +1259,7 @@ import UIKit
         }
         
         if txid.characters.count != 64 || TLWalletUtils.hexStringToData(txid) == nil {
-            TLPrompts.promptErrorMessage(TLDisplayStrings.INVALID_TRANSACTION_ID(), message: TLDisplayStrings.TXID_MUST_BE_A_64_CHARACTER_HEXADECIMAL_STRING())
+            TLPrompts.promptErrorMessage(TLDisplayStrings.INVALID_TRANSACTION_ID(), message: "")
             return
         }
 
@@ -1301,7 +1270,7 @@ import UIKit
             let stealthDataScriptAndOutputAddresses = TLStealthWallet.getStealthDataScriptAndOutputAddresses(jsonData as! NSDictionary)
             if stealthDataScriptAndOutputAddresses == nil || stealthDataScriptAndOutputAddresses!.stealthDataScript == nil {
                 TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                TLPrompts.promptSuccessMessage("", message: TLDisplayStrings.TXID_NOT_REUSABLE_ADDRESS_TRANSACTION_STRING())
+                TLPrompts.promptSuccessMessage("", message: TLDisplayStrings.TRANSACTION_NOT_REUSABLE_ADDRESS_TRANSACTION_STRING())
                 return
             }
             
@@ -1323,7 +1292,7 @@ import UIKit
                                 txid: txid, txTime: txTime, stealthPaymentStatus: TLStealthPaymentStatus.unspent)
                             
                             TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                            TLPrompts.promptSuccessMessage(TLDisplayStrings.SUCCESS_STRING(), message: String(format: TLDisplayStrings.TRANSACTION_X_BELONGS_TO_THIS_ACCOUNT_FUNDS_IMPORTED_STRING(), txid))
+                            TLPrompts.promptSuccessMessage(TLDisplayStrings.SUCCESS_STRING(), message: String(format: TLDisplayStrings.FUNDS_IMPORTED(), txid))
                             
                             AppDelegate.instance().pendingOperations.addSetUpAccountOperation(accountObject, fetchDataAgain: true, success: {
                                 self.refreshWalletAccounts(false)
@@ -2137,10 +2106,6 @@ import UIKit
         let IMPORT_WATCH_ADDRESS_BUTTON_IDX = count
         
         if (accountSelectIdx == CREATE_NEW_ACCOUNT_BUTTON_IDX) {
-            if (AppDelegate.instance().accounts!.getNumberOfAccounts() >= MAX_ACTIVE_CREATED_ACCOUNTS) {
-                TLPrompts.promptErrorMessage(TLDisplayStrings.MAXIMUM_ACCOUNTS_REACHED_STRING(), message: TLDisplayStrings.MAXIMUM_ACCOUNTS_REACHED_CREATE_ACCOUNT_DESC_STRING())
-                return
-            }
             self.promtForNameAccount({
                 (accountName: String!) in
                 AppDelegate.instance().accounts!.createNewAccount(accountName, accountType: .normal)
@@ -2153,22 +2118,10 @@ import UIKit
                 (isCanceled: Bool) in
             })
         } else if (accountSelectIdx == IMPORT_COLD_WALLET_ACCOUNT_BUTTON_IDX) {
-            if (AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts() + AppDelegate.instance().importedAccounts!.getNumberOfAccounts() + AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts() >= MAX_IMPORTED_ACCOUNTS) {
-                TLPrompts.promptErrorMessage(TLDisplayStrings.MAXIMUM_ACCOUNTS_REACHED_STRING(), message: TLDisplayStrings.MAXIMUM_IMPORTED_ACCOUNTS_REACHED_DESC_STRING())
-                return
-            }
             self.promptColdWalletAccountActionSheet()
         } else if (accountSelectIdx == IMPORT_ACCOUNT_BUTTON_IDX) {
-            if (AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts() + AppDelegate.instance().importedAccounts!.getNumberOfAccounts() + AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts() >= MAX_IMPORTED_ACCOUNTS) {
-                TLPrompts.promptErrorMessage(TLDisplayStrings.MAXIMUM_ACCOUNTS_REACHED_STRING(), message: TLDisplayStrings.MAXIMUM_IMPORTED_ACCOUNTS_REACHED_DESC_STRING())
-                return
-            }
             self.promptImportAccountActionSheet()
         } else if (accountSelectIdx == IMPORT_WATCH_ACCOUNT_BUTTON_IDX) {
-            if (AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts() + AppDelegate.instance().importedAccounts!.getNumberOfAccounts() + AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts() >= MAX_IMPORTED_ACCOUNTS) {
-                TLPrompts.promptErrorMessage(TLDisplayStrings.MAXIMUM_ACCOUNTS_REACHED_STRING(), message: TLDisplayStrings.MAXIMUM_IMPORTED_ACCOUNTS_REACHED_DESC_STRING())
-                return
-            }
             self.promptImportWatchAccountActionSheet()
         } else if (accountSelectIdx == IMPORT_PRIVATE_KEY_BUTTON_IDX) {
             self.promptImportPrivateKeyActionSheet()

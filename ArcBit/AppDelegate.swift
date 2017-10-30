@@ -928,7 +928,7 @@ import Crashlytics
             } else {
                 passphrase = TLHDWalletWrapper.generateMnemonicPassphrase()
                 self.refreshApp(passphrase!)
-                let accountObject = self.accounts!.createNewAccount("Account 1", accountType:.normal, preloadStartingAddresses:true)
+                let accountObject = self.accounts!.createNewAccount(TLDisplayStrings.ACCOUNT_1_STRING(), accountType:.normal, preloadStartingAddresses:true)
                 accountObject.updateAccountNeedsRecovering(false)
                 AppDelegate.instance().updateGodSend(TLSendFromType.hdWallet, sendFromIndex:0)
                 AppDelegate.instance().updateReceiveSelectedObject(TLSendFromType.hdWallet, sendFromIndex:0)

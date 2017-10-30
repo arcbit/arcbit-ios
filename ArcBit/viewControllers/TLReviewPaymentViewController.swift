@@ -112,7 +112,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
 
     override func viewDidAppear(_ animated: Bool) {
         if (!TLPreferences.disabledShowFeeExplanationInfo()) {
-            TLPrompts.promptSuccessMessage(TLDisplayStrings.TRANSACTION_FEES_STRING(), message: TLDisplayStrings.FEE_INFO_DESC_STRING())
+            TLPrompts.promptSuccessMessage(TLDisplayStrings.TRANSACTION_FEE_STRING(), message: TLDisplayStrings.FEE_INFO_DESC_STRING())
             TLPreferences.setDisableShowFeeExplanationInfo(true);
         }
     }
@@ -219,7 +219,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             // can only happen if unspentOutputsSum is for some reason less then the balance computed from the transactions, which it shouldn't
             cancelSend()
             let unspentOutputsSumString = TLCurrencyFormat.coinToProperBitcoinAmountString(unspentOutputsSum)
-            TLPrompts.promptErrorMessage(TLDisplayStrings.INSUFFICIENT_FUNDS_STRING(), message: String(format: TLDisplayStrings.SOME_FUNDS_MAY_BE_PENDING_CONFIRMATION_DESC_STRING(), unspentOutputsSumString, TLCurrencyFormat.getBitcoinDisplay()))
+            TLPrompts.promptErrorMessage(TLDisplayStrings.INSUFFICIENT_FUNDS_STRING(), message: String(format: TLDisplayStrings.SOME_FUNDS_MAY_BE_PENDING_CONFIRMATION_DESC_STRING(), "\(unspentOutputsSumString) \(TLCurrencyFormat.getBitcoinDisplay())"))
             return
         }
         
@@ -356,7 +356,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
     
     @IBAction func feeInfoButtonClicked(_ sender: AnyObject) {
-        TLPrompts.promptSuccessMessage(TLDisplayStrings.TRANSACTION_FEES_STRING(), message: TLDisplayStrings.FEE_INFO_DESC_STRING())
+        TLPrompts.promptSuccessMessage(TLDisplayStrings.TRANSACTION_FEE_STRING(), message: TLDisplayStrings.FEE_INFO_DESC_STRING())
     }
     
     @IBAction func sendButtonClicked(_ sender: AnyObject) {

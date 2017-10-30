@@ -37,6 +37,7 @@ import UIKit
     @IBOutlet fileprivate var pageControlViewContainer: UIView?
     @IBOutlet fileprivate var receivingAddressPageControl: UIPageControl?
     @IBOutlet fileprivate var tabBar: UITabBar?
+    @IBOutlet weak var receiveLabel: UILabel!
     
     fileprivate var pageControlBeingUsed = false
     fileprivate var receiveAddresses: NSMutableArray?
@@ -49,7 +50,7 @@ import UIKit
         setColors()
         
         self.setLogoImageView()
-        
+        self.receiveLabel.text = TLDisplayStrings.FROM_COLON_STRING()
         self.fromViewContainer!.backgroundColor = TLColors.mainAppColor()
         self.accountNameLabel!.textColor = TLColors.mainAppOppositeColor()
         self.accountBalanceLabel!.textColor = TLColors.mainAppOppositeColor()

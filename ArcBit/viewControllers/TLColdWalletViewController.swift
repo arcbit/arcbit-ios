@@ -116,7 +116,7 @@ import UIKit
         if(sectionType == STATIC_MEMBERS.kColdWalletSection) {
             return TLDisplayStrings.COLD_WALLET_STRING()
         } else if(sectionType == STATIC_MEMBERS.kSeeHDWalletDataSection) {
-            return TLDisplayStrings.SEE_INTERNAL_WALLET_DATA_STRING()
+            return TLDisplayStrings.INTERNAL_WALLET_DATA_STRING()
         }
         return ""
     }
@@ -143,7 +143,7 @@ import UIKit
         } else if(sectionType == STATIC_MEMBERS.kSeeHDWalletDataSection) {
             let row = self.seeHDWalletDataRowArray![(indexPath as NSIndexPath).row]
             if row == STATIC_MEMBERS.kSeeHDWalletDataRow {
-                cell!.textLabel!.text = TLDisplayStrings.SEE_INTERNAL_WALLET_DATA_STRING()
+                cell!.textLabel!.text = TLDisplayStrings.INTERNAL_WALLET_DATA_STRING()
             }
         }
 

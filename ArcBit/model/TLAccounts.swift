@@ -174,21 +174,6 @@ import Foundation
         }
     }
     
-    fileprivate func getAccountWithAccountName(_ accountName:String?) -> TLAccountObject?{
-        for key in self.accountsDict! {
-            let accountObject = self.accountsDict!.object(forKey: key.key) as! TLAccountObject
-            if (accountObject.getAccountName() == accountName)
-            {
-                return accountObject
-            }
-        }
-        return nil
-    }
-    
-    func accountNameExist(_ accountName:String) -> (Bool) {
-        return getAccountWithAccountName(accountName) == nil ? false : true
-    }
-    
     @discardableResult func createNewAccount(_ accountName:String, accountType:TLAccount) -> TLAccountObject {
         let accountObject = self.appWallet!.createNewAccount(accountName, accountType:TLAccount.normal,
             preloadStartingAddresses:true)

@@ -74,11 +74,9 @@ import UIKit
     }
     
     func passPhraseTextViewTapped(_ sender:AnyObject) {
-        TLPrompts.promptSuccessMessage("", message:TLDisplayStrings.BACKUP_PASSPHRASE_IS_NOT_SELECTABLE_DESC_STRING())
     }
     
     func masterSeedHexTextViewTapped(_ sender:AnyObject) {
-        TLPrompts.promptSuccessMessage("", message:TLDisplayStrings.MASTER_SEED_HEX_IS_NOT_SELECTABLE_DESC_STRING())
     }
     
     override func viewDidAppear(_ animated:Bool) -> () {

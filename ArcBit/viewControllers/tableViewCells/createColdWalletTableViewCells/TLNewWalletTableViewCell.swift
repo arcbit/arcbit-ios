@@ -38,7 +38,9 @@ protocol TLNewWalletTableViewCellDelegate {
     @IBOutlet var mnemonicLabel:UILabel!
     @IBOutlet var mnemonicTextView:UITextView!
     @IBOutlet var newWalletButton:UIButton!
+    @IBOutlet weak var accountIDLabel: UILabel!
     @IBOutlet var accountIDTextField: UITextField!
+    @IBOutlet weak var accountPublicKeyLabel: UILabel!
     @IBOutlet var accountPublicKeyTextView:UITextView!
     @IBOutlet var showAccountPublicKeyQRButton:UIButton!
     var delegate: TLNewWalletTableViewCellDelegate?
@@ -49,6 +51,12 @@ protocol TLNewWalletTableViewCellDelegate {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.mnemonicLabel.text = TLDisplayStrings.BACK_UP_PASSPHRASE_STRING()+":"
+        self.accountIDLabel.text = TLDisplayStrings.ACCOUNT_ID_STRING()+":"
+        self.accountPublicKeyLabel.text = TLDisplayStrings.ACCOUNT_PUBLIC_KEY_STRING()+":"
+        self.newWalletButton.setTitle(TLDisplayStrings.NEW_WALLET(), for: .normal)
+        self.showAccountPublicKeyQRButton.setTitle(TLDisplayStrings.QR_CODE_STRING(), for: .normal)
+
         self.mnemonicTextView.layer.borderWidth = 1.0
         self.mnemonicTextView.layer.borderColor = UIColor.black.cgColor
         self.mnemonicTextView.text = nil

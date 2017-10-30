@@ -35,7 +35,8 @@ protocol TLPassSignedTxTableViewCellDelegate {
     }
     
     @IBOutlet var passButton:UIButton!
-    
+    @IBOutlet weak var step3Label: UILabel!
+
     var delegate: TLPassSignedTxTableViewCellDelegate?
     
     override init(style:UITableViewCellStyle, reuseIdentifier:String?) {
@@ -44,6 +45,8 @@ protocol TLPassSignedTxTableViewCellDelegate {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.step3Label.text = TLDisplayStrings.AUTHORIZE_PAYMENT_STEP_3()
+        self.passButton.setTitle(TLDisplayStrings.PASS(), for: .normal)
         self.passButton.backgroundColor = TLColors.mainAppColor()
         self.passButton.setTitleColor(TLColors.mainAppOppositeColor(), for:UIControlState())
         self.passButton.isEnabled = false

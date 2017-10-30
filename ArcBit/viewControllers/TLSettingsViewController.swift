@@ -50,7 +50,7 @@ import AVFoundation
     override func viewDidAppear(_ animated: Bool) -> () {
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_SETTINGS_SCREEN()), object: nil)
         if (AppDelegate.instance().giveExitAppNoticeForBlockExplorerAPIToTakeEffect) {
-            TLPrompts.promptSuccessMessage("", message: TLDisplayStrings.CLOSE_APP_FOR_API_CHANGE_TO_TAKE_EFFECT_STRING())
+            TLPrompts.promptSuccessMessage("", message: TLDisplayStrings.KILL_THIS_APP_DESC_STRING())
             AppDelegate.instance().giveExitAppNoticeForBlockExplorerAPIToTakeEffect = false
         }
     }
@@ -98,7 +98,7 @@ import AVFoundation
     
     fileprivate func showPromptForSetBlockExplorerURL() {
         UIAlertController.showAlert(in: self,
-            withTitle: TLDisplayStrings.SET_BLOCK_EXPLORER_URL_STRING(),
+            withTitle: TLDisplayStrings.CHANGE_BLOCK_EXPLORER_URL_STRING(),
             message: "",
             preferredStyle: .alert,
             cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),

@@ -32,6 +32,14 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
         super.init(coder: aDecoder)
     }
     
+    @IBOutlet weak var backupPassphraseLabel: UILabel!
+    @IBOutlet weak var accountIDLabel: UILabel!
+    @IBOutlet weak var accountPublicKeyLabel: UILabel!
+    @IBOutlet weak var accountPrivateKeyLabel: UILabel!
+    @IBOutlet weak var startingReceivingAddressID: UILabel!
+    @IBOutlet weak var startingChangeAddressID: UILabel!
+
+    
     @IBOutlet var mnemonicTextView:UITextView!
     @IBOutlet var newWalletButton:UIButton!
     @IBOutlet var accountIDTextField: UITextField!
@@ -106,6 +114,35 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.backupPassphraseLabel.text = TLDisplayStrings.BACK_UP_PASSPHRASE_STRING()+":"
+        self.accountIDLabel.text = TLDisplayStrings.ACCOUNT_ID_STRING()+":"
+        self.accountPublicKeyLabel.text = TLDisplayStrings.ACCOUNT_PUBLIC_KEY_STRING()+":"
+        self.accountPrivateKeyLabel.text = TLDisplayStrings.ACCOUNT_PRIVATE_KEY_STRING()+":"
+        self.startingReceivingAddressID.text = TLDisplayStrings.STARTING_RECEIVING_ADDRESS_ID()
+        self.startingChangeAddressID.text = TLDisplayStrings.STARTING_CHANGE_ADDRESS_ID()
+        self.newWalletButton.setTitle(TLDisplayStrings.NEW_WALLET(), for: .normal)
+        self.showAccountPublicKeyQRButton.setTitle(TLDisplayStrings.QR_CODE_STRING(), for: .normal)
+        self.showAccountPrivateKeyQRButton.setTitle(TLDisplayStrings.QR_CODE_STRING(), for: .normal)
+        self.showAddressQRCodeButton1.setTitle(TLDisplayStrings.QR_CODE_STRING(), for: .normal)
+        self.showPrivateKeyQRCodeButton1.setTitle(TLDisplayStrings.QR_CODE_STRING(), for: .normal)
+        self.showAddressQRCodeButton2.setTitle(TLDisplayStrings.QR_CODE_STRING(), for: .normal)
+        self.showPrivateKeyQRCodeButton2.setTitle(TLDisplayStrings.QR_CODE_STRING(), for: .normal)
+        self.showAddressQRCodeButton3.setTitle(TLDisplayStrings.QR_CODE_STRING(), for: .normal)
+        self.showPrivateKeyQRCodeButton3.setTitle(TLDisplayStrings.QR_CODE_STRING(), for: .normal)
+        self.showAddressQRCodeButton4.setTitle(TLDisplayStrings.QR_CODE_STRING(), for: .normal)
+        self.showPrivateKeyQRCodeButton4.setTitle(TLDisplayStrings.QR_CODE_STRING(), for: .normal)
+        self.showAddressQRCodeButton5.setTitle(TLDisplayStrings.QR_CODE_STRING(), for: .normal)
+        self.showPrivateKeyQRCodeButton5.setTitle(TLDisplayStrings.QR_CODE_STRING(), for: .normal)
+        self.showChangeAddressQRCodeButton1.setTitle(TLDisplayStrings.QR_CODE_STRING(), for: .normal)
+        self.showChangePrivateKeyQRCodeButton1.setTitle(TLDisplayStrings.QR_CODE_STRING(), for: .normal)
+        self.showChangeAddressQRCodeButton2.setTitle(TLDisplayStrings.QR_CODE_STRING(), for: .normal)
+        self.showChangePrivateKeyQRCodeButton2.setTitle(TLDisplayStrings.QR_CODE_STRING(), for: .normal)
+        self.showChangeAddressQRCodeButton3.setTitle(TLDisplayStrings.QR_CODE_STRING(), for: .normal)
+        self.showChangePrivateKeyQRCodeButton3.setTitle(TLDisplayStrings.QR_CODE_STRING(), for: .normal)
+        self.showChangeAddressQRCodeButton4.setTitle(TLDisplayStrings.QR_CODE_STRING(), for: .normal)
+        self.showChangePrivateKeyQRCodeButton4.setTitle(TLDisplayStrings.QR_CODE_STRING(), for: .normal)
+        self.showChangeAddressQRCodeButton5.setTitle(TLDisplayStrings.QR_CODE_STRING(), for: .normal)
+        self.showChangePrivateKeyQRCodeButton5.setTitle(TLDisplayStrings.QR_CODE_STRING(), for: .normal)
         
         self.mnemonicTextView.layer.borderWidth = 1.0
         self.mnemonicTextView.layer.borderColor = UIColor.black.cgColor

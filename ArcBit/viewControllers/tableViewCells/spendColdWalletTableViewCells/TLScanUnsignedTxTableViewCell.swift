@@ -36,6 +36,7 @@ protocol TLScanUnsignedTxTableViewCellDelegate {
     
     @IBOutlet var scanButton:UIButton!
     @IBOutlet var statusLabel: UILabel!
+    @IBOutlet weak var step1Label: UILabel!
 
     var delegate: TLScanUnsignedTxTableViewCellDelegate?
     
@@ -45,6 +46,9 @@ protocol TLScanUnsignedTxTableViewCellDelegate {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.step1Label.text = TLDisplayStrings.AUTHORIZE_PAYMENT_STEP_1()
+        self.scanButton.setTitle(TLDisplayStrings.SCAN(), for: .normal)
+        
         self.scanButton.backgroundColor = TLColors.mainAppColor()
         self.scanButton.setTitleColor(TLColors.mainAppOppositeColor(), for:UIControlState())
         self.setstatusLabel(0, totalParts: 0)

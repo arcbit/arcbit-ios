@@ -124,32 +124,33 @@ class TLPrompts {
             tap: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView?.firstOtherButtonIndex) {
                     UIAlertController.showAlert(in: viewController,
-                        withTitle: TLDisplayStrings.TEMPORARY_IMPORT_VIA_TEXT_OR_QR_CODE_STRING(),
-                        message: "",
-                        cancelButtonTitle: nil,
-                        destructiveButtonTitle: nil,
-                        otherButtonTitles:[TLDisplayStrings.TEXT_STRING(), TLDisplayStrings.QR_CODE_STRING()],
-                        
-                        tap: {(alertView, action, buttonIndex) in
-                            if (buttonIndex == alertView?.firstOtherButtonIndex) {
-                                TLPrompts.promtForInputText(viewController, title: TLDisplayStrings.TEMPORARY_IMPORT_PRIVATE_KEY_STRING(), message: TLDisplayStrings.INPUT_PRIVATE_KEY_STRING(), textFieldPlaceholder: nil, success: {
-                                    (inputText: String!) in
-                                    success(inputText)
-                                    }, failure: {
-                                        (cancelled: Bool) in
-                                })
-                            } else {
-                                AppDelegate.instance().showPrivateKeyReaderController(viewController, success: {
-                                    (data: NSDictionary) in
-                                    let encryptedPrivateKey = data.object(forKey: "encryptedPrivateKey") as? String
-                                    if encryptedPrivateKey == nil {
-                                        success(data.object(forKey: "privateKey") as? String)
-                                    }
-                                    }, error: {
-                                        (data: String?) in
-                                        error(data)
-                                })
-                            }
+                                                withTitle: "",
+                                                message:"",
+                                                preferredStyle: .actionSheet,
+                                                cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
+                                                destructiveButtonTitle: nil,
+                                                otherButtonTitles: [TLDisplayStrings.IMPORT_VIA_QR_CODE_STRING(), TLDisplayStrings.IMPORT_VIA_TEXT_INPUT_STRING()],
+                                                tap: {(actionSheet, action, buttonIndex) in
+                                                    if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 0) {
+                                                        AppDelegate.instance().showPrivateKeyReaderController(viewController, success: {
+                                                            (data: NSDictionary) in
+                                                            let encryptedPrivateKey = data.object(forKey: "encryptedPrivateKey") as? String
+                                                            if encryptedPrivateKey == nil {
+                                                                success(data.object(forKey: "privateKey") as? String)
+                                                            }
+                                                        }, error: {
+                                                            (data: String?) in
+                                                            error(data)
+                                                        })
+                                                    } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 1) {
+                                                        TLPrompts.promtForInputText(viewController, title: TLDisplayStrings.TEMPORARY_IMPORT_PRIVATE_KEY_STRING(), message: TLDisplayStrings.INPUT_PRIVATE_KEY_STRING(), textFieldPlaceholder: nil, success: {
+                                                            (inputText: String!) in
+                                                            success(inputText)
+                                                        }, failure: {
+                                                            (cancelled: Bool) in
+                                                        })
+                                                    } else if (buttonIndex == actionSheet?.cancelButtonIndex) {
+                                                    }
                     })
                 } else if (buttonIndex == alertView?.cancelButtonIndex) {
                     error("")
@@ -165,31 +166,32 @@ class TLPrompts {
             destructiveButtonTitle: nil,
             otherButtonTitles: [TLDisplayStrings.YES_STRING()],
             tap: {(alertView, action, buttonIndex) in
-                if (buttonIndex == alertView?.firstOtherButtonIndex) {
+                if (buttonIndex == alertView?.firstOtherButtonIndex) {                    
                     UIAlertController.showAlert(in: viewController,
-                        withTitle: TLDisplayStrings.TEMPORARY_IMPORT_VIA_TEXT_OR_QR_CODE_STRING(),
-                        message: "",
-                        cancelButtonTitle: nil,
-                        destructiveButtonTitle: nil,
-                        otherButtonTitles:[TLDisplayStrings.TEXT_STRING(), TLDisplayStrings.QR_CODE_STRING()],
-                        
-                        tap: {(alertView, action, buttonIndex) in
-                            if (buttonIndex == alertView?.firstOtherButtonIndex) {
-                                TLPrompts.promtForInputText(viewController, title:TLDisplayStrings.TEMPORARY_IMPORT_ACCOUNT_PRIVATE_KEY_STRING(), message: TLDisplayStrings.INPUT_ACCOUNT_PRIVATE_KEY_STRING(), textFieldPlaceholder: nil, success: {
-                                    (inputText: String!) in
-                                    success(inputText)
-                                    }, failure: {
-                                        (cancelled: Bool) in
-                                })
-                            } else {
-                                AppDelegate.instance().showExtendedPrivateKeyReaderController(viewController, success: {
-                                    (data: String!) in
-                                    success(data)
-                                    }, error: {
-                                        (data: String?) in
-                                        error(data)
-                                })
-                            }
+                                                withTitle: "",
+                                                message:"",
+                                                preferredStyle: .actionSheet,
+                                                cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
+                                                destructiveButtonTitle: nil,
+                                                otherButtonTitles: [TLDisplayStrings.IMPORT_VIA_QR_CODE_STRING(), TLDisplayStrings.IMPORT_VIA_TEXT_INPUT_STRING()],
+                                                tap: {(actionSheet, action, buttonIndex) in
+                                                    if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 0) {
+                                                        AppDelegate.instance().showExtendedPrivateKeyReaderController(viewController, success: {
+                                                            (data: String!) in
+                                                            success(data)
+                                                        }, error: {
+                                                            (data: String?) in
+                                                            error(data)
+                                                        })
+                                                    } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 1) {
+                                                        TLPrompts.promtForInputText(viewController, title:TLDisplayStrings.TEMPORARY_IMPORT_ACCOUNT_PRIVATE_KEY_STRING(), message: TLDisplayStrings.INPUT_ACCOUNT_PRIVATE_KEY_STRING(), textFieldPlaceholder: nil, success: {
+                                                            (inputText: String!) in
+                                                            success(inputText)
+                                                        }, failure: {
+                                                            (cancelled: Bool) in
+                                                        })
+                                                    } else if (buttonIndex == actionSheet?.cancelButtonIndex) {
+                                                    }
                     })
                 } else if (buttonIndex == alertView?.cancelButtonIndex) {
                     error("")

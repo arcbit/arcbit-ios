@@ -35,6 +35,7 @@ protocol TLInputColdWalletKeyTableViewCellDelegate {
     
     @IBOutlet var keyInputTextView:UITextView!
     @IBOutlet var statusLabel: UILabel!
+    @IBOutlet weak var step2Label: UILabel!
 
     var delegate: TLInputColdWalletKeyTableViewCellDelegate?
     
@@ -44,6 +45,8 @@ protocol TLInputColdWalletKeyTableViewCellDelegate {
     
     override func awakeFromNib() {
         super.awakeFromNib()
+        self.step2Label.text = TLDisplayStrings.AUTHORIZE_PAYMENT_STEP_2()
+        self.statusLabel.text = TLDisplayStrings.INCOMPLETE_STRING()
         self.keyInputTextView.layer.borderWidth = 1.0
         self.keyInputTextView.layer.borderColor = UIColor.black.cgColor
         self.keyInputTextView.autocorrectionType = UITextAutocorrectionType.no

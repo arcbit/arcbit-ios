@@ -67,7 +67,7 @@ import UIKit
         
         let button   = UIButton(frame: CGRect(x: 0, y: 0, width: 80, height: 30))
         button.backgroundColor = TLColors.mainAppColor()
-        button.setTitle(TLDisplayStrings.STATUS_STRING(), for: UIControlState())
+        button.setTitle("Status", for: UIControlState())
         button.setTitleColor(TLColors.mainAppColor(), for: UIControlState())
         button.addTarget(self, action: #selector(TLLinksViewController.rightBarButtonClicked), for: UIControlEvents.touchUpInside)
         let rightBarButtonItem = UIBarButtonItem(customView: button)
@@ -202,8 +202,8 @@ import UIKit
     
     func tableView(_ tableView:UITableView, willSelectRowAt indexPath:IndexPath) -> IndexPath? {
         if((indexPath as NSIndexPath).section == 0) {
+            self.selectedSection = "webwallet"
             if (indexPath as NSIndexPath).row == 0 {
-                self.selectedSection = "webwallet"
                 let url = URL(string: "https://chrome.google.com/webstore/detail/arcbit-bitcoin-wallet/dkceiphcnbfahjbomhpdgjmphnpgogfk");
                 if (UIApplication.shared.canOpenURL(url!)) {
                     UIApplication.shared.openURL(url!);

@@ -43,7 +43,7 @@ extension UIViewController
         // work around to hide rightBarButtonItem
         navigationItem.rightBarButtonItem!.tintColor = TLColors.mainAppColor()
     }
-
+    
     public func setColors() -> () {
         if(navigationController != nil)
         {

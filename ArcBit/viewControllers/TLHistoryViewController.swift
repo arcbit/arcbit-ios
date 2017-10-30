@@ -43,13 +43,14 @@ import CoreData
     @IBOutlet fileprivate var tableviewBackgroundView: UIView?
     @IBOutlet fileprivate var fromBackgroundView: UIView?
     @IBOutlet fileprivate var revealButtonItem: UIBarButtonItem?
+    @IBOutlet weak var fromLabel: UILabel!
     
     override func viewDidLoad() {
         super.viewDidLoad()
         setColors()
         
         setLogoImageView()
-        
+       self.fromLabel.text = TLDisplayStrings.FROM_COLON_STRING()
         self.fromViewContainer!.backgroundColor = TLColors.mainAppColor()
         self.accountNameLabel!.textColor = TLColors.mainAppOppositeColor()
         self.accountBalanceLabel!.textColor = TLColors.mainAppOppositeColor()
@@ -332,7 +333,7 @@ import CoreData
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_TRANSACTION_IN_WEB()),
                         object: nil, userInfo: nil)
                 } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 1) {
-                    TLPrompts.promtForInputText(self, title:TLDisplayStrings.EDIT_TRANSACTION_TAG_STRING(), message: "", textFieldPlaceholder: TLDisplayStrings.TAG_STRING(), success: {
+                    TLPrompts.promtForInputText(self, title:TLDisplayStrings.EDIT_TRANSACTION_LABEL_STRING(), message: "", textFieldPlaceholder: TLDisplayStrings.LABEL_STRING(), success: {
                         (inputText: String!) in
                         if (inputText == "") {
                             AppDelegate.instance().appWallet.deleteTransactionTag(txHash as String)

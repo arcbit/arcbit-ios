@@ -40,6 +40,7 @@ import UIKit
     override func viewDidLoad() {
         super.viewDidLoad()
         self.setNavigationBarColors(self.navigationBar!)
+        self.navigationBar?.topItem?.title = TLDisplayStrings.CONTACTS_STRING()
         
         addressBook = AppDelegate.instance().appWallet.getAddressBook()
         

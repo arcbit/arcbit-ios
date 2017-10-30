@@ -98,6 +98,8 @@
 
 "Are you sure you want to delete this address?" = "Are you sure you want to delete this address?";
 
+"Enter an account ID and click 'QR Code'. Then on your primary online device, enable Cold Wallet in settings. Then go to the accounts screen and click 'Import Cold Wallet Account' and scan the Account Public Key QR Code. Afterwards use this cold wallet account as you would a normal account and deposits bitcoins into it. When you want to make a payment from a cold wallet account, go to the next section in the previous screen and follow the step by step instructions there." = "Enter an account ID and click 'QR Code'. Then on your primary online device, enable Cold Wallet in settings. Then go to the accounts screen and click 'Import Cold Wallet Account' and scan the Account Public Key QR Code. Afterwards use this cold wallet account as you would a normal account and deposits bitcoins into it. When you want to make a payment from a cold wallet account, go to the next section in the previous screen and follow the step by step instructions there.";
+
 "Enter passphrase for your iCloud backup wallet." = "Enter passphrase for your iCloud backup wallet.";
 
 "Your current wallet will be deleted. Your can restore your current wallet later with the wallet passphrase, but any imported accounts or addresses created in advanced mode cannot be recovered. Do you wish to continue?" = "Your current wallet will be deleted. Your can restore your current wallet later with the wallet passphrase, but any imported accounts or addresses created in advanced mode cannot be recovered. Do you wish to continue?";
@@ -108,7 +110,7 @@
 
 "Success" = "Success";
 
-"Your wallet is now restored!" = "Your wallet is now restored!";
+"Your wallet is now restored" = "Your wallet is now restored";
 
 "Incorrect passphrase, could not decrypt iCloud wallet backup." = "Incorrect passphrase, could not decrypt iCloud wallet backup.";
 
@@ -172,10 +174,6 @@
 
 "account name" = "account name";
 
-"Account name is taken" = "Account name is taken";
-
-"Rename" = "Rename";
-
 "Account ID: %u" = "Account ID: %u";
 
 "View account public key QR code" = "View account public key QR code";
@@ -212,8 +210,6 @@
 
 "Maximum accounts reached" = "Maximum accounts reached";
 
-"You need to archived an account in order to unarchive a different one." = "You need to archived an account in order to unarchive a different one.";
-
 "Transaction ID" = "Transaction ID";
 
 "Scan for reusable address transaction" = "Scan for reusable address transaction";
@@ -228,7 +224,7 @@
 
 "Checking Transaction" = "Checking Transaction";
 
-"Txid is not a reusable address transaction." = "Txid is not a reusable address transaction.";
+"Transaction is not a reusable address transaction." = "Transaction is not a reusable address transaction.";
 
 "Transaction %@ belongs to this account. Funds imported" = "Transaction %@ belongs to this account. Funds imported";
 
@@ -315,11 +311,7 @@
 
 "Maximum accounts reached" = "Maximum accounts reached";
 
-"You need to archive an account in order to create a new one." = "You need to archive an account in order to create a new one.";
-
 "You need to archive an imported account or imported watch account in order to import a new one." = "You need to archive an imported account or imported watch account in order to import a new one.";
-
-"You need to archive an imported private key or address in order to import a new one." = "You need to archive an imported private key or address in order to import a new one.";
 
 "Archived Accounts" = "Archived Accounts";
 
@@ -343,13 +335,11 @@
 
 "Settings" = "Settings";
 
+"Some funds may be pending confirmation and cannot be spent yet. (Check your account history) Account only has a spendable balance of %@" = "Some funds may be pending confirmation and cannot be spent yet. (Check your account history) Account only has a spendable balance of %@";
+
 "Write down the 12 word passphrase below and keep it safe. You can restore your entire wallets' bitcoins with this single passphrase." = "Write down the 12 word passphrase below and keep it safe. You can restore your entire wallets' bitcoins with this single passphrase.";
 
 "Write down the 12 word passphrase below and keep it safe. You can restore your entire wallets' bitcoins (excluding imported accounts and addresses) with this single passphrase." = "Write down the 12 word passphrase below and keep it safe. You can restore your entire wallets' bitcoins (excluding imported accounts and addresses) with this single passphrase.";
-
-"The backup passphrase is not selectable on purpose, It is not recommended that you copy it to your clipboard or paste it anywhere on a device that connects to the internet. Instead the backup passphrase should be memorized or written down on a piece of paper." = "The backup passphrase is not selectable on purpose, It is not recommended that you copy it to your clipboard or paste it anywhere on a device that connects to the internet. Instead the backup passphrase should be memorized or written down on a piece of paper.";
-
-"The master seed hex is not selectable on purpose, It is not recommended that you copy it to your clipboard or paste it anywhere on a device that connects to the internet." = "The master seed hex is not selectable on purpose, It is not recommended that you copy it to your clipboard or paste it anywhere on a device that connects to the internet.";
 
 "Backup passphrase found in keychain" = "Backup passphrase found in keychain";
 
@@ -395,11 +385,9 @@
 
 "Next" = "Next";
 
-"You must provide a valid bitcoin address." = "You must provide a valid bitcoin address.";
-
 "Invalid amount" = "Invalid amount";
 
-"You have %@ %@, but %@ is needed. (This includes the transactions fee)" = "You have %@ %@, but %@ is needed. (This includes the transactions fee)";
+"You have %@, but %@ is needed. (This includes the transactions fee)" = "You have %@, but %@ is needed. (This includes the transactions fee)";
 
 "Insufficient Funds" = "Insufficient Funds";
 
@@ -415,13 +403,11 @@
 
 "Sending payment to a reusable addresses might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For reusable address payments to show up faster, configure your app to use the Insight API in advance settings." = "Sending payment to a reusable addresses might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For reusable address payments to show up faster, configure your app to use the Insight API in advance settings.";
 
-"You must close the app in order for the API change to take effect." = "You must close the app in order for the API change to take effect.";
-
 "%@ Support" = "%@ Support";
 
 "Hi, \n\nI need help with... " = "Hi, \n\nI need help with... ";
 
-"Set Block Explorer URL" = "Set Block Explorer URL";
+"Change Block Explorer URL" = "Change Block Explorer URL";
 
 "You must exit and kill this app in order for this to take effect." = "You must exit and kill this app in order for this to take effect.";
 
@@ -432,8 +418,6 @@
 "Input a recommended amount between %@ and %@ bitcoins" = "Input a recommended amount between %@ and %@ bitcoins";
 
 "fee amount" = "fee amount";
-
-"Too low a transaction fee can cause transactions to take a long time to confirm. Continue anyways?" = "Too low a transaction fee can cause transactions to take a long time to confirm. Continue anyways?";
 
 "iCloud backup will be lost. Are you sure you want to backup your local wallet to iCloud?" = "iCloud backup will be lost. Are you sure you want to backup your local wallet to iCloud?";
 
@@ -452,10 +436,6 @@
 "Private key missing" = "Private key missing";
 
 "Do you want to temporary import your private key?" = "Do you want to temporary import your private key?";
-
-"Temporary import via text or QR code?" = "Temporary import via text or QR code?";
-
-"text" = "text";
 
 "QR code" = "QR code";
 
@@ -548,8 +528,6 @@
 "Delete Contact" = "Delete Contact";
 
 "Send To Address In Contacts" = "Send To Address In Contacts";
-
-"Tag transaction" = "Tag transaction";
 
 "Toggle Automatic Transaction Fee" = "Toggle Automatic Transaction Fee";
 
@@ -759,4 +737,22 @@
 
 "A bitcoin address typically begins with a '1' or '3'. You can see the transactions, and track the balance of an address, but you cannot spend from just an imported address.\nYou can however temporary import this watch addresses' private key to spend its bitcoins. Simply go the send screen and select a watch address to spend from and you will be prompt to temporary import your addresses' private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen." = "A bitcoin address typically begins with a '1' or '3'. You can see the transactions, and track the balance of an address, but you cannot spend from just an imported address.\nYou can however temporary import this watch addresses' private key to spend its bitcoins. Simply go the send screen and select a watch address to spend from and you will be prompt to temporary import your addresses' private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen.";
 
+"\tArcBit Web Wallet is a Chrome extension. It has all the features of the mobile wallet plus more. Highlights include the ability to create multiple wallets instead of just one, and a new non-cumbersome way to generate wallets, store and spend bitcoins all from cold storage! ArcBit's new way to manage your cold storage bitcoins also offers a more compelling reason to use ArcBit's watch account feature. Now you can safely watch the balance of your cold storage bitcoins by enabling advance mode in ArcBit and importing your cold storage account public keys.\n\tUse ArcBit Web Wallet in whatever way you wish. You can create a new wallet, or you can input your current 12 word backup passphrase to manage the same bitcoins across different devices. Check out the ArcBit Web Wallet in the Chrome Web Store for more details!\n" = "\tArcBit Web Wallet is a Chrome extension. It has all the features of the mobile wallet plus more. Highlights include the ability to create multiple wallets instead of just one, and a new non-cumbersome way to generate wallets, store and spend bitcoins all from cold storage! ArcBit's new way to manage your cold storage bitcoins also offers a more compelling reason to use ArcBit's watch account feature. Now you can safely watch the balance of your cold storage bitcoins by enabling advance mode in ArcBit and importing your cold storage account public keys.\n\tUse ArcBit Web Wallet in whatever way you wish. You can create a new wallet, or you can input your current 12 word backup passphrase to manage the same bitcoins across different devices. Check out the ArcBit Web Wallet in the Chrome Web Store for more details!\n";
+
 "" = "";
+
+"From:" = "From:";
+"Amount:" = "Amount:";
+"To:" = "To:";
+"Scan QR Code" = "Scan QR Code";
+"Contacts" = "Contacts";
+"Review Payment" = "Review Payment";
+"Account ID" = "Account ID";
+"Step 1: Scan transaction to authorize" = "Step 1: Scan transaction to authorize";
+"Step 2: Input 12 word backup passphrase" = "Step 2: Input 12 word backup passphrase";
+"Step 3: Pass authorized transaction data" = "Step 3: Pass authorized transaction data";
+"Starting Receiving Address ID:" = "Starting Receiving Address ID:";
+"Starting Change address ID:" = "Starting Change address ID:";
+"New Wallet" = "New Wallet";
+"Scan" = "Scan";
+"Pass" = "Pass";
