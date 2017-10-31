@@ -558,7 +558,7 @@
             for outputData in outputsData {
                 let outputAmount = ((outputData as! NSDictionary).object(forKey: "amount") as! NSNumber).uint64Value
                 if outputAmount <= DUST_AMOUNT {
-                    let dustAmountBitcoins = TLCoin(uint64: DUST_AMOUNT).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.bitcoin)
+                    let dustAmountBitcoins = TLCurrencyFormat.coinToProperBitcoinAmountString(TLCoin(uint64: DUST_AMOUNT), withCode: true)
                     error(String(format: TLDisplayStrings.CANNOT_CREATE_TRANSACTIONS_WITH_OUTPUTS_LESS_THEN_X_BITCOINS_STRING(), dustAmountBitcoins))
                     return (nil, realToAddresses, nil)
                 }

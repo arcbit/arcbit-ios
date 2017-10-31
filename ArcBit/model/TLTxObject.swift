@@ -179,7 +179,7 @@ import Foundation
         formatterTime.dateFormat = "@ hh:mm a"
         
         if ((transactionDate as NSDate).isToday()) {
-            return String(format:"%@ %@", "Today", formatterTime.string(from: transactionDate))
+            return String(format:"%@ %@", TLDisplayStrings.TODAY_STRING(), formatterTime.string(from: transactionDate))
         } else {
             let formatterDate = DateFormatter()
             formatterDate.dateFormat = "EEE dd MMM YYYY"

@@ -28,7 +28,7 @@ class TLDisplayStrings {
     class func X_NOT_ALLOWED_TO_ACCESS_THE_CAMERA_STRING() -> String { return "%@ is not allowed to access the camera".localized }
     class func X_SERVERS_NOT_REACHABLE_STRING() -> String { return "%@ servers not reachable.".localized }
     class func X_SLASH_Y_PARTS_SCANNED_STRING() -> String { return "%d/%d parts scanned.".localized }
-    class func X_CONFIRMATION_STRING() -> String { return "%llu confirmation".localized }
+    class func ONE_CONFIRMATION_STRING() -> String { return "1 Confirmation".localized }
     class func X_CONFIRMATIONS_STRING() -> String { return "%llu confirmations".localized }
     class func IMPORTING_A_WATCH_ONLY_ADDRESS_DESC_STRING() -> String { return "A bitcoin address typically begins with a '1' or '3'. You can see the transactions, and track the balance of an address, but you cannot spend from just an imported address.\nYou can however temporary import this watch addresses' private key to spend its bitcoins. Simply go the send screen and select a watch address to spend from and you will be prompt to temporary import your addresses' private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen.".localized }
     class func WHAT_IS_A_BITCOIN_WALLET_DESC_STRING() -> String { return "A bitcoin wallet is a software application that allows people to send, receive and manage their bitcoins.\nBe aware of how other bitcoin applications store your bitcoins' private keys, which are needed to spend your bitcoins.\nThere are generally three different ways applications can your store your bitcoins.\n1.\nThe banking model where your bitcoin private keys are held for you by someone else.\n2.\nThe security box model where your bitcoin private keys are stored encrypted on someone else’s servers.\n3.\nThe wallet model where your bitcoin private keys are stored only on your device.".localized }
@@ -36,11 +36,11 @@ class TLDisplayStrings {
     class func ACCOUNT_X_IMPORTED_STRING() -> String { return "Account %@ imported".localized }
     class func ACCOUNT_X_STRING() -> String { return "Account %lu".localized }
     class func ACCOUNT_1_STRING() -> String { return "Account 1".localized }
-    class func ACCOUNT_ACTIONS_STRING() -> String { return "Account Actions".localized }
+    class func ACCOUNT_ACTIONS_STRING() -> String { return "Actions".localized }
     class func ACCOUNT_ID_COLON_X_STRING() -> String { return "Account ID: %u".localized }
     class func ACCOUNT_PRIVATE_KEY_STRING() -> String { return "Account Private Key".localized }
     class func ACCOUNT_PUBLIC_KEY_STRING() -> String { return "Account Public Key".localized }
-    class func ACCOUNT_NAME_STRING() -> String { return "Account name".localized }
+    class func ACCOUNT_NAME_STRING() -> String { return "Name".localized }
     class func ACCOUNT_PRIVATE_KEY_CLEARED_FROM_MEMORY_STRING() -> String { return "Account private key cleared from memory".localized }
     class func ACCOUNT_PRIVATE_KEY_DOES_NOT_MATCH_STRING() -> String { return "Account private key does not match imported account public key".localized }
     class func ACCOUNT_PRIVATE_KEY_MISSING_STRING() -> String { return "Account private key missing".localized }
@@ -94,7 +94,7 @@ class TLDisplayStrings {
     class func CANCEL_STRING() -> String { return "Cancel".localized }
     class func CANNOT_ARCHIVE_YOUR_DEFAULT_ACCOUNT_STRING() -> String { return "Cannot archive your default account".localized }
     class func CANNOT_ARCHIVE_YOUR_ONE_AND_ONLY_ACCOUNT_STRING() -> String { return "Cannot archive your one and only account".localized }
-    class func CANNOT_CREATE_TRANSACTIONS_WITH_OUTPUTS_LESS_THEN_X_BITCOINS_STRING() -> String { return "Cannot create transactions with outputs less then %@ bitcoins.".localized }
+    class func CANNOT_CREATE_TRANSACTIONS_WITH_OUTPUTS_LESS_THEN_X_BITCOINS_STRING() -> String { return "Cannot create transactions with outputs less then %@".localized }
     class func CANNOT_DECRYPT_ICLOUD_BACKUP_WALLET_STRING() -> String { return "Cannot decrypt iCloud backup wallet.".localized }
     class func CANNOT_IMPORT_REUSABLE_ADDRESS_STRING() -> String { return "Cannot import reusable address".localized }
     class func CHANGE_ADDRESS_ID_STRING() -> String { return "Change Address ID ".localized }
@@ -104,7 +104,6 @@ class TLDisplayStrings {
     class func CHECK_OUT_THE_ARCBIT_BRAIN_WALLET_STRING() -> String { return "Check out the ArcBit Brain Wallet".localized }
     class func CHECK_OUT_THE_ARCBIT_WEB_WALLET_STRING() -> String { return "Check out the ArcBit Web Wallet".localized }
     class func CHECK_OUT_THE_ARCBIT_WEB_WALLET_EXCLAMATION_STRING() -> String { return "Check out the ArcBit Web Wallet!".localized }
-    class func CHECK_OUT_THE_NEW_ARCBIT_ANDROID_WALLET_EXCLAMATION_STRING() -> String { return "Check out the new ArcBit Android Wallet!".localized }
     class func CHECKING_TRANSACTION_STRING() -> String { return "Checking Transaction".localized }
     class func CLEAR_ACCOUNT_PRIVATE_KEY_FROM_MEMORY_STRING() -> String { return "Clear account private key from memory".localized }
     class func CLEAR_PRIVATE_KEY_FROM_MEMORY_STRING() -> String { return "Clear private key from memory".localized }
@@ -144,7 +143,6 @@ class TLDisplayStrings {
     class func CLICK_RECEIVE_STRING() -> String { return "Click ’Receive’".localized }
     class func CLOSE_STRING() -> String { return "Close".localized }
     class func COLD_WALLET_STRING() -> String { return "Cold Wallet".localized }
-    class func COLD_WALLET_ACCOUNT_STRING() -> String { return "Cold Wallet Account".localized }
     class func COLD_WALLET_ACCOUNTS_STRING() -> String { return "Cold Wallet Accounts".localized }
     class func IMPORTED_COLD_WALLET_ACCOUNTS_REUSABLE_ADDRESS_INFO_DESC_STRING() -> String { return "Cold Wallet Accounts can't see reusable address payments, thus this accounts' reusable address is not available.".localized }
     class func COLD_WALLET_OVERVIEW_STRING() -> String { return "Cold Wallet Overview".localized }
@@ -436,6 +434,7 @@ class TLDisplayStrings {
     class func ICLOUD_BACKUP_NOT_FOUND_STRING() -> String { return "iCloud backup not found".localized }
     class func BACKUP_IYOUR_LOCAL_WALLET_TO_ICLOUD_STRING() -> String { return "iCloud backup will be lost. Are you sure you want to backup your local wallet to iCloud?".localized }
     
+    class func TODAY_STRING() -> String { return "Today".localized }
     class func CONFIRM_PAYMENT_STRING() -> String { return "Confirm Payment".localized }
     class func FEE_COLON_STRING() -> String { return "Fee:".localized }
     class func TOTAL_COLON_STRING() -> String { return "Total:".localized }
@@ -444,7 +443,6 @@ class TLDisplayStrings {
     class func PASSPHRASE_STRING() -> String { return "Passphrase".localized }
     class func RESTORE_WALLET_STRING() -> String { return "Restore Wallet".localized }
     class func WALLET_BACKUP_PASSPHRASE_STRING() -> String { return "Wallet backup passphrase".localized }
-    
     class func FROM_COLON_STRING() -> String { return "From:".localized }
     class func AMOUNT_COLON_STRING() -> String { return "Amount:".localized }
     class func TO_COLON_STRING() -> String { return "To:".localized }
@@ -457,7 +455,6 @@ class TLDisplayStrings {
     class func AUTHORIZE_PAYMENT_STEP_3() -> String { return "Step 3: Pass authorized transaction data".localized }
     class func STARTING_RECEIVING_ADDRESS_ID() -> String { return "Starting Receiving Address ID:".localized }
     class func STARTING_CHANGE_ADDRESS_ID() -> String { return "Starting Change address ID:".localized }
-
     class func NEW_WALLET() -> String { return "New Wallet".localized }
     class func SCAN() -> String { return "Scan".localized }
     class func PASS() -> String { return "Pass".localized }

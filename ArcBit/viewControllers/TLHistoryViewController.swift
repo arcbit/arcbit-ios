@@ -295,7 +295,7 @@ import CoreData
             if (confirmations == 0) {
                 cell!.confirmationsLabel!.text = String(format: TLDisplayStrings.UNCONFIRMED_STRING())
             } else if (confirmations == 1) {
-                cell!.confirmationsLabel!.text = String(format: TLDisplayStrings.X_CONFIRMATION_STRING(), txObject!.getConfirmations())
+                cell!.confirmationsLabel!.text = String(format: TLDisplayStrings.ONE_CONFIRMATION_STRING())
             } else {
                 cell!.confirmationsLabel!.text = String(format: TLDisplayStrings.X_CONFIRMATIONS_STRING(), txObject!.getConfirmations())
             }

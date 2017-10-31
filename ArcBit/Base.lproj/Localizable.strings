@@ -172,7 +172,7 @@
 
 "Save" = "Save";
 
-"account name" = "account name";
+"Name" = "Name";
 
 "Account ID: %u" = "Account ID: %u";
 
@@ -319,7 +319,7 @@
 
 "Archived Imported Watch Addresses" = "Archived Imported Watch Addresses";
 
-"Account Actions" = "Account Actions";
+"Actions" = "Actions";
 
 "Send" = "Send";
 
@@ -491,7 +491,7 @@
 
 "Insufficient Funds. Account balance is %@ when %@ is required." = "Insufficient Funds. Account balance is %@ when %@ is required.";
 
-"Cannot create transactions with outputs less then %@ bitcoins." = "Cannot create transactions with outputs less then %@ bitcoins.";
+"Cannot create transactions with outputs less then %@" = "Cannot create transactions with outputs less then %@";
 
 "Encountered error creating transaction. Please try again." = "Encountered error creating transaction. Please try again.";
 
@@ -737,6 +737,7 @@
 
 "" = "";
 
+"Today" = "Today";
 "Confirm Payment" = "Confirm Payment";
 "Fee:" = "Fee:";
 "Total:" = "Total:";

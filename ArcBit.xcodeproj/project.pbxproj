@@ -346,6 +346,11 @@
 		C0649CA11E256B52007E3965 /* TLAddressTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLAddressTableViewCell.swift; sourceTree = "<group>"; };
 		C0649CA21E256B52007E3965 /* TLTransactionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLTransactionTableViewCell.swift; sourceTree = "<group>"; };
 		C0649CA61E256E16007E3965 /* TLDisplayStrings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLDisplayStrings.swift; sourceTree = "<group>"; };
+		C0920A971FA82DB6008A0745 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
+		C0920A981FA82DB6008A0745 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
+		C0920A991FA82DB6008A0745 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/IASKLocalizable.strings"; sourceTree = "<group>"; };
+		C0920A9A1FA82DB6008A0745 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LTHPasscodeViewController.strings"; sourceTree = "<group>"; };
+		C0920A9B1FA82DB6008A0745 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Localizable.strings"; sourceTree = "<group>"; };
 		C0A18F8E1ABF51C200BED648 /* ArcBit.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ArcBit.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C0A18F921ABF51C200BED648 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		C0A18F931ABF51C200BED648 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -1346,6 +1351,7 @@
 				sv,
 				th,
 				tr,
+				"zh-Hant",
 			);
 			mainGroup = C0A18F851ABF51C200BED648;
 			productRefGroup = C0A18F8F1ABF51C200BED648 /* Products */;
@@ -1795,6 +1801,7 @@
 			isa = PBXVariantGroup;
 			children = (
 				C0A18F9D1ABF51C200BED648 /* Base */,
+				C0920A981FA82DB6008A0745 /* zh-Hant */,
 			);
 			name = LaunchScreen.xib;
 			sourceTree = "<group>";
@@ -1810,6 +1817,7 @@
 				C0A190301ABF53A100BED648 /* ro */,
 				C0A190311ABF53A100BED648 /* ru */,
 				C0A190321ABF53A100BED648 /* zh-Hans-CN */,
+				C0920A9A1FA82DB6008A0745 /* zh-Hant */,
 			);
 			name = LTHPasscodeViewController.strings;
 			sourceTree = "<group>";
@@ -1819,6 +1827,7 @@
 			children = (
 				C0A192E71ABF707400BED648 /* Base */,
 				C01A489E1B4F9E6E004D7FA0 /* ru */,
+				C0920A971FA82DB6008A0745 /* zh-Hant */,
 			);
 			name = Main.storyboard;
 			sourceTree = "<group>";
@@ -1841,6 +1850,7 @@
 				C0AE419F1F788BD700682CDE /* sv */,
 				C0AE41A01F788BD700682CDE /* th */,
 				C0AE41A11F788BD700682CDE /* tr */,
+				C0920A991FA82DB6008A0745 /* zh-Hant */,
 			);
 			name = IASKLocalizable.strings;
 			sourceTree = "<group>";
@@ -1852,6 +1862,7 @@
 				C0BD70041B4E2BE600A5788D /* ru */,
 				C0B56BC11F51F30B00E4CA87 /* es */,
 				C0B56BC21F51F6BC00E4CA87 /* zh-Hans-CN */,
+				C0920A9B1FA82DB6008A0745 /* zh-Hant */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

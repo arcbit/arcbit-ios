@@ -415,17 +415,6 @@ import StoreKit
                 () in
                 TLPreferences.setDisabledPromptShowTryColdWallet(true)
             })
-        } else if TLSuggestions.instance().conditionToPromptCheckoutAndroidWallet() {
-            TLPreferences.setDisabledPromptCheckoutAndroidWallet(true)
-            TLPrompts.promptAlertController(self, title: TLDisplayStrings.CHECK_OUT_THE_NEW_ARCBIT_ANDROID_WALLET_EXCLAMATION_STRING(),
-                                            message: "", okText: TLDisplayStrings.GO_STRING(), cancelTx: TLDisplayStrings.CANCEL_STRING(),
-                                            success: { () -> () in
-                                                let url = URL(string: "https://play.google.com/store/apps/details?id=com.arcbit.arcbit&hl=en");
-                                                if (UIApplication.shared.canOpenURL(url!)) {
-                                                    UIApplication.shared.openURL(url!);
-                                                }
-            }, failure: { (Bool) -> () in
-            })
         }
         self.navigationController!.view.addGestureRecognizer(self.slidingViewController().panGesture)
     }

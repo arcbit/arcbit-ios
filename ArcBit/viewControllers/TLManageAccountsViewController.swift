@@ -1936,7 +1936,7 @@ import UIKit
     
     fileprivate func promptColdWalletAccountActionSheet() -> () {
         UIAlertController.showAlert(in: self,
-                                                    withTitle: TLDisplayStrings.COLD_WALLET_ACCOUNT_STRING(),
+                                                    withTitle: TLDisplayStrings.IMPORT_COLD_WALLET_ACCOUNT_STRING(),
                                                     message:"",
                                                     preferredStyle: .actionSheet,
                                                     cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
@@ -1951,7 +1951,7 @@ import UIKit
                                                                     (data: String?) in
                                                             })
                                                         } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 1) {
-                                                            TLPrompts.promtForInputText(self, title: TLDisplayStrings.COLD_WALLET_ACCOUNT_STRING(), message: TLDisplayStrings.INPUT_ACCOUNT_PUBLIC_KEY_STRING(), textFieldPlaceholder: nil, success: {
+                                                            TLPrompts.promtForInputText(self, title: TLDisplayStrings.IMPORT_COLD_WALLET_ACCOUNT_STRING(), message: TLDisplayStrings.INPUT_ACCOUNT_PUBLIC_KEY_STRING(), textFieldPlaceholder: nil, success: {
                                                                 (inputText: String!) in
                                                                 self.importColdWalletAccount(inputText)
                                                                 }, failure: {
