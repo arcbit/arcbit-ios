@@ -49,7 +49,7 @@ import Foundation
         }
     }
     
-    @discardableResult func addAccountWithExtendedKey(_ extendedKey:String) -> TLAccountObject {
+    @discardableResult func addAccountWithExtendedKey(_ extendedKey:String, accountName:String) -> TLAccountObject {
         assert(accountType != TLAccountType.hdWallet, "accountType == TLAccountTypeHDWallet")
         let accountObject:TLAccountObject
         
@@ -65,7 +65,7 @@ import Foundation
         accountObject.setPositionInWalletArray(positionInWalletArray)
         self.accountsDict!.setObject(accountObject, forKey:accountObject.getPositionInWalletArray() as NSCopying)
         
-        renameAccount(positionInWalletArray, accountName: accountObject.getDefaultNameAccount())
+        renameAccount(positionInWalletArray, accountName: accountName)
         
         return accountObject
     }

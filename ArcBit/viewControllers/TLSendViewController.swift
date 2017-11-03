@@ -516,7 +516,7 @@ import StoreKit
             TLSendFormData.instance().setAddress(address)
             return true
         } else {
-            let av = UIAlertView(title: TLDisplayStrings.INVALID_BITCOIN_ADDRESS_STRING(),
+            let av = UIAlertView(title: TLDisplayStrings.INVALID_ADDRESS_STRING(),
                 message: "",
                 delegate: nil,
                 cancelButtonTitle: TLDisplayStrings.OK_STRING()

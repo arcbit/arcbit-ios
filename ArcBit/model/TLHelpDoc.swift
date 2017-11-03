@@ -39,9 +39,9 @@ class TLHelpDoc {
         static let ACCOUNT_ACTION_CREATE_NEW_ACCOUNT = TLDisplayStrings.CREATE_NEW_ACCOUNT_STRING()
         static let ACCOUNT_ACTION_IMPORT_COLD_WALLET_ACCOUNT = TLDisplayStrings.IMPORT_COLD_WALLET_ACCOUNT_STRING()
         static let ACCOUNT_ACTION_IMPORT_ACCOUNT = TLDisplayStrings.IMPORT_ACCOUNT_STRING()
-        static let ACCOUNT_ACTION_IMPORT_WATCH_ONLY_ACCOUNT = TLDisplayStrings.IMPORT_WATCH_ONLY_ACCOUNT_STRING()
+        static let ACCOUNT_ACTION_IMPORT_WATCH_ONLY_ACCOUNT = TLDisplayStrings.IMPORT_WATCH_ACCOUNT_STRING()
         static let ACCOUNT_ACTION_IMPORT_PRIVATE_KEY = TLDisplayStrings.IMPORT_PRIVATE_KEY_STRING()
-        static let ACCOUNT_ACTION_IMPORT_WATCH_ONLY_ADDRESS = TLDisplayStrings.IMPORT_WATCH_ONLY_ADDRESS_STRING()
+        static let ACCOUNT_ACTION_IMPORT_WATCH_ONLY_ADDRESS = TLDisplayStrings.IMPORT_WATCH_ADDRESS_STRING()
         
         static let ACTION_SEND_PAYMENT = TLDisplayStrings.SEND_PAYMENT_STRING()
         static let ACTION_RECEIVE_PAYMENT = TLDisplayStrings.RECEIVE_PAYMENT_STRING()
@@ -66,9 +66,9 @@ class TLHelpDoc {
         static let ACTION_ENABLE_ADVANCE_MODE = TLDisplayStrings.ENABLE_ADVANCED_MODE_STRING()
         
         static let ACTION_IMPORT_ACCOUNT = TLDisplayStrings.IMPORT_ACCOUNT_STRING()
-        static let ACTION_IMPORT_WATCH_ONLY_ACCOUNT = TLDisplayStrings.IMPORT_WATCH_ONLY_ACCOUNT_STRING()
+        static let ACTION_IMPORT_WATCH_ONLY_ACCOUNT = TLDisplayStrings.IMPORT_WATCH_ACCOUNT_STRING()
         static let ACTION_IMPORT_PRIVATE_KEY = TLDisplayStrings.IMPORT_PRIVATE_ENCRYPTED_KEY_STRING()
-        static let ACTION_IMPORT_WATCH_ONLY_ADDRESS = TLDisplayStrings.IMPORT_WATCH_ONLY_ADDRESS_STRING()
+        static let ACTION_IMPORT_WATCH_ONLY_ADDRESS = TLDisplayStrings.IMPORT_WATCH_ADDRESS_STRING()
         static let ACTION_CHANGE_BLOCKEXPLORER_TYPE = TLDisplayStrings.CHANGE_BLOCKEXPLORER_TYPE_STRING()
         static let ACTION_VIEW_EXTENDED_PUBLIC_KEY = TLDisplayStrings.VIEW_ACCOUNT_PUBLIC_KEY_STRING()
         static let ACTION_VIEW_EXTENDED_PRIVATE_KEY = TLDisplayStrings.VIEW_ACCOUNT_PRIVATE_KEY_STRING()
@@ -252,7 +252,7 @@ class TLHelpDoc {
                     TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
                     TLDisplayStrings.CLICK_ACCOUNTS_STRING(),
                     TLDisplayStrings.SCROLL_DOWN_TO_THE_SECTION_ACCOUNT_ACTIONS_STRING(),
-                    TLDisplayStrings.CLICK_IMPORT_WATCH_ONLY_ACCOUNT_STRING(),
+                    TLDisplayStrings.CLICK_IMPORT_WATCH_ACCOUNT_STRING(),
                 ],
                 [
                     TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
@@ -264,7 +264,7 @@ class TLHelpDoc {
                     TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),
                     TLDisplayStrings.CLICK_ACCOUNTS_STRING(),
                     TLDisplayStrings.SCROLL_DOWN_TO_THE_SECTION_ACCOUNT_ACTIONS_STRING(),
-                    TLDisplayStrings.CLICK_IMPORT_WATCH_ONLY_ADDRESS_STRING(),
+                    TLDisplayStrings.CLICK_IMPORT_WATCH_ADDRESS_STRING(),
                 ],
                 [
                     TLDisplayStrings.GO_TO_THE_SIDE_MENU_STRING(),

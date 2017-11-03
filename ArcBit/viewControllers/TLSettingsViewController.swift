@@ -128,7 +128,7 @@ import AVFoundation
                     } else {
                         UIAlertController.showAlert(in: self,
                             withTitle:  TLDisplayStrings.INVALID_URL_STRING(),
-                            message: TLDisplayStrings.ENTER_SOMETHING_LIKE_STRING(),
+                            message: "",
                             cancelButtonTitle: TLDisplayStrings.OK_STRING(),
                             destructiveButtonTitle: nil,
                             otherButtonTitles: nil,
@@ -145,7 +145,7 @@ import AVFoundation
         let msg = String(format: TLDisplayStrings.SET_TRANSACTION_FEE_IN_X_STRING(), TLCurrencyFormat.getBitcoinDisplay())
         
         func addTextField(_ textField: UITextField!){
-            textField.placeholder = TLDisplayStrings.FEE_AMOUNT_STRING()
+            textField.placeholder = ""
             textField.keyboardType = .decimalPad
         }
         

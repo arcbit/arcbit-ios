@@ -143,7 +143,7 @@ class TLPrompts {
                                                             error(data)
                                                         })
                                                     } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 1) {
-                                                        TLPrompts.promtForInputText(viewController, title: TLDisplayStrings.TEMPORARY_IMPORT_PRIVATE_KEY_STRING(), message: TLDisplayStrings.INPUT_PRIVATE_KEY_STRING(), textFieldPlaceholder: nil, success: {
+                                                        TLPrompts.promtForInputText(viewController, title: TLDisplayStrings.TEMPORARY_IMPORT_PRIVATE_KEY_STRING(), message: "", textFieldPlaceholder: nil, success: {
                                                             (inputText: String!) in
                                                             success(inputText)
                                                         }, failure: {

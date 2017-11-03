@@ -76,9 +76,9 @@
 
 "Advanced Achievement List" = "Advanced Achievement List";
 
-"Input address" = "Input address";
+"Enter address" = "Enter address";
 
-"Import via QR code" = "Import via QR code";
+"Import with QR code" = "Import with QR code";
 
 "Import with text input" = "Import with text input";
 
@@ -86,11 +86,7 @@
 
 "Invalid Address" = "Invalid Address";
 
-"Input label for address" = "Input label for address";
-
 "label" = "label";
-
-"Edit address label" = "Edit address label";
 
 "address" = "address";
 
@@ -150,6 +146,8 @@
 
 "Transaction ID: %@" = "Transaction ID: %@";
 
+"Edit" = "Edit";
+
 "Edit Transaction label" = "Edit Transaction label";
 
 "tag" = "tag";
@@ -192,7 +190,7 @@
 
 "Clear account private key from memory" = "Clear account private key from memory";
 
-"Account private key cleared from memory" = "Account private key cleared from memory";
+"Cleared from memory" = "Cleared from memory";
 
 "Edit Label" = "Edit Label";
 
@@ -201,8 +199,6 @@
 "Unarchived address" = "Unarchived address";
 
 "Clear private key from memory" = "Clear private key from memory";
-
-"Private key cleared from memory" = "Private key cleared from memory";
 
 "Unarchive Account" = "Unarchive Account";
 
@@ -291,15 +287,13 @@
 
 "Import Account" = "Import Account";
 
-"Input account private key" = "Input account private key";
+"Enter account private key" = "Enter account private key";
 
 "Import Watch Account" = "Import Watch Account";
 
-"Input account public key" = "Input account public key";
+"Enter account public key" = "Enter account public key";
 
 "Import Private Key" = "Import Private Key";
-
-"Input private key" = "Input private key";
 
 "Import Watch Address" = "Import Watch Address";
 
@@ -375,8 +369,6 @@
 
 "Sending" = "Sending";
 
-"Invalid Bitcoin Address" = "Invalid Bitcoin Address";
-
 "Transaction Fee" = "Transaction Fee";
 
 "Next" = "Next";
@@ -409,11 +401,7 @@
 
 "Invalid URL" = "Invalid URL";
 
-"Enter something like https://example.com" = "Enter something like https://example.com";
-
 "Input a recommended amount between %@ and %@ bitcoins" = "Input a recommended amount between %@ and %@ bitcoins";
-
-"fee amount" = "fee amount";
 
 "iCloud backup will be lost. Are you sure you want to backup your local wallet to iCloud?" = "iCloud backup will be lost. Are you sure you want to backup your local wallet to iCloud?";
 
@@ -472,8 +460,6 @@
 "\nallow camera access in\n Settings->Privacy->Camera->%@" = "\nallow camera access in\n Settings->Privacy->Camera->%@";
 
 "Local back up to wallet failed!" = "Local back up to wallet failed!";
-
-"Default Account Name" = "Default Account Name";
 
 "Enable Pin Code" = "Enable Pin Code";
 
@@ -762,3 +748,6 @@
 "New Wallet" = "New Wallet";
 "Scan" = "Scan";
 "Pass" = "Pass";
+"Imported Account %@" = "Imported Cold Wallet Account %@";
+"Imported Watch Account %@" = "Imported Watch Account %@";
+"Imported Cold Wallet Account %@" = "Imported Cold Wallet Account %@";

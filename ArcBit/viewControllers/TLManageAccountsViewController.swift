@@ -818,7 +818,7 @@ import UIKit
                 if (addClearPrivateKeyButton && buttonIndex == CLEAR_ACCOUNT_PRIVATE_KEY_BUTTON_IDX) {
                 assert(accountObject.hasSetExtendedPrivateKeyInMemory(), "")
                 accountObject.clearExtendedPrivateKeyFromMemory()
-                TLPrompts.promptSuccessMessage(nil, message: TLDisplayStrings.ACCOUNT_PRIVATE_KEY_CLEARED_FROM_MEMORY_STRING())
+                TLPrompts.promptSuccessMessage(nil, message: TLDisplayStrings.CLEARED_FROM_MEMORY_STRING())
             } else if (buttonIndex == VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX) {
                 self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPubKey() as NSString,
                         buttonCopyText: TLDisplayStrings.COPY_TO_CLIPBOARD_STRING(), vc: self)
@@ -927,7 +927,7 @@ import UIKit
                 if (addClearPrivateKeyButton && buttonIndex == CLEAR_PRIVATE_KEY_BUTTON_IDX) {
                 assert(importAddressObject.hasSetPrivateKeyInMemory(), "")
                 importAddressObject.clearPrivateKeyFromMemory()
-                TLPrompts.promptSuccessMessage(nil, message: TLDisplayStrings.PRIVATE_KEY_CLEARED_FROM_MEMORY_STRING())
+                TLPrompts.promptSuccessMessage(nil, message: TLDisplayStrings.CLEARED_FROM_MEMORY_STRING())
             }
             if (buttonIndex == VIEW_ADDRESS_BUTTON_IDX) {
                 self.QRImageModal = TLQRImageModal(data: importAddressObject.getAddress() as NSString,
@@ -1040,7 +1040,7 @@ import UIKit
                 if (addClearPrivateKeyButton && buttonIndex == CLEAR_PRIVATE_KEY_BUTTON_IDX) {
                 assert(importAddressObject.hasSetPrivateKeyInMemory(), "")
                 importAddressObject.clearPrivateKeyFromMemory()
-                TLPrompts.promptSuccessMessage(nil, message: TLDisplayStrings.PRIVATE_KEY_CLEARED_FROM_MEMORY_STRING())
+                TLPrompts.promptSuccessMessage(nil, message: TLDisplayStrings.CLEARED_FROM_MEMORY_STRING())
             }
             if (buttonIndex == VIEW_ADDRESS_BUTTON_IDX) {
                 self.QRImageModal = TLQRImageModal(data: importAddressObject.getAddress() as NSString,
@@ -1608,7 +1608,8 @@ import UIKit
         if (TLHDWalletWrapper.isValidExtendedPublicKey(extendedPublicKey)) {
             AppDelegate.instance().saveWalletJsonCloudBackground()
             AppDelegate.instance().saveWalletJSONEnabled = false
-            let accountObject = AppDelegate.instance().coldWalletAccounts!.addAccountWithExtendedKey(extendedPublicKey)
+            let defaultAccountName = String(format: TLDisplayStrings.IMPORTED_COLD_WALLET_ACCOUNT_STRING(), String(AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts() + AppDelegate.instance().coldWalletAccounts!.getNumberOfArchivedAccounts() + 1))
+            let accountObject = AppDelegate.instance().coldWalletAccounts!.addAccountWithExtendedKey(extendedPublicKey, accountName: defaultAccountName)
             
             TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: TLDisplayStrings.IMPORTING_COLD_WALLET_ACCOUNT_STRING(), animated: true)
             DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
@@ -1627,7 +1628,7 @@ import UIKit
                             (_accountName: String?) in
                             var accountName = _accountName
                             if (accountName == nil || accountName == "") {
-                                accountName = accountObject.getDefaultNameAccount()
+                                accountName = defaultAccountName
                             }
                             AppDelegate.instance().coldWalletAccounts!.renameAccount(accountObject.getAccountIdxNumber(), accountName: accountName!)
                             
@@ -1682,7 +1683,9 @@ import UIKit
         if (TLHDWalletWrapper.isValidExtendedPrivateKey(extendedPrivateKey)) {
             AppDelegate.instance().saveWalletJsonCloudBackground()
             AppDelegate.instance().saveWalletJSONEnabled = false
-            let accountObject = AppDelegate.instance().importedAccounts!.addAccountWithExtendedKey(extendedPrivateKey)
+            
+            let defaultAccountName = String(format: TLDisplayStrings.IMPORTED_ACCOUNT_STRING(), String(AppDelegate.instance().importedAccounts!.getNumberOfAccounts() + AppDelegate.instance().importedAccounts!.getNumberOfArchivedAccounts() + 1))
+            let accountObject = AppDelegate.instance().importedAccounts!.addAccountWithExtendedKey(extendedPrivateKey, accountName: defaultAccountName)
             TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: TLDisplayStrings.IMPORTING_ACCOUNT_STRING(), animated: true)
             DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
                 SwiftTryCatch.`try`({
@@ -1698,7 +1701,7 @@ import UIKit
                                 (_accountName: String?) in
                                 var accountName = _accountName
                                 if (accountName == nil || accountName == "") {
-                                    accountName = accountObject.getDefaultNameAccount()
+                                    accountName = defaultAccountName
                                 }
                                 AppDelegate.instance().importedAccounts!.renameAccount(accountObject.getAccountIdxNumber(), accountName: accountName!)
                                 let av = UIAlertView(title: String(format: TLDisplayStrings.ACCOUNT_X_IMPORTED_STRING(), accountName!),
@@ -1746,7 +1749,8 @@ import UIKit
         if (TLHDWalletWrapper.isValidExtendedPublicKey(extendedPublicKey)) {
             AppDelegate.instance().saveWalletJsonCloudBackground()
             AppDelegate.instance().saveWalletJSONEnabled = false
-            let accountObject = AppDelegate.instance().importedWatchAccounts!.addAccountWithExtendedKey(extendedPublicKey)
+            let defaultAccountName = String(format: TLDisplayStrings.IMPORTED_WATCH_ACCOUNT_STRING(), String(AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts() + AppDelegate.instance().importedWatchAccounts!.getNumberOfArchivedAccounts() + 1))
+            let accountObject = AppDelegate.instance().importedWatchAccounts!.addAccountWithExtendedKey(extendedPublicKey, accountName: defaultAccountName)
             
             TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: TLDisplayStrings.IMPORTING_ACCOUNT_STRING(), animated: true)
             DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
@@ -1765,7 +1769,7 @@ import UIKit
                             (_accountName: String?) in
                                 var accountName = _accountName
                                 if (accountName == nil || accountName == "") {
-                                    accountName = accountObject.getDefaultNameAccount()
+                                    accountName = defaultAccountName
                                 }
                                 AppDelegate.instance().importedWatchAccounts!.renameAccount(accountObject.getAccountIdxNumber(), accountName: accountName!)
                             
@@ -2040,7 +2044,7 @@ import UIKit
                             (data: String?) in
                     })
                 } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 1) {
-                    TLPrompts.promtForInputText(self, title: TLDisplayStrings.IMPORT_PRIVATE_KEY_STRING(), message: TLDisplayStrings.INPUT_PRIVATE_KEY_STRING(), textFieldPlaceholder: nil, success: {
+                    TLPrompts.promtForInputText(self, title: TLDisplayStrings.IMPORT_PRIVATE_KEY_STRING(), message: "", textFieldPlaceholder: nil, success: {
                         (inputText: String!) in
                         if (TLCoreBitcoinWrapper.isBIP38EncryptedKey(inputText, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
                             TLPrompts.promptForEncryptedPrivKeyPassword(self, view:self.slidingViewController().topViewController.view, encryptedPrivKey: inputText, success: {

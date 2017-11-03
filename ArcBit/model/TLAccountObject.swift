@@ -265,11 +265,6 @@ import Foundation
         return accountName != "" ? accountName : getExtendedPubKey()
     }
     
-    func getDefaultNameAccount() -> String {
-        return TLDisplayStrings.DEFAULT_ACCOUNT_NAME_STRING()
-    }
-    
-    
     func archiveAccount(_ enabled: Bool) -> (Bool) {
         let status = enabled ? TLAddressStatus.archived : TLAddressStatus.active
         accountDict!.setObject(status.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS as NSCopying)

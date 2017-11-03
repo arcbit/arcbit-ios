@@ -151,10 +151,10 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
     
     fileprivate func showPromptForSetTransactionFee() {
-        let msg = String(format: TLDisplayStrings.INPUT_YOUR_CUSTOM_FEE_IN_X_STRING(), TLCurrencyFormat.getBitcoinDisplay())
-        
+        let msg = String(format: TLDisplayStrings.SET_TRANSACTION_FEE_IN_X_STRING(), TLCurrencyFormat.getBitcoinDisplay())
+
         func addTextField(_ textField: UITextField!){
-            textField.placeholder = TLDisplayStrings.FEE_AMOUNT_STRING()
+            textField.placeholder = ""
             textField.keyboardType = .decimalPad
         }
         

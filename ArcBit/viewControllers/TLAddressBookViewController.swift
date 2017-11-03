@@ -111,7 +111,7 @@ import UIKit
     }
     
     fileprivate func promptForLabel(_ address: String) -> () {
-        TLPrompts.promtForInputText(self, title: TLDisplayStrings.INPUT_LABEL_FOR_ADDRESS_STRING(), message: "", textFieldPlaceholder: TLDisplayStrings.LABEL_STRING(), success: {
+        TLPrompts.promtForInputText(self, title: TLDisplayStrings.EDIT_CONTACTS_ENTRY_STRING(), message: "", textFieldPlaceholder: TLDisplayStrings.LABEL_STRING(), success: {
             (inputText: String!) in
             AppDelegate.instance().appWallet.addAddressBookEntry(address, label: inputText)
             NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_ADD_TO_ADDRESS_BOOK()), object: nil, userInfo: nil)
@@ -184,11 +184,11 @@ import UIKit
     }
     
     func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
-        let moreAction = UITableViewRowAction(style:UITableViewRowActionStyle.default, title: "Edit", handler: {
+        let moreAction = UITableViewRowAction(style:UITableViewRowActionStyle.default, title: TLDisplayStrings.EDIT_STRING(), handler: {
             (action: UITableViewRowAction, indexPath: IndexPath) in
             tableView.isEditing = false
             
-            TLPrompts.promtForInputText(self, title: TLDisplayStrings.EDIT_ADDRESS_LABEL_STRING(), message: TLDisplayStrings.INPUT_LABEL_FOR_ADDRESS_STRING(), textFieldPlaceholder: TLDisplayStrings.ADDRESS_STRING(), success: {
+            TLPrompts.promtForInputText(self, title: TLDisplayStrings.EDIT_CONTACTS_ENTRY_STRING(), message: "", textFieldPlaceholder: TLDisplayStrings.ADDRESS_STRING(), success: {
                 (inputText: String!) in
                 AppDelegate.instance().appWallet.editAddressBookEntry((indexPath as NSIndexPath).row, label: inputText)
                 NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_EDIT_ENTRY_ADDRESS_BOOK()), object: nil, userInfo: nil)
