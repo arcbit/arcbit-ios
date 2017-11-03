@@ -6,9 +6,9 @@
 
 "%d/%d parts scanned." = "%d/%d个部分进行扫描。";
 
-"1 Confirmation" = "1确认";
-
 "%llu confirmations" = "%llu确认书";
+
+"1 Confirmation" = "1确认";
 
 "A bitcoin address typically begins with a '1' or '3'. You can see the transactions, and track the balance of an address, but you cannot spend from just an imported address.\nYou can however temporary import this watch addresses' private key to spend its bitcoins. Simply go the send screen and select a watch address to spend from and you will be prompt to temporary import your addresses' private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen." = "A bitcoin address typically begins with a '1' or '3'. You can see the transactions, and track the balance of an address, but you cannot spend from just an imported address.\nYou can however temporary import this watch addresses' private key to spend its bitcoins. Simply go the send screen and select a watch address to spend from and you will be prompt to temporary import your addresses' private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen.";
 
@@ -22,15 +22,13 @@
 
 "Account 1" = "帐户 1";
 
-"Actions" = "操作";
+"Account ID" = "帐户ID";
 
 "Account ID: %u" = "帐户ID: %u";
 
 "Account Private Key" = "账户私钥";
 
 "Account Public Key" = "账户公钥";
-
-"Name" = "名称";
 
 "Account private key does not match imported account public key" = "帐户私钥不匹配导入的账户公钥";
 
@@ -41,6 +39,8 @@
 "Achievement List" = "Achievement List";
 
 "Achievements" = "Achievements";
+
+"Actions" = "操作";
 
 "Active Change Addresses" = "活动的找零地址";
 
@@ -63,6 +63,8 @@
 "Advanced how To:" = "Advanced how To:";
 
 "After a transaction is broadcast to the Bitcoin network, it may be included in a block that is published to the network. When that happens it is said that the transaction has been mined at a depth of 1 block. With each subsequent block that is found, the number of blocks deep is increased by one. To be secure against double spending, a transaction should not be considered as confirmed until it is a certain number of blocks deep.\nA good rule of thumb is that 1 confirmations is good for small value amounts of bitcoins, and a user should wait for more confirmations for larger value amounts.\nArcBit will display the confirmation number up until the 6th confirmation." = "After a transaction is broadcast to the Bitcoin network, it may be included in a block that is published to the network. When that happens it is said that the transaction has been mined at a depth of 1 block. With each subsequent block that is found, the number of blocks deep is increased by one. To be secure against double spending, a transaction should not be considered as confirmed until it is a certain number of blocks deep.\nA good rule of thumb is that 1 confirmations is good for small value amounts of bitcoins, and a user should wait for more confirmations for larger value amounts.\nArcBit will display the confirmation number up until the 6th confirmation.";
+
+"Amount:" = "量：";
 
 "An account is a collection of bitcoin addresses. With accounts, you will no longer have to manage bitcoin addresses directly anymore. Since address reuse results in a loss of privacy for people using Bitcoin, ArcBit’s HD wallet account system will automatically handle the cycling of bitcoin addresses for you, so that you don’t use the same bitcoin address more then once.\nEach account also has a reusable address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a reusable address.\nYou can create an unlimited amount of accounts with ArcBit. See the help section on how to create a new account in ArcBit." = "An account is a collection of bitcoin addresses. With accounts, you will no longer have to manage bitcoin addresses directly anymore. Since address reuse results in a loss of privacy for people using Bitcoin, ArcBit’s HD wallet account system will automatically handle the cycling of bitcoin addresses for you, so that you don’t use the same bitcoin address more then once.\nEach account also has a reusable address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a reusable address.\nYou can create an unlimited amount of accounts with ArcBit. See the help section on how to create a new account in ArcBit.";
 
@@ -142,6 +144,8 @@
 
 "Change Automatic Transaction Fee" = "更改自动交易费用";
 
+"Change Block Explorer URL" = "更改阻止浏览器网址";
+
 "Change Blockexplorer Type" = "Change Blockexplorer Type";
 
 "Check out the ArcBit Android Wallet" = "检查ArcBit Android的钱包";
@@ -157,6 +161,8 @@
 "Clear account private key from memory" = "从内存中清除账户私钥";
 
 "Clear private key from memory" = "从内存中清除私钥";
+
+"Cleared from memory" = "从内存中清除账户私钥";
 
 "Click an address" = "Click an address";
 
@@ -242,7 +248,11 @@
 
 "Complete step 1" = "完成第1步";
 
+"Confirm Payment" = "确认付款";
+
 "Confirm Pin Code" = "确认PIN码";
+
+"Contacts" = "联系人";
 
 "Continue" = "继续";
 
@@ -258,6 +268,8 @@
 
 "Create new contact" = "新建联系人";
 
+"Customize Fee" = "定制费用";
+
 "Decrypting" = "解密";
 
 "Delete" = "删除";
@@ -271,6 +283,8 @@
 "Delete address" = "删除地址";
 
 "Do not use the QR code from here to receive bitcoins. Go to the Receive screen to get a QR code to receive bitcoins." = "不要使用这里的QR二维码接受比特币。进入接收画面得到一个QR二维码以接收比特币。";
+
+"Do you like using ArcBit?" = "你喜欢用ArcBit？";
 
 "Do you want to load and backup your current local wallet file?" = "您要加载和备份您当前的本地钱包文件吗？";
 
@@ -316,6 +330,14 @@
 
 "Enter PIN" = "输入PIN码";
 
+"Enter a wallet backup passphrase to wipe the current wallet and start/restore another." = "输入一个钱包备份密码以擦拭目前的钱包并启动或还原另一个。";
+
+"Enter account private key" = "输入账户私钥";
+
+"Enter account public key" = "输入账户公钥";
+
+"Enter address" = "输入网址";
+
 "Enter an account ID and click 'QR Code'. Then on your primary online device, enable Cold Wallet in settings. Then go to the accounts screen and click 'Import Cold Wallet Account' and scan the Account Public Key QR Code. Afterwards use this cold wallet account as you would a normal account and deposits bitcoins into it. When you want to make a payment from a cold wallet account, go to the next section in the previous screen and follow the step by step instructions there." = "输入帐户ID，然后点击“QR码”。然后在主要在线设备上，在设置中启用冷钱包。然后转到帐户屏幕，点击“导入冷钱包帐户”并扫描账户公钥QR码。之后使用这个冷钱包帐户，因为你会正常的帐户和存款比特币到它。当您想从冷钱包帐户进行付款时，请转到上一屏幕中的下一部分，并按照一步一步的说明操作。";
 
 "Enter backup passphrase" = "Enter backup passphrase";
@@ -323,6 +345,8 @@
 "Enter passphrase for your iCloud backup wallet." = "为您的iCloud备份钱包输入密码。";
 
 "Enter password for encrypted private key" = "输入加密私钥的密码";
+
+"Enter the 12 word passphrase that belongs to the cold wallet account that you want to make a payment from. This is the passphrase that was used to generate your account public key that was generated in the 'Create Cold Wallet' section found in the previous screen." = "输入属于您要进行付款的冷钱包帐户的12个字的密码。这是用于生成您在上一个屏幕中找到的“创建冷钱包”部分中生成的账户公钥的密码。";
 
 "Error" = "错误";
 
@@ -342,6 +366,8 @@
 
 "FAQ" = "FAQ";
 
+"Fee:" = "费用:";
+
 "Fill address field" = "Fill address field";
 
 "Finished Passing Transaction Data" = "成品合格交易数据";
@@ -350,7 +376,11 @@
 
 "Follow us on Twitter" = "在推特上关注我们";
 
+"From:" = "从：";
+
 "Funds have been claimed already." = "基金已经被宣称。";
+
+"Funds imported" = "资金导入完毕";
 
 "Go" = "走";
 
@@ -394,11 +424,17 @@
 
 "Import with text input" = "导入与文本输入";
 
+"Imported Account %@" = "導入的帳戶%@";
+
 "Imported Accounts" = "导入的帐户列表";
 
 "Imported Address" = "导入的地址";
 
 "Imported Addresses" = "导入的地址列表";
+
+"Imported Cold Wallet Account %@" = "進口冷錢包賬戶%@";
+
+"Imported Watch Account %@" = "進口監視帳戶%@";
 
 "Imported Watch Accounts" = "导入的监视帐户列表";
 
@@ -434,19 +470,11 @@
 
 "Input a recommended amount. Somewhere between %@ and %@ BTC" = "Input a recommended amount. Somewhere between %@ and %@ BTC";
 
-"Enter account private key" = "输入账户私钥";
-
-"Enter account public key" = "输入账户公钥";
-
-"Enter address" = "输入网址";
-
 "Input amount" = "Input amount";
 
 "Input label" = "Input label";
 
 "Input new account name" = "Input new account name";
-
-"Enter the 12 word passphrase that belongs to the cold wallet account that you want to make a payment from. This is the passphrase that was used to generate your account public key that was generated in the 'Create Cold Wallet' section found in the previous screen." = "输入属于您要进行付款的冷钱包帐户的12个字的密码。这是用于生成您在上一个屏幕中找到的“创建冷钱包”部分中生成的账户公钥的密码。";
 
 "Input transaction fee in bitcoins" = "Input transaction fee in bitcoins";
 
@@ -458,9 +486,13 @@
 
 "Insufficient Funds. Account contains bitcoin dust. You can only send up to %@ for now." = "余额不足。当需要%@的账户余额为%@。";
 
+"Internal Wallet Data" = "内部数据钱包";
+
 "Internal account transfer" = "内部转账";
 
 "Invalid Address" = "无效的地址";
+
+"Invalid Passphrase" = "口令无效";
 
 "Invalid URL" = "无效的网址";
 
@@ -471,8 +503,6 @@
 "Invalid amount" = "金额无效";
 
 "Invalid backup passphrase" = "无效的备份密码";
-
-"Invalid Passphrase" = "口令无效";
 
 "Invalid private key" = "无效私钥";
 
@@ -488,19 +518,19 @@
 
 "Label Transaction" = "标注交易";
 
-"Do you like using ArcBit?" = "你喜欢用ArcBit？";
-
 "Local back up to wallet failed!" = "本地备份到钱包失败了！";
 
 "Local wallet will be lost. Are you sure you want to restore wallet from iCloud?" = "本地钱包将会丢失。你确定要从iCloud还原钱包吗？";
-
-"Scan For Reusable Address Payment" = "扫描可重复使用的地址付款";
 
 "Maximum accounts reached" = "达到最大的帐户数量";
 
 "More" = "更多";
 
+"Name" = "名称";
+
 "Network Error" = "网络错误";
+
+"New Wallet" = "新建錢包";
 
 "New addresses will be automatically generated and cycled for you as you use your current available addresses." = "您使用当前可用地址的时候将为您自动生成新地址并循环。";
 
@@ -522,13 +552,15 @@
 
 "Other Links" = "其它链接";
 
+"Pass" = "通過";
+
+"Passphrase" = "密码";
+
 "Passphrase does not match the transaction" = "密码不匹配的交易";
 
 "Password" = "密码";
 
 "Payment Index: %lu" = "付款指数： %lu";
-
-"Cleared from memory" = "从内存中清除账户私钥";
 
 "Private key does not match address" = "私钥不匹配地址";
 
@@ -552,6 +584,8 @@
 
 "Restore" = "恢复";
 
+"Restore Wallet" = "恢复钱包";
+
 "Restore from iCloud" = "从iCloud还原";
 
 "Restoring Wallet" = "恢复钱包";
@@ -564,19 +598,25 @@
 
 "Reusable Addresses" = "Reusable Addresses";
 
+"Review Payment" = "审查付款";
+
 "Save" = "保存";
 
-"Scan" = "扫描";
+"Scan" = "掃描";
+
+"Scan" = "掃描";
 
 "Scan For Reusable Address Payment" = "扫描可重复使用的地址付款";
+
+"Scan For Reusable Address Payment" = "扫描可重复使用的地址付款";
+
+"Scan QR Code" = "扫描QR二维码";
 
 "Scan for reusable address transaction" = "扫描可重复使用的地址交易";
 
 "Scan next part" = "扫描下一部分";
 
 "Scroll down to the section ‘Account Actions’" = "Scroll down to the section ‘Account Actions’";
-
-"Internal Wallet Data" = "内部数据钱包";
 
 "Select Account" = "选择帐户";
 
@@ -608,8 +648,6 @@
 
 "Set Transaction Fee in %@" = "在%@中设置交易费";
 
-"Change Block Explorer URL" = "更改阻止浏览器网址";
-
 "Settings" = "设置";
 
 "Some funds may be pending confirmation and cannot be spent yet. (Check your account history) Account only has a spendable balance of %@" = "一些金额尚处于待确认状态，暂时不能使用。（请检查您的帐户历史记录）账户仅有%@的可支配余额";
@@ -621,6 +659,16 @@
 "Start fresh" = "开始新鲜";
 
 "Start/Restore Another Wallet" = "Start/Restore Another Wallet";
+
+"Starting Change address ID:" = "找零地址ID:";
+
+"Starting Receiving Address ID:" = "起始接收地址ID：";
+
+"Step 1: Scan transaction to authorize" = "第1步：扫描交易授权";
+
+"Step 2: Input 12 word backup passphrase" = "第2步：输入12字备份密码";
+
+"Step 3: Pass authorized transaction data" = "第3步：递交授权的交易数据";
 
 "Steps" = "Steps";
 
@@ -642,15 +690,19 @@
 
 "This feature allows you to manually input a transaction id and see if the corresponding transaction contains a reusable address payment to your reusable address. If so, then the funds will be added to your wallet. Normally the app will discover reusable address payments automatically for you, but if you believe a payment is missing you can use this feature." = "此功能可让您手动输入事务ID，看看相应的交易包含一个转发支付给您的可重复使用的地址。如果是这样，那么资金将被添加到你的钱包。通常情况下，应用程序将自动发现代理费给你，但如果你认为付款丢失，您可以使用此功能。";
 
+"To:" = "至：";
+
+"Today" = "今天";
+
 "Toggle Automatic Transaction Fee" = "Toggle Automatic Transaction Fee";
 
 "Toggle ‘Enable Transaction Fee’" = "Toggle ‘Enable Transaction Fee’";
 
 "Toggle ’Enable advanced mode’" = "Toggle ’Enable advanced mode’";
 
-"Transaction %@ already accounted for." = "事务%@已入账。";
+"Total:" = "总:";
 
-"Funds imported" = "资金导入完毕";
+"Transaction %@ already accounted for." = "事务%@已入账。";
 
 "Transaction %@ does not belong to this account." = "事务%@不属于此帐户。";
 
@@ -666,6 +718,8 @@
 
 "Transaction fees impact how quickly the Bitcoin network will confirm your transactions. Higher fees means faster confirmation times. Default fee behavior can be configured in settings." = "交易费用影响比特币网络如何快速确认您的交易。较高的费用意味着确认时间更快。可以在设置中配置默认费用行为。";
 
+"Transaction is not a reusable address transaction." = "交易不是一个可重用的地址交易。";
+
 "Transaction needs to be authorized by an offline and air gap device. Send transaction to an offline device for authorization?" = "交易需要由离线和气隙装置被授权。发送交易到脱机设备授权？";
 
 "Transaction needs to be passed back to your online device in order for the payment to be sent" = "交易需要传递回您的在线设备，以便对要发送的付款";
@@ -673,8 +727,6 @@
 "Try Again" = "再试一次";
 
 "Try our new cold wallet feature!" = "尝试我们的冷钱包功能！";
-
-"Transaction is not a reusable address transaction." = "交易不是一个可重用的地址交易。";
 
 "URL does not contain an address." = "网址不包含地址。";
 
@@ -731,6 +783,8 @@
 "View private key QR code" = "查看私钥QR码";
 
 "Visit our home page" = "访问我们的主页";
+
+"Wallet backup passphrase" = "钱包备份密码";
 
 "Warning" = "警告";
 
@@ -795,32 +849,4 @@
 "iCloud backup not found" = "未找到iCloud备份";
 
 "iCloud backup will be lost. Are you sure you want to backup your local wallet to iCloud?" = "iCloud备份将丢失。您确定要将当地的钱包备份到iCloud吗？";
-
-"Today" = "今天";
-"Confirm Payment" = "确认付款";
-"Fee:" = "费用:";
-"Total:" = "总:";
-"Customize Fee" = "定制费用";
-"Enter a wallet backup passphrase to wipe the current wallet and start/restore another." = "输入一个钱包备份密码以擦拭目前的钱包并启动或还原另一个。";
-"Passphrase" = "密码";
-"Restore Wallet" = "恢复钱包";
-"Wallet backup passphrase" = "钱包备份密码";
-"From:" = "从：";
-"Amount:" = "量：";
-"To:" = "至：";
-"Scan QR Code" = "扫描QR二维码";
-"Contacts" = "联系人";
-"Review Payment" = "审查付款";
-"Account ID" = "帐户ID";
-"Step 1: Scan transaction to authorize" = "第1步：扫描交易授权";
-"Step 2: Input 12 word backup passphrase" = "第2步：输入12字备份密码";
-"Step 3: Pass authorized transaction data" = "第3步：递交授权的交易数据";
-"Starting Receiving Address ID:" = "起始接收地址ID：";
-"Starting Change address ID:" = "找零地址ID:";
-"New Wallet" = "新建錢包";
-"Scan" = "掃描";
-"Pass" = "通過";
-"Imported Account %@" = "導入的帳戶%@";
-"Imported Watch Account %@" = "進口監視帳戶%@";
-"Imported Cold Wallet Account %@" = "進口冷錢包賬戶%@";
 
