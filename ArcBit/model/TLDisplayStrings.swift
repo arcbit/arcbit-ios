@@ -65,7 +65,7 @@ class TLDisplayStrings {
     class func ARCBIT_ANDROID_WALLET_STRING() -> String { return "ArcBit Android Wallet".localized }
     class func ARCBIT_BRAIN_WALLET_STRING() -> String { return "ArcBit Brain Wallet".localized }
     class func ARCBIT_WEB_WALLET_STRING() -> String { return "ArcBit Web Wallet".localized }
-    class func HOW_DOES_ARCBIT_WALLET_WORK_DESC_STRING() -> String { return "ArcBit used the the bitcoin wallet model (See the section ’What is a bitcoin wallet?’ to understand the 3 different security models of bitcoin software). However if you use iCloud to back up your wallet, you will be using the security box model. It is recommended that you do not use iCloud, and be responsible for your bitcoins yourself, but for those who don’t want to remember a simple backup passphrase, iCloud backup is a good alternative.".localized }
+    class func HOW_DOES_ARCBIT_WALLET_WORK_DESC_STRING() -> String { return "ArcBit used the the bitcoin wallet model (See the section ’What is a bitcoin wallet?’ to understand the 3 different security models of bitcoin software). However if you use iCloud to backup your wallet, you will be using the security box model. It is recommended that you do not use iCloud, and be responsible for your bitcoins yourself, but for those who don’t want to remember a simple backup passphrase, iCloud backup is a good alternative.".localized }
     class func ARCHIVE_ACCOUNT_STRING() -> String { return "Archive Account".localized }
     class func ARCHIVE_ADDRESS_STRING() -> String { return "Archive address".localized }
     class func ARCHIVED_ACCOUNTS_STRING() -> String { return "Archived Accounts".localized }
@@ -83,8 +83,8 @@ class TLDisplayStrings {
     class func ARE_YOU_SURE_YOU_WANT_TO_UNARCHIVE_ADDRESS_X_STRING() -> String { return "Are you sure you want to unarchive address %@?".localized }
     class func AUTHORIZE_COLD_WALLET_ACCOUNT_PAYMENT_STRING() -> String { return "Authorize Cold Wallet Account Payment".localized }
     class func AUTHORIZE_PAYMENT_STRING() -> String { return "Authorize Payment".localized }
-    class func BACK_UP_PASSPHRASE_STRING() -> String { return "Back Up Passphrase".localized }
-    class func BACK_UP_WALLET_STRING() -> String { return "Back up wallet".localized }
+    class func BACK_UP_PASSPHRASE_STRING() -> String { return "Backup Passphrase".localized }
+    class func BACK_UP_WALLET_STRING() -> String { return "Backup wallet".localized }
     class func BACKUP_LOCAL_WALLET_STRING() -> String { return "Backup local wallet".localized }
     class func BACKUP_PASSPHRASE_FOUND_IN_KEYCHAIN_STRING() -> String { return "Backup passphrase found in keychain".localized }
     class func WHAT_ARE_THE_BENEFITS_AND_ADVANTAGES_OF_BITCOIN_DESC_STRING() -> String { return "Bitcoin allows you to send money to anyone, anywhere in world that has an internet connections with minimum to zero fees, with no middlemen.".localized }
@@ -236,7 +236,7 @@ class TLDisplayStrings {
     class func IMPORTING_A_WATCH_ONLY_ADDRESS_STRING() -> String { return "Importing a Watch Only Address".localized }
     class func IMPORTING_AN_ACCOUNT_STRING() -> String { return "Importing an Account".localized }
     class func IMPORT_PRIVATE_KEY_ENCRYPTED_OR_UNENCRYPTED_DESC_STRING() -> String { return "Importing key encrypted will require you to input the password everytime you want to send bitcoins from it.".localized }
-    class func IMPORT_FEATURE_DESC_STRING() -> String { return "In advanced mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you back up imported keys and addresses separately.".localized }
+    class func IMPORT_FEATURE_DESC_STRING() -> String { return "In advanced mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you backup imported keys and addresses separately.".localized }
     class func INCOMPLETE_STRING() -> String { return "Incomplete".localized }
     class func INCORRECT_PASSPHRASE_FOR_ICLOUD_WALLET_BACKUP_STRING() -> String { return "Incorrect passphrase, could not decrypt iCloud wallet backup.".localized }
     class func INPUT_A_BITCOIN_ADDRESS_STRING() -> String { return "Input a bitcoin address".localized }
@@ -270,7 +270,7 @@ class TLDisplayStrings {
     class func LABEL_STRING() -> String { return "Label".localized }
     class func LABEL_TRANSACTION_STRING() -> String { return "Label Transaction".localized }
     class func LIKE_USING_ARCBIT_STRING() -> String { return "Do you like using ArcBit?".localized }
-    class func LOCAL_BACK_UP_TO_WALLET_FAILED_STRING() -> String { return "Local back up to wallet failed!".localized }
+    class func LOCAL_BACK_UP_TO_WALLET_FAILED_STRING() -> String { return "Local backup to wallet failed!".localized }
     class func RESTORE_WALLET_FROM_ICLOUD_STRING() -> String { return "Local wallet will be lost. Are you sure you want to restore wallet from iCloud?".localized }
     class func SCAN_REUSABLE_ADDRESS_PAYMENT_STRING() -> String { return "Scan For Reusable Address Payment".localized }
     class func MAXIMUM_ACCOUNTS_REACHED_STRING() -> String { return "Maximum accounts reached".localized }

@@ -1,4 +1,4 @@
-"DEFAULT_CURRENCY"      = "Währung";
+"DEFAULT_CURRENCY"      = "Moneda";
 "DEFAULT_CURRENCY_1"             = "$ - AUD";
 "DEFAULT_CURRENCY_2"             = "R$ - BRL";
 "DEFAULT_CURRENCY_3"             = "$ - CAD";
@@ -159,65 +159,64 @@
 "DEFAULT_CURRENCY_158"             = "Zimbabwean Dollar - ZWL";
 
 
-"BITCOIN_DISPLAY"      = "Bitcoin Einheit";
-"BLOCKCHAIN_API_TYPE"      = "Block Explorer API Typ";
+"BITCOIN_DISPLAY"      = "Unidad de Bitcoin";
+"BLOCKCHAIN_API_TYPE"      = "Bloquear el Explorador de tipo API";
 
-"CHANGE_BLOCKEXPLORER_URL"      = "Wechsel Blockexplorer URL";
+"CHANGE_BLOCKEXPLORER_URL"      = "Cambiar la URL blockexplorer";
 
 "BLOCKCHAIN_API_TYPE_1"             = "blockchain.info";
 "BLOCKCHAIN_API_TYPE_2"             = "Bitpay's Insight";
 
 
-"ADVANCED_TITLE"             = "Erweiterte Einstellunge";
+"ADVANCED_TITLE"             = "Ajustes avanzados";
 
 "BITCOIN_DISPLAY_1"             = "Bitcoin - BTC";
 "BITCOIN_DISPLAY_2"             = "MilliBit - mBTC";
 "BITCOIN_DISPLAY_3"             = "Bits - uBTC";
 
-"ENABLE_PIN_CODE"              = "Aktiviere PIN";
-"ENABLE_BACKUP_WITH_ICLOUD"    = "Backup mit iCloud";
-"ENABLE_BACKUP_WITH_ICLOUD_FOOTER"    = "Sie können iCloud aktivieren, um Ihre gesamte Geldbörse zu sichern, dh Ihre Bitcoins und andere Wallet-Daten. Sie benötigen weiterhin Ihre Backup-Passphrase, um Ihre Brieftasche aus einer iCloud-Sicherung wiederherzustellen, da Ihre Brieftasche zuerst verschlüsselt wird, bevor sie auf iCloud gesichert wird. Bitte beachten Sie, dass jedes iOS-Gerät über eine eigene iCloud-Wallet-Sicherungsdatei verfügt. Das bedeutet, dass Sie eine Brieftasche nicht auf einem anderen Gerät wiederherstellen können, sondern auf dem Gerät, auf dem Sie es gesichert haben. Und es bedeutet auch, dass verschiedene Geräte mit demselben iCloud-Konto über eigene Brieftaschen-Backups verfügen.";
-"SHOW_PASSPHRASE"              = "Zeige Backup Wortfolge";
-"RESTORE_WALLET"              = "Stelle das Wallet wieder her";
+"ENABLE_PIN_CODE"              = "Habilitar código PIN";
+"ENABLE_BACKUP_WITH_ICLOUD"    = "Copia de seguridad con iCloud";
+"ENABLE_BACKUP_WITH_ICLOUD_FOOTER"    = "Puede habilitar iCloud para realizar una copia de seguridad de toda su cartera, lo que significa sus bitcoins y otros datos de billetera. Aún necesitará su contraseña de respaldo para restaurar su billetera desde una copia de seguridad de iCloud ya que su billetera se cifra primero antes de realizar una copia de respaldo en iCloud. Tenga en cuenta que cada dispositivo iOS tiene su propio archivo de copia de seguridad de iCloud wallet. Esto significa que no puede restaurar una billetera en un dispositivo diferente, sino en el dispositivo en el que lo hizo. Y también significa que diferentes dispositivos con la misma cuenta de iCloud tendrán sus propios respaldos de billetera.";
+"SHOW_PASSPHRASE"              = "Mostrar contraseña de copia de seguridad";
+"RESTORE_WALLET"              = "Restaurar cartera";
 
-"DISPLAY_LOCAL_CURRENCY"    = "Zeige locale Währung";
-"FEE_AMOUNT_IN_BITCOINS"              = "Gebührenbetrag in Bitcoins";
+"DISPLAY_LOCAL_CURRENCY"    = "Mostrar la moneda local";
+"FEE_AMOUNT_IN_BITCOINS"              = "Cuota de la tasa en bitcoins";
 
-"ENABLE_DYNAMIC_FEE"              = "Aktiviere dynamische Gebühr";
-"CONFIRMATION_TIME"              = "Bestätigungszeit";
-"DYNAMIC_FEE_OPTION_1"              = "So schnell wie möglich";
-"DYNAMIC_FEE_OPTION_2"              = "Durchschnittlich 30 Minuten";
-"DYNAMIC_FEE_OPTION_3"              = "Durchschnittlich 60 Minuten";
+"ENABLE_DYNAMIC_FEE"              = "Habilitar comisión dinámico";
+"CONFIRMATION_TIME"              = "Hora de confirmación";
+"DYNAMIC_FEE_OPTION_1"              = "Tan rápido como sea posible";
+"DYNAMIC_FEE_OPTION_2"              = "Promedio 30 minutos";
+"DYNAMIC_FEE_OPTION_3"              = "Promedio 60 minutos";
 
-"ENABLE_COLD_WALLET_FOOTER"              = "Das aktivieren der offline Brieftasche erhöht die Sicherheit, erfordert jedoch auch zwei Geräte. Eines, dass täglich genutzte, hat eine Verbindung zum Internet. Das andere nicht, wodurch es vor Einflüssen von außen geschützt ist.";
-"ENABLE_COLD_WALLET"              = "Aktiviere das Offline Brieftasche";
+"ENABLE_COLD_WALLET_FOOTER"              = "Activación de la función Cartera fría le permitirá crear cuentas que ofrecen una mayor seguridad en línea a continuación, carteras normales. Se necesitan 2 dispositivos para utilizar esta función. Su día normal a día dispositivo que está conectado a internet y otro dispositivo que no está conectado a la internet. Puede encontrar la función Cartera fría en el menú lateral.";
+"ENABLE_COLD_WALLET"              = "Habilitar cartera fría";
 
-"ENABLE_ADVANCE_MODE_FOOTER"              = "Der fortgeschrittenen Modus ermögliche den Import von privaten Schlüsseln und Adressen. Bitte beachte, dass die Wortfolge nicht den privaten Schlüssel wiederherstellen kann. Diesen solltest du getrennt sichern. Alle Features findest du wenn du den Modus aktivierst und dann zu Hilfe wechselst.";
-"ENABLE_ADVANCE_MODE"              = "Aktiviere den fortgeschrittenen Modus";
+"ENABLE_ADVANCE_MODE_FOOTER"              = "La activación del modo avanzado expondrá las características ocultas, incluyendo la capacidad de importar bitcoin claves privadas y direcciones. Tenga en cuenta que la frase de contraseña de copia de seguridad no puede recuperar sus claves privadas bitcoin y direcciones, por lo que debe ser respaldado por separado. Para ver una lista de todas las características avanzadas, active el modo avanzado y vaya a la sección de Ayuda.";
+"ENABLE_ADVANCE_MODE"              = "Activar el modo avanzado";
 
 
-"SET_FIXED_TRANSACTION_FEE"             = "Bestimme eine feste Gebühr";
-"CHANGE_PIN_CODE"                 = "PIN ändern";
+"SET_FIXED_TRANSACTION_FEE"             = "Conjunto fijo comisión";
+"CHANGE_PIN_CODE"                 = "Cambiar PIN";
 "EMPTY"                           = "";
-"VERSION"                         = "Version";
-"ABOUT_TITLE"                     = "Über";
+"VERSION"                         = "Versión";
+"ABOUT_TITLE"                     = "Acerca de";
 
-"ENABLE_SOUND_NOTIFICATION"             = "Soundbenachrichtigung";
+"ENABLE_SOUND_NOTIFICATION"             = "Notificación de sonido";
 
-"EMAIL_SUPPORT"             = "Email Unterstützung";
+"EMAIL_SUPPORT"             = "Soporte de correo electrónico";
 
-"ENABLE_STEALTH_ADDRESS_DEFAULT_FOOTER" = "Das aktivieren der wiederverwendbaren Adressen zeigt alle wiederverwendbaren Adressen auf dem zugehörigen Tap ganz vorne an.";
-"ENABLE_STEALTH_ADDRESS_DEFAULT" = "Standart Adresse";
+"ENABLE_STEALTH_ADDRESS_DEFAULT_FOOTER" = "Habilitación de direcciones reutilizables como predeterminado pondrá toda cuenta de direcciones reutilizables en el frente de la lista de direcciones de recepción en la pantalla de recepción.";
+"ENABLE_STEALTH_ADDRESS_DEFAULT" = "Por defecto direcciones reutilizables";
 
 
-"ENABLE_CAN_RESTORE_DELETED_APP_FOOTER" = "Mit dieser Funktion können Sie Ihre native ArcBit-Wallet wiederherstellen, wenn Sie diese App löschen. Ihre Backup-Passphrase wird in Ihrem Schlüsselbund gespeichert. Wenn Sie diese Funktion aktivieren, kann eine neu installierte App sie lesen. Diese Funktion ermöglicht keine Wiederherstellung von Brieftaschen oder Adressen, die Sie in andere Konten importiert haben.";
-"ENABLE_CAN_RESTORE_DELETED_APP" = "Wiederherstellbar";
+"ENABLE_CAN_RESTORE_DELETED_APP_FOOTER" = "Esta característica le permite recuperar su billetera ArcBit nativa si se elimina esta aplicación. La frase de contraseña de copia de seguridad se almacena en su llavero y si se habilita esta función una aplicación de re-instalada será capaz de leerlo. Esta característica no permite la recuperación de carteras o direcciones que se importan desde otras cuentas.";
+"ENABLE_CAN_RESTORE_DELETED_APP" = "Recuperable";
 
-"ARCBIT_CONTRIBUTORS_LIST"    = "ArcBit Beitragsliste";
-"CONTRIBUTORS_LIST"    = "Liste der Mitwirkenden";
+"ARCBIT_CONTRIBUTORS_LIST"    = "Lista de colaboradores de ArcBit";
+"CONTRIBUTORS_LIST"    = "Lista de contribuyentes";
 "CONTRIBUTOR_1"    = "Mikhail Barinov";
 "CONTRIBUTOR_2"    = "Tomáš Horváth";
 "CONTRIBUTOR_3"    = "David Johnson";
 "CONTRIBUTOR_4"    = "汉服骑射";
-
 

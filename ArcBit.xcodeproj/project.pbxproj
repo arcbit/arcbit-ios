@@ -306,6 +306,7 @@
 		AA36D9E0C4AFE7E2A43F3C79 /* Pods-ArcBit.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-ArcBit.release.xcconfig"; path = "Pods/Target Support Files/Pods-ArcBit/Pods-ArcBit.release.xcconfig"; sourceTree = "<group>"; };
 		BABE2B037811FC35D025CD09 /* libPods-ArcBitTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-ArcBitTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		C00413491ACEFAF200505F31 /* TLOperationsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLOperationsManager.swift; sourceTree = "<group>"; };
+		C00E61361FB18C65003AD828 /* de */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = de; path = de.lproj/Localizable.strings; sourceTree = "<group>"; };
 		C01681A11DB0B1D9004D5FD7 /* TLBrainWalletViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLBrainWalletViewController.swift; sourceTree = "<group>"; };
 		C01681AB1DBD9ED8004D5FD7 /* TLColdWallet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLColdWallet.swift; sourceTree = "<group>"; };
 		C01A489E1B4F9E6E004D7FA0 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
@@ -1863,6 +1864,7 @@
 				C0B56BC11F51F30B00E4CA87 /* es */,
 				C0B56BC21F51F6BC00E4CA87 /* zh-Hans-CN */,
 				C0920A9B1FA82DB6008A0745 /* zh-Hant */,
+				C00E61361FB18C65003AD828 /* de */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";

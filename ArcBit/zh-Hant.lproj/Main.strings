@@ -296,8 +296,8 @@
 /* Class = "UITextField"; text = "0"; ObjectID = "aY3-3U-T31"; */
 "aY3-3U-T31.text" = "0";
 
-/* Class = "UILabel"; text = "Back Up Passphrase:"; ObjectID = "aYW-ME-0t8"; */
-"aYW-ME-0t8.text" = "Back Up Passphrase:";
+/* Class = "UILabel"; text = "Backup Passphrase:"; ObjectID = "aYW-ME-0t8"; */
+"aYW-ME-0t8.text" = "Backup Passphrase:";
 
 /* Class = "UILabel"; text = "Change Address ID 0:"; ObjectID = "aog-r6-zfJ"; */
 "aog-r6-zfJ.text" = "Change Address ID 0:";

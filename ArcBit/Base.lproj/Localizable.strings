@@ -78,7 +78,7 @@
 
 "ArcBit Web Wallet" = "ArcBit Web Wallet";
 
-"ArcBit used the the bitcoin wallet model (See the section ’What is a bitcoin wallet?’ to understand the 3 different security models of bitcoin software). However if you use iCloud to back up your wallet, you will be using the security box model. It is recommended that you do not use iCloud, and be responsible for your bitcoins yourself, but for those who don’t want to remember a simple backup passphrase, iCloud backup is a good alternative." = "ArcBit used the the bitcoin wallet model (See the section ’What is a bitcoin wallet?’ to understand the 3 different security models of bitcoin software). However if you use iCloud to back up your wallet, you will be using the security box model. It is recommended that you do not use iCloud, and be responsible for your bitcoins yourself, but for those who don’t want to remember a simple backup passphrase, iCloud backup is a good alternative.";
+"ArcBit used the the bitcoin wallet model (See the section ’What is a bitcoin wallet?’ to understand the 3 different security models of bitcoin software). However if you use iCloud to backup your wallet, you will be using the security box model. It is recommended that you do not use iCloud, and be responsible for your bitcoins yourself, but for those who don’t want to remember a simple backup passphrase, iCloud backup is a good alternative." = "ArcBit used the the bitcoin wallet model (See the section ’What is a bitcoin wallet?’ to understand the 3 different security models of bitcoin software). However if you use iCloud to backup your wallet, you will be using the security box model. It is recommended that you do not use iCloud, and be responsible for your bitcoins yourself, but for those who don’t want to remember a simple backup passphrase, iCloud backup is a good alternative.";
 
 "Archive Account" = "Archive Account";
 
@@ -114,9 +114,9 @@
 
 "Authorize Payment" = "Authorize Payment";
 
-"Back Up Passphrase" = "Back Up Passphrase";
+"Backup Passphrase" = "Backup Passphrase";
 
-"Back up wallet" = "Back up wallet";
+"Backup wallet" = "Backup wallet";
 
 "Backup local wallet" = "Backup local wallet";
 
@@ -456,7 +456,7 @@
 
 "Importing key encrypted will require you to input the password everytime you want to send bitcoins from it." = "Importing key encrypted will require you to input the password everytime you want to send bitcoins from it.";
 
-"In advanced mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you back up imported keys and addresses separately." = "In advanced mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you back up imported keys and addresses separately.";
+"In advanced mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you backup imported keys and addresses separately." = "In advanced mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you backup imported keys and addresses separately.";
 
 "Incomplete" = "Incomplete";
 
@@ -518,7 +518,7 @@
 
 "Label Transaction" = "Label Transaction";
 
-"Local back up to wallet failed!" = "Local back up to wallet failed!";
+"Local backup to wallet failed!" = "Local backup to wallet failed!";
 
 "Local wallet will be lost. Are you sure you want to restore wallet from iCloud?" = "Local wallet will be lost. Are you sure you want to restore wallet from iCloud?";
 
@@ -601,8 +601,6 @@
 "Review Payment" = "Review Payment";
 
 "Save" = "Save";
-
-"Scan" = "Scan";
 
 "Scan" = "Scan";
 

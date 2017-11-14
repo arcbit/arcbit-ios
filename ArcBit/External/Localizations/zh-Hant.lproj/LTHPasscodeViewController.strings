@@ -1,26 +1,26 @@
 /*
  LTHPasscodeViewController.strings
  */
-"Enter Passcode" = "Enter Passcode";
+"Enter Passcode" = "輸入密碼";
 
-"Enter your old passcode" = "Enter your old passcode";
+"Enter your old passcode" = "輸入您的舊密碼";
 
-"Enter your passcode" = "Enter your passcode";
+"Enter your passcode" = "輸入您的密碼";
 
-"Enable Passcode" = "Enable Passcode";
+"Enable Passcode" = "啟用密碼";
 
-"Change Passcode" = "Change Passcode";
+"Change Passcode" = "更改密碼";
 
-"Turn Off Passcode" = "Turn Off Passcode";
+"Turn Off Passcode" = "關閉密碼";
 
-"Re-enter your passcode" = "Re-enter your passcode";
+"Re-enter your passcode" = "重新輸入您的密碼";
 
-"Re-enter your new passcode" = "Re-enter your new passcode";
+"Re-enter your new passcode" = "重新輸入新的密碼";
 
-"Enter your new passcode" = "Enter your new passcode";
+"Enter your new passcode" = "輸入新的密碼";
 
-"Passcodes did not match. Try again." = "Passcodes did not match. Try again.";
+"Passcodes did not match. Try again." = "密碼不匹配。再試一次";
 
-"1 Passcode Failed Attempt" = "1 Passcode Failed Attempt";
+"1 Passcode Failed Attempt" = "1密碼失敗嘗試";
 
-"%i Passcode Failed Attempts" = "%i Passcode Failed Attempts";
+"%i Passcode Failed Attempts" = "%i 密碼失敗嘗試";

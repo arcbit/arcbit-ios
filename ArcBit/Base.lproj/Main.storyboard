@@ -2408,8 +2408,8 @@
                                             <rect key="frame" x="0.0" y="0.0" width="383" height="302.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Back Up Passphrase:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aYW-ME-0t8">
-                                                    <rect key="frame" x="16" y="8" width="162" height="21"/>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Backup Passphrase:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="aYW-ME-0t8">
+                                                    <rect key="frame" x="16" y="8" width="155" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="iXa-km-jiT"/>
                                                     </constraints>
@@ -2431,7 +2431,6 @@
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="85" id="4kj-hW-vW1"/>
                                                         <constraint firstAttribute="height" constant="21" id="TNT-mj-Tq3"/>
-                                                        <constraint firstAttribute="width" constant="89" id="nYa-7Z-CQQ"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -2443,7 +2442,7 @@
                                                     </variation>
                                                 </label>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Account Public Key:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="xa4-b8-Sm0">
-                                                    <rect key="frame" x="16" y="170" width="194" height="21"/>
+                                                    <rect key="frame" x="16" y="170" width="152" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="21" id="I16-V8-GZ6"/>
                                                     </constraints>
@@ -2504,14 +2503,13 @@
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6v0-hc-QVK">
-                                                    <rect key="frame" x="190" y="8" width="22" height="22"/>
+                                                    <rect key="frame" x="183" y="8" width="22" height="22"/>
                                                     <connections>
                                                         <action selector="clickedMnemonicInfoButton:" destination="MLB-fr-01h" eventType="touchUpInside" id="W7Z-Xp-QI6"/>
                                                     </connections>
                                                 </button>
                                             </subviews>
                                             <constraints>
-                                                <constraint firstItem="xa4-b8-Sm0" firstAttribute="trailing" secondItem="o2h-Yp-N8m" secondAttribute="trailing" id="0UG-hm-f7o"/>
                                                 <constraint firstItem="h73-3F-Pi3" firstAttribute="leading" secondItem="mHy-BX-xwD" secondAttribute="leadingMargin" constant="8" id="16L-5S-38F"/>
                                                 <constraint firstItem="xa4-b8-Sm0" firstAttribute="top" secondItem="o2h-Yp-N8m" secondAttribute="bottom" constant="8" id="5Af-U9-13L"/>
                                                 <constraint firstItem="h73-3F-Pi3" firstAttribute="top" secondItem="aYW-ME-0t8" secondAttribute="bottom" constant="8" id="7j2-mb-KK9"/>
@@ -2589,17 +2587,14 @@
                                             <rect key="frame" x="0.0" y="0.0" width="383" height="87.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Step 1: Scan transaction to authorize" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="1EF-AG-Tuv">
-                                                    <rect key="frame" x="16" y="16" width="240" height="17"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="240" id="eHA-Na-Uka"/>
-                                                    </constraints>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Step 1: Scan transaction to authorize" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="1EF-AG-Tuv">
+                                                    <rect key="frame" x="16" y="16" width="237.5" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="PUe-vc-MjY">
-                                                    <rect key="frame" x="264" y="16" width="22" height="22"/>
+                                                    <rect key="frame" x="261.5" y="16" width="22" height="22"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="22" id="bvo-W6-3hq"/>
                                                         <constraint firstAttribute="width" constant="22" id="s07-5u-AV5"/>
@@ -2609,10 +2604,9 @@
                                                     </connections>
                                                 </button>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aFx-Fr-jWj">
-                                                    <rect key="frame" x="16" y="41" width="90" height="30"/>
+                                                    <rect key="frame" x="16" y="41" width="35" height="30"/>
                                                     <constraints>
                                                         <constraint firstAttribute="height" constant="30" id="S4h-uh-n6Z"/>
-                                                        <constraint firstAttribute="width" constant="90" id="VHe-Rr-qdL"/>
                                                     </constraints>
                                                     <state key="normal" title="Scan"/>
                                                     <userDefinedRuntimeAttributes>
@@ -2623,7 +2617,7 @@
                                                     </connections>
                                                 </button>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Incomplete" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="P8S-SZ-g5V">
-                                                    <rect key="frame" x="114" y="46" width="86" height="21"/>
+                                                    <rect key="frame" x="59" y="46" width="86" height="21"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
@@ -2635,6 +2629,7 @@
                                                 <constraint firstItem="PUe-vc-MjY" firstAttribute="top" secondItem="0JE-Yp-wOJ" secondAttribute="topMargin" constant="8" id="M3d-Me-3rh"/>
                                                 <constraint firstItem="PUe-vc-MjY" firstAttribute="centerY" secondItem="1EF-AG-Tuv" secondAttribute="centerY" id="QOE-pj-TdC"/>
                                                 <constraint firstItem="P8S-SZ-g5V" firstAttribute="centerY" secondItem="aFx-Fr-jWj" secondAttribute="centerY" id="dbQ-PS-ppg"/>
+                                                <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="PUe-vc-MjY" secondAttribute="trailing" constant="8" id="edq-Yu-SIy"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="aFx-Fr-jWj" secondAttribute="bottom" constant="8" id="ehy-2O-w8i"/>
                                                 <constraint firstItem="PUe-vc-MjY" firstAttribute="leading" secondItem="1EF-AG-Tuv" secondAttribute="trailing" constant="8" id="h23-T0-nvn"/>
                                                 <constraint firstItem="1EF-AG-Tuv" firstAttribute="leading" secondItem="0JE-Yp-wOJ" secondAttribute="leadingMargin" constant="8" id="hhD-Si-Ozn"/>
@@ -2671,7 +2666,7 @@
                                                     <textInputTraits key="textInputTraits" autocapitalizationType="sentences"/>
                                                 </textView>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wNi-jF-drF">
-                                                    <rect key="frame" x="294" y="16" width="22" height="22"/>
+                                                    <rect key="frame" x="291" y="16" width="22" height="22"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="22" id="edh-yd-ApQ"/>
                                                         <constraint firstAttribute="height" constant="22" id="wbW-0c-f4w"/>
@@ -2680,11 +2675,8 @@
                                                         <action selector="infoButtonClicked:" destination="KE5-bX-FLO" eventType="touchUpInside" id="t8O-R5-gUP"/>
                                                     </connections>
                                                 </button>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Step 2: Input 12 word backup passphrase" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="9sL-6M-fQO">
-                                                    <rect key="frame" x="16" y="16" width="270" height="17"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="270" id="9co-M0-Bj4"/>
-                                                    </constraints>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Step 2: Input 12 word backup passphrase" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="9sL-6M-fQO">
+                                                    <rect key="frame" x="16" y="16" width="267" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
@@ -2708,6 +2700,7 @@
                                                 <constraint firstItem="9sL-6M-fQO" firstAttribute="top" secondItem="HZ5-aJ-D8k" secondAttribute="topMargin" constant="8" id="XZF-Ym-Qhg"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="BDz-V2-QTc" secondAttribute="trailing" constant="8" id="ZPQ-qJ-fuM"/>
                                                 <constraint firstAttribute="trailingMargin" secondItem="8T4-K7-DEy" secondAttribute="trailing" constant="8" id="ajy-7C-DDe"/>
+                                                <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="wNi-jF-drF" secondAttribute="trailing" constant="8" id="eSc-8A-4KW"/>
                                                 <constraint firstItem="wNi-jF-drF" firstAttribute="leading" secondItem="9sL-6M-fQO" secondAttribute="trailing" constant="8" id="fqR-CJ-Gaf"/>
                                                 <constraint firstItem="8T4-K7-DEy" firstAttribute="leading" secondItem="HZ5-aJ-D8k" secondAttribute="leadingMargin" constant="8" id="mlN-u2-uWW"/>
                                                 <constraint firstItem="BDz-V2-QTc" firstAttribute="leading" secondItem="HZ5-aJ-D8k" secondAttribute="leadingMargin" constant="8" id="tZp-gi-pad"/>
@@ -2733,17 +2726,14 @@
                                             <rect key="frame" x="0.0" y="0.0" width="383" height="87.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                             <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Step 3: Pass authorized transaction data" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Qhi-3j-THU">
-                                                    <rect key="frame" x="16" y="16" width="270" height="17"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="270" id="e63-Oa-AUg"/>
-                                                    </constraints>
+                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Step 3: Pass authorized transaction data" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="7" translatesAutoresizingMaskIntoConstraints="NO" id="Qhi-3j-THU">
+                                                    <rect key="frame" x="16" y="16" width="262" height="17"/>
                                                     <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                                     <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
                                                     <nil key="highlightedColor"/>
                                                 </label>
                                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="infoLight" showsTouchWhenHighlighted="YES" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="nN3-eA-KV3">
-                                                    <rect key="frame" x="294" y="16" width="22" height="22"/>
+                                                    <rect key="frame" x="286" y="16" width="22" height="22"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="22" id="Pe1-Ca-aQe"/>
                                                         <constraint firstAttribute="height" constant="22" id="ylC-r0-xao"/>
@@ -2772,6 +2762,7 @@
                                                 <constraint firstItem="Qhi-3j-THU" firstAttribute="leading" secondItem="cUw-h4-8NZ" secondAttribute="leadingMargin" constant="8" id="9Jg-7z-3fp"/>
                                                 <constraint firstItem="nN3-eA-KV3" firstAttribute="leading" secondItem="Qhi-3j-THU" secondAttribute="trailing" constant="8" id="B8g-Ps-RLS"/>
                                                 <constraint firstItem="nN3-eA-KV3" firstAttribute="top" secondItem="cUw-h4-8NZ" secondAttribute="topMargin" constant="8" id="JgZ-dt-mYj"/>
+                                                <constraint firstAttribute="trailingMargin" relation="greaterThanOrEqual" secondItem="nN3-eA-KV3" secondAttribute="trailing" constant="8" id="XWJ-OQ-CAq"/>
                                                 <constraint firstAttribute="bottomMargin" secondItem="noM-hf-cWa" secondAttribute="bottom" constant="8" id="apU-Ah-2CJ"/>
                                                 <constraint firstItem="noM-hf-cWa" firstAttribute="leading" secondItem="cUw-h4-8NZ" secondAttribute="leadingMargin" constant="8" id="vQd-KG-cQo"/>
                                                 <constraint firstItem="Qhi-3j-THU" firstAttribute="top" secondItem="cUw-h4-8NZ" secondAttribute="topMargin" constant="8" id="vbA-K5-CF3"/>
@@ -3630,9 +3621,8 @@
                                                     <textInputTraits key="textInputTraits"/>
                                                 </textField>
                                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Backup Passphrase:" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Y01-kf-oMW">
-                                                    <rect key="frame" x="16" y="8" width="160" height="21"/>
+                                                    <rect key="frame" x="16" y="8" width="155" height="21"/>
                                                     <constraints>
-                                                        <constraint firstAttribute="width" constant="160" id="6A3-O4-beD"/>
                                                         <constraint firstAttribute="height" constant="21" id="LKt-Kq-ezl"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
@@ -3665,7 +3655,6 @@
                                                     <rect key="frame" x="16" y="129" width="89" height="21"/>
                                                     <constraints>
                                                         <constraint firstAttribute="width" constant="85" id="YYs-Be-lh3"/>
-                                                        <constraint firstAttribute="width" constant="89" id="alF-bq-19k"/>
                                                         <constraint firstAttribute="height" constant="21" id="zqb-az-xl7"/>
                                                     </constraints>
                                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>

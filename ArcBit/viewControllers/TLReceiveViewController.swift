@@ -45,11 +45,20 @@ import UIKit
     let importedWatchAccountStealthAddressInfoText = TLDisplayStrings.IMPORTED_WATCH_ONLY_ACCOUNTS_REUSABLE_ADDRESS_INFO_DESC_STRING()
     let coldWalletAccountStealthAddressInfoText = TLDisplayStrings.IMPORTED_COLD_WALLET_ACCOUNTS_REUSABLE_ADDRESS_INFO_DESC_STRING()
     
+    func setupLabels() {
+        let sendTabBarItem = self.tabBar?.items?[0]
+        sendTabBarItem?.title = TLDisplayStrings.SEND_STRING()
+        let receiveTabBarItem = self.tabBar?.items?[1]
+        receiveTabBarItem?.title = TLDisplayStrings.RECEIVE_STRING()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         setColors()
         
         self.setLogoImageView()
+        self.setupLabels()
+
         self.receiveLabel.text = TLDisplayStrings.FROM_COLON_STRING()
         self.fromViewContainer!.backgroundColor = TLColors.mainAppColor()
         self.accountNameLabel!.textColor = TLColors.mainAppOppositeColor()

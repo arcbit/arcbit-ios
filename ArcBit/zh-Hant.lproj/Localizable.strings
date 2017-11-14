@@ -78,7 +78,7 @@
 
 "ArcBit Web Wallet" = "ArcBit網絡錢包";
 
-"ArcBit used the the bitcoin wallet model (See the section ’What is a bitcoin wallet?’ to understand the 3 different security models of bitcoin software). However if you use iCloud to back up your wallet, you will be using the security box model. It is recommended that you do not use iCloud, and be responsible for your bitcoins yourself, but for those who don’t want to remember a simple backup passphrase, iCloud backup is a good alternative." = "ArcBit used the the bitcoin wallet model (See the section ’What is a bitcoin wallet?’ to understand the 3 different security models of bitcoin software). However if you use iCloud to back up your wallet, you will be using the security box model. It is recommended that you do not use iCloud, and be responsible for your bitcoins yourself, but for those who don’t want to remember a simple backup passphrase, iCloud backup is a good alternative.";
+"ArcBit used the the bitcoin wallet model (See the section ’What is a bitcoin wallet?’ to understand the 3 different security models of bitcoin software). However if you use iCloud to backup your wallet, you will be using the security box model. It is recommended that you do not use iCloud, and be responsible for your bitcoins yourself, but for those who don’t want to remember a simple backup passphrase, iCloud backup is a good alternative." = "ArcBit used the the bitcoin wallet model (See the section ’What is a bitcoin wallet?’ to understand the 3 different security models of bitcoin software). However if you use iCloud to backup your wallet, you will be using the security box model. It is recommended that you do not use iCloud, and be responsible for your bitcoins yourself, but for those who don’t want to remember a simple backup passphrase, iCloud backup is a good alternative.";
 
 "Archive Account" = "存檔賬戶";
 
@@ -114,9 +114,9 @@
 
 "Authorize Payment" = "授權付款";
 
-"Back Up Passphrase" = "備份密碼短語";
+"Backup Passphrase" = "備份密碼短語";
 
-"Back up wallet" = "備份錢包";
+"Backup wallet" = "備份錢包";
 
 "Backup local wallet" = "備份本地錢包";
 
@@ -142,7 +142,7 @@
 
 "Change Address ID " = "找零地址ID ";
 
-"Change Automatic Transaction Fee" = "更改自动交易费用";
+"Change Automatic Transaction Fee" = "Change Automatic Transaction Fee";
 
 "Change Block Explorer URL" = "更改阻止瀏覽器網址";
 
@@ -394,7 +394,7 @@
 
 "Here are some features that no other mobile bitcoin wallet supports.\n- Reusable address support\n- Ability to import individual account (extended) keys\n- iCloud backup support\n- Over 150 local currencies supported" = "Here are some features that no other mobile bitcoin wallet supports.\n- Reusable address support\n- Ability to import individual account (extended) keys\n- iCloud backup support\n- Over 150 local currencies supported";
 
-"Hierarchical Deterministic Wallet" = "分层决定性钱包";
+"Hierarchical Deterministic Wallet" = "Hierarchical Deterministic Wallet";
 
 "History" = "歷史";
 
@@ -456,7 +456,7 @@
 
 "Importing key encrypted will require you to input the password everytime you want to send bitcoins from it." = "導入密鑰加密將需要您在每次想要從其中匯款時輸入密碼。";
 
-"In advanced mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you back up imported keys and addresses separately." = "In advanced mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you back up imported keys and addresses separately.";
+"In advanced mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you backup imported keys and addresses separately." = "In advanced mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you backup imported keys and addresses separately.";
 
 "Incomplete" = "殘缺";
 
@@ -518,7 +518,7 @@
 
 "Label Transaction" = "標注交易";
 
-"Local back up to wallet failed!" = "本地備份到錢包失敗了！";
+"Local backup to wallet failed!" = "本地備份到錢包失敗了！";
 
 "Local wallet will be lost. Are you sure you want to restore wallet from iCloud?" = "本地錢包將會丟失。你確定要從iCloud還原錢包嗎？";
 
@@ -603,10 +603,6 @@
 "Save" = "保存";
 
 "Scan" = "扫描";
-
-"Scan" = "扫描";
-
-"Scan For Reusable Address Payment" = "掃描可重複使用的地址付款";
 
 "Scan For Reusable Address Payment" = "掃描可重複使用的地址付款";
 

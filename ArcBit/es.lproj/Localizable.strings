@@ -1,1 +1,848 @@
+"" = "";
+
+"%@ is not allowed to access the camera" = "%@ no está permitido acceder a la cámara";
+
+"%@ servers not reachable." = "%@ servidores no accesibles.";
+
+"%d/%d parts scanned." = "%d/%d partes escaneadas.";
+
+"%llu confirmations" = "%llu confirmaciones";
+
+"1 Confirmation" = "1 confirmación";
+
+"A bitcoin address typically begins with a '1' or '3'. You can see the transactions, and track the balance of an address, but you cannot spend from just an imported address.\nYou can however temporary import this watch addresses' private key to spend its bitcoins. Simply go the send screen and select a watch address to spend from and you will be prompt to temporary import your addresses' private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen." = "A bitcoin address typically begins with a '1' or '3'. You can see the transactions, and track the balance of an address, but you cannot spend from just an imported address.\nYou can however temporary import this watch addresses' private key to spend its bitcoins. Simply go the send screen and select a watch address to spend from and you will be prompt to temporary import your addresses' private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen.";
+
+"A bitcoin wallet is a software application that allows people to send, receive and manage their bitcoins.\nBe aware of how other bitcoin applications store your bitcoins' private keys, which are needed to spend your bitcoins.\nThere are generally three different ways applications can your store your bitcoins.\n1.\nThe banking model where your bitcoin private keys are held for you by someone else.\n2.\nThe security box model where your bitcoin private keys are stored encrypted on someone else’s servers.\n3.\nThe wallet model where your bitcoin private keys are stored only on your device." = "A bitcoin wallet is a software application that allows people to send, receive and manage their bitcoins.\nBe aware of how other bitcoin applications store your bitcoins' private keys, which are needed to spend your bitcoins.\nThere are generally three different ways applications can your store your bitcoins.\n1.\nThe banking model where your bitcoin private keys are held for you by someone else.\n2.\nThe security box model where your bitcoin private keys are stored encrypted on someone else’s servers.\n3.\nThe wallet model where your bitcoin private keys are stored only on your device.";
+
+"A private key begins with an 'L', 'K', or '5'.\nBIP 38 encrypted private keys can also be imported. They can either be imported encrypted or unencrypted. If you choose to import it encrypted, you will need to input the password each time you spend from your encrypted private key." = "A private key begins with an 'L', 'K', or '5'.\nBIP 38 encrypted private keys can also be imported. They can either be imported encrypted or unencrypted. If you choose to import it encrypted, you will need to input the password each time you spend from your encrypted private key.";
+
+"Account %@ imported" = "Cuenta %@ importada";
+
+"Account %lu" = "Cuenta %lu";
+
+"Account 1" = "Cuenta 1";
+
+"Account ID" = "ID de cuenta：";
+
+"ID de cuenta: %u" = "ID de cuenta %u";
+
+"Account Private Key" = "Clave privada de cuenta";
+
+"Account Public Key" = "Clave pública de cuenta";
+
+"Account private key does not match imported account public key" = "La clave privada de la cuenta no coincide con la clave pública de la cuenta importad";
+
+"Account private key missing" = "Falta la clave privada de la cuenta";
+
+"Accounts" = "Cuentas";
+
+"Achievement List" = "Achievement List";
+
+"Achievements" = "Achievements";
+
+"Actions" = "Acciones";
+
+"Active Change Addresses" = "Direcciones de cambios activo";
+
+"Active Main Addresses" = "Direcciones principales activas";
+
+"Add Contacts Entry" = "Add Contacts Entry";
+
+"Address" = "Dirección";
+
+"Address ID " = "ID dirección ";
+
+"Address ID: %lu" = "ID dirección: %lu";
+
+"Addresses" = "Direcciones";
+
+"Advanced Achievement List" = "Advanced Achievement List";
+
+"Advanced FAQ" = "Advanced FAQ";
+
+"Advanced how To:" = "Advanced how To:";
+
+"After a transaction is broadcast to the Bitcoin network, it may be included in a block that is published to the network. When that happens it is said that the transaction has been mined at a depth of 1 block. With each subsequent block that is found, the number of blocks deep is increased by one. To be secure against double spending, a transaction should not be considered as confirmed until it is a certain number of blocks deep.\nA good rule of thumb is that 1 confirmations is good for small value amounts of bitcoins, and a user should wait for more confirmations for larger value amounts.\nArcBit will display the confirmation number up until the 6th confirmation." = "After a transaction is broadcast to the Bitcoin network, it may be included in a block that is published to the network. When that happens it is said that the transaction has been mined at a depth of 1 block. With each subsequent block that is found, the number of blocks deep is increased by one. To be secure against double spending, a transaction should not be considered as confirmed until it is a certain number of blocks deep.\nA good rule of thumb is that 1 confirmations is good for small value amounts of bitcoins, and a user should wait for more confirmations for larger value amounts.\nArcBit will display the confirmation number up until the 6th confirmation.";
+
+"Amount:" = "Cantidad：";
+
+"An account is a collection of bitcoin addresses. With accounts, you will no longer have to manage bitcoin addresses directly anymore. Since address reuse results in a loss of privacy for people using Bitcoin, ArcBit’s HD wallet account system will automatically handle the cycling of bitcoin addresses for you, so that you don’t use the same bitcoin address more then once.\nEach account also has a reusable address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a reusable address.\nYou can create an unlimited amount of accounts with ArcBit. See the help section on how to create a new account in ArcBit." = "An account is a collection of bitcoin addresses. With accounts, you will no longer have to manage bitcoin addresses directly anymore. Since address reuse results in a loss of privacy for people using Bitcoin, ArcBit’s HD wallet account system will automatically handle the cycling of bitcoin addresses for you, so that you don’t use the same bitcoin address more then once.\nEach account also has a reusable address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a reusable address.\nYou can create an unlimited amount of accounts with ArcBit. See the help section on how to create a new account in ArcBit.";
+
+"An account private key begins with the letters 'xprv'. You can see, spend and recover the transactions and bitcoins of an entire account from an account private key." = "An account private key begins with the letters 'xprv'. You can see, spend and recover the transactions and bitcoins of an entire account from an account private key.";
+
+"An account public key begins with the letters 'xpub'. You can see the transactions and bitcoins of an entire account from an account private key, with the exception of reusable address payments. Future releases will address this issue.\nYou can however temporary import the corresponding account private key for this accounts' account public key to spend your watch accounts' bitcoins. Simply go the send screen and select a watch account to spend from and you will be prompt to temporary import your account's private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen." = "An account public key begins with the letters 'xpub'. You can see the transactions and bitcoins of an entire account from an account private key, with the exception of reusable address payments. Future releases will address this issue.\nYou can however temporary import the corresponding account private key for this accounts' account public key to spend your watch accounts' bitcoins. Simply go the send screen and select a watch account to spend from and you will be prompt to temporary import your account's private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen.";
+
+"ArcBit Android Wallet" = "Arcbit Android cartera";
+
+"ArcBit Brain Wallet" = "Cartera Arcbit cerebro";
+
+"ArcBit Web Wallet" = "Cartera Arcbit Web";
+
+"ArcBit used the the bitcoin wallet model (See the section ’What is a bitcoin wallet?’ to understand the 3 different security models of bitcoin software). However if you use iCloud to backup your wallet, you will be using the security box model. It is recommended that you do not use iCloud, and be responsible for your bitcoins yourself, but for those who don’t want to remember a simple backup passphrase, iCloud backup is a good alternative." = "ArcBit used the the bitcoin wallet model (See the section ’What is a bitcoin wallet?’ to understand the 3 different security models of bitcoin software). However if you use iCloud to backup your wallet, you will be using the security box model. It is recommended that you do not use iCloud, and be responsible for your bitcoins yourself, but for those who don’t want to remember a simple backup passphrase, iCloud backup is a good alternative.";
+
+"Archive Account" = "Archivo cuenta";
+
+"Archive address" = "Archivo dirección";
+
+"Archived Accounts" = "Cuentas archivados";
+
+"Archived Change Addresses" = "Direcciónes de cambios archivadas";
+
+"Archived Cold Wallet Accounts" = "Cuentas archivadas de la cartera fría";
+
+"Archived Imported Accounts" = "Cuentas importadas archivadas";
+
+"Archived Imported Addresses" = "Direcciones importadas archivadas";
+
+"Archived Imported Watch Accounts" = "Cuentas de observar importadas archivadas";
+
+"Archived Imported Watch Addresses" = "Las direcciones de observar importadas archivadas";
+
+"Archived Main Addresses" = "Direcciones principales archivadas";
+
+"Are you sure you want to archive account %@?" = "¿Está seguro de que desea archivar cuenta %@？";
+
+"Are you sure you want to archive address %@?" = "¿Está seguro de que desea archivar la dirección %@？";
+
+"Are you sure you want to delete this account?" = "¿Está seguro de que quiere eliminar esta cuenta?";
+
+"Are you sure you want to unarchive account %@" = "¿Está seguro de que desea anular el archivo cuenta %1$s？";
+
+"Are you sure you want to unarchive address %@?" = "Está seguro de que desea anular el archivo de dirección %1$s？";
+
+"Authorize Cold Wallet Account Payment" = "Autorizar cartera fría pago de la cuenta";
+
+"Authorize Payment" = "autorizar el pago";
+
+"Backup Passphrase" = "Frase de copia de seguridad";
+
+"Backup wallet" = "Cartera de copia de seguridad";
+
+"Backup local wallet" = "Carpeta local de respaldo";
+
+"Backup passphrase found in keychain" = "Frase de paso de seguridad encontrada en llavero";
+
+"Bitcoin allows you to send money to anyone, anywhere in world that has an internet connections with minimum to zero fees, with no middlemen." = "Bitcoin allows you to send money to anyone, anywhere in world that has an internet connections with minimum to zero fees, with no middlemen.";
+
+"Bitcoin, uppercase 'B', is an online payment system invented in 2008, and released as open-source software in 2009 by a programmer name Satoshi Nakamoto. The system is decentralized and peer-to-peer, users can transact directly without needing an intermediary.\nBitcoin is also a platform where other decentralized applications can be built on top of. Bitcoin, lowercase 'b' is the currency unit that Bitcoin uses." = "Bitcoin, uppercase 'B', is an online payment system invented in 2008, and released as open-source software in 2009 by a programmer name Satoshi Nakamoto. The system is decentralized and peer-to-peer, users can transact directly without needing an intermediary.\nBitcoin is also a platform where other decentralized applications can be built on top of. Bitcoin, lowercase 'b' is the currency unit that Bitcoin uses.";
+
+"Bitcoins can be purchase from various bitcoin exchanges. ArcBit is not a bitcoin exchange. ArcBit is a bitcoin wallet. After you purchase some bitcoins from an exchange, you can move it to a bitcoin wallet." = "Bitcoins can be purchase from various bitcoin exchanges. ArcBit is not a bitcoin exchange. ArcBit is a bitcoin wallet. After you purchase some bitcoins from an exchange, you can move it to a bitcoin wallet.";
+
+"Cancel" = "Cancelar";
+
+"Cannot archive your default account" = "No se puede archivar su cuenta predeterminad";
+
+"Cannot archive your one and only account" = "No se puede archivar su primera y única cuenta";
+
+"Cannot create transactions with outputs less then %@" = "No se puede crear transacciones con salidas de menos de %@";
+
+"Cannot decrypt iCloud backup wallet." = "No se puede descifrar la billetera de copia de seguridad de iCloud.";
+
+"Cannot import reusable address" = "No se puede importar la dirección reutilizable";
+
+"Change Address ID " = "Dirección de cambio ID ";
+
+"Change Automatic Transaction Fee" = "Change Automatic Transaction Fee";
+
+"Change Block Explorer URL" = "Cambiar URL bloque explorador";
+
+"Change Blockexplorer Type" = "Change Blockexplorer Type";
+
+"Check out the ArcBit Android Wallet" = "Echa un vistazo a la cartera Arcbit Android";
+
+"Check out the ArcBit Brain Wallet" = "Echa un vistazo a la cartera Arcbit cerebro";
+
+"Check out the ArcBit Web Wallet" = "Echa un vistazo a la cartera Arcbit Web";
+
+"Check out the ArcBit Web Wallet!" = "Echa un vistazo a la cartera Arcbit Web!";
+
+"Checking Transaction" = "Comprobación de Transacció";
+
+"Clear account private key from memory" = "Borrar clave privada de la memoria";
+
+"Clear private key from memory" = "Borrar clave privada de la memoria";
+
+"Cleared from memory" = "Borradas de la memoria";
+
+"Click an address" = "Click an address";
+
+"Click the button with the arrow" = "Click the button with the arrow";
+
+"Click the plus button at the top right" = "Click the plus button at the top right";
+
+"Click the ‘Contacts’ button" = "Click the ‘Contacts’ button";
+
+"Click ‘Accounts’" = "Click ‘Accounts’";
+
+"Click ‘Advanced settings’" = "Click ‘Advanced settings’";
+
+"Click ‘Archive Account’" = "Click ‘Archive Account’";
+
+"Click ‘Create New Account’" = "Click ‘Create New Account’";
+
+"Click ‘Delete’" = "Click ‘Delete’";
+
+"Click ‘Done’" = "Click ‘Done’";
+
+"Click ‘Edit Account Name’" = "Click ‘Edit Account Name’";
+
+"Click ‘Edit’" = "Click ‘Edit’";
+
+"Click ‘Enable PIN Code’" = "Click ‘Enable PIN Code’";
+
+"Click ‘History’" = "Click ‘History’";
+
+"Click ‘Import Account’" = "Click ‘Import Account’";
+
+"Click ‘Import Private Key’" = "Click ‘Import Private Key’";
+
+"Click ‘Import Watch Only Account’" = "Click ‘Import Watch Only Account’";
+
+"Click ‘Import Watch Only Address’" = "Click ‘Import Watch Only Address’";
+
+"Click ‘Label transaction’" = "Click ‘Label transaction’";
+
+"Click ‘Restore Wallet’" = "Click ‘Restore Wallet’";
+
+"Click ‘Restore’" = "Click ‘Restore’";
+
+"Click ‘Review Payment’" = "Click ‘Review Payment’";
+
+"Click ‘Send’" = "Click ‘Send’";
+
+"Click ‘Set Transaction Fee’" = "Click ‘Set Transaction Fee’";
+
+"Click ‘Settings’" = "Click ‘Settings’";
+
+"Click ‘Show Backup Passphrase’" = "Click ‘Show Backup Passphrase’";
+
+"Click ‘View Addresses’" = "Click ‘View Addresses’";
+
+"Click ‘View account private key QR code’" = "Click ‘View account private key QR code’";
+
+"Click ‘View account public key QR code’" = "Click ‘View account public key QR code’";
+
+"Click ‘View address QR code’" = "Click ‘View address QR code’";
+
+"Click ‘View in web’" = "Click ‘View in web’";
+
+"Click ‘View private key QR code’" = "Click ‘View private key QR code’";
+
+"Click ‘blockexplorer API type’" = "Click ‘blockexplorer API type’";
+
+"Click ’Receive’" = "Click ’Receive’";
+
+"Close" = "Cerca";
+
+"Cold Wallet" = "Cartera fría";
+
+"Cold Wallet Accounts" = "Cuentas de cartera fría";
+
+"Cold Wallet Accounts can't see reusable address payments, thus this accounts' reusable address is not available." = "Las cuentas de cartera fría no pueden ver los pagos de direcciones reutilizables, por lo que la dirección reutilizable de estas cuentas no está disponible.";
+
+"Cold Wallet Overview" = "Descripción general de la cartera frío";
+
+"Cold wallet private keys are not stored here and cannot be viewed" = "Las claves privadas de cartera frío no se almacenan aquí y no se puede ver.";
+
+"Complete" = "Completar";
+
+"Complete step 1" = "Complete el paso 1";
+
+"Confirm Payment" = "Confirmar pago";
+
+"Confirm Pin Code" = "Confirmar PIN";
+
+"Contacts" = "Contactos";
+
+"Continue" = "Continuar";
+
+"Copied To clipboard" = "Copiado al portapapeles";
+
+"Copy" = "Dupdo";
+
+"Copy Transaction ID to Clipboard" = "Copia el ID de transacción en el portapapeles";
+
+"Create Cold Wallet" = "Crear Cartera Fría";
+
+"Create New Account" = "Crear una nueva cuenta";
+
+"Create new contact" = "Crear nuevo contacto";
+
+"Customize Fee" = "Personalizar tarifa";
+
+"Decrypting" = "Descifrado";
+
+"Delete" = "Eliminar";
+
+"Delete %@" = "Eliminar %@";
+
+"Delete Account" = "Borrar cuenta";
+
+"Delete Contact" = "Borrar contacto?";
+
+"Delete address" = "Borrar dirección";
+
+"Do not use the QR code from here to receive bitcoins. Go to the Receive screen to get a QR code to receive bitcoins." = "No utilice el código QR desde aquí para recibir bitcoins. Ir a la pantalla de recepción para obtener un código QR para recibir bitcoins.";
+
+"Do you like using ArcBit?" = "¿Te gusta usar Arcbit?";
+
+"Do you want to load and backup your current local wallet file?" = "¿Desea cargar y hacer una copia de seguridad de su archivo de billetera local actual?";
+
+"Do you want to load local wallet file?" = "¿Desea cargar el archivo de monedero local?";
+
+"Do you want to restore from your backup passphrase or start a new wallet?" = "¿Quieres restaurar a partir de copia de seguridad de su contraseña o iniciar una nueva cartera?";
+
+"Do you want to temporary import your account private key?" = "¿Quieres importación temporal clave privada de su cuenta?";
+
+"Do you want to temporary import your private key?" = "¿Quieres importación temporal de la clave privada?";
+
+"Don't remind me" = "No me lo recuerdes";
+
+"Done" = "Hecho";
+
+"Each account has a public and private account key. Accounts keys should be kept secret as they are used to view the account's transactions, and spend the accounts bitcoins." = "Each account has a public and private account key. Accounts keys should be kept secret as they are used to view the account's transactions, and spend the accounts bitcoins.";
+
+"Edit" = "Editar";
+
+"Edit Account Name" = "Editar Nombre de Cuenta";
+
+"Edit Contact Name" = "Editar Nombre de Contacto";
+
+"Edit Label" = "Editar etiqueta";
+
+"Edit Transaction label" = "Editar etiqueta de Transacción";
+
+"Email Support" = "Soporte de correo electrónico";
+
+"Enable PIN code in settings to better secure your wallet." = "Habilitar que el código PIN en Ajustes para asegurar mejor su cartera.";
+
+"Enable Pin Code" = "Habilitar código PIN";
+
+"Enable Transaction Fee" = "Enable Transaction Fee";
+
+"Enable advanced mode" = "Activar el modo avanzado";
+
+"Encountered error creating transaction. Please try again." = "Se encontró un error al crear una transacción. Por favor intente de nuevo";
+
+"Encrypted" = "Eifrada";
+
+"Enter Label" = "Introduzca la etiqueta";
+
+"Enter PIN" = "Ingrese su PIN";
+
+"Enter a wallet backup passphrase to wipe the current wallet and start/restore another." = "Introduzca una contraseña de copia de seguridad de la cartera para limpiar la cartera actual e iniciar/restaurar otro.";
+
+"Enter account private key" = "Introducir la clave privada de la cuenta";
+
+"Enter account public key" = "Introducir clave pública de cuenta";
+
+"Enter address" = "Introducir dirección";
+
+"Enter an account ID and click 'QR Code'. Then on your primary online device, enable Cold Wallet in settings. Then go to the accounts screen and click 'Import Cold Wallet Account' and scan the Account Public Key QR Code. Afterwards use this cold wallet account as you would a normal account and deposits bitcoins into it. When you want to make a payment from a cold wallet account, go to the next section in the previous screen and follow the step by step instructions there." = "Introduzca un ID de cuenta y haga clic en 'Código QR'. A continuación, en su dispositivo en línea principal, habilitar Cold Wallet en la configuración. A continuación, vaya a la pantalla de cuentas y haga clic en 'Importar cuenta de cartera fría' y escanear el código QR de clave pública de cuenta. Después utilice esta cuenta de cartera fría como lo haría con una cuenta normal y depositará bitcoins en ella. Cuando desee realizar un pago desde una cuenta de cartera fría, vaya a la siguiente sección en la pantalla anterior y siga las instrucciones paso a paso allí.";
+
+"Enter backup passphrase" = "Enter backup passphrase";
+
+"Enter passphrase for your iCloud backup wallet." = "Ingrese la frase de contraseña para su billetera de respaldo de iCloud.";
+
+"Enter password for encrypted private key" = "Introduzca la contraseña para la clave privada encriptada";
+
+"Enter the 12 word passphrase that belongs to the cold wallet account that you want to make a payment from. This is the passphrase that was used to generate your account public key that was generated in the 'Create Cold Wallet' section found in the previous screen." = "Introduzca la contraseña de 12 palabras que pertenece a la cuenta de cartera fría de la que desea realizar un pago. Esta es la frase de contraseña que se utilizó para generar la clave pública de su cuenta que se generó en la sección 'Crear Cartera fría' encontrada en la pantalla anterior.";
+
+"Error" = "Error";
+
+"Error fetching Transaction." = "Error de transacción ir a buscar";
+
+"Error fetching unspent outputs. Try again later." = "Error al recuperar las salidas no utilizadas. Inténtelo de nuevo más tarde.";
+
+"Error fetching unspent outputs. Try again." = "Error al recuperar las salidas no utilizadas. Inténtalo de nuevo.";
+
+"Error getting block height." = "Error al obtener la altura del bloque";
+
+"Error importing account" = "Error al importar la cuenta";
+
+"Error loading wallet JSON file" = "Error al cargar el archivo JSON de la cartera";
+
+"Explanation" = "Explanation";
+
+"FAQ" = "FAQ";
+
+"Fee:" = "Comisión:";
+
+"Fill address field" = "Fill address field";
+
+"Finished Passing Transaction Data" = "Terminado de pasar datos de transacciones";
+
+"First make sure you are using your secondary offline device for this screen (as mentioned in the overview in the previous screen). Click 'New Wallet' and write down or memorized the generated 12 word passphrase. This passphrase can recover and generate all your accounts and the bitcoins associated with it, so keep it safe and to yourself. Also instead of creating a new wallet, you can also input an existing 12 word passphrase that was generated here to create additional accounts." = "Primero, asegúrese de que está utilizando su dispositivo fuera de línea secundario para esta pantalla (como se menciona en la vista general en la pantalla anterior). Haga clic en 'New Wallet' y anote o memorice la contraseña de 12 palabras generada. Esta frase de paso puede recuperar y generar todas sus cuentas y los bitcoins asociados con él, así que guárdelo seguro ya sí mismo. También en lugar de crear una cartera nueva, también puede introducir una contraseña de 12 palabras existente que se generó aquí para crear cuentas adicionales.";
+
+"Follow us on Twitter" = "Síganos en Twitter";
+
+"From:" = "De：";
+
+"Funds have been claimed already." = "Los fondos han sido ya reivindicado.";
+
+"Funds imported" = "Fondos importados";
+
+"Ir" = "走";
+
+"Go to the side menu" = "Go to the side menu";
+
+"Have sender scan QR code" = "Have sender scan QR code";
+
+"Have sender send you payment" = "Have sender send you payment";
+
+"Help" = "Ayuda";
+
+"Here are some features that no other mobile bitcoin wallet supports.\n- Reusable address support\n- Ability to import individual account (extended) keys\n- iCloud backup support\n- Over 150 local currencies supported" = "Here are some features that no other mobile bitcoin wallet supports.\n- Reusable address support\n- Ability to import individual account (extended) keys\n- iCloud backup support\n- Over 150 local currencies supported";
+
+"Hierarchical Deterministic Wallet" = "Hierarchical Deterministic Wallet";
+
+"History" = "Historia";
+
+"How To:" = "How To:";
+
+"How do I get bitcoins?" = "How do I get bitcoins?";
+
+"How does ArcBit Wallet work?" = "How does ArcBit Wallet work?";
+
+"Import Account" = "Importar cuenta";
+
+"Import Cold Wallet Account" = "Importar cuenta de cartera fría";
+
+"Import Feature" = "Import Feature";
+
+"Import Private Key" = "Importar clave privada";
+
+"Import Private/Encrypted Key" = "Import Private/Encrypted Key";
+
+"Import Watch Account" = "Importar cuenta del observar";
+
+"Import Watch Address" = "Importar observar dirección";
+
+"Import private key encrypted or unencrypted?" = "Importar clave privada cifrado o sin cifrado?";
+
+"Import with QR code" = "Importar con el código QR";
+
+"Import with text input" = "Importar con la introducción de texto";
+
+"Imported Account %@" = "Importada cuenta %@";
+
+"Imported Accounts" = "Importada Cuentas";
+
+"Imported Address" = "Importada Dirección";
+
+"Imported Addresses" = "Importada Direcciones";
+
+"Imported Cold Wallet Account %@" = "Importada duenta de cartera fría %@";
+
+"Imported Watch Account %@" = "Importada observar de cuenta %@";
+
+"Imported Watch Accounts" = "Cuentas del observar importados";
+
+"Imported Watch Addresses" = "Direcciones Observar Importados";
+
+"Imported Watch Only Accounts can't see reusable address payments, thus this accounts' reusable address is not available. If you want see the reusable address for this account import the account private key that corresponds to this accounts public key." = "Las cuentas de observar importadas no pueden ver los pagos de direcciones reutilizables, por lo que la dirección reutilizable de estas cuentas no está disponible. Si desea ver la dirección reutilizable para esta cuenta, importe la clave privada de la cuenta que corresponde a esta clave pública de cuentas.";
+
+"Importing Account" = "Importación de cuenta";
+
+"Importing Cold Wallet Account" = "Importación de cuenta de cartera fría";
+
+"Importing a Private Key" = "Importing a Private Key";
+
+"Importing a Watch Only Account" = "Importing a Watch Only Account";
+
+"Importing a Watch Only Address" = "Importing a Watch Only Address";
+
+"Importing an Account" = "Importing an Account";
+
+"Importing key encrypted will require you to input the password everytime you want to send bitcoins from it." = "Importar clave cifrada requerirán que introduzca la contraseña cada vez que desee enviar dinero de él.";
+
+"In advanced mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you backup imported keys and addresses separately." = "In advanced mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word backphrase cannot recover your bitcoins, so it is recommended that you backup imported keys and addresses separately.";
+
+"Incomplete" = "Incompleto";
+
+"Incorrect passphrase, could not decrypt iCloud wallet backup." = "Frase de contraseña incorrecta, no se pudo descifrar la copia de seguridad de iCloud wallet.";
+
+"Input a bitcoin address" = "Input a bitcoin address";
+
+"Input a label" = "Input a label";
+
+"Input a new label" = "Input a new label";
+
+"Input a recommended amount. Somewhere between %@ and %@ BTC" = "Input a recommended amount. Somewhere between %@ and %@ BTC";
+
+"Input amount" = "Input amount";
+
+"Input label" = "Input label";
+
+"Input new account name" = "Input new account name";
+
+"Input transaction fee in bitcoins" = "Input transaction fee in bitcoins";
+
+"Instructions" = "Instructions";
+
+"Insufficient Funds" = "Fondos insuficiente";
+
+"Insufficient Funds. Account balance is %@ when %@ is required." = "Fondos insuficientes. saldo de la cuenta es %@ cuando se requiere %@.";
+
+"Insufficient Funds. Account contains bitcoin dust. You can only send up to %@ for now." = "Fondos insuficientes. Cuenta bitcoin contiene polvo. Sólo se puede enviar un máximo de %@ por ahora";
+
+"Internal Wallet Data" = "Los datos de la cartera interna";
+
+"Internal account transfer" = "Transferencia de cuenta interna";
+
+"Invalid Address" = "Dirección inválida";
+
+"Invalid Passphrase" = "Frase de contraseña no válido";
+
+"Invalid URL" = "URL invalida";
+
+"Invalid account private key" = "Clave privada de cuenta no válido";
+
+"Invalid account public Key" = "Clave pública de cuenta no válido";
+
+"Invalid amount" = "Monto invalido";
+
+"Invalid backup passphrase" = "Frase de contraseña de respaldo no válido";
+
+"Invalid private key" = "Clave privada no válido";
+
+"Invalid scanned data" = "Datos escaneados no válido";
+
+"Invalid transaction ID" = "ID de transacción no válido";
+
+"It is not recommended that you manually manage private keys yourself. A leak of a private key can lead to the compromise of your accounts." = "No se recomienda administrar manualmente las claves privadas a sí mismo. Una fuga de una clave privada puede conducir al compromiso de sus cuentas.";
+
+"It is not recommended that you use a regular bitcoin address for multiple payments, but instead you should import a reusable address. Add address anyways?" = "No se recomienda que utilice una dirección regular para varios pagos, sino que debe importar una dirección reutilizable. Añadir dirección de todos modos?";
+
+"Label" = "Etiqueta";
+
+"Label Transaction" = "Transacción etiqueta";
+
+"Local backup to wallet failed!" = "Error de respaldo local en la billetera！";
+
+"Local wallet will be lost. Are you sure you want to restore wallet from iCloud?" = "La billetera local se perderá. ¿Seguro que quieres restaurar la billetera desde iCloud?";
+
+"Maximum accounts reached" = "Cuentas máximo alcanzado";
+
+"More" = "Más";
+
+"Name" = "Nombre";
+
+"Network Error" = "Error de red";
+
+"New Wallet" = "Nueva cartera";
+
+"New addresses will be automatically generated and cycled for you as you use your current available addresses." = "Nuevas direcciones se generan automáticamente y se reciclan para usted como usted utiliza sus direcciones disponibles actuales.";
+
+"Next" = "Siguiente";
+
+"No" = "No";
+
+"None currently" = "Ninguno actualmente";
+
+"Not now" = "Ahora no";
+
+"Now authorize the transaction on your air gap device. When you have done so click continue on this device to scan the authorized transaction data and make your payment." = "Ahora autorizar la transacción en su dispositivo de separación de aire. Cuando haya hecho clic en continuar en este dispositivo para escanear los datos de las transacciones autorizadas y hacer su pago.";
+
+"OK" = "OK";
+
+"On your primary online device, when you want to make a payment from a cold wallet account, simply do it as would normally would on a normal account. When you click 'Send' on the Review Payment screen, instead of the payment going out immediately, you will be prompt to pass the unauthorized transaction data. Then on your secondary offline device, within this screen click 'Scan' to import the transaction so it can be authorized." = "En su dispositivo en línea principal, cuando desea realizar un pago desde una cuenta de cartera fría, simplemente hágalo como normalmente lo haría en una cuenta normal. Al hacer clic en 'Enviar' en la pantalla Revisar pago, en lugar de que el pago salga inmediatamente, se le pedirá que pase los datos de transacción no autorizados. A continuación, en su dispositivo secundario sin conexión, en esta pantalla haga clic en 'Escanear' para importar la transacción para que pueda ser autorizada.";
+
+"Once the transaction has been authorized by completing the above two steps, pass the authorized transaction back to your primary online device to finalize your payment." = "Una vez que la transacción haya sido autorizada, completando los dos pasos anteriores, pasar la transacción autorizada de nuevo a su dispositivo en línea primaria para finalizar su pago.";
+
+"Other Links" = "Otros enlaces";
+
+"Pass" = "Pasar";
+
+"Passphrase" = "Frase de contraseña";
+
+"Passphrase does not match the transaction" = "Frase de contraseña no coincide con la transacción";
+
+"Password" = "Contraseña";
+
+"Payment Index: %lu" = "Índice de Pago： %lu";
+
+"Private key does not match address" = "私密金鑰不匹配地址";
+
+"Private key missing" = "Clave privada no coincide con la dirección";
+
+"QR code" = "Código QR";
+
+"Quit and re-enter app" = "Quit and re-enter app";
+
+"Rate" = "Tarifa";
+
+"Rate us in the App Store!" = "Nos clasificaría en el App Store!";
+
+"Receive" = "Recibir";
+
+"Receive Payment" = "Receive Payment";
+
+"Receive Payment From Reusable Address" = "Receive Payment From Reusable Address";
+
+"Remind me Later" = "Recuérdame más tarde";
+
+"Restore" = "Restaurar";
+
+"Restore Wallet" = "Restaurar cartera";
+
+"Restore from iCloud" = "Restaurar desde iCloud";
+
+"Restoring Wallet" = "Restaurar cartera";
+
+"Retry" = "Rever";
+
+"Reusable Address Payment Addresses" = "Reutilizable dirección direcciones de pago";
+
+"Reusable Address:" = "Reutilizable Dirección:";
+
+"Reusable Addresses" = "Reusable Addresses";
+
+"Review Payment" = "Revisión de pagos";
+
+"Save" = "Salvar";
+
+"Scan" = "Escanear";
+
+"Scan For Reusable Address Payment" = "Para escanear reutilizable dirección de pago";
+
+"Scan QR Code" = "Escanear código QR";
+
+"Scan for reusable address transaction" = "Analizar en busca de transacción dirección reutilizable";
+
+"Scan next part" = "Scan parte próxima";
+
+"Scroll down to the section ‘Account Actions’" = "Scroll down to the section ‘Account Actions’";
+
+"Select Account" = "Seleccionar cuenta";
+
+"Select and click a blockexplorer API" = "Select and click a blockexplorer API";
+
+"Select and click a transaction" = "Select and click a transaction";
+
+"Select and click an account" = "Select and click an account";
+
+"Select and click an account to receive from" = "Select and click an account to receive from";
+
+"Select and click an account to view it’s transaction history" = "Select and click an account to view it’s transaction history";
+
+"Select and click an address" = "Select and click an address";
+
+"Send" = "Enviar";
+
+"Send Payment" = "Enviar Pago";
+
+"Send To Address In Contacts" = "Send To Address In Contacts";
+
+"Send authorized payment?" = "Envíe el pago autorizado?";
+
+"Sending" = "Enviando";
+
+"Sending payment to a reusable address might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For reusable address payments to show up faster, configure your app to use the Insight API in advance settings." = "Enviar el pago a una dirección reutilizable podría tomar más tiempo para aparecer luego de una transacción normal con la API blockchain.info. Es posible que tenga que esperar al menos hasta el 1 de confirmación de la transacción en aparecer. Esto es debido a las limitaciones de la API blockchain.info. Para los pagos de direcciones reutilizables para mostrar más rápido, configurar la aplicación para utilizar la API de Insight en configuraciones avanzadas.";
+
+"Sent %@ to %@" = "Enviado %@ a %@";
+
+"Set Transaction Fee in %@" = "Establecer cuota de transacción en %@";
+
+"Settings" = "Ajustes";
+
+"Some funds may be pending confirmation and cannot be spent yet. (Check your account history) Account only has a spendable balance of %@" = "Algunos fondos pueden estar pendientes de confirmación y no se pueden gastar todavía. (Consulte su historial de la cuenta) cuenta solamente tiene un saldo gastable de %@";
+
+"Some people has compared bitcoin addresses to a bank routing number. It is a good analogy, however bitcoin addresses are public. So if you reuse the same bitcoin address for multiple payments like you would a routing number, people will be able to figure out how much bitcoins you have. Thus it is recommended that you only use one address per payment.\nThis causes usability issues because making the user use a new address whenever receiving a payment is cumbersome.\nStealth/reusable addresses provides a better solution. When you give a sender a reusable address, the sender will derive a one time regular bitcoin address from the reusable address. Then the sender will send a payment to that regular bitcoin address. Now you can give many people just one reusable address and have them all send you payments without letting other people know how much bitcoins you have.\nA reusable address looks sometime like this vJmxthatTBXibYe9aZavx18iAT9gyiJETGkhwPX2WbHQGuzX83YvQXynD2t8yHU4Xjfonu5x9m6B4yxquytFP1c2CRbVR9mecxesvE. A reusable address is a lot longer then a regular bitcoin address, it is 102 characters in length.\nReusable addresses are great, however there are no other mobile bitcoin wallets but ArcBit that supports reusable addresses for now. Which is why ArcBit support receiving payments from both regular bitcoin addresses and reusable addresses.\nFor each account, you have one reusable address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a reusable address." = "Some people has compared bitcoin addresses to a bank routing number. It is a good analogy, however bitcoin addresses are public. So if you reuse the same bitcoin address for multiple payments like you would a routing number, people will be able to figure out how much bitcoins you have. Thus it is recommended that you only use one address per payment.\nThis causes usability issues because making the user use a new address whenever receiving a payment is cumbersome.\nStealth/reusable addresses provides a better solution. When you give a sender a reusable address, the sender will derive a one time regular bitcoin address from the reusable address. Then the sender will send a payment to that regular bitcoin address. Now you can give many people just one reusable address and have them all send you payments without letting other people know how much bitcoins you have.\nA reusable address looks sometime like this vJmxthatTBXibYe9aZavx18iAT9gyiJETGkhwPX2WbHQGuzX83YvQXynD2t8yHU4Xjfonu5x9m6B4yxquytFP1c2CRbVR9mecxesvE. A reusable address is a lot longer then a regular bitcoin address, it is 102 characters in length.\nReusable addresses are great, however there are no other mobile bitcoin wallets but ArcBit that supports reusable addresses for now. Which is why ArcBit support receiving payments from both regular bitcoin addresses and reusable addresses.\nFor each account, you have one reusable address. You can find it in your receive screen. Swipe all the way to right on the QRCode in your receive screen and you will find a reusable address.";
+
+"Spending from a cold wallet account" = "Pasar de una cuenta de cartera fría";
+
+"Start fresh" = "Empezar de nuevo";
+
+"Start/Restore Another Wallet" = "Start/Restore Another Wallet";
+
+"Starting Change address ID:" = "Inicio de la ID de dirección de cambio:";
+
+"Starting Receiving Address ID:" = "Inicio de la ID de dirección de recepción:";
+
+"Step 1: Scan transaction to authorize" = "Paso 1: Escanear para autorizar la transacción";
+
+"Step 2: Input 12 word backup passphrase" = "Paso 2: Entrada 12 palabra frase de contraseña de copia de seguridad";
+
+"Step 3: Pass authorized transaction data" = "Paso 3: Pasar los datos de transacciones autorizadas";
+
+"Steps" = "Steps";
+
+"Success" = "Éxito";
+
+"Swipe right on an address" = "Swipe right on an address";
+
+"Swipe to the right on the QR Code Image until you see the reusable address" = "Swipe to the right on the QR Code Image until you see the reusable address";
+
+"Temporary import account private key" = "Cuenta de clave privada importación temporal";
+
+"Temporary import private key" = "Clave privada importación temporal";
+
+"The cold wallet feature will allow you to create accounts which offer better security then normal online wallets. You will need 2 devices to use this feature. Your normal day to day device that is connected to the internet and a secondary device that is not connected to the internet (Your secondary device would need to be online once to download the ArcBit app. Afterwards keep the secondary device offline for maximal security). This feature allows you to authorize bitcoin payments from an offline device so that the keys to your bitcoins will never need to be store on your online device. Follow the step by step instructions by clicking the info buttons within the below sections." = "La función Cartera fría le permitirá crear cuentas que ofrecen una mayor seguridad en línea a continuación, carteras normales. Se necesitan 2 dispositivos para utilizar esta función. Su día normal de dispositivo de día que está conectado a Internet y un dispositivo secundario que no está conectado a Internet (Su dispositivo secundario tendría que estar en línea una vez que descargar la aplicación Arcbit. Posteriormente a mantener el dispositivo fuera de línea secundaria para la seguridad máxima). Esta característica le permite autorizar pagos bitcoin de un dispositivo de conexión para que las llaves de sus bitcoins no tendrán que ser Store en el dispositivo en línea. Siga las instrucciones paso a paso haciendo clic en los botones de información dentro de las siguientes secciones";
+
+"The cold wallet feature will allow you to create accounts which offer better security then normal online wallets. You will need 2 devices to use this feature. Your normal day to day device that is connected to the internet and a secondary device that is not connected to the internet (Your secondary device would need to be online once to download the ArcBit app. Afterwards keep the secondary device offline for maximal security). This feature allows you to authorize bitcoin payments from an offline device so that the keys to your bitcoins will never need to be store on your online device. You can enable the cold wallet feature by going into advanced settings." = "The cold wallet feature will allow you to create accounts which offer better security then normal online wallets. You will need 2 devices to use this feature. Your normal day to day device that is connected to the internet and a secondary device that is not connected to the internet (Your secondary device would need to be online once to download the ArcBit app. Afterwards keep the secondary device offline for maximal security). This feature allows you to authorize bitcoin payments from an offline device so that the keys to your bitcoins will never need to be store on your online device. You can enable the cold wallet feature by going into advanced settings.";
+
+"This account type can't see reusable address payments" = "Este tipo de cuenta no puede ver los pagos de direcciones reutilizables";
+
+"This feature allows you to manually input a transaction id and see if the corresponding transaction contains a reusable address payment to your reusable address. If so, then the funds will be added to your wallet. Normally the app will discover reusable address payments automatically for you, but if you believe a payment is missing you can use this feature." = "Esta característica le permite introducir manualmente un identificador de transacción y ver si la transacción correspondiente contiene un pago reenvío a su dirección reutilizable. Si es así, entonces los fondos se añadirán a su cartera. Normalmente, la aplicación va a descubrir los pagos de reenvío automáticamente para usted, pero si usted cree que un pago no se encuentra usted puede utilizar esta función.";
+
+"To:" = "A:";
+
+"Today" = "Hoy";
+
+"Toggle Automatic Transaction Fee" = "Toggle Automatic Transaction Fee";
+
+"Toggle ‘Enable Transaction Fee’" = "Toggle ‘Enable Transaction Fee’";
+
+"Toggle ’Enable advanced mode’" = "Toggle ’Enable advanced mode’";
+
+"Total:" = "Total:";
+
+"Transaction %@ already accounted for." = "Transacción %@ ya contabilizados.";
+
+"Transaction %@ does not belong to this account." = "Transacción %@ no pertenece a esta cuenta.";
+
+"Transaction Fee" = "Comisión de transacción";
+
+"Transaction ID" = "ID de transacción";
+
+"Transaction ID: %@" = "ID de transacción: %@";
+
+"Transaction authorized" = "Transacción autorizada";
+
+"Transaction confirmations" = "Transaction confirmations";
+
+"Transaction fees impact how quickly the Bitcoin network will confirm your transactions. Higher fees means faster confirmation times. Default fee behavior can be configured in settings." = "Las comisiones de transacción afectan la rapidez con que la red de Bitcoin confirmará sus transacciones. Las tarifas más altas significan tiempos de confirmación más rápidos. El comportamiento de pago predeterminado se puede configurar en la configuración.";
+
+"Transaction is not a reusable address transaction." = "La transacción no es una transacción dirección reutilizable.";
+
+"Transaction needs to be authorized by an offline and air gap device. Send transaction to an offline device for authorization?" = "Transacción debe ser autorizada por un dispositivo fuera de línea y espacio de aire. Enviar a un dispositivo de transacción fuera de línea para la autorización?";
+
+"Transaction needs to be passed back to your online device in order for the payment to be sent" = "Transacción debe ser aprobada de nuevo a su dispositivo en línea para que el pago que se enviará";
+
+"Try Again" = "Inténtalo de nuevo";
+
+"Try our new cold wallet feature!" = "Pruebe nuestra nueva función de cartera frío!";
+
+"URL does not contain an address." = "La URL no contiene una dirección.";
+
+"Unable to get dynamic fees. Falling back on fixed transaction fee. (fee can be configured on review payment)" = ">No es posible obtener tasas dinámicas. Volver a caer sobre el precio de la transacción fijo. (De pago se puede configurar mediante el pago revisión)";
+
+"Unarchive Account" = "Desarchivar cuenta";
+
+"Unarchive address" = "Desarchivar dirección";
+
+"Unarchived address" = "Dirección desarchivados";
+
+"Unconfirmed" = "Inconfirmado";
+
+"Unencrypted" = "Sin cifrar";
+
+"Use ArcBit on your browser to complement the mobile app. The web wallet has all the features that the mobile wallet has plus more!" = "Utilice cartera Arcbit Web para complementar la aplicación móvil. La cartera web tiene todas las características que la billetera móvil tiene mucho más!";
+
+"Use all funds" = "Usa todos los fondos";
+
+"View Account Address" = "View Account Address";
+
+"View Account Address In Web" = "View Account Address In Web";
+
+"View Account Addresses" = "View Account Addresses";
+
+"View Account Private Key" = "View Account Private Key";
+
+"View Account Public Key" = "View Account Public Key";
+
+"View Achievements" = "View Achievements";
+
+"View Addresses" = "Ver Direcciones";
+
+"View ArcBit Brain Wallet Details" = "Ver cartera Arcbit cerebrales detalles";
+
+"View ArcBit Web Wallet Details" = "Ver cartera Arcbit web detalles";
+
+"View History" = "View History";
+
+"View Private Key" = "View Private Key";
+
+"View Transaction In Web" = "View Transaction In Web";
+
+"View account private key QR code" = "Ver código QR clave privada de cuenta";
+
+"View account public key QR code" = "Ver código QR clave pública de cuenta";
+
+"View address QR code" = "Ver dirección de código QR";
+
+"View address in web" = "Ver dirección en la Web";
+
+"View in web" = "Ver en la Web";
+
+"View private key QR code" = "Ver código QR clave privada";
+
+"Visit our home page" = "Visita nuestra página de inicio";
+
+"Wallet backup passphrase" = "Contraseña de copia de seguridad";
+
+"Warning" = "Advertencia";
+
+"Welcome to ArcBit, a user only controlled Bitcoin wallet. Start using the app now by depositing your Bitcoins here." = "Bienvenido a Arcbit, un usuario sólo controlado Bitcoin cartera. Comience a utilizar la aplicación ahora depositando sus bitcoins aquí.";
+
+"Welcome!" = "¡Bienvenido!";
+
+"What are Account/Extended Keys?" = "What are Account/Extended Keys?";
+
+"What are accounts?" = "What are accounts?";
+
+"What are reusable addresses?" = "What are reusable addresses?";
+
+"What are the benefits and advantages of Bitcoin?" = "What are the benefits and advantages of Bitcoin?";
+
+"What are transaction confirmations?" = "What are transaction confirmations?";
+
+"What is ArcBit's cold wallet feature?" = "What is ArcBit's cold wallet feature?";
+
+"What is Bitcoin?" = "What is Bitcoin?";
+
+"What is a bitcoin wallet?" = "What is a bitcoin wallet?";
+
+"What makes ArcBit different from other bitcoin wallets?" = "What makes ArcBit different from other bitcoin wallets?";
+
+"With an ArcBit cold wallet feature, you can create wallets and make payments offline without exposing your private keys to an internet connected device. This feature is great for storing large amounts of bitcoins or for the security conscious minded. Check out this feature in the cold wallet section in the side menu." = "Con una función Cartera fría Arcbit, puede crear carteras y realizar pagos en línea sin exponer sus claves privadas a un dispositivo conectado a Internet. Esta característica es ideal para el almacenamiento de grandes cantidades de bitcoins o para la seguridad de mente consciente. Echa un vistazo a esta característica en la sección de cartera frío en el menú lateral.";
+
+"Write down backup passphrase" = "Write down backup passphrase";
+
+"Write down or memorize your 12 word wallet backup passphrase. You can view it by clicking \"Show backup passphrase\" in Settings. Your wallet backup passphrase is needed to recover your bitcoins." = "Anotar o memorizar el 12 palabra frase de contraseña de copia de seguridad de la cartera que se puede encontrar en la configuración. Se necesita su contraseña de copia de seguridad de la cartera para recuperar sus bitcoins.";
+
+"Write down the 12 word passphrase below and keep it safe. This passphrase alone can restore your entire wallets\' bitcoins (excluding imports)." = "Anote la contraseña de 12 palabras abajo y manténgala segura. Esta frase de contraseña solo puede restaurar los bitcoins de todas sus carteras (excluyendo las importaciones).";
+
+"Write down the 12 word passphrase below and keep it safe. This passphrase alone can restore your entire wallets\' bitcoins." = "Anote la contraseña de 12 palabras abajo y manténgala segura. Esta frase de contraseña solo puede restaurar los bitcoins de toda su cartera.";
+
+"Yes" = "Sí";
+
+"You are making a payment to a reusable address. Make sure that the receiver can see the payment made to them. (All ArcBit reusable addresses are compatible with other ArcBit wallets)" = "Usted está haciendo un pago a una dirección reutilizable. Asegúrese de que el receptor puede ver el pago hecho a ellos. (Todas las direcciones reutilizables Arcbit son compatibles con otras carteras ArcBit)";
+
+"You have %@, but %@ is needed. (This includes the transactions fee)" = "Tienes %@, pero se necesita %@. (Esto incluye la cuota de transacciones)";
+
+"You must exit and kill this app in order for this to take effect." = "Debe salir y matar esta aplicación para que esto tenga efecto.";
+
+"Your current wallet will be deleted. Your can restore your current wallet later with the wallet passphrase, but any imported accounts or addresses created in advanced mode cannot be recovered. Do you wish to continue?" = "Se eliminará su cartera actual. Su puede restaurar su cartera actual más tarde con la frase de cartera, pero ninguna cuenta o direcciones creadas en el modo avanzado importados no se pueden recuperar. ¿Desea continuar?";
+
+"Your iCloud backup was last saved on %@. Do you want to restore your wallet from iCloud or backup your local wallet to iCloud?" = "Su copia de seguridad de iCloud se guardó por última vez en %@. ¿Desea restaurar su billetera desde iCloud o hacer una copia de seguridad de su billetera local en iCloud?";
+
+"Your new transaction fee is too high" = "Su nueva tarifa de transacción es demasiado alto";
+
+"Your wallet is now restored" = "Su cartera ahora se restaura";
+
+"\nAllow camera access in\n Settings->Privacy->Camera->%@" = "\nPermitir acceso a la cámara en\n Configuraciones->Intimidad->Cámara->%@";
+
+"\tArcBit Web Wallet is a Chrome extension. It has all the features of the mobile wallet plus more. Highlights include the ability to create multiple wallets instead of just one, and a new non-cumbersome way to generate wallets, store and spend bitcoins all from cold storage! ArcBit's new way to manage your cold storage bitcoins also offers a more compelling reason to use ArcBit's watch account feature. Now you can safely watch the balance of your cold storage bitcoins by enabling advance mode in ArcBit and importing your cold storage account public keys.\n\tUse ArcBit Web Wallet in whatever way you wish. You can create a new wallet, or you can input your current 12 word backup passphrase to manage the same bitcoins across different devices. Check out the ArcBit Web Wallet in the Chrome Web Store for more details!\n" = "\tCartera Arcbit web es una extensión de Chrome. Tiene todas las características de la cartera móvil y más. Lo más destacado es la posibilidad de crear varias carteras en lugar de sólo una, y una nueva forma no engorrosa para generar carteras, almacenar y gastar bitcoins todo desde el almacenamiento en frío! La nueva forma de ArcBit para administrar tus bitcoins de almacenamiento en frío también ofrece una razón más convincente para usar la función de cuenta de reloj de ArcBit. Ahora puede ver con seguridad el balance de sus bitcoins de almacenamiento en frío al habilitar el modo avanzado en ArcBit e importar las claves públicas de su cuenta de almacenamiento en frío.\n\tUtilice cartera Arcbit web de la forma que desee. Puede crear una cartera nueva o puede introducir su contraseña de copia de seguridad actual de 12 palabras para administrar los mismos bitcoins entre dispositivos diferentes. Echa un vistazo a cartera Arcbit web en la Chrome Web Store para obtener más detalles.\n";
+
+"\tWith the Arcbit Brain Wallet you can safely spend your bitcoins without ever having your private keys be exposed to the internet. It can be use in conjuction with your Arcbit Wallet or as a stand alone wallet.\n" = "\tCon el Arcbit Brain Wallet puede pasar con seguridad sus bitcoins sin tener sus claves privadas expuestas a Internet. Se puede utilizar en conjunto con su cartera de Arcbit o como una cartera independiente.\n";
+
+"iCloud Error: %@" = "Error de iCloud: %@";
+
+"iCloud backup found" = "Copia de seguridad de iCloud encontrada";
+
+"iCloud backup not found" = "No se encontró la copia de seguridad de iCloud";
+
+"iCloud backup will be lost. Are you sure you want to backup your local wallet to iCloud?" = "La copia de seguridad de iCloud se perderá. ¿Seguro que quieres hacer una copia de seguridad de tu billetera local en iCloud?";
 
