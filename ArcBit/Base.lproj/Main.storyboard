@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UtC-4S-ThX">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13196" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="UtC-4S-ThX">
     <device id="retina4_7" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -10,6 +10,7 @@
         <capability name="Alignment constraints with different attributes" minToolsVersion="5.1"/>
         <capability name="Aspect ratio constraints" minToolsVersion="5.1"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -17,10 +18,6 @@
         <scene sceneID="tne-QT-ifu">
             <objects>
                 <viewController storyboardIdentifier="Send" id="BYZ-38-t0r" customClass="TLSendViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -297,7 +294,7 @@
                                 </variation>
                             </view>
                             <tabBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PhA-zc-Um6">
-                                <rect key="frame" x="0.0" y="618" width="375" height="49"/>
+                                <rect key="frame" x="0.0" y="617" width="375" height="49"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <items>
                                     <tabBarItem title="Send" image="upload.png" id="4mb-2o-3A1"/>
@@ -310,10 +307,10 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="eHT-LR-cZK" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="4by-cl-TeJ"/>
-                            <constraint firstItem="wfy-db-euE" firstAttribute="top" secondItem="PhA-zc-Um6" secondAttribute="bottom" id="9em-MP-4i1"/>
+                            <constraint firstItem="eHT-LR-cZK" firstAttribute="top" secondItem="s8n-dJ-Ket" secondAttribute="top" id="4by-cl-TeJ"/>
+                            <constraint firstItem="s8n-dJ-Ket" firstAttribute="bottom" secondItem="PhA-zc-Um6" secondAttribute="bottom" constant="1" id="9em-MP-4i1"/>
                             <constraint firstItem="z1R-zT-Rrk" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="BNS-Ke-99k"/>
-                            <constraint firstItem="z1R-zT-Rrk" firstAttribute="top" secondItem="y3c-jy-aDJ" secondAttribute="bottom" id="CKY-UR-VWw"/>
+                            <constraint firstItem="z1R-zT-Rrk" firstAttribute="top" secondItem="s8n-dJ-Ket" secondAttribute="top" id="CKY-UR-VWw"/>
                             <constraint firstItem="eHT-LR-cZK" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="Mez-Vu-Iik"/>
                             <constraint firstItem="z1R-zT-Rrk" firstAttribute="bottom" secondItem="eHT-LR-cZK" secondAttribute="bottom" constant="-43" id="SFT-xv-Rfe"/>
                             <constraint firstAttribute="trailingMargin" secondItem="PhA-zc-Um6" secondAttribute="trailing" constant="-16" id="dR6-lF-Vtb"/>
@@ -321,6 +318,7 @@
                             <constraint firstItem="PhA-zc-Um6" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leadingMargin" constant="-16" id="onN-ow-2cz"/>
                             <constraint firstAttribute="trailingMargin" secondItem="z1R-zT-Rrk" secondAttribute="trailing" constant="-16" id="yka-sw-axN"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="s8n-dJ-Ket"/>
                     </view>
                     <navigationItem key="navigationItem" title="Send" id="bCV-xP-8V6">
                         <barButtonItem key="leftBarButtonItem" image="list.png" id="TAh-zr-A5h">
@@ -417,10 +415,6 @@
         <scene sceneID="TCe-gT-kFA">
             <objects>
                 <viewController storyboardIdentifier="Passphrase" id="Cya-vx-OE4" customClass="TLPassPhraseViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Ftq-rQ-8tE"/>
-                        <viewControllerLayoutGuide type="bottom" id="U1h-pg-5aA"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="vHd-RN-LkG">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -513,17 +507,18 @@
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="R5o-dM-wOC" secondAttribute="trailing" constant="-16" id="Aa3-OA-yql"/>
                             <constraint firstAttribute="trailingMargin" secondItem="KBe-Ve-SYa" secondAttribute="trailing" constant="-20" id="CEv-1S-4yJ"/>
-                            <constraint firstItem="KBe-Ve-SYa" firstAttribute="bottom" secondItem="U1h-pg-5aA" secondAttribute="top" id="CLZ-vC-0P2"/>
+                            <constraint firstItem="KBe-Ve-SYa" firstAttribute="bottom" secondItem="hKp-iB-EXr" secondAttribute="bottom" id="CLZ-vC-0P2"/>
                             <constraint firstItem="KBe-Ve-SYa" firstAttribute="leading" secondItem="R5o-dM-wOC" secondAttribute="leading" id="Dex-r7-TJF"/>
                             <constraint firstItem="KBe-Ve-SYa" firstAttribute="leading" secondItem="vHd-RN-LkG" secondAttribute="leadingMargin" constant="-20" id="PQi-QQ-L86"/>
                             <constraint firstItem="R5o-dM-wOC" firstAttribute="leading" secondItem="vHd-RN-LkG" secondAttribute="leadingMargin" constant="-16" id="TlE-6e-OIm"/>
                             <constraint firstItem="KBe-Ve-SYa" firstAttribute="top" secondItem="R5o-dM-wOC" secondAttribute="bottom" constant="1" id="Zg7-QN-u97"/>
-                            <constraint firstItem="R5o-dM-wOC" firstAttribute="top" secondItem="Ftq-rQ-8tE" secondAttribute="bottom" id="cis-4S-Ox4"/>
-                            <constraint firstItem="U1h-pg-5aA" firstAttribute="top" secondItem="KBe-Ve-SYa" secondAttribute="bottom" id="k6K-rN-bBG"/>
+                            <constraint firstItem="R5o-dM-wOC" firstAttribute="top" secondItem="hKp-iB-EXr" secondAttribute="top" id="cis-4S-Ox4"/>
+                            <constraint firstItem="hKp-iB-EXr" firstAttribute="bottom" secondItem="KBe-Ve-SYa" secondAttribute="bottom" id="k6K-rN-bBG"/>
                             <constraint firstItem="KBe-Ve-SYa" firstAttribute="trailing" secondItem="R5o-dM-wOC" secondAttribute="trailing" id="mxQ-mI-ENd"/>
-                            <constraint firstItem="R5o-dM-wOC" firstAttribute="top" secondItem="Ftq-rQ-8tE" secondAttribute="bottom" id="qNF-Wm-tQp"/>
+                            <constraint firstItem="R5o-dM-wOC" firstAttribute="top" secondItem="hKp-iB-EXr" secondAttribute="top" id="qNF-Wm-tQp"/>
                             <constraint firstItem="KBe-Ve-SYa" firstAttribute="top" secondItem="R5o-dM-wOC" secondAttribute="bottom" constant="1" id="qal-Zq-60V"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="hKp-iB-EXr"/>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="Aa3-OA-yql"/>
@@ -549,10 +544,6 @@
         <scene sceneID="hQQ-jg-LEj">
             <objects>
                 <viewController storyboardIdentifier="Accounts" id="mbh-2x-bRM" customClass="TLAccountsViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="hIj-2N-g5K"/>
-                        <viewControllerLayoutGuide type="bottom" id="Y5u-Bk-xGG"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="dtW-87-FoU">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -612,10 +603,11 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="rFs-vj-XnZ" secondAttribute="trailing" constant="-20" id="9v0-FY-jPc"/>
-                            <constraint firstItem="Y5u-Bk-xGG" firstAttribute="top" secondItem="rFs-vj-XnZ" secondAttribute="bottom" id="Axw-H7-En5"/>
+                            <constraint firstItem="U1N-m2-zfP" firstAttribute="bottom" secondItem="rFs-vj-XnZ" secondAttribute="bottom" id="Axw-H7-En5"/>
                             <constraint firstItem="rFs-vj-XnZ" firstAttribute="top" secondItem="dtW-87-FoU" secondAttribute="topMargin" id="B9W-me-BUL"/>
                             <constraint firstItem="rFs-vj-XnZ" firstAttribute="leading" secondItem="dtW-87-FoU" secondAttribute="leadingMargin" constant="-20" id="Cix-g3-m4G"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="U1N-m2-zfP"/>
                     </view>
                     <connections>
                         <outlet property="accountsTableView" destination="rFs-vj-XnZ" id="d1J-pX-IGy"/>
@@ -629,10 +621,6 @@
         <scene sceneID="jXs-0n-N3w">
             <objects>
                 <viewController storyboardIdentifier="AddressList" id="hnW-d4-U0e" customClass="TLAddressListViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="HNu-HK-bxR"/>
-                        <viewControllerLayoutGuide type="bottom" id="pey-iG-ekX"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="Tb2-2M-YJm">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -692,10 +680,11 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="dbC-iF-8QI" secondAttribute="trailing" constant="-20" id="9kr-fc-ubj"/>
-                            <constraint firstItem="pey-iG-ekX" firstAttribute="top" secondItem="dbC-iF-8QI" secondAttribute="bottom" id="CBw-SZ-cqI"/>
+                            <constraint firstItem="y0i-eb-0Ax" firstAttribute="bottom" secondItem="dbC-iF-8QI" secondAttribute="bottom" id="CBw-SZ-cqI"/>
                             <constraint firstItem="dbC-iF-8QI" firstAttribute="top" secondItem="Tb2-2M-YJm" secondAttribute="topMargin" id="Sdp-2d-neb"/>
                             <constraint firstItem="dbC-iF-8QI" firstAttribute="leading" secondItem="Tb2-2M-YJm" secondAttribute="leadingMargin" constant="-20" id="rTv-72-zNV"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="y0i-eb-0Ax"/>
                     </view>
                     <connections>
                         <outlet property="addressListTableView" destination="dbC-iF-8QI" id="3Fj-2R-hbm"/>
@@ -741,10 +730,6 @@
         <scene sceneID="wUQ-2W-3bL">
             <objects>
                 <viewController id="C8L-lL-MXR" customClass="TLPreloadViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="NBU-e6-3EZ"/>
-                        <viewControllerLayoutGuide type="bottom" id="Rqh-y2-ApZ"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="UTz-R7-M7K">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -788,11 +773,12 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Rqh-y2-ApZ" firstAttribute="top" secondItem="Fw4-PF-tr4" secondAttribute="bottom" id="3va-ne-eRH"/>
+                            <constraint firstItem="poj-ul-LtC" firstAttribute="bottom" secondItem="Fw4-PF-tr4" secondAttribute="bottom" id="3va-ne-eRH"/>
                             <constraint firstItem="Fw4-PF-tr4" firstAttribute="leading" secondItem="UTz-R7-M7K" secondAttribute="leadingMargin" constant="-16" id="8Eo-cb-HjR"/>
                             <constraint firstItem="Fw4-PF-tr4" firstAttribute="top" secondItem="UTz-R7-M7K" secondAttribute="topMargin" id="9w6-EC-GT2"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Fw4-PF-tr4" secondAttribute="trailing" constant="-16" id="dEC-N4-buS"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="poj-ul-LtC"/>
                     </view>
                     <navigationItem key="navigationItem" id="2Xh-Uh-TIK"/>
                     <connections>
@@ -809,10 +795,6 @@
         <scene sceneID="wlN-qB-9Nx">
             <objects>
                 <viewController storyboardIdentifier="Help" id="EMB-ss-dIf" customClass="TLHelpViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="GvX-Rr-y9z"/>
-                        <viewControllerLayoutGuide type="bottom" id="7ji-o0-QdJ"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="ix1-Zv-355">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -836,9 +818,10 @@
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="KAB-6n-WOj" secondAttribute="trailing" constant="-20" id="ggL-Yt-38S"/>
                             <constraint firstItem="KAB-6n-WOj" firstAttribute="leading" secondItem="ix1-Zv-355" secondAttribute="leadingMargin" constant="-20" id="t5Y-UK-YVE"/>
-                            <constraint firstItem="7ji-o0-QdJ" firstAttribute="top" secondItem="KAB-6n-WOj" secondAttribute="bottom" id="uWc-Ds-Lgy"/>
+                            <constraint firstItem="JMR-1u-hWv" firstAttribute="bottom" secondItem="KAB-6n-WOj" secondAttribute="bottom" id="uWc-Ds-Lgy"/>
                             <constraint firstItem="KAB-6n-WOj" firstAttribute="top" secondItem="ix1-Zv-355" secondAttribute="topMargin" id="vgl-Vr-UTW"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="JMR-1u-hWv"/>
                     </view>
                     <navigationItem key="navigationItem" title="Help" id="m13-Co-pa3">
                         <barButtonItem key="leftBarButtonItem" image="list.png" id="uDe-E1-dfF">
@@ -862,10 +845,6 @@
         <scene sceneID="yMB-0I-kxY">
             <objects>
                 <viewController storyboardIdentifier="Achievements" id="tVq-GB-YI6" customClass="TLAchievementsViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="0zy-72-N9K"/>
-                        <viewControllerLayoutGuide type="bottom" id="Xwj-Fa-YXF"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="nXC-cy-Dm2">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -878,10 +857,11 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="Ni8-ZB-yBY" firstAttribute="top" secondItem="nXC-cy-Dm2" secondAttribute="topMargin" id="Fdj-CV-618"/>
-                            <constraint firstItem="Xwj-Fa-YXF" firstAttribute="top" secondItem="Ni8-ZB-yBY" secondAttribute="bottom" id="Flf-Hw-zqS"/>
+                            <constraint firstItem="7Xs-o1-96c" firstAttribute="bottom" secondItem="Ni8-ZB-yBY" secondAttribute="bottom" id="Flf-Hw-zqS"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Ni8-ZB-yBY" secondAttribute="trailing" constant="-20" id="H6q-t5-Xsh"/>
                             <constraint firstItem="Ni8-ZB-yBY" firstAttribute="leading" secondItem="nXC-cy-Dm2" secondAttribute="leadingMargin" constant="-20" id="UoN-2i-vyP"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="7Xs-o1-96c"/>
                     </view>
                     <connections>
                         <outlet property="howToInstructionsTableView" destination="Ni8-ZB-yBY" id="Zch-WK-eF1"/>
@@ -895,10 +875,6 @@
         <scene sceneID="FF9-zK-YcY">
             <objects>
                 <viewController storyboardIdentifier="EnterMnemonic" id="AIZ-GL-gsh" customClass="TLRestoreWalletViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="fBn-4j-C4a"/>
-                        <viewControllerLayoutGuide type="bottom" id="ekP-Vx-XTs"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="WzD-8J-vGc">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -945,19 +921,20 @@
                             <constraint firstItem="End-6K-7BJ" firstAttribute="top" secondItem="C86-HO-o7D" secondAttribute="bottom" id="8QH-Sg-2VS"/>
                             <constraint firstItem="End-6K-7BJ" firstAttribute="leading" secondItem="WzD-8J-vGc" secondAttribute="leadingMargin" id="BJ2-XD-hHQ"/>
                             <constraint firstItem="End-6K-7BJ" firstAttribute="leading" secondItem="WzD-8J-vGc" secondAttribute="leadingMargin" id="Ldy-T4-NZ3"/>
-                            <constraint firstItem="ekP-Vx-XTs" firstAttribute="top" secondItem="TKr-WK-HrH" secondAttribute="bottom" id="OHH-D9-NXU"/>
-                            <constraint firstItem="C86-HO-o7D" firstAttribute="top" secondItem="fBn-4j-C4a" secondAttribute="bottom" id="Ozf-FN-Qad"/>
+                            <constraint firstItem="lTX-43-mDu" firstAttribute="bottom" secondItem="TKr-WK-HrH" secondAttribute="bottom" id="OHH-D9-NXU"/>
+                            <constraint firstItem="C86-HO-o7D" firstAttribute="top" secondItem="lTX-43-mDu" secondAttribute="top" id="Ozf-FN-Qad"/>
                             <constraint firstItem="End-6K-7BJ" firstAttribute="trailing" secondItem="WzD-8J-vGc" secondAttribute="trailingMargin" id="Q8m-cW-JlS"/>
                             <constraint firstAttribute="trailingMargin" secondItem="C86-HO-o7D" secondAttribute="trailing" constant="-16" id="QJ7-Sq-SQR"/>
                             <constraint firstAttribute="trailingMargin" secondItem="TKr-WK-HrH" secondAttribute="trailing" constant="-20" id="cU3-fT-hrl"/>
                             <constraint firstItem="End-6K-7BJ" firstAttribute="centerX" secondItem="C86-HO-o7D" secondAttribute="centerX" id="fOa-ab-t4S"/>
                             <constraint firstItem="TKr-WK-HrH" firstAttribute="leading" secondItem="WzD-8J-vGc" secondAttribute="leadingMargin" constant="-20" id="hMC-LZ-hRd"/>
-                            <constraint firstItem="ekP-Vx-XTs" firstAttribute="top" secondItem="3gz-BW-2FW" secondAttribute="bottom" constant="20" id="nF4-cD-x28"/>
+                            <constraint firstItem="lTX-43-mDu" firstAttribute="bottom" secondItem="3gz-BW-2FW" secondAttribute="bottom" constant="20" id="nF4-cD-x28"/>
                             <constraint firstItem="TKr-WK-HrH" firstAttribute="top" secondItem="C86-HO-o7D" secondAttribute="bottom" id="nva-76-N9I"/>
                             <constraint firstItem="3gz-BW-2FW" firstAttribute="trailing" secondItem="WzD-8J-vGc" secondAttribute="trailingMargin" id="taE-Kb-UEa"/>
                             <constraint firstItem="3gz-BW-2FW" firstAttribute="leading" secondItem="WzD-8J-vGc" secondAttribute="leadingMargin" id="xEw-hJ-qu8"/>
                             <constraint firstItem="C86-HO-o7D" firstAttribute="leading" secondItem="WzD-8J-vGc" secondAttribute="leadingMargin" constant="-16" id="z6o-aW-aKJ"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="lTX-43-mDu"/>
                     </view>
                     <connections>
                         <outlet property="inputMnemonicTextView" destination="3gz-BW-2FW" id="0SP-JC-DeI"/>
@@ -989,26 +966,22 @@
         <scene sceneID="4ZL-hC-fPk">
             <objects>
                 <viewController storyboardIdentifier="History" id="KFU-CX-7uI" customClass="TLHistoryViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="tK1-U1-IOd"/>
-                        <viewControllerLayoutGuide type="bottom" id="pIa-5b-TbG"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="hN2-a6-SWn">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="PSv-oQ-2fb">
-                                <rect key="frame" x="-4" y="64" width="383" height="84"/>
+                                <rect key="frame" x="-4" y="64" width="383" height="76"/>
                                 <color key="backgroundColor" red="0.93725490196078431" green="0.93725490196078431" blue="0.95686274509803926" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="From:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="yUe-8I-uLU">
-                                <rect key="frame" x="8" y="72" width="44" height="20.5"/>
+                                <rect key="frame" x="8" y="64" width="44" height="20.5"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CHZ-nO-cIl" customClass="UIButton">
-                                <rect key="frame" x="8" y="100" width="359" height="40"/>
+                                <rect key="frame" x="8" y="92" width="359" height="40"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i0i-6T-FsV">
                                         <rect key="frame" x="256.5" y="0.0" width="44.5" height="40"/>
@@ -1115,11 +1088,11 @@
                                 </connections>
                             </view>
                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="r7j-US-yi8">
-                                <rect key="frame" x="0.0" y="148" width="375" height="519"/>
+                                <rect key="frame" x="0.0" y="140" width="375" height="527"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </view>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="105" sectionHeaderHeight="22" sectionFooterHeight="22" translatesAutoresizingMaskIntoConstraints="NO" id="Dcx-1i-gkH">
-                                <rect key="frame" x="-4" y="148" width="383" height="519"/>
+                                <rect key="frame" x="-4" y="140" width="383" height="527"/>
                                 <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <prototypes>
                                     <tableViewCell contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="TransactionCellIdentifier" rowHeight="105" id="jqH-vD-QNO" customClass="TLTransactionTableViewCell">
@@ -1205,17 +1178,18 @@
                             <constraint firstItem="CHZ-nO-cIl" firstAttribute="leading" secondItem="hN2-a6-SWn" secondAttribute="leadingMargin" constant="-8" id="LHq-to-8vH"/>
                             <constraint firstItem="r7j-US-yi8" firstAttribute="leading" secondItem="hN2-a6-SWn" secondAttribute="leadingMargin" constant="-16" id="Lfo-8B-QWC"/>
                             <constraint firstItem="CHZ-nO-cIl" firstAttribute="leading" secondItem="hN2-a6-SWn" secondAttribute="leadingMargin" constant="-8" id="SAG-Od-NWL"/>
-                            <constraint firstItem="PSv-oQ-2fb" firstAttribute="top" secondItem="tK1-U1-IOd" secondAttribute="bottom" id="U7d-NI-EF5"/>
+                            <constraint firstItem="PSv-oQ-2fb" firstAttribute="top" secondItem="JSo-W1-6H7" secondAttribute="top" id="U7d-NI-EF5"/>
                             <constraint firstItem="PSv-oQ-2fb" firstAttribute="leading" secondItem="hN2-a6-SWn" secondAttribute="leadingMargin" constant="-20" id="fGb-o8-t6M"/>
-                            <constraint firstItem="yUe-8I-uLU" firstAttribute="top" secondItem="tK1-U1-IOd" secondAttribute="bottom" constant="8" symbolic="YES" id="hNz-MA-TtA"/>
+                            <constraint firstItem="yUe-8I-uLU" firstAttribute="top" secondItem="JSo-W1-6H7" secondAttribute="top" constant="8" symbolic="YES" id="hNz-MA-TtA"/>
                             <constraint firstItem="Dcx-1i-gkH" firstAttribute="top" secondItem="CHZ-nO-cIl" secondAttribute="bottom" constant="8" id="iUn-qs-Det"/>
                             <constraint firstItem="Dcx-1i-gkH" firstAttribute="top" secondItem="PSv-oQ-2fb" secondAttribute="bottom" id="ijS-gQ-J0M"/>
                             <constraint firstItem="CHZ-nO-cIl" firstAttribute="top" secondItem="yUe-8I-uLU" secondAttribute="bottom" constant="7.5" id="kqz-HI-GZV"/>
-                            <constraint firstItem="pIa-5b-TbG" firstAttribute="top" secondItem="Dcx-1i-gkH" secondAttribute="bottom" id="nub-S7-Tql"/>
+                            <constraint firstItem="JSo-W1-6H7" firstAttribute="bottom" secondItem="Dcx-1i-gkH" secondAttribute="bottom" id="nub-S7-Tql"/>
                             <constraint firstAttribute="trailingMargin" secondItem="CHZ-nO-cIl" secondAttribute="trailing" constant="-8" id="w1c-3V-lWp"/>
                             <constraint firstAttribute="trailingMargin" secondItem="CHZ-nO-cIl" secondAttribute="trailing" constant="-8" id="xR2-aD-EPu"/>
-                            <constraint firstItem="pIa-5b-TbG" firstAttribute="top" secondItem="r7j-US-yi8" secondAttribute="bottom" id="zl7-Ge-JYM"/>
+                            <constraint firstItem="JSo-W1-6H7" firstAttribute="bottom" secondItem="r7j-US-yi8" secondAttribute="bottom" id="zl7-Ge-JYM"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="JSo-W1-6H7"/>
                     </view>
                     <navigationItem key="navigationItem" title="History" id="kF7-DP-jfw">
                         <barButtonItem key="leftBarButtonItem" image="list.png" id="fbY-Ai-l0d">
@@ -1249,10 +1223,6 @@
         <scene sceneID="UZq-tS-whr">
             <objects>
                 <viewController storyboardIdentifier="menu" id="jIt-jK-JgH" customClass="TLMenuViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="wzq-3a-OJx"/>
-                        <viewControllerLayoutGuide type="bottom" id="2RU-l4-n2C"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="YBq-O5-UEq">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1295,10 +1265,10 @@
                         <constraints>
                             <constraint firstItem="ZNg-op-29C" firstAttribute="leading" secondItem="YBq-O5-UEq" secondAttribute="leadingMargin" constant="-20" id="5WR-5G-1rd"/>
                             <constraint firstItem="ZNg-op-29C" firstAttribute="trailing" secondItem="QyY-kf-rkr" secondAttribute="trailing" id="AHg-6X-s8R"/>
-                            <constraint firstItem="QyY-kf-rkr" firstAttribute="leading" secondItem="YBq-O5-UEq" secondAttribute="leading" id="BKo-CS-Shd"/>
-                            <constraint firstItem="QyY-kf-rkr" firstAttribute="bottom" secondItem="2RU-l4-n2C" secondAttribute="top" id="C26-vq-IKD"/>
-                            <constraint firstAttribute="trailing" secondItem="QyY-kf-rkr" secondAttribute="trailing" id="K7V-Yt-CHL"/>
-                            <constraint firstItem="QyY-kf-rkr" firstAttribute="bottom" secondItem="2RU-l4-n2C" secondAttribute="top" id="PTE-vP-Xde"/>
+                            <constraint firstItem="QyY-kf-rkr" firstAttribute="leading" secondItem="Bnc-gn-bQv" secondAttribute="leading" id="BKo-CS-Shd"/>
+                            <constraint firstItem="QyY-kf-rkr" firstAttribute="bottom" secondItem="Bnc-gn-bQv" secondAttribute="bottom" id="C26-vq-IKD"/>
+                            <constraint firstItem="Bnc-gn-bQv" firstAttribute="trailing" secondItem="QyY-kf-rkr" secondAttribute="trailing" id="K7V-Yt-CHL"/>
+                            <constraint firstItem="QyY-kf-rkr" firstAttribute="bottom" secondItem="Bnc-gn-bQv" secondAttribute="bottom" id="PTE-vP-Xde"/>
                             <constraint firstItem="QyY-kf-rkr" firstAttribute="top" secondItem="ZNg-op-29C" secondAttribute="bottom" id="Qed-O0-YQh"/>
                             <constraint firstItem="ZNg-op-29C" firstAttribute="top" secondItem="YBq-O5-UEq" secondAttribute="topMargin" id="Vm7-4h-rsx"/>
                             <constraint firstItem="QyY-kf-rkr" firstAttribute="leading" secondItem="ZNg-op-29C" secondAttribute="leading" constant="-4" id="XY7-c6-bup"/>
@@ -1308,6 +1278,7 @@
                             <constraint firstItem="ZNg-op-29C" firstAttribute="leading" secondItem="QyY-kf-rkr" secondAttribute="leading" id="x52-p3-V1b"/>
                             <constraint firstAttribute="trailingMargin" secondItem="ZNg-op-29C" secondAttribute="trailing" constant="-16" id="x7o-Qz-AQ5"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="Bnc-gn-bQv"/>
                         <variation key="default">
                             <mask key="constraints">
                                 <exclude reference="AHg-6X-s8R"/>
@@ -1332,14 +1303,11 @@
         <scene sceneID="0UY-kI-FRz">
             <objects>
                 <viewController storyboardIdentifier="SlidingViewControllerID" id="UtC-4S-ThX" customClass="ECSlidingViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="hvf-zb-YIe"/>
-                        <viewControllerLayoutGuide type="bottom" id="u5e-xl-Zqf"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="bPc-f8-s2b">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="Wip-xe-1OL"/>
                     </view>
                     <userDefinedRuntimeAttributes>
                         <userDefinedRuntimeAttribute type="string" keyPath="topViewControllerStoryboardId" value="PreloadNav"/>
@@ -1402,10 +1370,6 @@
         <scene sceneID="zVp-th-l0I">
             <objects>
                 <viewController storyboardIdentifier="ManageAccounts" id="8PD-ML-0E8" customClass="TLManageAccountsViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="A0j-sA-xYw"/>
-                        <viewControllerLayoutGuide type="bottom" id="kBp-k6-fLi"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="HXv-XT-ldk">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1462,11 +1426,12 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="kBp-k6-fLi" firstAttribute="top" secondItem="s5R-e7-WcB" secondAttribute="bottom" id="30D-1W-Zbi"/>
+                            <constraint firstItem="vsY-KH-B9q" firstAttribute="bottom" secondItem="s5R-e7-WcB" secondAttribute="bottom" id="30D-1W-Zbi"/>
                             <constraint firstAttribute="trailingMargin" secondItem="s5R-e7-WcB" secondAttribute="trailing" constant="-20" id="G5m-WM-t8x"/>
                             <constraint firstItem="s5R-e7-WcB" firstAttribute="leading" secondItem="HXv-XT-ldk" secondAttribute="leadingMargin" constant="-20" id="bZN-y9-qtg"/>
                             <constraint firstItem="s5R-e7-WcB" firstAttribute="top" secondItem="HXv-XT-ldk" secondAttribute="topMargin" id="fhv-px-9ds"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="vsY-KH-B9q"/>
                     </view>
                     <navigationItem key="navigationItem" title="Manage Accounts" id="WPt-OD-Zry">
                         <barButtonItem key="leftBarButtonItem" image="list.png" id="VDR-YX-Y64">
@@ -1488,10 +1453,6 @@
         <scene sceneID="goz-pj-GZC">
             <objects>
                 <viewController storyboardIdentifier="Instructions" id="gO0-zP-PAR" customClass="TLInstructionsViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="yYB-oV-Dm0"/>
-                        <viewControllerLayoutGuide type="bottom" id="tKQ-XN-Xmc"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="jJ1-CX-3i5">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1506,8 +1467,9 @@
                             <constraint firstAttribute="trailingMargin" secondItem="I8j-N2-zwg" secondAttribute="trailing" constant="-20" id="2Nu-tl-WeC"/>
                             <constraint firstItem="I8j-N2-zwg" firstAttribute="leading" secondItem="jJ1-CX-3i5" secondAttribute="leadingMargin" constant="-20" id="4d0-Th-uKo"/>
                             <constraint firstItem="I8j-N2-zwg" firstAttribute="top" secondItem="jJ1-CX-3i5" secondAttribute="topMargin" id="bnZ-d8-Max"/>
-                            <constraint firstItem="tKQ-XN-Xmc" firstAttribute="top" secondItem="I8j-N2-zwg" secondAttribute="bottom" id="gn8-u3-XnY"/>
+                            <constraint firstItem="mpQ-ff-kFU" firstAttribute="bottom" secondItem="I8j-N2-zwg" secondAttribute="bottom" id="gn8-u3-XnY"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="mpQ-ff-kFU"/>
                     </view>
                     <connections>
                         <outlet property="instructionsTableView" destination="I8j-N2-zwg" id="kng-za-l8e"/>
@@ -1521,14 +1483,11 @@
         <scene sceneID="KA1-Zb-ExV">
             <objects>
                 <viewController storyboardIdentifier="TransparentViewController" id="uB4-dR-EYT" customClass="TransparentViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="n5i-qR-z2O"/>
-                        <viewControllerLayoutGuide type="bottom" id="I1E-cQ-SXS"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="S8g-90-fGo">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <viewLayoutGuide key="safeArea" id="aep-oL-fAn"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Jmj-t6-IdZ" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -1539,10 +1498,6 @@
         <scene sceneID="U1L-ck-7BV">
             <objects>
                 <viewController storyboardIdentifier="AddressBook" id="uYm-sU-f6O" customClass="TLAddressBookViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="xRx-ih-M2R"/>
-                        <viewControllerLayoutGuide type="bottom" id="aeh-cc-CqV"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="zYB-eN-IRt">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1572,14 +1527,15 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="aeh-cc-CqV" firstAttribute="top" secondItem="gu7-kb-fZh" secondAttribute="bottom" id="DA5-gX-Pyy"/>
+                            <constraint firstItem="kWM-Od-Ngu" firstAttribute="bottom" secondItem="gu7-kb-fZh" secondAttribute="bottom" id="DA5-gX-Pyy"/>
                             <constraint firstAttribute="trailingMargin" secondItem="M3H-i2-eeH" secondAttribute="trailing" constant="-16" id="EvO-d2-mFZ"/>
-                            <constraint firstItem="M3H-i2-eeH" firstAttribute="top" secondItem="xRx-ih-M2R" secondAttribute="bottom" id="GvH-fc-tC5"/>
+                            <constraint firstItem="M3H-i2-eeH" firstAttribute="top" secondItem="kWM-Od-Ngu" secondAttribute="top" id="GvH-fc-tC5"/>
                             <constraint firstAttribute="trailingMargin" secondItem="gu7-kb-fZh" secondAttribute="trailing" constant="-20" id="Jul-bv-NWY"/>
                             <constraint firstItem="gu7-kb-fZh" firstAttribute="top" secondItem="M3H-i2-eeH" secondAttribute="bottom" id="QKf-ma-Ia8"/>
                             <constraint firstItem="M3H-i2-eeH" firstAttribute="leading" secondItem="zYB-eN-IRt" secondAttribute="leadingMargin" constant="-16" id="bhO-Nu-Ace"/>
                             <constraint firstItem="gu7-kb-fZh" firstAttribute="leading" secondItem="zYB-eN-IRt" secondAttribute="leadingMargin" constant="-20" id="m79-qA-UPn"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="kWM-Od-Ngu"/>
                     </view>
                     <connections>
                         <outlet property="addressBookTableView" destination="gu7-kb-fZh" id="ADP-5f-RiA"/>
@@ -1594,10 +1550,6 @@
         <scene sceneID="6bB-Ot-rnW">
             <objects>
                 <viewController storyboardIdentifier="TextView" id="2ys-DS-bOJ" customClass="TLTextViewViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="0H4-8I-z9h"/>
-                        <viewControllerLayoutGuide type="bottom" id="sen-X1-Ond"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="avv-gL-cZN">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1628,9 +1580,10 @@
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="Smt-SB-fPR" secondAttribute="trailing" constant="-8" id="UZN-sP-FLb"/>
                             <constraint firstItem="Smt-SB-fPR" firstAttribute="leading" secondItem="avv-gL-cZN" secondAttribute="leadingMargin" constant="-8" id="b1U-G1-Z85"/>
-                            <constraint firstItem="Smt-SB-fPR" firstAttribute="top" secondItem="0H4-8I-z9h" secondAttribute="bottom" constant="80" id="m9f-Hc-sR9"/>
-                            <constraint firstItem="sen-X1-Ond" firstAttribute="top" secondItem="Smt-SB-fPR" secondAttribute="bottom" constant="100" id="zxz-aO-I01"/>
+                            <constraint firstItem="Smt-SB-fPR" firstAttribute="top" secondItem="VGy-yS-UUG" secondAttribute="top" constant="80" id="m9f-Hc-sR9"/>
+                            <constraint firstItem="VGy-yS-UUG" firstAttribute="bottom" secondItem="Smt-SB-fPR" secondAttribute="bottom" constant="100" id="zxz-aO-I01"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="VGy-yS-UUG"/>
                     </view>
                     <connections>
                         <outlet property="textView" destination="YlR-nU-l4e" id="RFp-NB-3jB"/>
@@ -1644,10 +1597,6 @@
         <scene sceneID="S9d-DQ-STL">
             <objects>
                 <viewController storyboardIdentifier="Receive" id="zWN-ve-V1H" customClass="TLReceiveViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="sy9-QJ-fta"/>
-                        <viewControllerLayoutGuide type="bottom" id="Ve9-4g-G8o"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="s0k-Wg-a4k">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1714,7 +1663,7 @@
                                 </constraints>
                             </view>
                             <tabBar contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="GD9-CA-2hf">
-                                <rect key="frame" x="0.0" y="618" width="375" height="49"/>
+                                <rect key="frame" x="0.0" y="617" width="375" height="49"/>
                                 <color key="backgroundColor" red="0.0" green="0.0" blue="0.0" alpha="0.0" colorSpace="custom" customColorSpace="sRGB"/>
                                 <items>
                                     <tabBarItem title="Send" image="upload.png" id="KIz-U8-UaX"/>
@@ -1836,17 +1785,18 @@
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="nfd-UK-9Ze" secondAttribute="trailing" constant="-8" id="1LC-QJ-epj"/>
                             <constraint firstItem="nfd-UK-9Ze" firstAttribute="top" secondItem="OX8-v3-aou" secondAttribute="bottom" constant="8" id="5xa-MC-kd4"/>
-                            <constraint firstItem="Ve9-4g-G8o" firstAttribute="top" secondItem="88g-Hh-q2e" secondAttribute="bottom" constant="66" id="6gw-y6-pLf"/>
-                            <constraint firstItem="Ve9-4g-G8o" firstAttribute="top" secondItem="GD9-CA-2hf" secondAttribute="bottom" id="8Sh-QF-xgb"/>
+                            <constraint firstItem="f7i-Wg-kxT" firstAttribute="bottom" secondItem="88g-Hh-q2e" secondAttribute="bottom" constant="66" id="6gw-y6-pLf"/>
+                            <constraint firstItem="f7i-Wg-kxT" firstAttribute="bottom" secondItem="GD9-CA-2hf" secondAttribute="bottom" constant="1" id="8Sh-QF-xgb"/>
                             <constraint firstItem="nfd-UK-9Ze" firstAttribute="leading" secondItem="s0k-Wg-a4k" secondAttribute="leadingMargin" constant="-8" id="CMQ-Kh-UfU"/>
                             <constraint firstItem="88g-Hh-q2e" firstAttribute="top" secondItem="nfd-UK-9Ze" secondAttribute="bottom" constant="8" id="Fg2-B2-SOF"/>
-                            <constraint firstItem="OX8-v3-aou" firstAttribute="top" secondItem="sy9-QJ-fta" secondAttribute="bottom" constant="8" id="MTT-B2-pT0"/>
+                            <constraint firstItem="OX8-v3-aou" firstAttribute="top" secondItem="f7i-Wg-kxT" secondAttribute="top" constant="8" id="MTT-B2-pT0"/>
                             <constraint firstAttribute="trailingMargin" secondItem="88g-Hh-q2e" secondAttribute="trailing" constant="-8" id="Pwf-NR-tib"/>
                             <constraint firstItem="88g-Hh-q2e" firstAttribute="leading" secondItem="s0k-Wg-a4k" secondAttribute="leadingMargin" constant="-8" id="TFX-QM-U0b"/>
                             <constraint firstItem="OX8-v3-aou" firstAttribute="leading" secondItem="s0k-Wg-a4k" secondAttribute="leadingMargin" constant="-8" id="l0z-dQ-EKI"/>
                             <constraint firstAttribute="trailingMargin" secondItem="GD9-CA-2hf" secondAttribute="trailing" constant="-16" id="qnh-NA-nUg"/>
                             <constraint firstItem="GD9-CA-2hf" firstAttribute="leading" secondItem="s0k-Wg-a4k" secondAttribute="leadingMargin" constant="-16" id="zeJ-Xu-fDB"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="f7i-Wg-kxT"/>
                     </view>
                     <navigationItem key="navigationItem" title="Receive" id="wZG-Zf-k4F">
                         <barButtonItem key="leftBarButtonItem" image="list.png" id="o35-om-lj0">
@@ -1899,10 +1849,6 @@
         <scene sceneID="W8O-8i-HwF">
             <objects>
                 <viewController storyboardIdentifier="Links" id="t5N-dq-DrK" customClass="TLLinksViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="euC-6V-QvA"/>
-                        <viewControllerLayoutGuide type="bottom" id="CRY-6O-bBQ"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="fy8-UP-bbX">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -1934,10 +1880,11 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstAttribute="trailingMargin" secondItem="bXB-co-Rhc" secondAttribute="trailing" constant="-20" id="B27-i4-iSb"/>
-                            <constraint firstItem="CRY-6O-bBQ" firstAttribute="top" secondItem="bXB-co-Rhc" secondAttribute="bottom" id="HOQ-J3-RYe"/>
+                            <constraint firstItem="qMf-76-jBs" firstAttribute="bottom" secondItem="bXB-co-Rhc" secondAttribute="bottom" id="HOQ-J3-RYe"/>
                             <constraint firstItem="bXB-co-Rhc" firstAttribute="top" secondItem="fy8-UP-bbX" secondAttribute="topMargin" id="Jab-gO-ubP"/>
                             <constraint firstItem="bXB-co-Rhc" firstAttribute="leading" secondItem="fy8-UP-bbX" secondAttribute="leadingMargin" constant="-20" id="omC-SX-LXe"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="qMf-76-jBs"/>
                     </view>
                     <navigationItem key="navigationItem" title="Links" id="4vj-uf-BUZ">
                         <barButtonItem key="leftBarButtonItem" image="list.png" id="Cnu-yj-zw1">
@@ -1959,10 +1906,6 @@
         <scene sceneID="OjR-Fo-fnK">
             <objects>
                 <viewController storyboardIdentifier="ReviewPayment" id="BoH-fs-Zva" customClass="TLReviewPaymentViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="Zf6-uH-LG0"/>
-                        <viewControllerLayoutGuide type="bottom" id="VSg-wg-P7o"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="fFb-o3-9od">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2273,14 +2216,15 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="H5t-HQ-sZs" firstAttribute="centerX" secondItem="fFb-o3-9od" secondAttribute="centerX" id="AAQ-yj-T2V"/>
+                            <constraint firstItem="H5t-HQ-sZs" firstAttribute="centerX" secondItem="MUe-oP-K6B" secondAttribute="centerX" id="AAQ-yj-T2V"/>
                             <constraint firstItem="H5t-HQ-sZs" firstAttribute="trailing" secondItem="U2m-ef-UaP" secondAttribute="trailing" id="Kh4-rz-qBa"/>
                             <constraint firstItem="H5t-HQ-sZs" firstAttribute="top" secondItem="fFb-o3-9od" secondAttribute="top" constant="65" id="KsD-or-Cg2"/>
-                            <constraint firstItem="H5t-HQ-sZs" firstAttribute="bottom" secondItem="VSg-wg-P7o" secondAttribute="top" id="Mqc-VU-SW7"/>
+                            <constraint firstItem="H5t-HQ-sZs" firstAttribute="bottom" secondItem="MUe-oP-K6B" secondAttribute="bottom" id="Mqc-VU-SW7"/>
                             <constraint firstItem="H5t-HQ-sZs" firstAttribute="leading" secondItem="fFb-o3-9od" secondAttribute="leadingMargin" constant="-24" id="NOM-U9-h0h"/>
                             <constraint firstItem="H5t-HQ-sZs" firstAttribute="top" secondItem="U2m-ef-UaP" secondAttribute="bottom" constant="1" id="deZ-y6-F5p"/>
                             <constraint firstItem="H5t-HQ-sZs" firstAttribute="leading" secondItem="U2m-ef-UaP" secondAttribute="leading" id="hJY-Oy-fMv"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="MUe-oP-K6B"/>
                     </view>
                     <connections>
                         <outlet property="customizeFeeButton" destination="bta-AA-vWW" id="oOG-y4-Cus"/>
@@ -2327,10 +2271,6 @@
         <scene sceneID="rz2-9l-b8t">
             <objects>
                 <viewController storyboardIdentifier="ColdWallet" id="9rs-G5-mnO" customClass="TLColdWalletViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="eju-YL-bjs"/>
-                        <viewControllerLayoutGuide type="bottom" id="Mjq-ae-B33"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="wz5-Y0-Cdm">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2361,11 +2301,12 @@
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="Mjq-ae-B33" firstAttribute="top" secondItem="d6x-1x-crM" secondAttribute="bottom" id="1iC-8s-nGU"/>
+                            <constraint firstItem="Rrq-g0-jG7" firstAttribute="bottom" secondItem="d6x-1x-crM" secondAttribute="bottom" id="1iC-8s-nGU"/>
                             <constraint firstItem="d6x-1x-crM" firstAttribute="top" secondItem="wz5-Y0-Cdm" secondAttribute="topMargin" id="7LL-8N-Zph"/>
                             <constraint firstItem="d6x-1x-crM" firstAttribute="leading" secondItem="wz5-Y0-Cdm" secondAttribute="leadingMargin" constant="-20" id="CYs-6N-Geh"/>
                             <constraint firstAttribute="trailingMargin" secondItem="d6x-1x-crM" secondAttribute="trailing" constant="-20" id="eT9-4x-tqg"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="Rrq-g0-jG7"/>
                     </view>
                     <navigationItem key="navigationItem" title="Cold Wallet" id="3YE-it-wRp">
                         <barButtonItem key="leftBarButtonItem" image="list.png" id="NXQ-8l-NdL">
@@ -2389,10 +2330,6 @@
         <scene sceneID="hCa-Dq-ZKI">
             <objects>
                 <viewController storyboardIdentifier="CreateColdWallet" id="mtF-bz-Q5X" customClass="TLCreateColdWalletViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="YvW-ev-872"/>
-                        <viewControllerLayoutGuide type="bottom" id="7Nm-yZ-VPZ"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="rDA-2w-WHB">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2552,9 +2489,10 @@
                         <constraints>
                             <constraint firstItem="r4T-KL-Txa" firstAttribute="leading" secondItem="rDA-2w-WHB" secondAttribute="leadingMargin" constant="-20" id="OU0-Af-Ne5"/>
                             <constraint firstAttribute="trailingMargin" secondItem="r4T-KL-Txa" secondAttribute="trailing" constant="-20" id="bas-q8-2OI"/>
-                            <constraint firstItem="7Nm-yZ-VPZ" firstAttribute="top" secondItem="r4T-KL-Txa" secondAttribute="bottom" id="dW2-85-UjO"/>
+                            <constraint firstItem="tkX-ah-QEl" firstAttribute="bottom" secondItem="r4T-KL-Txa" secondAttribute="bottom" id="dW2-85-UjO"/>
                             <constraint firstItem="r4T-KL-Txa" firstAttribute="top" secondItem="rDA-2w-WHB" secondAttribute="topMargin" id="y0n-Ku-07E"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="tkX-ah-QEl"/>
                     </view>
                     <connections>
                         <outlet property="tableView" destination="r4T-KL-Txa" id="qe5-qA-KkH"/>
@@ -2568,10 +2506,6 @@
         <scene sceneID="Pwp-YH-Xhr">
             <objects>
                 <viewController storyboardIdentifier="SpendColdWallet" id="g42-iO-Bfr" customClass="TLAuthorizeColdWalletPaymentViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="J7h-XV-sV0"/>
-                        <viewControllerLayoutGuide type="bottom" id="bAF-Xt-ZY7"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="2DQ-MR-AJY">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -2786,10 +2720,11 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="acg-Nx-MmS" firstAttribute="top" secondItem="2DQ-MR-AJY" secondAttribute="topMargin" id="9qu-x6-7w4"/>
-                            <constraint firstItem="bAF-Xt-ZY7" firstAttribute="top" secondItem="acg-Nx-MmS" secondAttribute="bottom" id="QLe-tV-8G4"/>
+                            <constraint firstItem="SVd-yL-fzu" firstAttribute="bottom" secondItem="acg-Nx-MmS" secondAttribute="bottom" id="QLe-tV-8G4"/>
                             <constraint firstAttribute="trailingMargin" secondItem="acg-Nx-MmS" secondAttribute="trailing" constant="-20" id="Z6U-J7-VQL"/>
                             <constraint firstItem="acg-Nx-MmS" firstAttribute="leading" secondItem="2DQ-MR-AJY" secondAttribute="leadingMargin" constant="-20" id="ukc-yS-T6D"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="SVd-yL-fzu"/>
                     </view>
                     <connections>
                         <outlet property="tableView" destination="acg-Nx-MmS" id="vMO-mi-z9d"/>
@@ -2803,10 +2738,6 @@
         <scene sceneID="8xC-Dy-v2F">
             <objects>
                 <viewController storyboardIdentifier="SeeHDWalletData" id="DOb-yd-euR" customClass="TLBrainWalletViewController" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="w3n-zy-XDE"/>
-                        <viewControllerLayoutGuide type="bottom" id="Lh0-Fh-ury"/>
-                    </layoutGuides>
                     <view key="view" contentMode="scaleToFill" id="nbi-WT-AVp">
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -4052,10 +3983,11 @@
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="gTP-dG-YzZ" firstAttribute="top" secondItem="nbi-WT-AVp" secondAttribute="topMargin" id="1ec-ds-qzP"/>
-                            <constraint firstItem="Lh0-Fh-ury" firstAttribute="top" secondItem="gTP-dG-YzZ" secondAttribute="bottom" id="XKi-8A-f9U"/>
+                            <constraint firstItem="7By-dU-vqq" firstAttribute="bottom" secondItem="gTP-dG-YzZ" secondAttribute="bottom" id="XKi-8A-f9U"/>
                             <constraint firstAttribute="trailingMargin" secondItem="gTP-dG-YzZ" secondAttribute="trailing" constant="-20" id="aQ3-df-DTw"/>
                             <constraint firstItem="gTP-dG-YzZ" firstAttribute="leading" secondItem="nbi-WT-AVp" secondAttribute="leadingMargin" constant="-20" id="alh-V3-YoB"/>
                         </constraints>
+                        <viewLayoutGuide key="safeArea" id="7By-dU-vqq"/>
                     </view>
                     <connections>
                         <outlet property="tableView" destination="gTP-dG-YzZ" id="UOL-5F-yf4"/>
@@ -4075,6 +4007,6 @@
     </resources>
     <inferredMetricsTieBreakers>
         <segue reference="s7I-Xo-HUH"/>
-        <segue reference="LPu-4e-rku"/>
+        <segue reference="jbc-qB-Ba2"/>
     </inferredMetricsTieBreakers>
 </document>
