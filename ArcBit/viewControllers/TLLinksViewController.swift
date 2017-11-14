@@ -37,27 +37,27 @@ import UIKit
         super.init(coder: aDecoder)
     }
     
+    struct STATIC_MEMBERS {
+        static let kWebWalletSection = "kColdWalletSection"
+        static let kBrainSection = "kBrainSection"
+        static let kOthersSection = "kOthersSection"
+        static let kEmailSupportSection = "kEmailSupportSection"
+    }
+    
     @IBOutlet fileprivate var linksTableView:UITableView?
-    fileprivate var eventActionArray:NSArray?
-    fileprivate var eventAdvanceActionArray:NSArray?
-    fileprivate var FAQArray:NSArray?
-    fileprivate var advancedFAQArray:NSArray?
-    fileprivate var instructions:NSArray?
     fileprivate var action:NSString?
-    fileprivate var FAQText:NSString?
     fileprivate var clickRightBarButtonCount:Int = 0
     fileprivate var selectedSection:String = ""
+    fileprivate lazy var sectionArray = Array<String>()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setColors()
         setLogoImageView()
         
-        eventActionArray = TLHelpDoc.getEventsArray()
-        eventAdvanceActionArray = TLHelpDoc.getAdvanceEventsArray()
-        FAQArray = TLHelpDoc.getFAQArray()
-        advancedFAQArray = TLHelpDoc.getAdvanceFAQArray()
-        
+        //self.sectionArray = [STATIC_MEMBERS.kWebWalletSection, STATIC_MEMBERS.kBrainSection, STATIC_MEMBERS.kOthersSection, STATIC_MEMBERS.kEmailSupportSection]
+        self.sectionArray = [STATIC_MEMBERS.kWebWalletSection, STATIC_MEMBERS.kOthersSection, STATIC_MEMBERS.kEmailSupportSection]
+
         self.navigationController!.view.addGestureRecognizer(self.slidingViewController().panGesture)
         
         self.linksTableView!.delegate = self
@@ -130,17 +130,16 @@ import UIKit
     }
     
     func numberOfSections(in tableView:UITableView) -> Int {
-        return 5
+        return self.sectionArray.count
     }
     
     func tableView(_ tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
-        if section == 0 {
+        let sectionType = self.sectionArray[section]
+        if sectionType == STATIC_MEMBERS.kWebWalletSection {
             return TLDisplayStrings.ARCBIT_WEB_WALLET_STRING()
-        } else if section == 1 {
+        } else if sectionType == STATIC_MEMBERS.kBrainSection {
             return TLDisplayStrings.ARCBIT_BRAIN_WALLET_STRING()
-        } else if section == 2 {
-            return TLDisplayStrings.ARCBIT_ANDROID_WALLET_STRING()
-        } else if section == 3 {
+        } else if sectionType == STATIC_MEMBERS.kOthersSection {
             return TLDisplayStrings.OTHER_LINKS_STRING()
         } else {
             return TLDisplayStrings.EMAIL_SUPPORT_STRING()
@@ -148,11 +147,10 @@ import UIKit
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section:Int) -> Int {
-        if section == 0 || section == 1 {
-            return 2
-        } else if section == 2 {
-            return 1
-        } else if section == 3 {
+        let sectionType = self.sectionArray[section]
+        if sectionType == STATIC_MEMBERS.kWebWalletSection ||
+            sectionType == STATIC_MEMBERS.kBrainSection ||
+            sectionType == STATIC_MEMBERS.kOthersSection {
             return 2
         } else {
             return 1
@@ -169,21 +167,20 @@ import UIKit
         }
         cell!.textLabel!.numberOfLines = 0
         
-        if (indexPath as NSIndexPath).section == 0 {
+        let sectionType = self.sectionArray[indexPath.section]
+        if sectionType == STATIC_MEMBERS.kWebWalletSection {
             if (indexPath as NSIndexPath).row == 0 {
                 cell!.textLabel?.text = TLDisplayStrings.CHECK_OUT_THE_ARCBIT_WEB_WALLET_STRING()
             } else {
                 cell!.textLabel?.text = TLDisplayStrings.VIEW_ARCBIT_WEB_WALLET_DETAILS_STRING()
             }
-        } else if (indexPath as NSIndexPath).section == 1 {
+        } else if sectionType == STATIC_MEMBERS.kBrainSection {
             if (indexPath as NSIndexPath).row == 0 {
                 cell!.textLabel?.text = TLDisplayStrings.CHECK_OUT_THE_ARCBIT_BRAIN_WALLET_STRING()
             } else {
                 cell!.textLabel?.text = TLDisplayStrings.VIEW_ARCBIT_BRAIN_WALLET_DETAILS_STRING()
             }
-        } else if (indexPath as NSIndexPath).section == 2 {
-            cell!.textLabel?.text = TLDisplayStrings.CHECK_OUT_THE_ARCBIT_ANDROID_WALLET_STRING()
-        } else if (indexPath as NSIndexPath).section == 3 {
+        } else if sectionType == STATIC_MEMBERS.kOthersSection {
             if (indexPath as NSIndexPath).row == 0 {
                 cell!.imageView?.image = UIImage(named: "home3")
                 cell!.textLabel?.text = TLDisplayStrings.VISIT_OUR_HOME_PAGE_STRING()
@@ -201,7 +198,8 @@ import UIKit
     }
     
     func tableView(_ tableView:UITableView, willSelectRowAt indexPath:IndexPath) -> IndexPath? {
-        if((indexPath as NSIndexPath).section == 0) {
+        let sectionType = self.sectionArray[indexPath.section]
+        if sectionType == STATIC_MEMBERS.kWebWalletSection {
             self.selectedSection = "webwallet"
             if (indexPath as NSIndexPath).row == 0 {
                 let url = URL(string: "https://chrome.google.com/webstore/detail/arcbit-bitcoin-wallet/dkceiphcnbfahjbomhpdgjmphnpgogfk");
@@ -211,7 +209,7 @@ import UIKit
             } else {
                 performSegue(withIdentifier: "SegueText2", sender:self)
             }
-        } else if((indexPath as NSIndexPath).section == 1) {
+        } else if sectionType == STATIC_MEMBERS.kBrainSection {
             self.selectedSection = "brainwallet"
             if (indexPath as NSIndexPath).row == 0 {
                 let url = URL(string: "https://www.arcbitbrainwallet.com");
@@ -221,12 +219,7 @@ import UIKit
             } else {
                 performSegue(withIdentifier: "SegueText2", sender:self)
             }
-        } else if((indexPath as NSIndexPath).section == 2) {
-            let url = URL(string: "https://play.google.com/store/apps/details?id=com.arcbit.arcbit&hl=en");
-            if (UIApplication.shared.canOpenURL(url!)) {
-                UIApplication.shared.openURL(url!);
-            }
-        } else if((indexPath as NSIndexPath).section == 3) {
+        } else if sectionType == STATIC_MEMBERS.kOthersSection {
             if (indexPath as NSIndexPath).row == 0 {
                 let url = URL(string: "http://arcbit.io/");
                 if (UIApplication.shared.canOpenURL(url!)) {

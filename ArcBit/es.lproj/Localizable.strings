@@ -72,8 +72,6 @@
 
 "An account public key begins with the letters 'xpub'. You can see the transactions and bitcoins of an entire account from an account private key, with the exception of reusable address payments. Future releases will address this issue.\nYou can however temporary import the corresponding account private key for this accounts' account public key to spend your watch accounts' bitcoins. Simply go the send screen and select a watch account to spend from and you will be prompt to temporary import your account's private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen." = "An account public key begins with the letters 'xpub'. You can see the transactions and bitcoins of an entire account from an account private key, with the exception of reusable address payments. Future releases will address this issue.\nYou can however temporary import the corresponding account private key for this accounts' account public key to spend your watch accounts' bitcoins. Simply go the send screen and select a watch account to spend from and you will be prompt to temporary import your account's private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen.";
 
-"ArcBit Android Wallet" = "Arcbit Android cartera";
-
 "ArcBit Brain Wallet" = "Cartera Arcbit cerebro";
 
 "ArcBit Web Wallet" = "Cartera Arcbit Web";
@@ -147,8 +145,6 @@
 "Change Block Explorer URL" = "Cambiar URL bloque explorador";
 
 "Change Blockexplorer Type" = "Change Blockexplorer Type";
-
-"Check out the ArcBit Android Wallet" = "Echa un vistazo a la cartera Arcbit Android";
 
 "Check out the ArcBit Brain Wallet" = "Echa un vistazo a la cartera Arcbit cerebro";
 

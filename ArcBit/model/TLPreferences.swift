@@ -76,7 +76,6 @@ class TLPreferences
         static let PREFERENCE_ENCRYPTED_BACKUP_PASSPHRASE_KEY = "pref-encrypted-backup-passphrase-key"
         static let PREFERENCE_ENABLED_PROMPT_SHOW_WEB_WALLET = "pref-enabled-prompt-show-web-wallet"
         static let PREFERENCE_ENABLED_PROMPT_SHOW_TRY_COLD_WALLET = "pref-enabled-prompt-show-try-cold-wallet"
-        static let PREFERENCE_ENABLED_PROMPT_SHOW_CHECKOUT_ANDROID_WALLET = "pref-enabled-prompt-checkout-android-wallet"
         static let ENABLE_SHOW_FEE_EXPLANATION_INFO  = "pref-disabled=showfee-explanation-info"
         static let PREFERENCE_ENABLED_PROMPT_RATE_APP = "pref-enabled-prompt-rate-app"
         static let PREFERENCE_RATED_ONCE = "pref-rated-once"
@@ -549,16 +548,7 @@ class TLPreferences
         UserDefaults.standard.set(disabled ,forKey:CLASS_STATIC.PREFERENCE_ENABLED_PROMPT_SHOW_TRY_COLD_WALLET)
         UserDefaults.standard.synchronize()
     }
-    
-    class func disabledPromptCheckoutAndroidWallet() -> (Bool) {
-        return UserDefaults.standard.bool(forKey: CLASS_STATIC.PREFERENCE_ENABLED_PROMPT_SHOW_CHECKOUT_ANDROID_WALLET)
-    }
-    
-    class func setDisabledPromptCheckoutAndroidWallet(_ disabled:Bool) -> () {
-        UserDefaults.standard.set(disabled ,forKey:CLASS_STATIC.PREFERENCE_ENABLED_PROMPT_SHOW_CHECKOUT_ANDROID_WALLET)
-        UserDefaults.standard.synchronize()
-    }
-    
+
     class func disabledShowFeeExplanationInfo() -> (Bool){
         return UserDefaults.standard.bool(forKey: CLASS_STATIC.ENABLE_SHOW_FEE_EXPLANATION_INFO)
     }
