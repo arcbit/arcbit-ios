@@ -175,8 +175,6 @@
 "BITCOIN_DISPLAY_3"             = "Bits - uBTC";
 
 "ENABLE_PIN_CODE"              = "Habilitar código PIN";
-"ENABLE_BACKUP_WITH_ICLOUD"    = "Copia de seguridad con iCloud";
-"ENABLE_BACKUP_WITH_ICLOUD_FOOTER"    = "Puede habilitar iCloud para realizar una copia de seguridad de toda su cartera, lo que significa sus bitcoins y otros datos de billetera. Aún necesitará su contraseña de respaldo para restaurar su billetera desde una copia de seguridad de iCloud ya que su billetera se cifra primero antes de realizar una copia de respaldo en iCloud. Tenga en cuenta que cada dispositivo iOS tiene su propio archivo de copia de seguridad de iCloud wallet. Esto significa que no puede restaurar una billetera en un dispositivo diferente, sino en el dispositivo en el que lo hizo. Y también significa que diferentes dispositivos con la misma cuenta de iCloud tendrán sus propios respaldos de billetera.";
 "SHOW_PASSPHRASE"              = "Mostrar contraseña de copia de seguridad";
 "RESTORE_WALLET"              = "Restaurar cartera";
 

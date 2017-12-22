@@ -847,3 +847,7 @@
 "Write down or memorize your wallet backup passphrase. If you lose your backup passphrase, your wallet cannot be recovered. Backup can be done later. The backup passphrase can always be found in settings." = "Запишите или запишите свою кодовую фразу. Если вы потеряете ключевую фразу для резервного копирования, ваш кошелек не может быть восстановлен. Резервное копирование можно выполнить позже. Кодовая фраза для резервного копирования всегда может быть найдена в настройках.";
 
 "I understand" = "я понимаю";
+
+"iCloud support for ArcBit discontinued" = "Поддержка iCloud для ArcBit прекращена";
+
+"iCloud support for ArcBit is being discontinued. If your backup passphrase has not been backed up already, please do so." = "Поддержка iCloud для ArcBit прекращается. Если ваша кодовая фраза резервного копирования еще не была скопирована, сделайте это.";

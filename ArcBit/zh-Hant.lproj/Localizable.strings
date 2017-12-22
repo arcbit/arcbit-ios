@@ -847,3 +847,7 @@
 "Write down or memorize your wallet backup passphrase. If you lose your backup passphrase, your wallet cannot be recovered. Backup can be done later. The backup passphrase can always be found in settings." = "記下或記住您的錢包備份密碼。如果您丟失了備份密碼，您的錢包將無法恢復。備份可以在以後完成。備份密碼總是可以在設置中找到。";
 
 "I understand" = "我明白";
+
+"iCloud support for ArcBit discontinued" = "iCloud對ArcBit的支持正在停止";
+
+"iCloud support for ArcBit is being discontinued. If your backup passphrase has not been backed up already, please do so." = "iCloud對ArcBit的支持正在停止。如果您的備份口令尚未備份，請執行此操作。";

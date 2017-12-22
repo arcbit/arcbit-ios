@@ -849,3 +849,7 @@
 "Write down or memorize your wallet backup passphrase. If you lose your backup passphrase, your wallet cannot be recovered. Backup can be done later. The backup passphrase can always be found in settings." = "Write down or memorize your wallet backup passphrase. If you  lose your backup passphrase, your wallet cannot be recovered. Backup can be done later. The backup passphrase can always be found in settings.";
 
 "I understand" = "I understand";
+
+"iCloud support for ArcBit discontinued" = "iCloud support for ArcBit discontinued";
+
+"iCloud support for ArcBit is being discontinued. If your backup passphrase has not been backed up already, please do so." = "iCloud support for ArcBit is being discontinued. If your backup passphrase has not been backed up already, please do so.";

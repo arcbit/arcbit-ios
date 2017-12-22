@@ -175,8 +175,6 @@
 "BITCOIN_DISPLAY_3"             = "Bits - uBTC";
 
 "ENABLE_PIN_CODE"              = "Aktiviere PIN";
-"ENABLE_BACKUP_WITH_ICLOUD"    = "Backup mit iCloud";
-"ENABLE_BACKUP_WITH_ICLOUD_FOOTER"    = "Sie können iCloud aktivieren, um Ihre gesamte Geldbörse zu sichern, dh Ihre Bitcoins und andere Wallet-Daten. Sie benötigen weiterhin Ihre Backup-Passphrase, um Ihre Brieftasche aus einer iCloud-Sicherung wiederherzustellen, da Ihre Brieftasche zuerst verschlüsselt wird, bevor sie auf iCloud gesichert wird. Bitte beachten Sie, dass jedes iOS-Gerät über eine eigene iCloud-Wallet-Sicherungsdatei verfügt. Das bedeutet, dass Sie eine Brieftasche nicht auf einem anderen Gerät wiederherstellen können, sondern auf dem Gerät, auf dem Sie es gesichert haben. Und es bedeutet auch, dass verschiedene Geräte mit demselben iCloud-Konto über eigene Brieftaschen-Backups verfügen.";
 "SHOW_PASSPHRASE"              = "Zeige Backup Wortfolge";
 "RESTORE_WALLET"              = "Stelle das Wallet wieder her";
 
