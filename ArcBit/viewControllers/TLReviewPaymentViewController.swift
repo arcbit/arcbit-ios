@@ -118,6 +118,9 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
              name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION()), object:nil)
         updateView()
         self.reviewPaymentViewController = self
+        if !TLPreferences.enabledAdvancedMode() {
+            self.customizeFeeButton.isHidden = true
+        }
     }
     
     override func viewWillAppear(_ animated: Bool) {
