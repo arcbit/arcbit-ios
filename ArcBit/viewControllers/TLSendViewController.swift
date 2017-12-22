@@ -415,8 +415,17 @@ import StoreKit
                 () in
                 TLPreferences.setDisabledPromptShowTryColdWallet(true)
             })
+        } else if let balance = AppDelegate.instance().receiveSelectedObject!.getBalanceForSelectedObject(), balance.greater(TLCoin.zero()) && !TLPreferences.hasShownBackupPassphrase() {
+            self.showPromptThenPassphraseViewController()
         }
         self.navigationController!.view.addGestureRecognizer(self.slidingViewController().panGesture)
+    }
+    
+    func showPromptThenPassphraseViewController() {
+        TLPrompts.promptWithOneButton(self, title: TLDisplayStrings.WALLET_BACKUP_PASSPHRASE_WILL_BE_SHOWN(), message: TLDisplayStrings.PLEASE_WRITE_DOWN_OR_MEMORIZE_YOUR_WALLET_BACKUP_PASSPHRASE(), buttonText: TLDisplayStrings.I_UNDERSTAND(), success: {
+            let vc = self.storyboard!.instantiateViewController(withIdentifier: "Passphrase")
+            self.slidingViewController().present(vc, animated: true, completion: nil)
+        })
     }
     
     func _clearSendForm() {

@@ -844,3 +844,8 @@
 
 "iCloud backup will be lost. Are you sure you want to backup your local wallet to iCloud?" = "iCloud backup will be lost. Are you sure you want to backup your local wallet to iCloud?";
 
+"Wallet backup passphrase will be shown" = "Wallet backup passphrase will be shown";
+
+"Write down or memorize your wallet backup passphrase. If you lose your backup passphrase, your wallet cannot be recovered. Backup can be done later. The backup passphrase can always be found in settings." = "Write down or memorize your wallet backup passphrase. If you  lose your backup passphrase, your wallet cannot be recovered. Backup can be done later. The backup passphrase can always be found in settings.";
+
+"I understand" = "I understand";

@@ -74,6 +74,9 @@ import UIKit
 //            let masterHex = TLHDWalletWrapper.getMasterHex(passphrase ?? "")
 //            self.masterSeedHexTextView!.text = (masterHex)
 //        }
+        if (!TLPreferences.hasShownBackupPassphrase()) {
+            TLPreferences.setHasShownBackupPassphrase(true)
+        }
     }
     
     func passPhraseTextViewTapped(_ sender:AnyObject) {

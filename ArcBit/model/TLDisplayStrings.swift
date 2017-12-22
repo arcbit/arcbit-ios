@@ -451,4 +451,9 @@ class TLDisplayStrings {
     class func IMPORTED_ACCOUNT_STRING() -> String { return "Imported Account %@".localized }
     class func IMPORTED_WATCH_ACCOUNT_STRING() -> String { return "Imported Watch Account %@".localized }
 
+    
+    class func WALLET_BACKUP_PASSPHRASE_WILL_BE_SHOWN() -> String { return "Wallet backup passphrase will be shown".localized }
+    class func PLEASE_WRITE_DOWN_OR_MEMORIZE_YOUR_WALLET_BACKUP_PASSPHRASE() -> String { return "Write down or memorize your wallet backup passphrase. If you lose your backup passphrase, your wallet cannot be recovered. Backup can be done later. The backup passphrase can always be found in settings.".localized }
+    class func I_UNDERSTAND() -> String { return "I understand".localized }
+
 }

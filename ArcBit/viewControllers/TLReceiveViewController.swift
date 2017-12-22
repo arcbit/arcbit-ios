@@ -99,7 +99,10 @@ import UIKit
         NotificationCenter.default.addObserver(self
             , selector: #selector(TLReceiveViewController.updateViewToNewSelectedObject),
               name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_EXCHANGE_RATE_UPDATED()), object: nil)
-        
+        NotificationCenter.default.addObserver(self
+            , selector: #selector(TLReceiveViewController.checkToShowPassphraseViewController),
+              name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION()), object: nil)
+
         
         self.receiveAddressesScrollView!.delegate = self
         
@@ -123,6 +126,8 @@ import UIKit
         
         if (TLSuggestions.instance().conditionToPromptToSuggestedBackUpWalletPassphraseSatisfied()) {
             TLSuggestions.instance().promptToSuggestBackUpWalletPassphrase(self)
+        } else if let balance = AppDelegate.instance().receiveSelectedObject!.getBalanceForSelectedObject(), balance.greater(TLCoin.zero()) && !TLPreferences.hasShownBackupPassphrase() {
+            self.showPromptThenPassphraseViewController()
         }
     }
     
@@ -132,6 +137,20 @@ import UIKit
     
     func refreshSelectedAccountAgain() {
         self.refreshSelectedAccount(true)
+    }
+
+    func checkToShowPassphraseViewController() {
+        if !TLPreferences.hasReceivePaymentForFirstTime() && !TLPreferences.hasShownBackupPassphrase() {
+            self.showPromptThenPassphraseViewController()
+        }
+        TLPreferences.setHasReceivePaymentForFirstTime(true)
+    }
+    
+    func showPromptThenPassphraseViewController() {
+        TLPrompts.promptWithOneButton(self, title: TLDisplayStrings.WALLET_BACKUP_PASSPHRASE_WILL_BE_SHOWN(), message: TLDisplayStrings.PLEASE_WRITE_DOWN_OR_MEMORIZE_YOUR_WALLET_BACKUP_PASSPHRASE(), buttonText: TLDisplayStrings.I_UNDERSTAND(), success: {
+            let vc = self.storyboard!.instantiateViewController(withIdentifier: "Passphrase")
+            self.slidingViewController().present(vc, animated: true, completion: nil)
+        })
     }
     
     fileprivate func refreshSelectedAccount(_ fetchDataAgain: Bool) {

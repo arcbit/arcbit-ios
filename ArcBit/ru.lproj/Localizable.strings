@@ -842,3 +842,8 @@
 
 "iCloud backup will be lost. Are you sure you want to backup your local wallet to iCloud?" = "Резервное копирование iCloud будет потеряно. Вы действительно хотите сделать резервную копию своего местного кошелька в iCloud?";
 
+"Wallet backup passphrase will be shown" = "Восстановительная фраза-пароль кошелька будет отображена";
+
+"Write down or memorize your wallet backup passphrase. If you lose your backup passphrase, your wallet cannot be recovered. Backup can be done later. The backup passphrase can always be found in settings." = "Запишите или запишите свою кодовую фразу. Если вы потеряете ключевую фразу для резервного копирования, ваш кошелек не может быть восстановлен. Резервное копирование можно выполнить позже. Кодовая фраза для резервного копирования всегда может быть найдена в настройках.";
+
+"I understand" = "я понимаю";

@@ -98,6 +98,18 @@ class TLPrompts {
             })
     }
     
+    class func promptWithOneButton(_ vc: UIViewController, title: String, message: String, buttonText: String,
+                                success: @escaping TLWalletUtils.Success) -> () {
+        UIAlertController.showAlert(in: vc,
+                                    withTitle: title,
+                                    message: message,
+                                    cancelButtonTitle: buttonText,
+                                    destructiveButtonTitle: nil,
+                                    otherButtonTitles: [],
+                                    tap: {(alertView, action, buttonIndex) in
+                                        success()
+        })
+    }
     
     class func promtForOK(_ vc:UIViewController, title: String, message: String,
         success: @escaping TLWalletUtils.Success) -> () {

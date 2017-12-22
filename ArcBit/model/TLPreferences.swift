@@ -79,6 +79,8 @@ class TLPreferences
         static let ENABLE_SHOW_FEE_EXPLANATION_INFO  = "pref-disabled=showfee-explanation-info"
         static let PREFERENCE_ENABLED_PROMPT_RATE_APP = "pref-enabled-prompt-rate-app"
         static let PREFERENCE_RATED_ONCE = "pref-rated-once"
+        static let HAS_RECEIVED_PAYMENT_FOR_FIRST_TIME = "has-received-payment-for-first-time"
+        static let HAS_SHOWN_BACKUP_PASSPHRASE = "has-shown-backup-passphrase"
     }
     
     class func setHasSetupHDWallet(_ enabled:Bool) -> () {
@@ -573,6 +575,24 @@ class TLPreferences
     
     class func setHasRatedOnce() -> () {
         UserDefaults.standard.set(true ,forKey:CLASS_STATIC.PREFERENCE_RATED_ONCE)
+        UserDefaults.standard.synchronize()
+    }
+    
+    class func hasReceivePaymentForFirstTime() -> (Bool) {
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.HAS_RECEIVED_PAYMENT_FOR_FIRST_TIME)
+    }
+    
+    class func setHasReceivePaymentForFirstTime(_ received:Bool) -> () {
+        UserDefaults.standard.set(received ,forKey:CLASS_STATIC.HAS_RECEIVED_PAYMENT_FOR_FIRST_TIME)
+        UserDefaults.standard.synchronize()
+    }
+    
+    class func hasShownBackupPassphrase() -> (Bool) {
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.HAS_SHOWN_BACKUP_PASSPHRASE)
+    }
+    
+    class func setHasShownBackupPassphrase(_ hasShown:Bool) -> () {
+        UserDefaults.standard.set(hasShown ,forKey:CLASS_STATIC.HAS_SHOWN_BACKUP_PASSPHRASE)
         UserDefaults.standard.synchronize()
     }
     
