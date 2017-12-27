@@ -883,9 +883,6 @@ import Crashlytics
     }
     
     func initializeWalletAppAndShowInitialScreen(_ recoverHDWalletIfNewlyInstalledApp:(Bool), walletPayload:(NSDictionary?)) {
-        if (TLPreferences.getEnableBackupWithiCloud()) {
-            TLCloudDocumentSyncWrapper.instance().checkCloudAvailability()
-        }
         TLAnalytics.instance()
         
         NotificationCenter.default.addObserver(self
@@ -1312,14 +1309,6 @@ import Crashlytics
     }
     
     func applicationWillTerminate(_ application: UIApplication) {
-        if (TLPreferences.getEnableBackupWithiCloud()) {
-            guard let walletJson = appWallet.getWalletsJson(),
-                let password = TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase() else { return }
-            // when terminating app must save immediately, don't wait to save to iCloud
-            let encryptedWalletJson = TLWalletJson.getEncryptedWalletJsonContainer(walletJson,
-                                                                                   password: password)
-            saveWalletJson(encryptedWalletJson as (NSString), date:Date())
-        }
         saveWalletJsonCloud()
     }
     
@@ -1357,26 +1346,8 @@ import Crashlytics
             let password = TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase() else { return false }
         let encryptedWalletJson = TLWalletJson.getEncryptedWalletJsonContainer(walletJson,
             password: password)
-        if (TLPreferences.getEnableBackupWithiCloud()) {
-            if let fileName = TLPreferences.getCloudBackupWalletFileName(), TLCloudDocumentSyncWrapper.instance().checkCloudAvailability() {
-                TLCloudDocumentSyncWrapper.instance().saveFile(toCloud: fileName, content:encryptedWalletJson,
-                    completion:{(cloudDocument, documentData, error) in
-                        if let error = error {
-                            DLog("saveFileToCloud error \(error.localizedDescription)")
-                        } else {
-                            guard let cloudDocument = cloudDocument, let date = cloudDocument.fileModificationDate else { return }
-                            self.saveWalletJson(encryptedWalletJson as NSString                                                                                                                                                                                                                                                                                                                                                                                     , date: date)
-                            DLog("saveFileToCloud done")
-                        }
-                })
-            } else {
-                saveWalletJson(encryptedWalletJson as (NSString), date:Date())
-                DLog("saveFileToCloud ! checkCloudAvailability save local done")
-            }
-        } else {
-            saveWalletJson(encryptedWalletJson as (NSString), date:Date())
-            DLog("saveFileToCloud local done")
-        }
+        saveWalletJson(encryptedWalletJson as (NSString), date:Date())
+        DLog("saveFileToCloud local done")
         return true
     }
     

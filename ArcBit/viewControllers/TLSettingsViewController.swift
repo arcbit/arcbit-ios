@@ -39,8 +39,6 @@ import AVFoundation
         LTHPasscodeViewController.sharedUser().delegate = self
         self.neverShowPrivacySettings = true
         self.delegate = self
-
-        TLPreferences.setInAppSettingsKitEnableBackupWithiCloud(TLPreferences.getEnableBackupWithiCloud())
         
         NotificationCenter.default.addObserver(self, selector: #selector(TLSettingsViewController.settingDidChange(_:)), name: NSNotification.Name(rawValue: kIASKAppSettingChanged), object: nil)
         
@@ -216,58 +214,6 @@ import AVFoundation
             asModal: true)
     }
     
-    
-    fileprivate func promptToConfirmOverwriteCloudWalletJSONFileWithLocalWalletJSONFile() {
-        UIAlertController.showAlert(in: self,
-            withTitle: TLDisplayStrings.BACKUP_IYOUR_LOCAL_WALLET_TO_ICLOUD_STRING(),
-            message: "",
-            cancelButtonTitle: TLDisplayStrings.NO_STRING(),
-            destructiveButtonTitle: nil,
-            otherButtonTitles: [TLDisplayStrings.YES_STRING()],
-            
-            tap: {(alertView, action, buttonIndex) in
-                if (buttonIndex == alertView?.firstOtherButtonIndex) {
-                    AppDelegate.instance().saveWalletJsonCloudBackground()
-                    TLPreferences.setEnableBackupWithiCloud(true)
-                } else if (buttonIndex == alertView?.cancelButtonIndex) {
-                    TLPreferences.setEnableBackupWithiCloud(false)
-                    TLPreferences.setInAppSettingsKitEnableBackupWithiCloud(false)
-                }
-        })
-        
-    }
-    
-    fileprivate func promptToConfirmOverwriteLocalWalletJSONFileWithCloudWalletJSONFile(_ encryptedWalletJSON: String) {
-        UIAlertController.showAlert(in: self,
-            withTitle: TLDisplayStrings.RESTORE_WALLET_FROM_ICLOUD_STRING(),
-            message: "",
-            cancelButtonTitle: TLDisplayStrings.NO_STRING(),
-            destructiveButtonTitle: nil,
-            otherButtonTitles: [TLDisplayStrings.YES_STRING()],
-            
-            tap: {(alertView, action, buttonIndex) in
-                if (buttonIndex == alertView?.firstOtherButtonIndex) {
-                    NotificationCenter.default.addObserver(self,
-                        selector: #selector(TLSettingsViewController.didDismissEnterMnemonicViewController(_:)),
-                        name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ENTER_MNEMONIC_VIEWCONTROLLER_DISMISSED()),
-                        object: nil)
-                    
-                    let vc = self.storyboard!.instantiateViewController(withIdentifier: "EnterMnemonic") as! TLRestoreWalletViewController
-                    vc.isRestoringFromEncryptedWalletJSON = true
-                    vc.encryptedWalletJSON = encryptedWalletJSON
-                    self.slidingViewController().present(vc, animated: true, completion: nil)
-                } else if (buttonIndex == alertView?.cancelButtonIndex) {
-                    TLPreferences.setEnableBackupWithiCloud(false)
-                    TLPreferences.setInAppSettingsKitEnableBackupWithiCloud(false)
-                }
-        })
-    }
-    
-    func didDismissEnterMnemonicViewController(_ notification: Notification) {
-        TLPreferences.setEnableBackupWithiCloud(false)
-        TLPreferences.setInAppSettingsKitEnableBackupWithiCloud(false)
-    }
-    
     func settingDidChange(_ info: Notification) {
         let userInfo = (info as NSNotification).userInfo! as NSDictionary
         for key1 in userInfo.allKeys {
@@ -305,52 +251,6 @@ import AVFoundation
             let enabled = userInfo.object(forKey: "enablesoundnotification") as! Bool
             if (enabled) {
                 AudioServicesPlaySystemSound(1016)
-            }
-            
-        } else if (didChangeKey == "enablebackupwithicloud") {
-            let enabled = userInfo.object(forKey: "enablebackupwithicloud") as! Bool
-            if (enabled) {
-                if !TLCloudDocumentSyncWrapper.instance().checkCloudAvailability() {
-                    // don't need own alert message, OS will give warning for you
-                    TLPreferences.setInAppSettingsKitEnableBackupWithiCloud(false)
-                    self.updateHiddenKeys()
-                    return
-                }
-
-                // Why give option to back from cloud or local? A user may want to restore from cloud backup if he get a new phone.
-                TLCloudDocumentSyncWrapper.instance().getFileFromCloud(TLPreferences.getCloudBackupWalletFileName()!, completion: {
-                    (cloudDocument, documentData, error) in
-                    TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                    if (documentData!.count != 0) {
-                        let cloudWalletJSONDocumentSavedDate = cloudDocument!.fileModificationDate
-                        let dateFormatter = DateFormatter()
-                        dateFormatter.dateStyle = .medium
-                        dateFormatter.timeStyle = .medium
-                        
-                        let msg = String(format: TLDisplayStrings.YOUR_ICLOUD_BACKUP_WAS_LAST_SAVED_ON_X_DATE_STRING(), dateFormatter.string(from: cloudWalletJSONDocumentSavedDate!))
-
-                        UIAlertController.showAlert(in: self,
-                            withTitle: TLDisplayStrings.ICLOUD_BACKUP_FOUND_STRING(),
-                            message: msg,
-                            cancelButtonTitle: TLDisplayStrings.RESTORE_FROM_ICLOUD_STRING(),
-                            destructiveButtonTitle: nil,
-                            otherButtonTitles: [TLDisplayStrings.BACKUP_LOCAL_WALLET_STRING()],
-                            tap: {(alertView, action, buttonIndex) in
-                                if (buttonIndex == alertView!.firstOtherButtonIndex) {
-                                    self.promptToConfirmOverwriteCloudWalletJSONFileWithLocalWalletJSONFile()
-                                } else if (buttonIndex == alertView!.cancelButtonIndex) {
-                                    let encryptedWalletJSON = NSString(data: documentData!, encoding: String.Encoding.utf8.rawValue)
-                                    self.promptToConfirmOverwriteLocalWalletJSONFileWithCloudWalletJSONFile(encryptedWalletJSON! as String)
-                                }
-                        })
-                        
-                    } else {
-                        TLPreferences.setEnableBackupWithiCloud(true)
-                        AppDelegate.instance().saveWalletJsonCloudBackground()
-                    }
-                })
-            } else {
-                TLPreferences.setEnableBackupWithiCloud(false)
             }
         } else if (didChangeKey == "enablepincode") {
             let enabled = userInfo.object(forKey: "enablepincode") as! Bool

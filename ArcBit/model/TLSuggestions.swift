@@ -197,8 +197,7 @@ class TLSuggestions {
         let viewSendScreenCount = userAnalyticsDict.object(forKey: TLNotificationEvents.EVENT_VIEW_SEND_SCREEN()) as! Int? ?? 0
         if (enabledSuggestedBackUpWalletPassphrase() &&
             viewSendScreenCount > 0 &&
-            viewSendScreenCount % VIEW_SEND_SCREEN_GAP_COUNT_TO_SHOW_SUGGESTION_TO_BACKUP_WALLET_PASSPHRASE == 0 &&
-            !TLPreferences.getEnableBackupWithiCloud()) {
+            viewSendScreenCount % VIEW_SEND_SCREEN_GAP_COUNT_TO_SHOW_SUGGESTION_TO_BACKUP_WALLET_PASSPHRASE == 0) {
                 return true
         } else {
             return false

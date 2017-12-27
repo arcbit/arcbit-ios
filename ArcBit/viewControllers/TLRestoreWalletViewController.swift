@@ -34,7 +34,6 @@ import UIKit
     @IBOutlet fileprivate var restoreWalletDescriptionLabel:UILabel?
     
     var encryptedWalletJSON:String?
-    var isRestoringFromEncryptedWalletJSON:Bool = false
     
     override var preferredStatusBarStyle : (UIStatusBarStyle) {
         return UIStatusBarStyle.lightContent
@@ -45,10 +44,6 @@ import UIKit
         setNavigationBarColors(self.navigationBar!)
         self.navigationBar?.topItem?.title = TLDisplayStrings.RESTORE_WALLET_STRING()
         self.restoreWalletDescriptionLabel!.text = TLDisplayStrings.ENTER_A_WALLET_BACKUP_PASSPHRASE_STRING()
-
-        if (self.isRestoringFromEncryptedWalletJSON) {
-            self.restoreWalletDescriptionLabel!.text = TLDisplayStrings.ENTER_PASSPHRASE_FOR_ICLOUD_BACKUP_WALLET_STRING()
-        }
         
         self.inputMnemonicTextView!.returnKeyType = .done
         self.inputMnemonicTextView!.delegate = self
@@ -73,21 +68,13 @@ import UIKit
                     self.inputMnemonicTextView!.resignFirstResponder()
                     TLHUDWrapper.showHUDAddedTo(self.view, labelText:TLDisplayStrings.RESTORING_WALLET_STRING(), animated:true)
                     
-                    if (self.isRestoringFromEncryptedWalletJSON) {
-                        AppDelegate.instance().initializeWalletAppAndShowInitialScreen(false, walletPayload:walletPayload)
-                        TLPreferences.setEnableBackupWithiCloud(true)
-                        TLPreferences.setWalletPassphrase(mnemonicPassphrase, useKeychain: true)
-                        TLPreferences.setEncryptedWalletJSONPassphrase(mnemonicPassphrase, useKeychain: true)
+                    DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
+                        AppDelegate.instance().saveWalletJSONEnabled = false
+                        AppDelegate.instance().recoverHDWallet(mnemonicPassphrase, shouldRefreshApp:false)
+                        AppDelegate.instance().refreshHDWalletAccounts(true)
+                        AppDelegate.instance().refreshApp(mnemonicPassphrase, clearWalletInMemory:false)
+                        AppDelegate.instance().saveWalletJSONEnabled = true
                         self.handleAfterRecoverWallet(mnemonicPassphrase)
-                    } else {
-                        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
-                            AppDelegate.instance().saveWalletJSONEnabled = false
-                            AppDelegate.instance().recoverHDWallet(mnemonicPassphrase, shouldRefreshApp:false)
-                            AppDelegate.instance().refreshHDWalletAccounts(true)
-                            AppDelegate.instance().refreshApp(mnemonicPassphrase, clearWalletInMemory:false)
-                            AppDelegate.instance().saveWalletJSONEnabled = true
-                            self.handleAfterRecoverWallet(mnemonicPassphrase)
-                        }
                     }
                 }
                 else if (buttonIndex == alertView?.cancelButtonIndex) {
@@ -128,18 +115,7 @@ import UIKit
             passphrase = passphrase?.trimmingCharacters(in: CharacterSet.whitespacesAndNewlines)
             
             if (TLHDWalletWrapper.phraseIsValid(passphrase!)) {
-                if (self.isRestoringFromEncryptedWalletJSON) {
-                    //try passphrase on EncryptedWalletJSON
-                    let encryptedWalletJSONPassphrase = passphrase
-                    let walletPayload = TLWalletJson.getWalletJsonDict(self.encryptedWalletJSON, password:encryptedWalletJSONPassphrase)
-                    if (walletPayload == nil) {
-                        TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message:TLDisplayStrings.INCORRECT_PASSPHRASE_FOR_ICLOUD_WALLET_BACKUP_STRING())
-                    } else {
-                        showPromptToRestoreWallet(passphrase!, walletPayload:walletPayload!)
-                    }
-                } else {
-                    showPromptToRestoreWallet(passphrase!, walletPayload:nil)
-                }
+                showPromptToRestoreWallet(passphrase!, walletPayload:nil)
             } else {
                 TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message:TLDisplayStrings.INVALID_BACKUP_PASSPHRASE_STRING())
             }

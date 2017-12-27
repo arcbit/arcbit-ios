@@ -75,7 +75,6 @@ import UIKit
                     }
             })
         } else {
-            //self.checkToLoadFromiCloud()
             self.checkToLoadFromLocal()
         }
     }
@@ -86,83 +85,6 @@ import UIKit
             self.initializeWalletAppAndShowInitialScreenAndGoToMainScreen(localWalletPayload)
         } else {
             self.initializeWalletAppAndShowInitialScreenAndGoToMainScreen(nil)
-        }
-    }
-    
-    fileprivate func checkToLoadFromiCloud() -> () {
-        if (TLPreferences.getEnableBackupWithiCloud()) {
-            self.walletLoadingActivityIndicatorView!.startAnimating()
-            
-            TLCloudDocumentSyncWrapper.instance().getFileFromCloud(TLPreferences.getCloudBackupWalletFileName()!, completion: {
-                (cloudDocument, documentData, error) in
-                var walletPayload: NSDictionary? = nil
-                
-                if (documentData!.count == 0) {
-                    self.walletLoadingActivityIndicatorView!.stopAnimating()
-                    walletPayload = AppDelegate.instance().getLocalWalletJsonDict()
-                    UIAlertController.showAlert(in: self,
-                        withTitle: TLDisplayStrings.ICLOUD_BACKUP_NOT_FOUND_STRING(),
-                        message: TLDisplayStrings.ICLOUD_BACKUP_NOT_FOUND_DESC_STRING(),
-                        cancelButtonTitle: TLDisplayStrings.NO_STRING(),
-                        destructiveButtonTitle: nil,
-                        otherButtonTitles: [TLDisplayStrings.YES_STRING()],
-                        tap: {(alertView, action, buttonIndex) in
-                            if (buttonIndex == alertView!.firstOtherButtonIndex) {
-                                self.initializeWalletAppAndShowInitialScreenAndGoToMainScreen(walletPayload!)
-                                AppDelegate.instance().saveWalletJsonCloudBackground()
-                            } else if (buttonIndex == alertView!.cancelButtonIndex) {
-                            }
-                    })
-                } else {
-                    if (error == nil) {
-                        let cloudWalletJSONDocumentSavedDate = cloudDocument!.fileModificationDate
-                        let localWalletJSONDocumentSavedDate = TLPreferences.getLastSavedEncryptedWalletJSONDate()
-                        let comparisonResult = cloudWalletJSONDocumentSavedDate!.compare(localWalletJSONDocumentSavedDate)
-                        
-                        if (comparisonResult == ComparisonResult.orderedDescending || comparisonResult == ComparisonResult.orderedSame) {
-                            let encryptedWalletJSON = NSString(data: documentData!, encoding: String.Encoding.utf8.rawValue)
-                            let passphrase = TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase()
-                            walletPayload = TLWalletJson.getWalletJsonDict((encryptedWalletJSON as! String), password: passphrase)
-                            if (walletPayload != nil) {
-                                self.initializeWalletAppAndShowInitialScreenAndGoToMainScreen(walletPayload!)
-                            } else {
-                                // Should not happen, this means somehow I pulled an icloud backup wallet that is different then the local wallet,
-                                // but the code that makes each icloud backup file name unique for each device should fix that issue.
-                                TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.CANNOT_DECRYPT_ICLOUD_BACKUP_WALLET_STRING())
-                            }
-                        } else {
-                            // Should not happen, this is because I always do local backup after icloud backup.
-                            // Even if I do backup when cloud is disabled, and I turn cloud back on, a backup will be made, thus syncing backup and backup time.
-                            // Even I do turn off wifi, and edit wallet also.
-                            walletPayload = AppDelegate.instance().getLocalWalletJsonDict()
-                            self.initializeWalletAppAndShowInitialScreenAndGoToMainScreen(walletPayload!)
-                        }
-                        self.walletLoadingActivityIndicatorView!.stopAnimating()
-                    } else {
-                        self.walletLoadingActivityIndicatorView!.stopAnimating()
-                        
-                        walletPayload = AppDelegate.instance().getLocalWalletJsonDict()
-                        
-                        UIAlertController.showAlert(in: self,
-                            withTitle: String(format: TLDisplayStrings.ICLOUD_ERROR_COLON_X_STRING(), error!.localizedDescription),
-                            message: TLDisplayStrings.DO_YOU_WANT_TO_LOAD_LOCAL_WALLET_FILE_STRING(),
-                            cancelButtonTitle: TLDisplayStrings.NO_STRING(),
-                            destructiveButtonTitle: nil,
-                            otherButtonTitles: [TLDisplayStrings.YES_STRING()],
-                            
-                            tap: {(alertView, action, buttonIndex) in
-                                if (buttonIndex == alertView!.firstOtherButtonIndex) {
-                                    self.initializeWalletAppAndShowInitialScreenAndGoToMainScreen(walletPayload!)
-                                } else if (buttonIndex == alertView!.cancelButtonIndex) {
-                                }
-                        })
-                        
-                    }
-                    
-                }
-            })
-        } else {
-            self.checkToLoadFromLocal()
         }
     }
     
