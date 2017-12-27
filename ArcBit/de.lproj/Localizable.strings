@@ -844,7 +844,7 @@
 
 "Wallet backup passphrase will be shown" = "Wallet backup Wortfolge wird angezeigt werden";
 
-"Write down or memorize your wallet backup passphrase. If you lose your backup passphrase, your wallet cannot be recovered. Backup can be done later. The backup passphrase can always be found in settings." = "Notieren oder merken Sie sich Ihre Brieftaschen-Backup-Passphrase. Wenn Sie Ihre Backup-Passphrase verlieren, kann Ihre Brieftasche nicht wiederhergestellt werden. Backup kann später durchgeführt werden. Die Backup-Passphrase ist immer in den Einstellungen zu finden.";
+"Write down or memorize your wallet backup passphrase. If you lose your backup passphrase, your wallet cannot be recovered." = "Notieren oder merken Sie sich Ihre Brieftaschen-Backup-Passphrase. Wenn Sie Ihre Backup-Passphrase verlieren, kann Ihre Brieftasche nicht wiederhergestellt werden.";
 
 "I understand" = "ich verstehe";
 

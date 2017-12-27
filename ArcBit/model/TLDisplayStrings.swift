@@ -453,7 +453,7 @@ class TLDisplayStrings {
 
     
     class func WALLET_BACKUP_PASSPHRASE_WILL_BE_SHOWN() -> String { return "Wallet backup passphrase will be shown".localized }
-    class func PLEASE_WRITE_DOWN_OR_MEMORIZE_YOUR_WALLET_BACKUP_PASSPHRASE() -> String { return "Write down or memorize your wallet backup passphrase. If you lose your backup passphrase, your wallet cannot be recovered. Backup can be done later. The backup passphrase can always be found in settings.".localized }
+    class func PLEASE_WRITE_DOWN_OR_MEMORIZE_YOUR_WALLET_BACKUP_PASSPHRASE() -> String { return "Write down or memorize your wallet backup passphrase. If you lose your backup passphrase, your wallet cannot be recovered.".localized }
     class func I_UNDERSTAND() -> String { return "I understand".localized }
     class func ICLOUD_SUPPORT_DISCONTINUED() -> String { return "iCloud support for ArcBit discontinued".localized }
     class func ICLOUD_SUPPORT_DISCONTINUED_DESCRIPTION() -> String { return "iCloud support for ArcBit is being discontinued. If your backup passphrase has not been backed up already, please do so.".localized }

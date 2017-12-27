@@ -844,7 +844,7 @@
 
 "Wallet backup passphrase will be shown" = "将显示电子钱包备份密码";
 
-"Write down or memorize your wallet backup passphrase. If you lose your backup passphrase, your wallet cannot be recovered. Backup can be done later. The backup passphrase can always be found in settings." = "记下或记住您的钱包备份密码。如果您丢失了备份密码，您的钱包将无法恢复。备份可以在以后完成。备份密码总是可以在设置中找到。";
+"Write down or memorize your wallet backup passphrase. If you lose your backup passphrase, your wallet cannot be recovered." = "记下或记住您的钱包备份密码。如果您丢失了备份密码，您的钱包将无法恢复。";
 
 "I understand" = "我明白";
 
