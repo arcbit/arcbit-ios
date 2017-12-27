@@ -54,7 +54,6 @@ class TLPreferences
         static let INAPPSETTINGS_KIT_ENABLE_BACKUP_WITH_ICLOUD = "enablebackupwithicloud"
         static let INAPPSETTINGS_KIT_ENABLE_PIN_CODE = "enablepincode"
         static let INAPPSETTINGS_CAN_RESTORE_DELETED_APP = "canrestoredeletedapp"
-        static let INAPPSETTINGS_ENABLE_SOUND_NOTIFICATION = "enablesoundnotification"
         static let PREFERENCE_CAN_RESTORE_DELETED_APP = "pref-can-restore-deleted-app"
         static let PREFERENCE_CLOUD_BACKUP_WALLET_FILE_NAME = "pref-cloud-backup-wallet-file-name"
         static let PREFERENCE_WALLET_PASSPHRASE = "pref-wallet-passphrase"
@@ -406,15 +405,6 @@ class TLPreferences
     
     class func setInAppSettingsCanRestoreDeletedApp(_ value: Bool) -> () {
         UserDefaults.standard.set(value ,forKey:CLASS_STATIC.INAPPSETTINGS_CAN_RESTORE_DELETED_APP)
-        UserDefaults.standard.synchronize()
-    }
-    
-    class func getEnableSoundNotification() -> (Bool) {
-        return UserDefaults.standard.bool(forKey: CLASS_STATIC.INAPPSETTINGS_ENABLE_SOUND_NOTIFICATION)
-    }
-    
-    class func setEnableSoundNotification(_ value:Bool) -> () {
-        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.INAPPSETTINGS_ENABLE_SOUND_NOTIFICATION)
         UserDefaults.standard.synchronize()
     }
     

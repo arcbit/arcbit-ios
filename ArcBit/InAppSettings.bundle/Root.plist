@@ -459,24 +459,6 @@
                 </array>
             </dict>
             
-            
-            <dict>
-                <key>Title</key>
-                <string>EMPTY</string>
-                <key>Type</key>
-                <string>PSGroupSpecifier</string>
-            </dict>
-            <dict>
-                <key>DefaultValue</key>
-                <string>NO</string>
-                <key>Key</key>
-                <string>enablesoundnotification</string>
-                <key>Title</key>
-                <string>ENABLE_SOUND_NOTIFICATION</string>
-                <key>Type</key>
-                <string>PSToggleSwitchSpecifier</string>
-            </dict>
-            
             <dict>
                 <key>Title</key>
                 <string>EMPTY</string>

@@ -460,7 +460,6 @@ import Crashlytics
         let DEFAULT_CURRENCY_IDX = "20"
         TLPreferences.setCurrency(DEFAULT_CURRENCY_IDX)
         TLPreferences.setInAppSettingsKitCurrency(DEFAULT_CURRENCY_IDX)
-        TLPreferences.setEnableSoundNotification(true)
         
         TLPreferences.setSendFromType(.hdWallet)
         TLPreferences.setSendFromIndex(0)
@@ -866,9 +865,6 @@ import Crashlytics
             let msg = "\(receivedTo) received \(TLCurrencyFormat.getProperAmount(receivedAmount))"
             TLPrompts.promptSuccessMessage(msg, message: "")
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-            if (TLPreferences.getEnableSoundNotification()) {
-                AudioServicesPlaySystemSound(1016)
-            }
         }
     }
     
@@ -1073,9 +1069,6 @@ import Crashlytics
         localNotification.alertBody = message
         localNotification.timeZone = TimeZone.current
         UIApplication.shared.scheduleLocalNotification(localNotification)
-        if (TLPreferences.getEnableSoundNotification()) {
-            AudioServicesPlaySystemSound(1016)
-        }
     }
     
     fileprivate func isCameraAllowed() -> Bool {

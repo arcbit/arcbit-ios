@@ -247,11 +247,6 @@ import AVFoundation
             }
             TLPreferences.setInAppSettingsCanRestoreDeletedApp(enabled)
             TLPreferences.setCanRestoreDeletedApp(enabled)
-        } else if (didChangeKey == "enablesoundnotification") {
-            let enabled = userInfo.object(forKey: "enablesoundnotification") as! Bool
-            if (enabled) {
-                AudioServicesPlaySystemSound(1016)
-            }
         } else if (didChangeKey == "enablepincode") {
             let enabled = userInfo.object(forKey: "enablepincode") as! Bool
             TLPreferences.setEnablePINCode(enabled)
