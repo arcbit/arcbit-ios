@@ -418,7 +418,8 @@ import StoreKit
         } else if let balance = AppDelegate.instance().receiveSelectedObject!.getBalanceForSelectedObject(), balance.greater(TLCoin.zero()) && !TLPreferences.hasShownBackupPassphrase() {
             self.showPromptThenPassphraseViewController()
         }
-        if TLPreferences.getInAppSettingsKitEnableBackupWithiCloud() {
+        if TLPreferences.getEnableBackupWithiCloud() {
+            TLPreferences.setEnableBackupWithiCloud(false)
             TLPreferences.setInAppSettingsKitEnableBackupWithiCloud(false)
             TLPrompts.promptWithOneButton(self, title: TLDisplayStrings.ICLOUD_SUPPORT_DISCONTINUED(), message: TLDisplayStrings.ICLOUD_SUPPORT_DISCONTINUED_DESCRIPTION(), buttonText: TLDisplayStrings.I_UNDERSTAND(), success: {
             })
