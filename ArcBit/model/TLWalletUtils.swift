@@ -110,8 +110,9 @@ class TLWalletUtils {
         static let WALLET_JSON_CLOUD_BACKUP_FILE_EXTENSION = "backup"
         
         static let SHOULD_SAVE_ARCHIVED_ADDRESSES_IN_JSON = false
-        static let ENABLE_STEALTH_ADDRESS = true
-        
+        static let ENABLE_STEALTH_ADDRESS = false
+        static let ALLOW_MANUAL_SCAN_FOR_STEALTH_PAYMENT = true
+
         static let SEND_ICON_IMAGE_NAME = "upload.png"
         static let RECEIVE_ICON_IMAGE_NAME = "download.png"
         static let SEND_ICON_2_IMAGE_NAME = "upload2.png"
@@ -133,6 +134,10 @@ class TLWalletUtils {
     
     class func ENABLE_STEALTH_ADDRESS() -> (Bool) {
         return STATIC_MEMBERS.ENABLE_STEALTH_ADDRESS
+    }
+    
+    class func ALLOW_MANUAL_SCAN_FOR_STEALTH_PAYMENT() -> (Bool) {
+        return STATIC_MEMBERS.ALLOW_MANUAL_SCAN_FOR_STEALTH_PAYMENT
     }
     
     class func dataToHexString(_ data: Data) -> String {

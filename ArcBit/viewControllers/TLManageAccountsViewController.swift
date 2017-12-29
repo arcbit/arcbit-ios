@@ -606,7 +606,11 @@ import UIKit
         
         let otherButtonTitles:[String]
         if (TLPreferences.enabledAdvancedMode()) {
-            otherButtonTitles = [TLDisplayStrings.VIEW_ACCOUNT_PUBLIC_KEY_QR_CODE_STRING(), TLDisplayStrings.VIEW_ACCOUNT_PRIVATE_KEY_QR_CODE_STRING(), TLDisplayStrings.VIEW_ADDRESSES_STRING(), TLDisplayStrings.SCAN_FOR_REUSABLE_ADDRESS_PAYMENT_STRING(), TLDisplayStrings.EDIT_ACCOUNT_NAME_STRING(), TLDisplayStrings.ARCHIVE_ACCOUNT_STRING()]
+            if TLWalletUtils.ALLOW_MANUAL_SCAN_FOR_STEALTH_PAYMENT() {
+                otherButtonTitles = [TLDisplayStrings.VIEW_ACCOUNT_PUBLIC_KEY_QR_CODE_STRING(), TLDisplayStrings.VIEW_ACCOUNT_PRIVATE_KEY_QR_CODE_STRING(), TLDisplayStrings.VIEW_ADDRESSES_STRING(), TLDisplayStrings.SCAN_FOR_REUSABLE_ADDRESS_PAYMENT_STRING(), TLDisplayStrings.EDIT_ACCOUNT_NAME_STRING(), TLDisplayStrings.ARCHIVE_ACCOUNT_STRING()]
+            } else {
+                otherButtonTitles = [TLDisplayStrings.VIEW_ACCOUNT_PUBLIC_KEY_QR_CODE_STRING(), TLDisplayStrings.VIEW_ACCOUNT_PRIVATE_KEY_QR_CODE_STRING(), TLDisplayStrings.VIEW_ADDRESSES_STRING(), TLDisplayStrings.EDIT_ACCOUNT_NAME_STRING(), TLDisplayStrings.ARCHIVE_ACCOUNT_STRING()]
+            }
         } else {
             otherButtonTitles = [TLDisplayStrings.VIEW_ADDRESSES_STRING(), TLDisplayStrings.EDIT_ACCOUNT_NAME_STRING(), TLDisplayStrings.ARCHIVE_ACCOUNT_STRING()]
         }
@@ -622,9 +626,18 @@ import UIKit
                 var VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = actionSheet!.firstOtherButtonIndex
                 var VIEW_EXTENDED_PRIVATE_KEY_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+1
                 var VIEW_ADDRESSES_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+2
-                var MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+3
-                var RENAME_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+4
-                var ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+5
+                var MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX:NSInteger
+                var RENAME_ACCOUNT_BUTTON_IDX:NSInteger
+                var ARCHIVE_ACCOUNT_BUTTON_IDX:NSInteger
+                if TLWalletUtils.ALLOW_MANUAL_SCAN_FOR_STEALTH_PAYMENT() {
+                    MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+3
+                    RENAME_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+4
+                    ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+5
+                } else {
+                    MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX = -1
+                    RENAME_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+3
+                    ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+4
+                }
                 if (!TLPreferences.enabledAdvancedMode()) {
                     VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = -1
                     VIEW_EXTENDED_PRIVATE_KEY_BUTTON_IDX = -1
@@ -735,34 +748,58 @@ import UIKit
         let accountHDIndex = accountObject.getAccountHDIndex()
         let title = String(format: TLDisplayStrings.ACCOUNT_ID_COLON_X_STRING(), accountHDIndex)
         
+        let otherButtonTitles:[String]
+        if TLWalletUtils.ALLOW_MANUAL_SCAN_FOR_STEALTH_PAYMENT() {
+            otherButtonTitles = [TLDisplayStrings.VIEW_ACCOUNT_PUBLIC_KEY_QR_CODE_STRING(), TLDisplayStrings.VIEW_ACCOUNT_PRIVATE_KEY_QR_CODE_STRING(), TLDisplayStrings.VIEW_ADDRESSES_STRING(), TLDisplayStrings.SCAN_REUSABLE_ADDRESS_PAYMENT_STRING(), TLDisplayStrings.EDIT_ACCOUNT_NAME_STRING(), TLDisplayStrings.ARCHIVE_ACCOUNT_STRING()]
+        } else {
+            otherButtonTitles = [TLDisplayStrings.VIEW_ACCOUNT_PUBLIC_KEY_QR_CODE_STRING(), TLDisplayStrings.VIEW_ACCOUNT_PRIVATE_KEY_QR_CODE_STRING(), TLDisplayStrings.VIEW_ADDRESSES_STRING(), TLDisplayStrings.EDIT_ACCOUNT_NAME_STRING(), TLDisplayStrings.ARCHIVE_ACCOUNT_STRING()]
+        }
+        
         UIAlertController.showAlert(in: self,
             withTitle: title,
             message: "",
             preferredStyle: .actionSheet,
             cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
             destructiveButtonTitle: nil,
-            otherButtonTitles: [TLDisplayStrings.VIEW_ACCOUNT_PUBLIC_KEY_QR_CODE_STRING(), TLDisplayStrings.VIEW_ACCOUNT_PRIVATE_KEY_QR_CODE_STRING(), TLDisplayStrings.VIEW_ADDRESSES_STRING(), TLDisplayStrings.SCAN_REUSABLE_ADDRESS_PAYMENT_STRING(), TLDisplayStrings.EDIT_ACCOUNT_NAME_STRING(), TLDisplayStrings.ARCHIVE_ACCOUNT_STRING()],
+            otherButtonTitles: otherButtonTitles,
             tap: {(actionSheet, action, buttonIndex) in
-                if (buttonIndex == actionSheet!.firstOtherButtonIndex) {
+                let VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = actionSheet!.firstOtherButtonIndex
+                let VIEW_EXTENDED_PRIVATE_KEY_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+1
+                let VIEW_ADDRESSES_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+2
+                let MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX:NSInteger
+                let RENAME_ACCOUNT_BUTTON_IDX:NSInteger
+                let ARCHIVE_ACCOUNT_BUTTON_IDX:NSInteger
+                if TLWalletUtils.ALLOW_MANUAL_SCAN_FOR_STEALTH_PAYMENT() {
+                    MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+3
+                    RENAME_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+4
+                    ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+5
+                } else {
+                    MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX = -1
+                    RENAME_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+3
+                    ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+4
+                }
+     
+                
+                if (buttonIndex == VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX) {
                     self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPubKey() as NSString,
                         buttonCopyText: TLDisplayStrings.COPY_TO_CLIPBOARD_STRING(), vc: self)
                     self.QRImageModal!.show()
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_EXTENDED_PUBLIC_KEY()), object: accountObject, userInfo: nil)
-                } else if (buttonIndex == actionSheet!.firstOtherButtonIndex+1) {
+                } else if (buttonIndex == VIEW_EXTENDED_PRIVATE_KEY_BUTTON_IDX) {
                     self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPrivKey()! as NSString,
                         buttonCopyText: TLDisplayStrings.COPY_TO_CLIPBOARD_STRING(), vc: self)
                     self.QRImageModal!.show()
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_EXTENDED_PRIVATE_KEY()), object: accountObject, userInfo: nil)
                     
-                } else if (buttonIndex == actionSheet!.firstOtherButtonIndex+2) {
+                } else if (buttonIndex == VIEW_ADDRESSES_BUTTON_IDX) {
                     self.showAddressListAccountObject = accountObject
                     self.showAddressListShowBalances = true
                     self.performSegue(withIdentifier: "SegueAddressList", sender: self)
                     
-                } else if (buttonIndex == actionSheet!.firstOtherButtonIndex+3) {
+                } else if (buttonIndex == MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX) {
                     self.promptInfoAndToManuallyScanForStealthTransactionAccount(accountObject)
                     
-                } else if (buttonIndex == actionSheet!.firstOtherButtonIndex+4) {
+                } else if (buttonIndex == RENAME_ACCOUNT_BUTTON_IDX) {
                     
                     self.promtForNameAccount({
                         (accountName: String!) in
@@ -773,7 +810,7 @@ import UIKit
                         , failure: ({
                             (isCanceled: Bool) in
                         }))}
-                else if (buttonIndex == actionSheet!.firstOtherButtonIndex+5) {
+                else if (buttonIndex == ARCHIVE_ACCOUNT_BUTTON_IDX) {
                     self.promptToArchiveAccount(accountObject)
                 } else if (buttonIndex == actionSheet!.cancelButtonIndex) {
                 }
@@ -1358,7 +1395,7 @@ import UIKit
                         AppDelegate.instance().importedWatchAccounts!.unarchiveAccount(accountObject.getPositionInWalletArray())
                     }
                     
-                    if !accountObject.isWatchOnly() && !accountObject.isColdWalletAccount() && !accountObject.stealthWallet!.hasUpdateStealthPaymentStatuses {
+                    if TLWalletUtils.ALLOW_MANUAL_SCAN_FOR_STEALTH_PAYMENT() && !accountObject.isWatchOnly() && !accountObject.isColdWalletAccount() && !accountObject.stealthWallet!.hasUpdateStealthPaymentStatuses {
                         accountObject.stealthWallet!.updateStealthPaymentStatusesAsync()
                     }
                     self._accountsTableViewReloadDataWrapper()

@@ -201,7 +201,7 @@ import Foundation
             //set later in accounts
         }
         
-        if accountType != TLAccountType.importedWatch && accountType != TLAccountType.coldWallet {
+        if TLWalletUtils.ALLOW_MANUAL_SCAN_FOR_STEALTH_PAYMENT() && accountType != TLAccountType.importedWatch && accountType != TLAccountType.coldWallet {
             let stealthAddressArray = accountDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESSES) as! NSArray
             let stealthWalletDict = stealthAddressArray.object(at: 0) as! NSDictionary
             self.stealthWallet = TLStealthWallet(stealthDict: stealthWalletDict, accountObject: self,

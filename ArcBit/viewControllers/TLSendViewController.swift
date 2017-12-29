@@ -853,6 +853,11 @@ import StoreKit
         
         let toAddress = self.toAddressTextField!.text
         if toAddress != nil && TLStealthAddress.isStealthAddress(toAddress!, isTestnet: false) {
+            if !TLWalletUtils.ENABLE_STEALTH_ADDRESS() {
+                TLPrompts.promptWithOneButton(self, title: "", message: TLDisplayStrings.REUSABLE_ADDRESS_DISABLED(), buttonText: TLDisplayStrings.OK_STRING(), success: {
+                })
+                return
+            }
             func checkToShowStealthPaymentDelayInfo() {
                 if TLSuggestions.instance().enabledShowStealthPaymentDelayInfo() && TLBlockExplorerAPI.STATIC_MEMBERS.blockExplorerAPI == .blockchain {
                     let msg = TLDisplayStrings.REUSABLE_ADDRESS_BLOCKCHAIN_API_WARNING_STRING()

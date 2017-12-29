@@ -90,7 +90,7 @@ import UIKit
     fileprivate func processAddressBookAddress(_ address: String) -> () {
         if (TLCoreBitcoinWrapper.isValidAddress(address, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
             if (TLCoreBitcoinWrapper.isAddressVersion0(address, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
-                if (TLSuggestions.instance().enabledSuggestDontAddNormalAddressToAddressBook()) {
+                if (TLWalletUtils.ENABLE_STEALTH_ADDRESS() && TLSuggestions.instance().enabledSuggestDontAddNormalAddressToAddressBook()) {
                     TLPrompts.promtForOKCancel(self, title: TLDisplayStrings.WARNING_STRING(), message: TLDisplayStrings.ADD_ADDRESS_TO_CONTACT_WARNING_DESC_STRING(), success: {
                         () in
                         self.promptForLabel(address)
