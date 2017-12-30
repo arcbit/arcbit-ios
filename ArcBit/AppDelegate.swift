@@ -305,7 +305,7 @@ import Crashlytics
             
             let sumMainAndChangeAddressMaxIdx = accountObject.recoverAccount(false)
             DLog(String(format: "accountName \(accountName) sumMainAndChangeAddressMaxIdx: \(sumMainAndChangeAddressMaxIdx)"))
-            if sumMainAndChangeAddressMaxIdx > -2 || stealthWallet.checkIfHaveStealthPayments() {
+            if sumMainAndChangeAddressMaxIdx > -2 || TLWalletUtils.ENABLE_STEALTH_ADDRESS() && stealthWallet.checkIfHaveStealthPayments() {
                 consecutiveUnusedAccountCount = 0
             } else {
                 consecutiveUnusedAccountCount += 1
@@ -1015,13 +1015,15 @@ import Crashlytics
             
             guard var activeAddresses = accountObject.getActiveMainAddresses() as? [String] else { return }
             activeAddresses += accountObject.getActiveChangeAddresses() as! [String]
-            
-            if let stealthWallet = accountObject.stealthWallet {
-                activeAddresses += stealthWallet.getPaymentAddresses()
-                group.enter()
-                DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
-                    accountObject.fetchNewStealthPayments(isRestoringWallet)
-                    group.leave()
+
+            if TLWalletUtils.ENABLE_STEALTH_ADDRESS() {
+                if let stealthWallet = accountObject.stealthWallet {
+                    activeAddresses += stealthWallet.getPaymentAddresses()
+                    group.enter()
+                    DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
+                        accountObject.fetchNewStealthPayments(isRestoringWallet)
+                        group.leave()
+                    }
                 }
             }
             
