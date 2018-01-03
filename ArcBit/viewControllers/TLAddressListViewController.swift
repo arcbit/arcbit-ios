@@ -273,7 +273,7 @@ import UIKit
             
             cell!.addressLabel!.text = address
             if (self.showBalances && address != TL_STRING_NONE_CURRENTLY && address != TL_STRING_NO_STEALTH_PAYMENT_ADDRESSES_INFO &&
-                ((indexPath as NSIndexPath).section == 0 || (indexPath as NSIndexPath).section == 1 || (indexPath as NSIndexPath).section == 3)) {
+                (sectionType == STATIC_MEMBERS.kStealthAddressSection || sectionType == STATIC_MEMBERS.kActiveMainSection || sectionType == STATIC_MEMBERS.kActiveChangeSection)) {
                     // only show balances of active addresses
                     cell!.amountButton!.isHidden = false
                     balance = TLCurrencyFormat.getProperAmount(self.accountObject!.getAddressBalance(address)) as String
