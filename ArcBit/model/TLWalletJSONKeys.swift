@@ -35,13 +35,13 @@ class TLWalletJSONKeys {
     struct STATIC_MEMBERS {
         static let WALLET_PAYLOAD_VERSION_ONE = "1"
         static let WALLET_PAYLOAD_VERSION_TWO = "2"
-        
+        static let WALLET_PAYLOAD_VERSION_THREE = "3"
+
         static let WALLET_PAYLOAD_KEY_VERSION = "version"
         static let WALLET_PAYLOAD_KEY_PAYLOAD = "payload"
         static let WALLET_PAYLOAD_KEY_WALLETS = "wallets"
         static let WALLET_PAYLOAD_KEY_HDWALLETS = "hd_wallets"
         static let WALLET_PAYLOAD_KEY_ACCOUNTS = "accounts"
-        static let WALLET_PAYLOAD_CURRENT_ACCOUNT_ID = "current_account_id"
         static let WALLET_PAYLOAD_IMPORTS = "imports"
         static let WALLET_PAYLOAD_COLD_WALLET_ACCOUNTS = "cold_wallet_accounts"
         static let WALLET_PAYLOAD_IMPORTED_ACCOUNTS = "imported_accounts"
@@ -77,11 +77,15 @@ class TLWalletJSONKeys {
         static let WALLET_PAYLOAD_KEY_MASTER_HEX = "master_hex"
         static let WALLET_PAYLOAD_KEY_PASSPHRASE = "passphrase"
         static let WALLET_PAYLOAD_KEY_ADDRESS_BOOK = "address_book"
-        static let WALLET_PAYLOAD_KEY_TRANSACTION_TAGS = "tx_tags"        
+        static let WALLET_PAYLOAD_KEY_TRANSACTION_TAGS = "tx_tags"
+        
+        static let WALLET_PAYLOAD_KEY_BITCOIN = "BTC"
+        static let WALLET_PAYLOAD_KEY_BITCOIN_CASH = "BCH"
+
     }
     
     // Notes:
     // version 2: Add 'cold_wallet_accounts' dictionary to 'imports' dictionary
-    class func getLastestVersion () -> String { return "2" }
+    class func getLastestVersion () -> String { return STATIC_MEMBERS.WALLET_PAYLOAD_VERSION_THREE }
 
 }

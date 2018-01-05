@@ -41,23 +41,23 @@ extension TLWallet {
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED()), object: nil, userInfo: nil)
     }
     
-    func setStealthAddressServerStatusHDWallet(_ accountIdx: Int, serverURL: String, isWatching: Bool) -> () {
-        let accountDict = getAccountDict(accountIdx)
+    func setStealthAddressServerStatusHDWallet(_ coinType: TLCoinType, accountIdx: Int, serverURL: String, isWatching: Bool) -> () {
+        let accountDict = getAccountDict(coinType, accountIdx: accountIdx)
         setStealthAddressServerStatus(accountDict, serverURL: serverURL, isWatching:isWatching)
     }
     
-    func setStealthAddressServerStatusColdWalletAccount(_ idx: Int, serverURL: String, isWatching: Bool) -> () {
-        let accountDict = getColdWalletAccountAtIndex(idx)
+    func setStealthAddressServerStatusColdWalletAccount(_ coinType: TLCoinType, idx: Int, serverURL: String, isWatching: Bool) -> () {
+        let accountDict = getColdWalletAccountAtIndex(coinType, idx: idx)
         setStealthAddressServerStatus(accountDict, serverURL: serverURL, isWatching: isWatching)
     }
     
-    func setStealthAddressServerStatusImportedAccount(_ idx: Int, serverURL: String, isWatching: Bool) -> () {
-        let accountDict = getImportedAccountAtIndex(idx)
+    func setStealthAddressServerStatusImportedAccount(_ coinType: TLCoinType, idx: Int, serverURL: String, isWatching: Bool) -> () {
+        let accountDict = getImportedAccountAtIndex(coinType, idx: idx)
         setStealthAddressServerStatus(accountDict, serverURL: serverURL, isWatching: isWatching)
     }
     
-    func setStealthAddressServerStatusImportedWatchAccount(_ idx: Int, serverURL: String, isWatching: Bool) -> () {
-        let accountDict = getImportedWatchOnlyAccountAtIndex(idx)
+    func setStealthAddressServerStatusImportedWatchAccount(_ coinType: TLCoinType, idx: Int, serverURL: String, isWatching: Bool) -> () {
+        let accountDict = getImportedWatchOnlyAccountAtIndex(coinType, idx: idx)
         setStealthAddressServerStatus(accountDict, serverURL: serverURL, isWatching: isWatching)
     }
 
@@ -69,23 +69,23 @@ extension TLWallet {
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED()), object: nil, userInfo: nil)
     }
     
-    func setStealthAddressLastTxTimeHDWallet(_ accountIdx: Int, serverURL: String, lastTxTime: UInt64) -> () {
-        let accountDict = getAccountDict(accountIdx)
+    func setStealthAddressLastTxTimeHDWallet(_ coinType: TLCoinType, accountIdx: Int, serverURL: String, lastTxTime: UInt64) -> () {
+        let accountDict = getAccountDict(coinType, accountIdx: accountIdx)
         setStealthAddressLastTxTime(accountDict, serverURL: serverURL, lastTxTime: lastTxTime)
     }
     
-    func setStealthAddressLastTxTimeColdWalletAccount(_ idx: Int, serverURL: String, lastTxTime: UInt64) -> () {
-        let accountDict = getColdWalletAccountAtIndex(idx)
+    func setStealthAddressLastTxTimeColdWalletAccount(_ coinType: TLCoinType, idx: Int, serverURL: String, lastTxTime: UInt64) -> () {
+        let accountDict = getColdWalletAccountAtIndex(coinType, idx: idx)
         setStealthAddressLastTxTime(accountDict, serverURL: serverURL, lastTxTime: lastTxTime)
     }
     
-    func setStealthAddressLastTxTimeImportedAccount(_ idx: Int, serverURL: String, lastTxTime: UInt64) -> () {
-        let accountDict = getImportedAccountAtIndex(idx)
+    func setStealthAddressLastTxTimeImportedAccount(_ coinType: TLCoinType, idx: Int, serverURL: String, lastTxTime: UInt64) -> () {
+        let accountDict = getImportedAccountAtIndex(coinType, idx: idx)
         setStealthAddressLastTxTime(accountDict, serverURL: serverURL, lastTxTime: lastTxTime)
     }
     
-    func setStealthAddressLastTxTimeImportedWatchAccount(_ idx: Int, serverURL: String, lastTxTime: UInt64) -> () {
-        let accountDict = getImportedWatchOnlyAccountAtIndex(idx)
+    func setStealthAddressLastTxTimeImportedWatchAccount(_ coinType: TLCoinType, idx: Int, serverURL: String, lastTxTime: UInt64) -> () {
+        let accountDict = getImportedWatchOnlyAccountAtIndex(coinType, idx: idx)
         setStealthAddressLastTxTime(accountDict, serverURL: serverURL, lastTxTime: lastTxTime)
     }
     
@@ -127,30 +127,30 @@ extension TLWallet {
         }
     }
     
-    func addStealthAddressPaymentKeyHDWallet(_ accountIdx: Int, privateKey: String, address: String,
+    func addStealthAddressPaymentKeyHDWallet(_ coinType: TLCoinType, accountIdx: Int, privateKey: String, address: String,
         txid: String, txTime: UInt64, stealthPaymentStatus: TLStealthPaymentStatus) -> () {
-            let accountDict = getAccountDict(accountIdx)
+            let accountDict = getAccountDict(coinType, accountIdx: accountIdx)
             addStealthAddressPaymentKey(accountDict, privateKey: privateKey, address: address,
                 txid: txid, txTime: txTime, stealthPaymentStatus: stealthPaymentStatus)
     }
     
-    func addStealthAddressPaymentKeyColdWalletAccount(_ idx: Int, privateKey: String, address: String,
+    func addStealthAddressPaymentKeyColdWalletAccount(_ coinType: TLCoinType, idx: Int, privateKey: String, address: String,
                                                          txid: String, txTime: UInt64, stealthPaymentStatus: TLStealthPaymentStatus) -> () {
-        let accountDict = getColdWalletAccountAtIndex(idx)
+        let accountDict = getColdWalletAccountAtIndex(coinType, idx: idx)
         addStealthAddressPaymentKey(accountDict, privateKey: privateKey, address: address,
                                     txid: txid, txTime: txTime, stealthPaymentStatus: stealthPaymentStatus)
     }
     
-    func addStealthAddressPaymentKeyImportedAccount(_ idx: Int, privateKey: String, address: String,
+    func addStealthAddressPaymentKeyImportedAccount(_ coinType: TLCoinType, idx: Int, privateKey: String, address: String,
         txid: String, txTime: UInt64, stealthPaymentStatus: TLStealthPaymentStatus) -> () {
-            let accountDict = getImportedAccountAtIndex(idx)
+            let accountDict = getImportedAccountAtIndex(coinType, idx: idx)
             addStealthAddressPaymentKey(accountDict, privateKey: privateKey, address: address,
                 txid: txid, txTime: txTime, stealthPaymentStatus: stealthPaymentStatus)
     }
     
-    func addStealthAddressPaymentKeyImportedWatchAccount(_ idx: Int, privateKey: String, address: String,
+    func addStealthAddressPaymentKeyImportedWatchAccount(_ coinType: TLCoinType, idx: Int, privateKey: String, address: String,
         txid: String, txTime: UInt64, stealthPaymentStatus: TLStealthPaymentStatus) -> () {
-            let accountDict = getImportedWatchOnlyAccountAtIndex(idx)
+            let accountDict = getImportedWatchOnlyAccountAtIndex(coinType, idx: idx)
             addStealthAddressPaymentKey(accountDict, privateKey: privateKey, address: address,
                 txid: txid, txTime: txTime, stealthPaymentStatus: stealthPaymentStatus)
     }
@@ -170,23 +170,23 @@ extension TLWallet {
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED()), object: nil, userInfo: nil)
     }
     
-    func setStealthPaymentLastCheckTimeHDWallet(_ accountIdx: Int, txid: String, lastCheckTime: UInt64) -> () {
-        let accountDict = getAccountDict(accountIdx)
+    func setStealthPaymentLastCheckTimeHDWallet(_ coinType: TLCoinType, accountIdx: Int, txid: String, lastCheckTime: UInt64) -> () {
+        let accountDict = getAccountDict(coinType, accountIdx: accountIdx)
         setStealthPaymentLastCheckTime(accountDict, txid: txid, lastCheckTime: lastCheckTime)
     }
     
-    func setStealthPaymentLastCheckTimeColdWalletAccount(_ idx: Int, txid: String, lastCheckTime: UInt64) -> () {
-        let accountDict = getColdWalletAccountAtIndex(idx)
+    func setStealthPaymentLastCheckTimeColdWalletAccount(_ coinType: TLCoinType, idx: Int, txid: String, lastCheckTime: UInt64) -> () {
+        let accountDict = getColdWalletAccountAtIndex(coinType, idx: idx)
         setStealthPaymentLastCheckTime(accountDict, txid: txid, lastCheckTime: lastCheckTime)
     }
     
-    func setStealthPaymentLastCheckTimeImportedAccount(_ idx: Int, txid: String, lastCheckTime: UInt64) -> () {
-        let accountDict = getImportedAccountAtIndex(idx)
+    func setStealthPaymentLastCheckTimeImportedAccount(_ coinType: TLCoinType, idx: Int, txid: String, lastCheckTime: UInt64) -> () {
+        let accountDict = getImportedAccountAtIndex(coinType, idx: idx)
         setStealthPaymentLastCheckTime(accountDict, txid: txid, lastCheckTime: lastCheckTime)
     }
     
-    func setStealthPaymentLastCheckTimeImportedWatchAccount(_ idx: Int, txid: String, lastCheckTime: UInt64) -> () {
-        let accountDict = getImportedWatchOnlyAccountAtIndex(idx)
+    func setStealthPaymentLastCheckTimeImportedWatchAccount(_ coinType: TLCoinType, idx: Int, txid: String, lastCheckTime: UInt64) -> () {
+        let accountDict = getImportedWatchOnlyAccountAtIndex(coinType, idx: idx)
         setStealthPaymentLastCheckTime(accountDict, txid: txid, lastCheckTime: lastCheckTime)
     }
     
@@ -208,23 +208,23 @@ extension TLWallet {
         }
     }
     
-    func setStealthPaymentStatusHDWallet(_ accountIdx: Int, txid: String, stealthPaymentStatus: TLStealthPaymentStatus, lastCheckTime: UInt64) -> () {
-        let accountDict = getAccountDict(accountIdx)
+    func setStealthPaymentStatusHDWallet(_ coinType: TLCoinType, accountIdx: Int, txid: String, stealthPaymentStatus: TLStealthPaymentStatus, lastCheckTime: UInt64) -> () {
+        let accountDict = getAccountDict(coinType, accountIdx: accountIdx)
         setStealthPaymentStatus(accountDict, txid: txid, stealthPaymentStatus: stealthPaymentStatus, lastCheckTime: lastCheckTime)
     }
     
-    func setStealthPaymentStatusColdWalletAccount(_ idx: Int, txid: String, stealthPaymentStatus: TLStealthPaymentStatus, lastCheckTime: UInt64) -> () {
-        let accountDict = getColdWalletAccountAtIndex(idx)
+    func setStealthPaymentStatusColdWalletAccount(_ coinType: TLCoinType, idx: Int, txid: String, stealthPaymentStatus: TLStealthPaymentStatus, lastCheckTime: UInt64) -> () {
+        let accountDict = getColdWalletAccountAtIndex(coinType, idx: idx)
         setStealthPaymentStatus(accountDict, txid: txid, stealthPaymentStatus: stealthPaymentStatus, lastCheckTime: lastCheckTime)
     }
     
-    func setStealthPaymentStatusImportedAccount(_ idx: Int, txid: String, stealthPaymentStatus: TLStealthPaymentStatus, lastCheckTime: UInt64) -> () {
-        let accountDict = getImportedAccountAtIndex(idx)
+    func setStealthPaymentStatusImportedAccount(_ coinType: TLCoinType, idx: Int, txid: String, stealthPaymentStatus: TLStealthPaymentStatus, lastCheckTime: UInt64) -> () {
+        let accountDict = getImportedAccountAtIndex(coinType, idx: idx)
         setStealthPaymentStatus(accountDict, txid: txid, stealthPaymentStatus: stealthPaymentStatus, lastCheckTime: lastCheckTime)
     }
     
-    func setStealthPaymentStatusImportedWatchAccount(_ idx: Int, txid: String, stealthPaymentStatus: TLStealthPaymentStatus, lastCheckTime: UInt64) -> () {
-        let accountDict = getImportedWatchOnlyAccountAtIndex(idx)
+    func setStealthPaymentStatusImportedWatchAccount(_ coinType: TLCoinType, idx: Int, txid: String, stealthPaymentStatus: TLStealthPaymentStatus, lastCheckTime: UInt64) -> () {
+        let accountDict = getImportedWatchOnlyAccountAtIndex(coinType, idx: idx)
         setStealthPaymentStatus(accountDict, txid: txid, stealthPaymentStatus: stealthPaymentStatus, lastCheckTime: lastCheckTime)
     }
     
@@ -256,23 +256,23 @@ extension TLWallet {
         }
     }
     
-    func removeOldStealthPaymentsHDWallet(_ accountIdx: Int) -> () {
-        let accountDict = getAccountDict(accountIdx)
+    func removeOldStealthPaymentsHDWallet(_ coinType: TLCoinType, accountIdx: Int) -> () {
+        let accountDict = getAccountDict(coinType, accountIdx: accountIdx)
         removeOldStealthPayments(accountDict)
     }
     
-    func removeOldStealthPaymentsColdWalletAccount(_ idx: Int) -> () {
-        let accountDict = getColdWalletAccountAtIndex(idx)
+    func removeOldStealthPaymentsColdWalletAccount(_ coinType: TLCoinType, idx: Int) -> () {
+        let accountDict = getColdWalletAccountAtIndex(coinType, idx: idx)
         removeOldStealthPayments(accountDict)
     }
     
-    func removeOldStealthPaymentsImportedAccount(_ idx: Int) -> () {
-        let accountDict = getImportedAccountAtIndex(idx)
+    func removeOldStealthPaymentsImportedAccount(_ coinType: TLCoinType, idx: Int) -> () {
+        let accountDict = getImportedAccountAtIndex(coinType, idx: idx)
         removeOldStealthPayments(accountDict)
     }
     
-    func removeOldStealthPaymentsImportedWatchAccount(_ idx: Int) -> () {
-        let accountDict = getImportedWatchOnlyAccountAtIndex(idx)
+    func removeOldStealthPaymentsImportedWatchAccount(_ coinType: TLCoinType, idx: Int) -> () {
+        let accountDict = getImportedWatchOnlyAccountAtIndex(coinType, idx: idx)
         removeOldStealthPayments(accountDict)
     }
     
@@ -284,23 +284,23 @@ extension TLWallet {
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED()), object: nil, userInfo: nil)
     }
     
-    func clearAllStealthPaymentsFromHDWallet(_ accountIdx: Int) -> () {
-        let accountDict = getAccountDict(accountIdx)
+    func clearAllStealthPaymentsFromHDWallet(_ coinType: TLCoinType, accountIdx: Int) -> () {
+        let accountDict = getAccountDict(coinType, accountIdx: accountIdx)
         clearAllStealthPayments(accountDict)
     }
 
-    func clearAllStealthPaymentsFromColdWalletAccount(_ idx: Int) -> () {
-        let accountDict = getColdWalletAccountAtIndex(idx)
+    func clearAllStealthPaymentsFromColdWalletAccount(_ coinType: TLCoinType, idx: Int) -> () {
+        let accountDict = getColdWalletAccountAtIndex(coinType, idx: idx)
         clearAllStealthPayments(accountDict)
     }
     
-    func clearAllStealthPaymentsFromImportedAccount(_ idx: Int) -> () {
-        let accountDict = getImportedAccountAtIndex(idx)
+    func clearAllStealthPaymentsFromImportedAccount(_ coinType: TLCoinType, idx: Int) -> () {
+        let accountDict = getImportedAccountAtIndex(coinType, idx: idx)
         clearAllStealthPayments(accountDict)
     }
     
-    func clearAllStealthPaymentsFromImportedWatchAccount(_ idx: Int) -> () {
-        let accountDict = getImportedWatchOnlyAccountAtIndex(idx)
+    func clearAllStealthPaymentsFromImportedWatchAccount(_ coinType: TLCoinType, idx: Int) -> () {
+        let accountDict = getImportedWatchOnlyAccountAtIndex(coinType, idx: idx)
         clearAllStealthPayments(accountDict)
     }
 }
