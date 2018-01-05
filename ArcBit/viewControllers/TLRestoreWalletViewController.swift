@@ -83,9 +83,9 @@ import UIKit
     }
     
     fileprivate func handleAfterRecoverWallet(_ mnemonicPassphrase:String) -> () {
-        AppDelegate.instance().updateGodSend(TLSendFromType.hdWallet, sendFromIndex:0)
-        AppDelegate.instance().updateReceiveSelectedObject(TLSendFromType.hdWallet, sendFromIndex:0)
-        AppDelegate.instance().updateHistorySelectedObject(TLSendFromType.hdWallet, sendFromIndex:0)
+        AppDelegate.instance().updateGodSend(TLWalletUtils.DEFAULT_COIN_TYPE(), sendFromType: TLSendFromType.hdWallet, sendFromIndex:0)
+        AppDelegate.instance().updateReceiveSelectedObject(TLWalletUtils.DEFAULT_COIN_TYPE(), sendFromType: TLSendFromType.hdWallet, sendFromIndex:0)
+        AppDelegate.instance().updateHistorySelectedObject(TLWalletUtils.DEFAULT_COIN_TYPE(), sendFromType: TLSendFromType.hdWallet, sendFromIndex:0)
         
         AppDelegate.instance().saveWalletJsonCloud()
         

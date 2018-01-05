@@ -129,8 +129,8 @@ import UIKit
     }
 
     fileprivate func refreshColdWalletAccounts(_ fetchDataAgain: Bool) -> () {
-        for i in stride(from: 0, to: AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts(), by: 1) {
-            let accountObject = AppDelegate.instance().coldWalletAccounts!.getAccountObjectForIdx(i)
+        for i in stride(from: 0, to: AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.getNumberOfAccounts(), by: 1) {
+            let accountObject = AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.getAccountObjectForIdx(i)
             let indexPath = IndexPath(row: i, section: coldWalletAccountSection)
             if self.accountsTableView!.cellForRow(at: indexPath) == nil {
                 return
@@ -165,8 +165,8 @@ import UIKit
     }
     
     fileprivate func refreshImportedAccounts(_ fetchDataAgain: Bool) -> () {
-        for i in stride(from: 0, to: AppDelegate.instance().importedAccounts!.getNumberOfAccounts(), by: 1) {
-            let accountObject = AppDelegate.instance().importedAccounts!.getAccountObjectForIdx(i)
+        for i in stride(from: 0, to: AppDelegate.instance().getSelectedWalletObject().importedAccounts.getNumberOfAccounts(), by: 1) {
+            let accountObject = AppDelegate.instance().getSelectedWalletObject().importedAccounts.getAccountObjectForIdx(i)
             let indexPath = IndexPath(row: i, section: importedAccountSection)
             if self.accountsTableView!.cellForRow(at: indexPath) == nil {
                 return
@@ -201,8 +201,8 @@ import UIKit
     }
 
     fileprivate func refreshImportedWatchAccounts(_ fetchDataAgain: Bool) -> () {
-        for i in stride(from: 0, to: AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts(), by: 1) {
-            let accountObject = AppDelegate.instance().importedWatchAccounts!.getAccountObjectForIdx(i)
+        for i in stride(from: 0, to: AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.getNumberOfAccounts(), by: 1) {
+            let accountObject = AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.getAccountObjectForIdx(i)
             let indexPath = IndexPath(row: i, section: importedWatchAccountSection)
             if self.accountsTableView!.cellForRow(at: indexPath) == nil {
                 return
@@ -237,9 +237,9 @@ import UIKit
     }
 
     fileprivate func refreshImportedAddressBalances(_ fetchDataAgain: Bool) {
-        if (AppDelegate.instance().importedAddresses!.getCount() > 0 &&
-            (!AppDelegate.instance().importedAddresses!.hasFetchedAddressesData() || fetchDataAgain)) {
-            for i in stride(from: 0, to: AppDelegate.instance().importedAddresses!.getCount(), by: 1) {
+        if (AppDelegate.instance().getSelectedWalletObject().importedAddresses.getCount() > 0 &&
+            (!AppDelegate.instance().getSelectedWalletObject().importedAddresses.hasFetchedAddressesData() || fetchDataAgain)) {
+            for i in stride(from: 0, to: AppDelegate.instance().getSelectedWalletObject().importedAddresses.getCount(), by: 1) {
                     let indexPath = IndexPath(row: i, section: importedAddressSection)
                     if let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell {
                         (cell.accessoryView as! UIActivityIndicatorView).isHidden = false
@@ -248,14 +248,14 @@ import UIKit
                     }
                 }
                 
-                AppDelegate.instance().pendingOperations.addSetUpImportedAddressesOperation(AppDelegate.instance().importedAddresses!, fetchDataAgain: fetchDataAgain, success: {
-                    for i in stride(from: 0, to: AppDelegate.instance().importedAddresses!.getCount(), by: 1) {
+                AppDelegate.instance().pendingOperations.addSetUpImportedAddressesOperation(AppDelegate.instance().getSelectedWalletObject().importedAddresses, fetchDataAgain: fetchDataAgain, success: {
+                    for i in stride(from: 0, to: AppDelegate.instance().getSelectedWalletObject().importedAddresses.getCount(), by: 1) {
                         let indexPath = IndexPath(row: i, section: self.importedAddressSection)
                         if let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell {
                             (cell.accessoryView as! UIActivityIndicatorView).stopAnimating()
                             (cell.accessoryView as! UIActivityIndicatorView).isHidden = true
-                            if AppDelegate.instance().importedAddresses!.downloadState == .downloaded {
-                                let importAddressObject = AppDelegate.instance().importedAddresses!.getAddressObjectAtIdx(i)
+                            if AppDelegate.instance().getSelectedWalletObject().importedAddresses.downloadState == .downloaded {
+                                let importAddressObject = AppDelegate.instance().getSelectedWalletObject().importedAddresses.getAddressObjectAtIdx(i)
                                 let balance = TLCurrencyFormat.getProperAmount(importAddressObject.getBalance()!)
                                 cell.accountBalanceButton!.setTitle(balance as String, for: UIControlState())
                             }
@@ -267,8 +267,8 @@ import UIKit
     }
 
     fileprivate func refreshImportedWatchAddressBalances(_ fetchDataAgain: Bool) {
-        if (AppDelegate.instance().importedWatchAddresses!.getCount() > 0 && (!AppDelegate.instance().importedWatchAddresses!.hasFetchedAddressesData() || fetchDataAgain)) {
-            for i in stride(from: 0, to: AppDelegate.instance().importedWatchAddresses!.getCount(), by: 1) {
+        if (AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.getCount() > 0 && (!AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.hasFetchedAddressesData() || fetchDataAgain)) {
+            for i in stride(from: 0, to: AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.getCount(), by: 1) {
                 let indexPath = IndexPath(row: i, section: importedWatchAddressSection)
                 if let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell {
                     (cell.accessoryView as! UIActivityIndicatorView).isHidden = false
@@ -277,15 +277,15 @@ import UIKit
                 }
             }
             
-            AppDelegate.instance().pendingOperations.addSetUpImportedAddressesOperation(AppDelegate.instance().importedWatchAddresses!, fetchDataAgain: fetchDataAgain, success: {
-                for i in stride(from: 0, to: AppDelegate.instance().importedWatchAddresses!.getCount(), by: 1) {
+            AppDelegate.instance().pendingOperations.addSetUpImportedAddressesOperation(AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses, fetchDataAgain: fetchDataAgain, success: {
+                for i in stride(from: 0, to: AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.getCount(), by: 1) {
                     let indexPath = IndexPath(row: i, section: self.importedWatchAddressSection)
                     if let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell {
                         (cell.accessoryView as! UIActivityIndicatorView).stopAnimating()
                         (cell.accessoryView as! UIActivityIndicatorView).isHidden = true
                         
-                        if AppDelegate.instance().importedWatchAddresses!.downloadState == .downloaded {
-                            let importAddressObject = AppDelegate.instance().importedWatchAddresses!.getAddressObjectAtIdx(i)
+                        if AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.downloadState == .downloaded {
+                            let importAddressObject = AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.getAddressObjectAtIdx(i)
                             let balance = TLCurrencyFormat.getProperAmount(importAddressObject.getBalance()!)
                             cell.accountBalanceButton!.setTitle(balance as String, for: UIControlState())
                         }
@@ -297,8 +297,8 @@ import UIKit
     }
 
     fileprivate func refreshAccountBalances(_ fetchDataAgain: Bool) -> () {
-        for i in stride(from: 0, to: AppDelegate.instance().accounts!.getNumberOfAccounts(), by: 1) {
-            let accountObject = AppDelegate.instance().accounts!.getAccountObjectForIdx(i)
+        for i in stride(from: 0, to: AppDelegate.instance().getSelectedWalletObject().accounts.getNumberOfAccounts(), by: 1) {
+            let accountObject = AppDelegate.instance().getSelectedWalletObject().accounts.getAccountObjectForIdx(i)
             let indexPath = IndexPath(row: i, section: accountListSection)
             if self.accountsTableView?.cellForRow(at: indexPath) == nil {
                 return
@@ -487,7 +487,7 @@ import UIKit
         var sectionCounter = 1
         
         if TLPreferences.enabledColdWallet() {
-            if (AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts() > 0) {
+            if (AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.getNumberOfAccounts() > 0) {
                 coldWalletAccountSection = sectionCounter
                 sectionCounter += 1
                 numberOfSections += 1
@@ -497,7 +497,7 @@ import UIKit
         }
         
         if (TLPreferences.enabledAdvancedMode()) {
-            if (AppDelegate.instance().importedAccounts!.getNumberOfAccounts() > 0) {
+            if (AppDelegate.instance().getSelectedWalletObject().importedAccounts.getNumberOfAccounts() > 0) {
                 importedAccountSection = sectionCounter
                 sectionCounter += 1
                 numberOfSections += 1
@@ -505,7 +505,7 @@ import UIKit
                 importedAccountSection = NSIntegerMax
             }
             
-            if (AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts() > 0) {
+            if (AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.getNumberOfAccounts() > 0) {
                 importedWatchAccountSection = sectionCounter
                 sectionCounter += 1
                 numberOfSections += 1
@@ -513,7 +513,7 @@ import UIKit
                 importedWatchAccountSection = NSIntegerMax
             }
             
-            if (AppDelegate.instance().importedAddresses!.getCount() > 0) {
+            if (AppDelegate.instance().getSelectedWalletObject().importedAddresses.getCount() > 0) {
                 importedAddressSection = sectionCounter
                 sectionCounter += 1
                 numberOfSections += 1
@@ -521,7 +521,7 @@ import UIKit
                 importedAddressSection = NSIntegerMax
             }
             
-            if (AppDelegate.instance().importedWatchAddresses!.getCount() > 0) {
+            if (AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.getCount() > 0) {
                 importedWatchAddressSection = sectionCounter
                 sectionCounter += 1
                 numberOfSections += 1
@@ -535,7 +535,7 @@ import UIKit
             importedWatchAddressSection = NSIntegerMax
         }
         
-        if (AppDelegate.instance().accounts!.getNumberOfArchivedAccounts() > 0) {
+        if (AppDelegate.instance().getSelectedWalletObject().accounts.getNumberOfArchivedAccounts() > 0) {
             archivedAccountSection = sectionCounter
             sectionCounter += 1
             numberOfSections += 1
@@ -544,7 +544,7 @@ import UIKit
         }
         
         if TLPreferences.enabledColdWallet() {
-            if (AppDelegate.instance().coldWalletAccounts!.getNumberOfArchivedAccounts() > 0) {
+            if (AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.getNumberOfArchivedAccounts() > 0) {
                 archivedColdWalletAccountSection = sectionCounter
                 sectionCounter += 1
                 numberOfSections += 1
@@ -554,7 +554,7 @@ import UIKit
         }
         
         if (TLPreferences.enabledAdvancedMode()) {
-            if (AppDelegate.instance().importedAccounts!.getNumberOfArchivedAccounts() > 0) {
+            if (AppDelegate.instance().getSelectedWalletObject().importedAccounts.getNumberOfArchivedAccounts() > 0) {
                 archivedImportedAccountSection = sectionCounter
                 sectionCounter += 1
                 numberOfSections += 1
@@ -562,7 +562,7 @@ import UIKit
                 archivedImportedAccountSection = NSIntegerMax
             }
             
-            if (AppDelegate.instance().importedWatchAccounts!.getNumberOfArchivedAccounts() > 0) {
+            if (AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.getNumberOfArchivedAccounts() > 0) {
                 archivedImportedWatchAccountSection = sectionCounter
                 sectionCounter += 1
                 numberOfSections += 1
@@ -570,7 +570,7 @@ import UIKit
                 archivedImportedWatchAccountSection = NSIntegerMax
             }
             
-            if (AppDelegate.instance().importedAddresses!.getArchivedCount() > 0) {
+            if (AppDelegate.instance().getSelectedWalletObject().importedAddresses.getArchivedCount() > 0) {
                 archivedImportedAddressSection = sectionCounter
                 sectionCounter += 1
                 numberOfSections += 1
@@ -578,7 +578,7 @@ import UIKit
                 archivedImportedAddressSection = NSIntegerMax
             }
             
-            if (AppDelegate.instance().importedWatchAddresses!.getArchivedCount() > 0) {
+            if (AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.getArchivedCount() > 0) {
                 archivedImportedWatchAddressSection = sectionCounter
                 sectionCounter += 1
                 numberOfSections += 1
@@ -600,7 +600,7 @@ import UIKit
     }
 
     fileprivate func promptAccountsActionSheet(_ idx: Int) -> () {
-        let accountObject = AppDelegate.instance().accounts!.getAccountObjectForIdx(idx)
+        let accountObject = AppDelegate.instance().getSelectedWalletObject().accounts.getAccountObjectForIdx(idx)
         let accountHDIndex = accountObject.getAccountHDIndex()
         let title = String(format: TLDisplayStrings.ACCOUNT_ID_COLON_X_STRING(), accountHDIndex)
         
@@ -668,7 +668,7 @@ import UIKit
                 } else if (buttonIndex == RENAME_ACCOUNT_BUTTON_IDX) {
                     self.promtForNameAccount({
                         (accountName: String!) in
-                        AppDelegate.instance().accounts!.renameAccount(accountObject.getAccountIdxNumber(), accountName: accountName)
+                        AppDelegate.instance().getSelectedWalletObject().accounts.renameAccount(accountObject.getAccountIdxNumber(), accountName: accountName)
                         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_EDIT_ACCOUNT_NAME()),
                             object: accountObject, userInfo: nil)
                         
@@ -687,7 +687,7 @@ import UIKit
     }
 
     fileprivate func promptColdWalletAccountsActionSheet(_ indexPath: IndexPath) -> () {
-        let accountObject = AppDelegate.instance().coldWalletAccounts!.getAccountObjectForIdx((indexPath as NSIndexPath).row)
+        let accountObject = AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
         let accountHDIndex = accountObject.getAccountHDIndex()
         let title = String(format: TLDisplayStrings.ACCOUNT_ID_COLON_X_STRING(), accountHDIndex)
         let otherButtons:[String]
@@ -729,7 +729,7 @@ import UIKit
                                                         } else if (buttonIndex == RENAME_ACCOUNT_BUTTON_IDX) {
                                                             self.promtForNameAccount({
                                                                 (accountName: String!) in
-                                                                AppDelegate.instance().coldWalletAccounts!.renameAccount(accountObject.getAccountIdxNumber(), accountName: accountName)
+                                                                AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.renameAccount(accountObject.getAccountIdxNumber(), accountName: accountName)
                                                                 self._accountsTableViewReloadDataWrapper()
                                                                 }, failure: {
                                                                     (isCancelled: Bool) in
@@ -744,7 +744,7 @@ import UIKit
 
 
     fileprivate func promptImportedAccountsActionSheet(_ indexPath: IndexPath) -> () {
-        let accountObject = AppDelegate.instance().importedAccounts!.getAccountObjectForIdx((indexPath as NSIndexPath).row)
+        let accountObject = AppDelegate.instance().getSelectedWalletObject().importedAccounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
         let accountHDIndex = accountObject.getAccountHDIndex()
         let title = String(format: TLDisplayStrings.ACCOUNT_ID_COLON_X_STRING(), accountHDIndex)
         
@@ -803,7 +803,7 @@ import UIKit
                     
                     self.promtForNameAccount({
                         (accountName: String!) in
-                        AppDelegate.instance().importedAccounts!.renameAccount(accountObject.getAccountIdxNumber(), accountName: accountName)
+                        AppDelegate.instance().getSelectedWalletObject().importedAccounts.renameAccount(accountObject.getAccountIdxNumber(), accountName: accountName)
                         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_EDIT_ACCOUNT_NAME()), object: nil, userInfo: nil)
                         self._accountsTableViewReloadDataWrapper()
                         }
@@ -818,7 +818,7 @@ import UIKit
     }
 
     fileprivate func promptImportedWatchAccountsActionSheet(_ indexPath: IndexPath) -> () {
-        let accountObject = AppDelegate.instance().importedWatchAccounts!.getAccountObjectForIdx((indexPath as NSIndexPath).row)
+        let accountObject = AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
         let accountHDIndex = accountObject.getAccountHDIndex()
         let title = String(format: TLDisplayStrings.ACCOUNT_ID_COLON_X_STRING(), accountHDIndex)
         var addClearPrivateKeyButton = false
@@ -869,7 +869,7 @@ import UIKit
             } else if (buttonIndex == RENAME_ACCOUNT_BUTTON_IDX) {
                 self.promtForNameAccount({
                     (accountName: String!) in
-                    AppDelegate.instance().importedWatchAccounts!.renameAccount(accountObject.getAccountIdxNumber(), accountName: accountName)
+                    AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.renameAccount(accountObject.getAccountIdxNumber(), accountName: accountName)
                     self._accountsTableViewReloadDataWrapper()
                 }, failure: {
                     (isCancelled: Bool) in
@@ -883,7 +883,7 @@ import UIKit
     }
 
     fileprivate func promptImportedAddressActionSheet(_ importedAddressIdx: Int) -> () {
-        let importAddressObject = AppDelegate.instance().importedAddresses!.getAddressObjectAtIdx(importedAddressIdx)
+        let importAddressObject = AppDelegate.instance().getSelectedWalletObject().importedAddresses.getAddressObjectAtIdx(importedAddressIdx)
         
         UIAlertController.showAlert(in: self,
             withTitle: nil,
@@ -912,7 +912,7 @@ import UIKit
                 self.promtForLabel({
                     (inputText: String!) in
 
-                    AppDelegate.instance().importedAddresses!.setLabel(inputText, positionInWalletArray: Int(importAddressObject.getPositionInWalletArrayNumber()))
+                    AppDelegate.instance().getSelectedWalletObject().importedAddresses.setLabel(inputText, positionInWalletArray: Int(importAddressObject.getPositionInWalletArrayNumber()))
 
                     self._accountsTableViewReloadDataWrapper()
                 }, failure: {
@@ -926,7 +926,7 @@ import UIKit
     }
 
     fileprivate func promptImportedWatchAddressActionSheet(_ importedAddressIdx: Int) -> () {
-        let importAddressObject = AppDelegate.instance().importedWatchAddresses!.getAddressObjectAtIdx(importedAddressIdx)
+        let importAddressObject = AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.getAddressObjectAtIdx(importedAddressIdx)
         var addClearPrivateKeyButton = false
 
         let otherButtonTitles:[String]
@@ -979,7 +979,7 @@ import UIKit
                 self.promtForLabel({
                     (inputText: String!) in
 
-                    AppDelegate.instance().importedWatchAddresses!.setLabel(inputText, positionInWalletArray: Int(importAddressObject.getPositionInWalletArrayNumber()))
+                    AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.setLabel(inputText, positionInWalletArray: Int(importAddressObject.getPositionInWalletArrayNumber()))
                     self._accountsTableViewReloadDataWrapper()
                 }, failure: ({
                     (isCanceled: Bool) in
@@ -993,7 +993,7 @@ import UIKit
     }
 
     fileprivate func promptArchivedImportedAddressActionSheet(_ importedAddressIdx: Int) -> () {
-        let importAddressObject = AppDelegate.instance().importedAddresses!.getArchivedAddressObjectAtIdx(importedAddressIdx)
+        let importAddressObject = AppDelegate.instance().getSelectedWalletObject().importedAddresses.getArchivedAddressObjectAtIdx(importedAddressIdx)
         UIAlertController.showAlert(in: self,
                                                     withTitle: nil,
                                                     message:"",
@@ -1023,7 +1023,7 @@ import UIKit
                                                                 (inputText: String!) in
                                                                 
                                                                 
-                                                                AppDelegate.instance().importedAddresses!.setLabel(inputText, positionInWalletArray: Int(importAddressObject.getPositionInWalletArrayNumber()))
+                                                                AppDelegate.instance().getSelectedWalletObject().importedAddresses.setLabel(inputText, positionInWalletArray: Int(importAddressObject.getPositionInWalletArrayNumber()))
                                                                 self._accountsTableViewReloadDataWrapper()
                                                                 }, failure: ({
                                                                     (isCanceled: Bool) in
@@ -1038,7 +1038,7 @@ import UIKit
     }
 
     fileprivate func promptArchivedImportedWatchAddressActionSheet(_ importedAddressIdx: Int) -> () {
-        let importAddressObject = AppDelegate.instance().importedWatchAddresses!.getArchivedAddressObjectAtIdx(importedAddressIdx)
+        let importAddressObject = AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.getArchivedAddressObjectAtIdx(importedAddressIdx)
         var addClearPrivateKeyButton = false
         let otherButtonTitles:[String]
         if (importAddressObject.hasSetPrivateKeyInMemory()) {
@@ -1092,7 +1092,7 @@ import UIKit
                 self.promtForLabel({
                     (inputText: String!) in
                     
-                    AppDelegate.instance().importedWatchAddresses!.setLabel(inputText, positionInWalletArray: Int(importAddressObject.getPositionInWalletArrayNumber()))
+                    AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.setLabel(inputText, positionInWalletArray: Int(importAddressObject.getPositionInWalletArrayNumber()))
                     self._accountsTableViewReloadDataWrapper()
                     }, failure: ({
                         (isCanceled: Bool) in
@@ -1111,11 +1111,11 @@ import UIKit
         assert(accountType == .imported || accountType == .importedWatch || accountType == .coldWallet, "not TLAccountTypeImported or TLAccountTypeImportedWatch or not TLAccountTypeIColdWallet")
         var accountObject: TLAccountObject?
         if (accountType == .coldWallet) {
-            accountObject = AppDelegate.instance().coldWalletAccounts!.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
+            accountObject = AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
         } else if (accountType == .imported) {
-            accountObject = AppDelegate.instance().importedAccounts!.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
+            accountObject = AppDelegate.instance().getSelectedWalletObject().importedAccounts.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
         } else if (accountType == .importedWatch) {
-            accountObject = AppDelegate.instance().importedWatchAccounts!.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
+            accountObject = AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
         }
         
         let accountHDIndex = accountObject!.getAccountHDIndex()
@@ -1172,11 +1172,11 @@ import UIKit
                     self.promtForNameAccount({
                         (accountName: String!) in
                         if (accountType == .coldWallet) {
-                            AppDelegate.instance().coldWalletAccounts!.renameAccount(accountObject!.getAccountIdxNumber(), accountName: accountName)
+                            AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.renameAccount(accountObject!.getAccountIdxNumber(), accountName: accountName)
                         } else if (accountType == .imported) {
-                            AppDelegate.instance().importedAccounts!.renameAccount(accountObject!.getAccountIdxNumber(), accountName: accountName)
+                            AppDelegate.instance().getSelectedWalletObject().importedAccounts.renameAccount(accountObject!.getAccountIdxNumber(), accountName: accountName)
                         } else if (accountType == .importedWatch) {
-                            AppDelegate.instance().importedWatchAccounts!.renameAccount(accountObject!.getAccountIdxNumber(), accountName: accountName)
+                            AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.renameAccount(accountObject!.getAccountIdxNumber(), accountName: accountName)
                         }
                         self._accountsTableViewReloadDataWrapper()
                         }, failure: ({
@@ -1199,7 +1199,7 @@ import UIKit
     }
 
     fileprivate func promptArchivedAccountsActionSheet(_ idx: Int) -> () {
-        let accountObject = AppDelegate.instance().accounts!.getArchivedAccountObjectForIdx(idx)
+        let accountObject = AppDelegate.instance().getSelectedWalletObject().accounts.getArchivedAccountObjectForIdx(idx)
         let accountHDIndex = accountObject.getAccountHDIndex()
         let title = String(format: TLDisplayStrings.ACCOUNT_ID_COLON_X_STRING(), accountHDIndex)
         let otherButtonTitles:[String]
@@ -1249,7 +1249,7 @@ import UIKit
             } else if (buttonIndex == RENAME_ACCOUNT_BUTTON_IDX) {
                 self.promtForNameAccount({
                     (accountName: String!) in
-                    AppDelegate.instance().accounts!.renameAccount(accountObject.getAccountIdxNumber(), accountName: accountName)
+                    AppDelegate.instance().getSelectedWalletObject().accounts.renameAccount(accountObject.getAccountIdxNumber(), accountName: accountName)
                     self._accountsTableViewReloadDataWrapper()
                 }, failure: ({
                     (isCanceled: Bool) in
@@ -1386,13 +1386,13 @@ import UIKit
             tap: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView?.firstOtherButtonIndex) {
                     if (accountObject.getAccountType() == .hdWallet) {
-                        AppDelegate.instance().accounts!.unarchiveAccount(accountObject.getAccountIdxNumber())
+                        AppDelegate.instance().getSelectedWalletObject().accounts.unarchiveAccount(accountObject.getAccountIdxNumber())
                     } else if (accountObject.getAccountType() == .coldWallet) {
-                        AppDelegate.instance().coldWalletAccounts!.unarchiveAccount(accountObject.getPositionInWalletArray())
+                        AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.unarchiveAccount(accountObject.getPositionInWalletArray())
                     } else if (accountObject.getAccountType() == .imported) {
-                        AppDelegate.instance().importedAccounts!.unarchiveAccount(accountObject.getPositionInWalletArray())
+                        AppDelegate.instance().getSelectedWalletObject().importedAccounts.unarchiveAccount(accountObject.getPositionInWalletArray())
                     } else if (accountObject.getAccountType() == .importedWatch) {
-                        AppDelegate.instance().importedWatchAccounts!.unarchiveAccount(accountObject.getPositionInWalletArray())
+                        AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.unarchiveAccount(accountObject.getPositionInWalletArray())
                     }
                     
                     if TLWalletUtils.ALLOW_MANUAL_SCAN_FOR_STEALTH_PAYMENT() && !accountObject.isWatchOnly() && !accountObject.isColdWalletAccount() && !accountObject.stealthWallet!.hasUpdateStealthPaymentStatuses {
@@ -1419,13 +1419,13 @@ import UIKit
             tap: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView?.firstOtherButtonIndex) {
                     if (accountObject.getAccountType() == .hdWallet) {
-                        AppDelegate.instance().accounts!.archiveAccount(accountObject.getAccountIdxNumber())
+                        AppDelegate.instance().getSelectedWalletObject().accounts.archiveAccount(accountObject.getAccountIdxNumber())
                     } else if (accountObject.getAccountType() == .coldWallet) {
-                        AppDelegate.instance().coldWalletAccounts!.archiveAccount(accountObject.getPositionInWalletArray())
+                        AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.archiveAccount(accountObject.getPositionInWalletArray())
                     } else if (accountObject.getAccountType() == .imported) {
-                        AppDelegate.instance().importedAccounts!.archiveAccount(accountObject.getPositionInWalletArray())
+                        AppDelegate.instance().getSelectedWalletObject().importedAccounts.archiveAccount(accountObject.getPositionInWalletArray())
                     } else if (accountObject.getAccountType() == .importedWatch) {
-                        AppDelegate.instance().importedWatchAccounts!.archiveAccount(accountObject.getPositionInWalletArray())
+                        AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.archiveAccount(accountObject.getPositionInWalletArray())
                     }
                     self._accountsTableViewReloadDataWrapper()
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_ARCHIVE_ACCOUNT()), object: nil, userInfo: nil)
@@ -1444,7 +1444,7 @@ import UIKit
                     otherButtonTitles: TLDisplayStrings.OK_STRING())
 
             av.show()
-        } else if (AppDelegate.instance().accounts!.getNumberOfAccounts() <= 1) {
+        } else if (AppDelegate.instance().getSelectedWalletObject().accounts.getNumberOfAccounts() <= 1) {
             let av = UIAlertView(title: TLDisplayStrings.CANNOT_ARCHIVE_YOUR_ONE_AND_ONLY_ACCOUNT_STRING(),
                     message: "",
                     delegate: nil,
@@ -1467,9 +1467,9 @@ import UIKit
             tap: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView?.firstOtherButtonIndex) {
                     if (importedAddressObject.isWatchOnly()) {
-                        AppDelegate.instance().importedWatchAddresses!.archiveAddress(Int(importedAddressObject.getPositionInWalletArrayNumber()))
+                        AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.archiveAddress(Int(importedAddressObject.getPositionInWalletArrayNumber()))
                     } else {
-                        AppDelegate.instance().importedAddresses!.archiveAddress(Int(importedAddressObject.getPositionInWalletArrayNumber()))
+                        AppDelegate.instance().getSelectedWalletObject().importedAddresses.archiveAddress(Int(importedAddressObject.getPositionInWalletArrayNumber()))
                     }
                     self._accountsTableViewReloadDataWrapper()
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_ARCHIVE_ACCOUNT()), object: nil, userInfo: nil)
@@ -1490,9 +1490,9 @@ import UIKit
             tap: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView?.firstOtherButtonIndex) {
                     if (importedAddressObject.isWatchOnly()) {
-                        AppDelegate.instance().importedWatchAddresses!.unarchiveAddress(Int(importedAddressObject.getPositionInWalletArrayNumber()))
+                        AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.unarchiveAddress(Int(importedAddressObject.getPositionInWalletArrayNumber()))
                     } else {
-                        AppDelegate.instance().importedAddresses!.unarchiveAddress(Int(importedAddressObject.getPositionInWalletArrayNumber()))
+                        AppDelegate.instance().getSelectedWalletObject().importedAddresses.unarchiveAddress(Int(importedAddressObject.getPositionInWalletArrayNumber()))
                     }
                     self._accountsTableViewReloadDataWrapper()
                     importedAddressObject.getSingleAddressData({
@@ -1510,7 +1510,7 @@ import UIKit
     }
 
     fileprivate func promptToDeleteColdWalletAccount(_ indexPath: IndexPath) -> () {
-        let accountObject = AppDelegate.instance().coldWalletAccounts!.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
+        let accountObject = AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
         
         UIAlertController.showAlert(in: self,
                                                     withTitle: String(format: TLDisplayStrings.DELETE_X_STRING(), accountObject.getAccountName()),
@@ -1521,7 +1521,7 @@ import UIKit
                                                     tap: {(alertView, action, buttonIndex) in
                                                         
                                                         if (buttonIndex == alertView!.firstOtherButtonIndex) {
-                                                            AppDelegate.instance().coldWalletAccounts!.deleteAccount((indexPath as NSIndexPath).row)
+                                                            AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.deleteAccount((indexPath as NSIndexPath).row)
                                                             //*
                                                             self.accountsTableView!.beginUpdates()
                                                             let index = NSIndexPath(indexes:[self.archivedColdWalletAccountSection, (indexPath as NSIndexPath).row], length:2) as IndexPath
@@ -1537,7 +1537,7 @@ import UIKit
     }
     
     fileprivate func promptToDeleteImportedAccount(_ indexPath: IndexPath) -> () {
-        let accountObject = AppDelegate.instance().importedAccounts!.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
+        let accountObject = AppDelegate.instance().getSelectedWalletObject().importedAccounts.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
 
         UIAlertController.showAlert(in: self,
             withTitle: String(format: TLDisplayStrings.DELETE_X_STRING(), accountObject.getAccountName()),
@@ -1547,7 +1547,7 @@ import UIKit
             otherButtonTitles: [TLDisplayStrings.YES_STRING()],
             tap: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView!.firstOtherButtonIndex) {
-                    AppDelegate.instance().importedAccounts!.deleteAccount((indexPath as NSIndexPath).row)
+                    AppDelegate.instance().getSelectedWalletObject().importedAccounts.deleteAccount((indexPath as NSIndexPath).row)
                     
                     self.accountsTableView!.beginUpdates()
                     let index = NSIndexPath(indexes: [self.archivedImportedAccountSection, (indexPath as NSIndexPath).row], length:2) as IndexPath
@@ -1563,7 +1563,7 @@ import UIKit
     }
 
     fileprivate func promptToDeleteImportedWatchAccount(_ indexPath: IndexPath) -> () {
-        let accountObject = AppDelegate.instance().importedWatchAccounts!.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
+        let accountObject = AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
         
         UIAlertController.showAlert(in: self,
             withTitle: String(format: TLDisplayStrings.DELETE_X_STRING(), accountObject.getAccountName()),
@@ -1574,7 +1574,7 @@ import UIKit
             tap: {(alertView, action, buttonIndex) in
                 
                 if (buttonIndex == alertView!.firstOtherButtonIndex) {
-                    AppDelegate.instance().importedWatchAccounts!.deleteAccount((indexPath as NSIndexPath).row)
+                    AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.deleteAccount((indexPath as NSIndexPath).row)
                     //*
                     self.accountsTableView!.beginUpdates()
                     let index = NSIndexPath(indexes:[self.archivedImportedWatchAccountSection, (indexPath as NSIndexPath).row], length:2) as IndexPath
@@ -1590,7 +1590,7 @@ import UIKit
     }
 
     fileprivate func promptToDeleteImportedAddress(_ importedAddressIdx: Int) -> () {
-        let importedAddressObject = AppDelegate.instance().importedAddresses!.getArchivedAddressObjectAtIdx(importedAddressIdx)
+        let importedAddressObject = AppDelegate.instance().getSelectedWalletObject().importedAddresses.getArchivedAddressObjectAtIdx(importedAddressIdx)
 
         UIAlertController.showAlert(in: self,
             withTitle: String(format: TLDisplayStrings.DELETE_X_STRING(), importedAddressObject.getLabel()),
@@ -1602,7 +1602,7 @@ import UIKit
         
             if (buttonIndex == alertView!.firstOtherButtonIndex) {
                 self.accountsTableView!.setEditing(true, animated: true)
-                AppDelegate.instance().importedAddresses!.deleteAddress(importedAddressIdx)
+                AppDelegate.instance().getSelectedWalletObject().importedAddresses.deleteAddress(importedAddressIdx)
                 self._accountsTableViewReloadDataWrapper()
                 self.accountsTableView!.setEditing(false, animated: true)
             } else if (buttonIndex == alertView!.cancelButtonIndex) {
@@ -1612,7 +1612,7 @@ import UIKit
     }
 
     fileprivate func promptToDeleteImportedWatchAddress(_ importedAddressIdx: Int) -> () {
-        let importedAddressObject = AppDelegate.instance().importedWatchAddresses!.getArchivedAddressObjectAtIdx(importedAddressIdx)
+        let importedAddressObject = AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.getArchivedAddressObjectAtIdx(importedAddressIdx)
 
         UIAlertController.showAlert(in: self,
             withTitle:  String(format: TLDisplayStrings.DELETE_X_STRING(), importedAddressObject.getLabel()),
@@ -1625,7 +1625,7 @@ import UIKit
 
             if (buttonIndex == alertView!.firstOtherButtonIndex) {
                 self.accountsTableView!.setEditing(true, animated: true)
-                AppDelegate.instance().importedWatchAddresses!.deleteAddress(importedAddressIdx)
+                AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.deleteAddress(importedAddressIdx)
                 self._accountsTableViewReloadDataWrapper()
                 self.accountsTableView!.setEditing(false, animated: true)
             } else if (buttonIndex == alertView!.cancelButtonIndex) {
@@ -1645,8 +1645,8 @@ import UIKit
         if (TLHDWalletWrapper.isValidExtendedPublicKey(extendedPublicKey)) {
             AppDelegate.instance().saveWalletJsonCloudBackground()
             AppDelegate.instance().saveWalletJSONEnabled = false
-            let defaultAccountName = String(format: TLDisplayStrings.IMPORTED_COLD_WALLET_ACCOUNT_STRING(), String(AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts() + AppDelegate.instance().coldWalletAccounts!.getNumberOfArchivedAccounts() + 1))
-            let accountObject = AppDelegate.instance().coldWalletAccounts!.addAccountWithExtendedKey(extendedPublicKey, accountName: defaultAccountName)
+            let defaultAccountName = String(format: TLDisplayStrings.IMPORTED_COLD_WALLET_ACCOUNT_STRING(), String(AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.getNumberOfAccounts() + AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.getNumberOfArchivedAccounts() + 1))
+            let accountObject = AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.addAccountWithExtendedKey(extendedPublicKey, accountName: defaultAccountName)
             
             TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: TLDisplayStrings.IMPORTING_COLD_WALLET_ACCOUNT_STRING(), animated: true)
             DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
@@ -1667,7 +1667,7 @@ import UIKit
                             if (accountName == nil || accountName == "") {
                                 accountName = defaultAccountName
                             }
-                            AppDelegate.instance().coldWalletAccounts!.renameAccount(accountObject.getAccountIdxNumber(), accountName: accountName!)
+                            AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.renameAccount(accountObject.getAccountIdxNumber(), accountName: accountName!)
                             
                             let titleStr = String(format: TLDisplayStrings.ACCOUNT_X_IMPORTED_STRING(), accountName!)
                             let av = UIAlertView(title: titleStr,
@@ -1686,7 +1686,7 @@ import UIKit
                     }, catch: {
                         (exception) -> Void in
                         DispatchQueue.main.async {
-                            AppDelegate.instance().coldWalletAccounts!.deleteAccount(AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts() - 1)
+                            AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.deleteAccount(AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.getNumberOfAccounts() - 1)
                             TLHUDWrapper.hideHUDForView(self.view, animated: true)
                             TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_IMPORTING_ACCOUNT_STRING(), message: TLDisplayStrings.TRY_AGAIN_STRING())
                             self.setEditingAndRefreshAccounts()
@@ -1710,7 +1710,7 @@ import UIKit
     fileprivate func importAccount(_ extendedPrivateKey: String) -> (Bool) {
         let handleImportAccountFail = {
             DispatchQueue.main.async {
-                AppDelegate.instance().importedAccounts!.deleteAccount(AppDelegate.instance().importedAccounts!.getNumberOfAccounts() - 1)
+                AppDelegate.instance().getSelectedWalletObject().importedAccounts.deleteAccount(AppDelegate.instance().getSelectedWalletObject().importedAccounts.getNumberOfAccounts() - 1)
                 TLHUDWrapper.hideHUDForView(self.view, animated: true)
                 TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_IMPORTING_ACCOUNT_STRING(), message: TLDisplayStrings.TRY_AGAIN_STRING())
                 self.setEditingAndRefreshAccounts()
@@ -1721,8 +1721,8 @@ import UIKit
             AppDelegate.instance().saveWalletJsonCloudBackground()
             AppDelegate.instance().saveWalletJSONEnabled = false
             
-            let defaultAccountName = String(format: TLDisplayStrings.IMPORTED_ACCOUNT_STRING(), String(AppDelegate.instance().importedAccounts!.getNumberOfAccounts() + AppDelegate.instance().importedAccounts!.getNumberOfArchivedAccounts() + 1))
-            let accountObject = AppDelegate.instance().importedAccounts!.addAccountWithExtendedKey(extendedPrivateKey, accountName: defaultAccountName)
+            let defaultAccountName = String(format: TLDisplayStrings.IMPORTED_ACCOUNT_STRING(), String(AppDelegate.instance().getSelectedWalletObject().importedAccounts.getNumberOfAccounts() + AppDelegate.instance().getSelectedWalletObject().importedAccounts.getNumberOfArchivedAccounts() + 1))
+            let accountObject = AppDelegate.instance().getSelectedWalletObject().importedAccounts.addAccountWithExtendedKey(extendedPrivateKey, accountName: defaultAccountName)
             TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: TLDisplayStrings.IMPORTING_ACCOUNT_STRING(), animated: true)
             DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
                 SwiftTryCatch.`try`({
@@ -1740,7 +1740,7 @@ import UIKit
                                 if (accountName == nil || accountName == "") {
                                     accountName = defaultAccountName
                                 }
-                                AppDelegate.instance().importedAccounts!.renameAccount(accountObject.getAccountIdxNumber(), accountName: accountName!)
+                                AppDelegate.instance().getSelectedWalletObject().importedAccounts.renameAccount(accountObject.getAccountIdxNumber(), accountName: accountName!)
                                 let av = UIAlertView(title: String(format: TLDisplayStrings.ACCOUNT_X_IMPORTED_STRING(), accountName!),
                                     message: nil,
                                     delegate: nil,
@@ -1786,8 +1786,8 @@ import UIKit
         if (TLHDWalletWrapper.isValidExtendedPublicKey(extendedPublicKey)) {
             AppDelegate.instance().saveWalletJsonCloudBackground()
             AppDelegate.instance().saveWalletJSONEnabled = false
-            let defaultAccountName = String(format: TLDisplayStrings.IMPORTED_WATCH_ACCOUNT_STRING(), String(AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts() + AppDelegate.instance().importedWatchAccounts!.getNumberOfArchivedAccounts() + 1))
-            let accountObject = AppDelegate.instance().importedWatchAccounts!.addAccountWithExtendedKey(extendedPublicKey, accountName: defaultAccountName)
+            let defaultAccountName = String(format: TLDisplayStrings.IMPORTED_WATCH_ACCOUNT_STRING(), String(AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.getNumberOfAccounts() + AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.getNumberOfArchivedAccounts() + 1))
+            let accountObject = AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.addAccountWithExtendedKey(extendedPublicKey, accountName: defaultAccountName)
             
             TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: TLDisplayStrings.IMPORTING_ACCOUNT_STRING(), animated: true)
             DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
@@ -1808,7 +1808,7 @@ import UIKit
                                 if (accountName == nil || accountName == "") {
                                     accountName = defaultAccountName
                                 }
-                                AppDelegate.instance().importedWatchAccounts!.renameAccount(accountObject.getAccountIdxNumber(), accountName: accountName!)
+                                AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.renameAccount(accountObject.getAccountIdxNumber(), accountName: accountName!)
                             
                                 let titleStr = String(format: TLDisplayStrings.ACCOUNT_X_IMPORTED_STRING(), accountName!)
                                 let av = UIAlertView(title: titleStr,
@@ -1827,7 +1827,7 @@ import UIKit
                 }, catch: {
                     (exception) -> Void in
                     DispatchQueue.main.async {
-                        AppDelegate.instance().importedWatchAccounts!.deleteAccount(AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts() - 1)
+                        AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.deleteAccount(AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.getNumberOfAccounts() - 1)
                         TLHUDWrapper.hideHUDForView(self.view, animated: true)
                         TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_IMPORTING_ACCOUNT_STRING(), message: TLDisplayStrings.TRY_AGAIN_STRING())
                         self.setEditingAndRefreshAccounts()
@@ -1860,17 +1860,17 @@ import UIKit
 
                     tap: {(alertView, action, buttonIndex) in
                     if (buttonIndex == alertView?.firstOtherButtonIndex) {
-                        let importedAddressObject = AppDelegate.instance().importedAddresses!.addImportedPrivateKey(privateKey,
+                        let importedAddressObject = AppDelegate.instance().getSelectedWalletObject().importedAddresses.addImportedPrivateKey(privateKey,
                                 encryptedPrivateKey: nil)
                         self.refreshAfterImportAddress(importedAddressObject)
                     } else if (buttonIndex == alertView?.cancelButtonIndex) {
-                        let importedAddressObject = AppDelegate.instance().importedAddresses!.addImportedPrivateKey(privateKey,
+                        let importedAddressObject = AppDelegate.instance().getSelectedWalletObject().importedAddresses.addImportedPrivateKey(privateKey,
                                 encryptedPrivateKey: encryptedPrivateKey)
                         self.refreshAfterImportAddress(importedAddressObject)
                     }
                 })
             } else {
-                let importedAddressObject = AppDelegate.instance().importedAddresses!.addImportedPrivateKey(privateKey,
+                let importedAddressObject = AppDelegate.instance().getSelectedWalletObject().importedAddresses.addImportedPrivateKey(privateKey,
                     encryptedPrivateKey: nil)
                 self.refreshAfterImportAddress(importedAddressObject)
             }
@@ -1888,7 +1888,7 @@ import UIKit
     }
 
     fileprivate func refreshAfterImportAddress(_ importedAddressObject: TLImportedAddress) -> () {
-        let lastIdx = AppDelegate.instance().importedAddresses!.getCount()
+        let lastIdx = AppDelegate.instance().getSelectedWalletObject().importedAddresses.getCount()
         let indexPath = IndexPath(row: lastIdx, section: importedAddressSection)
         let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell
         if cell != nil {
@@ -1933,8 +1933,8 @@ import UIKit
                 return false
             }
             
-            let importedAddressObject = AppDelegate.instance().importedWatchAddresses!.addImportedWatchAddress(address)
-            let lastIdx = AppDelegate.instance().importedWatchAddresses!.getCount()
+            let importedAddressObject = AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.addImportedWatchAddress(address)
+            let lastIdx = AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.getCount()
             let indexPath = IndexPath(row: lastIdx, section: importedWatchAddressSection)
             let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell
             if cell != nil {
@@ -2149,7 +2149,7 @@ import UIKit
         if (accountSelectIdx == CREATE_NEW_ACCOUNT_BUTTON_IDX) {
             self.promtForNameAccount({
                 (accountName: String!) in
-                AppDelegate.instance().accounts!.createNewAccount(accountName, accountType: .normal)
+                AppDelegate.instance().getSelectedWalletObject().accounts.createNewAccount(accountName, accountType: .normal)
 
                 NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_CREATE_NEW_ACCOUNT()), object: nil, userInfo: nil)
 
@@ -2231,40 +2231,40 @@ import UIKit
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (TLPreferences.enabledAdvancedMode()) {
             if (section == accountListSection) {
-                return AppDelegate.instance().accounts!.getNumberOfAccounts()
+                return AppDelegate.instance().getSelectedWalletObject().accounts.getNumberOfAccounts()
             } else if (section == coldWalletAccountSection) {
-                return AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts()
+                return AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.getNumberOfAccounts()
             } else if (section == importedAccountSection) {
-                return AppDelegate.instance().importedAccounts!.getNumberOfAccounts()
+                return AppDelegate.instance().getSelectedWalletObject().importedAccounts.getNumberOfAccounts()
             } else if (section == importedWatchAccountSection) {
-                return AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts()
+                return AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.getNumberOfAccounts()
             } else if (section == importedAddressSection) {
-                return AppDelegate.instance().importedAddresses!.getCount()
+                return AppDelegate.instance().getSelectedWalletObject().importedAddresses.getCount()
             } else if (section == importedWatchAddressSection) {
-                return AppDelegate.instance().importedWatchAddresses!.getCount()
+                return AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.getCount()
             } else if (section == archivedAccountSection) {
-                return AppDelegate.instance().accounts!.getNumberOfArchivedAccounts()
+                return AppDelegate.instance().getSelectedWalletObject().accounts.getNumberOfArchivedAccounts()
             } else if (section == archivedColdWalletAccountSection) {
-                return AppDelegate.instance().coldWalletAccounts!.getNumberOfArchivedAccounts()
+                return AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.getNumberOfArchivedAccounts()
             } else if (section == archivedImportedAccountSection) {
-                return AppDelegate.instance().importedAccounts!.getNumberOfArchivedAccounts()
+                return AppDelegate.instance().getSelectedWalletObject().importedAccounts.getNumberOfArchivedAccounts()
             } else if (section == archivedImportedWatchAccountSection) {
-                return AppDelegate.instance().importedWatchAccounts!.getNumberOfArchivedAccounts()
+                return AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.getNumberOfArchivedAccounts()
             } else if (section == archivedImportedAddressSection) {
-                return AppDelegate.instance().importedAddresses!.getArchivedCount()
+                return AppDelegate.instance().getSelectedWalletObject().importedAddresses.getArchivedCount()
             } else if (section == archivedImportedWatchAddressSection) {
-                return AppDelegate.instance().importedWatchAddresses!.getArchivedCount()
+                return AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.getArchivedCount()
             } else {
                 return accountActionsArray!.count
             }
         } else if (section == accountListSection) {
-            return AppDelegate.instance().accounts!.getNumberOfAccounts()
+            return AppDelegate.instance().getSelectedWalletObject().accounts.getNumberOfAccounts()
         } else if (section == coldWalletAccountSection) {
-            return AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts()
+            return AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.getNumberOfAccounts()
         } else if (section == archivedAccountSection) {
-            return AppDelegate.instance().accounts!.getNumberOfArchivedAccounts()
+            return AppDelegate.instance().getSelectedWalletObject().accounts.getNumberOfArchivedAccounts()
         } else if (section == archivedColdWalletAccountSection) {
-            return AppDelegate.instance().coldWalletAccounts!.getNumberOfArchivedAccounts()
+            return AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.getNumberOfArchivedAccounts()
         } else {
             return accountActionsArray!.count
         }
@@ -2315,55 +2315,55 @@ import UIKit
 
             if (TLPreferences.enabledAdvancedMode()) {
                 if ((indexPath as NSIndexPath).section == accountListSection) {
-                    let accountObject = AppDelegate.instance().accounts!.getAccountObjectForIdx((indexPath as NSIndexPath).row)
+                    let accountObject = AppDelegate.instance().getSelectedWalletObject().accounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
                     self.setUpCellAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
                 } else if ((indexPath as NSIndexPath).section == coldWalletAccountSection) {
-                    let accountObject = AppDelegate.instance().coldWalletAccounts!.getAccountObjectForIdx((indexPath as NSIndexPath).row)
+                    let accountObject = AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
                     self.setUpCellAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
                 } else if ((indexPath as NSIndexPath).section == importedAccountSection) {
-                    let accountObject = AppDelegate.instance().importedAccounts!.getAccountObjectForIdx((indexPath as NSIndexPath).row)
+                    let accountObject = AppDelegate.instance().getSelectedWalletObject().importedAccounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
                     self.setUpCellAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
                 } else if ((indexPath as NSIndexPath).section == importedWatchAccountSection) {
-                    let accountObject = AppDelegate.instance().importedWatchAccounts!.getAccountObjectForIdx((indexPath as NSIndexPath).row)
+                    let accountObject = AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
                     self.setUpCellAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
                 } else if ((indexPath as NSIndexPath).section == importedAddressSection) {
-                    let importedAddressObject = AppDelegate.instance().importedAddresses!.getAddressObjectAtIdx((indexPath as NSIndexPath).row)
+                    let importedAddressObject = AppDelegate.instance().getSelectedWalletObject().importedAddresses.getAddressObjectAtIdx((indexPath as NSIndexPath).row)
                     self.setUpCellImportedAddresses(importedAddressObject, cell: cell!, cellForRowAtIndexPath: indexPath)
                 } else if ((indexPath as NSIndexPath).section == importedWatchAddressSection) {
-                    let importedAddressObject = AppDelegate.instance().importedWatchAddresses!.getAddressObjectAtIdx((indexPath as NSIndexPath).row)
+                    let importedAddressObject = AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.getAddressObjectAtIdx((indexPath as NSIndexPath).row)
                     self.setUpCellImportedAddresses(importedAddressObject, cell: cell!, cellForRowAtIndexPath: indexPath)
                 } else if ((indexPath as NSIndexPath).section == archivedAccountSection) {
-                    let accountObject = AppDelegate.instance().accounts!.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
+                    let accountObject = AppDelegate.instance().getSelectedWalletObject().accounts.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
                     self.setUpCellArchivedAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
                 } else if ((indexPath as NSIndexPath).section == archivedColdWalletAccountSection) {
-                    let accountObject = AppDelegate.instance().coldWalletAccounts!.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
+                    let accountObject = AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
                     self.setUpCellArchivedAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
                 } else if ((indexPath as NSIndexPath).section == archivedImportedAccountSection) {
-                    let accountObject = AppDelegate.instance().importedAccounts!.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
+                    let accountObject = AppDelegate.instance().getSelectedWalletObject().importedAccounts.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
                     self.setUpCellArchivedAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
                 } else if ((indexPath as NSIndexPath).section == archivedImportedWatchAccountSection) {
-                    let accountObject = AppDelegate.instance().importedWatchAccounts!.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
+                    let accountObject = AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
                     self.setUpCellArchivedAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
                 } else if ((indexPath as NSIndexPath).section == archivedImportedAddressSection) {
-                    let importedAddressObject = AppDelegate.instance().importedAddresses!.getArchivedAddressObjectAtIdx((indexPath as NSIndexPath).row)
+                    let importedAddressObject = AppDelegate.instance().getSelectedWalletObject().importedAddresses.getArchivedAddressObjectAtIdx((indexPath as NSIndexPath).row)
                     self.setUpCellArchivedImportedAddresses(importedAddressObject, cell: cell!, cellForRowAtIndexPath: indexPath)
                 } else if ((indexPath as NSIndexPath).section == archivedImportedWatchAddressSection) {
-                    let importedAddressObject = AppDelegate.instance().importedWatchAddresses!.getArchivedAddressObjectAtIdx((indexPath as NSIndexPath).row)
+                    let importedAddressObject = AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.getArchivedAddressObjectAtIdx((indexPath as NSIndexPath).row)
                     self.setUpCellArchivedImportedAddresses(importedAddressObject, cell: cell!, cellForRowAtIndexPath: indexPath)
                 } else {
                 }
             } else {
                 if ((indexPath as NSIndexPath).section == accountListSection) {
-                    let accountObject = AppDelegate.instance().accounts!.getAccountObjectForIdx((indexPath as NSIndexPath).row)
+                    let accountObject = AppDelegate.instance().getSelectedWalletObject().accounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
                     self.setUpCellAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
                 } else if ((indexPath as NSIndexPath).section == coldWalletAccountSection) {
-                    let accountObject = AppDelegate.instance().coldWalletAccounts!.getAccountObjectForIdx((indexPath as NSIndexPath).row)
+                    let accountObject = AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
                     self.setUpCellAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
                 } else if ((indexPath as NSIndexPath).section == archivedAccountSection) {
-                    let accountObject = AppDelegate.instance().accounts!.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
+                    let accountObject = AppDelegate.instance().getSelectedWalletObject().accounts.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
                     self.setUpCellArchivedAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
                 } else if ((indexPath as NSIndexPath).section == archivedColdWalletAccountSection) {
-                    let accountObject = AppDelegate.instance().coldWalletAccounts!.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
+                    let accountObject = AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.getArchivedAccountObjectForIdx((indexPath as NSIndexPath).row)
                     self.setUpCellArchivedAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
                 } else {
                 }

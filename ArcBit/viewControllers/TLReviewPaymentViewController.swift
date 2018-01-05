@@ -332,8 +332,8 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                 }
             }
             
-            if let label = AppDelegate.instance().appWallet.getLabelForAddress(toAddress) {
-                AppDelegate.instance().appWallet.setTransactionTag(txHash, tag: label)
+            if let label = AppDelegate.instance().getLabelForAddress(TLPreferences.getSendFromCoinType(), address: toAddress) {
+                AppDelegate.instance().setTransactionTag(TLPreferences.getSendFromCoinType(), txid: txHash, tag: label)
             }
             handlePushTxSuccess()
             

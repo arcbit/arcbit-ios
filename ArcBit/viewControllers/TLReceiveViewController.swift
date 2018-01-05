@@ -474,21 +474,11 @@ import UIKit
 
     override func prepare(for segue: UIStoryboardSegue, sender: Any!) -> () {
         if(segue.identifier == "selectAccount") {
-            let vc = segue.destination 
-            vc.navigationItem.title = TLDisplayStrings.SELECT_ACCOUNT_STRING()
-            NotificationCenter.default.addObserver(self, selector: #selector(TLReceiveViewController.onAccountSelected(_:)), name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ACCOUNT_SELECTED()), object: nil)
+            if let vc = segue.destination as? TLAccountsViewController {
+                vc.navigationItem.title = TLDisplayStrings.SELECT_ACCOUNT_STRING()
+                vc.delegate = self
+            }
         }
-    }
-
-    func onAccountSelected(_ note: Notification) {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ACCOUNT_SELECTED()), object: nil)
-        let selectedDict = note.object as! NSDictionary
-        let sendFromType = TLSendFromType(rawValue: selectedDict.object(forKey: "sendFromType") as! Int)
-
-        let sendFromIndex = selectedDict.object(forKey: "sendFromIndex") as! Int
-        AppDelegate.instance().updateReceiveSelectedObject(sendFromType!, sendFromIndex: sendFromIndex)
-
-        self.updateViewToNewSelectedObject()
     }
 
     fileprivate func scrollToPage(_ page: NSInteger) {
@@ -542,3 +532,9 @@ import UIKit
     }
 }
 
+extension TLReceiveViewController : TLAccountsViewControllerDelegate {
+    func didSelectAccount(_ coinType: TLCoinType, sendFromType: TLSendFromType, sendFromIndex: NSInteger) {
+        AppDelegate.instance().updateReceiveSelectedObject(coinType, sendFromType: sendFromType, sendFromIndex: Int(sendFromIndex))
+        self.updateViewToNewSelectedObject()
+    }
+}

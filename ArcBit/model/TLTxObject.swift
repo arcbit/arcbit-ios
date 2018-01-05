@@ -142,8 +142,8 @@ import Foundation
         return outputAddressToValueArray
     }
     
-    func getHash() -> NSString? {
-        return txDict.object(forKey: "hash") as! NSString?
+    func getHash() -> String? {
+        return txDict.object(forKey: "hash") as! String?
     }
     
     func getTxid() -> (String?) {

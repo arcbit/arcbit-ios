@@ -22,6 +22,9 @@
 
 import UIKit
 
+protocol TLAccountsViewControllerDelegate {
+    func didSelectAccount(_ coinType: TLCoinType, sendFromType: TLSendFromType, sendFromIndex: NSInteger)
+}
 
 @objc(TLAccountsViewController) class TLAccountsViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     
@@ -29,6 +32,7 @@ import UIKit
         super.init(coder: aDecoder)
     }
     
+    var delegate: TLAccountsViewControllerDelegate?
     @IBOutlet fileprivate var accountsTableView: UITableView?
     fileprivate var numberOfSections = 0
     fileprivate var accountListSection = 0
@@ -101,8 +105,8 @@ import UIKit
     }
     
     fileprivate func refreshColdWalletAccounts(_ fetchDataAgain: Bool) {
-        for i in stride(from: 0, to: AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts(), by: 1) {
-            let accountObject = AppDelegate.instance().coldWalletAccounts!.getAccountObjectForIdx(i)
+        for i in stride(from: 0, to: AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.getNumberOfAccounts(), by: 1) {
+            let accountObject = AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.getAccountObjectForIdx(i)
             let indexPath = IndexPath(row: i, section:coldWalletAccountSection)
             if (!accountObject.hasFetchedAccountData() || fetchDataAgain) {
                 let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell
@@ -135,8 +139,8 @@ import UIKit
     }
     
     fileprivate func refreshImportedAccounts(_ fetchDataAgain: Bool) {
-        for i in stride(from: 0, to: AppDelegate.instance().importedAccounts!.getNumberOfAccounts(), by: 1) {
-            let accountObject = AppDelegate.instance().importedAccounts!.getAccountObjectForIdx(i)
+        for i in stride(from: 0, to: AppDelegate.instance().getSelectedWalletObject().importedAccounts.getNumberOfAccounts(), by: 1) {
+            let accountObject = AppDelegate.instance().getSelectedWalletObject().importedAccounts.getAccountObjectForIdx(i)
             let indexPath = IndexPath(row: i, section: importedAccountSection)
             if (!accountObject.hasFetchedAccountData() || fetchDataAgain) {
                 let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell
@@ -169,8 +173,8 @@ import UIKit
     }
     
     fileprivate func refreshImportedWatchAccounts(_ fetchDataAgain: Bool) {
-        for i in stride(from: 0, to: AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts(), by: 1) {
-            let accountObject = AppDelegate.instance().importedWatchAccounts!.getAccountObjectForIdx(i)
+        for i in stride(from: 0, to: AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.getNumberOfAccounts(), by: 1) {
+            let accountObject = AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.getAccountObjectForIdx(i)
             let indexPath = IndexPath(row: i, section:importedWatchAccountSection)
             if (!accountObject.hasFetchedAccountData() || fetchDataAgain) {
                 let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell
@@ -203,9 +207,9 @@ import UIKit
     }
     
     fileprivate func refreshImportedAddressBalances(_ fetchDataAgain: Bool) {
-        if (AppDelegate.instance().importedAddresses!.getCount() > 0 &&
-            (!AppDelegate.instance().importedAddresses!.hasFetchedAddressesData() || fetchDataAgain)) {
-                for i in stride(from: 0, to: AppDelegate.instance().importedAddresses!.getCount(), by: 1) {
+        if (AppDelegate.instance().getSelectedWalletObject().importedAddresses.getCount() > 0 &&
+            (!AppDelegate.instance().getSelectedWalletObject().importedAddresses.hasFetchedAddressesData() || fetchDataAgain)) {
+                for i in stride(from: 0, to: AppDelegate.instance().getSelectedWalletObject().importedAddresses.getCount(), by: 1) {
                     let indexPath = IndexPath(row: i, section: importedAddressSection)
                     if let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell {
                         (cell.accessoryView as! UIActivityIndicatorView).isHidden = false
@@ -214,14 +218,14 @@ import UIKit
                     }
                 }
                 
-                AppDelegate.instance().pendingOperations.addSetUpImportedAddressesOperation(AppDelegate.instance().importedAddresses!, fetchDataAgain: fetchDataAgain, success: {
-                    for i in stride(from: 0, to: AppDelegate.instance().importedAddresses!.getCount(), by: 1) {
+                AppDelegate.instance().pendingOperations.addSetUpImportedAddressesOperation(AppDelegate.instance().getSelectedWalletObject().importedAddresses, fetchDataAgain: fetchDataAgain, success: {
+                    for i in stride(from: 0, to: AppDelegate.instance().getSelectedWalletObject().importedAddresses.getCount(), by: 1) {
                         let indexPath = IndexPath(row: i, section: self.importedAddressSection)
                         if let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell {
                             (cell.accessoryView as! UIActivityIndicatorView).stopAnimating()
                             (cell.accessoryView as! UIActivityIndicatorView).isHidden = true
-                            if AppDelegate.instance().importedAddresses!.downloadState == .downloaded {
-                                let importAddressObject = AppDelegate.instance().importedAddresses!.getAddressObjectAtIdx(i)
+                            if AppDelegate.instance().getSelectedWalletObject().importedAddresses.downloadState == .downloaded {
+                                let importAddressObject = AppDelegate.instance().getSelectedWalletObject().importedAddresses.getAddressObjectAtIdx(i)
                                 let balance = TLCurrencyFormat.getProperAmount(importAddressObject.getBalance()!)
                                 cell.accountBalanceButton!.setTitle(balance as String, for: UIControlState())
                             }
@@ -233,8 +237,8 @@ import UIKit
     }
     
     fileprivate func refreshImportedWatchAddressBalances(_ fetchDataAgain: Bool) {
-        if (AppDelegate.instance().importedWatchAddresses!.getCount() > 0 && (!AppDelegate.instance().importedWatchAddresses!.hasFetchedAddressesData() || fetchDataAgain)) {
-            for i in stride(from: 0, to: AppDelegate.instance().importedWatchAddresses!.getCount(), by: 1) {
+        if (AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.getCount() > 0 && (!AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.hasFetchedAddressesData() || fetchDataAgain)) {
+            for i in stride(from: 0, to: AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.getCount(), by: 1) {
                 let indexPath = IndexPath(row: i, section: importedWatchAddressSection)
                 if let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell {
                     (cell.accessoryView as! UIActivityIndicatorView).isHidden = false
@@ -243,15 +247,15 @@ import UIKit
                 }
             }
             
-            AppDelegate.instance().pendingOperations.addSetUpImportedAddressesOperation(AppDelegate.instance().importedWatchAddresses!, fetchDataAgain: fetchDataAgain, success: {
-                for i in stride(from: 0, to: AppDelegate.instance().importedWatchAddresses!.getCount(), by: 1) {
+            AppDelegate.instance().pendingOperations.addSetUpImportedAddressesOperation(AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses, fetchDataAgain: fetchDataAgain, success: {
+                for i in stride(from: 0, to: AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.getCount(), by: 1) {
                     let indexPath = IndexPath(row: i, section: self.importedWatchAddressSection)
                     if let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell {
                         (cell.accessoryView as! UIActivityIndicatorView).stopAnimating()
                         (cell.accessoryView as! UIActivityIndicatorView).isHidden = true
                         
-                        if AppDelegate.instance().importedWatchAddresses!.downloadState == .downloaded {
-                            let importAddressObject = AppDelegate.instance().importedWatchAddresses!.getAddressObjectAtIdx(i)
+                        if AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.downloadState == .downloaded {
+                            let importAddressObject = AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.getAddressObjectAtIdx(i)
                             let balance = TLCurrencyFormat.getProperAmount(importAddressObject.getBalance()!)
                             cell.accountBalanceButton!.setTitle(balance as String, for: UIControlState())
                         }
@@ -263,8 +267,8 @@ import UIKit
     }
     
     fileprivate func refreshAccountBalances(_ fetchDataAgain: Bool) {
-        for i in stride(from: 0, to: AppDelegate.instance().accounts!.getNumberOfAccounts(), by: 1) {
-            let accountObject = AppDelegate.instance().accounts!.getAccountObjectForIdx(i)
+        for i in stride(from: 0, to: AppDelegate.instance().getSelectedWalletObject().accounts.getNumberOfAccounts(), by: 1) {
+            let accountObject = AppDelegate.instance().getSelectedWalletObject().accounts.getAccountObjectForIdx(i)
             let indexPath = IndexPath(row: i, section: accountListSection)
             if (!accountObject.hasFetchedAccountData() || fetchDataAgain) {
                 let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell
@@ -360,7 +364,7 @@ import UIKit
         var sectionCounter = 1
         
         if TLPreferences.enabledColdWallet() {
-            if (AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts() > 0) {
+            if (AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.getNumberOfAccounts() > 0) {
                 coldWalletAccountSection = sectionCounter
                 sectionCounter += 1
                 numberOfSections += 1
@@ -370,7 +374,7 @@ import UIKit
         }
         
         if (TLPreferences.enabledAdvancedMode()) {
-            if (AppDelegate.instance().importedAccounts!.getNumberOfAccounts() > 0) {
+            if (AppDelegate.instance().getSelectedWalletObject().importedAccounts.getNumberOfAccounts() > 0) {
                 importedAccountSection = sectionCounter
                 sectionCounter += 1
                 numberOfSections += 1
@@ -378,7 +382,7 @@ import UIKit
                 importedAccountSection = NSIntegerMax
             }
             
-            if (AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts() > 0) {
+            if (AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.getNumberOfAccounts() > 0) {
                 importedWatchAccountSection = sectionCounter
                 sectionCounter += 1
                 numberOfSections += 1
@@ -386,7 +390,7 @@ import UIKit
                 importedWatchAccountSection = NSIntegerMax
             }
             
-            if (AppDelegate.instance().importedAddresses!.getCount() > 0) {
+            if (AppDelegate.instance().getSelectedWalletObject().importedAddresses.getCount() > 0) {
                 importedAddressSection = sectionCounter
                 sectionCounter += 1
                 numberOfSections += 1
@@ -394,7 +398,7 @@ import UIKit
                 importedAddressSection = NSIntegerMax
             }
             
-            if (AppDelegate.instance().importedWatchAddresses!.getCount() > 0) {
+            if (AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.getCount() > 0) {
                 importedWatchAddressSection = sectionCounter
                 sectionCounter += 1
                 numberOfSections += 1
@@ -409,16 +413,14 @@ import UIKit
         _accountsTableViewReloadDataWrapper()
     }
     
-    fileprivate func doSelectFrom(_ sendFromType: TLSendFromType, sendFromIndex: NSInteger) {
+    fileprivate func doSelectFrom(_ coinType: TLCoinType, sendFromType: TLSendFromType, sendFromIndex: NSInteger) {
         var viewControllersIdx = self.navigationController!.viewControllers.count - 2
         // make sure viewControllersIdx not negative
         if (self.navigationController!.viewControllers.count < 2) {
             viewControllersIdx = 0
         }
-        
         self.navigationController!.popToViewController((self.navigationController!.viewControllers as NSArray).object(at: viewControllersIdx) as! UIViewController, animated: true)
-        let selectedDict = ["sendFromType": sendFromType.rawValue, "sendFromIndex": sendFromIndex]
-        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_ACCOUNT_SELECTED()), object: selectedDict, userInfo: nil)
+        self.delegate?.didSelectAccount(coinType, sendFromType: sendFromType, sendFromIndex: sendFromIndex)
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -458,25 +460,25 @@ import UIKit
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         if (TLPreferences.enabledColdWallet() && section == coldWalletAccountSection) {
-            return AppDelegate.instance().coldWalletAccounts!.getNumberOfAccounts()
+            return AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.getNumberOfAccounts()
         }
         if (TLPreferences.enabledAdvancedMode()) {
             if (section == accountListSection) {
-                return AppDelegate.instance().accounts!.getNumberOfAccounts()
+                return AppDelegate.instance().getSelectedWalletObject().accounts.getNumberOfAccounts()
             } else if (section == importedAccountSection) {
-                return AppDelegate.instance().importedAccounts!.getNumberOfAccounts()
+                return AppDelegate.instance().getSelectedWalletObject().importedAccounts.getNumberOfAccounts()
             } else if (section == importedWatchAccountSection) {
-                return AppDelegate.instance().importedWatchAccounts!.getNumberOfAccounts()
+                return AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.getNumberOfAccounts()
             } else if (section == importedAddressSection) {
-                return AppDelegate.instance().importedAddresses!.getCount()
+                return AppDelegate.instance().getSelectedWalletObject().importedAddresses.getCount()
             } else if (section == importedWatchAddressSection) {
-                return AppDelegate.instance().importedWatchAddresses!.getCount()
+                return AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.getCount()
             } else {
                 
             }
         } else {
             if (section == accountListSection) {
-                return AppDelegate.instance().accounts!.getNumberOfAccounts()
+                return AppDelegate.instance().getSelectedWalletObject().accounts.getNumberOfAccounts()
             } else {
             }
         }
@@ -498,34 +500,34 @@ import UIKit
         
         cell!.accountBalanceButton!.titleLabel!.adjustsFontSizeToFitWidth = true
         if (TLPreferences.enabledColdWallet() && (indexPath as NSIndexPath).section == coldWalletAccountSection) {
-            let accountObject = AppDelegate.instance().coldWalletAccounts!.getAccountObjectForIdx((indexPath as NSIndexPath).row)
+            let accountObject = AppDelegate.instance().getSelectedWalletObject().coldWalletAccounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
             self.setUpCellAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
         }
         if (TLPreferences.enabledAdvancedMode()) {
             if ((indexPath as NSIndexPath).section == accountListSection) {
-                let accountObject = AppDelegate.instance().accounts!.getAccountObjectForIdx((indexPath as NSIndexPath).row)
+                let accountObject = AppDelegate.instance().getSelectedWalletObject().accounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
                 self.setUpCellAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
             } else if ((indexPath as NSIndexPath).section == importedAccountSection) {
-                let accountObject = AppDelegate.instance().importedAccounts!.getAccountObjectForIdx((indexPath as NSIndexPath).row)
+                let accountObject = AppDelegate.instance().getSelectedWalletObject().importedAccounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
                 
                 self.setUpCellAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
                 
             } else if ((indexPath as NSIndexPath).section == importedWatchAccountSection) {
-                let accountObject = AppDelegate.instance().importedWatchAccounts!.getAccountObjectForIdx((indexPath as NSIndexPath).row)
+                let accountObject = AppDelegate.instance().getSelectedWalletObject().importedWatchAccounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
                 
                 self.setUpCellAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
                 
             } else if ((indexPath as NSIndexPath).section == importedAddressSection) {
-                let importedAddressObject = AppDelegate.instance().importedAddresses!.getAddressObjectAtIdx((indexPath as NSIndexPath).row)
+                let importedAddressObject = AppDelegate.instance().getSelectedWalletObject().importedAddresses.getAddressObjectAtIdx((indexPath as NSIndexPath).row)
                 self.setUpCellImportedAddresses(importedAddressObject, cell: cell!, cellForRowAtIndexPath: indexPath)
             } else if ((indexPath as NSIndexPath).section == importedWatchAddressSection) {
-                let importedAddressObject = AppDelegate.instance().importedWatchAddresses!.getAddressObjectAtIdx((indexPath as NSIndexPath).row)
+                let importedAddressObject = AppDelegate.instance().getSelectedWalletObject().importedWatchAddresses.getAddressObjectAtIdx((indexPath as NSIndexPath).row)
                 self.setUpCellImportedAddresses(importedAddressObject, cell: cell!, cellForRowAtIndexPath: indexPath)
             } else {
             }
         } else {
             if ((indexPath as NSIndexPath).section == accountListSection) {
-                let accountObject = AppDelegate.instance().accounts!.getAccountObjectForIdx((indexPath as NSIndexPath).row)
+                let accountObject = AppDelegate.instance().getSelectedWalletObject().accounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
                 self.setUpCellAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
             } else {
             }
@@ -542,36 +544,36 @@ import UIKit
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         if (TLPreferences.enabledColdWallet() && (indexPath as NSIndexPath).section == coldWalletAccountSection) {
-            self.doSelectFrom(.coldWalletAccount, sendFromIndex: (indexPath as NSIndexPath).row)
+            self.doSelectFrom(TLPreferences.getSendFromCoinType(), sendFromType: .coldWalletAccount, sendFromIndex: (indexPath as NSIndexPath).row)
             return nil
         }
         if (TLPreferences.enabledAdvancedMode()) {
             if ((indexPath as NSIndexPath).section == accountListSection) {
-                let accountObject = AppDelegate.instance().accounts!.getAccountObjectForIdx((indexPath as NSIndexPath).row)
+                let accountObject = AppDelegate.instance().getSelectedWalletObject().accounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
                 if (accountObject.hasFetchedAccountData()) {
-                    self.doSelectFrom(.hdWallet, sendFromIndex: (indexPath as NSIndexPath).row)
+                    self.doSelectFrom(TLPreferences.getSendFromCoinType(), sendFromType: .hdWallet, sendFromIndex: (indexPath as NSIndexPath).row)
                 }
                 return nil
             } else if ((indexPath as NSIndexPath).section == importedAccountSection) {
-                self.doSelectFrom(.importedAccount, sendFromIndex: (indexPath as NSIndexPath).row)
+                self.doSelectFrom(TLPreferences.getSendFromCoinType(), sendFromType: .importedAccount, sendFromIndex: (indexPath as NSIndexPath).row)
                 return nil
             } else if ((indexPath as NSIndexPath).section == importedWatchAccountSection) {
-                self.doSelectFrom(.importedWatchAccount, sendFromIndex: (indexPath as NSIndexPath).row)
+                self.doSelectFrom(TLPreferences.getSendFromCoinType(), sendFromType: .importedWatchAccount, sendFromIndex: (indexPath as NSIndexPath).row)
                 return nil
             } else if ((indexPath as NSIndexPath).section == importedAddressSection) {
-                self.doSelectFrom(.importedAddress, sendFromIndex: (indexPath as NSIndexPath).row)
+                self.doSelectFrom(TLPreferences.getSendFromCoinType(), sendFromType: .importedAddress, sendFromIndex: (indexPath as NSIndexPath).row)
                 return nil
             } else if ((indexPath as NSIndexPath).section == importedWatchAddressSection) {
-                self.doSelectFrom(.importedWatchAddress, sendFromIndex: (indexPath as NSIndexPath).row)
+                self.doSelectFrom(TLPreferences.getSendFromCoinType(), sendFromType: .importedWatchAddress, sendFromIndex: (indexPath as NSIndexPath).row)
                 return nil
             } else {
             }
         } else {
             if ((indexPath as NSIndexPath).section == accountListSection) {
-                let accountObject = AppDelegate.instance().accounts!.getAccountObjectForIdx((indexPath as NSIndexPath).row)
+                let accountObject = AppDelegate.instance().getSelectedWalletObject().accounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
                 
                 if (accountObject.hasFetchedAccountData()) {
-                    self.doSelectFrom(.hdWallet, sendFromIndex: (indexPath as NSIndexPath).row)
+                    self.doSelectFrom(TLPreferences.getSendFromCoinType(), sendFromType: .hdWallet, sendFromIndex: (indexPath as NSIndexPath).row)
                 }
             } else {
             }

@@ -29,11 +29,6 @@ class TLWallet {
     fileprivate var currentHDWalletIdx: Int?
     fileprivate var masterHex: String?
     
-    enum TLCoinType: String {
-        case BTC = "BTC"
-        case BCH = "BCH"
-    }
-    
     init(walletName: String, walletConfig: TLWalletConfig) {
         self.walletName = walletName
         self.walletConfig = walletConfig
@@ -616,7 +611,7 @@ class TLWallet {
         
             NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED()), object: nil, userInfo: nil)
         
-            return TLAccountObject(appWallet: self, dict: accountDict, accountType: .hdWallet)
+        return TLAccountObject(appWallet: self, coinType: coinType, dict: accountDict, accountType: .hdWallet)
     }
     
     fileprivate func createWallet(_ passphrase: String, masterHex: String, walletName: String) -> (NSMutableDictionary) {
@@ -702,7 +697,7 @@ class TLWallet {
         let coldWalletAccountDict = createAccountDictWithPreload("", extendedKey: extendedPublicKey, isPrivateExtendedKey: false, accountIdx: accountIdx, preloadStartingAddresses: false)
         coldWalletAccountsArray.add(coldWalletAccountDict)
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED()), object: nil, userInfo: nil)
-        return TLAccountObject(appWallet: self, dict: coldWalletAccountDict, accountType: .coldWallet)
+        return TLAccountObject(appWallet: self, coinType: coinType, dict: coldWalletAccountDict, accountType: .coldWallet)
     }
     
     func deleteColdWalletAccount(_ coinType: TLCoinType, idx: Int) -> () {
@@ -729,7 +724,7 @@ class TLWallet {
         
         let accountObjectArray = NSMutableArray()
         for accountDict in accountsArray as! [NSDictionary] {
-            let accountObject = TLAccountObject(appWallet: self, dict: accountDict, accountType: .coldWallet)
+            let accountObject = TLAccountObject(appWallet: self, coinType: coinType, dict: accountDict, accountType: .coldWallet)
             accountObjectArray.add(accountObject)
         }
         return accountObjectArray
@@ -744,7 +739,7 @@ class TLWallet {
         importedAccountsArray.add(accountDict)
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED()), object: nil, userInfo: nil)
         
-        return TLAccountObject(appWallet: self, dict: accountDict, accountType: .imported)
+        return TLAccountObject(appWallet: self, coinType: coinType, dict: accountDict, accountType: .imported)
     }
     
     func deleteImportedAccount(_ coinType: TLCoinType, idx: Int) -> () {
@@ -768,7 +763,7 @@ class TLWallet {
         
         let accountObjectArray = NSMutableArray()
         for accountDict in accountsArray as! [NSDictionary] {
-            let accountObject = TLAccountObject(appWallet: self, dict: accountDict, accountType: .imported)
+            let accountObject = TLAccountObject(appWallet: self, coinType: coinType, dict: accountDict, accountType: .imported)
             accountObjectArray.add(accountObject)
             
             
@@ -784,7 +779,7 @@ class TLWallet {
         let watchOnlyAccountDict = createAccountDictWithPreload("", extendedKey: extendedPublicKey, isPrivateExtendedKey: false, accountIdx: accountIdx, preloadStartingAddresses: false)
         watchOnlyAccountsArray.add(watchOnlyAccountDict)
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED()), object: nil, userInfo: nil)
-        return TLAccountObject(appWallet: self, dict: watchOnlyAccountDict, accountType: .importedWatch)
+        return TLAccountObject(appWallet: self, coinType: coinType, dict: watchOnlyAccountDict, accountType: .importedWatch)
     }
     
     func deleteWatchOnlyAccount(_ coinType: TLCoinType, idx: Int) -> () {
@@ -811,7 +806,7 @@ class TLWallet {
         
         let accountObjectArray = NSMutableArray()
         for accountDict in accountsArray as! [NSDictionary] {
-            let accountObject = TLAccountObject(appWallet: self, dict: accountDict, accountType: .importedWatch)
+            let accountObject = TLAccountObject(appWallet: self, coinType: coinType, dict: accountDict, accountType: .importedWatch)
             accountObjectArray.add(accountObject)
         }
         return accountObjectArray
@@ -1056,13 +1051,18 @@ class TLWallet {
         if version == TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_VERSION_TWO {
             loadWalletPayloadForCoin(TLCoinType.BTC)
         } else {
-            loadWalletPayloadForCoin(TLCoinType.BTC)
-            loadWalletPayloadForCoin(TLCoinType.BCH)
+            TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
+                loadWalletPayloadForCoin(coinType)
+            })
         }
     }
     
     func getWalletsJson() -> (NSDictionary?) {
         return rootDict?.copy() as? NSDictionary
+    }
+    
+    func getWalletJsonVersion() -> String {
+        return rootDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_VERSION) as! String
     }
     
     fileprivate func getWallets() -> (NSMutableArray) {
@@ -1105,7 +1105,7 @@ class TLWallet {
         
         let accountObjectArray = NSMutableArray()
         for accountDict in accountsArray {
-            let accountObject = TLAccountObject(appWallet: self, dict: accountDict as! NSDictionary, accountType: .hdWallet)
+            let accountObject = TLAccountObject(appWallet: self, coinType: coinType, dict: accountDict as! NSDictionary, accountType: .hdWallet)
             accountObjectArray.add(accountObject)
         }
         return accountObjectArray
@@ -1114,7 +1114,7 @@ class TLWallet {
     fileprivate func getAccountObjectForIdx(_ coinType: TLCoinType, accountIdx: Int) -> (TLAccountObject) {
         let accountsArray = getAccountsArray(coinType)
         let accountDict = accountsArray.object(at: accountIdx) as! NSDictionary
-        return TLAccountObject(appWallet: self, dict: accountDict, accountType: .hdWallet)
+        return TLAccountObject(appWallet: self, coinType: coinType, dict: accountDict, accountType: .hdWallet)
     }
 }
 

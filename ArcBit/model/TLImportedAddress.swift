@@ -301,18 +301,18 @@ import Foundation
         let receivedAmount:TLCoin?
         if (currentTxSubtract > currentTxAdd) {
             let amountChangeToAccountFromTx = TLCoin(uint64:currentTxSubtract - currentTxAdd)
-            txidToAccountAmountDict!.setObject(amountChangeToAccountFromTx, forKey:txObject.getHash()!)
-            txidToAccountAmountTypeDict!.setObject(TLAccountTxType.send.rawValue, forKey:txObject.getHash()!)
+            txidToAccountAmountDict!.setObject(amountChangeToAccountFromTx, forKey:txObject.getHash()! as NSCopying)
+            txidToAccountAmountTypeDict!.setObject(TLAccountTxType.send.rawValue, forKey:txObject.getHash()! as NSCopying)
             receivedAmount = nil
         } else if (currentTxSubtract < currentTxAdd) {
             let amountChangeToAccountFromTx = TLCoin(uint64:currentTxAdd - currentTxSubtract)
-            txidToAccountAmountDict!.setObject(amountChangeToAccountFromTx, forKey:txObject.getHash()!)
-            txidToAccountAmountTypeDict!.setObject(TLAccountTxType.receive.rawValue, forKey:txObject.getHash()!)
+            txidToAccountAmountDict!.setObject(amountChangeToAccountFromTx, forKey:txObject.getHash()! as NSCopying)
+            txidToAccountAmountTypeDict!.setObject(TLAccountTxType.receive.rawValue, forKey:txObject.getHash()! as NSCopying)
             receivedAmount = amountChangeToAccountFromTx
         } else {
             let amountChangeToAccountFromTx = TLCoin.zero()
-            txidToAccountAmountDict!.setObject(amountChangeToAccountFromTx, forKey:txObject.getHash()!)
-            txidToAccountAmountTypeDict!.setObject(TLAccountTxType.moveBetweenAccount.rawValue, forKey:txObject.getHash()!)
+            txidToAccountAmountDict!.setObject(amountChangeToAccountFromTx, forKey:txObject.getHash()! as NSCopying)
+            txidToAccountAmountTypeDict!.setObject(TLAccountTxType.moveBetweenAccount.rawValue, forKey:txObject.getHash()! as NSCopying)
             receivedAmount = nil
         }
         

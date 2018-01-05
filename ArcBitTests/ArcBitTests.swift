@@ -276,16 +276,9 @@ class ArcBitTests: XCTestCase {
         var wallets = NSMutableArray()
         var wallet = NSMutableDictionary()
         
-        var imports = NSMutableDictionary()
-        imports.setObject(NSMutableArray(), forKey: "imported_accounts" as NSCopying)
-        imports.setObject(NSMutableArray(), forKey: "imported_private_keys" as NSCopying)
-        imports.setObject(NSMutableArray(), forKey: "watch_only_accounts" as NSCopying)
-        imports.setObject(NSMutableArray(), forKey: "watch_only_addresses" as NSCopying)
-        
         var backupPassphrase = "slogan lottery zone helmet fatigue rebuild solve best hint frown conduct ill"
         let masterHex = TLHDWalletWrapper.getMasterHex(backupPassphrase)
         let walletConfig = TLWalletConfig(isTestnet: false)
-        
         let extendPrivKey = TLHDWalletWrapper.getExtendPrivKey(masterHex, accountIdx:0)
         
         let extendPubKey = TLHDWalletWrapper.getExtendPubKey(extendPrivKey)
@@ -296,73 +289,87 @@ class ArcBitTests: XCTestCase {
         let changeAddressIndex0 = [1,0]
         let changeAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:changeAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
         XCTAssertTrue("1CvpGn9VxVY1nsWWL3MSWRYaBHdNkCDbmv" == changeAddress0)
+        
+        func getMockCoinWallet(_ coinType: TLCoinType) -> NSMutableDictionary {
+            var imports = NSMutableDictionary()
+            imports.setObject(NSMutableArray(), forKey: "imported_accounts" as NSCopying)
+            imports.setObject(NSMutableArray(), forKey: "imported_private_keys" as NSCopying)
+            imports.setObject(NSMutableArray(), forKey: "watch_only_accounts" as NSCopying)
+            imports.setObject(NSMutableArray(), forKey: "watch_only_addresses" as NSCopying)
+            imports.setObject(NSMutableArray(), forKey: "cold_wallet_accounts" as NSCopying)
 
-        var hdWallets = NSMutableArray()
-        
-        var hdWallet = NSMutableDictionary()
-        hdWallet.setObject(0, forKey: "current_account_id" as NSCopying)
-        hdWallet.setObject(0, forKey: "master_hex" as NSCopying)
-        hdWallet.setObject(1, forKey: "max_account_id_created" as NSCopying)
-        hdWallet.setObject("default", forKey: "name" as NSCopying)
-        hdWallet.setObject(backupPassphrase, forKey: "passphrase" as NSCopying)
-        
-        var accounts = NSMutableArray()
-        var accountDict = NSMutableDictionary()
-        accountDict.setObject(0, forKey: "account_idx" as NSCopying)
-        accountDict.setObject(extendPubKey, forKey: "xpub" as NSCopying)
-        accountDict.setObject(extendPrivKey, forKey: "xpriv" as NSCopying)
+            var hdWallets = NSMutableArray()
+            
+            var hdWallet = NSMutableDictionary()
+            hdWallet.setObject(0, forKey: "current_account_id" as NSCopying)
+            hdWallet.setObject(0, forKey: "master_hex" as NSCopying)
+            hdWallet.setObject(1, forKey: "max_account_id_created" as NSCopying)
+            hdWallet.setObject("default", forKey: "name" as NSCopying)
+            hdWallet.setObject(backupPassphrase, forKey: "passphrase" as NSCopying)
+            
+            var accounts = NSMutableArray()
+            var accountDict = NSMutableDictionary()
+            accountDict.setObject(0, forKey: "account_idx" as NSCopying)
+            accountDict.setObject(extendPubKey, forKey: "xpub" as NSCopying)
+            accountDict.setObject(extendPrivKey, forKey: "xpriv" as NSCopying)
+            
+            var changeAdresses = NSMutableArray()
+            var changeAdress = NSMutableDictionary()
+            changeAdress.setObject(changeAddress0, forKey: "address" as NSCopying)
+            changeAdress.setObject(0, forKey: "index" as NSCopying)
+            changeAdress.setObject(1, forKey: "status" as NSCopying)
+            changeAdresses.add(changeAdress)
+            accountDict.setObject(changeAdresses, forKey: "change_addresses" as NSCopying)
+            
+            var mainAddresses = NSMutableArray()
+            var mainAddress = NSMutableDictionary()
+            mainAddress.setObject(mainAddress0, forKey: "address" as NSCopying)
+            mainAddress.setObject(0, forKey: "index" as NSCopying)
+            mainAddress.setObject(1, forKey: "status" as NSCopying)
+            mainAddresses.add(mainAddress)
+            accountDict.setObject(mainAddresses, forKey: "main_addresses" as NSCopying)
+            
+            accountDict.setObject(0, forKey: "min_change_address_vidx" as NSCopying)
+            accountDict.setObject(0, forKey: "min_main_address_idx" as NSCopying)
+            accountDict.setObject("Account 1", forKey: "name" as NSCopying)
+            accountDict.setObject(0, forKey: "needs_recovering" as NSCopying)
+            accountDict.setObject(1, forKey: "status" as NSCopying)
+            
+            
+            var stealthAddresses = NSMutableArray()
+            var stealthAddress = NSMutableDictionary()
+            stealthAddress.setObject(0, forKey: "last_tx_time" as NSCopying)
+            stealthAddress.setObject(NSMutableArray(), forKey: "payments" as NSCopying)
+            stealthAddress.setObject("NOTUSED", forKey: "scan_key" as NSCopying)
+            var servers = NSMutableDictionary()
+            var watching = NSMutableDictionary()
+            watching.setObject(1, forKey: "watching" as NSCopying)
+            servers.setObject(watching, forKey: "www.arcbit.net" as NSCopying)
+            stealthAddress.setObject(servers, forKey: "servers" as NSCopying)
+            stealthAddress.setObject("NOTUSED", forKey: "spend_key" as NSCopying)
+            stealthAddress.setObject("NOTUSED", forKey: "stealth_address" as NSCopying)
+            stealthAddresses.add(stealthAddress)
+            
+            accountDict.setObject(stealthAddresses, forKey: "stealth_addresses" as NSCopying)
+            accounts.add(accountDict)
+            
+            accountDict.setObject(extendPrivKey, forKey: "xprv" as NSCopying)
+            accountDict.setObject(extendPubKey, forKey: "xpub" as NSCopying)
+            
+            hdWallet.setObject(accounts, forKey: "accounts" as NSCopying)
+            hdWallets.add(hdWallet)
+            
+            let coinWallet = NSMutableDictionary()
+            coinWallet.setObject(hdWallets, forKey: "hd_wallets" as NSCopying)
+            coinWallet.setObject(NSMutableArray(), forKey: "address_book" as NSCopying)
+            coinWallet.setObject(imports, forKey: "imports" as NSCopying)
+            coinWallet.setObject(NSMutableArray(), forKey: "tx_tags" as NSCopying)
+            return coinWallet
+        }
+ 
+        wallet.setObject(getMockCoinWallet(TLCoinType.BTC), forKey: "BTC" as NSCopying)
+        wallet.setObject(getMockCoinWallet(TLCoinType.BCH), forKey: "BCH" as NSCopying)
 
-        var changeAdresses = NSMutableArray()
-        var changeAdress = NSMutableDictionary()
-        changeAdress.setObject(changeAddress0, forKey: "address" as NSCopying)
-        changeAdress.setObject(0, forKey: "index" as NSCopying)
-        changeAdress.setObject(1, forKey: "status" as NSCopying)
-        changeAdresses.add(changeAdress)
-        accountDict.setObject(changeAdresses, forKey: "change_addresses" as NSCopying)
-        
-        var mainAddresses = NSMutableArray()
-        var mainAddress = NSMutableDictionary()
-        mainAddress.setObject(mainAddress0, forKey: "address" as NSCopying)
-        mainAddress.setObject(0, forKey: "index" as NSCopying)
-        mainAddress.setObject(1, forKey: "status" as NSCopying)
-        mainAddresses.add(mainAddress)
-        accountDict.setObject(mainAddresses, forKey: "main_addresses" as NSCopying)
-        
-        accountDict.setObject(0, forKey: "min_change_address_vidx" as NSCopying)
-        accountDict.setObject(0, forKey: "min_main_address_idx" as NSCopying)
-        accountDict.setObject("Account 1", forKey: "name" as NSCopying)
-        accountDict.setObject(0, forKey: "needs_recovering" as NSCopying)
-        accountDict.setObject(1, forKey: "status" as NSCopying)
-        
-        
-        var stealthAddresses = NSMutableArray()
-        var stealthAddress = NSMutableDictionary()
-        stealthAddress.setObject(0, forKey: "last_tx_time" as NSCopying)
-        stealthAddress.setObject(NSMutableArray(), forKey: "payments" as NSCopying)
-        stealthAddress.setObject("NOTUSED", forKey: "scan_key" as NSCopying)
-        var servers = NSMutableDictionary()
-        var watching = NSMutableDictionary()
-        watching.setObject(1, forKey: "watching" as NSCopying)
-        servers.setObject(watching, forKey: "www.arcbit.net" as NSCopying)
-        stealthAddress.setObject(servers, forKey: "servers" as NSCopying)
-        stealthAddress.setObject("NOTUSED", forKey: "spend_key" as NSCopying)
-        stealthAddress.setObject("NOTUSED", forKey: "stealth_address" as NSCopying)
-        stealthAddresses.add(stealthAddress)
-        
-        accountDict.setObject(stealthAddresses, forKey: "stealth_addresses" as NSCopying)
-        accounts.add(accountDict)
-        
-        accountDict.setObject(extendPrivKey, forKey: "xprv" as NSCopying)
-        accountDict.setObject(extendPubKey, forKey: "xpub" as NSCopying)
-        
-        hdWallet.setObject(accounts, forKey: "accounts" as NSCopying)
-        hdWallets.add(hdWallet)
-        
-        wallet.setObject(hdWallets, forKey: "hd_wallets" as NSCopying)
-        wallet.setObject(NSMutableArray(), forKey: "address_book" as NSCopying)
-        wallet.setObject(imports, forKey: "imports" as NSCopying)
-        wallet.setObject(NSMutableArray(), forKey: "tx_tags" as NSCopying)
-        
         wallets.add(wallet)
         var payload = NSMutableDictionary()
         payload.setObject(wallets, forKey: "wallets" as NSCopying)
@@ -373,7 +380,7 @@ class ArcBitTests: XCTestCase {
         appWallet.loadWalletPayload(mockWalletPayload, masterHex:masterHex)
         
         
-        let accountsArray = appWallet.getAccountObjectArray()
+        let accountsArray = appWallet.getAccountObjectArray(TLCoinType.BTC)
         
         
         let accountObject = accountsArray.object(at: 0) as! TLAccountObject

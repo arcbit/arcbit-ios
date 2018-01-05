@@ -512,19 +512,7 @@ import StoreKit
     func updateAccountBalanceView(_ notification: Notification) {
         self._updateAccountBalanceView()
     }
-    
-    func onAccountSelected(_ note: Notification) {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ACCOUNT_SELECTED()),
-            object: nil)
         
-        let selectedDict = note.object as! NSDictionary
-        let sendFromType = TLSendFromType(rawValue: selectedDict.object(forKey: "sendFromType") as! Int)
-        let sendFromIndex = selectedDict.object(forKey: "sendFromIndex") as! Int
-        AppDelegate.instance().updateGodSend(sendFromType!, sendFromIndex: sendFromIndex)
-        
-        self.updateViewToNewSelectedObject()
-    }
-    
     fileprivate func fillToAddressTextField(_ address: String) -> Bool {
         if (TLCoreBitcoinWrapper.isValidAddress(address, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
             self.toAddressTextField!.text = address
@@ -784,10 +772,10 @@ import StoreKit
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any!) -> () {
         if (segue.identifier == "selectAccount") {
-            let vc = segue.destination 
-            vc.navigationItem.title = TLDisplayStrings.SELECT_ACCOUNT_STRING()
-            NotificationCenter.default.addObserver(self, selector: #selector(TLSendViewController.onAccountSelected(_:)),
-                name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ACCOUNT_SELECTED()), object: nil)
+            if let vc = segue.destination as? TLAccountsViewController {
+                vc.navigationItem.title = TLDisplayStrings.SELECT_ACCOUNT_STRING()
+                vc.delegate = self
+            }
         }
     }
     
@@ -988,4 +976,9 @@ import StoreKit
     }
 }
 
-
+extension TLSendViewController : TLAccountsViewControllerDelegate {
+    func didSelectAccount(_ coinType: TLCoinType, sendFromType: TLSendFromType, sendFromIndex: NSInteger) {
+        AppDelegate.instance().updateGodSend(coinType, sendFromType: sendFromType, sendFromIndex: Int(sendFromIndex))
+        self.updateViewToNewSelectedObject()
+    }
+}

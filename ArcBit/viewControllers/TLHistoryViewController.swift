@@ -187,25 +187,12 @@ import CoreData
         self.accountBalanceLabel!.isHidden = false
     }
     
-    func onAccountSelected(_ note: Notification) {
-        NotificationCenter.default.removeObserver(self, name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ACCOUNT_SELECTED()),
-            object: nil)
-        
-        let selectedDict = note.object as! NSDictionary
-        let sendFromType = TLSendFromType(rawValue: selectedDict.object(forKey: "sendFromType") as! Int)
-        let sendFromIndex = selectedDict.object(forKey: "sendFromIndex") as! Int
-        AppDelegate.instance().updateHistorySelectedObject(sendFromType!, sendFromIndex: sendFromIndex)
-        self.updateViewToNewSelectedObject()
-    }
-    
     override func prepare(for segue: UIStoryboardSegue, sender: Any!) -> () {
         if (segue.identifier == "selectAccount") {
-            let vc = segue.destination 
-            vc.navigationItem.title = TLDisplayStrings.SELECT_ACCOUNT_STRING()
-            
-            NotificationCenter.default.addObserver(self
-                , selector: #selector(TLHistoryViewController.onAccountSelected(_:)),
-                name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_ACCOUNT_SELECTED()), object: nil)
+            if let vc = segue.destination as? TLAccountsViewController {
+                vc.navigationItem.title = TLDisplayStrings.SELECT_ACCOUNT_STRING()
+                vc.delegate = self
+            }
         }
     }
     
@@ -230,7 +217,7 @@ import CoreData
         let amount = TLCurrencyFormat.getProperAmount(AppDelegate.instance().historySelectedObject!.getAccountAmountChangeForTx(txObject!.getHash()! as String)!)
         let amountType = AppDelegate.instance().historySelectedObject!.getAccountAmountChangeTypeForTx(txObject!.getHash()! as String)
         var amountTypeString = ""
-        let txTag = AppDelegate.instance().appWallet.getTransactionTag(txObject!.getHash()! as String)
+        let txTag = AppDelegate.instance().getTransactionTag(TLPreferences.getSendFromCoinType(), txObject: txObject!)
 
         cell!.descriptionLabel!.adjustsFontSizeToFitWidth = true
         if (amountType == .send) {
@@ -313,15 +300,15 @@ import CoreData
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
         let txObject = AppDelegate.instance().historySelectedObject!.getTxObject((indexPath as NSIndexPath).row)
-        self.promptTransactionActionSheet(txObject!.getHash()!)
+        self.promptTransactionActionSheet(txObject!)
         return nil
     }
     
-    fileprivate func promptTransactionActionSheet(_ txHash: NSString) {
+    fileprivate func promptTransactionActionSheet(_ txObject: TLTxObject) {
         let otherButtonTitles = [TLDisplayStrings.VIEW_IN_WEB_STRING(), TLDisplayStrings.LABEL_TRANSACTION_STRING(), TLDisplayStrings.COPY_TRANSACTION_ID_TO_CLIPBOARD_STRING()]
         
         UIAlertController.showAlert(in: self,
-            withTitle: String(format: TLDisplayStrings.TRANSACTION_ID_COLON_X_STRING(), txHash),
+            withTitle: String(format: TLDisplayStrings.TRANSACTION_ID_COLON_X_STRING(), txObject.getHash()!),
             message:"",
             preferredStyle: .actionSheet,
             cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
@@ -329,16 +316,16 @@ import CoreData
             otherButtonTitles: otherButtonTitles as [AnyObject],
             tap: {(actionSheet, action, buttonIndex) in
                 if (buttonIndex == actionSheet?.firstOtherButtonIndex) {
-                    TLBlockExplorerAPI.instance().openWebViewForTransaction(txHash as String)
+                    TLBlockExplorerAPI.instance().openWebViewForTransaction(txObject.getHash()!)
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_TRANSACTION_IN_WEB()),
                         object: nil, userInfo: nil)
                 } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 1) {
                     TLPrompts.promtForInputText(self, title:TLDisplayStrings.EDIT_TRANSACTION_LABEL_STRING(), message: "", textFieldPlaceholder: TLDisplayStrings.LABEL_STRING(), success: {
                         (inputText: String!) in
                         if (inputText == "") {
-                            AppDelegate.instance().appWallet.deleteTransactionTag(txHash as String)
+                            AppDelegate.instance().deleteTransactionTag(TLPreferences.getSendFromCoinType(), txObject: txObject)
                         } else {
-                            AppDelegate.instance().appWallet.setTransactionTag(txHash as String, tag: inputText)
+                            AppDelegate.instance().setTransactionTag(TLPreferences.getSendFromCoinType(), txid: txObject.getHash()!, tag: inputText)
                             NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_TAG_TRANSACTION()),
                                 object: nil, userInfo: nil)
                         }
@@ -348,7 +335,7 @@ import CoreData
                     })
                 } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 2) {
                     let pasteboard = UIPasteboard.general
-                    pasteboard.string = txHash as String
+                    pasteboard.string = txObject.getHash()!
                     iToast.makeText(TLDisplayStrings.COPIED_TO_CLIPBOARD_STRING()).setGravity(iToastGravityCenter).setDuration(1000).show()
                 } else if (buttonIndex == actionSheet?.cancelButtonIndex) {
                 }
@@ -361,7 +348,7 @@ import CoreData
             tableView.isEditing = false
             let txObject = AppDelegate.instance().historySelectedObject!.getTxObject((indexPath as NSIndexPath).row)
             
-            self.promptTransactionActionSheet(txObject!.getHash()!)
+            self.promptTransactionActionSheet(txObject!)
         })
         moreAction.backgroundColor = UIColor.lightGray
         
@@ -374,5 +361,12 @@ import CoreData
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+}
+
+extension TLHistoryViewController : TLAccountsViewControllerDelegate {
+    func didSelectAccount(_ coinType: TLCoinType, sendFromType: TLSendFromType, sendFromIndex: NSInteger) {
+        AppDelegate.instance().updateHistorySelectedObject(coinType, sendFromType: sendFromType, sendFromIndex: Int(sendFromIndex))
+        self.updateViewToNewSelectedObject()
     }
 }

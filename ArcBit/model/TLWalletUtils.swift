@@ -22,6 +22,10 @@
 
 import Foundation
 
+enum TLCoinType: String {
+    case BTC = "BTC"
+    case BCH = "BCH"
+}
 
 enum TLSendFromType: Int {
     case hdWallet = 0
@@ -64,6 +68,14 @@ class TLWalletUtils {
     
     class func APP_NAME() -> String {
         return STATIC_MEMBERS.APP_NAME
+    }
+    
+    class func DEFAULT_COIN_TYPE() ->TLCoinType {
+        return TLCoinType.BTC
+    }
+    
+    class func SUPPORT_COIN_TYPES() -> ([TLCoinType]) {
+        return [TLCoinType.BCH, TLCoinType.BTC]
     }
     
     class func DEFAULT_FEE_AMOUNT_IN_BITCOINS() -> (String) {

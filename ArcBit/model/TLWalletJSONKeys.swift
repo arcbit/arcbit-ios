@@ -33,7 +33,6 @@ enum TLStealthPaymentStatus:Int {
 class TLWalletJSONKeys {
     
     struct STATIC_MEMBERS {
-        static let WALLET_PAYLOAD_VERSION_ONE = "1"
         static let WALLET_PAYLOAD_VERSION_TWO = "2"
         static let WALLET_PAYLOAD_VERSION_THREE = "3"
 

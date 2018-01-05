@@ -67,6 +67,7 @@ class TLPreferences
         static let PREFERENCE_FEE_AMOUNT = "pref-fee-amount"
         static let PREFERENCE_SUGGESTIONS_DICT = "pref-suggestions-dict"
         static let PREFERENCE_ANALYTICS_DICT = "pref-analytics-dict"
+        static let PREFERENCE_SEND_FROM_COIN_TYPE = "pref-send-from-coin-type"
         static let PREFERENCE_SEND_FROM_TYPE = "pref-send-from-type"
         static let PREFERENCE_SEND_FROM_INDEX = "pref-send-from-index"
         static let PREFERENCE_HAS_SETUP_HDWALLET = "pref-has-setup-hdwallet"
@@ -139,6 +140,20 @@ class TLPreferences
         UserDefaults.standard.synchronize()
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_PREFERENCES_BITCOIN_DISPLAY_CHANGED())
             ,object:nil, userInfo:nil)
+    }
+
+    class func getSendFromCoinType() -> (TLCoinType) {
+        if let coinTypeRawValue = UserDefaults.standard.string(forKey: CLASS_STATIC.PREFERENCE_SEND_FROM_COIN_TYPE) {
+            return TLCoinType(rawValue: coinTypeRawValue)!
+        } else {
+            return TLWalletUtils.DEFAULT_COIN_TYPE()
+        }
+    }
+    
+    //TODO might probably need to setSendFromCoinType when updating from jsonv2 to v3
+    class func setSendFromCoinType(_ sendFromType:TLCoinType) -> () {
+        UserDefaults.standard.set(sendFromType.rawValue ,forKey:CLASS_STATIC.PREFERENCE_SEND_FROM_COIN_TYPE)
+        UserDefaults.standard.synchronize()
     }
     
     class func getSendFromType() -> (TLSendFromType) {
