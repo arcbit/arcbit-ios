@@ -402,6 +402,8 @@ import Crashlytics
         // Update wallet json to v3
         if self.appWallet.getWalletJsonVersion() == TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_VERSION_TWO {
             self.appWallet.updateWalletJSONToV3()
+            TLCoinWalletsManager.instance().createFirstBitcoinCashAccount()
+            printOutWalletJSON()
             self.saveWalletJsonCloud()
         }
         

@@ -18,6 +18,7 @@ import Foundation
     var receiveSelectedObject:TLSelectedObject?
     var historySelectedObject:TLSelectedObject?
 
+    @discardableResult
     class func instance() -> (TLCoinWalletsManager) {
         if(STATIC_MEMBERS.instance == nil) {
             STATIC_MEMBERS.instance = TLCoinWalletsManager()
@@ -237,6 +238,10 @@ import Foundation
             let coinWalletObject = self.coinWalletDict[coinType]!
             coinWalletObject.createFirstAccount()
         })
+    }
+    
+    func createFirstBitcoinCashAccount() {
+        self.coinWalletDict[TLCoinType.BCH]?.createFirstAccount()
     }
     
     func refreshHDWalletAccounts(_ isRestoringWallet: Bool) {
