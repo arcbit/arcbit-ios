@@ -72,9 +72,8 @@ class TLWalletJSONKeys {
         static let WALLET_PAYLOAD_KEY_INDEX = "index"
         static let WALLET_PAYLOAD_KEY_LABEL = "label"
         static let WALLET_PAYLOAD_KEY_NAME = "name"
+        static let WALLET_PAYLOAD_KEY_WALLET_NAME = "wallet_name"
         static let WALLET_PAYLOAD_KEY_MAX_ACCOUNTS_CREATED = "max_account_id_created"
-        static let WALLET_PAYLOAD_KEY_MASTER_HEX = "master_hex"
-        static let WALLET_PAYLOAD_KEY_PASSPHRASE = "passphrase"
         static let WALLET_PAYLOAD_KEY_ADDRESS_BOOK = "address_book"
         static let WALLET_PAYLOAD_KEY_TRANSACTION_TAGS = "tx_tags"
         

@@ -37,7 +37,7 @@ import Crashlytics
     var window:UIWindow?
     fileprivate var storyboard:UIStoryboard?
     fileprivate var modalDelegate:AnyObject?
-    var appWallet = TLWallet(walletName: "App Wallet", walletConfig: TLWalletConfig(isTestnet: false))
+    lazy var appWallet = TLWallet(walletName: "App Wallet", walletConfig: TLWalletConfig(isTestnet: false))
     var bitcoinWalletObject: TLWalletObject?
     var bitcoinCashWalletObject: TLWalletObject?
     var godSend:TLSpaghettiGodSend?
@@ -732,6 +732,12 @@ import Crashlytics
                 TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message:TLDisplayStrings.ERROR_LOADING_WALLET_JSON_FILE_STRING())
                 NSException(name: NSExceptionName(rawValue: "Error"), reason: "Error loading wallet JSON file", userInfo: nil).raise()
             }
+        }
+        
+        // Update wallet json to v3
+        if self.appWallet.getWalletJsonVersion() == TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_VERSION_TWO {
+            self.appWallet.updateWalletJSONToV3()
+            self.saveWalletJsonCloud()
         }
         
         self.bitcoinWalletObject = TLWalletObject(appWallet: self.appWallet, coinType: TLCoinType.BTC)

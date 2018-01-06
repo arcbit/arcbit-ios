@@ -614,47 +614,54 @@ class TLWallet {
         return TLAccountObject(appWallet: self, coinType: coinType, dict: accountDict, accountType: .hdWallet)
     }
     
+    func createWalletDictForCoin() -> NSMutableDictionary {
+        let coinWalletDict = NSMutableDictionary()
+        
+        let hdWalletDict = NSMutableDictionary()        
+        hdWalletDict.setObject(0, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MAX_ACCOUNTS_CREATED as NSCopying)
+        
+        let accountsArray = NSMutableArray()
+        hdWalletDict.setObject(accountsArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ACCOUNTS as NSCopying)
+        let hdWalletsArray = NSMutableArray()
+        hdWalletsArray.add(hdWalletDict)
+        
+        coinWalletDict.setValue(hdWalletsArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_HDWALLETS)
+        
+        let importedKeysDict = NSMutableDictionary()
+        
+        let coldWalletAccountsArray = NSMutableArray()
+        let importedAccountsArray = NSMutableArray()
+        let watchOnlyAccountsArray = NSMutableArray()
+        let importedPrivateKeysArray = NSMutableArray()
+        let watchOnlyAddressesArray = NSMutableArray()
+        importedKeysDict.setObject(coldWalletAccountsArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_COLD_WALLET_ACCOUNTS as NSCopying)
+        importedKeysDict.setObject(importedAccountsArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_IMPORTED_ACCOUNTS as NSCopying)
+        importedKeysDict.setObject(watchOnlyAccountsArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_WATCH_ONLY_ACCOUNTS as NSCopying)
+        importedKeysDict.setObject(importedPrivateKeysArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_IMPORTED_PRIVATE_KEYS as NSCopying)
+        importedKeysDict.setObject(watchOnlyAddressesArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_WATCH_ONLY_ADDRESSES as NSCopying)
+        
+        
+        coinWalletDict.setObject(importedKeysDict, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_IMPORTS as NSCopying)
+        
+        coinWalletDict.setValue(NSMutableArray(), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS_BOOK)
+        coinWalletDict.setValue(NSMutableDictionary(), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_TRANSACTION_TAGS)
+        
+        return coinWalletDict
+    }
+    
     fileprivate func createWallet(_ passphrase: String, masterHex: String, walletName: String) -> (NSMutableDictionary) {
         let createdWalletDict = NSMutableDictionary()
-        func createWalletDictForCoin(_ createdWalletDict: NSMutableDictionary, coinCode: String) {
-            let coinWalletDict = NSMutableDictionary()
-            createdWalletDict.setObject(coinWalletDict, forKey: coinCode as NSCopying)
-
-            let hdWalletDict = NSMutableDictionary()
-            hdWalletDict.setObject(walletName, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_NAME as NSCopying)
-            hdWalletDict.setObject(masterHex, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MASTER_HEX as NSCopying)
-            hdWalletDict.setObject(passphrase, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_PASSPHRASE as NSCopying)
-            
-            hdWalletDict.setObject(0, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MAX_ACCOUNTS_CREATED as NSCopying)
-            
-            let accountsArray = NSMutableArray()
-            hdWalletDict.setObject(accountsArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ACCOUNTS as NSCopying)
-            let hdWalletsArray = NSMutableArray()
-            hdWalletsArray.add(hdWalletDict)
-            
-            coinWalletDict.setValue(hdWalletsArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_HDWALLETS)
-            
-            let importedKeysDict = NSMutableDictionary()
-            
-            let coldWalletAccountsArray = NSMutableArray()
-            let importedAccountsArray = NSMutableArray()
-            let watchOnlyAccountsArray = NSMutableArray()
-            let importedPrivateKeysArray = NSMutableArray()
-            let watchOnlyAddressesArray = NSMutableArray()
-            importedKeysDict.setObject(coldWalletAccountsArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_COLD_WALLET_ACCOUNTS as NSCopying)
-            importedKeysDict.setObject(importedAccountsArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_IMPORTED_ACCOUNTS as NSCopying)
-            importedKeysDict.setObject(watchOnlyAccountsArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_WATCH_ONLY_ACCOUNTS as NSCopying)
-            importedKeysDict.setObject(importedPrivateKeysArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_IMPORTED_PRIVATE_KEYS as NSCopying)
-            importedKeysDict.setObject(watchOnlyAddressesArray, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_WATCH_ONLY_ADDRESSES as NSCopying)
-            
-            
-            coinWalletDict.setObject(importedKeysDict, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_IMPORTS as NSCopying)
-            
-            coinWalletDict.setValue(NSMutableArray(), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS_BOOK)
-            coinWalletDict.setValue(NSMutableDictionary(), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_TRANSACTION_TAGS)
-        }
-        createWalletDictForCoin(createdWalletDict, coinCode: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_BITCOIN)
-        createWalletDictForCoin(createdWalletDict, coinCode: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_BITCOIN_CASH)
+        createdWalletDict.setObject(walletName, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_WALLET_NAME as NSCopying)
+        TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
+            switch coinType {
+            case .BTC:
+                let coinWalletDict = createWalletDictForCoin()
+                createdWalletDict.setObject(coinWalletDict, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_BITCOIN as NSCopying)
+            case .BCH:
+                let coinWalletDict = createWalletDictForCoin()
+                createdWalletDict.setObject(coinWalletDict, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_BITCOIN_CASH as NSCopying)
+            }
+        })
         return createdWalletDict
     }
     
@@ -821,7 +828,7 @@ class TLWallet {
             importedPrivateKey = [
                 TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_KEY: privateKey,
                 TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS: TLCoreBitcoinWrapper.getAddress(privateKey, isTestnet: self.walletConfig.isTestnet)!,
-                TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL: String(""),
+                TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL: "",
                 TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS: Int(TLAddressStatus.active.rawValue)
             ]
         } else {
@@ -1115,6 +1122,24 @@ class TLWallet {
         let accountsArray = getAccountsArray(coinType)
         let accountDict = accountsArray.object(at: accountIdx) as! NSDictionary
         return TLAccountObject(appWallet: self, coinType: coinType, dict: accountDict, accountType: .hdWallet)
+    }
+    
+    func updateWalletJSONToV3() {
+        let walletV2 = self.getFirstWallet(TLCoinType.BTC)
+        let walletV3 = NSMutableDictionary()
+        TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
+            switch coinType {
+            case .BTC:
+                walletV3.setObject(walletV2, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_BITCOIN as NSCopying)
+            case .BCH:
+                let coinWalletDict = createWalletDictForCoin()
+                walletV3.setObject(coinWalletDict, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_BITCOIN_CASH as NSCopying)
+            }
+        })
+        let walletsArray = getWallets()
+        walletsArray.removeAllObjects()
+        walletsArray.add(walletV3)
+        rootDict!.setValue(TLWalletJSONKeys.getLastestVersion(), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_VERSION)
     }
 }
 
