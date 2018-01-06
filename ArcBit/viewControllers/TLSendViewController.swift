@@ -87,8 +87,8 @@ import StoreKit
     
     func checkToFetchUTXOsAndDynamicFeesAndFillAmountFieldWithWholeBalance() {
         if TLPreferences.enabledInAppSettingsKitDynamicFee() {
-            if !AppDelegate.instance().godSend!.haveUpDatedUTXOs() {
-                AppDelegate.instance().godSend!.getAndSetUnspentOutputs({
+            if !TLCoinWalletsManager.instance().godSend!.haveUpDatedUTXOs() {
+                TLCoinWalletsManager.instance().godSend!.getAndSetUnspentOutputs({
                     self.checkToFetchDynamicFeesAndFillAmountFieldWithWholeBalance()
                     }, failure: {
                         TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.ERROR_FETCHING_UNSPENT_OUTPUTS_TRY_AGAIN_LATER_STRING())
@@ -121,13 +121,13 @@ import StoreKit
         let fee:TLCoin
         let txSizeBytes:UInt64
         if useDynamicFees {
-            if (AppDelegate.instance().godSend!.getSelectedObjectType() == .account) {
-                let accountObject = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLAccountObject
+            if (TLCoinWalletsManager.instance().godSend!.getSelectedObjectType() == .account) {
+                let accountObject = TLCoinWalletsManager.instance().godSend!.getSelectedSendObject() as! TLAccountObject
                 let inputCount = accountObject.stealthPaymentUnspentOutputsCount + accountObject.unspentOutputsCount
                 txSizeBytes = TLSpaghettiGodSend.getEstimatedTxSize(inputCount, outputCount: 1)
                 DLog("fillAmountFieldWithWholeBalance TLAccountObject useDynamicFees inputCount txSizeBytes: \(inputCount) \(txSizeBytes)")
             } else {
-                let importedAddress = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLImportedAddress
+                let importedAddress = TLCoinWalletsManager.instance().godSend!.getSelectedSendObject() as! TLImportedAddress
                 txSizeBytes = TLSpaghettiGodSend.getEstimatedTxSize(importedAddress.unspentOutputsCount, outputCount: 1)
                 DLog("fillAmountFieldWithWholeBalance importedAddress useDynamicFees inputCount txSizeBytes: \(importedAddress.unspentOutputsCount) \(txSizeBytes)")
             }
@@ -144,7 +144,7 @@ import StoreKit
             fee = TLCurrencyFormat.bitcoinAmountStringToCoin(feeAmount!)
         }
 
-        let accountBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
+        let accountBalance = TLCoinWalletsManager.instance().godSend!.getCurrentFromBalance()
         let sendAmount = accountBalance.subtract(fee)
         DLog("fillAmountFieldWithWholeBalance accountBalance: \(accountBalance.toUInt64())")
         DLog("fillAmountFieldWithWholeBalance sendAmount: \(sendAmount.toUInt64())")
@@ -284,8 +284,8 @@ import StoreKit
         
         self.updateViewToNewSelectedObject()
         
-        if (AppDelegate.instance().godSend!.hasFetchedCurrentFromData()) {
-            let balance = AppDelegate.instance().godSend!.getCurrentFromBalance()
+        if (TLCoinWalletsManager.instance().godSend!.hasFetchedCurrentFromData()) {
+            let balance = TLCoinWalletsManager.instance().godSend!.getCurrentFromBalance()
             let balanceString = TLCurrencyFormat.getProperAmount(balance)
             self.accountBalanceLabel!.text = balanceString as String
             self.accountBalanceLabel!.isHidden = false
@@ -300,8 +300,8 @@ import StoreKit
     }
     
     func refreshAccountDataAndSetBalanceView(_ fetchDataAgain: Bool = false) -> () {
-        if (AppDelegate.instance().godSend!.getSelectedObjectType() == .account) {
-            let accountObject = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLAccountObject
+        if (TLCoinWalletsManager.instance().godSend!.getSelectedObjectType() == .account) {
+            let accountObject = TLCoinWalletsManager.instance().godSend!.getSelectedSendObject() as! TLAccountObject
             self.balanceActivityIndicatorView!.isHidden = false
             self.accountBalanceLabel!.isHidden = true
             self.balanceActivityIndicatorView!.startAnimating()
@@ -314,8 +314,8 @@ import StoreKit
                 }
             })
             
-        } else if (AppDelegate.instance().godSend!.getSelectedObjectType() == .address) {
-            let importedAddress = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLImportedAddress
+        } else if (TLCoinWalletsManager.instance().godSend!.getSelectedObjectType() == .address) {
+            let importedAddress = TLCoinWalletsManager.instance().godSend!.getSelectedSendObject() as! TLImportedAddress
             self.balanceActivityIndicatorView!.isHidden = false
             self.accountBalanceLabel!.isHidden = true
             self.balanceActivityIndicatorView!.startAnimating()
@@ -335,7 +335,7 @@ import StoreKit
     }
     
     fileprivate func updateViewToNewSelectedObject() -> () {
-        let label = AppDelegate.instance().godSend!.getCurrentFromLabel()
+        let label = TLCoinWalletsManager.instance().godSend!.getCurrentFromLabel()
         self.accountNameLabel!.text = label
         self._updateAccountBalanceView()
     }
@@ -355,7 +355,7 @@ import StoreKit
                     if (!TLCoreBitcoinWrapper.isValidPrivateKey(privKey, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
                         TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.INVALID_PRIVATE_KEY_STRING())
                     } else {
-                        let importedAddress = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLImportedAddress?
+                        let importedAddress = TLCoinWalletsManager.instance().godSend!.getSelectedSendObject() as! TLImportedAddress?
                         let success = importedAddress!.setPrivateKeyInMemory(privKey)
                         if (!success) {
                             TLPrompts.promptSuccessMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.PRIVATE_KEY_DOES_NOT_MATCH_ADDRESS_STRING())
@@ -415,7 +415,7 @@ import StoreKit
                 () in
                 TLPreferences.setDisabledPromptShowTryColdWallet(true)
             })
-        } else if let balance = AppDelegate.instance().receiveSelectedObject!.getBalanceForSelectedObject(), balance.greater(TLCoin.zero()) && !TLPreferences.hasShownBackupPassphrase() {
+        } else if let balance = TLCoinWalletsManager.instance().receiveSelectedObject!.getBalanceForSelectedObject(), balance.greater(TLCoin.zero()) && !TLPreferences.hasShownBackupPassphrase() {
             self.showPromptThenPassphraseViewController()
         }
         if TLPreferences.getEnableBackupWithiCloud() {
@@ -504,7 +504,7 @@ import StoreKit
     }
     
     func _updateAccountBalanceView() {
-        let balance = AppDelegate.instance().godSend!.getCurrentFromBalance()
+        let balance = TLCoinWalletsManager.instance().godSend!.getCurrentFromBalance()
         let balanceString = TLCurrencyFormat.getProperAmount(balance)
         self.accountBalanceLabel!.text = balanceString as String
     }
@@ -569,15 +569,15 @@ import StoreKit
                 if TLSendFormData.instance().useAllFunds {
                     fee = TLSendFormData.instance().feeAmount!
                 } else {
-                    if (AppDelegate.instance().godSend!.getSelectedObjectType() == .account) {
-                        let accountObject = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLAccountObject
+                    if (TLCoinWalletsManager.instance().godSend!.getSelectedObjectType() == .account) {
+                        let accountObject = TLCoinWalletsManager.instance().godSend!.getSelectedSendObject() as! TLAccountObject
                         let inputCount = accountObject.getInputsNeededToConsume(inputtedAmount)
                         //TODO account for change output, output count likely 2 (3 if have stealth payment) cause if user dont do click use all funds because will likely have change
                         // but for now dont need to be fully accurate with tx fee, for now we will underestimate tx fee, wont underestimate much because outputs contributes little to tx size
                         txSizeBytes = TLSpaghettiGodSend.getEstimatedTxSize(inputCount, outputCount: 1)
                         DLog("showPromptReviewTx TLAccountObject useDynamicFees inputCount txSizeBytes: \(inputCount) \(txSizeBytes)")
                     } else {
-                        let importedAddress = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLImportedAddress
+                        let importedAddress = TLCoinWalletsManager.instance().godSend!.getSelectedSendObject() as! TLImportedAddress
                         // TODO same as above
                         let inputCount = importedAddress.getInputsNeededToConsume(inputtedAmount)
                         txSizeBytes = TLSpaghettiGodSend.getEstimatedTxSize(inputCount, outputCount: 1)
@@ -600,7 +600,7 @@ import StoreKit
             }
             
             let amountNeeded = inputtedAmount.add(fee)
-            let accountBalance = AppDelegate.instance().godSend!.getCurrentFromBalance()
+            let accountBalance = TLCoinWalletsManager.instance().godSend!.getCurrentFromBalance()
             if (amountNeeded.greater(accountBalance)) {
                 let msg = String(format: TLDisplayStrings.YOU_HAVE_X_Y_BUT_Z_IS_NEEDED_STRING(), "\(TLCurrencyFormat.coinToProperBitcoinAmountString(accountBalance)) \(TLCurrencyFormat.getBitcoinDisplay())", TLCurrencyFormat.coinToProperBitcoinAmountString(amountNeeded))
                 TLPrompts.promptErrorMessage(TLDisplayStrings.INSUFFICIENT_FUNDS_STRING(), message: msg)
@@ -610,7 +610,7 @@ import StoreKit
             DLog("showPromptReviewTx accountBalance: \(accountBalance.toUInt64())")
             DLog("showPromptReviewTx inputtedAmount: \(inputtedAmount.toUInt64())")
             DLog("showPromptReviewTx fee: \(fee.toUInt64())")
-            TLSendFormData.instance().fromLabel = AppDelegate.instance().godSend!.getCurrentFromLabel()!
+            TLSendFormData.instance().fromLabel = TLCoinWalletsManager.instance().godSend!.getCurrentFromLabel()!
             let vc = self.storyboard!.instantiateViewController(withIdentifier: "ReviewPayment") as! TLReviewPaymentViewController
             self.slidingViewController().present(vc, animated: true, completion: nil)
         }
@@ -631,8 +631,8 @@ import StoreKit
         }
         
         if TLPreferences.enabledInAppSettingsKitDynamicFee() {
-            if !AppDelegate.instance().godSend!.haveUpDatedUTXOs() {
-                AppDelegate.instance().godSend!.getAndSetUnspentOutputs({
+            if !TLCoinWalletsManager.instance().godSend!.haveUpDatedUTXOs() {
+                TLCoinWalletsManager.instance().godSend!.getAndSetUnspentOutputs({
                     checkToFetchDynamicFees()
                     }, failure: {
                         TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.ERROR_FETCHING_UNSPENT_OUTPUTS_TRY_AGAIN_LATER_STRING())
@@ -649,7 +649,7 @@ import StoreKit
         if (!TLCoreBitcoinWrapper.isValidPrivateKey(privateKey, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
             TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.INVALID_PRIVATE_KEY_STRING())
         } else {
-            let importedAddress = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLImportedAddress?
+            let importedAddress = TLCoinWalletsManager.instance().godSend!.getSelectedSendObject() as! TLImportedAddress?
             let success = importedAddress!.setPrivateKeyInMemory(privateKey)
             if (!success) {
                 TLPrompts.promptSuccessMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.PRIVATE_KEY_DOES_NOT_MATCH_ADDRESS_STRING())
@@ -660,8 +660,8 @@ import StoreKit
     }
     
     fileprivate func showPromptReviewTx() {
-        if (AppDelegate.instance().godSend!.needWatchOnlyAccountPrivateKey()) {
-            let accountObject = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLAccountObject
+        if (TLCoinWalletsManager.instance().godSend!.needWatchOnlyAccountPrivateKey()) {
+            let accountObject = TLCoinWalletsManager.instance().godSend!.getSelectedSendObject() as! TLAccountObject
             TLPrompts.promptForTempararyImportExtendedPrivateKey(self, success: {
                 (data: String!) in
                 if (!TLHDWalletWrapper.isValidExtendedPrivateKey(data)) {
@@ -679,7 +679,7 @@ import StoreKit
                 }, error: {
                     (data: String?) in
             })
-        } else if (AppDelegate.instance().godSend!.needWatchOnlyAddressPrivateKey()) {
+        } else if (TLCoinWalletsManager.instance().godSend!.needWatchOnlyAddressPrivateKey()) {
             TLPrompts.promptForTempararyImportPrivateKey(self, success: {
                 (data: String!) in
                 if (TLCoreBitcoinWrapper.isBIP38EncryptedKey(data, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
@@ -698,11 +698,11 @@ import StoreKit
                     (data: String?) in
             })
             
-        } else if (AppDelegate.instance().godSend!.needEncryptedPrivateKeyPassword()) {
-            let encryptedPrivateKey = AppDelegate.instance().godSend!.getEncryptedPrivateKey()
+        } else if (TLCoinWalletsManager.instance().godSend!.needEncryptedPrivateKeyPassword()) {
+            let encryptedPrivateKey = TLCoinWalletsManager.instance().godSend!.getEncryptedPrivateKey()
             TLPrompts.promptForEncryptedPrivKeyPassword(self, view:self.slidingViewController().topViewController.view, encryptedPrivKey: encryptedPrivateKey, success: {
                 (privKey: String!) in
-                let importedAddress = AppDelegate.instance().godSend!.getSelectedSendObject() as! TLImportedAddress?
+                let importedAddress = TLCoinWalletsManager.instance().godSend!.getSelectedSendObject() as! TLImportedAddress?
                 let success = importedAddress!.setPrivateKeyInMemory(privKey)
                 if (!success) {
                     TLPrompts.promptSuccessMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.PRIVATE_KEY_DOES_NOT_MATCH_ADDRESS_STRING())
@@ -795,8 +795,8 @@ import StoreKit
                     })
                 }
                 
-                if !AppDelegate.instance().godSend!.haveUpDatedUTXOs() {
-                    AppDelegate.instance().godSend!.getAndSetUnspentOutputs({
+                if !TLCoinWalletsManager.instance().godSend!.haveUpDatedUTXOs() {
+                    TLCoinWalletsManager.instance().godSend!.getAndSetUnspentOutputs({
                         DLog("preFetchUTXOsAndDynamicFees getAndSetUnspentOutputs success")
                         }, failure: {
                             DLog("preFetchUTXOsAndDynamicFees getAndSetUnspentOutputs failure")
@@ -978,7 +978,7 @@ import StoreKit
 
 extension TLSendViewController : TLAccountsViewControllerDelegate {
     func didSelectAccount(_ coinType: TLCoinType, sendFromType: TLSendFromType, sendFromIndex: NSInteger) {
-        AppDelegate.instance().updateGodSend(coinType, sendFromType: sendFromType, sendFromIndex: Int(sendFromIndex))
+        TLCoinWalletsManager.instance().updateGodSend(coinType, sendFromType: sendFromType, sendFromIndex: Int(sendFromIndex))
         self.updateViewToNewSelectedObject()
     }
 }

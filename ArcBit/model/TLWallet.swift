@@ -617,7 +617,7 @@ class TLWallet {
     func createWalletDictForCoin() -> NSMutableDictionary {
         let coinWalletDict = NSMutableDictionary()
         
-        let hdWalletDict = NSMutableDictionary()        
+        let hdWalletDict = NSMutableDictionary()
         hdWalletDict.setObject(0, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MAX_ACCOUNTS_CREATED as NSCopying)
         
         let accountsArray = NSMutableArray()

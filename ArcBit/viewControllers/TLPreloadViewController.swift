@@ -62,7 +62,7 @@ import UIKit
 
                         DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
                             AppDelegate.instance().initializeWalletAppAndShowInitialScreen(true, walletPayload: nil)
-                            AppDelegate.instance().refreshHDWalletAccounts(true)
+                            TLCoinWalletsManager.instance().refreshHDWalletAccounts(true)
                             DispatchQueue.main.async {
                                 AppDelegate.instance().saveWalletJSONEnabled = true
                                 AppDelegate.instance().saveWalletJsonCloud()
