@@ -1130,6 +1130,10 @@ class TLWallet {
         TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
             switch coinType {
             case .BTC:
+                let hdWallet = self.getHDWallet(TLCoinType.BTC) as NSMutableDictionary
+                hdWallet.removeObject(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MASTER_HEX)
+                hdWallet.removeObject(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_PASSPHRASE)
+                hdWallet.removeObject(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_NAME)
                 walletV3.setObject(walletV2, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_BITCOIN as NSCopying)
             case .BCH:
                 let coinWalletDict = createWalletDictForCoin()

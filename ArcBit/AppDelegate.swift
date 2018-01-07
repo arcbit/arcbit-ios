@@ -402,12 +402,15 @@ import Crashlytics
         // Update wallet json to v3
         if self.appWallet.getWalletJsonVersion() == TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_VERSION_TWO {
             self.appWallet.updateWalletJSONToV3()
+            TLCoinWalletsManager.instance().setupCoinWallets(self.appWallet)
             TLCoinWalletsManager.instance().createFirstBitcoinCashAccount()
             printOutWalletJSON()
             self.saveWalletJsonCloud()
+        } else {
+            TLCoinWalletsManager.instance().setupCoinWallets(self.appWallet)
         }
-        
-        TLCoinWalletsManager.instance().setupCoinWallets(self.appWallet)
+        printOutWalletJSON()
+
         
         TLCoinWalletsManager.instance().godSend = TLSpaghettiGodSend(appWallet: appWallet)
         TLCoinWalletsManager.instance().receiveSelectedObject = TLSelectedObject()
@@ -647,7 +650,6 @@ import Crashlytics
         let jsonString = JSONStringify(value: walletJson)
         //set breakpoint and in console do "po jsonString as NSString"
         DLog("printOutWalletJSON:\n\(jsonString)")
-//        DLog("printOutWalletJSON:\n\(walletJson)")
     }
     
     func saveWalletJsonCloud() -> Bool {
