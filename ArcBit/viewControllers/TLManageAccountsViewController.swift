@@ -34,6 +34,7 @@ import UIKit
     fileprivate var QRImageModal: TLQRImageModal?
     fileprivate var accountActionsArray: NSArray?
     fileprivate var numberOfSections: Int = 0
+    fileprivate var selectCryptoCoinSection = 0
     fileprivate var accountListSection: Int = 0
     fileprivate var coldWalletAccountSection: Int = 0
     fileprivate var importedAccountSection: Int = 0
@@ -116,7 +117,7 @@ import UIKit
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_MANAGE_ACCOUNTS_SCREEN()),
                 object: nil)
     }
-
+    
     func checkToRecoverAccounts() {
         if (TLCoinWalletsManager.instance().aAccountNeedsRecovering()) {
             TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: TLDisplayStrings.RESTORING_WALLET_STRING(), animated: true)
@@ -344,6 +345,11 @@ import UIKit
             vc.navigationItem.title = TLDisplayStrings.ADDRESSES_STRING()
             vc.accountObject = showAddressListAccountObject
             vc.showBalances = showAddressListShowBalances
+        } else if (segue.identifier == "SegueSelectCryptoCoinManageAccounts") {
+            if let vc = segue.destination as? TLSelectCryptoCoinViewController {
+                vc.delegate = self
+                vc.navigationItem.title = TLDisplayStrings.SELECT_COIN()
+            }
         }
     }
 
@@ -484,9 +490,23 @@ import UIKit
     func _accountsTableViewReloadDataWrapper() -> () {
         accountActionsArray = TLHelpDoc.getAccountActionsArray()
         
-        numberOfSections = 2
+        numberOfSections = 1
         
-        var sectionCounter = 1
+        var sectionCounter = 0
+        
+        if TLPreferences.getNumberOfSupportedCoins() > 1 {
+            selectCryptoCoinSection = sectionCounter
+            sectionCounter += 1
+            numberOfSections += 1
+            
+            accountListSection = sectionCounter
+        } else {
+            selectCryptoCoinSection = NSIntegerMax
+            
+            accountListSection = 0
+        }
+        sectionCounter += 1
+        numberOfSections += 1
         
         if TLPreferences.enabledColdWallet() {
             if (TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).coldWalletAccounts.getNumberOfAccounts() > 0) {
@@ -2187,6 +2207,9 @@ import UIKit
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if TLPreferences.getNumberOfSupportedCoins() > 1 && section == selectCryptoCoinSection {
+            return ""
+        }
         if (TLPreferences.enabledAdvancedMode()) {
             if (section == accountListSection) {
                 return TLDisplayStrings.ACCOUNTS_STRING()
@@ -2231,6 +2254,9 @@ import UIKit
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if TLPreferences.getNumberOfSupportedCoins() > 1 && section == selectCryptoCoinSection {
+            return 1
+        }
         if (TLPreferences.enabledAdvancedMode()) {
             if (section == accountListSection) {
                 return TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).accounts.getNumberOfAccounts()
@@ -2282,6 +2308,19 @@ import UIKit
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if ((indexPath as NSIndexPath).section == selectCryptoCoinSection) {
+            let MyIdentifier = "selectCryptoCoinCellIdentifier"
+            var cell = tableView.dequeueReusableCell(withIdentifier: MyIdentifier)
+            if (cell == nil) {
+                cell = UITableViewCell(style: UITableViewCellStyle.subtitle,
+                                       reuseIdentifier: MyIdentifier)
+            }
+            cell!.textLabel!.text = TLDisplayStrings.SELECT_CRYPTOCURRENCY()
+            cell!.detailTextLabel!.text =  String(format: TLDisplayStrings.CURRENT_SELECTED_CURRENCY(), TLWalletUtils.GET_CRYPTO_COIN_FULL_NAME(self.currentCoinType))
+            cell!.accessoryType = .disclosureIndicator
+            return cell!
+        }
+        
         if ((indexPath as NSIndexPath).section == accountActionSection) {
             let MyIdentifier = "AccountActionCellIdentifier"
 
@@ -2382,6 +2421,11 @@ import UIKit
     }
 
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        if TLPreferences.getNumberOfSupportedCoins() > 1 && (indexPath as NSIndexPath).section == selectCryptoCoinSection {
+            performSegue(withIdentifier: "SegueSelectCryptoCoinManageAccounts", sender:self)
+            return nil
+        }
+        
         if (TLPreferences.enabledAdvancedMode()) {
             if ((indexPath as NSIndexPath).section == accountListSection) {
                 self.promptAccountsActionSheet((indexPath as NSIndexPath).row)
@@ -2457,5 +2501,12 @@ import UIKit
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+}
+
+extension TLManageAccountsViewController : TLSelectCryptoCoinViewControllerDelegate {
+    func didSelectCryptoCoin(_ coinType: TLCoinType) {
+        self.currentCoinType = coinType
+        self._accountsTableViewReloadDataWrapper()
     }
 }

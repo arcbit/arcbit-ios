@@ -1444,6 +1444,7 @@
                     <connections>
                         <outlet property="accountsTableView" destination="s5R-e7-WcB" id="bPP-bq-Yr5"/>
                         <segue destination="hnW-d4-U0e" kind="show" identifier="SegueAddressList" id="5Zz-vA-Rzy"/>
+                        <segue destination="aPw-Sr-SCH" kind="show" identifier="SegueSelectCryptoCoinManageAccounts" id="4V0-lk-xTm"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="RLG-Sc-3Ul" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -4037,6 +4038,7 @@
         <image name="upload.png" width="26" height="26"/>
     </resources>
     <inferredMetricsTieBreakers>
+        <segue reference="4V0-lk-xTm"/>
         <segue reference="s7I-Xo-HUH"/>
         <segue reference="jbc-qB-Ba2"/>
     </inferredMetricsTieBreakers>
