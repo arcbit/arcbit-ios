@@ -55,7 +55,7 @@ import Foundation
     fileprivate var txidToAccountAmountTypeDict = [String:Int]()
     fileprivate var receivingAddressesArray = [String]()
     fileprivate var processedTxSet:NSMutableSet = NSMutableSet()
-    fileprivate var coinType:TLCoinType = TLCoinType.BTC
+    var coinType:TLCoinType = TLCoinType.BTC
     fileprivate var accountType: TLAccountType?
     var accountBalance = TLCoin.zero()
     fileprivate var totalUnspentOutputsSum: TLCoin?

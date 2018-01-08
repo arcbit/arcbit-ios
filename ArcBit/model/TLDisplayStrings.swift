@@ -458,4 +458,12 @@ class TLDisplayStrings {
     class func ICLOUD_SUPPORT_DISCONTINUED() -> String { return "iCloud support for ArcBit discontinued".localized }
     class func ICLOUD_SUPPORT_DISCONTINUED_DESCRIPTION() -> String { return "iCloud support for ArcBit is being discontinued. If your backup passphrase has not been backed up already, please do so.".localized }
     class func REUSABLE_ADDRESS_DISABLED() -> String { return "Reusable address payments are disabled until further notice.".localized }
+    
+    class func SELECT_CRYPTOCURRENCY() -> String { return "Select cryptocurrency".localized }
+    class func CURRENT_SELECTED_CURRENCY() -> String { return "Current selected: %@".localized }
+
+    class func SELECT_COIN() -> String { return "Select Coin".localized }
+    class func CRYPTO_COIN_BITCOIN() -> String { return "Bitcoin".localized }
+    class func CRYPTO_COIN_BITCOIN_CASH() -> String { return "Bitcoin Cash".localized }
+
 }

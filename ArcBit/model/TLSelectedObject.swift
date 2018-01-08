@@ -25,6 +25,14 @@ import Foundation
     fileprivate var accountObject:TLAccountObject?
     fileprivate var importedAddress:TLImportedAddress?
     
+    func getSelectedObjectCoinType() -> TLCoinType {
+        if (self.accountObject != nil) {
+            return self.accountObject!.coinType
+        } else {
+            return self.importedAddress!.coinType
+        }
+    }
+
     func setSelectedAccount(_ accountObject: TLAccountObject) -> () {
         self.accountObject = accountObject
         self.importedAddress = nil

@@ -45,6 +45,16 @@
         sendFromAddresses = NSMutableArray()
     }
     
+    func getSelectedObjectCoinType() -> TLCoinType {
+        if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
+            let accountObject = sendFromAccounts!.object(at: 0) as! TLAccountObject
+            return accountObject.coinType
+        } else {
+            let importedAddress = sendFromAddresses!.object(at: 0) as! TLImportedAddress
+            return importedAddress.coinType
+        }
+    }
+    
     func getSelectedSendObject() -> AnyObject? {
         if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
             return sendFromAccounts!.object(at: 0) as AnyObject?

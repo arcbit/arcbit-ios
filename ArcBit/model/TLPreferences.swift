@@ -471,6 +471,16 @@ class TLPreferences
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED()), object:nil)
     }
     
+    class func getNumberOfSupportedCoins() -> Int {
+        return 2
+//        return UserDefaults.standard.bool(forKey: CLASS_STATIC.PREFERENCE_WALLET_COLD_WALLET)
+    }
+    
+//    class func setNumberOfSupportedCoins(_ enabled:Int) -> () {
+//        UserDefaults.standard.set(enabled ,forKey:CLASS_STATIC.PREFERENCE_WALLET_COLD_WALLET)
+//        UserDefaults.standard.synchronize()
+//    }
+    
     class func enabledColdWallet() -> (Bool) {
         return UserDefaults.standard.bool(forKey: CLASS_STATIC.PREFERENCE_WALLET_COLD_WALLET)
     }

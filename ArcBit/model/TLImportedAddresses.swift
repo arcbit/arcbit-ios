@@ -29,7 +29,7 @@ import Foundation
     fileprivate let archivedImportedAddresses = NSMutableArray()
     fileprivate let addressToIdxDict = NSMutableDictionary()
     fileprivate let addressToPositionInWalletArrayDict = NSMutableDictionary()
-    fileprivate var coinType:TLCoinType = TLCoinType.BTC
+    fileprivate var coinType:TLCoinType = TLWalletUtils.DEFAULT_COIN_TYPE()
     fileprivate var accountAddressType:TLAccountAddressType?
     var downloadState:TLDownloadState = .notDownloading
 
@@ -164,7 +164,7 @@ import Foundation
     func addImportedPrivateKey(_ privateKey:String, encryptedPrivateKey:String?) -> (TLImportedAddress) {
         let importedPrivateKeyDict = self.appWallet!.addImportedPrivateKey(self.coinType, privateKey: privateKey, encryptedPrivateKey:encryptedPrivateKey)
         
-        let importedAddressObject = TLImportedAddress(appWallet:self.appWallet!, dict:importedPrivateKeyDict)
+        let importedAddressObject = TLImportedAddress(appWallet:self.appWallet!, coinType: self.coinType, dict:importedPrivateKeyDict)
         self.importedAddresses.add(importedAddressObject)
         
         importedAddressObject.setPositionInWalletArray(self.importedAddresses.count + self.archivedImportedAddresses.count - 1)
@@ -187,7 +187,7 @@ import Foundation
     
     func addImportedWatchAddress(_ address:String) -> (TLImportedAddress) {
         let importedDict = self.appWallet!.addWatchOnlyAddress(self.coinType, address: address as NSString)
-        let importedAddressObject = TLImportedAddress(appWallet:self.appWallet!, dict:importedDict)
+        let importedAddressObject = TLImportedAddress(appWallet:self.appWallet!, coinType: self.coinType, dict:importedDict)
         self.importedAddresses.add(importedAddressObject)
         
         importedAddressObject.setPositionInWalletArray(self.importedAddresses.count + self.archivedImportedAddresses.count - 1)

@@ -33,8 +33,11 @@ protocol TLAccountsViewControllerDelegate {
     }
     
     var delegate: TLAccountsViewControllerDelegate?
+    lazy var currentCoinType = TLWalletUtils.DEFAULT_COIN_TYPE()
+    lazy var parentViewIsSendVC = false
     @IBOutlet fileprivate var accountsTableView: UITableView?
     fileprivate var numberOfSections = 0
+    fileprivate var selectCryptoCoinSection = 0
     fileprivate var accountListSection = 0
     fileprivate var coldWalletAccountSection = 0
     fileprivate var importedAccountSection = 0
@@ -42,12 +45,10 @@ protocol TLAccountsViewControllerDelegate {
     fileprivate var importedAddressSection = 0
     fileprivate var importedWatchAddressSection = 0
     fileprivate var accountRefreshControl: UIRefreshControl?
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         setColors()
-        
-        accountListSection = 0
         
         self.accountsTableView!.delegate = self
         self.accountsTableView!.dataSource = self
@@ -90,6 +91,15 @@ protocol TLAccountsViewControllerDelegate {
             object: nil, userInfo: nil)
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender:Any!) -> () {
+        if (segue.identifier == "SegueSelectCryptoCoin") {
+            if let vc = segue.destination as? TLSelectCryptoCoinViewController {
+                vc.delegate = self
+                vc.navigationItem.title = TLDisplayStrings.SELECT_COIN()
+            }
+        }
+    }
+    
     fileprivate func checkToRecoverAccounts() {
         if (TLCoinWalletsManager.instance().aAccountNeedsRecovering()) {
             TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController!.view,
@@ -105,8 +115,8 @@ protocol TLAccountsViewControllerDelegate {
     }
     
     fileprivate func refreshColdWalletAccounts(_ fetchDataAgain: Bool) {
-        for i in stride(from: 0, to: TLCoinWalletsManager.instance().getSelectedWalletObject().coldWalletAccounts.getNumberOfAccounts(), by: 1) {
-            let accountObject = TLCoinWalletsManager.instance().getSelectedWalletObject().coldWalletAccounts.getAccountObjectForIdx(i)
+        for i in stride(from: 0, to: TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).coldWalletAccounts.getNumberOfAccounts(), by: 1) {
+            let accountObject = TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).coldWalletAccounts.getAccountObjectForIdx(i)
             let indexPath = IndexPath(row: i, section:coldWalletAccountSection)
             if (!accountObject.hasFetchedAccountData() || fetchDataAgain) {
                 let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell
@@ -139,8 +149,8 @@ protocol TLAccountsViewControllerDelegate {
     }
     
     fileprivate func refreshImportedAccounts(_ fetchDataAgain: Bool) {
-        for i in stride(from: 0, to: TLCoinWalletsManager.instance().getSelectedWalletObject().importedAccounts.getNumberOfAccounts(), by: 1) {
-            let accountObject = TLCoinWalletsManager.instance().getSelectedWalletObject().importedAccounts.getAccountObjectForIdx(i)
+        for i in stride(from: 0, to: TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedAccounts.getNumberOfAccounts(), by: 1) {
+            let accountObject = TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedAccounts.getAccountObjectForIdx(i)
             let indexPath = IndexPath(row: i, section: importedAccountSection)
             if (!accountObject.hasFetchedAccountData() || fetchDataAgain) {
                 let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell
@@ -173,8 +183,8 @@ protocol TLAccountsViewControllerDelegate {
     }
     
     fileprivate func refreshImportedWatchAccounts(_ fetchDataAgain: Bool) {
-        for i in stride(from: 0, to: TLCoinWalletsManager.instance().getSelectedWalletObject().importedWatchAccounts.getNumberOfAccounts(), by: 1) {
-            let accountObject = TLCoinWalletsManager.instance().getSelectedWalletObject().importedWatchAccounts.getAccountObjectForIdx(i)
+        for i in stride(from: 0, to: TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedWatchAccounts.getNumberOfAccounts(), by: 1) {
+            let accountObject = TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedWatchAccounts.getAccountObjectForIdx(i)
             let indexPath = IndexPath(row: i, section:importedWatchAccountSection)
             if (!accountObject.hasFetchedAccountData() || fetchDataAgain) {
                 let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell
@@ -207,9 +217,9 @@ protocol TLAccountsViewControllerDelegate {
     }
     
     fileprivate func refreshImportedAddressBalances(_ fetchDataAgain: Bool) {
-        if (TLCoinWalletsManager.instance().getSelectedWalletObject().importedAddresses.getCount() > 0 &&
-            (!TLCoinWalletsManager.instance().getSelectedWalletObject().importedAddresses.hasFetchedAddressesData() || fetchDataAgain)) {
-                for i in stride(from: 0, to: TLCoinWalletsManager.instance().getSelectedWalletObject().importedAddresses.getCount(), by: 1) {
+        if (TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedAddresses.getCount() > 0 &&
+            (!TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedAddresses.hasFetchedAddressesData() || fetchDataAgain)) {
+                for i in stride(from: 0, to: TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedAddresses.getCount(), by: 1) {
                     let indexPath = IndexPath(row: i, section: importedAddressSection)
                     if let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell {
                         (cell.accessoryView as! UIActivityIndicatorView).isHidden = false
@@ -218,14 +228,14 @@ protocol TLAccountsViewControllerDelegate {
                     }
                 }
                 
-                AppDelegate.instance().pendingOperations.addSetUpImportedAddressesOperation(TLCoinWalletsManager.instance().getSelectedWalletObject().importedAddresses, fetchDataAgain: fetchDataAgain, success: {
-                    for i in stride(from: 0, to: TLCoinWalletsManager.instance().getSelectedWalletObject().importedAddresses.getCount(), by: 1) {
+                AppDelegate.instance().pendingOperations.addSetUpImportedAddressesOperation(TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedAddresses, fetchDataAgain: fetchDataAgain, success: {
+                    for i in stride(from: 0, to: TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedAddresses.getCount(), by: 1) {
                         let indexPath = IndexPath(row: i, section: self.importedAddressSection)
                         if let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell {
                             (cell.accessoryView as! UIActivityIndicatorView).stopAnimating()
                             (cell.accessoryView as! UIActivityIndicatorView).isHidden = true
-                            if TLCoinWalletsManager.instance().getSelectedWalletObject().importedAddresses.downloadState == .downloaded {
-                                let importAddressObject = TLCoinWalletsManager.instance().getSelectedWalletObject().importedAddresses.getAddressObjectAtIdx(i)
+                            if TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedAddresses.downloadState == .downloaded {
+                                let importAddressObject = TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedAddresses.getAddressObjectAtIdx(i)
                                 let balance = TLCurrencyFormat.getProperAmount(importAddressObject.getBalance()!)
                                 cell.accountBalanceButton!.setTitle(balance as String, for: UIControlState())
                             }
@@ -237,8 +247,8 @@ protocol TLAccountsViewControllerDelegate {
     }
     
     fileprivate func refreshImportedWatchAddressBalances(_ fetchDataAgain: Bool) {
-        if (TLCoinWalletsManager.instance().getSelectedWalletObject().importedWatchAddresses.getCount() > 0 && (!TLCoinWalletsManager.instance().getSelectedWalletObject().importedWatchAddresses.hasFetchedAddressesData() || fetchDataAgain)) {
-            for i in stride(from: 0, to: TLCoinWalletsManager.instance().getSelectedWalletObject().importedWatchAddresses.getCount(), by: 1) {
+        if (TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedWatchAddresses.getCount() > 0 && (!TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedWatchAddresses.hasFetchedAddressesData() || fetchDataAgain)) {
+            for i in stride(from: 0, to: TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedWatchAddresses.getCount(), by: 1) {
                 let indexPath = IndexPath(row: i, section: importedWatchAddressSection)
                 if let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell {
                     (cell.accessoryView as! UIActivityIndicatorView).isHidden = false
@@ -247,15 +257,15 @@ protocol TLAccountsViewControllerDelegate {
                 }
             }
             
-            AppDelegate.instance().pendingOperations.addSetUpImportedAddressesOperation(TLCoinWalletsManager.instance().getSelectedWalletObject().importedWatchAddresses, fetchDataAgain: fetchDataAgain, success: {
-                for i in stride(from: 0, to: TLCoinWalletsManager.instance().getSelectedWalletObject().importedWatchAddresses.getCount(), by: 1) {
+            AppDelegate.instance().pendingOperations.addSetUpImportedAddressesOperation(TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedWatchAddresses, fetchDataAgain: fetchDataAgain, success: {
+                for i in stride(from: 0, to: TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedWatchAddresses.getCount(), by: 1) {
                     let indexPath = IndexPath(row: i, section: self.importedWatchAddressSection)
                     if let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell {
                         (cell.accessoryView as! UIActivityIndicatorView).stopAnimating()
                         (cell.accessoryView as! UIActivityIndicatorView).isHidden = true
                         
-                        if TLCoinWalletsManager.instance().getSelectedWalletObject().importedWatchAddresses.downloadState == .downloaded {
-                            let importAddressObject = TLCoinWalletsManager.instance().getSelectedWalletObject().importedWatchAddresses.getAddressObjectAtIdx(i)
+                        if TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedWatchAddresses.downloadState == .downloaded {
+                            let importAddressObject = TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedWatchAddresses.getAddressObjectAtIdx(i)
                             let balance = TLCurrencyFormat.getProperAmount(importAddressObject.getBalance()!)
                             cell.accountBalanceButton!.setTitle(balance as String, for: UIControlState())
                         }
@@ -267,8 +277,8 @@ protocol TLAccountsViewControllerDelegate {
     }
     
     fileprivate func refreshAccountBalances(_ fetchDataAgain: Bool) {
-        for i in stride(from: 0, to: TLCoinWalletsManager.instance().getSelectedWalletObject().accounts.getNumberOfAccounts(), by: 1) {
-            let accountObject = TLCoinWalletsManager.instance().getSelectedWalletObject().accounts.getAccountObjectForIdx(i)
+        for i in stride(from: 0, to: TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).accounts.getNumberOfAccounts(), by: 1) {
+            let accountObject = TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).accounts.getAccountObjectForIdx(i)
             let indexPath = IndexPath(row: i, section: accountListSection)
             if (!accountObject.hasFetchedAccountData() || fetchDataAgain) {
                 let cell = self.accountsTableView!.cellForRow(at: indexPath) as? TLAccountTableViewCell
@@ -359,12 +369,26 @@ protocol TLAccountsViewControllerDelegate {
     }
     
     func _accountsTableViewReloadDataWrapper() {
-        numberOfSections = 1
+        numberOfSections = 0
         
-        var sectionCounter = 1
+        var sectionCounter = 0
         
+        if TLPreferences.getNumberOfSupportedCoins() > 1 {
+            selectCryptoCoinSection = sectionCounter
+            sectionCounter += 1
+            numberOfSections += 1
+            
+            accountListSection = sectionCounter
+        } else {
+            selectCryptoCoinSection = NSIntegerMax
+            
+            accountListSection = 0
+        }
+        sectionCounter += 1
+        numberOfSections += 1
+
         if TLPreferences.enabledColdWallet() {
-            if (TLCoinWalletsManager.instance().getSelectedWalletObject().coldWalletAccounts.getNumberOfAccounts() > 0) {
+            if (TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).coldWalletAccounts.getNumberOfAccounts() > 0) {
                 coldWalletAccountSection = sectionCounter
                 sectionCounter += 1
                 numberOfSections += 1
@@ -374,7 +398,7 @@ protocol TLAccountsViewControllerDelegate {
         }
         
         if (TLPreferences.enabledAdvancedMode()) {
-            if (TLCoinWalletsManager.instance().getSelectedWalletObject().importedAccounts.getNumberOfAccounts() > 0) {
+            if (TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedAccounts.getNumberOfAccounts() > 0) {
                 importedAccountSection = sectionCounter
                 sectionCounter += 1
                 numberOfSections += 1
@@ -382,7 +406,7 @@ protocol TLAccountsViewControllerDelegate {
                 importedAccountSection = NSIntegerMax
             }
             
-            if (TLCoinWalletsManager.instance().getSelectedWalletObject().importedWatchAccounts.getNumberOfAccounts() > 0) {
+            if (TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedWatchAccounts.getNumberOfAccounts() > 0) {
                 importedWatchAccountSection = sectionCounter
                 sectionCounter += 1
                 numberOfSections += 1
@@ -390,7 +414,7 @@ protocol TLAccountsViewControllerDelegate {
                 importedWatchAccountSection = NSIntegerMax
             }
             
-            if (TLCoinWalletsManager.instance().getSelectedWalletObject().importedAddresses.getCount() > 0) {
+            if (TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedAddresses.getCount() > 0) {
                 importedAddressSection = sectionCounter
                 sectionCounter += 1
                 numberOfSections += 1
@@ -398,7 +422,7 @@ protocol TLAccountsViewControllerDelegate {
                 importedAddressSection = NSIntegerMax
             }
             
-            if (TLCoinWalletsManager.instance().getSelectedWalletObject().importedWatchAddresses.getCount() > 0) {
+            if (TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedWatchAddresses.getCount() > 0) {
                 importedWatchAddressSection = sectionCounter
                 sectionCounter += 1
                 numberOfSections += 1
@@ -433,6 +457,9 @@ protocol TLAccountsViewControllerDelegate {
     }
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
+        if TLPreferences.getNumberOfSupportedCoins() > 1 && section == selectCryptoCoinSection {
+            return ""
+        }
         if (TLPreferences.enabledAdvancedMode()) {
             if (section == accountListSection) {
                 return TLDisplayStrings.ACCOUNTS_STRING()
@@ -459,26 +486,29 @@ protocol TLAccountsViewControllerDelegate {
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        if TLPreferences.getNumberOfSupportedCoins() > 1 && section == selectCryptoCoinSection {
+            return 1
+        }
         if (TLPreferences.enabledColdWallet() && section == coldWalletAccountSection) {
-            return TLCoinWalletsManager.instance().getSelectedWalletObject().coldWalletAccounts.getNumberOfAccounts()
+            return TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).coldWalletAccounts.getNumberOfAccounts()
         }
         if (TLPreferences.enabledAdvancedMode()) {
             if (section == accountListSection) {
-                return TLCoinWalletsManager.instance().getSelectedWalletObject().accounts.getNumberOfAccounts()
+                return TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).accounts.getNumberOfAccounts()
             } else if (section == importedAccountSection) {
-                return TLCoinWalletsManager.instance().getSelectedWalletObject().importedAccounts.getNumberOfAccounts()
+                return TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedAccounts.getNumberOfAccounts()
             } else if (section == importedWatchAccountSection) {
-                return TLCoinWalletsManager.instance().getSelectedWalletObject().importedWatchAccounts.getNumberOfAccounts()
+                return TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedWatchAccounts.getNumberOfAccounts()
             } else if (section == importedAddressSection) {
-                return TLCoinWalletsManager.instance().getSelectedWalletObject().importedAddresses.getCount()
+                return TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedAddresses.getCount()
             } else if (section == importedWatchAddressSection) {
-                return TLCoinWalletsManager.instance().getSelectedWalletObject().importedWatchAddresses.getCount()
+                return TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedWatchAddresses.getCount()
             } else {
                 
             }
         } else {
             if (section == accountListSection) {
-                return TLCoinWalletsManager.instance().getSelectedWalletObject().accounts.getNumberOfAccounts()
+                return TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).accounts.getNumberOfAccounts()
             } else {
             }
         }
@@ -486,6 +516,18 @@ protocol TLAccountsViewControllerDelegate {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        if ((indexPath as NSIndexPath).section == selectCryptoCoinSection) {
+            let MyIdentifier = "selectCryptoCoinCellIdentifier"
+            var cell = tableView.dequeueReusableCell(withIdentifier: MyIdentifier)
+            if (cell == nil) {
+                cell = UITableViewCell(style: UITableViewCellStyle.subtitle,
+                                       reuseIdentifier: MyIdentifier)
+            }
+            cell!.textLabel!.text = TLDisplayStrings.SELECT_CRYPTOCURRENCY()
+            cell!.detailTextLabel!.text =  String(format: TLDisplayStrings.CURRENT_SELECTED_CURRENCY(), TLWalletUtils.GET_CRYPTO_COIN_FULL_NAME(self.currentCoinType))
+            cell!.accessoryType = .disclosureIndicator
+            return cell!
+        }
         
         let MyIdentifier = "AccountCellIdentifier"
         
@@ -500,34 +542,34 @@ protocol TLAccountsViewControllerDelegate {
         
         cell!.accountBalanceButton!.titleLabel!.adjustsFontSizeToFitWidth = true
         if (TLPreferences.enabledColdWallet() && (indexPath as NSIndexPath).section == coldWalletAccountSection) {
-            let accountObject = TLCoinWalletsManager.instance().getSelectedWalletObject().coldWalletAccounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
+            let accountObject = TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).coldWalletAccounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
             self.setUpCellAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
         }
         if (TLPreferences.enabledAdvancedMode()) {
             if ((indexPath as NSIndexPath).section == accountListSection) {
-                let accountObject = TLCoinWalletsManager.instance().getSelectedWalletObject().accounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
+                let accountObject = TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).accounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
                 self.setUpCellAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
             } else if ((indexPath as NSIndexPath).section == importedAccountSection) {
-                let accountObject = TLCoinWalletsManager.instance().getSelectedWalletObject().importedAccounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
+                let accountObject = TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedAccounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
                 
                 self.setUpCellAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
                 
             } else if ((indexPath as NSIndexPath).section == importedWatchAccountSection) {
-                let accountObject = TLCoinWalletsManager.instance().getSelectedWalletObject().importedWatchAccounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
+                let accountObject = TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedWatchAccounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
                 
                 self.setUpCellAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
                 
             } else if ((indexPath as NSIndexPath).section == importedAddressSection) {
-                let importedAddressObject = TLCoinWalletsManager.instance().getSelectedWalletObject().importedAddresses.getAddressObjectAtIdx((indexPath as NSIndexPath).row)
+                let importedAddressObject = TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedAddresses.getAddressObjectAtIdx((indexPath as NSIndexPath).row)
                 self.setUpCellImportedAddresses(importedAddressObject, cell: cell!, cellForRowAtIndexPath: indexPath)
             } else if ((indexPath as NSIndexPath).section == importedWatchAddressSection) {
-                let importedAddressObject = TLCoinWalletsManager.instance().getSelectedWalletObject().importedWatchAddresses.getAddressObjectAtIdx((indexPath as NSIndexPath).row)
+                let importedAddressObject = TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).importedWatchAddresses.getAddressObjectAtIdx((indexPath as NSIndexPath).row)
                 self.setUpCellImportedAddresses(importedAddressObject, cell: cell!, cellForRowAtIndexPath: indexPath)
             } else {
             }
         } else {
             if ((indexPath as NSIndexPath).section == accountListSection) {
-                let accountObject = TLCoinWalletsManager.instance().getSelectedWalletObject().accounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
+                let accountObject = TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).accounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
                 self.setUpCellAccounts(accountObject, cell: cell!, cellForRowAtIndexPath: indexPath)
             } else {
             }
@@ -543,37 +585,42 @@ protocol TLAccountsViewControllerDelegate {
     }
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
+        if TLPreferences.getNumberOfSupportedCoins() > 1 && (indexPath as NSIndexPath).section == selectCryptoCoinSection {
+            performSegue(withIdentifier: "SegueSelectCryptoCoin", sender:self)
+            return nil
+        }
+        
         if (TLPreferences.enabledColdWallet() && (indexPath as NSIndexPath).section == coldWalletAccountSection) {
-            self.doSelectFrom(TLPreferences.getSendFromCoinType(), sendFromType: .coldWalletAccount, sendFromIndex: (indexPath as NSIndexPath).row)
+            self.doSelectFrom(self.currentCoinType, sendFromType: .coldWalletAccount, sendFromIndex: (indexPath as NSIndexPath).row)
             return nil
         }
         if (TLPreferences.enabledAdvancedMode()) {
             if ((indexPath as NSIndexPath).section == accountListSection) {
-                let accountObject = TLCoinWalletsManager.instance().getSelectedWalletObject().accounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
+                let accountObject = TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).accounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
                 if (accountObject.hasFetchedAccountData()) {
-                    self.doSelectFrom(TLPreferences.getSendFromCoinType(), sendFromType: .hdWallet, sendFromIndex: (indexPath as NSIndexPath).row)
+                    self.doSelectFrom(self.currentCoinType, sendFromType: .hdWallet, sendFromIndex: (indexPath as NSIndexPath).row)
                 }
                 return nil
             } else if ((indexPath as NSIndexPath).section == importedAccountSection) {
-                self.doSelectFrom(TLPreferences.getSendFromCoinType(), sendFromType: .importedAccount, sendFromIndex: (indexPath as NSIndexPath).row)
+                self.doSelectFrom(self.currentCoinType, sendFromType: .importedAccount, sendFromIndex: (indexPath as NSIndexPath).row)
                 return nil
             } else if ((indexPath as NSIndexPath).section == importedWatchAccountSection) {
-                self.doSelectFrom(TLPreferences.getSendFromCoinType(), sendFromType: .importedWatchAccount, sendFromIndex: (indexPath as NSIndexPath).row)
+                self.doSelectFrom(self.currentCoinType, sendFromType: .importedWatchAccount, sendFromIndex: (indexPath as NSIndexPath).row)
                 return nil
             } else if ((indexPath as NSIndexPath).section == importedAddressSection) {
-                self.doSelectFrom(TLPreferences.getSendFromCoinType(), sendFromType: .importedAddress, sendFromIndex: (indexPath as NSIndexPath).row)
+                self.doSelectFrom(self.currentCoinType, sendFromType: .importedAddress, sendFromIndex: (indexPath as NSIndexPath).row)
                 return nil
             } else if ((indexPath as NSIndexPath).section == importedWatchAddressSection) {
-                self.doSelectFrom(TLPreferences.getSendFromCoinType(), sendFromType: .importedWatchAddress, sendFromIndex: (indexPath as NSIndexPath).row)
+                self.doSelectFrom(self.currentCoinType, sendFromType: .importedWatchAddress, sendFromIndex: (indexPath as NSIndexPath).row)
                 return nil
             } else {
             }
         } else {
             if ((indexPath as NSIndexPath).section == accountListSection) {
-                let accountObject = TLCoinWalletsManager.instance().getSelectedWalletObject().accounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
+                let accountObject = TLCoinWalletsManager.instance().getSelectedWalletObject(self.currentCoinType).accounts.getAccountObjectForIdx((indexPath as NSIndexPath).row)
                 
                 if (accountObject.hasFetchedAccountData()) {
-                    self.doSelectFrom(TLPreferences.getSendFromCoinType(), sendFromType: .hdWallet, sendFromIndex: (indexPath as NSIndexPath).row)
+                    self.doSelectFrom(self.currentCoinType, sendFromType: .hdWallet, sendFromIndex: (indexPath as NSIndexPath).row)
                 }
             } else {
             }
@@ -584,5 +631,15 @@ protocol TLAccountsViewControllerDelegate {
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+}
+
+extension TLAccountsViewController : TLSelectCryptoCoinViewControllerDelegate {
+    func didSelectCryptoCoin(_ coinType: TLCoinType) {
+        self.currentCoinType = coinType
+        if self.parentViewIsSendVC {
+            TLPreferences.setSendFromCoinType(coinType)
+        }
+        self._accountsTableViewReloadDataWrapper()
     }
 }

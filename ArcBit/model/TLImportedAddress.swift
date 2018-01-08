@@ -42,11 +42,13 @@ import Foundation
     fileprivate var processedTxSet:NSMutableSet?
     fileprivate var privateKey:String?
     fileprivate var importedAddress:String?
+    var coinType:TLCoinType = TLWalletUtils.DEFAULT_COIN_TYPE()
     var downloadState:TLDownloadState = .notDownloading
 
-    init(appWallet: TLWallet, dict:NSDictionary) {
+    init(appWallet: TLWallet, coinType: TLCoinType, dict:NSDictionary) {
         super.init()
         self.appWallet = appWallet
+        self.coinType = coinType
         addressDict = NSMutableDictionary(dictionary:dict)
         importedAddress = addressDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String?
         unspentOutputs = NSMutableArray()

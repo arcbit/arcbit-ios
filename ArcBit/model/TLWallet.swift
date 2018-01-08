@@ -880,7 +880,7 @@ class TLWallet {
         let importedAddressesObjectArray = NSMutableArray(capacity: importedAddresses.count)
         
         for addressDict in importedAddresses as! [NSDictionary] {
-            let importedAddressObject = TLImportedAddress(appWallet: self, dict: addressDict)
+            let importedAddressObject = TLImportedAddress(appWallet: self, coinType: coinType, dict: addressDict)
             importedAddressesObjectArray.add(importedAddressObject)
         }
         return importedAddressesObjectArray
@@ -937,7 +937,7 @@ class TLWallet {
         let importedAddressesObjectArray = NSMutableArray(capacity: importedAddresses.count)
         
         for addressDict in importedAddresses as! [NSDictionary] {
-            let importedAddressObject = TLImportedAddress(appWallet: self, dict: addressDict)
+            let importedAddressObject = TLImportedAddress(appWallet: self, coinType: coinType, dict: addressDict)
             importedAddressesObjectArray.add(importedAddressObject)
         }
         

@@ -272,6 +272,8 @@
 		C0D8A36B1DAA126700497D31 /* TLColdWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D8A36A1DAA126700497D31 /* TLColdWalletViewController.swift */; };
 		C0D8A36D1DAA16C900497D31 /* TLCreateColdWalletViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D8A36C1DAA16C900497D31 /* TLCreateColdWalletViewController.swift */; };
 		C0D8A36F1DAA183D00497D31 /* TLAuthorizeColdWalletPaymentViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0D8A36E1DAA183D00497D31 /* TLAuthorizeColdWalletPaymentViewController.swift */; };
+		C0DDFC0B2002E227006DB8BC /* TLSelectCryptoCoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DDFC0A2002E227006DB8BC /* TLSelectCryptoCoinViewController.swift */; };
+		C0DDFC0C2002EAA1006DB8BC /* TLSelectCryptoCoinViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0DDFC0A2002E227006DB8BC /* TLSelectCryptoCoinViewController.swift */; };
 		C0E5393D1AD454FD00651FE4 /* TLHelpDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E5393C1AD454FD00651FE4 /* TLHelpDoc.swift */; };
 		C0E5393E1AD4555C00651FE4 /* TLHelpDoc.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0E5393C1AD454FD00651FE4 /* TLHelpDoc.swift */; };
 		C0EE6D6A1B1B7E6000982692 /* 360X80logo.png in Resources */ = {isa = PBXBuildFile; fileRef = C0EE6D681B1B7E6000982692 /* 360X80logo.png */; };
@@ -591,6 +593,7 @@
 		C0D8A36A1DAA126700497D31 /* TLColdWalletViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLColdWalletViewController.swift; sourceTree = "<group>"; };
 		C0D8A36C1DAA16C900497D31 /* TLCreateColdWalletViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLCreateColdWalletViewController.swift; sourceTree = "<group>"; };
 		C0D8A36E1DAA183D00497D31 /* TLAuthorizeColdWalletPaymentViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLAuthorizeColdWalletPaymentViewController.swift; sourceTree = "<group>"; };
+		C0DDFC0A2002E227006DB8BC /* TLSelectCryptoCoinViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TLSelectCryptoCoinViewController.swift; sourceTree = "<group>"; };
 		C0E5393C1AD454FD00651FE4 /* TLHelpDoc.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLHelpDoc.swift; sourceTree = "<group>"; };
 		C0EE6D681B1B7E6000982692 /* 360X80logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 360X80logo.png; sourceTree = "<group>"; };
 		C0EE6D691B1B7E6000982692 /* 1200X1200logo.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1200X1200logo.png; sourceTree = "<group>"; };
@@ -1113,6 +1116,7 @@
 				C0A1909A1ABF53A100BED648 /* TLSettingsViewController.swift */,
 				C0A1909B1ABF53A100BED648 /* TLTextViewViewController.swift */,
 				C0C61C5D1AF15E6100F9F71F /* TransparentViewController.swift */,
+				C0DDFC0A2002E227006DB8BC /* TLSelectCryptoCoinViewController.swift */,
 			);
 			path = viewControllers;
 			sourceTree = "<group>";
@@ -1616,6 +1620,7 @@
 				C05F82E21EF5D13E0016F0FC /* SocketAnyEvent.swift in Sources */,
 				C0A1930A1ABF744E00BED648 /* TLBlockchainAPI.swift in Sources */,
 				C05F82EE1EF5D13E0016F0FC /* SocketIOClientOption.swift in Sources */,
+				C0DDFC0B2002E227006DB8BC /* TLSelectCryptoCoinViewController.swift in Sources */,
 				C0A190DC1ABF53A100BED648 /* JNKeychain.m in Sources */,
 				C0A190E11ABF53A100BED648 /* NSDate-Utilities.m in Sources */,
 				C0D20A921D5963FF008F70F2 /* TLTxFeeAPI.swift in Sources */,
@@ -1763,6 +1768,7 @@
 				C05F830C1EF5D16D0016F0FC /* SocketStringReader.swift in Sources */,
 				C0A193381ABF82EF00BED648 /* TLNetworking.swift in Sources */,
 				C0A1932E1ABF82B700BED648 /* TLStealthWallet.swift in Sources */,
+				C0DDFC0C2002EAA1006DB8BC /* TLSelectCryptoCoinViewController.swift in Sources */,
 				F3BC360F1B8681A300CBB3F7 /* TLWalletPassphrase.swift in Sources */,
 				F37072481B8F57810026505D /* TLWalletConfig.swift in Sources */,
 				C05F83091EF5D1660016F0FC /* SocketLogger.swift in Sources */,

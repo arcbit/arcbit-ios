@@ -774,6 +774,8 @@ import StoreKit
         if (segue.identifier == "selectAccount") {
             if let vc = segue.destination as? TLAccountsViewController {
                 vc.navigationItem.title = TLDisplayStrings.SELECT_ACCOUNT_STRING()
+                vc.currentCoinType = TLCoinWalletsManager.instance().getSendObjectSelectedCoinType()
+                vc.parentViewIsSendVC = true
                 vc.delegate = self
             }
         }

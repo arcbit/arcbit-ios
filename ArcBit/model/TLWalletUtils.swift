@@ -70,6 +70,15 @@ class TLWalletUtils {
         return STATIC_MEMBERS.APP_NAME
     }
     
+    class func GET_CRYPTO_COIN_FULL_NAME(_ coinType: TLCoinType) ->String {
+        switch coinType {
+        case .BCH:
+            return TLDisplayStrings.CRYPTO_COIN_BITCOIN_CASH()
+        case .BTC:
+            return TLDisplayStrings.CRYPTO_COIN_BITCOIN()
+        }
+    }
+    
     class func DEFAULT_COIN_TYPE() ->TLCoinType {
         return TLCoinType.BTC
     }
