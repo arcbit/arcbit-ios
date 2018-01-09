@@ -314,7 +314,6 @@
 		C01681A11DB0B1D9004D5FD7 /* TLBrainWalletViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLBrainWalletViewController.swift; sourceTree = "<group>"; };
 		C01681AB1DBD9ED8004D5FD7 /* TLColdWallet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLColdWallet.swift; sourceTree = "<group>"; };
 		C01A489E1B4F9E6E004D7FA0 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/Main.strings; sourceTree = "<group>"; };
-		C02D3B111B4A45F500B3B7F0 /* ArcBit copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "ArcBit copy-Info.plist"; path = "/Users/timothylee/git/arcbit-ios/ArcBit copy-Info.plist"; sourceTree = "<absolute>"; };
 		C0378C921AF4A1850083206F /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		C0378C941AF4A18A0083206F /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		C0378C961AF4A18F0083206F /* QuickLook.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuickLook.framework; path = System/Library/Frameworks/QuickLook.framework; sourceTree = SDKROOT; };
@@ -782,7 +781,6 @@
 		C0A18F911ABF51C200BED648 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
-				C02D3B111B4A45F500B3B7F0 /* ArcBit copy-Info.plist */,
 				C0A18F921ABF51C200BED648 /* Info.plist */,
 				C0BD70031B4E2BE300A5788D /* Localizable.strings */,
 			);

@@ -60,11 +60,18 @@ import AVFoundation
     fileprivate func updateHiddenKeys() {
         let hiddenKeys = NSMutableSet()
         
-        if (TLPreferences.enabledInAppSettingsKitDynamicFee()) {
+        if (TLPreferences.enabledInAppSettingsKitDynamicFeeBitcoin()) {
             hiddenKeys.add("transactionfee")
             hiddenKeys.add("settransactionfee")
         } else {
             hiddenKeys.add("dynamicfeeoption")
+        }
+        
+        if (TLPreferences.enabledInAppSettingsKitDynamicFeeBitcoinCash()) {
+            hiddenKeys.add("transactionfeebitcoincash")
+            hiddenKeys.add("settransactionfeebitcoincash")
+        } else {
+            hiddenKeys.add("dynamicfeeoptionbitcoincash")
         }
         
         if (!LTHPasscodeViewController.doesPasscodeExist()) {
@@ -139,8 +146,8 @@ import AVFoundation
         })
     }
     
-    fileprivate func showPromptForSetTransactionFee() {
-        let msg = String(format: TLDisplayStrings.SET_TRANSACTION_FEE_IN_X_STRING(), TLCurrencyFormat.getBitcoinDisplay())
+    fileprivate func showPromptForSetTransactionFee(_ coinType: TLCoinType) {
+        let msg = String(format: TLDisplayStrings.SET_TRANSACTION_FEE_IN_X_STRING(), TLCurrencyFormat.getBitcoinDisplay(coinType))
         
         func addTextField(_ textField: UITextField!){
             textField.placeholder = ""
@@ -163,9 +170,14 @@ import AVFoundation
             tap: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView!.firstOtherButtonIndex) {
                     let feeAmount = (alertView!.textFields![0] ).text
-                    
-                    let feeAmountCoin = TLCurrencyFormat.bitcoinAmountStringToCoin(feeAmount!)
-                    TLPreferences.setInAppSettingsKitTransactionFee(feeAmountCoin.bigIntegerToBitcoinAmountString(.bitcoin))
+                    let feeAmountCoin = TLCurrencyFormat.coinAmountStringToCoin(feeAmount!, coinType: coinType)
+
+                    switch coinType {
+                    case .BCH:
+                        TLPreferences.setInAppSettingsKitTransactionFeeBitcoinCash(TLCurrencyFormat.bigIntegerToBitcoinAmountString(feeAmountCoin, coinType: coinType, coinDenomination: TLCoinDenomination.bitcoinCash))
+                    case .BTC:
+                        TLPreferences.setInAppSettingsKitTransactionFeeBitcoinCash(TLCurrencyFormat.bigIntegerToBitcoinAmountString(feeAmountCoin, coinType: coinType, coinDenomination: TLCoinDenomination.bitcoin))
+                    }
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_CHANGE_AUTOMATIC_TX_FEE()), object: nil)
                 } else if (buttonIndex == alertView!.cancelButtonIndex) {
                 }
@@ -258,15 +270,25 @@ import AVFoundation
         } else if (didChangeKey == "displaylocalcurrency") {
             let enabled = userInfo.object(forKey: "displaylocalcurrency") as! Bool
             TLPreferences.setDisplayLocalCurrency(enabled)
+            
         } else if (didChangeKey == "dynamicfeeoption") {
+        } else if (didChangeKey == "dynamicfeeoptionbitcoincash") {
         } else if (didChangeKey == "enabledynamicfee") {
             self.updateHiddenKeys()
+        } else if (didChangeKey == "enabledynamicfeebitcoincash") {
+            self.updateHiddenKeys()
+            
         } else if (didChangeKey == "currency") {
             let currencyIdx = userInfo.object(forKey: "currency") as! String
             TLPreferences.setCurrency(currencyIdx)
+
+        } else if (didChangeKey == "bitcoincashdisplay") {
+            let displayIdx = userInfo.object(forKey: "bitcoincashdisplay") as! String
+            TLPreferences.setBitcoinCashDisplay(displayIdx)
         } else if (didChangeKey == "bitcoindisplay") {
-            let bitcoindisplayIdx = userInfo.object(forKey: "bitcoindisplay") as! String
-            TLPreferences.setBitcoinDisplay(bitcoindisplayIdx)
+            let displayIdx = userInfo.object(forKey: "bitcoindisplay") as! String
+            TLPreferences.setBitcoinDisplay(displayIdx)
+            
         } else if (didChangeKey == "stealthaddressdefault") {
             let enabled = userInfo.object(forKey: "stealthaddressdefault") as! Bool
             TLPreferences.setEnabledStealthAddressDefault(enabled)
@@ -294,7 +316,10 @@ import AVFoundation
             self.slidingViewController().present(vc, animated: true, completion: nil)
             
         } else if (specifier.key() == "settransactionfee") {
-            self.showPromptForSetTransactionFee()
+            self.showPromptForSetTransactionFee(TLCoinType.BTC)
+        } else if (specifier.key() == "settransactionfeebitcoincash") {
+            self.showPromptForSetTransactionFee(TLCoinType.BCH)
+
         } else if (specifier.key() == "setblockexplorerurl") {
             self.showPromptForSetBlockExplorerURL()
         }

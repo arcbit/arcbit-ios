@@ -42,7 +42,7 @@ import UIKit
         self.setNavigationBarColors(self.navigationBar!)
         self.navigationBar?.topItem?.title = TLDisplayStrings.CONTACTS_STRING()
         
-        addressBook = TLCoinWalletsManager.instance().getAddressBook(TLPreferences.getSendFromCoinType())
+        addressBook = AppDelegate.instance().coinWalletsManager!.getAddressBook(TLPreferences.getSendFromCoinType())
         
         self.addressBookTableView!.delegate = self
         self.addressBookTableView!.dataSource = self
@@ -113,7 +113,7 @@ import UIKit
     fileprivate func promptForLabel(_ address: String) -> () {
         TLPrompts.promtForInputText(self, title: TLDisplayStrings.EDIT_CONTACTS_ENTRY_STRING(), message: "", textFieldPlaceholder: TLDisplayStrings.LABEL_STRING(), success: {
             (inputText: String!) in
-            TLCoinWalletsManager.instance().addAddressBookEntry(TLPreferences.getSendFromCoinType(), address: address, label: inputText)
+            AppDelegate.instance().coinWalletsManager!.addAddressBookEntry(TLPreferences.getSendFromCoinType(), address: address, label: inputText)
             NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_ADD_TO_ADDRESS_BOOK()), object: nil, userInfo: nil)
             
             self.addressBookTableView!.reloadData()
@@ -190,7 +190,7 @@ import UIKit
             
             TLPrompts.promtForInputText(self, title: TLDisplayStrings.EDIT_CONTACTS_ENTRY_STRING(), message: "", textFieldPlaceholder: TLDisplayStrings.ADDRESS_STRING(), success: {
                 (inputText: String!) in
-                TLCoinWalletsManager.instance().editAddressBookEntry(TLPreferences.getSendFromCoinType(), idx: (indexPath as NSIndexPath).row, label: inputText)
+                AppDelegate.instance().coinWalletsManager!.editAddressBookEntry(TLPreferences.getSendFromCoinType(), idx: (indexPath as NSIndexPath).row, label: inputText)
                 NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_EDIT_ENTRY_ADDRESS_BOOK()), object: nil, userInfo: nil)
                 tableView.reloadData()
                 }, failure: {
@@ -205,7 +205,7 @@ import UIKit
             
             TLPrompts.promtForOKCancel(self, title: TLDisplayStrings.DELETE_ADDRESS_STRING(), message: TLDisplayStrings.ARE_YOU_SURE_YOU_WANT_TO_DELETE_THIS_ACCOUNT_STRING(), success: {
                 () in
-                TLCoinWalletsManager.instance().deleteAddressBookEntry(TLPreferences.getSendFromCoinType(), idx: (indexPath as NSIndexPath).row)
+                AppDelegate.instance().coinWalletsManager!.deleteAddressBookEntry(TLPreferences.getSendFromCoinType(), idx: (indexPath as NSIndexPath).row)
                 NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_DELETE_ENTRY_ADDRESS_BOOK()), object: nil, userInfo: nil)
                 tableView.reloadData()
                 }, failure: {

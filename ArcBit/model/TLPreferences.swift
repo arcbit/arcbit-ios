@@ -29,7 +29,6 @@ class TLPreferences
         //keys must match keys defined in Settings.bundle/Root.plist
         static let INAPPSETTINGS_KIT_RECEIVING_ADDRESS = "address"
         static let INAPPSETTINGS_KIT_NAME = "name"
-        static let INAPPSETTINGS_KIT_TRANSACTION_FEE = "transactionfee"
         static let INAPPSETTINGS_KIT_BLOCKEXPLORER_URL = "blockexplorerurl"
         static let INAPPSETTINGS_KIT_BLOCKEXPLORER_API = "blockexplorerapi"
         static let INAPPSETTINGS_KIT_STEALTH_EXPLORER_URL = "stealthexplorerurl"
@@ -38,15 +37,21 @@ class TLPreferences
         static let INAPPSETTINGS_KIT_STEALTH_WEB_SOCKET_PORT = "stealthwebsocketport"
         static let INAPPSETTINGS_KIT_RECEIVING_CURRENCY = "currency"
         static let INAPPSETTINGS_KIT_DISPLAY_LOCAL_CURRENCY = "displaylocalcurrency"
-        static let INAPPSETTINGS_KIT_ENABLE_DYNAMIC_FEE = "enabledynamicfee"
-        static let INAPPSETTINGS_KIT_DYNAMIC_FEE_OPTION = "dynamicfeeoption"
-        static let INAPPSETTINGS_KIT_ENABLE_COLD_WALLET = "enablecoldwallet"
 
+        static let PREFERENCE_BITCOIN_CASH_DISPLAY = "pref-bitcoin-cash-display"
+        static let PREFERENCE_BITCOIN_DISPLAY = "pref-bitcoin-display"
+        static let INAPPSETTINGS_KIT_TRANSACTION_FEE_BITCOIN = "transactionfee"
+        static let INAPPSETTINGS_KIT_TRANSACTION_FEE_BITCOIN_CASH = "transactionfeebitcoincash"
+        static let INAPPSETTINGS_KIT_ENABLE_DYNAMIC_FEE_BITCOIN = "enabledynamicfee"
+        static let INAPPSETTINGS_KIT_ENABLE_DYNAMIC_FEE_BITCOIN_CASH = "enabledynamicfeebitcoincash"
+        static let INAPPSETTINGS_KIT_DYNAMIC_FEE_OPTION_BITCOIN = "dynamicfeeoption"
+        static let INAPPSETTINGS_KIT_DYNAMIC_FEE_OPTION_BITCOIN_CASH = "dynamicfeeoptionbitcoincash"
+        
+        static let INAPPSETTINGS_KIT_ENABLE_COLD_WALLET = "enablecoldwallet"
         static let PREFERENCE_INSTALL_DATE = "pref-install-date"
         static let PREFERENCE_APP_VERSION = "pref-app-version"
         static let PREFERENCE_PUSH_NOTIFICTION = "pref-push-notification"
         static let PREFERENCE_FIAT_DISPLAY = "pref-fiat-display"
-        static let PREFERENCE_BITCOIN_DISPLAY = "pref-bitcoin-display"
         static let PREFERENCE_BLOCKEXPLORER_API = "pref-blockexplorer-api"
         static let PREFERENCE_BLOCKEXPLORER_API_URL_DICT = "pref-blockexplorer-api-url"
         static let PREFERENCE_BTC_SYMBOL_TOGGLED = "pref-btc-symbol-toggled"
@@ -127,18 +132,34 @@ class TLPreferences
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_PREFERENCES_FIAT_DISPLAY_CHANGED()), object:nil, userInfo:nil)
     }
     
-    class func getBitcoinDenomination() -> (TLBitcoinDenomination) {
+    class func getBitcoinCashDenomination() -> (TLCoinDenomination) {
+        let value = UserDefaults.standard.string(forKey: CLASS_STATIC.PREFERENCE_BITCOIN_CASH_DISPLAY) as NSString?
+        if(value == nil) {
+            return TLCoinDenomination(rawValue: TLCurrencyFormat.DEFAULT_COIN_DENOMINATION_STARTING_IDX(TLCoinType.BCH))!
+        }
+        return TLCoinDenomination(rawValue: value!.integerValue)!
+    }
+    
+    class func setBitcoinCashDisplay(_ bitcoinDisplayIdx:String) {
+        let bitcoinDisplayIdx = String(Int(bitcoinDisplayIdx)!+TLCurrencyFormat.DEFAULT_COIN_DENOMINATION_STARTING_IDX(TLCoinType.BCH))
+        UserDefaults.standard.set(bitcoinDisplayIdx ,forKey:CLASS_STATIC.PREFERENCE_BITCOIN_CASH_DISPLAY)
+        UserDefaults.standard.synchronize()
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_PREFERENCES_COIN_UNIT_DISPLAY_CHANGED())
+            ,object:nil, userInfo:nil)
+    }
+    
+    class func getBitcoinDenomination() -> (TLCoinDenomination) {
         let value = UserDefaults.standard.string(forKey: CLASS_STATIC.PREFERENCE_BITCOIN_DISPLAY) as NSString?
         if(value == nil) {
-            return TLBitcoinDenomination(rawValue: 0)!
+            return TLCoinDenomination(rawValue: TLCurrencyFormat.DEFAULT_COIN_DENOMINATION_STARTING_IDX(TLCoinType.BTC))!
         }
-        return TLBitcoinDenomination(rawValue: value!.integerValue)!
+        return TLCoinDenomination(rawValue: value!.integerValue)!
     }
     
     class func setBitcoinDisplay(_ bitcoinDisplayIdx:String) -> (){
         UserDefaults.standard.set(bitcoinDisplayIdx ,forKey:CLASS_STATIC.PREFERENCE_BITCOIN_DISPLAY)
         UserDefaults.standard.synchronize()
-        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_PREFERENCES_BITCOIN_DISPLAY_CHANGED())
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_PREFERENCES_COIN_UNIT_DISPLAY_CHANGED())
             ,object:nil, userInfo:nil)
     }
 
@@ -304,12 +325,21 @@ class TLPreferences
         UserDefaults.standard.synchronize()
     }
     
-    class func getInAppSettingsKitTransactionFee() -> (String?) {
-        return UserDefaults.standard.string(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_TRANSACTION_FEE)
+    class func getInAppSettingsKitTransactionFeeBitcoin() -> (String?) {
+        return UserDefaults.standard.string(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_TRANSACTION_FEE_BITCOIN)
     }
     
-    class func setInAppSettingsKitTransactionFee(_ value:String) -> () {
-        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_TRANSACTION_FEE)
+    class func setInAppSettingsKitTransactionFeeBitcoin(_ value:String) -> () {
+        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_TRANSACTION_FEE_BITCOIN)
+        UserDefaults.standard.synchronize()
+    }
+    
+    class func getInAppSettingsKitTransactionFeeBitcoinCash() -> (String?) {
+        return UserDefaults.standard.string(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_TRANSACTION_FEE_BITCOIN_CASH)
+    }
+    
+    class func setInAppSettingsKitTransactionFeeBitcoinCash(_ value:String) -> () {
+        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_TRANSACTION_FEE_BITCOIN_CASH)
         UserDefaults.standard.synchronize()
     }
     
@@ -611,26 +641,48 @@ class TLPreferences
         UserDefaults.standard.synchronize()
     }
     
-    class func enabledInAppSettingsKitDynamicFee() -> (Bool){
-        return UserDefaults.standard.bool(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_ENABLE_DYNAMIC_FEE)
+    class func enabledInAppSettingsKitDynamicFeeBitcoin() -> (Bool){
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_ENABLE_DYNAMIC_FEE_BITCOIN)
     }
     
-    class func setInAppSettingsKitEnabledDynamicFee(_ enabled:Bool) -> () {
-        UserDefaults.standard.set(enabled ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_ENABLE_DYNAMIC_FEE)
+    class func setInAppSettingsKitEnabledDynamicFeeBitcoin(_ enabled:Bool) -> () {
+        UserDefaults.standard.set(enabled ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_ENABLE_DYNAMIC_FEE_BITCOIN)
         UserDefaults.standard.synchronize()
     }
 
+    class func enabledInAppSettingsKitDynamicFeeBitcoinCash() -> (Bool){
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_ENABLE_DYNAMIC_FEE_BITCOIN_CASH)
+    }
+    
+    class func setInAppSettingsKitEnabledDynamicFeeBitcoinCash(_ enabled:Bool) -> () {
+        UserDefaults.standard.set(enabled ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_ENABLE_DYNAMIC_FEE_BITCOIN_CASH)
+        UserDefaults.standard.synchronize()
+    }
+    
     //WARNING: TLDynamicFeeSetting, therefore InAppSettingsKit must match the keys for 21's dynamic fee api return object keys called in TLTxFeeAPI
-    class func getInAppSettingsKitDynamicFeeSetting() -> TLDynamicFeeSetting {
-        if let fee = UserDefaults.standard.string(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_DYNAMIC_FEE_OPTION) {
+    class func getInAppSettingsKitDynamicFeeSettingBitcoin() -> TLDynamicFeeSetting {
+        if let fee = UserDefaults.standard.string(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_DYNAMIC_FEE_OPTION_BITCOIN) {
             return TLDynamicFeeSetting(rawValue:fee)!
         } else {
             return TLDynamicFeeSetting.FastestFee
         }
     }
     
-    class func setInAppSettingsKitDynamicFeeSettingIdx(_ dynamicFeeSetting:TLDynamicFeeSetting) -> () {
-        UserDefaults.standard.set(dynamicFeeSetting.rawValue ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_DYNAMIC_FEE_OPTION)
+    class func setInAppSettingsKitDynamicFeeSettingIdxBitcoin(_ dynamicFeeSetting:TLDynamicFeeSetting) -> () {
+        UserDefaults.standard.set(dynamicFeeSetting.rawValue ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_DYNAMIC_FEE_OPTION_BITCOIN)
+        UserDefaults.standard.synchronize()
+    }
+    
+    class func getInAppSettingsKitDynamicFeeSettingBitcoinCash() -> TLDynamicFeeSetting {
+        if let fee = UserDefaults.standard.string(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_DYNAMIC_FEE_OPTION_BITCOIN_CASH) {
+            return TLDynamicFeeSetting(rawValue:fee)!
+        } else {
+            return TLDynamicFeeSetting.FastestFee
+        }
+    }
+    
+    class func setInAppSettingsKitDynamicFeeSettingIdxBitcoinCash(_ dynamicFeeSetting:TLDynamicFeeSetting) -> () {
+        UserDefaults.standard.set(dynamicFeeSetting.rawValue ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_DYNAMIC_FEE_OPTION_BITCOIN_CASH)
         UserDefaults.standard.synchronize()
     }
 }

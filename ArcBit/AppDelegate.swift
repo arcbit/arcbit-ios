@@ -37,6 +37,7 @@ import Crashlytics
     var window:UIWindow?
     fileprivate var storyboard:UIStoryboard?
     fileprivate var modalDelegate:AnyObject?
+    var coinWalletsManager:TLCoinWalletsManager?
     lazy var appWallet = TLWallet(walletName: "App Wallet", walletConfig: TLWalletConfig(isTestnet: false))
     var bitcoinURIOptionsDict:NSDictionary?
     var justSetupHDWallet = false
@@ -78,9 +79,9 @@ import Crashlytics
         } else {
             let masterHex = TLHDWalletWrapper.getMasterHex(mnemonic)
             appWallet.createInitialWalletPayload(mnemonic, masterHex:masterHex)
-            TLCoinWalletsManager.instance().setupCoinWallets(self.appWallet)
+            self.coinWalletsManager = TLCoinWalletsManager(self.appWallet)
         }
-        TLCoinWalletsManager.instance().recoverHDWallet()
+        self.coinWalletsManager!.recoverHDWallet()
     }
     
     // work around to show SendView
@@ -194,9 +195,14 @@ import Crashlytics
         TLPreferences.setEnableBackupWithiCloud(false)
         TLPreferences.setInAppSettingsKitEnableBackupWithiCloud(false)
         
-        TLPreferences.setInAppSettingsKitEnabledDynamicFee(true)
-        TLPreferences.setInAppSettingsKitDynamicFeeSettingIdx(TLDynamicFeeSetting.FastestFee);
-        TLPreferences.setInAppSettingsKitTransactionFee(TLWalletUtils.DEFAULT_FEE_AMOUNT_IN_BITCOINS())
+        TLPreferences.setInAppSettingsKitEnabledDynamicFeeBitcoinCash(true)
+        TLPreferences.setInAppSettingsKitDynamicFeeSettingIdxBitcoinCash(TLDynamicFeeSetting.FastestFee)
+        TLPreferences.setInAppSettingsKitTransactionFeeBitcoinCash(TLWalletUtils.DEFAULT_FEE_AMOUNT_IN_BITCOIN_CASH())
+        TLPreferences.setInAppSettingsKitEnabledDynamicFeeBitcoin(true)
+        TLPreferences.setInAppSettingsKitDynamicFeeSettingIdxBitcoin(TLDynamicFeeSetting.FastestFee)
+        TLPreferences.setInAppSettingsKitTransactionFeeBitcoin(TLWalletUtils.DEFAULT_FEE_AMOUNT_IN_BITCOIN())
+
+        
         TLPreferences.setEnablePINCode(false)
         TLSuggestions.instance().enabledAllSuggestions()
         TLPreferences.resetBlockExplorerAPIURL()
@@ -214,6 +220,7 @@ import Crashlytics
         TLPreferences.setCurrency(DEFAULT_CURRENCY_IDX)
         TLPreferences.setInAppSettingsKitCurrency(DEFAULT_CURRENCY_IDX)
         
+        TLPreferences.setBitcoinCashDisplay("2")
         TLPreferences.setSendFromCoinType(TLWalletUtils.DEFAULT_COIN_TYPE())
         TLPreferences.setSendFromType(.hdWallet)
         TLPreferences.setSendFromIndex(0)
@@ -221,12 +228,9 @@ import Crashlytics
         if clearWalletInMemory {
             let masterHex = TLHDWalletWrapper.getMasterHex(passphrase)
             self.appWallet.createInitialWalletPayload(passphrase, masterHex:masterHex)
-            TLCoinWalletsManager.instance().setupCoinWallets(self.appWallet)
+            self.coinWalletsManager = TLCoinWalletsManager(self.appWallet)
         }
-        
-        TLCoinWalletsManager.instance().receiveSelectedObject = TLSelectedObject()
-        TLCoinWalletsManager.instance().historySelectedObject = TLSelectedObject()
-        
+                
         //self.appWallet.addAddressBookEntry("vJmwhHhMNevDQh188gSeHd2xxxYGBQmnVuMY2yG2MmVTC31UWN5s3vaM3xsM2Q1bUremdK1W7eNVgPg1BnvbTyQuDtMKAYJanahvse", label: "ArcBit Donation")
     }
     
@@ -237,7 +241,7 @@ import Crashlytics
         lock.lock()
         TLStealthWebSocket.instance().challenge = challenge
         lock.unlock()
-        TLCoinWalletsManager.instance().respondToStealthChallege(challenge)
+        self.coinWalletsManager!.respondToStealthChallege(challenge)
     }
     
     func respondToStealthAddressSubscription(_ note: Notification) {
@@ -250,7 +254,7 @@ import Crashlytics
             return
         }
         consecutiveFailedStealthChallengeCount = 0
-        TLCoinWalletsManager.instance().respondToStealthAddressSubscription(stealthAddress)
+        self.coinWalletsManager!.respondToStealthAddressSubscription(stealthAddress)
     }
     
     func respondToStealthPayment(_ note: Notification) {
@@ -268,7 +272,7 @@ import Crashlytics
                     return;
                 }
                 let txObject = TLTxObject(dict:jsonData as! NSDictionary)
-                TLCoinWalletsManager.instance().handleGetTxSuccessForRespondToStealthPayment(stealthAddress,
+                self.coinWalletsManager!.handleGetTxSuccessForRespondToStealthPayment(stealthAddress,
                     paymentAddress: paymentAddress, txid: txid, txTime: txTime, txObject: txObject)
                 
                     self.respondToStealthPaymentGetTxTries = 0
@@ -301,26 +305,26 @@ import Crashlytics
                     return
                 }
             }
-            TLCoinWalletsManager.instance().updateModelWithNewTransaction(txObject)
+            self.coinWalletsManager!.updateModelWithNewTransaction(txObject)
         }
     }
     
-    func updateUIForNewTx(_ txHash: String, receivedAmount: TLCoin?, receivedTo: String) {
+    func updateUIForNewTx(_ txHash: String, receivedAmount: TLCoin?, coinType: TLCoinType, receivedTo: String) {
         DispatchQueue.main.async {
             DLog("updateUIForNewTx txHash \(txHash)")
             self.webSocketNotifiedTxHashSet.add(txHash)
             NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION()), object: txHash, userInfo:nil)
             if let receivedAmount = receivedAmount {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_RECEIVE_PAYMENT()), object:nil, userInfo:nil)
-                self.promptReceivedPayment(receivedTo, receivedAmount: receivedAmount)
+                self.promptReceivedPayment(receivedTo, receivedAmount: receivedAmount, coinType: coinType)
             }
         }
     }
     
-    func promptReceivedPayment(_ receivedTo:String, receivedAmount:TLCoin) {
+    func promptReceivedPayment(_ receivedTo:String, receivedAmount:TLCoin, coinType: TLCoinType) {
         let delayTime = DispatchTime.now() + Double(Int64(1 * Double(NSEC_PER_SEC))) / Double(NSEC_PER_SEC)
         DispatchQueue.main.asyncAfter(deadline: delayTime) {
-            let msg = "\(receivedTo) received \(TLCurrencyFormat.getProperAmount(receivedAmount))"
+            let msg = "\(receivedTo) received \(TLCurrencyFormat.getProperAmount(receivedAmount, coinType: coinType))"
             TLPrompts.promptSuccessMessage(msg, message: "")
             AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
         }
@@ -361,7 +365,6 @@ import Crashlytics
             ,selector:#selector(AppDelegate.respondToStealthPayment(_:)),
             name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_RECEIVED_STEALTH_PAYMENT()), object:nil)
     
-        TLCoinWalletsManager.instance()
         var passphrase = TLWalletPassphrase.getDecryptedWalletPassphrase()
 
         if !TLPreferences.hasSetupHDWallet() {
@@ -371,11 +374,11 @@ import Crashlytics
                 passphrase = TLHDWalletWrapper.generateMnemonicPassphrase()
                 self.refreshApp(passphrase!)
                 
-                TLCoinWalletsManager.instance().createFirstAccount()
+                self.coinWalletsManager!.createFirstAccount()
                 
-                TLCoinWalletsManager.instance().updateGodSend(TLPreferences.getSendFromCoinType(), sendFromType: TLSendFromType.hdWallet, sendFromIndex:0)
-                TLCoinWalletsManager.instance().updateReceiveSelectedObject(TLPreferences.getSendFromCoinType(), sendFromType: TLSendFromType.hdWallet, sendFromIndex:0)
-                TLCoinWalletsManager.instance().updateHistorySelectedObject(TLPreferences.getSendFromCoinType(), sendFromType: TLSendFromType.hdWallet, sendFromIndex:0)
+                self.coinWalletsManager!.updateGodSend(TLPreferences.getSendFromCoinType(), sendFromType: TLSendFromType.hdWallet, sendFromIndex:0)
+                self.coinWalletsManager!.updateReceiveSelectedObject(TLPreferences.getSendFromCoinType(), sendFromType: TLSendFromType.hdWallet, sendFromIndex:0)
+                self.coinWalletsManager!.updateHistorySelectedObject(TLPreferences.getSendFromCoinType(), sendFromType: TLSendFromType.hdWallet, sendFromIndex:0)
             }
             justSetupHDWallet = true
             guard let password = TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase(),
@@ -402,32 +405,15 @@ import Crashlytics
         // Update wallet json to v3
         if self.appWallet.getWalletJsonVersion() == TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_VERSION_TWO {
             self.appWallet.updateWalletJSONToV3()
-            TLCoinWalletsManager.instance().setupCoinWallets(self.appWallet)
-            TLCoinWalletsManager.instance().createFirstBitcoinCashAccount()
+            self.coinWalletsManager = TLCoinWalletsManager(self.appWallet)
+            self.coinWalletsManager!.createFirstBitcoinCashAccount()
             printOutWalletJSON()
             self.saveWalletJsonCloud()
         } else {
-            TLCoinWalletsManager.instance().setupCoinWallets(self.appWallet)
+            self.coinWalletsManager = TLCoinWalletsManager(self.appWallet)
         }
         printOutWalletJSON()
 
-        
-        TLCoinWalletsManager.instance().godSend = TLSpaghettiGodSend(appWallet: appWallet)
-        TLCoinWalletsManager.instance().receiveSelectedObject = TLSelectedObject()
-        TLCoinWalletsManager.instance().historySelectedObject = TLSelectedObject()
-        TLCoinWalletsManager.instance().updateGodSend()
-        let selectObjected: AnyObject? = TLCoinWalletsManager.instance().godSend?.getSelectedSendObject()
-        if let receiveSelectedObject = TLCoinWalletsManager.instance().receiveSelectedObject,
-            let historySelectedObject = TLCoinWalletsManager.instance().historySelectedObject {
-            if selectObjected is TLAccountObject {
-                receiveSelectedObject.setSelectedAccount(selectObjected as! TLAccountObject)
-                historySelectedObject.setSelectedAccount(selectObjected as! TLAccountObject)
-            } else if (selectObjected is TLImportedAddress) {
-                receiveSelectedObject.setSelectedAddress(selectObjected as! TLImportedAddress)
-                historySelectedObject.setSelectedAddress(selectObjected as! TLImportedAddress)
-            }
-        }
-        
         TLBlockExplorerAPI.instance()
         TLExchangeRate.instance()
         TLAchievements.instance()

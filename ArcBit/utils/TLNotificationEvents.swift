@@ -27,7 +27,7 @@ class TLNotificationEvents {
     class func EVENT_WALLET_PAYLOAD_UPDATED() -> String { return "event.wallet.payload.updated"}
     class func EVENT_ADDRESS_SELECTED() -> String { return "event.address.selected"}
     class func EVENT_PREFERENCES_FIAT_DISPLAY_CHANGED() -> String { return "pref.fiatcurrencychanged"}
-    class func EVENT_PREFERENCES_BITCOIN_DISPLAY_CHANGED() -> String { return "pref.bitcoindisplaychanged"}
+    class func EVENT_PREFERENCES_COIN_UNIT_DISPLAY_CHANGED() -> String { return "pref.bitcoindisplaychanged"}
     class func EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED() -> String { return "pref.displaylocalcurrencychanged"}
     class func EVENT_ADVANCE_MODE_TOGGLED() -> String { return "pref.advancemode"}
     class func EVENT_FETCHED_ADDRESS() -> String { return "api.address"}

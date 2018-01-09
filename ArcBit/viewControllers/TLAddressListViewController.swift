@@ -34,6 +34,7 @@ import UIKit
     }
     
     var accountObject: TLAccountObject?
+    lazy var currentCoinType = TLWalletUtils.DEFAULT_COIN_TYPE()
     fileprivate var QRImageModal: TLQRImageModal?
     fileprivate lazy var sectionArray = Array<String>()
     var showBalances: Bool = false
@@ -276,7 +277,7 @@ import UIKit
                 (sectionType == STATIC_MEMBERS.kStealthAddressSection || sectionType == STATIC_MEMBERS.kActiveMainSection || sectionType == STATIC_MEMBERS.kActiveChangeSection)) {
                     // only show balances of active addresses
                     cell!.amountButton!.isHidden = false
-                    balance = TLCurrencyFormat.getProperAmount(self.accountObject!.getAddressBalance(address)) as String
+                    balance = TLCurrencyFormat.getProperAmount(self.accountObject!.getAddressBalance(address), coinType: self.currentCoinType) as String
                     cell!.amountButton!.setTitle(balance, for: UIControlState())
             } else {
                 cell!.amountButton!.isHidden = true

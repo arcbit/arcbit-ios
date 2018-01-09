@@ -530,7 +530,7 @@ import Foundation
         let receivedAmount = accountObject.processNewTx(txObject)
         let receivedTo = accountObject.getAccountNameOrAccountPublicKey()
         //AppDelegate.instance().pendingOperations.addSetUpAccountOperation(accountObject, fetchDataAgain: true, success: {
-        AppDelegate.instance().updateUIForNewTx(txObject.getHash() as! String, receivedAmount: receivedAmount, receivedTo: receivedTo)
+        AppDelegate.instance().updateUIForNewTx(txObject.getHash() as! String, receivedAmount: receivedAmount, coinType: self.coinType, receivedTo: receivedTo)
         //})
     }
     
@@ -538,7 +538,7 @@ import Foundation
         let receivedAmount = importedAddress.processNewTx(txObject)
         let receivedTo = importedAddress.getLabel()
         //AppDelegate.instance().pendingOperations.addSetUpImportedAddressOperation(importedAddress, fetchDataAgain: true, success: {
-        AppDelegate.instance().updateUIForNewTx(txObject.getHash() as! String, receivedAmount: receivedAmount, receivedTo: receivedTo)
+        AppDelegate.instance().updateUIForNewTx(txObject.getHash() as! String, receivedAmount: receivedAmount, coinType: self.coinType, receivedTo: receivedTo)
         //})
     }
     

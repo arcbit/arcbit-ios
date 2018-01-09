@@ -398,11 +398,11 @@ class ArcBitTests: XCTestCase {
         }
         
         func testCreateSignedSerializedTransactionHexAndBIP69_1() -> () {
-            let feeAmount = TLCoin(bitcoinAmount: "0.00000", bitcoinDenomination: TLBitcoinDenomination.bitcoin)
+            let feeAmount = TLCurrencyFormat.amountStringToCoin("0.00000", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
             let toAddress = "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv"
             let toAddress2 = "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5"
-            let toAmount = TLCoin(bitcoinAmount: "1", bitcoinDenomination: TLBitcoinDenomination.bitcoin)
-            let toAmount2 = TLCoin(bitcoinAmount: "24", bitcoinDenomination: TLBitcoinDenomination.bitcoin)
+            let toAmount = TLCurrencyFormat.amountStringToCoin("1", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+            let toAmount2 = TLCurrencyFormat.amountStringToCoin("24", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
             
             let txid0 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
             let txid1 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
@@ -507,11 +507,11 @@ class ArcBitTests: XCTestCase {
         }
         
         func testCreateSignedSerializedTransactionHexAndBIP69_2() -> () {
-            let feeAmount = TLCoin(bitcoinAmount: "0.00002735", bitcoinDenomination: TLBitcoinDenomination.bitcoin)
+            let feeAmount = TLCurrencyFormat.amountStringToCoin("0.00002735", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
             let toAddress = "17nFgS1YaDPnXKMPQkZVdNQqZnVqRgBwnZ"
             let toAddress2 = "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm"
-            let toAmount = TLCoin(bitcoinAmount: "4.00057456", bitcoinDenomination: TLBitcoinDenomination.bitcoin)
-            let toAmount2 = TLCoin(bitcoinAmount: "400", bitcoinDenomination: TLBitcoinDenomination.bitcoin)
+            let toAmount = TLCurrencyFormat.amountStringToCoin("4.00057456", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+            let toAmount2 = TLCurrencyFormat.amountStringToCoin("400", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
             
             let txid0 = "0e53ec5dfb2cb8a71fec32dc9a634a35b7e24799295ddd5278217822e0b31f57"
             let txid1 = "26aa6e6d8b9e49bb0630aac301db6757c02e3619feb4ee0eea81eb1672947024"
@@ -769,11 +769,11 @@ class ArcBitTests: XCTestCase {
         }
         
         func testCreateSignedSerializedTransactionHexAndBIP69_3() -> () {
-            let feeAmount = TLCoin(bitcoinAmount: "0.00000", bitcoinDenomination: TLBitcoinDenomination.bitcoin)
+            let feeAmount = TLCurrencyFormat.amountStringToCoin("0.00000", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
             let toAddress = "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv"
             let toAddress2 = "vJmwhHhMNevDQh188gSeHd2xxxYGBQmnVuMY2yG2MmVTC31UWN5s3vaM3xsM2Q1bUremdK1W7eNVgPg1BnvbTyQuDtMKAYJanahvse"
-            let toAmount = TLCoin(bitcoinAmount: "1", bitcoinDenomination: TLBitcoinDenomination.bitcoin)
-            let toAmount2 = TLCoin(bitcoinAmount: "24", bitcoinDenomination: TLBitcoinDenomination.bitcoin)
+            let toAmount = TLCurrencyFormat.amountStringToCoin("1", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+            let toAmount2 = TLCurrencyFormat.amountStringToCoin("24", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
             
             let txid0 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
             let txid1 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
@@ -890,11 +890,11 @@ class ArcBitTests: XCTestCase {
         }
         
         func testCreateSignedSerializedTransactionHexAndBIP69_4() -> () {
-            let feeAmount = TLCoin(bitcoinAmount: "0.00002735", bitcoinDenomination: TLBitcoinDenomination.bitcoin)
+            let feeAmount = TLCurrencyFormat.amountStringToCoin("0.00002735", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
             let toAddress = "vJmwhHhMNevDQh188gSeHd2xxxYGBQmnVuMY2yG2MmVTC31UWN5s3vaM3xsM2Q1bUremdK1W7eNVgPg1BnvbTyQuDtMKAYJanahvse"
             let toAddress2 = "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm"
-            let toAmount = TLCoin(bitcoinAmount: "4.00057456", bitcoinDenomination: TLBitcoinDenomination.bitcoin)
-            let toAmount2 = TLCoin(bitcoinAmount: "400", bitcoinDenomination: TLBitcoinDenomination.bitcoin)
+            let toAmount = TLCurrencyFormat.amountStringToCoin("4.00057456", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+            let toAmount2 = TLCurrencyFormat.amountStringToCoin("400", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
             
             let txid0 = "0e53ec5dfb2cb8a71fec32dc9a634a35b7e24799295ddd5278217822e0b31f57"
             let txid1 = "26aa6e6d8b9e49bb0630aac301db6757c02e3619feb4ee0eea81eb1672947024"
@@ -1166,9 +1166,9 @@ class ArcBitTests: XCTestCase {
         }
         
         func testCreateSignedSerializedTransactionHexAndBIP69_5() -> () {
-            let feeAmount = TLCoin(bitcoinAmount: "0.00000", bitcoinDenomination: TLBitcoinDenomination.bitcoin)
+            let feeAmount = TLCurrencyFormat.amountStringToCoin("0.00000", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
             let toAddress = "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv"
-            let toAmount = TLCoin(bitcoinAmount: "8", bitcoinDenomination: TLBitcoinDenomination.bitcoin)
+            let toAmount = TLCurrencyFormat.amountStringToCoin("8", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
             
             let txid0 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
             let txid1 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
@@ -1268,11 +1268,11 @@ class ArcBitTests: XCTestCase {
         }
         
         func testCreateSignedSerializedTransactionHexAndBIP69_6() -> () {
-            let feeAmount = TLCoin(bitcoinAmount: "0.00000", bitcoinDenomination: TLBitcoinDenomination.bitcoin)
+            let feeAmount = TLCurrencyFormat.amountStringToCoin("0.00000", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
             let toAddress = "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv"
             let toAddress2 = "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5"
-            let toAmount = TLCoin(bitcoinAmount: "1", bitcoinDenomination: TLBitcoinDenomination.bitcoin)
-            let toAmount2 = TLCoin(bitcoinAmount: "1", bitcoinDenomination: TLBitcoinDenomination.bitcoin)
+            let toAmount = TLCurrencyFormat.amountStringToCoin("1", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+            let toAmount2 = TLCurrencyFormat.amountStringToCoin("1", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
             
             let txid0 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
             let txid1 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
@@ -1330,11 +1330,11 @@ class ArcBitTests: XCTestCase {
         }
         
         func testColdWallet_1() -> () {
-            let feeAmount = TLCoin(bitcoinAmount: "0.00000", bitcoinDenomination: TLBitcoinDenomination.bitcoin)
+            let feeAmount = TLCurrencyFormat.amountStringToCoin("0.00000", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
             let toAddress = "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv"
             let toAddress2 = "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5"
-            let toAmount = TLCoin(bitcoinAmount: "1", bitcoinDenomination: TLBitcoinDenomination.bitcoin)
-            let toAmount2 = TLCoin(bitcoinAmount: "24", bitcoinDenomination: TLBitcoinDenomination.bitcoin)
+            let toAmount = TLCurrencyFormat.amountStringToCoin("1", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+            let toAmount2 = TLCurrencyFormat.amountStringToCoin("24", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
             
             let txid0 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
             let txid1 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
@@ -1456,127 +1456,127 @@ class ArcBitTests: XCTestCase {
     func testCoin() {
         
         var coin:TLCoin
-
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0.0")
+        let coinType = TLCoinType.BTC
+        coin = TLCurrencyFormat.coinAmountStringToCoin("0.0", coinType: coinType)
         XCTAssertTrue(coin.toUInt64() == 0)
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0")
+        coin = TLCurrencyFormat.coinAmountStringToCoin("0", coinType: coinType)
         XCTAssertTrue(coin.toUInt64() == 0)
 
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0.00000001")
+        coin = TLCurrencyFormat.coinAmountStringToCoin("0.00000001", coinType: coinType)
         XCTAssertTrue(coin.toUInt64() == 1)
-        //coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0.000000011")
+        //coin = TLCurrencyFormat.coinAmountStringToCoin("0.000000011", coinType: coinType)
         //XCTAssertTrue(coin.toUInt64() == 1)
-        //coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0.000000015")
+        //coin = TLCurrencyFormat.coinAmountStringToCoin("0.000000015", coinType: coinType)
         //XCTAssertTrue(coin.toUInt64() == 2)
-        //coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0.000000019")
+        //coin = TLCurrencyFormat.coinAmountStringToCoin("0.000000019", coinType: coinType)
         //XCTAssertTrue(coin.toUInt64() == 2)
 
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0.1")
+        coin = TLCurrencyFormat.coinAmountStringToCoin("0.1", coinType: coinType)
         XCTAssertTrue(coin.toUInt64() == 10000000)
 
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin(".99999998")
+        coin = TLCurrencyFormat.coinAmountStringToCoin(".99999998", coinType: coinType)
         XCTAssertTrue(coin.toUInt64() == 99999998)
-        //coin = TLCurrencyFormat.bitcoinAmountStringToCoin(".999999985")
+        //coin = TLCurrencyFormat.coinAmountStringToCoin(".999999985", coinType: coinType)
         //XCTAssertTrue(coin.toUInt64() == 99999998)
-        //coin = TLCurrencyFormat.bitcoinAmountStringToCoin(".999999986")
+        //coin = TLCurrencyFormat.coinAmountStringToCoin(".999999986", coinType: coinType)
         //XCTAssertTrue(coin.toUInt64() == 99999999)
-        //coin = TLCurrencyFormat.bitcoinAmountStringToCoin(".999999989")
+        //coin = TLCurrencyFormat.coinAmountStringToCoin(".999999989", coinType: coinType)
         //XCTAssertTrue(coin.toUInt64() == 99999999)
 
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0.99999999")
+        coin = TLCurrencyFormat.coinAmountStringToCoin("0.99999999", coinType: coinType)
         XCTAssertTrue(coin.toUInt64() == 99999999)
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin(".99999999")
+        coin = TLCurrencyFormat.coinAmountStringToCoin(".99999999", coinType: coinType)
         XCTAssertTrue(coin.toUInt64() == 99999999)
 
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("1.00000000")
+        coin = TLCurrencyFormat.coinAmountStringToCoin("1.00000000", coinType: coinType)
         XCTAssertTrue(coin.toUInt64() == 100000000)
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("1")
+        coin = TLCurrencyFormat.coinAmountStringToCoin("1", coinType: coinType)
         XCTAssertTrue(coin.toUInt64() == 100000000)
 
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("1.00000001")
+        coin = TLCurrencyFormat.coinAmountStringToCoin("1.00000001", coinType: coinType)
         XCTAssertTrue(coin.toUInt64() == 100000001)
 
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("1.99999998")
+        coin = TLCurrencyFormat.coinAmountStringToCoin("1.99999998", coinType: coinType)
         XCTAssertTrue(coin.toUInt64() == 199999998)
         
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("1.99999999")
+        coin = TLCurrencyFormat.coinAmountStringToCoin("1.99999999", coinType: coinType)
         XCTAssertTrue(coin.toUInt64() == 199999999)
 
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("2.0")
+        coin = TLCurrencyFormat.coinAmountStringToCoin("2.0", coinType: coinType)
         XCTAssertTrue(coin.toUInt64() == 200000000)
 
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("2.00000001")
+        coin = TLCurrencyFormat.coinAmountStringToCoin("2.00000001", coinType: coinType)
         XCTAssertTrue(coin.toUInt64() == 200000001)
 
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("31,821.95320551")
+        coin = TLCurrencyFormat.coinAmountStringToCoin("31,821.95320551", coinType: coinType)
         XCTAssertTrue(coin.toUInt64() == 3182195320551)
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("31821.95320551")
+        coin = TLCurrencyFormat.coinAmountStringToCoin("31821.95320551", coinType: coinType)
         XCTAssertTrue(coin.toUInt64() == 3182195320551)
 
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("21,000,000")
+        coin = TLCurrencyFormat.coinAmountStringToCoin("21,000,000", coinType: coinType)
         XCTAssertTrue(coin.toUInt64() == 2100000000000000)
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("21000000")
+        coin = TLCurrencyFormat.coinAmountStringToCoin("21000000", coinType: coinType)
         XCTAssertTrue(coin.toUInt64() == 2100000000000000)
         
         
         let spainLocale = Locale(identifier: "es_ES")
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0,0", locale: spainLocale)
+        coin = TLCurrencyFormat.coinAmountStringToCoin("0,0", coinType: coinType, locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 0)
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0", locale: spainLocale)
+        coin = TLCurrencyFormat.coinAmountStringToCoin("0", coinType: coinType, locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 0)
         
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0,00000001", locale: spainLocale)
+        coin = TLCurrencyFormat.coinAmountStringToCoin("0,00000001", coinType: coinType, locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 1)
         
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0,1", locale: spainLocale)
+        coin = TLCurrencyFormat.coinAmountStringToCoin("0,1", coinType: coinType, locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 10000000)
         
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin(",99999998", locale: spainLocale)
+        coin = TLCurrencyFormat.coinAmountStringToCoin(",99999998", coinType: coinType, locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 99999998)
         
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("0,99999999", locale: spainLocale)
+        coin = TLCurrencyFormat.coinAmountStringToCoin("0,99999999", coinType: coinType, locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 99999999)
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin(",99999999", locale: spainLocale)
+        coin = TLCurrencyFormat.coinAmountStringToCoin(",99999999", coinType: coinType, locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 99999999)
         
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("1,00000000", locale: spainLocale)
+        coin = TLCurrencyFormat.coinAmountStringToCoin("1,00000000", coinType: coinType, locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 100000000)
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("1", locale: spainLocale)
+        coin = TLCurrencyFormat.coinAmountStringToCoin("1", coinType: coinType, locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 100000000)
         
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("1,00000001", locale: spainLocale)
+        coin = TLCurrencyFormat.coinAmountStringToCoin("1,00000001", coinType: coinType, locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 100000001)
         
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("1,99999998", locale: spainLocale)
+        coin = TLCurrencyFormat.coinAmountStringToCoin("1,99999998", coinType: coinType, locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 199999998)
         
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("1,99999999", locale: spainLocale)
+        coin = TLCurrencyFormat.coinAmountStringToCoin("1,99999999", coinType: coinType, locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 199999999)
         
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("2,0", locale: spainLocale)
+        coin = TLCurrencyFormat.coinAmountStringToCoin("2,0", coinType: coinType, locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 200000000)
         
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("2,00000001", locale: spainLocale)
+        coin = TLCurrencyFormat.coinAmountStringToCoin("2,00000001", coinType: coinType, locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 200000001)
         
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("31.821,95320551", locale: spainLocale)
+        coin = TLCurrencyFormat.coinAmountStringToCoin("31.821,95320551", coinType: coinType, locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 3182195320551)
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("31821,95320551", locale: spainLocale)
+        coin = TLCurrencyFormat.coinAmountStringToCoin("31821,95320551", coinType: coinType, locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 3182195320551)
         
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("21.000.000", locale: spainLocale)
+        coin = TLCurrencyFormat.coinAmountStringToCoin("21.000.000", coinType: coinType, locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 2100000000000000)
-        coin = TLCurrencyFormat.bitcoinAmountStringToCoin("21000000", locale: spainLocale)
+        coin = TLCurrencyFormat.coinAmountStringToCoin("21000000", coinType: coinType, locale: spainLocale)
         XCTAssertTrue(coin.toUInt64() == 2100000000000000)
         
         
                 
         TLPreferences.setBitcoinDisplay("1")
-        coin = TLCurrencyFormat.properBitcoinAmountStringToCoin("1000")
+        coin = TLCurrencyFormat.properBitcoinAmountStringToCoin("1000", coinType: coinType)
         XCTAssertTrue(coin.toUInt64() == 100000000)
 
         TLPreferences.setBitcoinDisplay("2")
-        coin = TLCurrencyFormat.properBitcoinAmountStringToCoin("1000000")
+        coin = TLCurrencyFormat.properBitcoinAmountStringToCoin("1000000", coinType: coinType)
         XCTAssertTrue(coin.toUInt64() == 100000000)
 
         TLPreferences.setBitcoinDisplay("0")

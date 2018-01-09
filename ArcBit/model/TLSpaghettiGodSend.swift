@@ -503,13 +503,13 @@
                     DLog("createSignedSerializedTransactionHex dustAmount \(Int(dustAmount))")
                     DLog("createSignedSerializedTransactionHex dustCoinAmount \(dustCoinAmount.toString())")
                     DLog("createSignedSerializedTransactionHex valueNeeded \(valueNeeded.toString())")
-                    let amountCanSendString = TLCurrencyFormat.coinToProperBitcoinAmountString(valueNeeded.subtract(dustCoinAmount))
-                    error(String(format: TLDisplayStrings.INSUFFICIENT_FUNDS_ACCOUNT_CONTAINS_BITCOIN_DUST_STRING(), "\(amountCanSendString) \(TLCurrencyFormat.getBitcoinDisplay())"))
+                    let amountCanSendString = TLCurrencyFormat.coinToProperBitcoinAmountString(valueNeeded.subtract(dustCoinAmount), coinType: self.getSelectedObjectCoinType())
+                    error(String(format: TLDisplayStrings.INSUFFICIENT_FUNDS_ACCOUNT_CONTAINS_BITCOIN_DUST_STRING(), "\(amountCanSendString) \(TLCurrencyFormat.getBitcoinDisplay(self.getSelectedObjectCoinType()))"))
                     return (nil, realToAddresses, nil)
                 }
-                let valueSelectedString = TLCurrencyFormat.coinToProperBitcoinAmountString(valueSelected)
-                let valueNeededString = TLCurrencyFormat.coinToProperBitcoinAmountString(valueNeeded)
-                error(String(format: TLDisplayStrings.INSUFFICIENT_FUNDS_ACCOUNT_BALANCE_IS_STRING(), "\(valueSelectedString) \(TLCurrencyFormat.getBitcoinDisplay())", "\(valueNeededString) \(TLCurrencyFormat.getBitcoinDisplay())"))
+                let valueSelectedString = TLCurrencyFormat.coinToProperBitcoinAmountString(valueSelected, coinType: self.getSelectedObjectCoinType())
+                let valueNeededString = TLCurrencyFormat.coinToProperBitcoinAmountString(valueNeeded, coinType: self.getSelectedObjectCoinType())
+                error(String(format: TLDisplayStrings.INSUFFICIENT_FUNDS_ACCOUNT_BALANCE_IS_STRING(), "\(valueSelectedString) \(TLCurrencyFormat.getBitcoinDisplay(self.getSelectedObjectCoinType()))", "\(valueNeededString) \(TLCurrencyFormat.getBitcoinDisplay(self.getSelectedObjectCoinType()))"))
                 return (nil, realToAddresses, nil)
             }
             
@@ -568,7 +568,7 @@
             for outputData in outputsData {
                 let outputAmount = ((outputData as! NSDictionary).object(forKey: "amount") as! NSNumber).uint64Value
                 if outputAmount <= DUST_AMOUNT {
-                    let dustAmountBitcoins = TLCurrencyFormat.coinToProperBitcoinAmountString(TLCoin(uint64: DUST_AMOUNT), withCode: true)
+                    let dustAmountBitcoins = TLCurrencyFormat.coinToProperBitcoinAmountString(TLCoin(uint64: DUST_AMOUNT), coinType: self.getSelectedObjectCoinType(), withCode: true)
                     error(String(format: TLDisplayStrings.CANNOT_CREATE_TRANSACTIONS_WITH_OUTPUTS_LESS_THEN_X_BITCOINS_STRING(), dustAmountBitcoins))
                     return (nil, realToAddresses, nil)
                 }

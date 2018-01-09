@@ -60,11 +60,18 @@ class TLExchangeRate {
             })
         }    }
     
-    fileprivate func getExchangeRate(_ currency:String) -> (Double) {
+    fileprivate func getExchangeRate(_ currency:String, coinType:TLCoinType) -> (Double) {
         if (self.exchangeRateDict == nil || self.exchangeRateDict![currency] == nil) {
             return 0
         } else {
-            return ((self.exchangeRateDict![currency] as! NSDictionary)["rate"] as! Double)
+            switch coinType {
+            case .BCH:
+                let bitcoinCashExchangeRate = ((self.exchangeRateDict!["BCH"] as! NSDictionary)["rate"] as! Double)
+                let fiatCurrencyExchangeRate = ((self.exchangeRateDict![currency] as! NSDictionary)["rate"] as! Double)
+                return fiatCurrencyExchangeRate/bitcoinCashExchangeRate
+            case .BTC:
+                return ((self.exchangeRateDict![currency] as! NSDictionary)["rate"] as! Double)
+            }
         }
     }
     
@@ -73,22 +80,22 @@ class TLExchangeRate {
             parameters:[:], success:success, failure:failure)
     }
     
-    fileprivate func fiatAmountFromBitcoin(_ currency:String, bitcoinAmount:TLCoin) -> (Double) {
-        let exchangeRate = getExchangeRate(currency)
-        return bitcoinAmount.bigIntegerToBitcoin() * exchangeRate
+    fileprivate func fiatAmountFromBitcoin(_ currency:String, amount:TLCoin, coinType:TLCoinType) -> (Double) {
+        let exchangeRate = getExchangeRate(currency, coinType: coinType)
+        return amount.bigIntegerToBitcoin() * exchangeRate
     }
 
-    func bitcoinAmountFromFiat(_ currency:String, fiatAmount:Double) -> (TLCoin) {
-        let exchangeRate = getExchangeRate(currency)
+    func bitcoinAmountFromFiat(_ currency:String, fiatAmount:Double, coinType:TLCoinType) -> (TLCoin) {
+        let exchangeRate = getExchangeRate(currency, coinType: coinType)
         let bitcoinAmount = TLCoin(doubleValue: fiatAmount/exchangeRate)
         return bitcoinAmount
     }
     
-    func fiatAmountStringFromBitcoin(_ currency:String, bitcoinAmount:TLCoin) -> (String){
+    func fiatAmountStringFromBitcoin(_ currency:String, amount:TLCoin, coinType:TLCoinType) -> (String){
         //TODO move bitcoinFormatter to property
         let bitcoinFormatter = NumberFormatter()
         bitcoinFormatter.numberStyle = .decimal
         bitcoinFormatter.maximumFractionDigits = 2
-        return bitcoinFormatter.string(from: NSNumber(value: fiatAmountFromBitcoin(currency, bitcoinAmount:bitcoinAmount) as Double))!
+        return bitcoinFormatter.string(from: NSNumber(value: fiatAmountFromBitcoin(currency, amount:amount, coinType: coinType) as Double))!
     }
 }

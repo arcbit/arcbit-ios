@@ -71,7 +71,7 @@ import UIKit
                     DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
                         AppDelegate.instance().saveWalletJSONEnabled = false
                         AppDelegate.instance().recoverHDWallet(mnemonicPassphrase, shouldRefreshApp:false)
-                        TLCoinWalletsManager.instance().refreshHDWalletAccounts(true)
+                        AppDelegate.instance().coinWalletsManager!.refreshHDWalletAccounts(true)
                         AppDelegate.instance().refreshApp(mnemonicPassphrase, clearWalletInMemory:false)
                         AppDelegate.instance().saveWalletJSONEnabled = true
                         self.handleAfterRecoverWallet(mnemonicPassphrase)
@@ -83,9 +83,9 @@ import UIKit
     }
     
     fileprivate func handleAfterRecoverWallet(_ mnemonicPassphrase:String) -> () {
-        TLCoinWalletsManager.instance().updateGodSend(TLWalletUtils.DEFAULT_COIN_TYPE(), sendFromType: TLSendFromType.hdWallet, sendFromIndex:0)
-        TLCoinWalletsManager.instance().updateReceiveSelectedObject(TLWalletUtils.DEFAULT_COIN_TYPE(), sendFromType: TLSendFromType.hdWallet, sendFromIndex:0)
-        TLCoinWalletsManager.instance().updateHistorySelectedObject(TLWalletUtils.DEFAULT_COIN_TYPE(), sendFromType: TLSendFromType.hdWallet, sendFromIndex:0)
+        AppDelegate.instance().coinWalletsManager!.updateGodSend(TLWalletUtils.DEFAULT_COIN_TYPE(), sendFromType: TLSendFromType.hdWallet, sendFromIndex:0)
+        AppDelegate.instance().coinWalletsManager!.updateReceiveSelectedObject(TLWalletUtils.DEFAULT_COIN_TYPE(), sendFromType: TLSendFromType.hdWallet, sendFromIndex:0)
+        AppDelegate.instance().coinWalletsManager!.updateHistorySelectedObject(TLWalletUtils.DEFAULT_COIN_TYPE(), sendFromType: TLSendFromType.hdWallet, sendFromIndex:0)
         
         AppDelegate.instance().saveWalletJsonCloud()
         

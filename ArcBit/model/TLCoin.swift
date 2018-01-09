@@ -22,13 +22,6 @@
 
 import Foundation
 
-enum TLBitcoinDenomination:Int {
-    case bitcoin  = 0
-    case milliBit = 1
-    case bits     = 2
-}
-
-
 @objc class TLCoin:NSObject {
     struct STATIC_MEMBERS {
         static let numberFormatter: NumberFormatter =  NumberFormatter()
@@ -90,64 +83,15 @@ enum TLBitcoinDenomination:Int {
         return STATIC_MEMBERS.numberFormatter.number(from: coin.decimalString)!.uint64Value
     }
     
-    init(bitcoinAmount:(String), bitcoinDenomination:(TLBitcoinDenomination), locale: Locale=Locale.current) {
-        //TODO move to TLCurrencyFormat like an droid, so dont have to create formatter everytime
-        let bitcoinFormatter = NumberFormatter()
-        bitcoinFormatter.numberStyle = .decimal
-        bitcoinFormatter.maximumFractionDigits = 8
-        bitcoinFormatter.locale = locale
-        
-        let tmpString = bitcoinFormatter.number(from: bitcoinAmount)
-        if tmpString == nil {
-            coin = BTCMutableBigNumber(uInt64:0)
-            return
-        }
-
-        let satoshis:UInt64
-        let mericaFormatter = NumberFormatter()
-        mericaFormatter.maximumFractionDigits = 8
-        mericaFormatter.locale = Locale(identifier: "en_US")
-        let decimalAmount = NSDecimalNumber(string: mericaFormatter.string(from: bitcoinFormatter.number(from: bitcoinAmount)!))
-        if (bitcoinDenomination == TLBitcoinDenomination.bitcoin) {
-            satoshis = decimalAmount.multiplying(by: NSDecimalNumber(string: "100000000")).uint64Value
-        }
-        else if (bitcoinDenomination == TLBitcoinDenomination.milliBit) {
-            satoshis = (decimalAmount.multiplying(by: NSDecimalNumber(value: 100000 as UInt64))).uint64Value
-        }
-        else {
-            satoshis = (decimalAmount.multiplying(by: NSDecimalNumber(value: 100 as UInt64))).uint64Value
-        }
-        coin = BTCMutableBigNumber(uInt64:satoshis)
-    }
-    
-    func bigIntegerToBitcoinAmountString(_ bitcoinDenomination: TLBitcoinDenomination) -> (String) {
-        //TODO move to TLCurrencyFormat like an droid, so dont have to create formatter everytime
-        let bitcoinFormatter = NumberFormatter()
-        bitcoinFormatter.numberStyle = .decimal
-        
-        if (bitcoinDenomination == TLBitcoinDenomination.bitcoin) {
-            bitcoinFormatter.maximumFractionDigits = 8
-            return bitcoinFormatter.string(from: NSNumber(value: bigIntegerToBitcoin() as Double))!
-        }
-        else if (bitcoinDenomination == TLBitcoinDenomination.milliBit) {
-            bitcoinFormatter.maximumFractionDigits = 5
-            return bitcoinFormatter.string(from: NSNumber(value: bigIntegerToMilliBit() as Double))!
-        }
-        else {
-            bitcoinFormatter.maximumFractionDigits = 2
-            return bitcoinFormatter.string(from: NSNumber(value: bigIntegerToBits() as Double))!
-        }
-    }
-    
     func toString() -> (String) {
         return coin.decimalString != nil ? coin.decimalString : "0"
     }
     
-    fileprivate func bigIntegerToBits() -> (Double) {
+    func bigIntegerToBits() -> (Double) {
         return (NSDecimalNumber(string: coin.decimalString as String).multiplying(by: NSDecimalNumber(value: 0.01 as Double))).doubleValue
     }
     
-    fileprivate func bigIntegerToMilliBit() -> (Double){
+    func bigIntegerToMilliBit() -> (Double){
         return (NSDecimalNumber(string: coin.decimalString as String).multiplying(by: NSDecimalNumber(value: 0.00001 as Double))).doubleValue
     }
     

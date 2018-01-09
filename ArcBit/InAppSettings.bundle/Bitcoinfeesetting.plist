@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Title</key>
+	<string>ADVANCED_TITLE</string>
+	<key>StringsTable</key>
+	<string>Root</string>
+	<key>PreferenceSpecifiers</key>
+	<array>        
+        
+        <dict>
+            <key>Title</key>
+            <string>EMPTY</string>
+            <key>Type</key>
+            <string>PSGroupSpecifier</string>
+        </dict>
+        <dict>
+            <key>DefaultValue</key>
+            <string>NO</string>
+            <key>Key</key>
+            <string>enabledynamicfee</string>
+            <key>Title</key>
+            <string>ENABLE_DYNAMIC_FEE</string>
+            <key>Type</key>
+            <string>PSToggleSwitchSpecifier</string>
+        </dict>
+        <dict>
+            <key>Key</key>
+            <string>transactionfee</string>
+            <key>Type</key>
+            <string>PSTitleValueSpecifier</string>
+            <key>IASKTextAlignment</key>
+            <string>IASKUITextAlignmentCenter</string>
+        </dict>
+        <dict>
+            <key>Title</key>
+            <string>SET_FIXED_TRANSACTION_FEE</string>
+            <key>Key</key>
+            <string>settransactionfee</string>
+            <key>Type</key>
+            <string>IASKButtonSpecifier</string>
+        </dict>
+        
+        <dict>
+            <key>DefaultValue</key>
+            <string>0</string>
+            <key>Key</key>
+            <string>dynamicfeeoption</string>
+            <key>Title</key>
+            <string>CONFIRMATION_TIME</string>
+            <key>Titles</key>
+            <array>
+                <string>DYNAMIC_FEE_OPTION_1</string>
+                <string>DYNAMIC_FEE_OPTION_2</string>
+                <string>DYNAMIC_FEE_OPTION_3</string>
+            </array>
+            <key>Type</key>
+            <string>PSMultiValueSpecifier</string>
+            <key>Values</key>
+            <array>
+                <string>0</string>
+                <string>1</string>
+                <string>2</string>
+            </array>
+        </dict>
+
+	</array>
+</dict>
+</plist>

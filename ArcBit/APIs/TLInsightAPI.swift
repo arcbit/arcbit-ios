@@ -465,8 +465,10 @@ class TLInsightAPI {
                 }
 
                 if let value = vout.object(forKey: "value") as? String {
-                    let coinValue = TLCoin(bitcoinAmount: value, bitcoinDenomination: .bitcoin, locale: Locale(identifier: "en_US"))
-                    aOut.setObject(Int(coinValue.toUInt64()), forKey: "value" as NSCopying)
+                    
+                    //TODO: NEED TO REVISIT AND UNCOMMENT OUT CODE BELOW AND FIX 
+//                    let coinValue = TLCoin(bitcoinAmount: value, bitcoinDenomination: .bitcoin, locale: Locale(identifier: "en_US"))
+//                    aOut.setObject(Int(coinValue.toUInt64()), forKey: "value" as NSCopying)
 
                 }
                 outs.add(aOut)

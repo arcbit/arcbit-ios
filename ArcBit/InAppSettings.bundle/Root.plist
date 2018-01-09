@@ -378,30 +378,14 @@
                     <string>157</string>
                 </array>
             </dict>
-            
             <dict>
-                <key>DefaultValue</key>
-                <string>0</string>
-                <key>Key</key>
-                <string>bitcoindisplay</string>
-                <key>Title</key>
-                <string>BITCOIN_DISPLAY</string>
-                <key>Titles</key>
-                <array>
-                    <string>BITCOIN_DISPLAY_1</string>
-                    <string>BITCOIN_DISPLAY_2</string>
-                    <string>BITCOIN_DISPLAY_3</string>
-                </array>
                 <key>Type</key>
-                <string>PSMultiValueSpecifier</string>
-                <key>Values</key>
-                <array>
-                    <string>0</string>
-                    <string>1</string>
-                    <string>2</string>
-                </array>
+                <string>PSChildPaneSpecifier</string>
+                <key>Title</key>
+                <string>COIN_DISPLAY_UNIT_TITLE</string>
+                <key>File</key>
+                <string>Selectcryptocoindisplayunits</string>
             </dict>
-        
             
             <dict>
                 <key>Title</key>
@@ -410,53 +394,12 @@
                 <string>PSGroupSpecifier</string>
             </dict>
             <dict>
-                <key>DefaultValue</key>
-                <string>NO</string>
-                <key>Key</key>
-                <string>enabledynamicfee</string>
+                <key>Type</key>
+                <string>PSChildPaneSpecifier</string>
                 <key>Title</key>
-                <string>ENABLE_DYNAMIC_FEE</string>
-                <key>Type</key>
-                <string>PSToggleSwitchSpecifier</string>
-            </dict>
-            <dict>
-                <key>Key</key>
-                <string>transactionfee</string>
-                <key>Type</key>
-                <string>PSTitleValueSpecifier</string>
-                <key>IASKTextAlignment</key>
-                <string>IASKUITextAlignmentCenter</string>
-            </dict>
-            <dict>
-                <key>Title</key>
-                <string>SET_FIXED_TRANSACTION_FEE</string>
-                <key>Key</key>
-                <string>settransactionfee</string>
-                <key>Type</key>
-                <string>IASKButtonSpecifier</string>
-            </dict>
-            
-            <dict>
-                <key>DefaultValue</key>
-                <string>0</string>
-                <key>Key</key>
-                <string>dynamicfeeoption</string>
-                <key>Title</key>
-                <string>CONFIRMATION_TIME</string>
-                <key>Titles</key>
-                <array>
-                    <string>DYNAMIC_FEE_OPTION_1</string>
-                    <string>DYNAMIC_FEE_OPTION_2</string>
-                    <string>DYNAMIC_FEE_OPTION_3</string>
-                </array>
-                <key>Type</key>
-                <string>PSMultiValueSpecifier</string>
-                <key>Values</key>
-                <array>
-                    <string>0</string>
-                    <string>1</string>
-                    <string>2</string>
-                </array>
+                <string>FEE_SETTINGS_TITLE</string>
+                <key>File</key>
+                <string>Selectcryptocoinfeesettings</string>
             </dict>
             
             <dict>

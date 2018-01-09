@@ -14,20 +14,21 @@ import Foundation
     }
     
     lazy fileprivate var coinWalletDict = [TLCoinType:TLWalletObject]()
-    var godSend:TLSpaghettiGodSend?
-    var receiveSelectedObject:TLSelectedObject?
-    var historySelectedObject:TLSelectedObject?
-
-    @discardableResult
-    class func instance() -> (TLCoinWalletsManager) {
-        if(STATIC_MEMBERS.instance == nil) {
-            STATIC_MEMBERS.instance = TLCoinWalletsManager()
-        }
-        return STATIC_MEMBERS.instance!
-    }
+    var godSend:TLSpaghettiGodSend
+    var receiveSelectedObject:TLSelectedObject
+    var historySelectedObject:TLSelectedObject
     
-    override init() {
+    init(_ appWallet: TLWallet) {
+
+        self.godSend = TLSpaghettiGodSend(appWallet: appWallet)
+        self.receiveSelectedObject = TLSelectedObject()
+        self.historySelectedObject = TLSelectedObject()
+
         super.init()
+        TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
+            self.coinWalletDict[coinType] = TLWalletObject(appWallet: appWallet, coinType: coinType)
+        })
+        
         NotificationCenter.default.addObserver(self
             ,selector:#selector(TLCoinWalletsManager.setWalletTransactionListenerClosed),
              name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_TRANSACTION_LISTENER_CLOSE()), object:nil)
@@ -37,13 +38,58 @@ import Foundation
         NotificationCenter.default.addObserver(self
             ,selector:#selector(TLCoinWalletsManager.setAccountsListeningToStealthPaymentsToFalse),
              name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_STEALTH_PAYMENT_LISTENER_CLOSE()), object:nil)
-
-    }
-    
-    func setupCoinWallets(_ appWallet: TLWallet) {
-        TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
-            self.coinWalletDict[coinType] = TLWalletObject(appWallet: appWallet, coinType: coinType)
-        })
+        
+        
+        func updateGodSend() {
+            let sendFromCoinType = TLPreferences.getSendFromCoinType()
+            var sendFromType = TLPreferences.getSendFromType()
+            var sendFromIndex = Int(TLPreferences.getSendFromIndex())
+            
+            TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
+                let coinWalletObject = self.coinWalletDict[coinType]!
+                if (sendFromType == .hdWallet) {
+                    if sendFromIndex > coinWalletObject.accounts.getNumberOfAccounts() - 1 {
+                        sendFromType = TLSendFromType.hdWallet
+                        sendFromIndex = 0
+                    }
+                } else if (sendFromType == .coldWalletAccount) {
+                    if sendFromIndex > coinWalletObject.coldWalletAccounts.getNumberOfAccounts() - 1 {
+                        sendFromType = TLSendFromType.hdWallet
+                        sendFromIndex = 0
+                    }
+                } else if (sendFromType == .importedAccount) {
+                    if sendFromIndex > coinWalletObject.importedAccounts.getNumberOfAccounts() - 1 {
+                        sendFromType = TLSendFromType.hdWallet
+                        sendFromIndex = 0
+                    }
+                } else if (sendFromType == .importedWatchAccount) {
+                    if sendFromIndex > coinWalletObject.importedWatchAccounts.getNumberOfAccounts() - 1 {
+                        sendFromType = TLSendFromType.hdWallet
+                        sendFromIndex = 0
+                    }
+                } else if (sendFromType == .importedAddress) {
+                    if sendFromIndex > coinWalletObject.importedAddresses.getCount() - 1 {
+                        sendFromType = TLSendFromType.hdWallet
+                        sendFromIndex = 0
+                    }
+                } else if (sendFromType == .importedWatchAddress) {
+                    if sendFromIndex > coinWalletObject.importedWatchAddresses.getCount() - 1 {
+                        sendFromType = TLSendFromType.hdWallet
+                        sendFromIndex = 0
+                    }
+                }
+            })
+            self.updateGodSend(sendFromCoinType, sendFromType: sendFromType, sendFromIndex:sendFromIndex)
+        }
+        updateGodSend()
+        let selectObjected: AnyObject? = self.godSend.getSelectedSendObject()
+        if selectObjected is TLAccountObject {
+            self.receiveSelectedObject.setSelectedAccount(selectObjected as! TLAccountObject)
+            self.historySelectedObject.setSelectedAccount(selectObjected as! TLAccountObject)
+        } else if (selectObjected is TLImportedAddress) {
+            self.receiveSelectedObject.setSelectedAddress(selectObjected as! TLImportedAddress)
+            self.historySelectedObject.setSelectedAddress(selectObjected as! TLImportedAddress)
+        }
     }
 
     func getSelectedWalletObject(_ coinType: TLCoinType) -> TLWalletObject {
@@ -76,47 +122,7 @@ import Foundation
         })
     }
     
-    func updateGodSend() {
-        let sendFromCoinType = TLPreferences.getSendFromCoinType()
-        var sendFromType = TLPreferences.getSendFromType()
-        var sendFromIndex = Int(TLPreferences.getSendFromIndex())
-        
-        TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
-            let coinWalletObject = self.coinWalletDict[coinType]!
-            if (sendFromType == .hdWallet) {
-                if sendFromIndex > coinWalletObject.accounts.getNumberOfAccounts() - 1 {
-                    sendFromType = TLSendFromType.hdWallet
-                    sendFromIndex = 0
-                }
-            } else if (sendFromType == .coldWalletAccount) {
-                if sendFromIndex > coinWalletObject.coldWalletAccounts.getNumberOfAccounts() - 1 {
-                    sendFromType = TLSendFromType.hdWallet
-                    sendFromIndex = 0
-                }
-            } else if (sendFromType == .importedAccount) {
-                if sendFromIndex > coinWalletObject.importedAccounts.getNumberOfAccounts() - 1 {
-                    sendFromType = TLSendFromType.hdWallet
-                    sendFromIndex = 0
-                }
-            } else if (sendFromType == .importedWatchAccount) {
-                if sendFromIndex > coinWalletObject.importedWatchAccounts.getNumberOfAccounts() - 1 {
-                    sendFromType = TLSendFromType.hdWallet
-                    sendFromIndex = 0
-                }
-            } else if (sendFromType == .importedAddress) {
-                if sendFromIndex > coinWalletObject.importedAddresses.getCount() - 1 {
-                    sendFromType = TLSendFromType.hdWallet
-                    sendFromIndex = 0
-                }
-            } else if (sendFromType == .importedWatchAddress) {
-                if sendFromIndex > coinWalletObject.importedWatchAddresses.getCount() - 1 {
-                    sendFromType = TLSendFromType.hdWallet
-                    sendFromIndex = 0
-                }
-            }
-        })
-        self.updateGodSend(sendFromCoinType, sendFromType: sendFromType, sendFromIndex:sendFromIndex)
-    }
+
     
     
     func updateGodSend(_ coinType: TLCoinType, sendFromType: TLSendFromType, sendFromIndex: Int) {
@@ -126,22 +132,22 @@ import Foundation
         let coinWalletObject = self.coinWalletDict[coinType]!
         if sendFromType == .hdWallet {
             let accountObject = coinWalletObject.accounts.getAccountObjectForIdx(sendFromIndex)
-            godSend?.setOnlyFromAccount(accountObject)
+            godSend.setOnlyFromAccount(accountObject)
         } else if sendFromType == .coldWalletAccount {
             let accountObject = coinWalletObject.coldWalletAccounts.getAccountObjectForIdx(sendFromIndex)
-            godSend?.setOnlyFromAccount(accountObject)
+            godSend.setOnlyFromAccount(accountObject)
         } else if sendFromType == .importedAccount {
             let accountObject = coinWalletObject.importedAccounts.getAccountObjectForIdx(sendFromIndex)
-            godSend?.setOnlyFromAccount(accountObject)
+            godSend.setOnlyFromAccount(accountObject)
         } else if sendFromType == .importedWatchAccount {
             let accountObject = coinWalletObject.importedWatchAccounts.getAccountObjectForIdx(sendFromIndex)
-            godSend?.setOnlyFromAccount(accountObject)
+            godSend.setOnlyFromAccount(accountObject)
         } else if sendFromType == .importedAddress {
             let importedAddress = coinWalletObject.importedAddresses.getAddressObjectAtIdx(sendFromIndex)
-            godSend?.setOnlyFromAddress(importedAddress)
+            godSend.setOnlyFromAddress(importedAddress)
         } else if sendFromType == .importedWatchAddress {
             let importedAddress = coinWalletObject.importedWatchAddresses.getAddressObjectAtIdx(sendFromIndex)
-            godSend?.setOnlyFromAddress(importedAddress)
+            godSend.setOnlyFromAddress(importedAddress)
         }
     }
     
@@ -150,27 +156,21 @@ import Foundation
         let coinWalletObject = self.coinWalletDict[coinType]!
         switch sendFromType {
         case .hdWallet:
-            guard let receiveSelectedObject = receiveSelectedObject else { return }
             let accountObject = coinWalletObject.accounts.getAccountObjectForIdx(sendFromIndex)
             receiveSelectedObject.setSelectedAccount(accountObject)
         case .coldWalletAccount:
-            guard let receiveSelectedObject = receiveSelectedObject else { return }
             let accountObject = coinWalletObject.coldWalletAccounts.getAccountObjectForIdx(sendFromIndex)
             receiveSelectedObject.setSelectedAccount(accountObject)
         case .importedAccount:
-            guard let receiveSelectedObject = receiveSelectedObject else { return }
             let accountObject = coinWalletObject.importedAccounts.getAccountObjectForIdx(sendFromIndex)
             receiveSelectedObject.setSelectedAccount(accountObject)
         case .importedWatchAccount:
-            guard let receiveSelectedObject = receiveSelectedObject else { return }
             let accountObject = coinWalletObject.importedWatchAccounts.getAccountObjectForIdx(sendFromIndex)
             receiveSelectedObject.setSelectedAccount(accountObject)
         case .importedAddress:
-            guard let receiveSelectedObject = receiveSelectedObject else { return }
             let importedAddress = coinWalletObject.importedAddresses.getAddressObjectAtIdx(sendFromIndex)
             receiveSelectedObject.setSelectedAddress(importedAddress)
         case .importedWatchAddress:
-            guard let receiveSelectedObject = receiveSelectedObject else { return }
             let importedAddress = coinWalletObject.importedWatchAddresses.getAddressObjectAtIdx(sendFromIndex)
             receiveSelectedObject.setSelectedAddress(importedAddress)
         }
@@ -180,42 +180,36 @@ import Foundation
         let coinWalletObject = self.coinWalletDict[coinType]!
         switch sendFromType {
         case .hdWallet:
-            guard let historySelectedObject = historySelectedObject else { return }
             let accountObject = coinWalletObject.accounts.getAccountObjectForIdx(sendFromIndex)
             historySelectedObject.setSelectedAccount(accountObject)
         case .coldWalletAccount:
-            guard let historySelectedObject = historySelectedObject else { return }
             let accountObject = coinWalletObject.coldWalletAccounts.getAccountObjectForIdx(sendFromIndex)
             historySelectedObject.setSelectedAccount(accountObject)
         case .importedAccount:
-            guard let historySelectedObject = historySelectedObject else { return }
             let accountObject = coinWalletObject.importedAccounts.getAccountObjectForIdx(sendFromIndex)
             historySelectedObject.setSelectedAccount(accountObject)
         case .importedWatchAccount:
-            guard let historySelectedObject = historySelectedObject else { return }
             let accountObject = coinWalletObject.importedWatchAccounts.getAccountObjectForIdx(sendFromIndex)
             historySelectedObject.setSelectedAccount(accountObject)
         case .importedAddress:
-            guard let historySelectedObject = historySelectedObject else { return }
             let importedAddress = coinWalletObject.importedAddresses.getAddressObjectAtIdx(sendFromIndex)
             historySelectedObject.setSelectedAddress(importedAddress)
         case .importedWatchAddress:
-            guard let historySelectedObject = historySelectedObject else { return }
             let importedAddress = coinWalletObject.importedWatchAddresses.getAddressObjectAtIdx(sendFromIndex)
             historySelectedObject.setSelectedAddress(importedAddress)
         }
     }
     
     func getSendObjectSelectedCoinType() -> TLCoinType {
-        return self.godSend!.getSelectedObjectCoinType()
+        return self.godSend.getSelectedObjectCoinType()
     }
     
     func getReceiveSelectedCoinType() -> TLCoinType {
-        return self.receiveSelectedObject!.getSelectedObjectCoinType()
+        return self.receiveSelectedObject.getSelectedObjectCoinType()
     }
     
     func getHistorySelectedCoinType() -> TLCoinType {
-        return self.historySelectedObject!.getSelectedObjectCoinType()
+        return self.historySelectedObject.getSelectedObjectCoinType()
     }
     
     func setAccountsListeningToStealthPaymentsToFalse() {

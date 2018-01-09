@@ -55,7 +55,6 @@ enum TLAccountAddressType: Int {
     case importedWatch = 2
 }
 
-
 class TLWalletUtils {
     typealias Error = () -> ()
     typealias Success = () -> ()
@@ -87,8 +86,14 @@ class TLWalletUtils {
         return [TLCoinType.BCH, TLCoinType.BTC]
     }
     
-    class func DEFAULT_FEE_AMOUNT_IN_BITCOINS() -> (String) {
-        return TLCurrencyFormat.bitcoinAmountStringToCoin(STATIC_MEMBERS.DEFAULT_FEE_AMOUNT, locale: Locale(identifier: "en_US")).bigIntegerToBitcoinAmountString(TLBitcoinDenomination.bitcoin)
+    class func DEFAULT_FEE_AMOUNT_IN_BITCOIN() -> (String) {
+        let coin = TLCurrencyFormat.coinAmountStringToCoin(STATIC_MEMBERS.DEFAULT_FEE_AMOUNT_BITCOIN, coinType: TLCoinType.BTC, locale: Locale(identifier: "en_US"))
+        return TLCurrencyFormat.bigIntegerToBitcoinAmountString(coin, coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+    }
+    
+    class func DEFAULT_FEE_AMOUNT_IN_BITCOIN_CASH() -> (String) {
+        let coin = TLCurrencyFormat.coinAmountStringToCoin(STATIC_MEMBERS.DEFAULT_FEE_AMOUNT_BITCOIN_CASH, coinType: TLCoinType.BCH, locale: Locale(identifier: "en_US"))
+        return TLCurrencyFormat.bigIntegerToBitcoinAmountString(coin, coinType: TLCoinType.BCH, coinDenomination: TLCoinDenomination.bitcoinCash)
     }
 
     class func RECEIVE_ICON_IMAGE_NAME() -> (String) {
@@ -150,7 +155,8 @@ class TLWalletUtils {
         static let BITCOIN_ISO_CODE = "BTC"
         static let BITCOIN_SYMBOL = "B"
         
-        static let DEFAULT_FEE_AMOUNT = "0.0001"
+        static let DEFAULT_FEE_AMOUNT_BITCOIN = "0.0001"
+        static let DEFAULT_FEE_AMOUNT_BITCOIN_CASH = "0.000001"
     }
     
     class func ENABLE_STEALTH_ADDRESS() -> (Bool) {
