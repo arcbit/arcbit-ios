@@ -195,13 +195,11 @@ import Crashlytics
         TLPreferences.setEnableBackupWithiCloud(false)
         TLPreferences.setInAppSettingsKitEnableBackupWithiCloud(false)
         
-        TLPreferences.setInAppSettingsKitEnabledDynamicFeeBitcoinCash(true)
-        TLPreferences.setInAppSettingsKitDynamicFeeSettingIdxBitcoinCash(TLDynamicFeeSetting.FastestFee)
-        TLPreferences.setInAppSettingsKitTransactionFeeBitcoinCash(TLWalletUtils.DEFAULT_FEE_AMOUNT_IN_BITCOIN_CASH())
-        TLPreferences.setInAppSettingsKitEnabledDynamicFeeBitcoin(true)
-        TLPreferences.setInAppSettingsKitDynamicFeeSettingIdxBitcoin(TLDynamicFeeSetting.FastestFee)
-        TLPreferences.setInAppSettingsKitTransactionFeeBitcoin(TLWalletUtils.DEFAULT_FEE_AMOUNT_IN_BITCOIN())
-
+        TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
+            TLPreferences.setInAppSettingsKitEnabledDynamicFee(coinType, enabled: true)
+            TLPreferences.setInAppSettingsKitDynamicFeeSettingIdx(coinType, dynamicFeeSetting: TLDynamicFeeSetting.FastestFee)
+            TLPreferences.setInAppSettingsKitTransactionFee(coinType, value: TLWalletUtils.DEFAULT_FEE_AMOUNT(coinType))
+        })
         
         TLPreferences.setEnablePINCode(false)
         TLSuggestions.instance().enabledAllSuggestions()
@@ -220,7 +218,7 @@ import Crashlytics
         TLPreferences.setCurrency(DEFAULT_CURRENCY_IDX)
         TLPreferences.setInAppSettingsKitCurrency(DEFAULT_CURRENCY_IDX)
         
-        TLPreferences.setBitcoinCashDisplay("2")
+        TLPreferences.setBitcoinCashDisplay("2") // idx 2 = bits, as displayed in settings
         TLPreferences.setSendFromCoinType(TLWalletUtils.DEFAULT_COIN_TYPE())
         TLPreferences.setSendFromType(.hdWallet)
         TLPreferences.setSendFromIndex(0)

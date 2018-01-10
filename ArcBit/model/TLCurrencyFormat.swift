@@ -22,15 +22,6 @@
 
 import Foundation
 
-enum TLCoinDenomination:Int {
-    case bitcoin  = 0
-    case bitcoin_milliBit = 1
-    case bitcoin_bits     = 2
-    case bitcoinCash  = 3
-    case bitcoinCash_milliBit = 4
-    case bitcoinCash_bits     = 5
-}
-
 class TLCurrencyFormat {
     
     struct STATIC_MEMBERS {
@@ -50,16 +41,6 @@ class TLCurrencyFormat {
                 "uBCH",
                 ]
         }()
-//        static var _bitcoinDisplayWords: NSArray?
-    }
-
-    class func DEFAULT_COIN_DENOMINATION_STARTING_IDX(_ coinType: TLCoinType) -> Int {
-        switch coinType {
-        case .BCH:
-            return 3
-        case .BTC:
-            return 0
-        }
     }
     
     class func coinAmountStringToCoin(_ amount: String, coinType: TLCoinType, locale: Locale=Locale.current) -> TLCoin {
@@ -72,12 +53,7 @@ class TLCurrencyFormat {
     }
     
     class func properBitcoinAmountStringToCoin(_ amount: String, coinType: TLCoinType, locale: Locale=Locale.current) -> TLCoin {
-        switch coinType {
-        case .BCH:
-            return amountStringToCoin(amount, coinType: coinType, coinDenomination: TLPreferences.getBitcoinCashDenomination(), locale: locale)
-        case .BTC:
-            return amountStringToCoin(amount, coinType: coinType, coinDenomination: TLPreferences.getBitcoinDenomination(), locale: locale)
-        }
+        return amountStringToCoin(amount, coinType: coinType, coinDenomination: TLPreferences.getCoinDenomination(coinType), locale: locale)
     }
     
     class func amountStringToCoin(_ amount: String, coinType: TLCoinType, coinDenomination: TLCoinDenomination, locale: Locale=Locale.current) -> TLCoin {
@@ -98,26 +74,15 @@ class TLCurrencyFormat {
                 mericaFormatter.maximumFractionDigits = 8
                 mericaFormatter.locale = Locale(identifier: "en_US")
                 let decimalAmount = NSDecimalNumber(string: mericaFormatter.string(from: bitcoinFormatter.number(from: amount)!))
-                switch coinType {
-                case .BCH:
-                    if (coinDenomination == TLCoinDenomination.bitcoinCash) {
-                        satoshis = decimalAmount.multiplying(by: NSDecimalNumber(string: "100000000")).uint64Value
-                    } else if (coinDenomination == TLCoinDenomination.bitcoinCash_milliBit) {
-                        satoshis = (decimalAmount.multiplying(by: NSDecimalNumber(value: 100000 as UInt64))).uint64Value
-                    } else {
-                        satoshis = (decimalAmount.multiplying(by: NSDecimalNumber(value: 100 as UInt64))).uint64Value
-                    }
-                    return TLCoin(uint64:satoshis)
-                case .BTC:
-                    if (coinDenomination == TLCoinDenomination.bitcoin) {
-                        satoshis = decimalAmount.multiplying(by: NSDecimalNumber(string: "100000000")).uint64Value
-                    } else if (coinDenomination == TLCoinDenomination.bitcoin_milliBit) {
-                        satoshis = (decimalAmount.multiplying(by: NSDecimalNumber(value: 100000 as UInt64))).uint64Value
-                    } else {
-                        satoshis = (decimalAmount.multiplying(by: NSDecimalNumber(value: 100 as UInt64))).uint64Value
-                    }
-                    return TLCoin(uint64:satoshis)
+                switch coinDenomination {
+                case .bitcoinCash, .bitcoin:
+                    satoshis = decimalAmount.multiplying(by: NSDecimalNumber(string: "100000000")).uint64Value
+                case .bitcoinCash_milliBit, .bitcoin_milliBit:
+                    satoshis = (decimalAmount.multiplying(by: NSDecimalNumber(value: 100000 as UInt64))).uint64Value
+                case .bitcoinCash_bits, .bitcoin_bits:
+                    satoshis = (decimalAmount.multiplying(by: NSDecimalNumber(value: 100 as UInt64))).uint64Value
                 }
+                return TLCoin(uint64:satoshis)
             }
         } else {
             return TLCoin.zero()
@@ -127,46 +92,24 @@ class TLCurrencyFormat {
     class func bigIntegerToBitcoinAmountString(_ coin: TLCoin, coinType: TLCoinType, coinDenomination: TLCoinDenomination) -> (String) {
         let bitcoinFormatter = NumberFormatter()
         bitcoinFormatter.numberStyle = .decimal
-        switch coinType {
-        case .BCH:
-            if (coinDenomination == TLCoinDenomination.bitcoinCash) {
-                bitcoinFormatter.maximumFractionDigits = 8
-                return bitcoinFormatter.string(from: NSNumber(value: coin.bigIntegerToBitcoin() as Double))!
-            } else if (coinDenomination == TLCoinDenomination.bitcoinCash_milliBit) {
-                bitcoinFormatter.maximumFractionDigits = 5
-                return bitcoinFormatter.string(from: NSNumber(value: coin.bigIntegerToMilliBit() as Double))!
-            } else {
-                bitcoinFormatter.maximumFractionDigits = 2
-                return bitcoinFormatter.string(from: NSNumber(value: coin.bigIntegerToBits() as Double))!
-            }
-        case .BTC:
-            if (coinDenomination == TLCoinDenomination.bitcoin) {
-                bitcoinFormatter.maximumFractionDigits = 8
-                return bitcoinFormatter.string(from: NSNumber(value: coin.bigIntegerToBitcoin() as Double))!
-            } else if (coinDenomination == TLCoinDenomination.bitcoin_milliBit) {
-                bitcoinFormatter.maximumFractionDigits = 5
-                return bitcoinFormatter.string(from: NSNumber(value: coin.bigIntegerToMilliBit() as Double))!
-            } else {
-                bitcoinFormatter.maximumFractionDigits = 2
-                return bitcoinFormatter.string(from: NSNumber(value: coin.bigIntegerToBits() as Double))!
-            }
+        switch coinDenomination {
+        case .bitcoinCash, .bitcoin:
+            bitcoinFormatter.maximumFractionDigits = 8
+            return bitcoinFormatter.string(from: NSNumber(value: coin.bigIntegerToBitcoin() as Double))!
+        case .bitcoinCash_milliBit, .bitcoin_milliBit:
+            bitcoinFormatter.maximumFractionDigits = 5
+            return bitcoinFormatter.string(from: NSNumber(value: coin.bigIntegerToMilliBit() as Double))!
+        case .bitcoinCash_bits, .bitcoin_bits:
+            bitcoinFormatter.maximumFractionDigits = 2
+            return bitcoinFormatter.string(from: NSNumber(value: coin.bigIntegerToBits() as Double))!
         }
     }
     
     class func coinToProperBitcoinAmountString(_ amount: TLCoin, coinType: TLCoinType, withCode: Bool = false) -> String {
-        switch coinType {
-        case .BCH:
-            if withCode {
-                return self.bigIntegerToBitcoinAmountString(amount, coinType: coinType, coinDenomination: TLPreferences.getBitcoinDenomination()) + " " + TLCurrencyFormat.getBitcoinDisplay(coinType)
-            } else {
-                return self.bigIntegerToBitcoinAmountString(amount, coinType: coinType, coinDenomination: TLPreferences.getBitcoinDenomination())
-            }
-        case .BTC:
-            if withCode {
-                return self.bigIntegerToBitcoinAmountString(amount, coinType: coinType, coinDenomination: TLPreferences.getBitcoinCashDenomination()) + " " + TLCurrencyFormat.getBitcoinDisplay(coinType)
-            } else {
-                return self.bigIntegerToBitcoinAmountString(amount, coinType: coinType, coinDenomination: TLPreferences.getBitcoinCashDenomination())
-            }
+        if withCode {
+            return self.bigIntegerToBitcoinAmountString(amount, coinType: coinType, coinDenomination: TLPreferences.getCoinDenomination(coinType)) + " " + TLCurrencyFormat.getBitcoinDisplay(coinType)
+        } else {
+            return self.bigIntegerToBitcoinAmountString(amount, coinType: coinType, coinDenomination: TLPreferences.getCoinDenomination(coinType))
         }
     }
     
@@ -210,52 +153,22 @@ class TLCurrencyFormat {
     }
     
     class func getBitcoinDisplay(_ coinType: TLCoinType) -> String {
-        switch coinType {
-        case .BCH:
-            let coinDenomination = TLPreferences.getBitcoinCashDenomination()
-            if (coinDenomination == TLCoinDenomination.bitcoinCash) {
-                return getBitcoinDisplayArray(coinType)[0]
-            } else if (coinDenomination == TLCoinDenomination.bitcoinCash_milliBit) {
-                return getBitcoinDisplayArray(coinType)[1]
-            } else {
-                return getBitcoinDisplayArray(coinType)[2]
-            }
-        case .BTC:
-            let bitcoinDenomination = TLPreferences.getBitcoinDenomination()
-            if (bitcoinDenomination == TLCoinDenomination.bitcoin) {
-                return getBitcoinDisplayArray(coinType)[0]
-            } else if (bitcoinDenomination == TLCoinDenomination.bitcoin_milliBit) {
-                return getBitcoinDisplayArray(coinType)[1]
-            } else {
-                return getBitcoinDisplayArray(coinType)[2]
-            }
+        let coinDenomination = TLPreferences.getCoinDenomination(coinType)
+        switch coinDenomination {
+        case TLCoinDenomination.bitcoinCash:
+            return getBitcoinDisplayArray(coinType)[0]
+        case TLCoinDenomination.bitcoinCash_milliBit:
+            return getBitcoinDisplayArray(coinType)[1]
+        case TLCoinDenomination.bitcoinCash_bits:
+            return getBitcoinDisplayArray(coinType)[2]
+        case TLCoinDenomination.bitcoin:
+            return getBitcoinDisplayArray(coinType)[0]
+        case TLCoinDenomination.bitcoin_milliBit:
+            return getBitcoinDisplayArray(coinType)[1]
+        case TLCoinDenomination.bitcoin_bits:
+            return getBitcoinDisplayArray(coinType)[2]
         }
     }
-    
-//    class func getBitcoinDisplayWord(_ coinType: TLCoinType) -> String {
-//        switch coinType {
-//        case .BCH:
-//            let coinDenomination = TLPreferences.getBitcoinDenomination()
-//
-//            if (coinDenomination == TLCoinDenomination.bitcoinCash) {
-//                return getBitcoinDisplayWordArray().object(at: 0) as! String
-//            } else if (coinDenomination == TLCoinDenomination.bitcoinCash_milliBit) {
-//                return getBitcoinDisplayWordArray().object(at: 1) as! String
-//            } else {
-//                return getBitcoinDisplayWordArray().object(at: 2) as! String
-//            }
-//        case .BTC:
-//            let bitcoinDenomination = TLPreferences.getBitcoinDenomination()
-//
-//            if (bitcoinDenomination == TLCoinDenomination.bitcoin) {
-//                return getBitcoinDisplayWordArray().object(at: 0) as! String
-//            } else if (bitcoinDenomination == TLCoinDenomination.bitcoin_milliBit) {
-//                return getBitcoinDisplayWordArray().object(at: 1) as! String
-//            } else {
-//                return getBitcoinDisplayWordArray().object(at: 2) as! String
-//            }
-//        }
-//    }
     
     class func getBitcoinDisplayArray(_ coinType: TLCoinType) -> Array<String> {
         switch coinType {
@@ -264,19 +177,7 @@ class TLCurrencyFormat {
         case .BTC:
             return STATIC_MEMBERS._bitcoinDisplays
         }
-
     }
-
-//    class func getBitcoinDisplayWordArray() -> NSArray {
-//        if (STATIC_MEMBERS._bitcoinDisplayWords == nil) {
-//            STATIC_MEMBERS._bitcoinDisplayWords = [
-//                "Bitcoin",
-//                "MilliBit",
-//                "Bits",
-//            ]
-//        }
-//        return STATIC_MEMBERS._bitcoinDisplayWords!
-//    }
     
     class func getCurrencySymbolArray() -> (NSArray) {
         if (STATIC_MEMBERS._currencySymbols == nil) {

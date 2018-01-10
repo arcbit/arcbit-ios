@@ -614,7 +614,7 @@ class TLWallet {
         return TLAccountObject(appWallet: self, coinType: coinType, dict: accountDict, accountType: .hdWallet)
     }
     
-    func createWalletDictForCoin() -> NSMutableDictionary {
+    func createWalletDict() -> NSMutableDictionary {
         let coinWalletDict = NSMutableDictionary()
         
         let hdWalletDict = NSMutableDictionary()
@@ -653,12 +653,11 @@ class TLWallet {
         let createdWalletDict = NSMutableDictionary()
         createdWalletDict.setObject(walletName, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_WALLET_NAME as NSCopying)
         TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
+            let coinWalletDict = createWalletDict()
             switch coinType {
             case .BTC:
-                let coinWalletDict = createWalletDictForCoin()
                 createdWalletDict.setObject(coinWalletDict, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_BITCOIN as NSCopying)
             case .BCH:
-                let coinWalletDict = createWalletDictForCoin()
                 createdWalletDict.setObject(coinWalletDict, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_BITCOIN_CASH as NSCopying)
             }
         })
@@ -1139,7 +1138,7 @@ class TLWallet {
                 hdWallet.removeObject(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_NAME)
                 walletV3.setObject(walletV2, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_BITCOIN as NSCopying)
             case .BCH:
-                let coinWalletDict = createWalletDictForCoin()
+                let coinWalletDict = createWalletDict()
                 walletV3.setObject(coinWalletDict, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_BITCOIN_CASH as NSCopying)
             }
         })

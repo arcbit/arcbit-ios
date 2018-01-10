@@ -136,11 +136,13 @@ import StoreKit
                 fee = TLCoin(uint64: txSizeBytes*dynamicFeeSatoshis!.uint64Value)
                 DLog("fillAmountFieldWithWholeBalance coinFeeAmount dynamicFeeSatoshis: \(txSizeBytes*dynamicFeeSatoshis!.uint64Value)")
             } else {
-                fee = TLCurrencyFormat.coinAmountStringToCoin(TLPreferences.getInAppSettingsKitTransactionFeeBitcoin()!, coinType: AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType())
+                let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+                fee = TLCurrencyFormat.coinAmountStringToCoin(TLPreferences.getInAppSettingsKitTransactionFee(coinType)!, coinType: coinType)
             }
             
         } else {
-            let feeAmount = TLPreferences.getInAppSettingsKitTransactionFeeBitcoin()
+            let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+            let feeAmount = TLPreferences.getInAppSettingsKitTransactionFee(coinType)
             fee = TLCurrencyFormat.coinAmountStringToCoin(feeAmount!, coinType: AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType())
         }
 
@@ -590,12 +592,14 @@ import StoreKit
                         DLog("showPromptReviewTx coinFeeAmount dynamicFeeSatoshis: \(txSizeBytes*dynamicFeeSatoshis!.uint64Value)")
                         
                     } else {
-                        fee = TLCurrencyFormat.coinAmountStringToCoin(TLPreferences.getInAppSettingsKitTransactionFeeBitcoin()!, coinType: AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType())
+                        let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+                        fee = TLCurrencyFormat.coinAmountStringToCoin(TLPreferences.getInAppSettingsKitTransactionFee(coinType)!, coinType: coinType)
                     }
                     TLSendFormData.instance().feeAmount = fee
                 }
             } else {
-                let feeAmount = TLPreferences.getInAppSettingsKitTransactionFeeBitcoin()
+                let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+                let feeAmount = TLPreferences.getInAppSettingsKitTransactionFee(coinType)
                 fee = TLCurrencyFormat.coinAmountStringToCoin(feeAmount!, coinType: AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType())
                 TLSendFormData.instance().feeAmount = fee
             }

@@ -55,7 +55,7 @@ class TLTxFeeAPI {
         var dynamicFee:NSNumber? = nil
         if self.cachedDynamicFees != nil {
             //TODO bitcoin cash version
-            let dynamicFeeSetting = TLPreferences.getInAppSettingsKitDynamicFeeSettingBitcoin()
+            let dynamicFeeSetting = TLPreferences.getInAppSettingsKitDynamicFeeSetting(TLCoinType.BTC)
             if dynamicFeeSetting == TLDynamicFeeSetting.FastestFee {
                 dynamicFee = self.cachedDynamicFees!.object(forKey: TLDynamicFeeSetting.getAPIValue(TLDynamicFeeSetting.FastestFee)) as? NSNumber
             } else if dynamicFeeSetting == TLDynamicFeeSetting.HalfHourFee {

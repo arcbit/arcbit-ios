@@ -169,15 +169,10 @@ import AVFoundation
             ,
             tap: {(alertView, action, buttonIndex) in
                 if (buttonIndex == alertView!.firstOtherButtonIndex) {
-                    let feeAmount = (alertView!.textFields![0] ).text
+                    let feeAmount = (alertView!.textFields![0]).text
                     let feeAmountCoin = TLCurrencyFormat.coinAmountStringToCoin(feeAmount!, coinType: coinType)
-
-                    switch coinType {
-                    case .BCH:
-                        TLPreferences.setInAppSettingsKitTransactionFeeBitcoinCash(TLCurrencyFormat.bigIntegerToBitcoinAmountString(feeAmountCoin, coinType: coinType, coinDenomination: TLCoinDenomination.bitcoinCash))
-                    case .BTC:
-                        TLPreferences.setInAppSettingsKitTransactionFeeBitcoinCash(TLCurrencyFormat.bigIntegerToBitcoinAmountString(feeAmountCoin, coinType: coinType, coinDenomination: TLCoinDenomination.bitcoin))
-                    }
+                    let value = TLCurrencyFormat.bigIntegerToBitcoinAmountString(feeAmountCoin, coinType: coinType, coinDenomination: TLWalletUtils.GET_DEFAULT_COIN_DENOMINATION(coinType))
+                    TLPreferences.setInAppSettingsKitTransactionFee(coinType, value: value)
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_CHANGE_AUTOMATIC_TX_FEE()), object: nil)
                 } else if (buttonIndex == alertView!.cancelButtonIndex) {
                 }

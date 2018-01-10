@@ -55,6 +55,15 @@ enum TLAccountAddressType: Int {
     case importedWatch = 2
 }
 
+enum TLCoinDenomination:Int {
+    case bitcoin  = 0
+    case bitcoin_milliBit = 1
+    case bitcoin_bits     = 2
+    case bitcoinCash  = 3
+    case bitcoinCash_milliBit = 4
+    case bitcoinCash_bits     = 5
+}
+
 class TLWalletUtils {
     typealias Error = () -> ()
     typealias Success = () -> ()
@@ -69,12 +78,31 @@ class TLWalletUtils {
         return STATIC_MEMBERS.APP_NAME
     }
     
+    class func DEFAULT_COIN_DENOMINATION_STARTING_IDX(_ coinType: TLCoinType) -> Int {
+        // base on raw values in TLCoinDenomination
+        switch coinType {
+        case .BCH:
+            return 5
+        case .BTC:
+            return 0
+        }
+    }
+    
     class func GET_CRYPTO_COIN_FULL_NAME(_ coinType: TLCoinType) ->String {
         switch coinType {
         case .BCH:
             return TLDisplayStrings.CRYPTO_COIN_BITCOIN_CASH()
         case .BTC:
             return TLDisplayStrings.CRYPTO_COIN_BITCOIN()
+        }
+    }
+    
+    class func GET_DEFAULT_COIN_DENOMINATION(_ coinType: TLCoinType) -> TLCoinDenomination {
+        switch coinType {
+        case .BCH:
+            return TLCoinDenomination.bitcoin_bits
+        case .BTC:
+            return TLCoinDenomination.bitcoin
         }
     }
     
@@ -85,13 +113,21 @@ class TLWalletUtils {
     class func SUPPORT_COIN_TYPES() -> ([TLCoinType]) {
         return [TLCoinType.BCH, TLCoinType.BTC]
     }
+    class func DEFAULT_FEE_AMOUNT(_ coinType: TLCoinType) -> (String) {
+        switch coinType {
+        case .BCH:
+            return DEFAULT_FEE_AMOUNT_IN_BITCOIN_CASH()
+        default:
+            return DEFAULT_FEE_AMOUNT_IN_BITCOIN()
+        }
+    }
     
-    class func DEFAULT_FEE_AMOUNT_IN_BITCOIN() -> (String) {
+    fileprivate class func DEFAULT_FEE_AMOUNT_IN_BITCOIN() -> (String) {
         let coin = TLCurrencyFormat.coinAmountStringToCoin(STATIC_MEMBERS.DEFAULT_FEE_AMOUNT_BITCOIN, coinType: TLCoinType.BTC, locale: Locale(identifier: "en_US"))
         return TLCurrencyFormat.bigIntegerToBitcoinAmountString(coin, coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
     }
     
-    class func DEFAULT_FEE_AMOUNT_IN_BITCOIN_CASH() -> (String) {
+    fileprivate class func DEFAULT_FEE_AMOUNT_IN_BITCOIN_CASH() -> (String) {
         let coin = TLCurrencyFormat.coinAmountStringToCoin(STATIC_MEMBERS.DEFAULT_FEE_AMOUNT_BITCOIN_CASH, coinType: TLCoinType.BCH, locale: Locale(identifier: "en_US"))
         return TLCurrencyFormat.bigIntegerToBitcoinAmountString(coin, coinType: TLCoinType.BCH, coinDenomination: TLCoinDenomination.bitcoinCash)
     }
