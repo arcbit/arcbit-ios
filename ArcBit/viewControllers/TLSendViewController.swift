@@ -86,7 +86,8 @@ import StoreKit
     }
     
     func checkToFetchUTXOsAndDynamicFeesAndFillAmountFieldWithWholeBalance() {
-        if TLPreferences.enabledInAppSettingsKitDynamicFeeBitcoin() {
+        let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+        if TLPreferences.enabledInAppSettingsKitDynamicFee(coinType) {
             if !AppDelegate.instance().coinWalletsManager!.godSend.haveUpDatedUTXOs() {
                 AppDelegate.instance().coinWalletsManager!.godSend.getAndSetUnspentOutputs({
                     self.checkToFetchDynamicFeesAndFillAmountFieldWithWholeBalance()
@@ -102,8 +103,9 @@ import StoreKit
     }
 
     func checkToFetchDynamicFeesAndFillAmountFieldWithWholeBalance() {
-        if !AppDelegate.instance().txFeeAPI.haveUpdatedCachedDynamicFees() {
-            AppDelegate.instance().txFeeAPI.getDynamicTxFee({
+        let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+        if !AppDelegate.instance().txFeeAPI.haveUpdatedCachedDynamicFees(coinType) {
+            AppDelegate.instance().txFeeAPI.getDynamicTxFee(coinType, success: {
                 (_jsonData) in
                 self.fillAmountFieldWithWholeBalance(true)
                 }, failure: {
@@ -132,11 +134,11 @@ import StoreKit
                 DLog("fillAmountFieldWithWholeBalance importedAddress useDynamicFees inputCount txSizeBytes: \(importedAddress.unspentOutputsCount) \(txSizeBytes)")
             }
             
-            if let dynamicFeeSatoshis:NSNumber? = AppDelegate.instance().txFeeAPI.getCachedDynamicFee() {
-                fee = TLCoin(uint64: txSizeBytes*dynamicFeeSatoshis!.uint64Value)
-                DLog("fillAmountFieldWithWholeBalance coinFeeAmount dynamicFeeSatoshis: \(txSizeBytes*dynamicFeeSatoshis!.uint64Value)")
+            let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+            if let dynamicFeeSatoshis:NSNumber = AppDelegate.instance().txFeeAPI.getCachedDynamicFee(coinType) {
+                fee = TLCoin(uint64: txSizeBytes*dynamicFeeSatoshis.uint64Value)
+                DLog("fillAmountFieldWithWholeBalance coinFeeAmount dynamicFeeSatoshis: \(txSizeBytes*dynamicFeeSatoshis.uint64Value)")
             } else {
-                let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
                 fee = TLCurrencyFormat.coinAmountStringToCoin(TLPreferences.getInAppSettingsKitTransactionFee(coinType)!, coinType: coinType)
             }
             
@@ -534,8 +536,9 @@ import StoreKit
     }
     
     fileprivate func checkTofetchFeeThenFinalPromptReviewTx() {
-        if TLPreferences.enabledInAppSettingsKitDynamicFeeBitcoin() && !AppDelegate.instance().txFeeAPI.haveUpdatedCachedDynamicFees() {
-            AppDelegate.instance().txFeeAPI.getDynamicTxFee({
+        let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+        if TLPreferences.enabledInAppSettingsKitDynamicFee(coinType) && !AppDelegate.instance().txFeeAPI.haveUpdatedCachedDynamicFees(coinType) {
+            AppDelegate.instance().txFeeAPI.getDynamicTxFee(coinType, success: {
                 (_jsonData) in
                 self.showFinalPromptReviewTx()
                 }, failure: {
@@ -587,12 +590,12 @@ import StoreKit
                         DLog("showPromptReviewTx importedAddress useDynamicFees inputCount txSizeBytes: \(importedAddress.unspentOutputsCount) \(txSizeBytes)")
                     }
                     
-                    if let dynamicFeeSatoshis:NSNumber? = AppDelegate.instance().txFeeAPI.getCachedDynamicFee() {
-                        fee = TLCoin(uint64: txSizeBytes*dynamicFeeSatoshis!.uint64Value)
-                        DLog("showPromptReviewTx coinFeeAmount dynamicFeeSatoshis: \(txSizeBytes*dynamicFeeSatoshis!.uint64Value)")
+                    let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+                    if let dynamicFeeSatoshis:NSNumber = AppDelegate.instance().txFeeAPI.getCachedDynamicFee(coinType) {
+                        fee = TLCoin(uint64: txSizeBytes*dynamicFeeSatoshis.uint64Value)
+                        DLog("showPromptReviewTx coinFeeAmount dynamicFeeSatoshis: \(txSizeBytes*dynamicFeeSatoshis.uint64Value)")
                         
                     } else {
-                        let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
                         fee = TLCurrencyFormat.coinAmountStringToCoin(TLPreferences.getInAppSettingsKitTransactionFee(coinType)!, coinType: coinType)
                     }
                     TLSendFormData.instance().feeAmount = fee
@@ -622,8 +625,9 @@ import StoreKit
         }
         
         func checkToFetchDynamicFees() {
-            if !AppDelegate.instance().txFeeAPI.haveUpdatedCachedDynamicFees() {
-                AppDelegate.instance().txFeeAPI.getDynamicTxFee({
+            let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+            if !AppDelegate.instance().txFeeAPI.haveUpdatedCachedDynamicFees(coinType) {
+                AppDelegate.instance().txFeeAPI.getDynamicTxFee(coinType, success: {
                     (_jsonData) in
                     showReviewPaymentViewController(true)
                     }, failure: {
@@ -636,7 +640,8 @@ import StoreKit
             }
         }
         
-        if TLPreferences.enabledInAppSettingsKitDynamicFeeBitcoin() {
+        let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+        if TLPreferences.enabledInAppSettingsKitDynamicFee(coinType) {
             if !AppDelegate.instance().coinWalletsManager!.godSend.haveUpDatedUTXOs() {
                 AppDelegate.instance().coinWalletsManager!.godSend.getAndSetUnspentOutputs({
                     checkToFetchDynamicFees()
@@ -791,11 +796,13 @@ import StoreKit
     func preFetchUTXOsAndDynamicFees() {
         DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).async {
             DLog("preFetchUTXOsAndDynamicFees")
-            if TLPreferences.enabledInAppSettingsKitDynamicFeeBitcoin() {
+            let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+            if TLPreferences.enabledInAppSettingsKitDynamicFee(coinType) {
                 DLog("preFetchUTXOsAndDynamicFees enabledInAppSettingsKitDynamicFee")
                 
-                if !AppDelegate.instance().txFeeAPI.haveUpdatedCachedDynamicFees() {
-                    AppDelegate.instance().txFeeAPI.getDynamicTxFee({
+                let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+                if !AppDelegate.instance().txFeeAPI.haveUpdatedCachedDynamicFees(coinType) {
+                    AppDelegate.instance().txFeeAPI.getDynamicTxFee(coinType, success: {
                         (_jsonData) in
                         DLog("preFetchUTXOsAndDynamicFees getDynamicTxFee success")
                         }, failure: {

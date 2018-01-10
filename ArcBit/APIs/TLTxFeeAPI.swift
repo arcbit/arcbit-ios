@@ -42,57 +42,81 @@ enum TLDynamicFeeSetting:String {
 
 class TLTxFeeAPI {
     
-    var networking:TLNetworking
+    fileprivate var networking:TLNetworking
     fileprivate var cachedDynamicFees: NSDictionary?
-    var cachedDynamicFeesTime: TimeInterval?
+    fileprivate var cachedDynamicFeesTime: TimeInterval?
 
 
     init() {
         self.networking = TLNetworking()
     }
     
-    func getCachedDynamicFee() -> NSNumber? {
-        var dynamicFee:NSNumber? = nil
-        if self.cachedDynamicFees != nil {
-            //TODO bitcoin cash version
-            let dynamicFeeSetting = TLPreferences.getInAppSettingsKitDynamicFeeSetting(TLCoinType.BTC)
-            if dynamicFeeSetting == TLDynamicFeeSetting.FastestFee {
-                dynamicFee = self.cachedDynamicFees!.object(forKey: TLDynamicFeeSetting.getAPIValue(TLDynamicFeeSetting.FastestFee)) as? NSNumber
-            } else if dynamicFeeSetting == TLDynamicFeeSetting.HalfHourFee {
-                dynamicFee = self.cachedDynamicFees!.object(forKey: TLDynamicFeeSetting.getAPIValue(TLDynamicFeeSetting.HalfHourFee)) as? NSNumber
-            } else if dynamicFeeSetting == TLDynamicFeeSetting.HourFee {
-                dynamicFee = self.cachedDynamicFees!.object(forKey: TLDynamicFeeSetting.getAPIValue(TLDynamicFeeSetting.HourFee)) as? NSNumber
+    func getCachedDynamicFee(_ coinType: TLCoinType) -> NSNumber? {
+        let dynamicFeeSetting = TLPreferences.getInAppSettingsKitDynamicFeeSetting(coinType)
+        switch coinType {
+        case .BCH:
+            // hardcoded satoshis per byte for now works because bitcoin cash fees are near-zero because of no capacity issue
+            // TODO still need to figure out numbers
+            switch dynamicFeeSetting {
+            case .FastestFee:
+                return NSNumber(integerLiteral: 10)
+            case .HalfHourFee:
+                return NSNumber(integerLiteral: 1)
+            case .HourFee:
+                return NSNumber(integerLiteral: 0)
             }
+        case .BTC:
+            if self.cachedDynamicFees != nil {
+                switch dynamicFeeSetting {
+                case .FastestFee:
+                    return self.cachedDynamicFees!.object(forKey: TLDynamicFeeSetting.getAPIValue(TLDynamicFeeSetting.FastestFee)) as? NSNumber
+                case .HalfHourFee:
+                    return self.cachedDynamicFees!.object(forKey: TLDynamicFeeSetting.getAPIValue(TLDynamicFeeSetting.HalfHourFee)) as? NSNumber
+                case .HourFee:
+                    return self.cachedDynamicFees!.object(forKey: TLDynamicFeeSetting.getAPIValue(TLDynamicFeeSetting.HourFee)) as? NSNumber
+                }
+            }
+            return nil
         }
-        return dynamicFee
     }
     
-    func haveUpdatedCachedDynamicFees() -> Bool {
-        let nowUnixTime = Date().timeIntervalSince1970
-        let tenMinutesInSeconds = 600.0
-        if self.cachedDynamicFeesTime == nil || nowUnixTime - self.cachedDynamicFeesTime! > tenMinutesInSeconds {
-            return false
+    func haveUpdatedCachedDynamicFees(_ coinType: TLCoinType) -> Bool {
+        switch coinType {
+        case .BCH:
+            return true
+        case .BTC:
+            let nowUnixTime = Date().timeIntervalSince1970
+            let tenMinutesInSeconds = 600.0
+            if self.cachedDynamicFeesTime == nil || nowUnixTime - self.cachedDynamicFeesTime! > tenMinutesInSeconds {
+                return false
+            }
+            return true
         }
-        return true
     }
 
-    func getDynamicTxFee(_ success:@escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler)-> () {
-        self.networking.httpGET(URL(string: "https://bitcoinfees.21.co/api/v1/fees/recommended")!,
-                                parameters:[:], success:{
-                                    (_jsonData) in
-                                    if let jsonData = _jsonData as? NSDictionary {
-                                        self.cachedDynamicFeesTime = Date().timeIntervalSince1970
-                                        self.cachedDynamicFees = jsonData
-                                        DLog("TLTxFeeAPI getDynamicTxFee success \(jsonData.description)")
-                                    } else {
-                                        self.cachedDynamicFees = nil
-                                    }
-                                    success(_jsonData)
+    func getDynamicTxFee(_ coinType: TLCoinType, success:@escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler)-> () {
+        switch coinType {
+        case .BCH:
+            success(NSDictionary())
+        case .BTC:
+            self.networking.httpGET(URL(string: "https://bitcoinfees.21.co/api/v1/fees/recommended")!,
+                                    parameters:[:], success:{
+                                        (_jsonData) in
+                                        if let jsonData = _jsonData as? NSDictionary {
+                                            self.cachedDynamicFeesTime = Date().timeIntervalSince1970
+                                            self.cachedDynamicFees = jsonData
+                                            DLog("TLTxFeeAPI getDynamicTxFee success \(jsonData.description)")
+                                        } else {
+                                            self.cachedDynamicFees = nil
+                                        }
+                                        success(_jsonData)
             }, failure: {
                 (code, status) in
                 self.cachedDynamicFees = nil
                 DLog("TLTxFeeAPI getDynamicTxFee failure")
                 failure(code, status)
-        })
+            })
+        }
+
     }
 }

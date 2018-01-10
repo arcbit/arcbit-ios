@@ -170,6 +170,23 @@ class TLCurrencyFormat {
         }
     }
     
+    class func getBitcoinDisplayWithDenomination(_ coinType: TLCoinType, coinDenomination: TLCoinDenomination) -> String {
+        switch coinDenomination {
+        case TLCoinDenomination.bitcoinCash:
+            return getBitcoinDisplayArray(coinType)[0]
+        case TLCoinDenomination.bitcoinCash_milliBit:
+            return getBitcoinDisplayArray(coinType)[1]
+        case TLCoinDenomination.bitcoinCash_bits:
+            return getBitcoinDisplayArray(coinType)[2]
+        case TLCoinDenomination.bitcoin:
+            return getBitcoinDisplayArray(coinType)[0]
+        case TLCoinDenomination.bitcoin_milliBit:
+            return getBitcoinDisplayArray(coinType)[1]
+        case TLCoinDenomination.bitcoin_bits:
+            return getBitcoinDisplayArray(coinType)[2]
+        }
+    }
+    
     class func getBitcoinDisplayArray(_ coinType: TLCoinType) -> Array<String> {
         switch coinType {
         case .BCH:

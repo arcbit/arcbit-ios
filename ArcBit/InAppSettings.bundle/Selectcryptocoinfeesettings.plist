@@ -19,7 +19,7 @@
             <key>Type</key>
             <string>PSChildPaneSpecifier</string>
             <key>Title</key>
-            <string>BITCOIN_CASH_DISPLAY</string>
+            <string>BITCOIN_CASH_DISPLAY_1</string>
             <key>File</key>
             <string>Bitcoincashfeesetting</string>
         </dict>
@@ -27,7 +27,7 @@
             <key>Type</key>
             <string>PSChildPaneSpecifier</string>
             <key>Title</key>
-            <string>BITCOIN_DISPLAY</string>
+            <string>BITCOIN_DISPLAY_1</string>
             <key>File</key>
             <string>Bitcoinfeesetting</string>
         </dict>

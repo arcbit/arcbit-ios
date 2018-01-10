@@ -147,7 +147,15 @@ import AVFoundation
     }
     
     fileprivate func showPromptForSetTransactionFee(_ coinType: TLCoinType) {
-        let msg = String(format: TLDisplayStrings.SET_TRANSACTION_FEE_IN_X_STRING(), TLCurrencyFormat.getBitcoinDisplay(coinType))
+        // we should really allow fee settings to be done in current unit type, but due to limitations of inappsettingskit we cant
+        let coinDenomination: TLCoinDenomination
+        switch coinType {
+        case .BCH:
+            coinDenomination = TLCoinDenomination.bitcoinCash
+        case .BTC:
+            coinDenomination = TLCoinDenomination.bitcoin
+        }
+        let msg = String(format: TLDisplayStrings.SET_TRANSACTION_FEE_IN_X_STRING(), TLCurrencyFormat.getBitcoinDisplayWithDenomination(coinType, coinDenomination: coinDenomination))
         
         func addTextField(_ textField: UITextField!){
             textField.placeholder = ""
@@ -171,7 +179,7 @@ import AVFoundation
                 if (buttonIndex == alertView!.firstOtherButtonIndex) {
                     let feeAmount = (alertView!.textFields![0]).text
                     let feeAmountCoin = TLCurrencyFormat.coinAmountStringToCoin(feeAmount!, coinType: coinType)
-                    let value = TLCurrencyFormat.bigIntegerToBitcoinAmountString(feeAmountCoin, coinType: coinType, coinDenomination: TLWalletUtils.GET_DEFAULT_COIN_DENOMINATION(coinType))
+                    let value = TLCurrencyFormat.bigIntegerToBitcoinAmountString(feeAmountCoin, coinType: coinType, coinDenomination: coinDenomination)
                     TLPreferences.setInAppSettingsKitTransactionFee(coinType, value: value)
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_CHANGE_AUTOMATIC_TX_FEE()), object: nil)
                 } else if (buttonIndex == alertView!.cancelButtonIndex) {
