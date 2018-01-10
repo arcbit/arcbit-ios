@@ -40,6 +40,8 @@ class TLPreferences
 
         static let PREFERENCE_BITCOIN_CASH_DISPLAY = "pref-bitcoin-cash-display"
         static let PREFERENCE_BITCOIN_DISPLAY = "pref-bitcoin-display"
+        static let INAPPSETTINGS_KIT_PREFERENCE_BITCOIN_CASH_DISPLAY = "bitcoincashdisplay"
+        static let INAPPSETTINGS_KIT_PREFERENCE_BITCOIN_DISPLAY = "bitcoindisplay"
         static let INAPPSETTINGS_KIT_TRANSACTION_FEE_BITCOIN = "transactionfee"
         static let INAPPSETTINGS_KIT_TRANSACTION_FEE_BITCOIN_CASH = "transactionfeebitcoincash"
         static let INAPPSETTINGS_KIT_ENABLE_DYNAMIC_FEE_BITCOIN = "enabledynamicfee"
@@ -623,8 +625,9 @@ extension TLPreferences {
     
     class func setBitcoinCashDisplay(_ displayIdx:String) {
         //TODO should probably store string not displayidx, very confusing
-        let bitcoinDisplayIdx = String(Int(displayIdx)!+TLWalletUtils.DEFAULT_COIN_DENOMINATION_STARTING_IDX(TLCoinType.BCH))
-        UserDefaults.standard.set(displayIdx ,forKey:CLASS_STATIC.PREFERENCE_BITCOIN_CASH_DISPLAY)
+        let enumDisplayIdx = String(Int(displayIdx)!+TLWalletUtils.DEFAULT_COIN_DENOMINATION_STARTING_IDX(TLCoinType.BCH))
+        UserDefaults.standard.set(enumDisplayIdx ,forKey:CLASS_STATIC.PREFERENCE_BITCOIN_CASH_DISPLAY)
+        UserDefaults.standard.set(displayIdx ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_PREFERENCE_BITCOIN_CASH_DISPLAY)
         UserDefaults.standard.synchronize()
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_PREFERENCES_COIN_UNIT_DISPLAY_CHANGED())
             ,object:nil, userInfo:nil)
@@ -640,6 +643,7 @@ extension TLPreferences {
     
     class func setBitcoinDisplay(_ displayIdx:String) {
         UserDefaults.standard.set(displayIdx ,forKey:CLASS_STATIC.PREFERENCE_BITCOIN_DISPLAY)
+        UserDefaults.standard.set(displayIdx ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_PREFERENCE_BITCOIN_DISPLAY)
         UserDefaults.standard.synchronize()
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_PREFERENCES_COIN_UNIT_DISPLAY_CHANGED())
             ,object:nil, userInfo:nil)

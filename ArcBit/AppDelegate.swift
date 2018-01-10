@@ -405,6 +405,7 @@ import Crashlytics
             self.appWallet.updateWalletJSONToV3()
             self.coinWalletsManager = TLCoinWalletsManager(self.appWallet)
             self.coinWalletsManager!.createFirstBitcoinCashAccount()
+            TLPreferences.setBitcoinCashDisplay("2") // idx 2 = bits, as displayed in settings
             TLUtils.printOutDictionaryAsJSON(appWallet.getWalletsJson()!)
             self.saveWalletJsonCloud()
         } else {

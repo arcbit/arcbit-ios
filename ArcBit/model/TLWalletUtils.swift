@@ -82,7 +82,7 @@ class TLWalletUtils {
         // base on raw values in TLCoinDenomination
         switch coinType {
         case .BCH:
-            return 5
+            return 3
         case .BTC:
             return 0
         }
