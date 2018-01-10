@@ -662,6 +662,9 @@ class TLWallet {
                 createdWalletDict.setObject(coinWalletDict, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_BITCOIN_CASH as NSCopying)
             }
         })
+        TLUtils.printOutDictionaryAsJSON(createdWalletDict)
+
+        
         return createdWalletDict
     }
     

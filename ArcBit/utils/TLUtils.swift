@@ -75,4 +75,25 @@ class TLUtils {
         assert(error == nil, "Invalid JSON string")
         return jsonDict as! NSDictionary
     }
+    
+    class func printOutDictionaryAsJSON(_ json: NSDictionary) {
+        func JSONStringify(value: AnyObject, prettyPrinted: Bool = true) -> String {
+            let options = prettyPrinted ? JSONSerialization.WritingOptions.prettyPrinted : nil
+            if JSONSerialization.isValidJSONObject(value) {
+                do {
+                    let data = try JSONSerialization.data(withJSONObject: value, options: options!)
+                    if let string = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
+                        return string as String
+                    }
+                } catch let error as NSError {
+                    // If the encryption key was not accepted, the error will state that the database was invalid
+                    fatalError("Error opening Realm: \(error)")
+                }
+            }
+            return ""
+        }
+        let jsonString = JSONStringify(value: json)
+        //set breakpoint and in console do "po jsonString as NSString"
+        DLog("printOutDictionaryAsJSON:\n\(jsonString)")
+    }
 }

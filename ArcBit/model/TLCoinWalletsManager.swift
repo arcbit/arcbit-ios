@@ -81,6 +81,9 @@ import Foundation
             })
             self.updateGodSend(sendFromCoinType, sendFromType: sendFromType, sendFromIndex:sendFromIndex)
         }
+        
+        // create first account if first account not created
+        createFirstAccount()
         updateGodSend()
         let selectObjected: AnyObject? = self.godSend.getSelectedSendObject()
         if selectObjected is TLAccountObject {

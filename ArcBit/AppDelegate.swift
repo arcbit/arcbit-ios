@@ -407,12 +407,12 @@ import Crashlytics
             self.appWallet.updateWalletJSONToV3()
             self.coinWalletsManager = TLCoinWalletsManager(self.appWallet)
             self.coinWalletsManager!.createFirstBitcoinCashAccount()
-            printOutWalletJSON()
+            TLUtils.printOutDictionaryAsJSON(appWallet.getWalletsJson()!)
             self.saveWalletJsonCloud()
         } else {
             self.coinWalletsManager = TLCoinWalletsManager(self.appWallet)
         }
-        printOutWalletJSON()
+        TLUtils.printOutDictionaryAsJSON(appWallet.getWalletsJson()!)
 
         TLBlockExplorerAPI.instance()
         TLExchangeRate.instance()
@@ -616,34 +616,12 @@ import Crashlytics
         }
     }
     
-    func printOutWalletJSON() {
-        func JSONStringify(value: AnyObject, prettyPrinted: Bool = true) -> String {
-            let options = prettyPrinted ? JSONSerialization.WritingOptions.prettyPrinted : nil
-            if JSONSerialization.isValidJSONObject(value) {
-                do {
-                    let data = try JSONSerialization.data(withJSONObject: value, options: options!)
-                    if let string = NSString(data: data, encoding: String.Encoding.utf8.rawValue) {
-                        return string as String
-                    }
-                } catch let error as NSError {
-                    // If the encryption key was not accepted, the error will state that the database was invalid
-                    fatalError("Error opening Realm: \(error)")
-                }
-            }
-            return ""
-        }
-        guard let walletJson = appWallet.getWalletsJson() else { return }
-        let jsonString = JSONStringify(value: walletJson)
-        //set breakpoint and in console do "po jsonString as NSString"
-        DLog("printOutWalletJSON:\n\(jsonString)")
-    }
-    
     func saveWalletJsonCloud() -> Bool {
         if saveWalletJSONEnabled == false {
             DLog("saveWalletJSONEnabled disabled")
             return false
         }
-        printOutWalletJSON()
+        TLUtils.printOutDictionaryAsJSON(appWallet.getWalletsJson()!)
         DLog("saveFileToCloud starting...")
         guard let walletJson = appWallet.getWalletsJson(),
             let password = TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase() else { return false }

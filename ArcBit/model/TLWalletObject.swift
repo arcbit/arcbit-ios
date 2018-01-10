@@ -169,6 +169,9 @@ import Foundation
     }
     
     func createFirstAccount() {
+        if self.accounts.getNumberOfAccounts() > 0 {
+            return
+        }
         let accountObject = self.accounts.createNewAccount(TLDisplayStrings.ACCOUNT_1_STRING(), accountType:.normal, preloadStartingAddresses:true)
         accountObject.updateAccountNeedsRecovering(false)
     }
