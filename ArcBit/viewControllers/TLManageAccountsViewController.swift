@@ -58,10 +58,11 @@ import UIKit
         setColors()
 
         self.setLogoImageView()
-        
+
         self.navigationController!.view.addGestureRecognizer(self.slidingViewController().panGesture)
 
-        self.currentCoinType = TLPreferences.getSendFromCoinType()
+        self.updateViewForEnabledCryptoCoinsIfChanged()
+        self.currentCoinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
         accountListSection = 0
 
         self.accountsTableView!.delegate = self
@@ -495,7 +496,7 @@ import UIKit
         
         var sectionCounter = 0
         
-        if TLPreferences.getNumberOfSupportedCoins() > 1 {
+        if TLPreferences.getEnabledCryptocoinsCount() > 1 {
             selectCryptoCoinSection = sectionCounter
             sectionCounter += 1
             numberOfSections += 1
@@ -2208,7 +2209,7 @@ import UIKit
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if TLPreferences.getNumberOfSupportedCoins() > 1 && section == selectCryptoCoinSection {
+        if TLPreferences.getEnabledCryptocoinsCount() > 1 && section == selectCryptoCoinSection {
             return ""
         }
         if (TLPreferences.enabledAdvancedMode()) {
@@ -2255,7 +2256,7 @@ import UIKit
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if TLPreferences.getNumberOfSupportedCoins() > 1 && section == selectCryptoCoinSection {
+        if TLPreferences.getEnabledCryptocoinsCount() > 1 && section == selectCryptoCoinSection {
             return 1
         }
         if (TLPreferences.enabledAdvancedMode()) {
@@ -2422,7 +2423,7 @@ import UIKit
     }
 
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        if TLPreferences.getNumberOfSupportedCoins() > 1 && (indexPath as NSIndexPath).section == selectCryptoCoinSection {
+        if TLPreferences.getEnabledCryptocoinsCount() > 1 && (indexPath as NSIndexPath).section == selectCryptoCoinSection {
             performSegue(withIdentifier: "SegueSelectCryptoCoinManageAccounts", sender:self)
             return nil
         }
@@ -2502,6 +2503,16 @@ import UIKit
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+}
+
+extension TLManageAccountsViewController {
+    func updateViewForEnabledCryptoCoinsIfChanged() {
+        let sendObjectCurrentCoinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+        if !TLPreferences.isCryptoCoinEnabled(sendObjectCurrentCoinType) {
+            self.currentCoinType = AppDelegate.instance().coinWalletsManager!.updateSelectedObjectsToEnabledCoin(TLSelectAccountObjectType.send)
+            self._accountsTableViewReloadDataWrapper()
+        }
     }
 }
 

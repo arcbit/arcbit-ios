@@ -36,6 +36,12 @@ enum TLSendFromType: Int {
     case coldWalletAccount = 5
 }
 
+enum TLSelectAccountObjectType: Int {
+    case send = 0
+    case receive = 1
+    case history = 2
+}
+
 enum TLAccountTxType: Int {
     case send = 0
     case receive = 1

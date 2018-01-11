@@ -203,6 +203,28 @@ import Foundation
         }
     }
     
+    @discardableResult
+    func updateSelectedObjectsToEnabledCoin(_ selectAccountObjectType: TLSelectAccountObjectType) -> TLCoinType {
+        var selectedCoinType = TLCoinType.BCH
+        for coinType in TLWalletUtils.SUPPORT_COIN_TYPES() {
+            if TLPreferences.isCryptoCoinEnabled(coinType) {
+                selectedCoinType = coinType
+                break
+            }
+        }
+        let sendFromType = TLSendFromType.hdWallet
+        let sendFromIndex = 0
+        switch selectAccountObjectType {
+        case .send:
+            self.updateGodSend(selectedCoinType, sendFromType: sendFromType, sendFromIndex: sendFromIndex)
+        case .receive:
+            self.updateReceiveSelectedObject(selectedCoinType, sendFromType: sendFromType, sendFromIndex: sendFromIndex)
+        case .history:
+            self.updateHistorySelectedObject(selectedCoinType, sendFromType: sendFromType, sendFromIndex: sendFromIndex)
+        }
+        return selectedCoinType
+    }
+    
     func getSendObjectSelectedCoinType() -> TLCoinType {
         return self.godSend.getSelectedObjectCoinType()
     }

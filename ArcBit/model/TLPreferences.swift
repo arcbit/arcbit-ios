@@ -49,6 +49,11 @@ class TLPreferences
         static let INAPPSETTINGS_KIT_DYNAMIC_FEE_OPTION_BITCOIN = "dynamicfeeoption"
         static let INAPPSETTINGS_KIT_DYNAMIC_FEE_OPTION_BITCOIN_CASH = "dynamicfeeoptionbitcoincash"
         
+        static let ENABLED_BITCOIN = "pref-enabled-cryptocoin-bitcoin"
+        static let ENABLED_BITCOIN_CASH = "pref-enabled-cryptocoin-bitcoincash"
+        static let INAPPSETTINGS_KIT_ENABLED_BITCOIN = "enabledcryptocoinbitcoin"
+        static let INAPPSETTINGS_KIT_ENABLED_BITCOIN_CASH = "enabledcryptocoinbitcoincash"
+        
         static let INAPPSETTINGS_KIT_ENABLE_COLD_WALLET = "enablecoldwallet"
         static let PREFERENCE_INSTALL_DATE = "pref-install-date"
         static let PREFERENCE_APP_VERSION = "pref-app-version"
@@ -454,16 +459,6 @@ class TLPreferences
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_DISPLAY_LOCAL_CURRENCY_TOGGLED()), object:nil)
     }
     
-    class func getNumberOfSupportedCoins() -> Int {
-        return 2
-//        return UserDefaults.standard.bool(forKey: CLASS_STATIC.PREFERENCE_WALLET_COLD_WALLET)
-    }
-    
-//    class func setNumberOfSupportedCoins(_ enabled:Int) -> () {
-//        UserDefaults.standard.set(enabled ,forKey:CLASS_STATIC.PREFERENCE_WALLET_COLD_WALLET)
-//        UserDefaults.standard.synchronize()
-//    }
-    
     class func enabledColdWallet() -> (Bool) {
         return UserDefaults.standard.bool(forKey: CLASS_STATIC.PREFERENCE_WALLET_COLD_WALLET)
     }
@@ -764,5 +759,74 @@ extension TLPreferences {
     fileprivate class func setInAppSettingsKitDynamicFeeSettingIdxBitcoin(_ dynamicFeeSetting:TLDynamicFeeSetting) -> () {
         UserDefaults.standard.set(dynamicFeeSetting.rawValue ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_DYNAMIC_FEE_OPTION_BITCOIN)
         UserDefaults.standard.synchronize()
+    }
+    // --------------------------------------------------------------------------------------------------------------------------------------------
+    class func enabledBitcoinCash() -> Bool {
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.ENABLED_BITCOIN_CASH)
+    }
+    
+    class func setEnabledBitcoinCash(_ enabled:Bool) -> () {
+        UserDefaults.standard.set(enabled ,forKey:CLASS_STATIC.ENABLED_BITCOIN_CASH)
+        UserDefaults.standard.synchronize()
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_ENABLED_CRYPO_COINS_CHANGED()), object:nil, userInfo:nil)
+    }
+    
+    class func enabledBitcoin() -> Bool {
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.ENABLED_BITCOIN)
+    }
+    
+    class func setEnabledBitcoin(_ enabled:Bool) -> () {
+        UserDefaults.standard.set(enabled ,forKey:CLASS_STATIC.ENABLED_BITCOIN)
+        UserDefaults.standard.synchronize()
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_ENABLED_CRYPO_COINS_CHANGED()), object:nil, userInfo:nil)
+    }
+    
+    class func getEnabledCryptocoinsCount() -> Int {
+        var count = 0
+        if enabledBitcoinCash() {
+            count += 1
+        }
+        if enabledBitcoin() {
+            count += 1
+        }
+        return count
+    }
+    
+    class func isCryptoCoinEnabled(_ coinType: TLCoinType) -> Bool {
+        switch coinType {
+        case .BCH:
+            return enabledBitcoinCash()
+        case .BTC:
+            return enabledBitcoin()
+        }
+    }
+    
+    fileprivate class func enabledInAppSettingsKitBitcoinCash() -> Bool {
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_ENABLED_BITCOIN_CASH)
+    }
+    
+    class func setInAppSettingsKitEnabledBitcoinCash(_ enabled:Bool) -> () {
+        UserDefaults.standard.set(enabled , forKey:CLASS_STATIC.INAPPSETTINGS_KIT_ENABLED_BITCOIN_CASH)
+        UserDefaults.standard.synchronize()
+    }
+    
+    fileprivate class func enabledInAppSettingsKitBitcoin() -> Bool {
+        return UserDefaults.standard.bool(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_ENABLED_BITCOIN)
+    }
+    
+    class func setInAppSettingsKitEnabledBitcoin(_ enabled:Bool) -> () {
+        UserDefaults.standard.set(enabled , forKey:CLASS_STATIC.INAPPSETTINGS_KIT_ENABLED_BITCOIN)
+        UserDefaults.standard.synchronize()
+    }
+
+    class func getInAppSettingsKitEnabledCryptocoinsCount() -> Int {
+        var count = 0
+        if enabledInAppSettingsKitBitcoinCash() {
+            count += 1
+        }
+        if enabledInAppSettingsKitBitcoin() {
+            count += 1
+        }
+        return count
     }
 }

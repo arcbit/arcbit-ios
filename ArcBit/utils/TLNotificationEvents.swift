@@ -94,4 +94,5 @@ class TLNotificationEvents {
     class func EVENT_VIEW_EXTENDED_PUBLIC_KEY() -> String { return "event.view.extended.public.key"}
     class func EVENT_VIEW_EXTENDED_PRIVATE_KEY() -> String { return "event.view.extended.private.key"}
     class func EVENT_VIEW_ACCOUNT_PRIVATE_KEY() -> String { return "event.view.account.private.key"}
+    class func EVENT_ENABLED_CRYPO_COINS_CHANGED() -> String { return "event.enabled.crypto.coins.changed"}
 }

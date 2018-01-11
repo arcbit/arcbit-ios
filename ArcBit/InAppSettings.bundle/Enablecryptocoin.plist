@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Title</key>
+	<string>ADVANCED_TITLE</string>
+	<key>StringsTable</key>
+	<string>Root</string>
+	<key>PreferenceSpecifiers</key>
+	<array>
+        
+        <dict>
+            <key>Title</key>
+            <string>EMPTY</string>
+            <key>Type</key>
+            <string>PSGroupSpecifier</string>
+        </dict>
+        <dict>
+            <key>DefaultValue</key>
+            <string>NO</string>
+            <key>Key</key>
+            <string>enabledcryptocoinbitcoincash</string>
+            <key>Title</key>
+            <string>BITCOIN_CASH_DISPLAY_1</string>
+            <key>Type</key>
+            <string>PSToggleSwitchSpecifier</string>
+        </dict>
+        <dict>
+            <key>DefaultValue</key>
+            <string>NO</string>
+            <key>Key</key>
+            <string>enabledcryptocoinbitcoin</string>
+            <key>Title</key>
+            <string>BITCOIN_DISPLAY_1</string>
+            <key>Type</key>
+            <string>PSToggleSwitchSpecifier</string>
+        </dict>
+        
+
+	</array>
+</dict>
+</plist>

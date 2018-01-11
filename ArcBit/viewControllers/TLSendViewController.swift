@@ -199,7 +199,8 @@ import StoreKit
         self.scanQRButton!.setTitleColor(TLColors.mainAppOppositeColor(), for: UIControlState())
         self.reviewPaymentButton!.setTitleColor(TLColors.mainAppOppositeColor(), for: UIControlState())
         self.addressBookButton!.setTitleColor(TLColors.mainAppOppositeColor(), for: UIControlState())
-        
+        self.updateViewForEnabledCryptoCoinsIfChanged()
+
         if TLUtils.isIPhone5() || TLUtils.isIPhone4() {
             let keyboardDoneButtonView = UIToolbar()
             keyboardDoneButtonView.sizeToFit()
@@ -991,6 +992,16 @@ import StoreKit
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+}
+
+extension TLSendViewController {
+    func updateViewForEnabledCryptoCoinsIfChanged() {
+        let sendObjectCurrentCoinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+        if !TLPreferences.isCryptoCoinEnabled(sendObjectCurrentCoinType) {
+            AppDelegate.instance().coinWalletsManager!.updateSelectedObjectsToEnabledCoin(TLSelectAccountObjectType.send)
+            self.updateViewToNewSelectedObject()
+        }
     }
 }
 

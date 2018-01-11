@@ -75,7 +75,8 @@ import UIKit
         if UIScreen.main.bounds.size.height <= 480.0 { // is 3.5 inch screen
             self.tabBar!.isHidden = true
         }
-        
+        self.updateViewForEnabledCryptoCoinsIfChanged()
+
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: UIBarButtonSystemItem.refresh, target: self, action: #selector(TLReceiveViewController.refreshSelectedAccountAgain))
         
         self.navigationController!.view.addGestureRecognizer(self.slidingViewController().panGesture)
@@ -532,6 +533,16 @@ import UIKit
     
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+}
+
+extension TLReceiveViewController {
+    func updateViewForEnabledCryptoCoinsIfChanged() {
+        let receivedObjectCurrentCoinType = AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.getSelectedObjectCoinType()
+        if !TLPreferences.isCryptoCoinEnabled(receivedObjectCurrentCoinType) {
+            AppDelegate.instance().coinWalletsManager!.updateSelectedObjectsToEnabledCoin(TLSelectAccountObjectType.receive)
+            self.updateViewToNewSelectedObject()
+        }
     }
 }
 

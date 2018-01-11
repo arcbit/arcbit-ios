@@ -55,7 +55,8 @@ import CoreData
         self.accountNameLabel!.textColor = TLColors.mainAppOppositeColor()
         self.accountBalanceLabel!.textColor = TLColors.mainAppOppositeColor()
         self.balanceActivityIndicatorView!.color = TLColors.mainAppOppositeColor()
-        
+        self.updateViewForEnabledCryptoCoinsIfChanged()
+
         self.navigationController!.view.addGestureRecognizer(self.slidingViewController().panGesture)
         
         NotificationCenter.default.addObserver(self
@@ -362,6 +363,16 @@ import CoreData
 
     deinit {
         NotificationCenter.default.removeObserver(self)
+    }
+}
+
+extension TLHistoryViewController {
+    func updateViewForEnabledCryptoCoinsIfChanged() {
+        let historyObjectCurrentCoinType = AppDelegate.instance().coinWalletsManager!.historySelectedObject.getSelectedObjectCoinType()
+        if !TLPreferences.isCryptoCoinEnabled(historyObjectCurrentCoinType) {
+            AppDelegate.instance().coinWalletsManager!.updateSelectedObjectsToEnabledCoin(TLSelectAccountObjectType.history)
+            self.updateViewToNewSelectedObject()
+        }
     }
 }
 

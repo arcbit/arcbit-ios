@@ -291,7 +291,25 @@ import AVFoundation
         } else if (didChangeKey == "bitcoindisplay") {
             let displayIdx = userInfo.object(forKey: "bitcoindisplay") as! String
             TLPreferences.setBitcoinDisplay(displayIdx)
-            
+
+        } else if (didChangeKey == "enabledcryptocoinbitcoincash") {
+            if TLPreferences.getInAppSettingsKitEnabledCryptocoinsCount() == 0 {
+                // must have at least one coin enabled
+                TLPreferences.setInAppSettingsKitEnabledBitcoinCash(true)
+                TLPrompts.promptSuccessMessage("", message: TLDisplayStrings.KILL_THIS_APP_DESC_STRING())
+                return
+            }
+            let enabled = userInfo.object(forKey: "enabledcryptocoinbitcoincash") as! Bool
+            TLPreferences.setEnabledBitcoinCash(enabled)
+        } else if (didChangeKey == "enabledcryptocoinbitcoin") {
+            if TLPreferences.getInAppSettingsKitEnabledCryptocoinsCount() == 0 {
+                // must have at least one coin enabled
+                TLPreferences.setInAppSettingsKitEnabledBitcoin(true)
+                TLPrompts.promptSuccessMessage("", message: TLDisplayStrings.KILL_THIS_APP_DESC_STRING())
+                return
+            }
+            let enabled = userInfo.object(forKey: "enabledcryptocoinbitcoin") as! Bool
+            TLPreferences.setEnabledBitcoin(enabled)
         } else if (didChangeKey == "stealthaddressdefault") {
             let enabled = userInfo.object(forKey: "stealthaddressdefault") as! Bool
             TLPreferences.setEnabledStealthAddressDefault(enabled)
