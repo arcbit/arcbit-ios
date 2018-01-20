@@ -223,6 +223,11 @@ import Crashlytics
         TLPreferences.setSendFromType(.hdWallet)
         TLPreferences.setSendFromIndex(0)
         
+        TLPreferences.setInAppSettingsKitEnabledBitcoinCash(true)
+        TLPreferences.setInAppSettingsKitEnabledBitcoin(true)
+        TLPreferences.setEnabledBitcoinCash(true)
+        TLPreferences.setEnabledBitcoin(true)
+
         if clearWalletInMemory {
             let masterHex = TLHDWalletWrapper.getMasterHex(passphrase)
             self.appWallet.createInitialWalletPayload(passphrase, masterHex:masterHex)
