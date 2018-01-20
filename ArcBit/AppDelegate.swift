@@ -265,11 +265,7 @@ import Crashlytics
         DLog("respondToStealthPayment respondToStealthPaymentGetTxTries: \(self.respondToStealthPaymentGetTxTries)")
 
         if self.respondToStealthPaymentGetTxTries < self.RESPOND_TO_STEALTH_PAYMENT_GET_TX_TRIES_MAX_TRIES {
-            TLBlockExplorerAPI.instance().getTx(txid, success: { (jsonData:AnyObject?) -> () in
-                if jsonData == nil {
-                    return;
-                }
-                let txObject = TLTxObject(dict:jsonData as! NSDictionary)
+            TLBlockExplorerAPI.instance().getTx(txid, success: { (txObject) -> () in
                 self.coinWalletsManager!.handleGetTxSuccessForRespondToStealthPayment(stealthAddress,
                     paymentAddress: paymentAddress, txid: txid, txTime: txTime, txObject: txObject)
                 
@@ -289,11 +285,10 @@ import Crashlytics
     }
     
     func updateModelWithNewTransaction(_ note: Notification) {
-        let txDict = note.object as! NSDictionary
-        DLog("updateModelWithNewTransaction txDict: \(txDict.debugDescription)")
+        let txObject = note.object as! TLTxObject
+        DLog("updateModelWithNewTransaction txObject: \(txObject)")
         
         DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).async {
-            let txObject = TLTxObject(dict:txDict)
             if self.pendingSelfStealthPaymentTxid != nil {
                 // Special case where receiving stealth payment from same sending account. 
                 // Let stealth websocket handle it
@@ -427,9 +422,9 @@ import Crashlytics
             }
         })
         
-        TLBlockExplorerAPI.instance().getBlockHeight({(jsonData: AnyObject!) in
-            let blockHeight = (jsonData.object(forKey: "height") as! NSNumber).uint64Value
-            DLog("setBlockHeight: \((jsonData.object(forKey: "height") as! NSNumber))")
+        TLBlockExplorerAPI.instance().getBlockHeight({(blockHeightObject) in
+            let blockHeight = blockHeightObject.blockHeight
+            DLog("setBlockHeight: \(blockHeight)")
             TLBlockchainStatus.instance().blockHeight = blockHeight
             }, failure:{(code, status) in
                 DLog("Error getting block height.")

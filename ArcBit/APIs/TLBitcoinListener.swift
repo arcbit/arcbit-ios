@@ -148,10 +148,10 @@ import Foundation
                             //DLog("socketio on address: \(addr)")
                             //DLog("socketio transaction: \(txHash)")
                             TLBlockExplorerAPI.instance().getTx(txHash, success: {
-                                (txDict: AnyObject?) in
-                                if let txDict = txDict {
-                                    NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_NEW_UNCONFIRMED_TRANSACTION()), object: txDict, userInfo: nil)
-                                }
+                                (txObject) in
+//                                if let txDict = txDict { // TODO test before remove commented out code
+                                    NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_NEW_UNCONFIRMED_TRANSACTION()), object: txObject, userInfo: nil)
+//                                }
                                 }, failure: {
                                     (code, status) in
                             })
@@ -222,7 +222,8 @@ import Foundation
             DLog("blockchain.info didReceiveMessage \(jsonDict.description)")
 
             if (jsonDict.object(forKey: "op") as! String == "utx") {
-                NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_NEW_UNCONFIRMED_TRANSACTION()), object: jsonDict.object(forKey: "x"), userInfo: nil)
+                let txObject = TLTxObject(jsonDict.object(forKey: "x") as! NSDictionary)
+                NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_NEW_UNCONFIRMED_TRANSACTION()), object: txObject, userInfo: nil)
             } else if (jsonDict.object(forKey: "op") as! String == "block") {
                 NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_NEW_BLOCK()), object: jsonDict.object(forKey: "x"), userInfo: nil)
             }

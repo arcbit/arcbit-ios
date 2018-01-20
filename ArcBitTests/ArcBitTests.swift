@@ -386,7 +386,7 @@ class ArcBitTests: XCTestCase {
         let accountObject = accountsArray.object(at: 0) as! TLAccountObject
         godSend.setOnlyFromAccount(accountObject)
 
-        let mockUnspentOutput = { (txid: String, value: UInt64, txOutputN: Int) -> NSDictionary in
+        let mockUnspentOutput = { (txid: String, value: UInt64, txOutputN: Int) -> TLUnspentOutputObject in
             var unspentOutput = NSMutableDictionary()
             unspentOutput.setObject(TLWalletUtils.reverseHexString(txid), forKey: "tx_hash" as NSCopying)
             unspentOutput.setObject(txid, forKey: "tx_hash_big_endian" as NSCopying)
@@ -394,7 +394,7 @@ class ArcBitTests: XCTestCase {
             unspentOutput.setObject(BTCScript(address: fromAddress).hex, forKey: "script" as NSCopying)
             unspentOutput.setObject(NSNumber(value: value as UInt64), forKey: "value" as NSCopying)
             unspentOutput.setObject(6, forKey: "confirmations" as NSCopying)
-            return unspentOutput
+            return TLUnspentOutputObject(unspentOutput)
         }
         
         func testCreateSignedSerializedTransactionHexAndBIP69_1() -> () {
@@ -413,10 +413,10 @@ class ArcBitTests: XCTestCase {
             func testCreateSignedSerializedTransactionHexAndBIP69_1_1() -> () {
                 let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount], ["address": toAddress2, "amount": toAmount2]]
                 
-                accountObject.unspentOutputs = NSMutableArray(capacity: 2)
-                accountObject.unspentOutputs!.add(unspentOutput0)
-                accountObject.unspentOutputs!.add(unspentOutput1)
-                accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
+                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+                accountObject.unspentOutputs!.append(unspentOutput0)
+                accountObject.unspentOutputs!.append(unspentOutput1)
+                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
                 
                 let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
                     (data: String?) in
@@ -459,10 +459,10 @@ class ArcBitTests: XCTestCase {
             func testCreateSignedSerializedTransactionHexAndBIP69_1_2() -> () {
                 let toAddressesAndAmounts = [["address": toAddress2, "amount": toAmount2], ["address": toAddress, "amount": toAmount]]
                 
-                accountObject.unspentOutputs = NSMutableArray(capacity: 2)
-                accountObject.unspentOutputs!.add(unspentOutput1)
-                accountObject.unspentOutputs!.add(unspentOutput0)
-                accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
+                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+                accountObject.unspentOutputs!.append(unspentOutput0)
+                accountObject.unspentOutputs!.append(unspentOutput1)
+                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
                 
                 let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
                     (data: String?) in
@@ -552,26 +552,25 @@ class ArcBitTests: XCTestCase {
             func testCreateSignedSerializedTransactionHexAndBIP69_2_1() -> () {
                 let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount], ["address": toAddress2, "amount": toAmount2]]
                 
-                accountObject.unspentOutputs = NSMutableArray(capacity: 17)
-                accountObject.unspentOutputs!.add(unspentOutput0)
-                accountObject.unspentOutputs!.add(unspentOutput1)
-                accountObject.unspentOutputs!.add(unspentOutput2)
-                accountObject.unspentOutputs!.add(unspentOutput3)
-                accountObject.unspentOutputs!.add(unspentOutput4)
-                accountObject.unspentOutputs!.add(unspentOutput5)
-                accountObject.unspentOutputs!.add(unspentOutput6)
-                accountObject.unspentOutputs!.add(unspentOutput7)
-                accountObject.unspentOutputs!.add(unspentOutput8)
-                accountObject.unspentOutputs!.add(unspentOutput9)
-                accountObject.unspentOutputs!.add(unspentOutput10)
-                accountObject.unspentOutputs!.add(unspentOutput11)
-                accountObject.unspentOutputs!.add(unspentOutput12)
-                accountObject.unspentOutputs!.add(unspentOutput13)
-                accountObject.unspentOutputs!.add(unspentOutput14)
-                accountObject.unspentOutputs!.add(unspentOutput15)
-                accountObject.unspentOutputs!.add(unspentOutput16)
-                
-                accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
+                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+                accountObject.unspentOutputs!.append(unspentOutput0)
+                accountObject.unspentOutputs!.append(unspentOutput1)
+                accountObject.unspentOutputs!.append(unspentOutput2)
+                accountObject.unspentOutputs!.append(unspentOutput3)
+                accountObject.unspentOutputs!.append(unspentOutput4)
+                accountObject.unspentOutputs!.append(unspentOutput5)
+                accountObject.unspentOutputs!.append(unspentOutput6)
+                accountObject.unspentOutputs!.append(unspentOutput7)
+                accountObject.unspentOutputs!.append(unspentOutput8)
+                accountObject.unspentOutputs!.append(unspentOutput9)
+                accountObject.unspentOutputs!.append(unspentOutput10)
+                accountObject.unspentOutputs!.append(unspentOutput11)
+                accountObject.unspentOutputs!.append(unspentOutput12)
+                accountObject.unspentOutputs!.append(unspentOutput13)
+                accountObject.unspentOutputs!.append(unspentOutput14)
+                accountObject.unspentOutputs!.append(unspentOutput15)
+                accountObject.unspentOutputs!.append(unspentOutput16)
+                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
                 
                 let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
                     (data: String?) in
@@ -659,27 +658,26 @@ class ArcBitTests: XCTestCase {
             func testCreateSignedSerializedTransactionHexAndBIP69_2_2() -> () {
                 let toAddressesAndAmounts = [["address": toAddress2, "amount": toAmount2], ["address": toAddress, "amount": toAmount]]
                 
-                accountObject.unspentOutputs = NSMutableArray(capacity: 17)
-                accountObject.unspentOutputs!.add(unspentOutput15)
-                accountObject.unspentOutputs!.add(unspentOutput2)
-                accountObject.unspentOutputs!.add(unspentOutput0)
-                accountObject.unspentOutputs!.add(unspentOutput1)
-                accountObject.unspentOutputs!.add(unspentOutput5)
-                accountObject.unspentOutputs!.add(unspentOutput3)
-                accountObject.unspentOutputs!.add(unspentOutput4)
-                accountObject.unspentOutputs!.add(unspentOutput6)
-                accountObject.unspentOutputs!.add(unspentOutput7)
-                accountObject.unspentOutputs!.add(unspentOutput9)
-                accountObject.unspentOutputs!.add(unspentOutput10)
-                accountObject.unspentOutputs!.add(unspentOutput8)
-                accountObject.unspentOutputs!.add(unspentOutput12)
-                accountObject.unspentOutputs!.add(unspentOutput11)
-                accountObject.unspentOutputs!.add(unspentOutput14)
-                accountObject.unspentOutputs!.add(unspentOutput16)
-                accountObject.unspentOutputs!.add(unspentOutput13)
-                
-                accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
-                
+                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+                accountObject.unspentOutputs!.append(unspentOutput15)
+                accountObject.unspentOutputs!.append(unspentOutput2)
+                accountObject.unspentOutputs!.append(unspentOutput0)
+                accountObject.unspentOutputs!.append(unspentOutput1)
+                accountObject.unspentOutputs!.append(unspentOutput5)
+                accountObject.unspentOutputs!.append(unspentOutput3)
+                accountObject.unspentOutputs!.append(unspentOutput4)
+                accountObject.unspentOutputs!.append(unspentOutput6)
+                accountObject.unspentOutputs!.append(unspentOutput7)
+                accountObject.unspentOutputs!.append(unspentOutput9)
+                accountObject.unspentOutputs!.append(unspentOutput10)
+                accountObject.unspentOutputs!.append(unspentOutput8)
+                accountObject.unspentOutputs!.append(unspentOutput12)
+                accountObject.unspentOutputs!.append(unspentOutput11)
+                accountObject.unspentOutputs!.append(unspentOutput14)
+                accountObject.unspentOutputs!.append(unspentOutput16)
+                accountObject.unspentOutputs!.append(unspentOutput13)
+                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
+
                 let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
                     (data: String?) in
                 })
@@ -786,10 +784,10 @@ class ArcBitTests: XCTestCase {
             func testCreateSignedSerializedTransactionHexAndBIP69_3_1() -> () {
                 let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount], ["address": toAddress2, "amount": toAmount2]]
                 
-                accountObject.unspentOutputs = NSMutableArray(capacity: 2)
-                accountObject.unspentOutputs!.add(unspentOutput0)
-                accountObject.unspentOutputs!.add(unspentOutput1)
-                accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
+                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+                accountObject.unspentOutputs!.append(unspentOutput0)
+                accountObject.unspentOutputs!.append(unspentOutput1)
+                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
                 
                 let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray,
                     feeAmount: feeAmount, nonce: nonce, ephemeralPrivateKeyHex: ephemeralPrivateKeyHex, error: {
@@ -837,10 +835,10 @@ class ArcBitTests: XCTestCase {
             func testCreateSignedSerializedTransactionHexAndBIP69_3_2() -> () {
                 let toAddressesAndAmounts = [["address": toAddress2, "amount": toAmount2], ["address": toAddress, "amount": toAmount]]
                 
-                accountObject.unspentOutputs = NSMutableArray(capacity: 2)
-                accountObject.unspentOutputs!.add(unspentOutput1)
-                accountObject.unspentOutputs!.add(unspentOutput0)
-                accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
+                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+                accountObject.unspentOutputs!.append(unspentOutput1)
+                accountObject.unspentOutputs!.append(unspentOutput0)
+                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
                 
                 let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray,
                     feeAmount: feeAmount, nonce: nonce, ephemeralPrivateKeyHex: ephemeralPrivateKeyHex, error: {
@@ -938,26 +936,26 @@ class ArcBitTests: XCTestCase {
             func testCreateSignedSerializedTransactionHexAndBIP69_4_1() -> () {
                 let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount], ["address": toAddress2, "amount": toAmount2]]
                 
-                accountObject.unspentOutputs = NSMutableArray(capacity: 17)
-                accountObject.unspentOutputs!.add(unspentOutput0)
-                accountObject.unspentOutputs!.add(unspentOutput1)
-                accountObject.unspentOutputs!.add(unspentOutput2)
-                accountObject.unspentOutputs!.add(unspentOutput3)
-                accountObject.unspentOutputs!.add(unspentOutput4)
-                accountObject.unspentOutputs!.add(unspentOutput5)
-                accountObject.unspentOutputs!.add(unspentOutput6)
-                accountObject.unspentOutputs!.add(unspentOutput7)
-                accountObject.unspentOutputs!.add(unspentOutput8)
-                accountObject.unspentOutputs!.add(unspentOutput9)
-                accountObject.unspentOutputs!.add(unspentOutput10)
-                accountObject.unspentOutputs!.add(unspentOutput11)
-                accountObject.unspentOutputs!.add(unspentOutput12)
-                accountObject.unspentOutputs!.add(unspentOutput13)
-                accountObject.unspentOutputs!.add(unspentOutput14)
-                accountObject.unspentOutputs!.add(unspentOutput15)
-                accountObject.unspentOutputs!.add(unspentOutput16)
+                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+                accountObject.unspentOutputs!.append(unspentOutput0)
+                accountObject.unspentOutputs!.append(unspentOutput1)
+                accountObject.unspentOutputs!.append(unspentOutput2)
+                accountObject.unspentOutputs!.append(unspentOutput3)
+                accountObject.unspentOutputs!.append(unspentOutput4)
+                accountObject.unspentOutputs!.append(unspentOutput5)
+                accountObject.unspentOutputs!.append(unspentOutput6)
+                accountObject.unspentOutputs!.append(unspentOutput7)
+                accountObject.unspentOutputs!.append(unspentOutput8)
+                accountObject.unspentOutputs!.append(unspentOutput9)
+                accountObject.unspentOutputs!.append(unspentOutput10)
+                accountObject.unspentOutputs!.append(unspentOutput11)
+                accountObject.unspentOutputs!.append(unspentOutput12)
+                accountObject.unspentOutputs!.append(unspentOutput13)
+                accountObject.unspentOutputs!.append(unspentOutput14)
+                accountObject.unspentOutputs!.append(unspentOutput15)
+                accountObject.unspentOutputs!.append(unspentOutput16)
                 
-                accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
+                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
                 
                 let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray,
                     feeAmount: feeAmount, nonce: nonce, ephemeralPrivateKeyHex: ephemeralPrivateKeyHex, error: {
@@ -1050,26 +1048,26 @@ class ArcBitTests: XCTestCase {
             func testCreateSignedSerializedTransactionHexAndBIP69_4_2() -> () {
                 let toAddressesAndAmounts = [["address": toAddress2, "amount": toAmount2], ["address": toAddress, "amount": toAmount]]
                 
-                accountObject.unspentOutputs = NSMutableArray(capacity: 17)
-                accountObject.unspentOutputs!.add(unspentOutput5)
-                accountObject.unspentOutputs!.add(unspentOutput2)
-                accountObject.unspentOutputs!.add(unspentOutput15)
-                accountObject.unspentOutputs!.add(unspentOutput0)
-                accountObject.unspentOutputs!.add(unspentOutput1)
-                accountObject.unspentOutputs!.add(unspentOutput6)
-                accountObject.unspentOutputs!.add(unspentOutput4)
-                accountObject.unspentOutputs!.add(unspentOutput7)
-                accountObject.unspentOutputs!.add(unspentOutput3)
-                accountObject.unspentOutputs!.add(unspentOutput13)
-                accountObject.unspentOutputs!.add(unspentOutput9)
-                accountObject.unspentOutputs!.add(unspentOutput10)
-                accountObject.unspentOutputs!.add(unspentOutput8)
-                accountObject.unspentOutputs!.add(unspentOutput11)
-                accountObject.unspentOutputs!.add(unspentOutput14)
-                accountObject.unspentOutputs!.add(unspentOutput12)
-                accountObject.unspentOutputs!.add(unspentOutput16)
+                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+                accountObject.unspentOutputs!.append(unspentOutput5)
+                accountObject.unspentOutputs!.append(unspentOutput2)
+                accountObject.unspentOutputs!.append(unspentOutput15)
+                accountObject.unspentOutputs!.append(unspentOutput0)
+                accountObject.unspentOutputs!.append(unspentOutput1)
+                accountObject.unspentOutputs!.append(unspentOutput6)
+                accountObject.unspentOutputs!.append(unspentOutput4)
+                accountObject.unspentOutputs!.append(unspentOutput7)
+                accountObject.unspentOutputs!.append(unspentOutput3)
+                accountObject.unspentOutputs!.append(unspentOutput13)
+                accountObject.unspentOutputs!.append(unspentOutput9)
+                accountObject.unspentOutputs!.append(unspentOutput10)
+                accountObject.unspentOutputs!.append(unspentOutput8)
+                accountObject.unspentOutputs!.append(unspentOutput11)
+                accountObject.unspentOutputs!.append(unspentOutput14)
+                accountObject.unspentOutputs!.append(unspentOutput12)
+                accountObject.unspentOutputs!.append(unspentOutput16)
                 
-                accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
+                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
                 
                 let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray,
                     feeAmount: feeAmount, nonce: nonce, ephemeralPrivateKeyHex: ephemeralPrivateKeyHex, error: {
@@ -1179,10 +1177,10 @@ class ArcBitTests: XCTestCase {
             func testCreateSignedSerializedTransactionHexAndBIP69_5_1() -> () {
                 let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount]]
                 
-                accountObject.unspentOutputs = NSMutableArray(capacity: 2)
-                accountObject.unspentOutputs!.add(unspentOutput0)
-                accountObject.unspentOutputs!.add(unspentOutput1)
-                accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
+                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+                accountObject.unspentOutputs!.append(unspentOutput0)
+                accountObject.unspentOutputs!.append(unspentOutput1)
+                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
                 
                 let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
                     (data: String?) in
@@ -1224,10 +1222,10 @@ class ArcBitTests: XCTestCase {
             func testCreateSignedSerializedTransactionHexAndBIP69_5_2() -> () {
                 let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount]]
                 
-                accountObject.unspentOutputs = NSMutableArray(capacity: 2)
-                accountObject.unspentOutputs!.add(unspentOutput1)
-                accountObject.unspentOutputs!.add(unspentOutput0)
-                accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
+                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+                accountObject.unspentOutputs!.append(unspentOutput1)
+                accountObject.unspentOutputs!.append(unspentOutput0)
+                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
                 
                 let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
                     (data: String?) in
@@ -1283,10 +1281,10 @@ class ArcBitTests: XCTestCase {
             func testCreateSignedSerializedTransactionHexAndBIP69_6_1() -> () {
                 let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount], ["address": toAddress2, "amount": toAmount2]]
                 
-                accountObject.unspentOutputs = NSMutableArray(capacity: 2)
-                accountObject.unspentOutputs!.add(unspentOutput0)
-                accountObject.unspentOutputs!.add(unspentOutput1)
-                accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
+                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+                accountObject.unspentOutputs!.append(unspentOutput0)
+                accountObject.unspentOutputs!.append(unspentOutput1)
+                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
                 
                 let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
                     (data: String?) in
@@ -1345,10 +1343,10 @@ class ArcBitTests: XCTestCase {
             func testColdWallet_1_1() -> () {
                 let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount], ["address": toAddress2, "amount": toAmount2]]
                 
-                accountObject.unspentOutputs = NSMutableArray(capacity: 2)
-                accountObject.unspentOutputs!.add(unspentOutput0)
-                accountObject.unspentOutputs!.add(unspentOutput1)
-                accountObject.stealthPaymentUnspentOutputs = NSMutableArray(capacity: 0)
+                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+                accountObject.unspentOutputs!.append(unspentOutput0)
+                accountObject.unspentOutputs!.append(unspentOutput1)
+                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
                 
                 let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, signTx: false, error: {
                     (data: String?) in

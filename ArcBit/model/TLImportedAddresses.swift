@@ -92,18 +92,13 @@ import Foundation
             return
         }
 
-        TLBlockExplorerAPI.instance().getAddressesInfo(addresses.allObjects as! [String], success:{(jsonData:AnyObject!) in
-            let addressesArray = jsonData.object(forKey: "addresses") as! NSArray
-            let txArray = jsonData.object(forKey: "txs") as! NSArray
-            for addressDict in addressesArray {
-                let address = (addressDict as! NSDictionary).object(forKey: "address") as! String
-                
-                let indexes = self.addressToIdxDict.object(forKey: address) as! NSArray
+        TLBlockExplorerAPI.instance().getAddressesInfo(addresses.allObjects as! [String], success:{(addressesObject) in
+            for addressObject in addressesObject.addresses {
+                let indexes = (self.addressToIdxDict).object(forKey: addressObject.address) as! NSArray
                 for idx in indexes {
                     let importedAddressObject = self.importedAddresses.object(at: idx as! Int) as! TLImportedAddress
-                    let addressBalance = ((addressDict as AnyObject).object(forKey: "final_balance") as! NSNumber).uint64Value
-                    importedAddressObject.balance = TLCoin(uint64: addressBalance)
-                    importedAddressObject.processTxArray(txArray, shouldUpdateAccountBalance: false)
+                    importedAddressObject.balance = TLCoin(uint64: addressObject.finalBalance)
+                    importedAddressObject.processTxArray(addressesObject.txs, shouldUpdateAccountBalance: false)
                     importedAddressObject.setHasFetchedAccountData(true)
                 }
             }
@@ -133,32 +128,31 @@ import Foundation
             return
         }
         
-        let jsonData = TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(addresses.allObjects as! [String])
-        if (jsonData.object(forKey: TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) != nil) {
+        do {
+            let addressesObject = try TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(addresses.allObjects as! [String])
+            
+            for addressObject in addressesObject.addresses {
+                let indexes = (self.addressToIdxDict).object(forKey: addressObject.address) as! NSArray
+                for idx in indexes {
+                    let importedAddressObject = self.importedAddresses.object(at: idx as! Int) as! TLImportedAddress
+                    importedAddressObject.balance = TLCoin(uint64: addressObject.finalBalance)
+                    importedAddressObject.processTxArray(addressesObject.txs, shouldUpdateAccountBalance: false)
+                    importedAddressObject.setHasFetchedAccountData(true)
+                }
+            }
+
+            self.downloadState = .downloaded
+            DispatchQueue.main.async(execute: {
+                DLog("postNotificationName: EVENT_FETCHED_ADDRESSES_DATA importedAddresses")
+                NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_FETCHED_ADDRESSES_DATA()), object:nil, userInfo:nil)
+            })
+        } catch TLNetworkingError.NetworkError(_, _) {
+            self.downloadState = .failed
+            return
+        } catch { //TODO why do i need this, xcode gives error that above catch is not exhastive, need to look into
             self.downloadState = .failed
             return
         }
-
-        let addressesArray = jsonData.object(forKey: "addresses") as! NSArray
-        let txArray = jsonData.object(forKey: "txs") as! NSArray
-        for addressDict in addressesArray {
-            let address = (addressDict as! NSDictionary).object(forKey: "address") as! String
-            
-            let indexes = (self.addressToIdxDict).object(forKey: address) as! NSArray
-            for idx in indexes {
-                let importedAddressObject = self.importedAddresses.object(at: idx as! Int) as! TLImportedAddress
-                let addressBalance = ((addressDict as AnyObject).object(forKey: "final_balance") as! NSNumber).uint64Value
-                importedAddressObject.balance = TLCoin(uint64: addressBalance)
-                importedAddressObject.processTxArray(txArray, shouldUpdateAccountBalance: false)
-                importedAddressObject.setHasFetchedAccountData(true)
-            }
-        }
-        
-        self.downloadState = .downloaded
-        DispatchQueue.main.async(execute: {
-            DLog("postNotificationName: EVENT_FETCHED_ADDRESSES_DATA importedAddresses")
-            NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_FETCHED_ADDRESSES_DATA()), object:nil, userInfo:nil)
-        })
     }
     
     func addImportedPrivateKey(_ privateKey:String, encryptedPrivateKey:String?) -> (TLImportedAddress) {

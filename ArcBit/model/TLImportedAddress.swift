@@ -28,7 +28,7 @@ import Foundation
     fileprivate var addressDict:NSMutableDictionary?
     lazy var haveUpDatedUTXOs: Bool = false
     lazy var unspentOutputsCount: Int = 0
-    fileprivate var unspentOutputs:NSArray?
+    lazy var unspentOutputs = Array<TLUnspentOutputObject>()
     fileprivate var unspentOutputsSum:TLCoin?
     var balance = TLCoin.zero()
     fileprivate var fetchedAccountData = false
@@ -51,7 +51,6 @@ import Foundation
         self.coinType = coinType
         addressDict = NSMutableDictionary(dictionary:dict)
         importedAddress = addressDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String?
-        unspentOutputs = NSMutableArray()
         processedTxSet = NSMutableSet()
         if (addressDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_KEY) != nil) {
             self.watchOnly = false
@@ -99,7 +98,7 @@ import Foundation
         return self.fetchedAccountData
     }
     
-    func getUnspentArray() -> (NSArray?) {
+    func getUnspentArray() -> Array<TLUnspentOutputObject> {
         return unspentOutputs
     }
     
@@ -108,14 +107,13 @@ import Foundation
             return unspentOutputsSum
         }
         
-        if (unspentOutputs == nil) {
-            return TLCoin.zero()
-        }
+//        if (unspentOutputs == nil) {
+//            return TLCoin.zero()
+//        }
         
         var unspentOutputsSumTemp:UInt64 = 0
-        for unspentOutput in unspentOutputs as! [NSDictionary] {
-            let amount = unspentOutput.object(forKey: "value") as! NSNumber
-            unspentOutputsSumTemp += UInt64(amount)
+        for unspentOutput in unspentOutputs {
+            unspentOutputsSumTemp += unspentOutput.value
         }
         
         
@@ -126,10 +124,8 @@ import Foundation
     func getInputsNeededToConsume(_ amountNeeded: TLCoin) -> Int {
         var valueSelected:UInt64 = 0
         var inputCount = 0
-        for _unspentOutput in unspentOutputs! {
-            let unspentOutput = _unspentOutput as! NSDictionary
-            let amount = unspentOutput.object(forKey: "value") as! NSNumber
-            valueSelected += amount.uint64Value
+        for unspentOutput in unspentOutputs {
+            valueSelected += unspentOutput.value
             inputCount += 1
             if valueSelected >= amountNeeded.toUInt64() {
                 return inputCount
@@ -138,8 +134,11 @@ import Foundation
         return inputCount
     }
     
-    func setUnspentOutputs(_ unspentOuts:NSArray)-> () {
-        unspentOutputs = unspentOuts.copy() as? NSArray
+    func setUnspentOutputs(_ unspentOuts:Array<TLUnspentOutputObject>) {
+        // https://stackoverflow.com/questions/27812433/how-do-i-make-a-exact-duplicate-copy-of-an-array
+//        self.unspentOuts = unspentOuts.map { $0.copy() }
+        self.unspentOutputs = unspentOuts
+//        unspentOutputs = unspentOuts.copy() as? NSArray
     }
     
     func getBalance() -> (TLCoin?) {
@@ -241,7 +240,7 @@ import Foundation
     
     
     func processNewTx(_ txObject: TLTxObject) -> TLCoin? {
-        if (processedTxSet!.contains(txObject.getHash()!)) {
+        if (processedTxSet!.contains(txObject.getHash())) {
             // happens when you send coins to the same account, so you get the same tx from the websockets more then once
             return nil
         }
@@ -251,11 +250,10 @@ import Foundation
         return doesTxInvolveAddressAndReceivedAmount.1
     }
     
-    func processTxArray(_ txArray: NSArray, shouldUpdateAccountBalance: Bool) -> (){
+    func processTxArray(_ txArray: Array<TLTxObject>, shouldUpdateAccountBalance: Bool) -> (){
         resetAccountBalances()
 
-        for tx in txArray as! [NSDictionary] {
-            let txObject = TLTxObject(dict:tx)
+        for txObject in txArray {
             let doesTxInvolveAddressAndReceivedAmount = processTx(txObject, shouldUpdateAccountBalance: shouldUpdateAccountBalance)
             if (doesTxInvolveAddressAndReceivedAmount.0) {
                 txObjectArray!.add(txObject)
@@ -265,7 +263,7 @@ import Foundation
     
     fileprivate func processTx(_ txObject: TLTxObject, shouldUpdateAccountBalance: Bool) -> (Bool, TLCoin?) {
         haveUpDatedUTXOs = false
-        processedTxSet!.add(txObject.getHash()!)
+        processedTxSet!.add(txObject.getHash())
         var currentTxSubtract:UInt64 = 0
         var currentTxAdd:UInt64 = 0
         var doesTxInvolveAddress = false
@@ -303,18 +301,18 @@ import Foundation
         let receivedAmount:TLCoin?
         if (currentTxSubtract > currentTxAdd) {
             let amountChangeToAccountFromTx = TLCoin(uint64:currentTxSubtract - currentTxAdd)
-            txidToAccountAmountDict!.setObject(amountChangeToAccountFromTx, forKey:txObject.getHash()! as NSCopying)
-            txidToAccountAmountTypeDict!.setObject(TLAccountTxType.send.rawValue, forKey:txObject.getHash()! as NSCopying)
+            txidToAccountAmountDict!.setObject(amountChangeToAccountFromTx, forKey:txObject.getHash() as NSCopying)
+            txidToAccountAmountTypeDict!.setObject(TLAccountTxType.send.rawValue, forKey:txObject.getHash() as NSCopying)
             receivedAmount = nil
         } else if (currentTxSubtract < currentTxAdd) {
             let amountChangeToAccountFromTx = TLCoin(uint64:currentTxAdd - currentTxSubtract)
-            txidToAccountAmountDict!.setObject(amountChangeToAccountFromTx, forKey:txObject.getHash()! as NSCopying)
-            txidToAccountAmountTypeDict!.setObject(TLAccountTxType.receive.rawValue, forKey:txObject.getHash()! as NSCopying)
+            txidToAccountAmountDict!.setObject(amountChangeToAccountFromTx, forKey:txObject.getHash() as NSCopying)
+            txidToAccountAmountTypeDict!.setObject(TLAccountTxType.receive.rawValue, forKey:txObject.getHash() as NSCopying)
             receivedAmount = amountChangeToAccountFromTx
         } else {
             let amountChangeToAccountFromTx = TLCoin.zero()
-            txidToAccountAmountDict!.setObject(amountChangeToAccountFromTx, forKey:txObject.getHash()! as NSCopying)
-            txidToAccountAmountTypeDict!.setObject(TLAccountTxType.moveBetweenAccount.rawValue, forKey:txObject.getHash()! as NSCopying)
+            txidToAccountAmountDict!.setObject(amountChangeToAccountFromTx, forKey:txObject.getHash() as NSCopying)
+            txidToAccountAmountTypeDict!.setObject(TLAccountTxType.moveBetweenAccount.rawValue, forKey:txObject.getHash() as NSCopying)
             receivedAmount = nil
         }
         
@@ -322,14 +320,11 @@ import Foundation
     }
     
     func getSingleAddressData(_ success: @escaping TLWalletUtils.Success, failure:@escaping TLWalletUtils.Error) -> () {
-        TLBlockExplorerAPI.instance().getAddressesInfo([importedAddress!], success:{(jsonData:AnyObject!) in
+        TLBlockExplorerAPI.instance().getAddressesInfo([importedAddress!], success:{(addressesObject) in
             
-            let addressesArray = jsonData.object(forKey: "addresses") as! NSArray
-            for addressDict in addressesArray {
-                let addressBalance = ((addressDict as AnyObject).object(forKey: "final_balance") as! NSNumber).uint64Value
-                self.balance = TLCoin(uint64: addressBalance)
-
-                self.processTxArray((jsonData as! NSDictionary!).object(forKey: "txs") as! NSArray, shouldUpdateAccountBalance: false)
+            for addressObject in addressesObject.addresses {
+                self.balance = TLCoin(uint64: addressObject.finalBalance)
+                self.processTxArray(addressesObject.txs, shouldUpdateAccountBalance: false)
             }
             
             self.setHasFetchedAccountData(true)
@@ -350,20 +345,24 @@ import Foundation
             return
         }
         
-        let jsonData = TLBlockExplorerAPI.instance().getAddressesInfoSynchronous([importedAddress!])
-        let addressesArray = jsonData.object(forKey: "addresses") as! NSArray
-        for addressDict in addressesArray {
-            let addressBalance = ((addressDict as AnyObject).object(forKey: "final_balance") as! NSNumber).uint64Value
-            self.balance = TLCoin(uint64: addressBalance)
-            self.processTxArray(jsonData.object(forKey: "txs") as! NSArray, shouldUpdateAccountBalance: false)
+        do {
+            let addressesObject = try TLBlockExplorerAPI.instance().getAddressesInfoSynchronous([importedAddress!])
+            for addressObject in addressesObject.addresses {
+                self.balance = TLCoin(uint64: addressObject.finalBalance)
+                self.processTxArray(addressesObject.txs, shouldUpdateAccountBalance: false)
+            }
+            self.setHasFetchedAccountData(true)
+            DispatchQueue.main.async(execute: {
+                DLog("postNotificationName: EVENT_FETCHED_ADDRESSES_DATA \(self.getAddress())")
+                NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_FETCHED_ADDRESSES_DATA())
+                    ,object:self.importedAddress, userInfo:nil)
+            })
+        } catch TLNetworkingError.NetworkError(let code, let message) {
+            DLog("getAccountDataSynchronous error \(code) \(message)")
+            NSException(name: NSExceptionName(rawValue: "Network Error"), reason: "HTTP Error", userInfo: nil).raise()
+        } catch { //TODO why do i need this, xcode gives error that above catch is not exhastive, need to look into
+            NSException(name: NSExceptionName(rawValue: "Network Error"), reason: "HTTP Error", userInfo: nil).raise()
         }
-        
-        self.setHasFetchedAccountData(true)
-        DispatchQueue.main.async(execute: {
-            DLog("postNotificationName: EVENT_FETCHED_ADDRESSES_DATA \(self.getAddress())")
-            NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_FETCHED_ADDRESSES_DATA())
-                ,object:self.importedAddress, userInfo:nil)
-        })
     }
     
     func setLabel(_ label:NSString) -> (){

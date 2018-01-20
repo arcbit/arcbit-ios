@@ -203,7 +203,6 @@ class TLPreferences
         let blockExplorer2blockExplorerURLDict = NSMutableDictionary(capacity: 3)
         blockExplorer2blockExplorerURLDict.setObject("https://blockchain.info/" ,forKey:String(format:"%ld", TLBlockExplorer.blockchain.rawValue) as NSCopying)
         blockExplorer2blockExplorerURLDict.setObject("https://insight.bitpay.com/" ,forKey:String(format:"%ld", TLBlockExplorer.insight.rawValue) as NSCopying)
-        blockExplorer2blockExplorerURLDict.setObject("https://bitcoin.toshi.io/" ,forKey:String(format:"%ld", TLBlockExplorer.toshi.rawValue) as NSCopying)
         UserDefaults.standard.set(blockExplorer2blockExplorerURLDict ,forKey:CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT)
         UserDefaults.standard.synchronize()
     }

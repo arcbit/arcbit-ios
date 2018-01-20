@@ -37,8 +37,8 @@ import Foundation
     lazy var haveUpDatedUTXOs: Bool = false
     lazy var unspentOutputsCount: Int = 0
     lazy var stealthPaymentUnspentOutputsCount: Int = 0
-    var unspentOutputs: NSMutableArray?
-    var stealthPaymentUnspentOutputs: NSMutableArray?
+    var unspentOutputs: Array<TLUnspentOutputObject>?
+    var stealthPaymentUnspentOutputs: Array<TLUnspentOutputObject>?
     fileprivate var mainActiveAddresses = [String]()
     fileprivate var changeActiveAddresses = [String]()
     fileprivate var activeAddressesDict = [String:Bool]()
@@ -434,7 +434,7 @@ import Foundation
     }
     
     func processNewTx(_ txObject: TLTxObject) -> TLCoin? {
-        if (processedTxSet.contains(txObject.getHash()!)) {
+        if (processedTxSet.contains(txObject.getHash())) {
             return nil
         }
         
@@ -451,39 +451,36 @@ import Foundation
     
     fileprivate func processTx(_ txObject: TLTxObject, shouldCheckToAddressesNTxsCount: Bool, shouldUpdateAccountBalance: Bool) -> TLCoin? {
         haveUpDatedUTXOs = false
-        processedTxSet.add(txObject.getHash()!)
+        processedTxSet.add(txObject.getHash())
         var currentTxSubtract:UInt64 = 0
         var currentTxAdd:UInt64 = 0
-        
-        let address2hasUpdatedNTxCount = NSMutableDictionary()
-        
-//        DLog("TLAccountObject processTx: \(self.getAccountID()) \(txObject.getTxid()!)")
-    
-        let outputAddressToValueArray = txObject.getOutputAddressToValueArray()
 
-        for _output in outputAddressToValueArray! {
-            let output = _output as! NSDictionary
-            
+        let address2hasUpdatedNTxCount = NSMutableDictionary()
+
+//        DLog("TLAccountObject processTx: \(self.getAccountID()) \(txObject.getTxid())")
+
+        let outputAddressToValueArray = txObject.getOutputAddressToValueArray()
+        for txOutputObject in outputAddressToValueArray {
             var value:UInt64 = 0
-            if let v = output.object(forKey: "value") as? NSNumber {
-                value = UInt64(v.uint64Value)
+            if let v = txOutputObject.value {
+                value = v
             }
-            
-            if let address = output.object(forKey: "addr") as? String {
-                
+
+            if let address = txOutputObject.addr {
+
                 if (isActiveAddress(address)) {
-                    
+
                     currentTxAdd += value
                     //DLog("addToAddressBalance: \(address) \(value)")
                     if (shouldUpdateAccountBalance) {
                         addToAddressBalance(address as NSString, amount: TLCoin(uint64: value))
                     }
-                    
+
                     if (shouldCheckToAddressesNTxsCount &&
                         address2hasUpdatedNTxCount.object(forKey: address) == nil) {
-                            
+
                             address2hasUpdatedNTxCount.setObject("", forKey: address as NSCopying)
-                            
+
                             let ntxs = getNumberOfTransactionsForAddress(address)
                             address2NumberOfTransactions[address] = ntxs + 1
                     }
@@ -497,63 +494,57 @@ import Foundation
                 }
             }
         }
-        
+
         let inputAddressToValueArray = txObject.getInputAddressToValueArray()
-        for _input in inputAddressToValueArray! {
-            let input = _input as! NSDictionary
-            
-            var value:UInt64 = 0
-            if let v = input.object(forKey: "value") as? NSNumber {
-                value = UInt64(v.uint64Value)
-            }
+        for inputObject in inputAddressToValueArray {
+            var value = inputObject.prevOut.value
 
-            if let address = input.object(forKey: "addr") as? String {
+            let address = inputObject.prevOut.addr
 
-                if (isActiveAddress(address)) {
-                        
-                    currentTxSubtract += value
-                    //DLog("subtractToAddressBalance: \(address) \(value)")
-                    if (shouldUpdateAccountBalance) {
-                        subtractToAddressBalance(address, amount: TLCoin(uint64: value))
-                    }
-                    
-                    if (shouldCheckToAddressesNTxsCount &&
-                        address2hasUpdatedNTxCount.object(forKey: address) == nil) {
-                            
-                            address2hasUpdatedNTxCount.setObject("", forKey: address as NSCopying)
-                            let ntxs = getNumberOfTransactionsForAddress(address)
-                            address2NumberOfTransactions[address] = ntxs + 1
-                    }
-                } else if self.stealthWallet != nil && self.stealthWallet!.isPaymentAddress(address) {
-                    currentTxSubtract += value
-                    //DLog("subtractToAddressBalance: stealth \(address) \(value)")
-                    if shouldUpdateAccountBalance {
-                        subtractToAddressBalance(address, amount: TLCoin(uint64: value))
-                    }
-                } else {
+            if (isActiveAddress(address)) {
+                
+                currentTxSubtract += value
+                //DLog("subtractToAddressBalance: \(address) \(value)")
+                if (shouldUpdateAccountBalance) {
+                    subtractToAddressBalance(address, amount: TLCoin(uint64: value))
                 }
+                
+                if (shouldCheckToAddressesNTxsCount &&
+                    address2hasUpdatedNTxCount.object(forKey: address) == nil) {
+                    
+                    address2hasUpdatedNTxCount.setObject("", forKey: address as NSCopying)
+                    let ntxs = getNumberOfTransactionsForAddress(address)
+                    address2NumberOfTransactions[address] = ntxs + 1
+                }
+            } else if self.stealthWallet != nil && self.stealthWallet!.isPaymentAddress(address) {
+                currentTxSubtract += value
+                //DLog("subtractToAddressBalance: stealth \(address) \(value)")
+                if shouldUpdateAccountBalance {
+                    subtractToAddressBalance(address, amount: TLCoin(uint64: value))
+                }
+            } else {
             }
         }
-        
+
         //DLog("current processTxprocessTx \(self.accountBalance.toUInt64()) + \(currentTxAdd) - \(currentTxSubtract)")
         if (shouldUpdateAccountBalance) {
             self.accountBalance = TLCoin(uint64: self.accountBalance.toUInt64() + currentTxAdd - currentTxSubtract)
         }
-        
+
         if (currentTxSubtract > currentTxAdd) {
             let amountChangeToAccountFromTx = TLCoin(uint64: UInt64(currentTxSubtract - currentTxAdd))
-            txidToAccountAmountDict[txObject.getHash()! as String] = amountChangeToAccountFromTx
-            txidToAccountAmountTypeDict[txObject.getHash()! as String] = Int(TLAccountTxType.send.rawValue)
+            txidToAccountAmountDict[txObject.getHash() as String] = amountChangeToAccountFromTx
+            txidToAccountAmountTypeDict[txObject.getHash() as String] = Int(TLAccountTxType.send.rawValue)
             return nil
         } else if (currentTxSubtract < currentTxAdd) {
             let amountChangeToAccountFromTx = TLCoin(uint64: UInt64(currentTxAdd - currentTxSubtract))
-            txidToAccountAmountDict[txObject.getHash()! as String] = amountChangeToAccountFromTx
-            txidToAccountAmountTypeDict[txObject.getHash()! as String] = Int(TLAccountTxType.receive.rawValue)
+            txidToAccountAmountDict[txObject.getHash() as String] = amountChangeToAccountFromTx
+            txidToAccountAmountTypeDict[txObject.getHash() as String] = Int(TLAccountTxType.receive.rawValue)
             return amountChangeToAccountFromTx
         } else {
             let amountChangeToAccountFromTx = TLCoin.zero()
-            txidToAccountAmountDict[txObject.getHash()! as String] = amountChangeToAccountFromTx
-            txidToAccountAmountTypeDict[txObject.getHash()! as String] = Int(TLAccountTxType.moveBetweenAccount.rawValue)
+            txidToAccountAmountDict[txObject.getHash() as String] = amountChangeToAccountFromTx
+            txidToAccountAmountTypeDict[txObject.getHash() as String] = Int(TLAccountTxType.moveBetweenAccount.rawValue)
             return nil
         }
     }
@@ -744,10 +735,8 @@ import Foundation
         }
     }
     
-    fileprivate func processTxArray(_ txArray: NSArray, shouldResetAccountBalance: (Bool)) -> () {
-        for _tx in txArray {
-            let tx = _tx as! NSDictionary
-            let txObject = TLTxObject(dict: tx)
+    fileprivate func processTxArray(_ txArray: Array<TLTxObject>, shouldResetAccountBalance: (Bool)) -> () {
+        for txObject in txArray {
             processTx(txObject, shouldCheckToAddressesNTxsCount: true, shouldUpdateAccountBalance: false)
             txObjectArray.append(txObject)
         }
@@ -1029,39 +1018,35 @@ import Foundation
                 addressToIdxDict.setObject(i, forKey: address as NSCopying)
             }
 
-            let jsonData = TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(addresses)
-            if (jsonData.object(forKey: TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) != nil) {
-                DLog("getAccountDataSynchronous error \(jsonData.description)")
+            do {
+                let addressesObject = try TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(addresses)
+            
+                var balance:UInt64 = 0
+                for addressObject in addressesObject.addresses {
+                    self.address2NumberOfTransactions[addressObject.address] = addressObject.nTx
+                    balance += addressObject.finalBalance
+                    self.address2BalanceDict[addressObject.address] = TLCoin(uint64: addressObject.finalBalance)
+                    let HDIdx = addressToIdxDict.object(forKey: addressObject.address) as! Int
+                    DLog(String(format: "recoverAccountMainAddresses HDIdx: %d address: %@ n_tx: %d", HDIdx, addressObject.address, addressObject.nTx))
+                    if (addressObject.nTx > 0 && HDIdx > accountAddressIdx) {
+                        accountAddressIdx = HDIdx
+                    }
+                }
+                self.accountBalance = TLCoin(uint64: self.accountBalance.toUInt64() + balance)
+                
+                DLog(String(format: "accountAddressIdx: %ld lookAheadOffset: %lu", accountAddressIdx, lookAheadOffset))
+                
+                if (accountAddressIdx < lookAheadOffset) {
+                    continueLookingAheadAddress = false
+                }
+                
+                lookAheadOffset += GAP_LIMIT
+            } catch TLNetworkingError.NetworkError(let code, let message) {
+                DLog("getAccountDataSynchronous error \(code) \(message)")
+                NSException(name: NSExceptionName(rawValue: "Network Error"), reason: "HTTP Error", userInfo: nil).raise()
+            } catch { //TODO why do i need this, xcode gives error that above catch is not exhastive, need to look into
                 NSException(name: NSExceptionName(rawValue: "Network Error"), reason: "HTTP Error", userInfo: nil).raise()
             }
-            let addressesArray = jsonData.object(forKey: "addresses") as! NSArray
-            var balance:UInt64 = 0
-            for _addressDict in addressesArray {
-                let addressDict = _addressDict as! NSDictionary
-                let n_tx = addressDict.object(forKey: "n_tx") as! Int
-                let address = addressDict.object(forKey: "address") as! String
-                address2NumberOfTransactions[address] = n_tx
-                let addressBalance = (addressDict.object(forKey: "final_balance") as! NSNumber).uint64Value
-                balance += addressBalance
-                address2BalanceDict[address] = TLCoin(uint64: addressBalance)
-
-                
-                let HDIdx = addressToIdxDict.object(forKey: address) as! Int
-                DLog(String(format: "recoverAccountMainAddresses HDIdx: %d address: %@ n_tx: %d", HDIdx, address, n_tx))
-                if (n_tx > 0 && HDIdx > accountAddressIdx) {
-                    accountAddressIdx = HDIdx
-                }
-            }
-            self.accountBalance = TLCoin(uint64: self.accountBalance.toUInt64() + UInt64(balance))
-            
-            DLog(String(format: "accountAddressIdx: %ld lookAheadOffset: %lu", accountAddressIdx, lookAheadOffset))
-            
-            if (accountAddressIdx < lookAheadOffset) {
-                continueLookingAheadAddress = false
-            }
-            
-            lookAheadOffset += GAP_LIMIT
-            
         }
         
         while (getMainAddressesCount() > accountAddressIdx + 1) {
@@ -1092,35 +1077,33 @@ import Foundation
                 addressToIdxDict.setObject(i, forKey: address as NSCopying)
             }
             
-            let jsonData = TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(addresses)
-            if (jsonData.object(forKey: TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) != nil) {
-                DLog("getAccountDataSynchronous error \(jsonData.description)")
+            do {
+                let addressesObject = try TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(addresses)
+                
+                var balance:UInt64 = 0
+                for addressObject in addressesObject.addresses {
+                    self.address2NumberOfTransactions[addressObject.address] = addressObject.nTx
+                    balance += addressObject.finalBalance
+                    self.address2BalanceDict[addressObject.address] = TLCoin(uint64: addressObject.finalBalance)
+                    let HDIdx = addressToIdxDict.object(forKey: addressObject.address) as! Int
+                    DLog(String(format: "recoverAccountChangeAddresses HDIdx: %d address: %@ n_tx: %d", HDIdx, addressObject.address, addressObject.nTx))
+                    if (addressObject.nTx > 0 && HDIdx > accountAddressIdx) {
+                        accountAddressIdx = HDIdx
+                    }
+                }
+                self.accountBalance = TLCoin(uint64: self.accountBalance.toUInt64() + balance)
+
+                if (accountAddressIdx < lookAheadOffset) {
+                    continueLookingAheadAddress = false
+                }
+                
+                lookAheadOffset += GAP_LIMIT
+            } catch TLNetworkingError.NetworkError(let code, let message) {
+                DLog("getAccountDataSynchronous error \(code) \(message)")
+                NSException(name: NSExceptionName(rawValue: "Network Error"), reason: "HTTP Error", userInfo: nil).raise()
+            } catch { //TODO why do i need this, xcode gives error that above catch is not exhastive, need to look into
                 NSException(name: NSExceptionName(rawValue: "Network Error"), reason: "HTTP Error", userInfo: nil).raise()
             }
-            let addressesArray = jsonData.object(forKey: "addresses") as! NSArray
-            var balance:UInt64 = 0
-            for _addressDict in addressesArray {
-                let addressDict = _addressDict as! NSDictionary
-                let n_tx = addressDict.object(forKey: "n_tx") as! Int
-                let address = addressDict.object(forKey: "address") as! String
-                address2NumberOfTransactions[address] = n_tx
-                let addressBalance = (addressDict.object(forKey: "final_balance") as! NSNumber).uint64Value
-                balance += addressBalance
-                address2BalanceDict[address] = TLCoin(uint64: addressBalance)
-                
-                let HDIdx = addressToIdxDict.object(forKey: address) as! Int
-                DLog(String(format: "recoverAccountChangeAddresses HDIdx: %d address: %@ n_tx: %d", HDIdx, address, n_tx))
-                if (n_tx > 0 && HDIdx > accountAddressIdx) {
-                    accountAddressIdx = HDIdx
-                }
-            }
-            accountBalance = TLCoin(uint64: self.accountBalance.toUInt64() + UInt64(balance))
-            
-            if (accountAddressIdx < lookAheadOffset) {
-                continueLookingAheadAddress = false
-            }
-            
-            lookAheadOffset += GAP_LIMIT
         }
         
         while (getChangeAddressesCount() > accountAddressIdx + 1) {
@@ -1204,11 +1187,11 @@ import Foundation
         return needsRecovering
     }
     
-    func getUnspentArray() -> NSArray {
+    func getUnspentArray() -> Array<TLUnspentOutputObject> {
         return unspentOutputs!
     }
     
-    func getStealthPaymentUnspentOutputsArray() -> NSArray {
+    func getStealthPaymentUnspentOutputsArray() -> Array<TLUnspentOutputObject> {
         return stealthPaymentUnspentOutputs!
     }
     
@@ -1217,22 +1200,20 @@ import Foundation
             return totalUnspentOutputsSum!
         }
         
-        if (unspentOutputs == nil) {
+        guard let unspentOutputs = unspentOutputs else {
             return TLCoin.zero()
         }
         
         var totalUnspentOutputsSumTemp:UInt64 = 0
         
-        for _unspentOutput in stealthPaymentUnspentOutputs! {
-            let unspentOutput = _unspentOutput as! NSDictionary
-            let amount = unspentOutput.object(forKey: "value") as! NSNumber
-            totalUnspentOutputsSumTemp += amount.uint64Value
+        if let stealthPaymentUnspentOutputs = stealthPaymentUnspentOutputs {
+            for unspentOutput in stealthPaymentUnspentOutputs {
+                totalUnspentOutputsSumTemp += unspentOutput.value
+            }
         }
         
-        for _unspentOutput in unspentOutputs! {
-            let unspentOutput = _unspentOutput as! NSDictionary
-            let amount = unspentOutput.object(forKey: "value") as! NSNumber
-            totalUnspentOutputsSumTemp += amount.uint64Value
+        for unspentOutput in unspentOutputs {
+            totalUnspentOutputsSumTemp += unspentOutput.value
         }
         
         totalUnspentOutputsSum = TLCoin(uint64: totalUnspentOutputsSumTemp)
@@ -1242,28 +1223,28 @@ import Foundation
     func getInputsNeededToConsume(_ amountNeeded: TLCoin) -> Int {
         var valueSelected:UInt64 = 0
         var inputCount = 0
-        for _unspentOutput in stealthPaymentUnspentOutputs! {
-            let unspentOutput = _unspentOutput as! NSDictionary
-            let amount = unspentOutput.object(forKey: "value") as! NSNumber
-            valueSelected += amount.uint64Value
-            
-            inputCount += 1
-            if (valueSelected >= amountNeeded.toUInt64() && inputCount >= MAX_CONSOLIDATE_STEALTH_PAYMENT_UTXOS_COUNT) {
-                break
+        if let stealthPaymentUnspentOutputs = stealthPaymentUnspentOutputs {
+            for unspentOutput in stealthPaymentUnspentOutputs {
+                valueSelected += unspentOutput.value
+                inputCount += 1
+                if (valueSelected >= amountNeeded.toUInt64() && inputCount >= MAX_CONSOLIDATE_STEALTH_PAYMENT_UTXOS_COUNT) {
+                    break
+                }
             }
         }
+
         
         if valueSelected >= amountNeeded.toUInt64() {
             return inputCount
         }
         
-        for _unspentOutput in unspentOutputs! {
-            let unspentOutput = _unspentOutput as! NSDictionary
-            let amount = unspentOutput.object(forKey: "value") as! NSNumber
-            valueSelected += amount.uint64Value
-            inputCount += 1
-            if valueSelected >= amountNeeded.toUInt64() {
-                return inputCount
+        if let unspentOutputs = unspentOutputs {
+            for unspentOutput in unspentOutputs {
+                valueSelected += unspentOutput.value
+                inputCount += 1
+                if valueSelected >= amountNeeded.toUInt64() {
+                    return inputCount
+                }
             }
         }
         return inputCount
@@ -1285,12 +1266,12 @@ import Foundation
         haveUpDatedUTXOs = false
         
         TLBlockExplorerAPI.instance().getUnspentOutputs(activeAddresses, success: {
-            (jsonData) in
-            let unspentOutputs = (jsonData as! NSDictionary).object(forKey: "unspent_outputs") as! NSArray!
-            self.unspentOutputs = NSMutableArray(capacity: unspentOutputs!.count)
-            self.stealthPaymentUnspentOutputs = NSMutableArray(capacity: unspentOutputs!.count)
-
-            for unspentOutput in unspentOutputs! {
+            (unspentOutputsObject) in
+//            let unspentOutputs = (jsonData as! NSDictionary).object(forKey: "unspent_outputs") as! NSArray!
+            self.unspentOutputs = Array<TLUnspentOutputObject>()
+            self.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
+            
+            for unspentOutput in unspentOutputsObject.unspentOutputs {
                 let outputScript = (unspentOutput as AnyObject).object(forKey: "script") as! String
                 
                 let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript, isTestnet: self.appWallet!.walletConfig.isTestnet)
@@ -1299,59 +1280,33 @@ import Foundation
                     continue
                 }
                 if self.stealthWallet != nil && self.stealthWallet!.isPaymentAddress(address!) == true {
-                    self.stealthPaymentUnspentOutputs!.add(unspentOutput)
+                    self.stealthPaymentUnspentOutputs?.append(unspentOutput)
                     self.stealthPaymentUnspentOutputsCount += 1
                 } else {
-                    self.unspentOutputs!.add(unspentOutput)
+                    self.unspentOutputs?.append(unspentOutput)
                     self.unspentOutputsCount += 1
                 }
             }
         
-            self.unspentOutputs = NSMutableArray(array: self.unspentOutputs!.sortedArray (comparator: {
-                (obj1, obj2) -> ComparisonResult in
-                
-                var confirmations1 = 0
-                var confirmations2 = 0
-                
-                if let c1 = (obj1 as! NSDictionary).object(forKey: "confirmations") as? Int {
-                    confirmations1 = c1
+            self.unspentOutputs!.sort { (obj1, obj2) -> Bool in
+                if  (obj1 as TLUnspentOutputObject).confirmations >  (obj2 as TLUnspentOutputObject).confirmations {
+                    return true
+                } else if (obj1 as TLUnspentOutputObject).confirmations < (obj2 as TLUnspentOutputObject).confirmations {
+                    return false
+                } else {
+                    return true
                 }
-                
-                if let c2 = (obj2 as! NSDictionary).object(forKey: "confirmations") as? Int {
-                    confirmations2 = c2
-                }
+            }
 
-                if confirmations1 > confirmations2 {
-                    return .orderedAscending
-                } else if confirmations1 < confirmations2 {
-                    return .orderedDescending
+            self.stealthPaymentUnspentOutputs!.sort { (obj1, obj2) -> Bool in
+                if  (obj1 as TLUnspentOutputObject).confirmations >  (obj2 as TLUnspentOutputObject).confirmations {
+                    return true
+                } else if (obj1 as TLUnspentOutputObject).confirmations < (obj2 as TLUnspentOutputObject).confirmations {
+                    return false
                 } else {
-                    return .orderedSame
+                    return true
                 }
-            }))
-            
-            self.stealthPaymentUnspentOutputs = NSMutableArray(array: self.stealthPaymentUnspentOutputs!.sortedArray (comparator: {
-                (obj1, obj2) -> ComparisonResult in
-                
-                var confirmations1 = 0
-                var confirmations2 = 0
-                
-                if let c1 = (obj1 as! NSDictionary).object(forKey: "confirmations") as? Int {
-                    confirmations1 = c1
-                }
-                
-                if let c2 = (obj2 as! NSDictionary).object(forKey: "confirmations") as? Int {
-                    confirmations2 = c2
-                }
-                
-                if confirmations1 > confirmations2 {
-                    return .orderedAscending
-                } else if confirmations1 < confirmations2 {
-                    return .orderedDescending
-                } else {
-                    return .orderedSame
-                }
-            }))
+            }
             self.haveUpDatedUTXOs = true
             success()
             }, failure: {
@@ -1397,26 +1352,20 @@ import Foundation
         success: @escaping TLWalletUtils.Success, failure:@escaping TLWalletUtils.Error) -> () {
             
             TLBlockExplorerAPI.instance().getAddressesInfo(addresses, success: {
-                (_jsonData) in
-                let jsonData = _jsonData as! NSDictionary
+                (addressesObject) in
                 if (shouldResetAccountBalance) {
                     self.resetAccountBalances()
                 }
                 
-                let addressesDict = jsonData.object(forKey: "addresses") as! NSArray
                 var balance:UInt64 = 0
-                for _addressDict in addressesDict {
-                    let addressDict = _addressDict as! NSDictionary
-                    let n_tx = addressDict.object(forKey: "n_tx") as! Int
-                    let address = addressDict.object(forKey: "address") as! String
-                    self.address2NumberOfTransactions[address] = n_tx
-                    let addressBalance = (addressDict.object(forKey: "final_balance") as! NSNumber).uint64Value
-                    balance += addressBalance
-                    self.address2BalanceDict[address] = TLCoin(uint64: addressBalance)
+                for addressObject in addressesObject.addresses {
+                    self.address2NumberOfTransactions[addressObject.address] = addressObject.nTx
+                    balance += addressObject.finalBalance
+                    self.address2BalanceDict[addressObject.address] = TLCoin(uint64: addressObject.finalBalance)
                 }
                 self.accountBalance = TLCoin(uint64: self.accountBalance.toUInt64() + balance)
-                
-                self.processTxArray(jsonData.object(forKey: "txs") as! NSArray, shouldResetAccountBalance: true)
+
+                self.processTxArray(addressesObject.txs, shouldResetAccountBalance: true)
                 
                 
                 self.fetchedAccountData = true
@@ -1432,36 +1381,27 @@ import Foundation
             })
     }
     
-    fileprivate func getAccountDataSynchronous(_ addresses: Array<String>, shouldResetAccountBalance: Bool, shouldProcessTxArray: Bool) -> NSDictionary? {
-        let jsonData = TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(addresses)
-        if (jsonData.object(forKey: TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) == nil) {
-            if (shouldResetAccountBalance) {
-                resetAccountBalances()
-            }
-            
-            let addressesArray = jsonData.object(forKey: "addresses") as! NSArray
+    fileprivate func getAccountDataSynchronous(_ addresses: Array<String>, shouldResetAccountBalance: Bool, shouldProcessTxArray: Bool) {
+        do {
+            let addressesObject = try TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(addresses)
             var balance:UInt64 = 0
-            for _addressDict in addressesArray {
-                let addressDict = _addressDict as! NSDictionary
-                let n_tx = addressDict.object(forKey: "n_tx") as! Int
-                let address = addressDict.object(forKey: "address") as! String
-                address2NumberOfTransactions[address] = n_tx
-                let addressBalance = (addressDict.object(forKey: "final_balance") as! NSNumber).uint64Value
-                balance += addressBalance
-                address2BalanceDict[address] = TLCoin(uint64: addressBalance)
+            for addressObject in addressesObject.addresses {
+                self.address2NumberOfTransactions[addressObject.address] = addressObject.nTx
+                balance += addressObject.finalBalance
+                self.address2BalanceDict[addressObject.address] = TLCoin(uint64: addressObject.finalBalance)
             }
             self.accountBalance = TLCoin(uint64: self.accountBalance.toUInt64() + balance)
             
             if (shouldProcessTxArray) {
-                self.processTxArray(jsonData.object(forKey: "txs") as! NSArray, shouldResetAccountBalance: false)
+                self.processTxArray(addressesObject.txs, shouldResetAccountBalance: false)
                 self.fetchedAccountData = false //need to be false because after recovering account need to fetch stealth payments
             }
-        } else {
-            DLog("getAccountDataSynchronous error \(jsonData.description)")
+        } catch TLNetworkingError.NetworkError(let code, let message) {
+            DLog("getAccountDataSynchronous error \(code) \(message)")
+            NSException(name: NSExceptionName(rawValue: "Network Error"), reason: "HTTP Error", userInfo: nil).raise()
+        } catch { //TODO why do i need this, xcode gives error that above catch is not exhastive, need to look into
             NSException(name: NSExceptionName(rawValue: "Network Error"), reason: "HTTP Error", userInfo: nil).raise()
         }
-        
-        return jsonData
     }
     
     
@@ -1601,38 +1541,37 @@ import Foundation
     }
     
     fileprivate func getAccountDataO(_ addresses: Array<String>, shouldResetAccountBalance: Bool) -> () {
-        let jsonData = TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(addresses)
-        if (jsonData.object(forKey: TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) != nil) {
+        do {
+            let addressesObject = try TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(addresses)
+            
+            if (shouldResetAccountBalance) {
+                self.resetAccountBalances()
+            }
+            
+            var balance:UInt64 = 0
+            for addressObject in addressesObject.addresses {
+                self.address2NumberOfTransactions[addressObject.address] = addressObject.nTx
+                balance += addressObject.finalBalance
+                self.address2BalanceDict[addressObject.address] = TLCoin(uint64: addressObject.finalBalance)
+            }
+            self.accountBalance = TLCoin(uint64: self.accountBalance.toUInt64() + balance)
+            self.processTxArray(addressesObject.txs, shouldResetAccountBalance: true)
+            
+            self.fetchedAccountData = true
+            self.subscribeToWebsockets()
+            self.downloadState = .downloaded
+            DispatchQueue.main.async(execute: {
+                DLog("postNotificationName: EVENT_FETCHED_ADDRESSES_DATA \(self.getAccountIdxNumber())")
+                NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_FETCHED_ADDRESSES_DATA()), object: nil)
+            })
+        } catch TLNetworkingError.NetworkError(let code, let message) {
+            DLog("getAccountDataSynchronous error \(code) \(message)")
+            self.downloadState = .failed
+            return
+        } catch { //TODO why do i need this, xcode gives error that above catch is not exhastive, need to look into
             self.downloadState = .failed
             return
         }
-
-        if (shouldResetAccountBalance) {
-            self.resetAccountBalances()
-        }
-
-        let addressesDict = jsonData.object(forKey: "addresses") as! NSArray
-        var balance:UInt64 = 0
-        for _addressDict in addressesDict {
-            let addressDict = _addressDict as! NSDictionary
-            let n_tx = addressDict.object(forKey: "n_tx") as! Int
-            let address = addressDict.object(forKey: "address") as! String
-            self.address2NumberOfTransactions[address] = n_tx
-            let addressBalance = (addressDict.object(forKey: "final_balance") as! NSNumber).uint64Value
-            balance += addressBalance
-            self.address2BalanceDict[address] = TLCoin(uint64: addressBalance)
-        }
-        self.accountBalance = TLCoin(uint64: self.accountBalance.toUInt64() + balance)
-        
-        self.processTxArray(jsonData.object(forKey: "txs") as! NSArray, shouldResetAccountBalance: true)
-        
-        self.fetchedAccountData = true
-        self.subscribeToWebsockets()
-        self.downloadState = .downloaded
-        DispatchQueue.main.async(execute: {
-            DLog("postNotificationName: EVENT_FETCHED_ADDRESSES_DATA \(self.getAccountIdxNumber())")
-            NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_FETCHED_ADDRESSES_DATA()), object: nil)
-        })
     }
     
     fileprivate func subscribeToWebsockets() -> () {

@@ -22,15 +22,51 @@
 
 import Foundation
 
-@objc class TLTxObject : NSObject
-{
+class TLTxInputPrevOutObject {
+    let addr:String
+    let value:UInt64
+    
+    init(_ jsonDict: NSDictionary) {
+        self.addr = jsonDict.object(forKey: "addr") as! String
+        self.value = jsonDict.object(forKey: "value") as! UInt64
+    }
+}
+
+class TLTxInputObject {
+    let prevOut:TLTxInputPrevOutObject
+    init?(_ jsonDict: NSDictionary) {
+        if let prevOut = jsonDict.object(forKey: "prev_out") as? NSDictionary {
+            self.prevOut = TLTxInputPrevOutObject(prevOut)
+        } else {
+            return nil
+        }
+    }
+}
+
+class TLTxOutputObject {
+    private(set) var addr:String?
+    private(set) var value:UInt64?
+    let script:String
+
+    init(_ jsonDict: NSDictionary) {
+        if let address = jsonDict.object(forKey: "addr") as? String {
+            self.addr = address
+        }
+        if let value = jsonDict.object(forKey: "value") as? UInt64 {
+            self.value = value
+        }
+        self.script = jsonDict.object(forKey: "script") as! String
+    }
+}
+
+@objc class TLTxObject : NSObject {
     fileprivate var txDict : NSDictionary
-    fileprivate var inputAddressToValueArray : NSMutableArray?
-    fileprivate var outputAddressToValueArray : NSMutableArray?
+    fileprivate lazy var inputAddressToValueArray = Array<TLTxInputObject>()
+    fileprivate lazy var outputAddressToValueArray = Array<TLTxOutputObject>()
     fileprivate var addresses:[String]? = nil
     fileprivate var txid : String?
-    
-    init(dict: NSDictionary) {
+
+    init(_ dict: NSDictionary) {
         txDict = NSDictionary(dictionary:dict)
         super.init()
         txid = nil
@@ -38,86 +74,57 @@ import Foundation
     }
     
     fileprivate func buildTxObject(_ tx: NSDictionary) -> (){
-        inputAddressToValueArray = NSMutableArray()
-        let inputsArray = tx.object(forKey: "inputs") as? NSArray
-        if (inputsArray != nil) {
-            for _input in inputsArray! {
-                let input = _input as! NSDictionary
-                let prevOut = input.object(forKey: "prev_out") as? NSDictionary
-                if (prevOut != nil) {
-                    let addr = prevOut!.object(forKey: "addr") as? String
-                    
-                    let inp = NSMutableDictionary()
-                    if (addr != nil) {
-                        inp.setObject(addr!, forKey:"addr" as NSCopying)
-                        inp.setObject(prevOut!.object(forKey: "value") as! Int, forKey:"value" as NSCopying)
-                    }
-                    inputAddressToValueArray!.add(inp)
+        if let inputsArray = tx.object(forKey: "inputs") as? NSArray {
+            for input in inputsArray {
+                if let txInputObject = TLTxInputObject(input as! NSDictionary) {
+                    inputAddressToValueArray.append(txInputObject)
                 }
             }
         }
         
-        outputAddressToValueArray = NSMutableArray()
-        let outsArray = tx.object(forKey: "out") as? NSArray
-        if (outsArray != nil) {
-            for _output in outsArray! {
-                let output = _output as! NSDictionary
-                let addr = output.object(forKey: "addr") as? String
-                let outt = NSMutableDictionary()
-                if (addr != nil) {
-                    outt.setObject(addr!, forKey:"addr" as NSCopying)
-                    outt.setObject(output.object(forKey: "value") as! Int, forKey:"value" as NSCopying)
-                }
-                
-                outt.setObject(output.object(forKey: "script") as! String, forKey:"script" as NSCopying)
-                outputAddressToValueArray!.add(outt)
+        if let outsArray = tx.object(forKey: "out") as? NSArray {
+            for output in outsArray {
+                outputAddressToValueArray.append(TLTxOutputObject(output as! NSDictionary))
             }
         }
     }
     
     func getAddresses() -> [String] {
-        if (addresses != nil)
-        {
+        if (addresses != nil) {
             return addresses!
         }
         
         addresses = [String]()
         
-        for addressTovalueDict in inputAddressToValueArray! {
-            if let address = (addressTovalueDict as! NSDictionary).object(forKey: "addr") as? String {
-                addresses!.append(address)
-            }
+        for inputObject in inputAddressToValueArray {
+            addresses!.append(inputObject.prevOut.addr)
         }
-        for addressTovalueDict in outputAddressToValueArray! {
-            if let address = (addressTovalueDict as! NSDictionary).object(forKey: "addr") as? String {
-                addresses!.append(address)
+        for outputObject in outputAddressToValueArray {
+            if let addr = outputObject.addr {
+                addresses!.append(addr)
             }
         }
         return addresses!
     }
     
-    func getInputAddressToValueArray() -> (NSArray?) {
+    func getInputAddressToValueArray() -> Array<TLTxInputObject> {
         return inputAddressToValueArray
     }
     
     func getInputAddressArray() -> [String] {
         var addresses = [String]()
-        addresses.reserveCapacity(inputAddressToValueArray!.count)
-        for _input in inputAddressToValueArray! {
-            let input = _input as! NSDictionary
-            if let address = input.object(forKey: "addr") as? String {
-                addresses.append(address)
-            }
+        addresses.reserveCapacity(inputAddressToValueArray.count)
+        for inputObject in inputAddressToValueArray {
+            addresses.append(inputObject.prevOut.addr)
         }
         return addresses
     }
     
     func getOutputAddressArray() -> [String] {
         var addresses = [String]()
-        addresses.reserveCapacity(outputAddressToValueArray!.count)
-        for _output in outputAddressToValueArray! {
-            let output = _output as! NSDictionary
-            if let address = output.object(forKey: "addr") as? String {
+        addresses.reserveCapacity(outputAddressToValueArray.count)
+        for outputObject in outputAddressToValueArray {
+            if let address = outputObject.addr {
                 addresses.append(address)
             }
         }
@@ -126,31 +133,29 @@ import Foundation
     
     func getPossibleStealthDataScripts() -> [String] {
         var possibleStealthDataScripts = [String]()
-        possibleStealthDataScripts.reserveCapacity(outputAddressToValueArray!.count)
+        possibleStealthDataScripts.reserveCapacity(outputAddressToValueArray.count)
         
-        for _output in outputAddressToValueArray! {
-            let output = _output as! NSDictionary
-            let script = output.object(forKey: "script") as! String
-            if script.characters.count == 80 {
-                possibleStealthDataScripts.append(script)
+        for outputObject in outputAddressToValueArray {
+            if outputObject.script.count == 80 {
+                possibleStealthDataScripts.append(outputObject.script)
             }
         }
         return possibleStealthDataScripts
     }
     
-    func getOutputAddressToValueArray() -> (NSArray?) {
+    func getOutputAddressToValueArray() -> Array<TLTxOutputObject> {
         return outputAddressToValueArray
     }
     
-    func getHash() -> String? {
-        return txDict.object(forKey: "hash") as! String?
+    func getHash() -> String {
+        return txDict.object(forKey: "hash") as! String
     }
     
-    func getTxid() -> (String?) {
+    func getTxid() -> String {
         if (txid == nil) {
             txid = TLWalletUtils.reverseHexString(txDict.object(forKey: "hash") as! String)
         }
-        return txid
+        return txid!
     }
     
     func getTxUnixTime() -> UInt64 {

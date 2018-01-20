@@ -48,12 +48,12 @@ class TLInsightAPI {
         })
     }
     
-    func getUnspentOutputsSynchronous(_ addressArray: NSArray) -> NSDictionary {
+    func getUnspentOutputsSynchronous(_ addressArray: NSArray) throws -> NSDictionary {
         let endPoint = String(format: "%@%@%@", "api/addrs/", addressArray.componentsJoined(by: ","), "/utxo")
         
         let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
         
-        let jsonData: AnyObject? = self.networking.httpGETSynchronous(url, parameters: nil)
+        let jsonData: AnyObject? = try self.networking.httpGETSynchronous(url, parameters: nil)
         
         if jsonData is NSDictionary { // if don't get dict http error, will get array
             return jsonData as! NSDictionary
@@ -81,14 +81,14 @@ class TLInsightAPI {
         })
     }
     
-    func getAddressesInfoSynchronous(_ addressArray: Array<String>, txCountFrom: Int=0, allTxs: NSMutableArray=[]) -> NSDictionary {
+    func getAddressesInfoSynchronous(_ addressArray: Array<String>, txCountFrom: Int=0, allTxs: NSMutableArray=[]) throws -> NSDictionary {
         let endPoint = String(format: "%@%@%@", "api/addrs/", addressArray.joined(separator: ","), "/txs")
         
         let parameters = ["from":txCountFrom, "to":txCountFrom+50]
 
         let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
         
-        let jsonData: AnyObject? = self.networking.httpGETSynchronous(url, parameters: parameters as NSDictionary)
+        let jsonData: AnyObject? = try self.networking.httpGETSynchronous(url, parameters: parameters as NSDictionary)
 
         if ((jsonData as! NSDictionary).object(forKey: TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) != nil) {
             return jsonData as! NSDictionary
@@ -109,7 +109,7 @@ class TLInsightAPI {
             }
         } else {
             allTxs.addObjects(from: txs as [AnyObject])
-            return self.getAddressesInfoSynchronous(addressArray, txCountFrom: to.intValue, allTxs: allTxs)
+            return try self.getAddressesInfoSynchronous(addressArray, txCountFrom: to.intValue, allTxs: allTxs)
         }
     }
     
@@ -142,50 +142,50 @@ class TLInsightAPI {
             }, failure: failure)
     }
     
-    func getAddressData(_ address: String, success: @escaping TLNetworking.SuccessHandler, failure: @escaping TLNetworking.FailureHandler) {
-        let endPoint = String(format: "%@%@", "api/txs/?address=", address)
-        
-        let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
-        self.networking.httpGET(url, parameters: nil,
-            success: {
-                (jsonData) in
-                
-                let txs = (jsonData as! NSDictionary!).object(forKey: "txs") as! NSArray
-                let transformedTxs = NSMutableArray(capacity:txs.count)
-                
-                for tx in txs as! [NSDictionary] {
-                    if let transformedTx = TLInsightAPI.insightTxToBlockchainTx(tx) {
-                        transformedTxs.add(transformedTx)
-                    }
-                }
-                
-                let transansformedJsonData = NSMutableDictionary()
-                transansformedJsonData.setObject(transformedTxs, forKey:"txs" as NSCopying)
-                
-                success(transansformedJsonData)
-            }, failure: failure)
-    }
-    
-    func getAddressDataSynchronous(_ address: String) -> NSDictionary {
-        let endPoint = String(format: "%@%@", "api/txs/?address=", address)
-        
-        let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
-        let jsonData: AnyObject? = self.networking.httpGETSynchronous(url, parameters: nil)
-        
-        let txs = (jsonData as! NSDictionary!).object(forKey: "txs") as! NSArray
-        let transformedTxs = NSMutableArray(capacity:txs.count)
-        
-        for tx in txs as! [NSDictionary] {
-            if let transformedTx = TLInsightAPI.insightTxToBlockchainTx(tx) {
-                transformedTxs.add(transformedTx)
-            }
-        }
-        
-        let transansformedJsonData = NSMutableDictionary()
-        transansformedJsonData.setObject(transformedTxs, forKey:"txs" as NSCopying)
-        
-        return transansformedJsonData
-    }
+//    func getAddressData(_ address: String, success: @escaping TLNetworking.SuccessHandler, failure: @escaping TLNetworking.FailureHandler) {
+//        let endPoint = String(format: "%@%@", "api/txs/?address=", address)
+//        
+//        let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
+//        self.networking.httpGET(url, parameters: nil,
+//            success: {
+//                (jsonData) in
+//                
+//                let txs = (jsonData as! NSDictionary!).object(forKey: "txs") as! NSArray
+//                let transformedTxs = NSMutableArray(capacity:txs.count)
+//                
+//                for tx in txs as! [NSDictionary] {
+//                    if let transformedTx = TLInsightAPI.insightTxToBlockchainTx(tx) {
+//                        transformedTxs.add(transformedTx)
+//                    }
+//                }
+//                
+//                let transansformedJsonData = NSMutableDictionary()
+//                transansformedJsonData.setObject(transformedTxs, forKey:"txs" as NSCopying)
+//                
+//                success(transansformedJsonData)
+//            }, failure: failure)
+//    }
+//    
+//    func getAddressDataSynchronous(_ address: String) throws -> NSDictionary {
+//        let endPoint = String(format: "%@%@", "api/txs/?address=", address)
+//        
+//        let url = URL(string: endPoint, relativeTo: URL(string: self.baseURL))!
+//        let jsonData: AnyObject? = try self.networking.httpGETSynchronous(url, parameters: nil)
+//        
+//        let txs = (jsonData as! NSDictionary!).object(forKey: "txs") as! NSArray
+//        let transformedTxs = NSMutableArray(capacity:txs.count)
+//        
+//        for tx in txs as! [NSDictionary] {
+//            if let transformedTx = TLInsightAPI.insightTxToBlockchainTx(tx) {
+//                transformedTxs.add(transformedTx)
+//            }
+//        }
+//        
+//        let transansformedJsonData = NSMutableDictionary()
+//        transansformedJsonData.setObject(transformedTxs, forKey:"txs" as NSCopying)
+//        
+//        return transansformedJsonData
+//    }
     
     func getTx(_ txHash: String, success: @escaping TLNetworking.SuccessHandler, failure: @escaping TLNetworking.FailureHandler) {
         let endPoint = String(format: "%@%@", "api/tx/", txHash)

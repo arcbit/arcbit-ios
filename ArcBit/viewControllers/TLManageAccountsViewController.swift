@@ -1327,9 +1327,9 @@ import UIKit
         TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: TLDisplayStrings.CHECKING_TRANSACTION_STRING(), animated: true)
 
         TLBlockExplorerAPI.instance().getTx(txid, success: {
-            (jsonData) in
-            let stealthDataScriptAndOutputAddresses = TLStealthWallet.getStealthDataScriptAndOutputAddresses(jsonData as! NSDictionary)
-            if stealthDataScriptAndOutputAddresses == nil || stealthDataScriptAndOutputAddresses!.stealthDataScript == nil {
+            (txObject) in
+            let stealthDataScriptAndOutputAddresses = TLStealthWallet.getStealthDataScriptAndOutputAddresses(txObject)
+            guard let stealthDataScript = stealthDataScriptAndOutputAddresses.stealthDataScript else {
                 TLHUDWrapper.hideHUDForView(self.view, animated: true)
                 TLPrompts.promptSuccessMessage("", message: TLDisplayStrings.TRANSACTION_NOT_REUSABLE_ADDRESS_TRANSACTION_STRING())
                 return
@@ -1337,17 +1337,14 @@ import UIKit
             
             let scanPriv = accountObject.stealthWallet!.getStealthAddressScanKey()
             let spendPriv = accountObject.stealthWallet!.getStealthAddressSpendKey()
-            let stealthDataScript = stealthDataScriptAndOutputAddresses!.stealthDataScript!
             if let secret = TLStealthAddress.getPaymentAddressPrivateKeySecretFromScript(stealthDataScript, scanPrivateKey: scanPriv, spendPrivateKey: spendPriv) {
                 let paymentAddress = TLCoreBitcoinWrapper.getAddressFromSecret(secret, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)
-                if (stealthDataScriptAndOutputAddresses!.outputAddresses).index(of: (paymentAddress!)) != nil {
+                if (stealthDataScriptAndOutputAddresses.outputAddresses).index(of: (paymentAddress!)) != nil {
                     
                     TLBlockExplorerAPI.instance().getUnspentOutputs([paymentAddress!], success: {
-                        (jsonData2: AnyObject!) in
-                        let unspentOutputs = (jsonData2 as! NSDictionary).object(forKey: "unspent_outputs") as! NSArray!
-                        if (unspentOutputs!.count > 0) {
+                        (unspentOutputsObject) in
+                        if (unspentOutputsObject.unspentOutputs.count > 0) {
                             let privateKey = TLCoreBitcoinWrapper.privateKeyFromSecret(secret, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)
-                            let txObject = TLTxObject(dict:jsonData as! NSDictionary)
                             let txTime = txObject.getTxUnixTime()
                             accountObject.stealthWallet!.addStealthAddressPaymentKey(privateKey, paymentAddress: paymentAddress!,
                                 txid: txid, txTime: txTime, stealthPaymentStatus: TLStealthPaymentStatus.unspent)

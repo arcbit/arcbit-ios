@@ -25,8 +25,6 @@ import Foundation
 enum TLBlockExplorer:Int {
     case blockchain  = 0
     case insight     = 1
-    case toshi     = 2
-    case blockr     = 3
 }
 
 class TLBlockExplorerAPI {
@@ -36,7 +34,11 @@ class TLBlockExplorerAPI {
         static var BLOCKEXPLORER_BASE_URL:String? = "https://blockchain.info/"
         static var _instance:TLBlockExplorerAPI? = nil
     }
-    
+    typealias BlockHeightSuccessHandler = (TLBlockHeightObject) -> ()
+    typealias UnspentOutputsSuccessHandler = (TLUnspentOutputsObject) -> ()
+    typealias AddressesSuccessHandler = (TLAddressesObject) -> ()
+    typealias TxObjectSuccessHandler = (TLTxObject) -> ()
+
     var blockchainAPI:TLBlockchainAPI? = nil
     var insightAPI:TLInsightAPI? = nil
 
@@ -67,11 +69,11 @@ class TLBlockExplorerAPI {
     }
     
     
-    func getBlockHeight(_ success: @escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler) -> (){
+    func getBlockHeight(_ success: @escaping TLBlockExplorerAPI.BlockHeightSuccessHandler, failure:@escaping TLNetworking.FailureHandler) -> (){
         if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
             self.blockchainAPI!.getBlockHeight({(height:AnyObject!) in
-                let blockHeight = ["height": NSNumber(value: (height as! NSString).longLongValue as Int64)]
-                success(blockHeight as AnyObject!)
+                let blockHeight = TLBlockHeightObject(jsonDict:  ["height": UInt64(NSNumber(value: (height as! NSString).longLongValue as Int64)) as AnyObject])
+                success(blockHeight)
                 }, failure:failure)
         }
         else {
@@ -85,76 +87,103 @@ class TLBlockExplorerAPI {
         }
     }
     
-    func getAddressesInfoSynchronous(_ addressArray:Array<String>) -> NSDictionary {
+    func getAddressesInfoSynchronous(_ addressArray:Array<String>) throws -> TLAddressesObject {
         if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
-            return self.blockchainAPI!.getAddressesInfoSynchronous(addressArray)
+            return try self.blockchainAPI!.getAddressesInfoSynchronous(addressArray)
         } else {
-            return self.insightAPI!.getAddressesInfoSynchronous(addressArray)
+            return TLAddressesObject(try self.insightAPI!.getAddressesInfoSynchronous(addressArray))
         }
     }
     
-    func getAddressesInfo(_ addressArray:Array<String>, success:@escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler)-> () {
+    func getAddressesInfo(_ addressArray:Array<String>, success:@escaping TLBlockExplorerAPI.AddressesSuccessHandler, failure:@escaping TLNetworking.FailureHandler)-> () {
         if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
-            self.blockchainAPI!.getAddressesInfo(addressArray, success:success, failure:failure)
+            self.blockchainAPI!.getAddressesInfo(addressArray, success: {
+                (jsonData) in
+                success(TLAddressesObject(jsonData as! NSDictionary))
+//                success(AddressesObject(jsonData as! NSDictionary, blockExplorerJSONType: STATIC_MEMBERS.blockExplorerAPI))
+            }, failure:failure)
         } else {
-            self.insightAPI!.getAddressesInfo(addressArray, success:success, failure:failure)
+            self.insightAPI!.getAddressesInfo(addressArray, success: {
+                (jsonData) in
+                success(TLAddressesObject(jsonData as! NSDictionary))
+//                success(AddressesObject(jsonData as! NSDictionary, blockExplorerJSONType: STATIC_MEMBERS.blockExplorerAPI))
+            }, failure:failure)
         }
     }
     
-    func getUnspentOutputs(_ addressArray:Array<String>, success:@escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler) -> () {
+    func getUnspentOutputs(_ addressArray:Array<String>, success:@escaping TLBlockExplorerAPI.UnspentOutputsSuccessHandler, failure:@escaping TLNetworking.FailureHandler) -> () {
         if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
-            self.blockchainAPI!.getUnspentOutputs(addressArray, success:success, failure:failure)
+            self.blockchainAPI!.getUnspentOutputs(addressArray, success: {
+                (jsonData) in
+                success(TLUnspentOutputsObject(jsonData as! NSDictionary, blockExplorerJSONType: STATIC_MEMBERS.blockExplorerAPI))
+            }, failure:failure)
         } else {
-            self.insightAPI!.getUnspentOutputs(addressArray, success:success, failure:failure)
+            self.insightAPI!.getUnspentOutputs(addressArray, success: {
+                (jsonData) in
+                success(TLUnspentOutputsObject(jsonData as! NSDictionary, blockExplorerJSONType: STATIC_MEMBERS.blockExplorerAPI))
+            }, failure:failure)
         }
     }
     
-    func getUnspentOutputsSynchronous(_ addressArray:NSArray) -> NSDictionary {
+    func getUnspentOutputsSynchronous(_ addressArray:NSArray) throws -> TLUnspentOutputsObject {
         if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
-            return self.blockchainAPI!.getUnspentOutputsSynchronous(addressArray)
+            return try self.blockchainAPI!.getUnspentOutputsSynchronous(addressArray)
         } else {
-            return self.insightAPI!.getUnspentOutputsSynchronous(addressArray)
+            return TLUnspentOutputsObject(try self.insightAPI!.getUnspentOutputsSynchronous(addressArray), blockExplorerJSONType: STATIC_MEMBERS.blockExplorerAPI)
+
+//            let jsonData = self.insightAPI!.getUnspentOutputsSynchronous(addressArray)
+//            if jsonData is NSDictionary { // if don't get dict http error, will get array
+//                return jsonData as! NSDictionary
+//            }
+//            let transansformedJsonData = TLInsightAPI.insightUnspentOutputsToBlockchainUnspentOutputs(jsonData as! NSArray)
+
         }
     }
     
-    func getAddressDataSynchronous(_ address:String) -> NSDictionary {
-        if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
-            return self.blockchainAPI!.getAddressDataSynchronous(address)
-        } else {
-            return self.insightAPI!.getAddressDataSynchronous(address)               
-        }
-    }
+//    func getAddressDataSynchronous(_ address:String) throws -> NSDictionary {
+//        if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
+//            return try self.blockchainAPI!.getAddressDataSynchronous(address)
+//        } else {
+//            return try self.insightAPI!.getAddressDataSynchronous(address)
+//        }
+//    }
+//    
+//    func getAddressData(_ address:String, success:@escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler) -> () {
+//        if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
+//            self.blockchainAPI!.getAddressData(address, success:success, failure:failure)
+//        } else {
+//            self.insightAPI!.getAddressData(address, success: success, failure: failure)
+//        }
+//    }
     
-    func getAddressData(_ address:String, success:@escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler) -> () {
+    func getTx(_ txHash:String, success:@escaping TLBlockExplorerAPI.TxObjectSuccessHandler, failure:@escaping TLNetworking.FailureHandler) -> () {
         if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
-            self.blockchainAPI!.getAddressData(address, success:success, failure:failure)
-        } else {
-            self.insightAPI!.getAddressData(address, success: success, failure: failure)
-        }
-    }
-    
-    func getTx(_ txHash:String, success:@escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler) -> () {
-        if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
-            self.blockchainAPI!.getTx(txHash, success:success, failure:failure)
+            self.blockchainAPI!.getTx(txHash, success: {
+                (jsonData) in
+                success(TLTxObject(jsonData as! NSDictionary))
+            }, failure:failure)
         } else {
             self.insightAPI!.getTx(txHash, success:{(jsonData:AnyObject!) in
                 let transformedTx = TLInsightAPI.insightTxToBlockchainTx(jsonData as! NSDictionary)
-                success(transformedTx)
+                success(TLTxObject(transformedTx as! NSDictionary))
                 }, failure:{(code, status) in
                     failure(code, status)
             })
         }
     }
     
-    func getTxBackground(_ txHash:String, success:@escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler) -> () {
+    func getTxBackground(_ txHash:String, success:@escaping TLBlockExplorerAPI.TxObjectSuccessHandler, failure:@escaping TLNetworking.FailureHandler) -> () {
         if (STATIC_MEMBERS.blockExplorerAPI == .blockchain) {
-            self.blockchainAPI!.getTxBackground(txHash, success:success, failure:failure)
+            self.blockchainAPI!.getTxBackground(txHash, success: {
+                (jsonData) in
+                success(TLTxObject(jsonData as! NSDictionary))
+            }, failure:failure)
         } else {
             self.insightAPI!.getTxBackground(txHash, success:{(jsonData:AnyObject!) in
                 let transformedTx = TLInsightAPI.insightTxToBlockchainTx(jsonData as! NSDictionary)
-                success(transformedTx)
-                }, failure:{(code, status) in
-                    failure(code, status)
+                success(TLTxObject(transformedTx!))
+            }, failure:{(code, status) in
+                failure(code, status)
             })
         }
     }

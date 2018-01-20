@@ -546,11 +546,11 @@ import Foundation
     }
     
     func getTransactionTag(_ txObject: TLTxObject) -> String? {
-        return self.appWallet.getTransactionTag(self.coinType, txid: txObject.getHash()!)
+        return self.appWallet.getTransactionTag(self.coinType, txid: txObject.getHash())
     }
     
     func deleteTransactionTag(_ txObject: TLTxObject) {
-        self.appWallet.deleteTransactionTag(self.coinType, txid: txObject.getHash()!)
+        self.appWallet.deleteTransactionTag(self.coinType, txid: txObject.getHash())
     }
     
     func setTransactionTag(_ txid: String, tag: String) {

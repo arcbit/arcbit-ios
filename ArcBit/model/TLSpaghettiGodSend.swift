@@ -274,37 +274,34 @@
             
             if (addresses.count > 0) {
                 importedAddress.haveUpDatedUTXOs = false
-                TLBlockExplorerAPI.instance().getUnspentOutputs(addresses, success:{(jsonData:AnyObject!) in
-                    let unspentOutputs = (jsonData as! NSDictionary).object(forKey: "unspent_outputs") as! NSArray
+                TLBlockExplorerAPI.instance().getUnspentOutputs(addresses, success:{(unspentOutputsObject) in
+                    var address2UnspentOutputs = Dictionary<String, Array<TLUnspentOutputObject>>(minimumCapacity:addresses.count)
                     
-                    let address2UnspentOutputs = NSMutableDictionary(capacity:addresses.count)
-                    
-                    for _unspentOutput in unspentOutputs {
-                        let unspentOutput = _unspentOutput as! NSDictionary
-                        let outputScript = unspentOutput.object(forKey: "script") as! String
+                    for unspentOutput in unspentOutputsObject.unspentOutputs {
+                        let outputScript = unspentOutput.script
                         
-                        let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript, isTestnet: self.appWallet.walletConfig.isTestnet)
-                        if (address == nil) {
+                        guard let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript, isTestnet: self.appWallet.walletConfig.isTestnet) else {
                             DLog("address cannot be decoded. not normal pubkeyhash outputScript: \(outputScript)")
                             continue
                         }
                         
-                        var cachedUnspentOutputs = address2UnspentOutputs.object(forKey: address!) as! NSMutableArray?
+                        var cachedUnspentOutputs:Array<TLUnspentOutputObject>? = address2UnspentOutputs[address]
                         if (cachedUnspentOutputs == nil) {
-                            cachedUnspentOutputs = NSMutableArray()
-                            address2UnspentOutputs.setObject(cachedUnspentOutputs!, forKey:address! as NSCopying)
+                            cachedUnspentOutputs = Array<TLUnspentOutputObject>()
+                            address2UnspentOutputs[address] = cachedUnspentOutputs
                         }
-                        cachedUnspentOutputs!.add(unspentOutput)
+                        cachedUnspentOutputs!.append(unspentOutput)
                     }
                     
                     for _address in address2UnspentOutputs {
                         let address = _address.key as! String
                         let idx = addresses.index(of: address)
                         let importedAddress = self.sendFromAddresses!.object(at: idx!) as! TLImportedAddress
-                        let unspentOutputsArray = address2UnspentOutputs.object(forKey: address) as! NSArray
-                        importedAddress.unspentOutputsCount = unspentOutputsArray.count
-                        importedAddress.setUnspentOutputs(unspentOutputsArray)
-                        importedAddress.haveUpDatedUTXOs = true
+                        if let unspentOutputsArray = address2UnspentOutputs[address] {
+                            importedAddress.unspentOutputsCount = unspentOutputsArray.count
+                            importedAddress.setUnspentOutputs(unspentOutputsArray)
+                            importedAddress.haveUpDatedUTXOs = true
+                        }
                     }
                     
                     success()
@@ -345,9 +342,8 @@
                     }
                     
                     let unspentOutputs = importedAddress.getUnspentArray()
-                    for _unspentOutput in unspentOutputs! {
-                        let unspentOutput = _unspentOutput as! NSDictionary
-                        let amount = (unspentOutput.object(forKey: "value") as! NSNumber).uint64Value
+                    for unspentOutput in unspentOutputs {
+                        let amount = unspentOutput.value
                         if (amount < DUST_AMOUNT) {
                             dustAmount += amount
                             continue
@@ -355,7 +351,7 @@
                         
                         valueSelected = valueSelected.add(TLCoin(uint64:amount))
                         
-                        let outputScript = unspentOutput.object(forKey: "script") as! String
+                        let outputScript = unspentOutput.script
                         
                         let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript, isTestnet: self.appWallet.walletConfig.isTestnet)
                         if (address == nil) {
@@ -366,16 +362,16 @@
                         
                         if signTx {
                             inputsData.add([
-                                "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.object(forKey: "tx_hash") as! String)!,
-                                "txid": TLWalletUtils.hexStringToData(unspentOutput.object(forKey: "tx_hash_big_endian") as! String)!,
-                                "tx_output_n": unspentOutput.object(forKey: "tx_output_n")!,
+                                "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.txHash)!,
+                                "txid": TLWalletUtils.hexStringToData(unspentOutput.txHashBigEndian)!,
+                                "tx_output_n": unspentOutput.txOutputN,
                                 "script": TLWalletUtils.hexStringToData(outputScript)!,
                                 "private_key": importedAddress.getPrivateKey()!])
                         } else {
                             inputsData.add([
-                                "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.object(forKey: "tx_hash") as! String)!,
-                                "txid": TLWalletUtils.hexStringToData(unspentOutput.object(forKey: "tx_hash_big_endian") as! String)!,
-                                "tx_output_n": unspentOutput.object(forKey: "tx_output_n")!,
+                                "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.txHash)!,
+                                "txid": TLWalletUtils.hexStringToData(unspentOutput.txHashBigEndian)!,
+                                "tx_output_n": unspentOutput.txOutputN,
                                 "script": TLWalletUtils.hexStringToData(outputScript)!])
                         }
                         
@@ -396,23 +392,21 @@
                         }
                         
                         // move some stealth payments to HD wallet as soon as possible
-                        var stealthPaymentUnspentOutputs = NSArray()
+                        var stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
                         if accountObject.stealthWallet != nil {
                             stealthPaymentUnspentOutputs = accountObject.getStealthPaymentUnspentOutputsArray()
                         }
                         
                         var unspentOutputsUsingCount = 0
-                        for _unspentOutput in stealthPaymentUnspentOutputs {
-                            let unspentOutput = _unspentOutput as! NSDictionary
-                            let amount = (unspentOutput.object(forKey: "value") as! NSNumber).uint64Value
-                            if (amount < DUST_AMOUNT) {
+                        for unspentOutput in stealthPaymentUnspentOutputs {
+                            if (unspentOutput.value < DUST_AMOUNT) {
                                 // if commented out, app will try to spend dust inputs
-                                dustAmount += amount
+                                dustAmount += unspentOutput.value
                                 continue
                             }
                             
-                            valueSelected = valueSelected.add(TLCoin(uint64:amount))
-                            let outputScript = unspentOutput.object(forKey: "script") as! String
+                            valueSelected = valueSelected.add(TLCoin(uint64:unspentOutput.value))
+                            let outputScript = unspentOutput.script
                             DLog("createSignedSerializedTransactionHex outputScript: \(outputScript)")
                             
                             let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript, isTestnet: self.appWallet.walletConfig.isTestnet)
@@ -423,16 +417,16 @@
                             
                             if signTx {
                                 inputsData.add([
-                                    "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.object(forKey: "tx_hash") as! String)!,
-                                    "txid": TLWalletUtils.hexStringToData(unspentOutput.object(forKey: "tx_hash_big_endian") as! String)!,
-                                    "tx_output_n": unspentOutput.object(forKey: "tx_output_n")!,
+                                    "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.txHash)!,
+                                    "txid": TLWalletUtils.hexStringToData(unspentOutput.txHashBigEndian)!,
+                                    "tx_output_n": unspentOutput.txOutputN,
                                     "script": TLWalletUtils.hexStringToData(outputScript)!,
                                     "private_key": accountObject.stealthWallet!.getPaymentAddressPrivateKey(address!)!])
                             } else {
                                 inputsData.add([
-                                    "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.object(forKey: "tx_hash") as! String)!,
-                                    "txid": TLWalletUtils.hexStringToData(unspentOutput.object(forKey: "tx_hash_big_endian") as! String)!,
-                                    "tx_output_n": unspentOutput.object(forKey: "tx_output_n")!,
+                                    "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.txHash)!,
+                                    "txid": TLWalletUtils.hexStringToData(unspentOutput.txHashBigEndian)!,
+                                    "tx_output_n": unspentOutput.txOutputN,
                                     "script": TLWalletUtils.hexStringToData(outputScript)!])
                             }
                             
@@ -448,18 +442,16 @@
                         }
                         
                         let unspentOutputs = accountObject.getUnspentArray()
-                        for _unspentOutput in unspentOutputs {
-                            let unspentOutput = _unspentOutput as! NSDictionary
-                            let amount = (unspentOutput.object(forKey: "value") as! NSNumber).uint64Value
-                            if (amount < DUST_AMOUNT) {
+                        for unspentOutput in unspentOutputs {
+                            if (unspentOutput.value < DUST_AMOUNT) {
                                 // if commented out, app will try to spend dust inputs
-                                dustAmount += amount
+                                dustAmount += unspentOutput.value
                                 continue
                             }
                             
-                            valueSelected = valueSelected.add(TLCoin(uint64:amount))
+                            valueSelected = valueSelected.add(TLCoin(uint64:unspentOutput.value))
                             
-                            let outputScript = unspentOutput.object(forKey: "script") as! String
+                            let outputScript = unspentOutput.script
                             DLog("createSignedSerializedTransactionHex outputScript: \(outputScript)")
                             
                             let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript, isTestnet: self.appWallet.walletConfig.isTestnet)
@@ -470,17 +462,17 @@
                             
                             if signTx {
                                 inputsData.add([
-                                    "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.object(forKey: "tx_hash") as! String)!,
-                                    "txid": TLWalletUtils.hexStringToData(unspentOutput.object(forKey: "tx_hash_big_endian") as! String)!,
-                                    "tx_output_n": unspentOutput.object(forKey: "tx_output_n")!,
+                                    "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.txHash)!,
+                                    "txid": TLWalletUtils.hexStringToData(unspentOutput.txHashBigEndian)!,
+                                    "tx_output_n": unspentOutput.txOutputN,
                                     "script": TLWalletUtils.hexStringToData(outputScript)!,
                                     "private_key": accountObject.getAccountPrivateKey(address!)!
                                     ])
                             } else {
                                 inputsData.add([
-                                    "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.object(forKey: "tx_hash") as! String)!,
-                                    "txid": TLWalletUtils.hexStringToData(unspentOutput.object(forKey: "tx_hash_big_endian") as! String)!,
-                                    "tx_output_n": unspentOutput.object(forKey: "tx_output_n")!,
+                                    "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.txHash)!,
+                                    "txid": TLWalletUtils.hexStringToData(unspentOutput.txHashBigEndian)!,
+                                    "tx_output_n": unspentOutput.txOutputN,
                                     "script": TLWalletUtils.hexStringToData(outputScript)!,
                                     "hd_account_info": ["idx": accountObject.getAddressHDIndex(address!), "is_change": !accountObject.isMainAddress(address!)]
                                     ])

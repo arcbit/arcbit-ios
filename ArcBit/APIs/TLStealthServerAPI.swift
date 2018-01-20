@@ -69,14 +69,14 @@ class TLStealthExplorerAPI {
             success:success, failure:failure)
     }
 
-    func getChallenge() -> NSDictionary {
+    func getChallenge() throws -> NSDictionary {
         let endPoint = "challenge"
         let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
-        let jsonDict = self.networking.httpGETSynchronous(url!, parameters: nil) as! NSDictionary
+        let jsonDict = try self.networking.httpGETSynchronous(url!, parameters: nil) as! NSDictionary
         return jsonDict
     }
     
-    func getStealthPaymentsSynchronous(_ stealthAddress:String, signature:String, offset:Int) -> NSDictionary {
+    func getStealthPaymentsSynchronous(_ stealthAddress:String, signature:String, offset:Int) throws -> NSDictionary {
         let endPoint = "payments"
         let parameters = [
             "addr": stealthAddress,
@@ -84,11 +84,11 @@ class TLStealthExplorerAPI {
             "offset":offset
         ] as [String : Any]
         let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
-        let jsonDict = self.networking.httpGETSynchronous(url!, parameters: parameters as NSDictionary?) as! NSDictionary
+        let jsonDict = try self.networking.httpGETSynchronous(url!, parameters: parameters as NSDictionary?) as! NSDictionary
         return jsonDict
     }
     
-    func watchStealthAddressSynchronous(_ stealthAddress:String, scanPriv:String, signature:String) -> NSDictionary {
+    func watchStealthAddressSynchronous(_ stealthAddress:String, scanPriv:String, signature:String) throws -> NSDictionary {
         let endPoint = "watch"
         let parameters = [
             "addr": stealthAddress,
@@ -96,7 +96,7 @@ class TLStealthExplorerAPI {
             "sig":signature
         ]
         let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
-        let jsonDict = self.networking.httpGETSynchronous(url!, parameters: parameters as NSDictionary?) as! NSDictionary
+        let jsonDict = try self.networking.httpGETSynchronous(url!, parameters: parameters as NSDictionary?) as! NSDictionary
         return jsonDict
     }
     

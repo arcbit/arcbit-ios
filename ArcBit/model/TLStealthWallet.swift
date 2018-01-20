@@ -280,13 +280,15 @@ import Foundation
     
     class func getChallengeAndSign(_ stealthAddress: String, privKey: String, pubKey: String) -> String? {
         if TLStealthWallet.Challenge.needsRefreshing == true {
-            let jsonData = TLStealthExplorerAPI.instance().getChallenge()
-            if let _: AnyObject = jsonData.object(forKey: TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) as AnyObject? {
+            do {
+                let jsonData = try TLStealthExplorerAPI.instance().getChallenge()
+                TLStealthWallet.Challenge.challenge = jsonData["challenge"] as! String
+                TLStealthWallet.Challenge.needsRefreshing = false
+            } catch TLNetworkingError.NetworkError(_, _) {
+                return nil
+            } catch { //TODO why do i need this, xcode gives error that above catch is not exhastive, need to look into
                 return nil
             }
-            
-            TLStealthWallet.Challenge.challenge = jsonData["challenge"] as! String
-            TLStealthWallet.Challenge.needsRefreshing = false
         }
         
         let challenge = TLStealthWallet.Challenge.challenge
@@ -296,17 +298,24 @@ import Foundation
     }
 
     func addOrSetStealthPaymentsWithStatus(_ txidArray: [String], addressArray: [String], txTimeArray: [UInt64], isAddingPayments: Bool, waitForCompletion: Bool) -> () {
-        var jsonData:NSDictionary? = nil
+        var unspentOutputsObject:TLUnspentOutputsObject? = nil
         if txidArray.count > 0 {
-            jsonData = TLBlockExplorerAPI.instance().getUnspentOutputsSynchronous(addressArray as NSArray)
-            if let _: AnyObject = jsonData!.object(forKey: TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) as AnyObject? {
-                let msg = jsonData![TLNetworking.STATIC_MEMBERS.HTTP_ERROR_MSG] as? String
-                if msg != "No free outputs to spend" {
-                    
-                    return
-                } else {
-                    jsonData = ["unspent_outputs":[]];
+            do {
+                unspentOutputsObject = try TLBlockExplorerAPI.instance().getUnspentOutputsSynchronous(addressArray as NSArray)
+            } catch TLNetworkingError.NetworkError(let code, let message) {
+                if code != nil {
+                    if message != "No free outputs to spend" {
+                        return
+                    } else {
+                        let unspentOutputsDictionary = [
+                            "unspent_outputs": [],
+                            ] as [String : Any]
+                        unspentOutputsObject = TLUnspentOutputsObject(NSDictionary(dictionary: unspentOutputsDictionary), blockExplorerJSONType: TLBlockExplorer.blockchain)
+                    }
                 }
+            } catch { //TODO what to do here? cant do above
+                DLog("what to do here? cant do above")
+                NSException(name: NSExceptionName(rawValue: "Network Error"), reason: "HTTP Error", userInfo: nil).raise()
             }
         }
         
@@ -315,13 +324,9 @@ import Foundation
             txid2hasUnspentOutputs[txid] = false
         }
 
-        if jsonData != nil {
-            let unspentOutputs = jsonData!.object(forKey: "unspent_outputs") as! NSArray
-            
-            for _unspentOutput in unspentOutputs {
-                let unspentOutput = _unspentOutput as! NSDictionary
-                let unspentOutputTxid = unspentOutput.object(forKey: "tx_hash_big_endian") as! String
-                txid2hasUnspentOutputs[unspentOutputTxid] = true
+        if let unspentOutputsObject = unspentOutputsObject {
+            for unspentOutput in unspentOutputsObject.unspentOutputs {
+                txid2hasUnspentOutputs[unspentOutput.txHashBigEndian] = true
             }
         }
 
@@ -341,30 +346,29 @@ import Foundation
                 }
                 // cant figure out whether stealth payments has been spent by getting unspent outputs because
                 // blockexplorer api might receive tx yet, if we are pushing tx from a source that is not the blockexplorer api
-                TLBlockExplorerAPI.instance().getTxBackground(txid, success: { (jsonData:AnyObject?) -> () in
-                    if (jsonData == nil) {
-                        if waitForCompletion {
-                            group.leave()
-                        }
-                        return
-                    }
-                    let stealthDataScriptAndOutputAddresses = TLStealthWallet.getStealthDataScriptAndOutputAddresses((jsonData as? NSDictionary)!)
+                TLBlockExplorerAPI.instance().getTxBackground(txid, success: { (txObject) -> () in
+                    // TODO how can jsonData be nil? when anyobject is forced unwrapped in TLNetworking
+//                    if (jsonData == nil) {
+//                        if waitForCompletion {
+//                            group.leave()
+//                        }
+//                        return
+//                    }
+                    let stealthDataScriptAndOutputAddresses = TLStealthWallet.getStealthDataScriptAndOutputAddresses(txObject)
                     
-                    if stealthDataScriptAndOutputAddresses == nil || stealthDataScriptAndOutputAddresses!.0 == nil {
+                    if stealthDataScriptAndOutputAddresses.0 == nil {
                         if waitForCompletion {
                             group.leave()
                         }
                         return
                     }
-                    if (stealthDataScriptAndOutputAddresses!.1).index(of: paymentAddress) != nil {
-                        let txObject = TLTxObject(dict:jsonData as! NSDictionary)
-                        
+                    if (stealthDataScriptAndOutputAddresses.1).index(of: paymentAddress) != nil {
                         //Note: this confirmation count is not the confirmations for the tx that spent the stealth payment
                         let confirmations = txObject.getConfirmations()
                         
                         if confirmations >= STATIC_MEMBERS.PREVIOUS_TX_CONFIRMATIONS_TO_COUNT_AS_SPENT {
                             if isAddingPayments {
-                                if let privateKey = self.generateAndAddStealthAddressPaymentKey(stealthDataScriptAndOutputAddresses!.0!, expectedAddress: paymentAddress,
+                                if let privateKey = self.generateAndAddStealthAddressPaymentKey(stealthDataScriptAndOutputAddresses.0!, expectedAddress: paymentAddress,
                                     txid: txid, txTime: txTime, stealthPaymentStatus: TLStealthPaymentStatus.spent) {
                                         self.setPaymentAddressPrivateKey(paymentAddress, privateKey: privateKey)
                                 } else {
@@ -375,7 +379,7 @@ import Foundation
                             }
                         } else {
                             if isAddingPayments {
-                                if let privateKey = self.generateAndAddStealthAddressPaymentKey(stealthDataScriptAndOutputAddresses!.0!, expectedAddress: paymentAddress,
+                                if let privateKey = self.generateAndAddStealthAddressPaymentKey(stealthDataScriptAndOutputAddresses.0!, expectedAddress: paymentAddress,
                                     txid: txid, txTime: txTime, stealthPaymentStatus: TLStealthPaymentStatus.claimed) {
                                         self.setPaymentAddressPrivateKey(paymentAddress, privateKey: privateKey)
                                 } else {
@@ -401,31 +405,30 @@ import Foundation
                 if waitForCompletion {
                     group.enter()
                 }
-                TLBlockExplorerAPI.instance().getTxBackground(txid, success: { (jsonData:AnyObject?) -> () in
-                    if (jsonData == nil) {
+                TLBlockExplorerAPI.instance().getTxBackground(txid, success: { (txObject) -> () in
+//                    if (jsonData == nil) {
+//                        if waitForCompletion {
+//                            group.leave()
+//                        }
+//                        return
+//                    }
+                    let stealthDataScriptAndOutputAddresses = TLStealthWallet.getStealthDataScriptAndOutputAddresses(txObject)
+                    if stealthDataScriptAndOutputAddresses.0 == nil {
                         if waitForCompletion {
                             group.leave()
                         }
                         return
                     }
-                    if let stealthDataScriptAndOutputAddresses = TLStealthWallet.getStealthDataScriptAndOutputAddresses((jsonData as? NSDictionary)!) {
-                        if stealthDataScriptAndOutputAddresses.0 == nil {
-                            if waitForCompletion {
-                                group.leave()
-                            }
-                            return
-                        }
-                        if (stealthDataScriptAndOutputAddresses.1).index(of: paymentAddress) != nil {
-                            if isAddingPayments {
-                                if let privateKey = self.generateAndAddStealthAddressPaymentKey(stealthDataScriptAndOutputAddresses.0!, expectedAddress: paymentAddress,
-                                    txid: txid, txTime: txTime, stealthPaymentStatus: TLStealthPaymentStatus.unspent) {
-                                        self.setPaymentAddressPrivateKey(paymentAddress, privateKey: privateKey)
-                                } else {
-                                    DLog("no privateKey for \(paymentAddress)")
-                                }
+                    if (stealthDataScriptAndOutputAddresses.1).index(of: paymentAddress) != nil {
+                        if isAddingPayments {
+                            if let privateKey = self.generateAndAddStealthAddressPaymentKey(stealthDataScriptAndOutputAddresses.0!, expectedAddress: paymentAddress,
+                                                                                            txid: txid, txTime: txTime, stealthPaymentStatus: TLStealthPaymentStatus.unspent) {
+                                self.setPaymentAddressPrivateKey(paymentAddress, privateKey: privateKey)
                             } else {
-                                self.accountObject!.setStealthPaymentStatus(txid, stealthPaymentStatus: TLStealthPaymentStatus.unspent, lastCheckTime: nowTime)
+                                DLog("no privateKey for \(paymentAddress)")
                             }
+                        } else {
+                            self.accountObject!.setStealthPaymentStatus(txid, stealthPaymentStatus: TLStealthPaymentStatus.unspent, lastCheckTime: nowTime)
                         }
                     }
                     if waitForCompletion {
@@ -492,28 +495,22 @@ import Foundation
         return (gotOldestPaymentAddresses, latestTxTime, addressArray)
     }
 
-    class func getStealthDataScriptAndOutputAddresses(_ jsonTxData: NSDictionary) -> (stealthDataScript: String?, outputAddresses:Array<String>)? {
-        let outsArray = jsonTxData.object(forKey: "out") as? NSArray
-        
-        if (outsArray != nil) {
-            var outputAddresses = [String]()
-            var stealthDataScript:String? = nil
-            for _output in outsArray! {
-                let output = _output as! NSDictionary
-                
-                if let addr = output.object(forKey: "addr") as? String {
-                    outputAddresses.append(addr)
-                } else {
-                    let script = output.object(forKey: "script") as! String
-                    if script.characters.count == 80 {
-                        stealthDataScript = script
-                    }
-                    
+    class func getStealthDataScriptAndOutputAddresses(_ txObject: TLTxObject) -> (stealthDataScript: String?, outputAddresses:Array<String>) {
+        var outputAddresses = [String]()
+        var stealthDataScript:String? = nil
+        let outputAddressToValueArray = txObject.getOutputAddressToValueArray()
+        for outputObject in txObject.getOutputAddressToValueArray() {
+            if let addr = outputObject.addr {
+                outputAddresses.append(addr)
+            } else {
+                let script = outputObject.script
+                if script.characters.count == 80 {
+                    stealthDataScript = script
                 }
+                
             }
-            return (stealthDataScript, outputAddresses)
         }
-        return nil
+        return (stealthDataScript, outputAddresses)
     }
 
     func generateAndAddStealthAddressPaymentKey(_ stealthAddressDataScript: String, expectedAddress: String, txid: String, txTime: UInt64, stealthPaymentStatus:
@@ -557,26 +554,28 @@ import Foundation
             var consecutiveInvalidSignatures = 0
             
             while true {
-                jsonData = TLStealthExplorerAPI.instance().getStealthPaymentsSynchronous(stealthAddress, signature: signature!, offset: offset)
-                if let _: AnyObject = jsonData?.object(forKey: TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) as AnyObject? {
+                do {
+                    jsonData = try TLStealthExplorerAPI.instance().getStealthPaymentsSynchronous(stealthAddress, signature: signature!, offset: offset)
+                    if let errorCode = jsonData!.object(forKey: TLStealthExplorerAPI.STATIC_MEMBERS.SERVER_ERROR_CODE) as? Int {
+                        if errorCode == TLStealthExplorerAPI.STATIC_MEMBERS.INVALID_SIGNATURE_ERROR {
+                            consecutiveInvalidSignatures += 1
+                            if (consecutiveInvalidSignatures > STATIC_MEMBERS.MAX_CONSECUTIVE_INVALID_SIGNATURES) {
+                                return nil
+                            }
+                            TLStealthWallet.Challenge.needsRefreshing = true
+                            signature = TLStealthWallet.getChallengeAndSign(stealthAddress, privKey: scanPriv, pubKey: scanPublicKey)
+                            if signature == nil {
+                                return nil
+                            }
+                        }
+                        continue
+                    }
+                    break
+                } catch TLNetworkingError.NetworkError(_, _) {
+                    return nil
+                } catch {
                     return nil
                 }
-                
-                if let errorCode = jsonData!.object(forKey: TLStealthExplorerAPI.STATIC_MEMBERS.SERVER_ERROR_CODE) as? Int {
-                    if errorCode == TLStealthExplorerAPI.STATIC_MEMBERS.INVALID_SIGNATURE_ERROR {
-                        consecutiveInvalidSignatures += 1
-                        if (consecutiveInvalidSignatures > STATIC_MEMBERS.MAX_CONSECUTIVE_INVALID_SIGNATURES) {
-                            return nil
-                        }
-                        TLStealthWallet.Challenge.needsRefreshing = true
-                        signature = TLStealthWallet.getChallengeAndSign(stealthAddress, privKey: scanPriv, pubKey: scanPublicKey)
-                        if signature == nil {
-                            return nil
-                        }
-                    }
-                    continue
-                }
-                break
             }
             
             let stealthPayments = jsonData!["payments"] as! NSArray
@@ -605,31 +604,32 @@ import Foundation
         var consecutiveInvalidSignatures = 0
         
         while true {
-            let jsonData = TLStealthExplorerAPI.instance().watchStealthAddressSynchronous(stealthAddress, scanPriv: scanPriv, signature: signature!)
-            
-            if let _: AnyObject = jsonData.object(forKey: TLNetworking.STATIC_MEMBERS.HTTP_ERROR_CODE) as AnyObject? {
+            do {
+                let jsonData = try TLStealthExplorerAPI.instance().watchStealthAddressSynchronous(stealthAddress, scanPriv: scanPriv, signature: signature!)
+                if let errorCode = (jsonData as NSDictionary).object(forKey: TLStealthExplorerAPI.STATIC_MEMBERS.SERVER_ERROR_CODE) as? Int {
+                    if errorCode == TLStealthExplorerAPI.STATIC_MEMBERS.INVALID_SIGNATURE_ERROR {
+                        TLStealthWallet.Challenge.needsRefreshing = true
+                        signature = self.getChallengeAndSign(stealthAddress, privKey: scanPriv, pubKey: scanPublicKey)
+                        if signature == nil {
+                            return false
+                        }
+                        consecutiveInvalidSignatures += 1
+                        if (consecutiveInvalidSignatures > STATIC_MEMBERS.MAX_CONSECUTIVE_INVALID_SIGNATURES) {
+                            return false
+                        } else {
+                            continue
+                        }
+                    }
+                } else {
+                    if let success: AnyObject = jsonData.object(forKey: "success") as AnyObject?  {
+                        return success as! Bool
+                    }
+                    
+                    return false
+                }
+            } catch TLNetworkingError.NetworkError(_, _) {
                 return false
-            }
-            
-            if let errorCode = (jsonData as NSDictionary).object(forKey: TLStealthExplorerAPI.STATIC_MEMBERS.SERVER_ERROR_CODE) as? Int {
-                if errorCode == TLStealthExplorerAPI.STATIC_MEMBERS.INVALID_SIGNATURE_ERROR {
-                    TLStealthWallet.Challenge.needsRefreshing = true
-                    signature = self.getChallengeAndSign(stealthAddress, privKey: scanPriv, pubKey: scanPublicKey)
-                    if signature == nil {
-                        return false
-                    }
-                    consecutiveInvalidSignatures += 1
-                    if (consecutiveInvalidSignatures > STATIC_MEMBERS.MAX_CONSECUTIVE_INVALID_SIGNATURES) {
-                        return false
-                    } else {
-                        continue
-                    }
-                }
-            } else {
-                if let success: AnyObject = jsonData.object(forKey: "success") as AnyObject?  {
-                    return success as! Bool
-                }
-                
+            } catch {
                 return false
             }
         }

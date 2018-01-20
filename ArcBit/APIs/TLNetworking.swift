@@ -28,6 +28,11 @@ enum TLDOMAINREACHABLE:Int {
     case notreachable   = 2
 }
 
+enum TLNetworkingError: Error {
+//enum TLNetworkingError: Error, CustomStringConvertible {
+    case NetworkError(code: Int?, message: String?)
+}
+
 class TLNetworking {
     
     typealias ReachableHandler = (TLDOMAINREACHABLE) -> ()
@@ -129,11 +134,13 @@ class TLNetworking {
         manager?.reachabilityManager.startMonitoring()
     }
     
-    func httpGETSynchronous(_ url: URL, parameters: NSDictionary?) -> AnyObject? {
+//    func httpGETSynchronous(_ url: URL, parameters: NSDictionary?) -> AnyObject? {
+    func httpGETSynchronous(_ url: URL, parameters: NSDictionary?) throws -> AnyObject? {
         var response:AnyObject? = nil
         let semaphore = DispatchSemaphore(value: 0)
 
         DLog("httpGETSynchronous: url \(url.absoluteString)")
+        var isNetworkError = false
         _ = self.getSynchronousManager.get(url.absoluteString,
             parameters: parameters,
             success:{(operation, responseObject) in
@@ -142,6 +149,7 @@ class TLNetworking {
             },
             failure:{(operation, error) in
                 DLog("httpGETSynchronous: requestFailed url \(url.absoluteString)")
+                isNetworkError = true
                 if operation?.response != nil {
                     response = [STATIC_MEMBERS.HTTP_ERROR_CODE: operation?.response.statusCode, STATIC_MEMBERS.HTTP_ERROR_MSG:operation?.responseString] as AnyObject
                 } else {
@@ -150,8 +158,10 @@ class TLNetworking {
                 semaphore.signal()
         })
         
-        
         semaphore.wait(timeout: DispatchTime.distantFuture)
+        if isNetworkError {
+            throw TLNetworkingError.NetworkError(code: response?[STATIC_MEMBERS.HTTP_ERROR_CODE] as? Int, message: response?[STATIC_MEMBERS.HTTP_ERROR_MSG] as? String)
+        }
         return response
     }
     

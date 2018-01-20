@@ -213,11 +213,11 @@ import CoreData
         
         cell!.amountButton!.titleEdgeInsets = UIEdgeInsetsMake(0.0, 5.0, 0.0, 5.0)
         let txObject = AppDelegate.instance().coinWalletsManager!.historySelectedObject.getTxObject((indexPath as NSIndexPath).row)
-        DLog("txObject hash: \(txObject!.getHash()!)")
+        DLog("txObject hash: \(txObject!.getHash())")
         cell!.dateLabel!.text = txObject!.getTime()
         
-        let amount = TLCurrencyFormat.getProperAmount(AppDelegate.instance().coinWalletsManager!.historySelectedObject.getAccountAmountChangeForTx(txObject!.getHash()! as String)!, coinType: AppDelegate.instance().coinWalletsManager!.historySelectedObject.getSelectedObjectCoinType())
-        let amountType = AppDelegate.instance().coinWalletsManager!.historySelectedObject.getAccountAmountChangeTypeForTx(txObject!.getHash()! as String)
+        let amount = TLCurrencyFormat.getProperAmount(AppDelegate.instance().coinWalletsManager!.historySelectedObject.getAccountAmountChangeForTx(txObject!.getHash() as String)!, coinType: AppDelegate.instance().coinWalletsManager!.historySelectedObject.getSelectedObjectCoinType())
+        let amountType = AppDelegate.instance().coinWalletsManager!.historySelectedObject.getAccountAmountChangeTypeForTx(txObject!.getHash())
         var amountTypeString = ""
         let txTag = AppDelegate.instance().coinWalletsManager!.getTransactionTag(TLPreferences.getSendFromCoinType(), txObject: txObject!)
 
@@ -227,9 +227,8 @@ import CoreData
             cell!.amountButton!.backgroundColor = UIColor.red
             if txTag == nil || txTag == "" {
                 let outputAddressToValueArray = txObject!.getOutputAddressToValueArray()
-                for _dict in outputAddressToValueArray! {
-                    let dict = _dict as! NSDictionary
-                    if let address = dict.object(forKey: "addr") as? String {
+                for txOutputObject in outputAddressToValueArray {
+                    if let address = txOutputObject.addr {
                         if AppDelegate.instance().coinWalletsManager!.historySelectedObject.isAddressPartOfAccount(address) {
                             cell!.descriptionLabel!.text = address
                         } else {
@@ -310,7 +309,7 @@ import CoreData
         let otherButtonTitles = [TLDisplayStrings.VIEW_IN_WEB_STRING(), TLDisplayStrings.LABEL_TRANSACTION_STRING(), TLDisplayStrings.COPY_TRANSACTION_ID_TO_CLIPBOARD_STRING()]
         
         UIAlertController.showAlert(in: self,
-            withTitle: String(format: TLDisplayStrings.TRANSACTION_ID_COLON_X_STRING(), txObject.getHash()!),
+            withTitle: String(format: TLDisplayStrings.TRANSACTION_ID_COLON_X_STRING(), txObject.getHash()),
             message:"",
             preferredStyle: .actionSheet,
             cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
@@ -318,7 +317,7 @@ import CoreData
             otherButtonTitles: otherButtonTitles as [AnyObject],
             tap: {(actionSheet, action, buttonIndex) in
                 if (buttonIndex == actionSheet?.firstOtherButtonIndex) {
-                    TLBlockExplorerAPI.instance().openWebViewForTransaction(txObject.getHash()!)
+                    TLBlockExplorerAPI.instance().openWebViewForTransaction(txObject.getHash())
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_TRANSACTION_IN_WEB()),
                         object: nil, userInfo: nil)
                 } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 1) {
@@ -327,7 +326,7 @@ import CoreData
                         if (inputText == "") {
                             AppDelegate.instance().coinWalletsManager!.deleteTransactionTag(TLPreferences.getSendFromCoinType(), txObject: txObject)
                         } else {
-                            AppDelegate.instance().coinWalletsManager!.setTransactionTag(TLPreferences.getSendFromCoinType(), txid: txObject.getHash()!, tag: inputText)
+                            AppDelegate.instance().coinWalletsManager!.setTransactionTag(TLPreferences.getSendFromCoinType(), txid: txObject.getHash(), tag: inputText)
                             NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_TAG_TRANSACTION()),
                                 object: nil, userInfo: nil)
                         }
@@ -337,7 +336,7 @@ import CoreData
                     })
                 } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 2) {
                     let pasteboard = UIPasteboard.general
-                    pasteboard.string = txObject.getHash()!
+                    pasteboard.string = txObject.getHash()
                     iToast.makeText(TLDisplayStrings.COPIED_TO_CLIPBOARD_STRING()).setGravity(iToastGravityCenter).setDuration(1000).show()
                 } else if (buttonIndex == actionSheet?.cancelButtonIndex) {
                 }
