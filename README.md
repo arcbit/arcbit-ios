@@ -1,11 +1,11 @@
 ArcBit
-===========
+===
 Bitcoin wallet for iOS. First mobile wallet to support reusable/stealth addresses. Also offers cold wallet storage and offline spending. Visit http://www.arcbit.io/ for more information.
 
-#####App store Link:
+##### App store Link:
 https://itunes.apple.com/app/arcbit-bitcoin-wallet/id999487888
 
-#####Features:
+##### Features:
 - No signup required
 - Cold wallet storage and offline  spending
 - Encrypted iCloud backup support
@@ -39,12 +39,12 @@ https://itunes.apple.com/app/arcbit-bitcoin-wallet/id999487888
 - Import HD wallet watch only account keys support
 
 Build
-===========
+===
 To build ArcBit simply open the project from XCode and click run.
 
 
 Made Possible By
-===========
+===
 ArcBit is made possible by, but not limited to these projects.
 
 - https://github.com/oleganza/CoreBitcoin
