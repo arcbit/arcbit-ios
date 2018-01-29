@@ -160,19 +160,27 @@
 
 
 "BITCOIN_DISPLAY"      = "Bitcoin Einheit";
+"BITCOIN_CASH_DISPLAY"      = "Bitcoin Cash Einheit";
 "BLOCKCHAIN_API_TYPE"      = "Block Explorer API Typ";
 
 "CHANGE_BLOCKEXPLORER_URL"      = "Wechsel Blockexplorer URL";
 
 "BLOCKCHAIN_API_TYPE_1"             = "blockchain.info";
 "BLOCKCHAIN_API_TYPE_2"             = "Bitpay's Insight";
+"BLOCKCHAIN_API_TYPE_3"             = "blockexplorer.com";
 
 
 "ADVANCED_TITLE"             = "Erweiterte Einstellunge";
 
+"COIN_DISPLAY_UNIT_TITLE"    = "Münzeinheit";
+
 "BITCOIN_DISPLAY_1"             = "Bitcoin - BTC";
 "BITCOIN_DISPLAY_2"             = "MilliBit - mBTC";
 "BITCOIN_DISPLAY_3"             = "Bits - uBTC";
+
+"BITCOIN_CASH_DISPLAY_1"             = "Bitcoin Cash - BCH";
+"BITCOIN_CASH_DISPLAY_2"             = "MilliBit - mBCH";
+"BITCOIN_CASH_DISPLAY_3"             = "Bits - uBCH";
 
 "ENABLE_PIN_CODE"              = "Aktiviere PIN";
 "SHOW_PASSPHRASE"              = "Zeige Backup Wortfolge";
@@ -218,4 +226,6 @@
 "CONTRIBUTOR_3"    = "David Johnson";
 "CONTRIBUTOR_4"    = "汉服骑射";
 
+"FEE_SETTINGS_TITLE" = "Fee settings";
+"ENABLED_COINS" = "Enabled Coins";
 
