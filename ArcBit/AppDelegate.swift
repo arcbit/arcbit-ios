@@ -418,7 +418,8 @@ import Crashlytics
         
         let reader = TLQRCodeScannerViewController(success:{(data: String?) in
             
-            if let data = data, TLCoreBitcoinWrapper.isBIP38EncryptedKey(data, isTestnet: self.appWallet.walletConfig.isTestnet) {
+            let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+            if let data = data, TLCoreBitcoinWrapper.isBIP38EncryptedKey(coinType, privateKey: data, isTestnet: self.appWallet.walletConfig.isTestnet) {
                 self.scannedEncryptedPrivateKey = data
             }
             else {

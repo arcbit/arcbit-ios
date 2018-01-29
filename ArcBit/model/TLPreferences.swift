@@ -871,7 +871,6 @@ extension TLPreferences {
     
     class func resetBlockExplorerAPIURLBitcoinCash() -> () {
         let blockExplorer2blockExplorerURLDict = NSMutableDictionary(capacity: 2)
-        //        blockExplorer2blockExplorerURLDict.setObject("https://blockexplorer.com/" ,forKey:String(format:"%ld", TLBlockExplorer.bitcoinCash_blockexplorer.rawValue) as NSCopying)
         blockExplorer2blockExplorerURLDict.setObject("https://bitcoincash.blockexplorer.com/" ,forKey:String(format:"%ld", TLBlockExplorer.bitcoinCash_blockexplorer.rawValue) as NSCopying)
         blockExplorer2blockExplorerURLDict.setObject("https://bch-insight.bitpay.com/" ,forKey:String(format:"%ld", TLBlockExplorer.bitcoinCash_insight.rawValue) as NSCopying)
         UserDefaults.standard.set(blockExplorer2blockExplorerURLDict ,forKey:CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT_BITCOIN_CASH)

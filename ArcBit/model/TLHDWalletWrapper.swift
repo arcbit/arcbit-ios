@@ -137,7 +137,7 @@ class TLHDWalletWrapper {
         return accountKeychain.extendedPrivateKey
     }
     
-    class func getAddress(_ extendPubKey:String, sequence:NSArray, isTestnet:Bool) -> String{
+    class func getAddress(_ coinType:TLCoinType, extendPubKey:String, sequence:NSArray, isTestnet:Bool) -> String{
         var keyChain = BTCKeychain(extendedKey:extendPubKey)
         
         for _idx in sequence {
@@ -152,7 +152,7 @@ class TLHDWalletWrapper {
         }
     }
     
-    class func getPrivateKey(_ extendPrivKey:NSString, sequence:NSArray, isTestnet:Bool) -> String{
+    class func getPrivateKey(_ coinType:TLCoinType, extendPrivKey:NSString, sequence:NSArray, isTestnet:Bool) -> String{
         var keyChain = BTCKeychain(extendedKey:extendPrivKey as String)
         
         for _idx in sequence {

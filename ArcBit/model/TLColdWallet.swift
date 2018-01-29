@@ -109,8 +109,8 @@ class TLColdWallet {
         return nil
     }
     
-    class func createSerializedSignedTxAipGapData(_ aipGapDataBase64: String, mnemonicOrExtendedPrivateKey: String, isTestnet:Bool) throws -> String? {
-        if let signedTxHexAndTxHash = try createSignedTxAipGapData(aipGapDataBase64, mnemonicOrExtendedPrivateKey: mnemonicOrExtendedPrivateKey, isTestnet: isTestnet) {
+    class func createSerializedSignedTxAipGapData(_ coinType: TLCoinType, aipGapDataBase64: String, mnemonicOrExtendedPrivateKey: String, isTestnet:Bool) throws -> String? {
+        if let signedTxHexAndTxHash = try createSignedTxAipGapData(coinType, aipGapDataBase64: aipGapDataBase64, mnemonicOrExtendedPrivateKey: mnemonicOrExtendedPrivateKey, isTestnet: isTestnet) {
             DLog("createSerializedSignedTxAipGapData signedTxHexAndTxHash \(signedTxHexAndTxHash)");
             
             let aipGapDataJSONString = TLUtils.dictionaryToJSONString(false, dict: signedTxHexAndTxHash)
@@ -120,7 +120,7 @@ class TLColdWallet {
         return nil
     }
 
-    class func createSignedTxAipGapData(_ aipGapDataBase64: String, mnemonicOrExtendedPrivateKey: String, isTestnet:Bool) throws -> NSDictionary? {
+    class func createSignedTxAipGapData(_ coinType: TLCoinType, aipGapDataBase64: String, mnemonicOrExtendedPrivateKey: String, isTestnet:Bool) throws -> NSDictionary? {
         let data = Data(base64Encoded: aipGapDataBase64, options: NSData.Base64DecodingOptions.ignoreUnknownCharacters)
         if data == nil {
             throw TLColdWalletError.InvalidScannedData("")
@@ -159,7 +159,7 @@ class TLColdWallet {
                 let HDIndexNumber = txInputsAccountHDIdx["idx"] as! Int
                 let isChange = txInputsAccountHDIdx["is_change"] as! Bool
                 let addressSequence = [isChange ? Int(TLAddressType.change.rawValue) : Int(TLAddressType.main.rawValue), HDIndexNumber]
-                let privateKey = TLHDWalletWrapper.getPrivateKey(mnemonicExtendedPrivateKey as NSString, sequence: addressSequence as NSArray, isTestnet: isTestnet)
+                let privateKey = TLHDWalletWrapper.getPrivateKey(coinType, extendPrivKey: mnemonicExtendedPrivateKey as NSString, sequence: addressSequence as NSArray, isTestnet: isTestnet)
                 privateKeysArray.add(privateKey)
             }
             
@@ -176,7 +176,7 @@ class TLColdWallet {
             }
 
             for _ in 0...3 {
-                let txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(txData!, inputScripts: inputScriptsArray, privateKeys: privateKeysArray, isTestnet: isTestnet)
+                let txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(coinType, unsignedTx: txData!, inputScripts: inputScriptsArray, privateKeys: privateKeysArray, isTestnet: isTestnet)
                 DLog("createSignedTxAipGapData txHexAndTxHash: \(txHexAndTxHash.debugDescription as AnyObject)")
                 //                break
                 if txHexAndTxHash != nil {

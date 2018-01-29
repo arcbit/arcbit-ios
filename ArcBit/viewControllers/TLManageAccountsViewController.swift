@@ -101,7 +101,7 @@ import UIKit
     override func viewWillAppear(_ animated: Bool) -> () {
         // TODO: better way
         if AppDelegate.instance().scannedEncryptedPrivateKey != nil {
-            TLPrompts.promptForEncryptedPrivKeyPassword(self, view:self.slidingViewController().topViewController.view,
+            TLPrompts.promptForEncryptedPrivKeyPassword(self, view:self.slidingViewController().topViewController.view, coinType: self.currentCoinType,
                 encryptedPrivKey:AppDelegate.instance().scannedEncryptedPrivateKey!,
                 success:{(privKey: String!) in
                     let privateKey = privKey
@@ -631,7 +631,7 @@ import UIKit
         let otherButtonTitles:[String]
         if (TLPreferences.enabledAdvancedMode()) {
             if TLWalletUtils.ALLOW_MANUAL_SCAN_FOR_STEALTH_PAYMENT() {
-                otherButtonTitles = [TLDisplayStrings.VIEW_ACCOUNT_PUBLIC_KEY_QR_CODE_STRING(), TLDisplayStrings.VIEW_ACCOUNT_PRIVATE_KEY_QR_CODE_STRING(), TLDisplayStrings.VIEW_ADDRESSES_STRING(), TLDisplayStrings.SCAN_FOR_REUSABLE_ADDRESS_PAYMENT_STRING(), TLDisplayStrings.EDIT_ACCOUNT_NAME_STRING(), TLDisplayStrings.ARCHIVE_ACCOUNT_STRING()]
+                otherButtonTitles = [TLDisplayStrings.VIEW_ACCOUNT_PUBLIC_KEY_QR_CODE_STRING(), TLDisplayStrings.VIEW_ACCOUNT_PRIVATE_KEY_QR_CODE_STRING(), TLDisplayStrings.VIEW_ADDRESSES_STRING(), TLDisplayStrings.EDIT_ACCOUNT_NAME_STRING(), TLDisplayStrings.ARCHIVE_ACCOUNT_STRING()]
             } else {
                 otherButtonTitles = [TLDisplayStrings.VIEW_ACCOUNT_PUBLIC_KEY_QR_CODE_STRING(), TLDisplayStrings.VIEW_ACCOUNT_PRIVATE_KEY_QR_CODE_STRING(), TLDisplayStrings.VIEW_ADDRESSES_STRING(), TLDisplayStrings.EDIT_ACCOUNT_NAME_STRING(), TLDisplayStrings.ARCHIVE_ACCOUNT_STRING()]
             }
@@ -1728,7 +1728,7 @@ import UIKit
     }
 
     fileprivate func checkAndImportAddress(_ privateKey: String, encryptedPrivateKey: String?) -> (Bool) {        
-        if (TLCoreBitcoinWrapper.isValidPrivateKey(privateKey, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
+        if (TLCoreBitcoinWrapper.isValidPrivateKey(self.currentCoinType, privateKey: privateKey, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
             if (encryptedPrivateKey != nil) {
                 UIAlertController.showAlert(in: self,
                     withTitle: TLDisplayStrings.IMPORT_PRIVATE_KEY_ENCRYPTED_OR_UNENCRYPTED_STRING(),
@@ -1806,7 +1806,7 @@ import UIKit
     }
 
     fileprivate func checkAndImportWatchAddress(_ address: String) -> (Bool) {
-        if (TLCoreBitcoinWrapper.isValidAddress(address, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
+        if (TLCoreBitcoinWrapper.isValidAddress(self.currentCoinType, address: address, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
             if (TLStealthAddress.isStealthAddress(address, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
                 TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.CANNOT_IMPORT_REUSABLE_ADDRESS_STRING())
                 return false
@@ -1962,8 +1962,8 @@ import UIKit
                 } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 1) {
                     TLPrompts.promtForInputText(self, title: TLDisplayStrings.IMPORT_PRIVATE_KEY_STRING(), message: "", textFieldPlaceholder: nil, success: {
                         (inputText: String!) in
-                        if (TLCoreBitcoinWrapper.isBIP38EncryptedKey(inputText, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
-                            TLPrompts.promptForEncryptedPrivKeyPassword(self, view:self.slidingViewController().topViewController.view, encryptedPrivKey: inputText, success: {
+                        if (TLCoreBitcoinWrapper.isBIP38EncryptedKey(self.currentCoinType, privateKey: inputText, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
+                            TLPrompts.promptForEncryptedPrivKeyPassword(self, view:self.slidingViewController().topViewController.view, coinType: self.currentCoinType, encryptedPrivKey: inputText, success: {
                                 (privKey: String!) in
                                 self.checkAndImportAddress(privKey, encryptedPrivateKey: inputText)
                                 }, failure: {

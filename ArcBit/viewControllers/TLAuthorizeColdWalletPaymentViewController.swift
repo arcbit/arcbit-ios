@@ -51,6 +51,7 @@ import UIKit
     private var scannedUnsignedTxAirGapData:String? = nil
     private var airGapDataBase64PartsArray: Array<String>?
     private var savedAirGapDataBase64PartsArray: Array<String>?
+    lazy var currentCoinType = TLWalletUtils.DEFAULT_COIN_TYPE()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -129,9 +130,9 @@ import UIKit
         }
         
         do {
-            let serializedSignedAipGapData = try TLColdWallet.createSerializedSignedTxAipGapData(self.scannedUnsignedTxAirGapData!,
-                                                                                               mnemonicOrExtendedPrivateKey: keyText!,
-                                                                                               isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)
+            let serializedSignedAipGapData = try TLColdWallet.createSerializedSignedTxAipGapData(self.currentCoinType, aipGapDataBase64: self.scannedUnsignedTxAirGapData!,
+                                                                                                 mnemonicOrExtendedPrivateKey: keyText!,
+                                                                                                 isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)
             self.airGapDataBase64PartsArray = TLColdWallet.splitStringToArray(serializedSignedAipGapData!)
             self.savedAirGapDataBase64PartsArray = TLColdWallet.splitStringToArray(serializedSignedAipGapData!)
             

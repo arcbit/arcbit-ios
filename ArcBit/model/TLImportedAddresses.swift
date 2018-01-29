@@ -164,7 +164,7 @@ import Foundation
         importedAddressObject.setPositionInWalletArray(self.importedAddresses.count + self.archivedImportedAddresses.count - 1)
         self.addressToPositionInWalletArrayDict.setObject(importedAddressObject, forKey:importedAddressObject.getPositionInWalletArrayNumber())
         
-        let address = TLCoreBitcoinWrapper.getAddress(privateKey, isTestnet: self.appWallet!.walletConfig.isTestnet)
+        let address = TLCoreBitcoinWrapper.getAddress(self.coinType, privateKey: privateKey, isTestnet: self.appWallet!.walletConfig.isTestnet)
         
         var indexes = self.addressToIdxDict.object(forKey: address!) as! NSMutableArray?
         if (indexes == nil) {

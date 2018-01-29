@@ -102,6 +102,7 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
     @IBOutlet weak var showChangeAddressQRCodeButton5: UIButton!
     @IBOutlet weak var showChangePrivateKeyQRCodeButton5: UIButton!
     
+    lazy var currentCoinType = TLWalletUtils.DEFAULT_COIN_TYPE()
     var delegate: TLAdvancedNewWalletTableViewCellDelegate?
     fileprivate lazy var coldWalletKeyType: TLColdWalletKeyType = .mnemonic
     fileprivate var isTestnet = AppDelegate.instance().appWallet.walletConfig.isTestnet
@@ -540,23 +541,23 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
             var HDAddressIdx = startingAddressID
             let addressSequence1 = [Int(TLAddressType.main.rawValue), HDAddressIdx] as [Any]
             self.addressLabel1.text = TLDisplayStrings.ADDRESS_ID_STRING() + String(HDAddressIdx) + ":"
-            self.addressTextField1.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence1 as NSArray, isTestnet: isTestnet)
+            self.addressTextField1.text = TLHDWalletWrapper.getAddress(self.currentCoinType, extendPubKey: extendedPublicKey!, sequence: addressSequence1 as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             let addressSequence2 = [Int(TLAddressType.main.rawValue), HDAddressIdx]
             self.addressLabel2.text = TLDisplayStrings.ADDRESS_ID_STRING() + String(HDAddressIdx) + ":"
-            self.addressTextField2.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence2 as NSArray, isTestnet: isTestnet)
+            self.addressTextField2.text = TLHDWalletWrapper.getAddress(self.currentCoinType, extendPubKey: extendedPublicKey!, sequence: addressSequence2 as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             let addressSequence3 = [Int(TLAddressType.main.rawValue), HDAddressIdx]
             self.addressLabel3.text = TLDisplayStrings.ADDRESS_ID_STRING() + String(HDAddressIdx) + ":"
-            self.addressTextField3.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence3 as NSArray, isTestnet: isTestnet)
+            self.addressTextField3.text = TLHDWalletWrapper.getAddress(self.currentCoinType, extendPubKey: extendedPublicKey!, sequence: addressSequence3 as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             let addressSequence4 = [Int(TLAddressType.main.rawValue), HDAddressIdx]
             self.addressLabel4.text = TLDisplayStrings.ADDRESS_ID_STRING() + String(HDAddressIdx) + ":"
-            self.addressTextField4.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence4 as NSArray, isTestnet: isTestnet)
+            self.addressTextField4.text = TLHDWalletWrapper.getAddress(self.currentCoinType, extendPubKey: extendedPublicKey!, sequence: addressSequence4 as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             let addressSequence5 = [Int(TLAddressType.main.rawValue), HDAddressIdx]
             self.addressLabel5.text = TLDisplayStrings.ADDRESS_ID_STRING() + String(HDAddressIdx) + ":"
-            self.addressTextField5.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence5 as NSArray, isTestnet: isTestnet)
+            self.addressTextField5.text = TLHDWalletWrapper.getAddress(self.currentCoinType, extendPubKey: extendedPublicKey!, sequence: addressSequence5 as NSArray, isTestnet: isTestnet)
 
             self.enableButton(self.showAddressQRCodeButton1, enable: true)
             self.enableButton(self.showAddressQRCodeButton2, enable: true)
@@ -565,11 +566,11 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
             self.enableButton(self.showAddressQRCodeButton5, enable: true)
             
             if extendedPrivateKey != nil {
-                self.privateKeyTextField1.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey! as NSString, sequence: addressSequence1 as NSArray, isTestnet: isTestnet)
-                self.privateKeyTextField2.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey! as NSString, sequence: addressSequence2 as NSArray, isTestnet: isTestnet)
-                self.privateKeyTextField3.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey! as NSString, sequence: addressSequence3 as NSArray, isTestnet: isTestnet)
-                self.privateKeyTextField4.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey! as NSString, sequence: addressSequence4 as NSArray, isTestnet: isTestnet)
-                self.privateKeyTextField5.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey! as NSString, sequence: addressSequence5 as NSArray, isTestnet: isTestnet)
+                self.privateKeyTextField1.text = TLHDWalletWrapper.getPrivateKey(self.currentCoinType, extendPrivKey: extendedPrivateKey! as NSString, sequence: addressSequence1 as NSArray, isTestnet: isTestnet)
+                self.privateKeyTextField2.text = TLHDWalletWrapper.getPrivateKey(self.currentCoinType, extendPrivKey: extendedPrivateKey! as NSString, sequence: addressSequence2 as NSArray, isTestnet: isTestnet)
+                self.privateKeyTextField3.text = TLHDWalletWrapper.getPrivateKey(self.currentCoinType, extendPrivKey: extendedPrivateKey! as NSString, sequence: addressSequence3 as NSArray, isTestnet: isTestnet)
+                self.privateKeyTextField4.text = TLHDWalletWrapper.getPrivateKey(self.currentCoinType, extendPrivKey: extendedPrivateKey! as NSString, sequence: addressSequence4 as NSArray, isTestnet: isTestnet)
+                self.privateKeyTextField5.text = TLHDWalletWrapper.getPrivateKey(self.currentCoinType, extendPrivKey: extendedPrivateKey! as NSString, sequence: addressSequence5 as NSArray, isTestnet: isTestnet)
                 self.enableButton(self.showPrivateKeyQRCodeButton1, enable: true)
                 self.enableButton(self.showPrivateKeyQRCodeButton2, enable: true)
                 self.enableButton(self.showPrivateKeyQRCodeButton3, enable: true)
@@ -609,23 +610,23 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
             var HDAddressIdx = startingAddressID
             let addressSequence1 = [Int(TLAddressType.change.rawValue), HDAddressIdx] as [Any]
             self.changeAddressLabel1.text = TLDisplayStrings.CHANGE_ADDRESS_ID_STRING() + String(HDAddressIdx) + ":"
-            self.changeAddressTextField1.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence1 as NSArray, isTestnet: isTestnet)
+            self.changeAddressTextField1.text = TLHDWalletWrapper.getAddress(self.currentCoinType, extendPubKey: extendedPublicKey!, sequence: addressSequence1 as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             let addressSequence2 = [Int(TLAddressType.change.rawValue), HDAddressIdx]
             self.changeAddressLabel2.text = TLDisplayStrings.CHANGE_ADDRESS_ID_STRING() + String(HDAddressIdx) + ":"
-            self.changeAddressTextField2.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence2 as NSArray, isTestnet: isTestnet)
+            self.changeAddressTextField2.text = TLHDWalletWrapper.getAddress(self.currentCoinType, extendPubKey: extendedPublicKey!, sequence: addressSequence2 as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             let addressSequence3 = [Int(TLAddressType.change.rawValue), HDAddressIdx]
             self.changeAddressLabel3.text = TLDisplayStrings.CHANGE_ADDRESS_ID_STRING() + String(HDAddressIdx) + ":"
-            self.changeAddressTextField3.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence3 as NSArray, isTestnet: isTestnet)
+            self.changeAddressTextField3.text = TLHDWalletWrapper.getAddress(self.currentCoinType, extendPubKey: extendedPublicKey!, sequence: addressSequence3 as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             let addressSequence4 = [Int(TLAddressType.change.rawValue), HDAddressIdx]
             self.changeAddressLabel4.text = TLDisplayStrings.CHANGE_ADDRESS_ID_STRING() + String(HDAddressIdx) + ":"
-            self.changeAddressTextField4.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence4 as NSArray, isTestnet: isTestnet)
+            self.changeAddressTextField4.text = TLHDWalletWrapper.getAddress(self.currentCoinType, extendPubKey: extendedPublicKey!, sequence: addressSequence4 as NSArray, isTestnet: isTestnet)
             HDAddressIdx += 1
             let addressSequence5 = [Int(TLAddressType.change.rawValue), HDAddressIdx]
             self.changeAddressLabel5.text = TLDisplayStrings.CHANGE_ADDRESS_ID_STRING() + String(HDAddressIdx) + ":"
-            self.changeAddressTextField5.text = TLHDWalletWrapper.getAddress(extendedPublicKey!, sequence: addressSequence5 as NSArray, isTestnet: isTestnet)
+            self.changeAddressTextField5.text = TLHDWalletWrapper.getAddress(self.currentCoinType, extendPubKey: extendedPublicKey!, sequence: addressSequence5 as NSArray, isTestnet: isTestnet)
             
             self.enableButton(self.showChangeAddressQRCodeButton1, enable: true)
             self.enableButton(self.showChangeAddressQRCodeButton2, enable: true)
@@ -634,11 +635,11 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
             self.enableButton(self.showChangeAddressQRCodeButton5, enable: true)
             
             if extendedPrivateKey != nil {
-                self.changePrivateKeyTextField1.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey! as NSString, sequence: addressSequence1 as NSArray, isTestnet: isTestnet)
-                self.changePrivateKeyTextField2.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey! as NSString, sequence: addressSequence2 as NSArray, isTestnet: isTestnet)
-                self.changePrivateKeyTextField3.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey! as NSString, sequence: addressSequence3 as NSArray, isTestnet: isTestnet)
-                self.changePrivateKeyTextField4.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey! as NSString, sequence: addressSequence4 as NSArray, isTestnet: isTestnet)
-                self.changePrivateKeyTextField5.text = TLHDWalletWrapper.getPrivateKey(extendedPrivateKey! as NSString, sequence: addressSequence5 as NSArray, isTestnet: isTestnet)
+                self.changePrivateKeyTextField1.text = TLHDWalletWrapper.getPrivateKey(self.currentCoinType, extendPrivKey: extendedPrivateKey! as NSString, sequence: addressSequence1 as NSArray, isTestnet: isTestnet)
+                self.changePrivateKeyTextField2.text = TLHDWalletWrapper.getPrivateKey(self.currentCoinType, extendPrivKey: extendedPrivateKey! as NSString, sequence: addressSequence2 as NSArray, isTestnet: isTestnet)
+                self.changePrivateKeyTextField3.text = TLHDWalletWrapper.getPrivateKey(self.currentCoinType, extendPrivKey: extendedPrivateKey! as NSString, sequence: addressSequence3 as NSArray, isTestnet: isTestnet)
+                self.changePrivateKeyTextField4.text = TLHDWalletWrapper.getPrivateKey(self.currentCoinType, extendPrivKey: extendedPrivateKey! as NSString, sequence: addressSequence4 as NSArray, isTestnet: isTestnet)
+                self.changePrivateKeyTextField5.text = TLHDWalletWrapper.getPrivateKey(self.currentCoinType, extendPrivKey: extendedPrivateKey! as NSString, sequence: addressSequence5 as NSArray, isTestnet: isTestnet)
                 self.enableButton(self.showChangePrivateKeyQRCodeButton1, enable: true)
                 self.enableButton(self.showChangePrivateKeyQRCodeButton2, enable: true)
                 self.enableButton(self.showChangePrivateKeyQRCodeButton3, enable: true)
@@ -683,70 +684,70 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
     
     @IBAction fileprivate func showAddressQRButtonClicked1(_ sender:UIButton) {
         let address = self.addressTextField1.text
-        if address != nil && !address!.isEmpty && TLCoreBitcoinWrapper.isValidAddress(address!, isTestnet: isTestnet) {
+        if address != nil && !address!.isEmpty && TLCoreBitcoinWrapper.isValidAddress(self.currentCoinType, address: address!, isTestnet: isTestnet) {
             delegate?.didAdvancedNewWalletClickShowQRCodeButton(self, data: address!)
         }
     }
     
     @IBAction fileprivate func showPrivateKeyQRButtonClicked1(_ sender:UIButton) {
         let privateKey = self.privateKeyTextField1.text
-        if privateKey != nil && !privateKey!.isEmpty && TLCoreBitcoinWrapper.isValidPrivateKey(privateKey!, isTestnet: isTestnet) {
+        if privateKey != nil && !privateKey!.isEmpty && TLCoreBitcoinWrapper.isValidPrivateKey(self.currentCoinType, privateKey: privateKey!, isTestnet: isTestnet) {
             delegate?.didAdvancedNewWalletClickShowQRCodeButton(self, data: privateKey!)
         }
     }
     
     @IBAction fileprivate func showAddressQRButtonClicked2(_ sender:UIButton) {
         let address = self.addressTextField2.text
-        if address != nil && !address!.isEmpty && TLCoreBitcoinWrapper.isValidAddress(address!, isTestnet: isTestnet) {
+        if address != nil && !address!.isEmpty && TLCoreBitcoinWrapper.isValidAddress(self.currentCoinType, address: address!, isTestnet: isTestnet) {
             delegate?.didAdvancedNewWalletClickShowQRCodeButton(self, data: address!)
         }
     }
     
     @IBAction fileprivate func showPrivateKeyQRButtonClicked2(_ sender:UIButton) {
         let privateKey = self.privateKeyTextField2.text
-        if privateKey != nil && !privateKey!.isEmpty && TLCoreBitcoinWrapper.isValidPrivateKey(privateKey!, isTestnet: isTestnet) {
+        if privateKey != nil && !privateKey!.isEmpty && TLCoreBitcoinWrapper.isValidPrivateKey(self.currentCoinType, privateKey: privateKey!, isTestnet: isTestnet) {
             delegate?.didAdvancedNewWalletClickShowQRCodeButton(self, data: privateKey!)
         }
     }
     
     @IBAction fileprivate func showAddressQRButtonClicked3(_ sender:UIButton) {
         let address = self.addressTextField3.text
-        if address != nil && !address!.isEmpty && TLCoreBitcoinWrapper.isValidAddress(address!, isTestnet: isTestnet) {
+        if address != nil && !address!.isEmpty && TLCoreBitcoinWrapper.isValidAddress(self.currentCoinType, address: address!, isTestnet: isTestnet) {
             delegate?.didAdvancedNewWalletClickShowQRCodeButton(self, data: address!)
         }
     }
     
     @IBAction fileprivate func showPrivateKeyQRButtonClicked3(_ sender:UIButton) {
         let privateKey = self.privateKeyTextField3.text
-        if privateKey != nil && !privateKey!.isEmpty && TLCoreBitcoinWrapper.isValidPrivateKey(privateKey!, isTestnet: isTestnet) {
+        if privateKey != nil && !privateKey!.isEmpty && TLCoreBitcoinWrapper.isValidPrivateKey(self.currentCoinType, privateKey: privateKey!, isTestnet: isTestnet) {
             delegate?.didAdvancedNewWalletClickShowQRCodeButton(self, data: privateKey!)
         }
     }
     
     @IBAction fileprivate func showAddressQRButtonClicked4(_ sender:UIButton) {
         let address = self.addressTextField4.text
-        if address != nil && !address!.isEmpty && TLCoreBitcoinWrapper.isValidAddress(address!, isTestnet: isTestnet) {
+        if address != nil && !address!.isEmpty && TLCoreBitcoinWrapper.isValidAddress(self.currentCoinType, address: address!, isTestnet: isTestnet) {
             delegate?.didAdvancedNewWalletClickShowQRCodeButton(self, data: address!)
         }
     }
     
     @IBAction fileprivate func showPrivateKeyQRButtonClicked4(_ sender:UIButton) {
         let privateKey = self.privateKeyTextField4.text
-        if privateKey != nil && !privateKey!.isEmpty && TLCoreBitcoinWrapper.isValidPrivateKey(privateKey!, isTestnet: isTestnet) {
+        if privateKey != nil && !privateKey!.isEmpty && TLCoreBitcoinWrapper.isValidPrivateKey(self.currentCoinType, privateKey: privateKey!, isTestnet: isTestnet) {
             delegate?.didAdvancedNewWalletClickShowQRCodeButton(self, data: privateKey!)
         }
     }
     
     @IBAction fileprivate func showAddressQRButtonClicked5(_ sender:UIButton) {
         let address = self.addressTextField5.text
-        if address != nil && !address!.isEmpty && TLCoreBitcoinWrapper.isValidAddress(address!, isTestnet: isTestnet) {
+        if address != nil && !address!.isEmpty && TLCoreBitcoinWrapper.isValidAddress(self.currentCoinType, address: address!, isTestnet: isTestnet) {
             delegate?.didAdvancedNewWalletClickShowQRCodeButton(self, data: address!)
         }
     }
     
     @IBAction fileprivate func showPrivateKeyQRButtonClicked5(_ sender:UIButton) {
         let privateKey = self.privateKeyTextField5.text
-        if privateKey != nil && !privateKey!.isEmpty && TLCoreBitcoinWrapper.isValidPrivateKey(privateKey!, isTestnet: isTestnet) {
+        if privateKey != nil && !privateKey!.isEmpty && TLCoreBitcoinWrapper.isValidPrivateKey(self.currentCoinType, privateKey: privateKey!, isTestnet: isTestnet) {
             delegate?.didAdvancedNewWalletClickShowQRCodeButton(self, data: privateKey!)
         }
     }
@@ -755,70 +756,70 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
     
     @IBAction fileprivate func showChangeAddressQRButtonClicked1(_ sender:UIButton) {
         let address = self.changeAddressTextField1.text
-        if address != nil && !address!.isEmpty && TLCoreBitcoinWrapper.isValidAddress(address!, isTestnet: isTestnet) {
+        if address != nil && !address!.isEmpty && TLCoreBitcoinWrapper.isValidAddress(self.currentCoinType, address: address!, isTestnet: isTestnet) {
             delegate?.didAdvancedNewWalletClickShowQRCodeButton(self, data: address!)
         }
     }
     
     @IBAction fileprivate func showChangePrivateKeyQRButtonClicked1(_ sender:UIButton) {
         let privateKey = self.changePrivateKeyTextField1.text
-        if privateKey != nil && !privateKey!.isEmpty && TLCoreBitcoinWrapper.isValidPrivateKey(privateKey!, isTestnet: isTestnet) {
+        if privateKey != nil && !privateKey!.isEmpty && TLCoreBitcoinWrapper.isValidPrivateKey(self.currentCoinType, privateKey: privateKey!, isTestnet: isTestnet) {
             delegate?.didAdvancedNewWalletClickShowQRCodeButton(self, data: privateKey!)
         }
     }
     
     @IBAction fileprivate func showChangeAddressQRButtonClicked2(_ sender:UIButton) {
         let address = self.changeAddressTextField2.text
-        if address != nil && !address!.isEmpty && TLCoreBitcoinWrapper.isValidAddress(address!, isTestnet: isTestnet) {
+        if address != nil && !address!.isEmpty && TLCoreBitcoinWrapper.isValidAddress(self.currentCoinType, address: address!, isTestnet: isTestnet) {
             delegate?.didAdvancedNewWalletClickShowQRCodeButton(self, data: address!)
         }
     }
     
     @IBAction fileprivate func showChangePrivateKeyQRButtonClicked2(_ sender:UIButton) {
         let privateKey = self.changePrivateKeyTextField2.text
-        if privateKey != nil && !privateKey!.isEmpty && TLCoreBitcoinWrapper.isValidPrivateKey(privateKey!, isTestnet: isTestnet) {
+        if privateKey != nil && !privateKey!.isEmpty && TLCoreBitcoinWrapper.isValidPrivateKey(self.currentCoinType, privateKey: privateKey!, isTestnet: isTestnet) {
             delegate?.didAdvancedNewWalletClickShowQRCodeButton(self, data: privateKey!)
         }
     }
     
     @IBAction fileprivate func showChangeAddressQRButtonClicked3(_ sender:UIButton) {
         let address = self.changeAddressTextField3.text
-        if address != nil && !address!.isEmpty && TLCoreBitcoinWrapper.isValidAddress(address!, isTestnet: isTestnet) {
+        if address != nil && !address!.isEmpty && TLCoreBitcoinWrapper.isValidAddress(self.currentCoinType, address: address!, isTestnet: isTestnet) {
             delegate?.didAdvancedNewWalletClickShowQRCodeButton(self, data: address!)
         }
     }
     
     @IBAction fileprivate func showChangePrivateKeyQRButtonClicked3(_ sender:UIButton) {
         let privateKey = self.changePrivateKeyTextField3.text
-        if privateKey != nil && !privateKey!.isEmpty && TLCoreBitcoinWrapper.isValidPrivateKey(privateKey!, isTestnet: isTestnet) {
+        if privateKey != nil && !privateKey!.isEmpty && TLCoreBitcoinWrapper.isValidPrivateKey(self.currentCoinType, privateKey: privateKey!, isTestnet: isTestnet) {
             delegate?.didAdvancedNewWalletClickShowQRCodeButton(self, data: privateKey!)
         }
     }
     
     @IBAction fileprivate func showChangeAddressQRButtonClicked4(_ sender:UIButton) {
         let address = self.changeAddressTextField4.text
-        if address != nil && !address!.isEmpty && TLCoreBitcoinWrapper.isValidAddress(address!, isTestnet: isTestnet) {
+        if address != nil && !address!.isEmpty && TLCoreBitcoinWrapper.isValidAddress(self.currentCoinType, address: address!, isTestnet: isTestnet) {
             delegate?.didAdvancedNewWalletClickShowQRCodeButton(self, data: address!)
         }
     }
     
     @IBAction fileprivate func showChangePrivateKeyQRButtonClicked4(_ sender:UIButton) {
         let privateKey = self.changePrivateKeyTextField4.text
-        if privateKey != nil && !privateKey!.isEmpty && TLCoreBitcoinWrapper.isValidPrivateKey(privateKey!, isTestnet: isTestnet) {
+        if privateKey != nil && !privateKey!.isEmpty && TLCoreBitcoinWrapper.isValidPrivateKey(self.currentCoinType, privateKey: privateKey!, isTestnet: isTestnet) {
             delegate?.didAdvancedNewWalletClickShowQRCodeButton(self, data: privateKey!)
         }
     }
     
     @IBAction fileprivate func showChangeAddressQRButtonClicked5(_ sender:UIButton) {
         let address = self.changeAddressTextField5.text
-        if address != nil && !address!.isEmpty && TLCoreBitcoinWrapper.isValidAddress(address!, isTestnet: isTestnet) {
+        if address != nil && !address!.isEmpty && TLCoreBitcoinWrapper.isValidAddress(self.currentCoinType, address: address!, isTestnet: isTestnet) {
             delegate?.didAdvancedNewWalletClickShowQRCodeButton(self, data: address!)
         }
     }
     
     @IBAction fileprivate func showChangePrivateKeyQRButtonClicked5(_ sender:UIButton) {
         let privateKey = self.changePrivateKeyTextField5.text
-        if privateKey != nil && !privateKey!.isEmpty && TLCoreBitcoinWrapper.isValidPrivateKey(privateKey!, isTestnet: isTestnet) {
+        if privateKey != nil && !privateKey!.isEmpty && TLCoreBitcoinWrapper.isValidPrivateKey(self.currentCoinType, privateKey: privateKey!, isTestnet: isTestnet) {
             delegate?.didAdvancedNewWalletClickShowQRCodeButton(self, data: privateKey!)
         }
     }

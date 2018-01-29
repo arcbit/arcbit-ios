@@ -25,7 +25,7 @@ import Foundation
 class TLCoreBitcoinWrapper {
     
     // WARNING: returns compressed address only
-    class func getAddressFromOutputScript(_ scriptHex:String, isTestnet:Bool) -> (String?){
+    class func getAddressFromOutputScript(_ coinType:TLCoinType, scriptHex:String, isTestnet:Bool) -> (String?) {
         let scriptData = TLWalletUtils.hexStringToData(scriptHex)!
         let script = BTCScript(data:scriptData)
         if let address = script?.standardAddress {
@@ -39,12 +39,12 @@ class TLCoreBitcoinWrapper {
         return nil
     }
    
-    class func getStandardPubKeyHashScriptFromAddress(_ address:String, isTestnet:Bool) -> String {
+    class func getStandardPubKeyHashScriptFromAddress(_ coinType:TLCoinType, address:String, isTestnet:Bool) -> String {
         let scriptData = BTCScript(address: BTCAddress(base58String: address))
         return scriptData!.hex
     }
     
-    class func getAddress(_ privateKey:String, isTestnet:Bool) -> (String?){
+    class func getAddress(_ coinType:TLCoinType, privateKey:String, isTestnet:Bool) -> (String?){
         if let key = BTCKey(wif: privateKey) {
             if !isTestnet {
                 return key.address.string
@@ -56,7 +56,7 @@ class TLCoreBitcoinWrapper {
         }
     }
     
-    class func getAddressFromPublicKey(_ publicKey:String, isTestnet:Bool) -> (String?){
+    class func getAddressFromPublicKey(_ coinType:TLCoinType, publicKey:String, isTestnet:Bool) -> (String?){
         if !isTestnet {
             if let key = BTCKey(publicKey: TLWalletUtils.hexStringToData(publicKey)!) {
                 return key.address.string
@@ -73,7 +73,7 @@ class TLCoreBitcoinWrapper {
     }
     
     // WARNING: returns compressed address only
-    class func getAddressFromSecret(_ secret:String, isTestnet:Bool) -> (String?){
+    class func getAddressFromSecret(_ coinType:TLCoinType, secret:String, isTestnet:Bool) -> (String?){
         if let key = BTCKey(privateKey: BTCDataFromHex(secret)) {
             if !isTestnet {
                 return key.compressedPublicKeyAddress.string
@@ -86,7 +86,7 @@ class TLCoreBitcoinWrapper {
         }
     }
     
-    class func privateKeyFromEncryptedPrivateKey(_ encryptedPrivateKey:String, password:String, isTestnet:Bool) -> (String?) {
+    class func privateKeyFromEncryptedPrivateKey(_ coinType:TLCoinType, encryptedPrivateKey:String, password:String, isTestnet:Bool) -> (String?) {
         if let key = BRKey(bip38Key:encryptedPrivateKey, andPassphrase:password, isTestnet:isTestnet) {
             return key.privateKey
         }
@@ -94,7 +94,7 @@ class TLCoreBitcoinWrapper {
     }
     
     // WARNING: returns compressed address only
-    class func privateKeyFromSecret(_ secret:String, isTestnet:Bool) -> (String){
+    class func privateKeyFromSecret(_ coinType:TLCoinType, secret:String, isTestnet:Bool) -> (String){
         let key = BTCKey(privateKey:BTCDataFromHex(secret))
         key?.isPublicKeyCompressed = true
         if !isTestnet {
@@ -104,7 +104,7 @@ class TLCoreBitcoinWrapper {
         }
     }
     
-    class func isAddressVersion0(_ address:String, isTestnet:Bool) -> (Bool){
+    class func isAddressVersion0(_ coinType:TLCoinType, address:String, isTestnet:Bool) -> (Bool){
         if !isTestnet {
             return address.hasPrefix("1")
         } else {
@@ -123,32 +123,32 @@ class TLCoreBitcoinWrapper {
     }
     */
     
-    class func isValidAddress(_ address:String, isTestnet:Bool) -> (Bool){
+    class func isValidAddress(_ coinType:TLCoinType, address:String, isTestnet:Bool) -> (Bool){
         return address.isValidBitcoinAddress(isTestnet) || TLStealthAddress.isStealthAddress(address, isTestnet:isTestnet)
     }
     
-    class func isValidPrivateKey(_ privateKey:String, isTestnet:Bool) -> Bool{
+    class func isValidPrivateKey(_ coinType:TLCoinType, privateKey:String, isTestnet:Bool) -> Bool{
         return privateKey.isValidBitcoinPrivateKey(isTestnet)
     }
     
-    class func isBIP38EncryptedKey(_ privateKey:String, isTestnet:Bool) -> Bool{
+    class func isBIP38EncryptedKey(_ coinType:TLCoinType, privateKey:String, isTestnet:Bool) -> Bool{
         return (privateKey as NSString).substring(with: NSMakeRange(0, 2)) == "6P"
     }
     
-    class func getSignature(_ privateKey:String, message:String) -> String {
+    class func getSignature(_ coinType:TLCoinType, privateKey:String, message:String) -> String {
         let key = BTCKey(privateKey: BTCDataFromHex(privateKey))
         let signature = key?.signature(forMessage: message)
         assert((key?.isValidSignature(signature, forMessage: message))!, "")
         return signature!.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength64Characters);
     }
     
-    class func createSignedSerializedTransactionHex(_ hashes:NSArray, inputIndexes indexes:NSArray, inputScripts scripts:NSArray,
+    class func createSignedSerializedTransactionHex(_ coinType:TLCoinType, hashes:NSArray, inputIndexes indexes:NSArray, inputScripts scripts:NSArray,
                                                     outputAddresses:NSArray, outputAmounts amounts:NSArray, privateKeys:NSArray,
                                                     outputScripts:NSArray?, isTestnet:Bool) -> NSDictionary? {
-        return createSignedSerializedTransactionHex(hashes, inputIndexes: indexes, inputScripts: scripts, outputAddresses: outputAddresses, outputAmounts: amounts, privateKeys: privateKeys, outputScripts: outputScripts, signTx: true, isTestnet: isTestnet)
+        return createSignedSerializedTransactionHex(coinType, hashes: hashes, inputIndexes: indexes, inputScripts: scripts, outputAddresses: outputAddresses, outputAmounts: amounts, privateKeys: privateKeys, outputScripts: outputScripts, signTx: true, isTestnet: isTestnet)
     }
     
-    class func createSignedSerializedTransactionHex(_ hashes:NSArray, inputIndexes indexes:NSArray, inputScripts scripts:NSArray,
+    class func createSignedSerializedTransactionHex(_ coinType:TLCoinType, hashes:NSArray, inputIndexes indexes:NSArray, inputScripts scripts:NSArray,
                                                     outputAddresses:NSArray, outputAmounts amounts:NSArray, privateKeys:NSArray,
                                                     outputScripts:NSArray?, signTx: Bool, isTestnet:Bool) -> NSDictionary? {
             
@@ -193,13 +193,13 @@ class TLCoreBitcoinWrapper {
             ]
     }
 
-    class func createSignedSerializedTransactionHex(_ unsignedTx:Data, inputScripts:NSArray, privateKeys:NSArray, isTestnet:Bool) -> NSDictionary? {
+    class func createSignedSerializedTransactionHex(_ coinType:TLCoinType, unsignedTx:Data, inputScripts:NSArray, privateKeys:NSArray, isTestnet:Bool) -> NSDictionary? {
         let tx = BRTransaction(message: unsignedTx, isTestnet: isTestnet)
         let inputHashes = tx!.inputHashes as NSArray
         let inputIndexes = tx!.inputIndexes as NSArray
         let outputAmounts = tx!.outputAmounts as NSArray
         let outputAddresses = tx!.outputAddresses as NSArray
-        let txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(inputHashes, inputIndexes:inputIndexes, inputScripts:inputScripts,
+        let txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(coinType, hashes:inputHashes, inputIndexes:inputIndexes, inputScripts:inputScripts,
                                                                                        outputAddresses:outputAddresses, outputAmounts:outputAmounts, privateKeys:privateKeys,
                                                                                        outputScripts:nil, signTx: true, isTestnet: isTestnet)
         return txHexAndTxHash

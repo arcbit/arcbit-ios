@@ -269,7 +269,7 @@
                     for unspentOutput in unspentOutputsObject.unspentOutputs {
                         let outputScript = unspentOutput.script
                         
-                        guard let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript, isTestnet: self.appWallet.walletConfig.isTestnet) else {
+                        guard let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(self.getSelectedObjectCoinType(), scriptHex: outputScript, isTestnet: self.appWallet.walletConfig.isTestnet) else {
                             DLog("address cannot be decoded. not normal pubkeyhash outputScript: \(outputScript)")
                             continue
                         }
@@ -342,7 +342,7 @@
                         
                         let outputScript = unspentOutput.script
                         
-                        let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript, isTestnet: self.appWallet.walletConfig.isTestnet)
+                        let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(self.getSelectedObjectCoinType(), scriptHex: outputScript, isTestnet: self.appWallet.walletConfig.isTestnet)
                         if (address == nil) {
                             DLog("address cannot be decoded. not normal pubkeyhash outputScript: \(outputScript)")
                             continue
@@ -393,7 +393,7 @@
                             let outputScript = unspentOutput.script
                             DLog("createSignedSerializedTransactionHex outputScript: \(outputScript)")
                             
-                            let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript, isTestnet: self.appWallet.walletConfig.isTestnet)
+                            let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(self.getSelectedObjectCoinType(), scriptHex: outputScript, isTestnet: self.appWallet.walletConfig.isTestnet)
                             if (address == nil) {
                                 DLog("address cannot be decoded. not normal pubkeyhash outputScript: \(outputScript)")
                                 continue
@@ -569,8 +569,8 @@
                     let firstAddress = (obj1 as! NSDictionary).object(forKey: "to_address") as! String
                     let secondAddress = (obj2 as! NSDictionary).object(forKey: "to_address") as! String
                     
-                    let firstScript = TLCoreBitcoinWrapper.getStandardPubKeyHashScriptFromAddress(firstAddress, isTestnet: self.appWallet.walletConfig.isTestnet)
-                    let secondScript = TLCoreBitcoinWrapper.getStandardPubKeyHashScriptFromAddress(secondAddress, isTestnet: self.appWallet.walletConfig.isTestnet)
+                    let firstScript = TLCoreBitcoinWrapper.getStandardPubKeyHashScriptFromAddress(self.getSelectedObjectCoinType(), address: firstAddress, isTestnet: self.appWallet.walletConfig.isTestnet)
+                    let secondScript = TLCoreBitcoinWrapper.getStandardPubKeyHashScriptFromAddress(self.getSelectedObjectCoinType(), address: secondAddress, isTestnet: self.appWallet.walletConfig.isTestnet)
                     
                     let firstScriptData = TLWalletUtils.hexStringToData(firstScript)!
                     let secondScriptData = TLWalletUtils.hexStringToData(secondScript)!
@@ -606,7 +606,7 @@
             DLog("createSignedSerializedTransactionHex outputAmounts: \(outputAmounts.debugDescription)")
             DLog("createSignedSerializedTransactionHex privateKeys: \(privateKeys.debugDescription)")
             for _ in 0...3 {
-                let txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(hashes, inputIndexes:inputIndexes, inputScripts:inputScripts,
+                let txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(self.getSelectedObjectCoinType(), hashes:hashes, inputIndexes:inputIndexes, inputScripts:inputScripts,
                     outputAddresses:outputAddresses, outputAmounts:outputAmounts, privateKeys:privateKeys,
                     outputScripts:stealthOutputScripts, signTx: signTx, isTestnet: self.appWallet.walletConfig.isTestnet)
                 DLog("createSignedSerializedTransactionHex txHexAndTxHash: \(txHexAndTxHash.debugDescription)")

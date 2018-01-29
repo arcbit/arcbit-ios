@@ -211,7 +211,7 @@ class TLPrompts {
         })
     }
     
-    class func promptForEncryptedPrivKeyPassword(_ vc:UIViewController, view: UIView, encryptedPrivKey: String, success: @escaping UserInputCallback, failure: @escaping Failure) -> () {
+    class func promptForEncryptedPrivKeyPassword(_ vc:UIViewController, view: UIView, coinType: TLCoinType, encryptedPrivKey: String, success: @escaping UserInputCallback, failure: @escaping Failure) -> () {
         UIAlertController.showAlert(in: vc,
             withTitle: TLDisplayStrings.ENTER_PASSWORD_FOR_ENCRYPTED_PRIVATE_KEY_STRING(),
             message: "",
@@ -232,7 +232,7 @@ class TLPrompts {
                     let password = (alertView!.textFields![0] ).text
                     
                     DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
-                        let privKey = TLCoreBitcoinWrapper.privateKeyFromEncryptedPrivateKey(encryptedPrivKey, password: password!, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)
+                        let privKey = TLCoreBitcoinWrapper.privateKeyFromEncryptedPrivateKey(coinType, encryptedPrivateKey: encryptedPrivKey, password: password!, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)
                         DispatchQueue.main.async {
                             TLHUDWrapper.hideHUDForView(view, animated: true)
                             
@@ -249,7 +249,7 @@ class TLPrompts {
                                     
                                     tap: {(alertView, action, buttonIndex) in
                                         if (buttonIndex == alertView!.firstOtherButtonIndex) {
-                                            self.promptForEncryptedPrivKeyPassword(vc, view:view, encryptedPrivKey: encryptedPrivKey, success: success, failure: failure)
+                                            self.promptForEncryptedPrivKeyPassword(vc, view:view, coinType: coinType, encryptedPrivKey: encryptedPrivKey, success: success, failure: failure)
                                         } else if (buttonIndex == alertView!.cancelButtonIndex) {
                                             failure(true)
                                         }

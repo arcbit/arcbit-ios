@@ -329,9 +329,9 @@ import Foundation
         let addressSequence = [Int(TLAddressType.main.rawValue), HDIndexNumber]
         if (accountType == TLAccountType.importedWatch) {
             assert(extendedPrivateKey != nil, "")
-            return TLHDWalletWrapper.getPrivateKey(extendedPrivateKey! as! NSString, sequence: addressSequence as NSArray, isTestnet: self.appWallet!.walletConfig.isTestnet)
+            return TLHDWalletWrapper.getPrivateKey(self.coinType, extendPrivKey: extendedPrivateKey! as! NSString, sequence: addressSequence as NSArray, isTestnet: self.appWallet!.walletConfig.isTestnet)
         } else {
-            return TLHDWalletWrapper.getPrivateKey(accountDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PRIVATE_KEY) as! NSString, sequence: addressSequence as NSArray, isTestnet: self.appWallet!.walletConfig.isTestnet)
+            return TLHDWalletWrapper.getPrivateKey(self.coinType, extendPrivKey: accountDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PRIVATE_KEY) as! NSString, sequence: addressSequence as NSArray, isTestnet: self.appWallet!.walletConfig.isTestnet)
         }
     }
     
@@ -340,9 +340,9 @@ import Foundation
         let addressSequence = [TLAddressType.change.rawValue, HDIndexNumber]
         if (accountType == TLAccountType.importedWatch) {
             assert(extendedPrivateKey != nil, "")
-            return TLHDWalletWrapper.getPrivateKey(extendedPrivateKey! as NSString, sequence: addressSequence as NSArray, isTestnet: self.appWallet!.walletConfig.isTestnet)
+            return TLHDWalletWrapper.getPrivateKey(self.coinType, extendPrivKey: extendedPrivateKey! as NSString, sequence: addressSequence as NSArray, isTestnet: self.appWallet!.walletConfig.isTestnet)
         } else {
-            return TLHDWalletWrapper.getPrivateKey(accountDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PRIVATE_KEY) as! NSString, sequence: addressSequence as NSArray, isTestnet: self.appWallet!.walletConfig.isTestnet)
+            return TLHDWalletWrapper.getPrivateKey(self.coinType, extendPrivKey: accountDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PRIVATE_KEY) as! NSString, sequence: addressSequence as NSArray, isTestnet: self.appWallet!.walletConfig.isTestnet)
         }
     }
     
@@ -937,7 +937,7 @@ import Foundation
             if (address == nil) {
                 let extendedPublicKey = accountDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PUBLIC_KEY) as! String
                 let mainAddressSequence = [Int(TLAddressType.main.rawValue), idx]
-                address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: mainAddressSequence as NSArray, isTestnet: self.appWallet!.walletConfig.isTestnet)
+                address = TLHDWalletWrapper.getAddress(self.coinType, extendPubKey: extendedPublicKey, sequence: mainAddressSequence as NSArray, isTestnet: self.appWallet!.walletConfig.isTestnet)
                 HDIndexToArchivedMainAddress[HDIndex] = address!
                 
                 address2HDIndexDict[address!] = HDIndex
@@ -956,7 +956,7 @@ import Foundation
             if (address == nil) {
                 let extendedPublicKey = accountDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PUBLIC_KEY) as! String
                 let changeAddressSequence = [Int(TLAddressType.change.rawValue), idx]
-                address = TLHDWalletWrapper.getAddress(extendedPublicKey, sequence: changeAddressSequence as NSArray, isTestnet: self.appWallet!.walletConfig.isTestnet)
+                address = TLHDWalletWrapper.getAddress(self.coinType, extendPubKey: extendedPublicKey, sequence: changeAddressSequence as NSArray, isTestnet: self.appWallet!.walletConfig.isTestnet)
                 HDIndexToArchivedChangeAddress[HDIndex] = address!
                 
                 address2HDIndexDict[address!] = HDIndex
@@ -1202,7 +1202,7 @@ import Foundation
             for unspentOutput in unspentOutputsObject.unspentOutputs {
                 let outputScript = (unspentOutput as AnyObject).object(forKey: "script") as! String
                 
-                let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript, isTestnet: self.appWallet!.walletConfig.isTestnet)
+                let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(self.coinType, scriptHex: outputScript, isTestnet: self.appWallet!.walletConfig.isTestnet)
                 if (address == nil) {
                     DLog("address cannot be decoded. not normal pubkeyhash outputScript: \(outputScript)")
                     continue

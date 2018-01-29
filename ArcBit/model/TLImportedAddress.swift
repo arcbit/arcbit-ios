@@ -67,7 +67,7 @@ import Foundation
     }
     
     func setPrivateKeyInMemory(_ privKey:String) -> (Bool) {
-        if (TLCoreBitcoinWrapper.getAddress(privKey, isTestnet: self.appWallet!.walletConfig.isTestnet) == getAddress()) {
+        if (TLCoreBitcoinWrapper.getAddress(self.coinType, privateKey: privKey, isTestnet: self.appWallet!.walletConfig.isTestnet) == getAddress()) {
             privateKey = privKey
             return true
         }
@@ -174,7 +174,7 @@ import Foundation
         if (self.watchOnly) {
             return false
         }
-        if (TLCoreBitcoinWrapper.isBIP38EncryptedKey(addressDict!.object(forKey: "key") as! String, isTestnet: self.appWallet!.walletConfig.isTestnet)) {
+        if (TLCoreBitcoinWrapper.isBIP38EncryptedKey(self.coinType, privateKey: addressDict!.object(forKey: "key") as! String, isTestnet: self.appWallet!.walletConfig.isTestnet)) {
             return true
         }
         return false

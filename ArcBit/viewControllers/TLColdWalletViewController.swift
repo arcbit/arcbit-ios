@@ -35,6 +35,9 @@ import UIKit
 @objc(TLColdWalletViewController) class TLColdWalletViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, MFMailComposeViewControllerDelegate {
     
     struct STATIC_MEMBERS {
+        static let kSelectCryptoCoinSection = "kSelectCryptoCoinSection"
+        static let kSelectCryptoCoinRow = "kSelectCryptoCoinRow"
+
         static let kColdWalletSection = "kColdWalletSection"
         static let kColdWalletOverViewRow = "kColdWalletOverViewRow"
         static let kColdWalletCreateRow = "kColdWalletCreateRow"
@@ -45,14 +48,16 @@ import UIKit
     }
     
     fileprivate var sectionArray: Array<String>?
+    fileprivate lazy var selectCryptoCoinRowArray: Array<String> = [STATIC_MEMBERS.kSelectCryptoCoinRow]
     fileprivate var coldWalletRowArray: Array<String>?
     fileprivate var seeHDWalletDataRowArray: Array<String>?
+    fileprivate lazy var currentCoinType = TLWalletUtils.DEFAULT_COIN_TYPE()
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
     
-    @IBOutlet fileprivate var coldWalletTableView:UITableView?
+    @IBOutlet fileprivate var coldWalletTableView:UITableView!
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -60,19 +65,28 @@ import UIKit
         setLogoImageView()
         
         self.navigationController!.view.addGestureRecognizer(self.slidingViewController().panGesture)
-        
+        self.currentCoinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+
         if (TLPreferences.enabledAdvancedMode()) {
-            self.sectionArray = [STATIC_MEMBERS.kColdWalletSection, STATIC_MEMBERS.kSeeHDWalletDataSection]
+            if TLPreferences.getEnabledCryptocoinsCount() > 1 {
+                self.sectionArray = [STATIC_MEMBERS.kSelectCryptoCoinSection, STATIC_MEMBERS.kColdWalletSection, STATIC_MEMBERS.kSeeHDWalletDataSection]
+            } else {
+                self.sectionArray = [STATIC_MEMBERS.kColdWalletSection, STATIC_MEMBERS.kSeeHDWalletDataSection]
+            }
         } else {
-            self.sectionArray = [STATIC_MEMBERS.kColdWalletSection]
+            if TLPreferences.getEnabledCryptocoinsCount() > 1 {
+                self.sectionArray = [STATIC_MEMBERS.kSelectCryptoCoinSection, STATIC_MEMBERS.kColdWalletSection]
+            } else {
+                self.sectionArray = [STATIC_MEMBERS.kColdWalletSection]
+            }
         }
         self.coldWalletRowArray = [STATIC_MEMBERS.kColdWalletOverViewRow, STATIC_MEMBERS.kColdWalletCreateRow, STATIC_MEMBERS.kColdWalletSpendtRow]
         self.seeHDWalletDataRowArray = [STATIC_MEMBERS.kSeeHDWalletDataRow]
 
         
-        self.coldWalletTableView!.delegate = self
-        self.coldWalletTableView!.dataSource = self
-        self.coldWalletTableView!.tableFooterView = UIView(frame:CGRect.zero)
+        self.coldWalletTableView.delegate = self
+        self.coldWalletTableView.dataSource = self
+        self.coldWalletTableView.tableFooterView = UIView(frame:CGRect.zero)
     }
     
     override func viewDidAppear(_ animated:Bool) -> () {
@@ -81,15 +95,27 @@ import UIKit
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender:Any!) -> () {
-        if (segue.identifier == "SegueCreateColdWallet") {
+        if (segue.identifier == "SegueSelectCryptoCoinColdWallet") {
+            if let vc = segue.destination as? TLSelectCryptoCoinViewController {
+                vc.delegate = self
+                vc.navigationItem.title = TLDisplayStrings.SELECT_COIN()
+            }
+        } else if (segue.identifier == "SegueCreateColdWallet") {
             let vc = segue.destination
             vc.navigationItem.title = TLDisplayStrings.CREATE_COLD_WALLET_STRING()
         } else if (segue.identifier == "SegueSpendColdWallet") {
             let vc = segue.destination
             vc.navigationItem.title = TLDisplayStrings.AUTHORIZE_PAYMENT_STRING()
         } else if (segue.identifier == "SegueSpendColdWallet") {
-            let vc = segue.destination
-            vc.navigationItem.title = ""
+            if let vc = segue.destination as? TLAuthorizeColdWalletPaymentViewController {
+                vc.currentCoinType = self.currentCoinType
+                vc.navigationItem.title = ""
+            }
+        } else if (segue.identifier == "SegueSeeWalletData") {
+            if let vc = segue.destination as? TLBrainWalletViewController {
+                vc.currentCoinType = self.currentCoinType
+                vc.navigationItem.title = TLDisplayStrings.SELECT_COIN()
+            }
         }
     }
     
@@ -99,7 +125,9 @@ import UIKit
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section:Int) -> Int {
         let sectionType = self.sectionArray![section]
-        if(sectionType == STATIC_MEMBERS.kColdWalletSection) {
+        if(sectionType == STATIC_MEMBERS.kSelectCryptoCoinSection) {
+            return self.selectCryptoCoinRowArray.count
+        } else if(sectionType == STATIC_MEMBERS.kColdWalletSection) {
             return self.coldWalletRowArray!.count
         } else if(sectionType == STATIC_MEMBERS.kSeeHDWalletDataSection) {
             return self.seeHDWalletDataRowArray!.count
@@ -113,7 +141,9 @@ import UIKit
     
     func tableView(_ tableView:UITableView, titleForHeaderInSection section:Int) -> String? {
         let sectionType = self.sectionArray![section]
-        if(sectionType == STATIC_MEMBERS.kColdWalletSection) {
+        if(sectionType == STATIC_MEMBERS.kSelectCryptoCoinSection) {
+            return ""
+        } else if(sectionType == STATIC_MEMBERS.kColdWalletSection) {
             return TLDisplayStrings.COLD_WALLET_STRING()
         } else if(sectionType == STATIC_MEMBERS.kSeeHDWalletDataSection) {
             return TLDisplayStrings.INTERNAL_WALLET_DATA_STRING()
@@ -122,6 +152,20 @@ import UIKit
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath:IndexPath) -> UITableViewCell{
+        let sectionType = self.sectionArray![(indexPath as NSIndexPath).section]
+        if(sectionType == STATIC_MEMBERS.kSelectCryptoCoinSection) {
+            let MyIdentifier = "selectCryptoCoinCellIdentifier"
+            var cell = tableView.dequeueReusableCell(withIdentifier: MyIdentifier)
+            if (cell == nil) {
+                cell = UITableViewCell(style: UITableViewCellStyle.subtitle,
+                                       reuseIdentifier: MyIdentifier)
+            }
+            cell!.textLabel!.text = TLDisplayStrings.SELECT_CRYPTOCURRENCY()
+            cell!.detailTextLabel!.text =  String(format: TLDisplayStrings.CURRENT_SELECTED_CURRENCY(), TLWalletUtils.GET_CRYPTO_COIN_FULL_NAME(self.currentCoinType))
+            cell!.accessoryType = .disclosureIndicator
+            return cell!
+        }
+        
         let MyIdentifier = "ColdWalletCellIdentifier"
         
         var cell = tableView.dequeueReusableCell(withIdentifier: MyIdentifier)
@@ -129,7 +173,6 @@ import UIKit
             cell = UITableViewCell(style:UITableViewCellStyle.default,
                 reuseIdentifier:MyIdentifier)
         }
-        let sectionType = self.sectionArray![(indexPath as NSIndexPath).section]
         if(sectionType == STATIC_MEMBERS.kColdWalletSection) {
             cell!.textLabel!.font = cell!.textLabel!.font.withSize(15)
             let row = self.coldWalletRowArray![(indexPath as NSIndexPath).row]
@@ -152,6 +195,10 @@ import UIKit
     
     func tableView(_ tableView:UITableView, willSelectRowAt indexPath:IndexPath) -> IndexPath? {
         let sectionType = self.sectionArray![(indexPath as NSIndexPath).section]
+        if TLPreferences.getEnabledCryptocoinsCount() > 1 && sectionType == STATIC_MEMBERS.kSelectCryptoCoinSection {
+            performSegue(withIdentifier: "SegueSelectCryptoCoinColdWallet", sender:self)
+        }
+        
         if(sectionType == STATIC_MEMBERS.kColdWalletSection) {
             let row = self.coldWalletRowArray![(indexPath as NSIndexPath).row]
             if row == STATIC_MEMBERS.kColdWalletOverViewRow {
@@ -172,5 +219,12 @@ import UIKit
         }
 
         return nil
+    }
+}
+
+extension TLColdWalletViewController : TLSelectCryptoCoinViewControllerDelegate {
+    func didSelectCryptoCoin(_ coinType: TLCoinType) {
+        self.currentCoinType = coinType
+        self.coldWalletTableView.reloadData()
     }
 }

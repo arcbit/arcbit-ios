@@ -48,6 +48,7 @@ import UIKit
     fileprivate var advancedNewWalletTableViewCell: TLAdvancedNewWalletTableViewCell?
     fileprivate var tapGesture: UITapGestureRecognizer?
     fileprivate lazy var coldWalletKeyType: TLColdWalletKeyType = .mnemonic
+    lazy var currentCoinType = TLWalletUtils.DEFAULT_COIN_TYPE()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -274,6 +275,7 @@ import UIKit
                 cell?.accountPrivateKeyTextView.delegate = self
                 cell?.startingAddressIDTextField.delegate = self
                 cell?.startingChangeAddressIDTextField.delegate = self
+                cell?.currentCoinType = self.currentCoinType
                 self.advancedNewWalletTableViewCell = cell
                 return cell!
             }

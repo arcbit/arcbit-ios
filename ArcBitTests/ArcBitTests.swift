@@ -11,6 +11,8 @@ import XCTest
 
 class ArcBitTests: XCTestCase {
     
+    var coinType = TLCoinType.BTC
+    
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
@@ -194,39 +196,39 @@ class ArcBitTests: XCTestCase {
         
         let walletConfig = TLWalletConfig(isTestnet: false)
         let mainAddressIndex0 = [0,0]
-        let mainAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
+        let mainAddress0 = TLHDWalletWrapper.getAddress(self.coinType, extendPubKey:extendPubKey, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("mainAddress0: %@", mainAddress0)
         XCTAssertTrue("1K7fXZeeQydcUvbsfvkMSQmiacV5sKRYQz" == mainAddress0)
-        TLHDWalletWrapper.getPrivateKey(extendPrivKey as NSString, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
-        let mainPrivKey0 = TLHDWalletWrapper.getPrivateKey(extendPrivKey as NSString, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
+        TLHDWalletWrapper.getPrivateKey(self.coinType, extendPrivKey: extendPrivKey as NSString, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
+        let mainPrivKey0 = TLHDWalletWrapper.getPrivateKey(self.coinType, extendPrivKey: extendPrivKey as NSString, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("mainPrivKey0: %@", mainPrivKey0)
         XCTAssertTrue("KwJhkmrjjg3AEX5gvccNAHCDcXnQLwzyZshnp5yK7vXz1mHKqDDq" == mainPrivKey0)
         
         let mainAddressIndex1 = [0,1]
-        let mainAddress1 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:mainAddressIndex1 as NSArray, isTestnet:walletConfig.isTestnet)
+        let mainAddress1 = TLHDWalletWrapper.getAddress(self.coinType, extendPubKey:extendPubKey, sequence:mainAddressIndex1 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("mainAddress1: %@", mainAddress1)
         XCTAssertTrue("12eQLjACXw6XwfGF9kqBwy9U7Se8qGoBuq" == mainAddress1)
-        TLHDWalletWrapper.getPrivateKey(extendPrivKey as NSString, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
-        let mainPrivKey1 = TLHDWalletWrapper.getPrivateKey(extendPrivKey as NSString, sequence:mainAddressIndex1 as NSArray, isTestnet:walletConfig.isTestnet)
+        TLHDWalletWrapper.getPrivateKey(self.coinType, extendPrivKey: extendPrivKey as NSString, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
+        let mainPrivKey1 = TLHDWalletWrapper.getPrivateKey(self.coinType, extendPrivKey: extendPrivKey as NSString, sequence:mainAddressIndex1 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("mainPrivKey1: %@", mainPrivKey1)
         XCTAssertTrue("KwpCsb3wBGk7E1M9EXcZWZhRoKBoZLNc63RsSP4YspUR53Ndefyr" == mainPrivKey1)
         
         
         let changeAddressIndex0 = [1,0]
-        let changeAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:changeAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
+        let changeAddress0 = TLHDWalletWrapper.getAddress(self.coinType, extendPubKey:extendPubKey, sequence:changeAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("changeAddress0: %@", changeAddress0)
         XCTAssertTrue("1CvpGn9VxVY1nsWWL3MSWRYaBHdNkCDbmv" == changeAddress0)
-        TLHDWalletWrapper.getPrivateKey(extendPrivKey as NSString, sequence:changeAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
-        let changePrivKey0 = TLHDWalletWrapper.getPrivateKey(extendPrivKey as NSString, sequence:changeAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
+        TLHDWalletWrapper.getPrivateKey(self.coinType, extendPrivKey: extendPrivKey as NSString, sequence:changeAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
+        let changePrivKey0 = TLHDWalletWrapper.getPrivateKey(self.coinType, extendPrivKey: extendPrivKey as NSString, sequence:changeAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("changePrivKey0: %@", changePrivKey0)
         XCTAssertTrue("L33guNrQHMXdpFd9jpjo2mQzddwLUgUrNzK3KqAM83D9ZU1H5NDN" == changePrivKey0)
         
         let changeAddressIndex1 = [1,1]
-        let changeAddress1 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:changeAddressIndex1 as NSArray, isTestnet:walletConfig.isTestnet)
+        let changeAddress1 = TLHDWalletWrapper.getAddress(self.coinType, extendPubKey:extendPubKey, sequence:changeAddressIndex1 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("changeAddress1: %@", changeAddress1)
         XCTAssertTrue("17vnH8d1fBbjX7GZx727X2Y6dheaid2NUR" == changeAddress1)
-        TLHDWalletWrapper.getPrivateKey(extendPrivKey as NSString, sequence:changeAddressIndex1 as NSArray, isTestnet:walletConfig.isTestnet)
-        let changePrivKey1 = TLHDWalletWrapper.getPrivateKey(extendPrivKey as NSString, sequence:changeAddressIndex1 as NSArray, isTestnet:walletConfig.isTestnet)
+        TLHDWalletWrapper.getPrivateKey(self.coinType, extendPrivKey: extendPrivKey as NSString, sequence:changeAddressIndex1 as NSArray, isTestnet:walletConfig.isTestnet)
+        let changePrivKey1 = TLHDWalletWrapper.getPrivateKey(self.coinType, extendPrivKey: extendPrivKey as NSString, sequence:changeAddressIndex1 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("changePrivKey1: %@", changePrivKey1)
         XCTAssertTrue("KwiMiFtWv1PXNN3zV67TC59tWJxPbeagMJU1SSr3uLssAC82UKhf" == changePrivKey1)
     }
@@ -240,7 +242,7 @@ class ArcBitTests: XCTestCase {
         NSLog("txHash: %@", txHash)
         XCTAssertTrue(txHash == "c3ceef0ada07af11e0a8b098ad574fb626267f64b5ed6678f3030f92a41b442c")
         
-        let address = TLCoreBitcoinWrapper.getAddressFromOutputScript("76a9147ab89f9fae3f8043dcee5f7b5467a0f0a6e2f7e188ac", isTestnet: false)
+        let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(self.coinType, scriptHex: "76a9147ab89f9fae3f8043dcee5f7b5467a0f0a6e2f7e188ac", isTestnet: false)
         NSLog("address: %@", address!)
         XCTAssertTrue(address == "1CBtcGivXmHQ8ZqdPgeMfcpQNJrqTrSAcG")
     }
@@ -252,7 +254,7 @@ class ArcBitTests: XCTestCase {
         let script = TLWalletUtils.hexStringToData("76a9149a1c78a507689f6f54b847ad1cef1e614ee23f1e88ac")!
         let address = "1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV"
         let privateKey = "L4rK1yDtCWekvXuE6oXD9jCYfFNV2cWRpVuPLBcCU2z8TrisoyY1"
-        let txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex([hash], inputIndexes:[0], inputScripts:[script],
+        let txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(self.coinType, hashes: [hash], inputIndexes:[0], inputScripts:[script],
             outputAddresses:[address], outputAmounts:[2500000], privateKeys:[privateKey], outputScripts:nil, isTestnet: false)!
         
         let txHex = txHexAndTxHash.object(forKey: "txHex") as! String
@@ -283,11 +285,11 @@ class ArcBitTests: XCTestCase {
         
         let extendPubKey = TLHDWalletWrapper.getExtendPubKey(extendPrivKey)
         let mainAddressIndex0 = [0,0]
-        let mainAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
+        let mainAddress0 = TLHDWalletWrapper.getAddress(self.coinType, extendPubKey:extendPubKey, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
         let fromAddress = BTCAddress(base58String: mainAddress0)
         XCTAssertTrue("1K7fXZeeQydcUvbsfvkMSQmiacV5sKRYQz" == mainAddress0)
         let changeAddressIndex0 = [1,0]
-        let changeAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:changeAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
+        let changeAddress0 = TLHDWalletWrapper.getAddress(self.coinType, extendPubKey:extendPubKey, sequence:changeAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
         XCTAssertTrue("1CvpGn9VxVY1nsWWL3MSWRYaBHdNkCDbmv" == changeAddress0)
         
         func getMockCoinWallet(_ coinType: TLCoinType) -> NSMutableDictionary {
@@ -1377,7 +1379,7 @@ class ArcBitTests: XCTestCase {
                 XCTAssertTrue(passedUnsignedTxairGapDataBase64 == unsignedTxAirGapDataBase64)
 
                 do {
-                    let serializedSignedAipGapData = try TLColdWallet.createSerializedSignedTxAipGapData(passedUnsignedTxairGapDataBase64,
+                    let serializedSignedAipGapData = try TLColdWallet.createSerializedSignedTxAipGapData(self.coinType, aipGapDataBase64: passedUnsignedTxairGapDataBase64,
                                                                                                        mnemonicOrExtendedPrivateKey: backupPassphrase,
                                                                                                        isTestnet: false)
                     NSLog("testColdWallet_1_1 serializedSignedAipGapData \(serializedSignedAipGapData)");
@@ -1582,87 +1584,87 @@ class ArcBitTests: XCTestCase {
 
     func testCoreBitcoinWrapper() {
         let outputScript = "76a9149a1c78a507689f6f54b847ad1cef1e614ee23f1e88ac"
-        var address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript, isTestnet: false)
+        var address = TLCoreBitcoinWrapper.getAddressFromOutputScript(self.coinType, scriptHex: outputScript, isTestnet: false)
         NSLog("address: %@", address!)
         XCTAssertTrue(address == "1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV")
-        address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript, isTestnet: true)
+        address = TLCoreBitcoinWrapper.getAddressFromOutputScript(self.coinType, scriptHex: outputScript, isTestnet: true)
         NSLog("address: %@", address!)
         XCTAssertTrue(address == "muZpTpBYhxmRFuCjLc7C6BBDF32C8XVJUi")
         
         
         let secret = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
-        address = TLCoreBitcoinWrapper.getAddressFromSecret(secret, isTestnet: false)
+        address = TLCoreBitcoinWrapper.getAddressFromSecret(self.coinType, secret: secret, isTestnet: false)
         NSLog("address: %@", address!)
         XCTAssertTrue(address == "1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV")
-        address = TLCoreBitcoinWrapper.getAddressFromSecret(secret, isTestnet: true)
+        address = TLCoreBitcoinWrapper.getAddressFromSecret(self.coinType, secret: secret, isTestnet: true)
         NSLog("address: %@", address!)
         XCTAssertTrue(address == "muZpTpBYhxmRFuCjLc7C6BBDF32C8XVJUi")
 
         var privateKey:String
-        privateKey = TLCoreBitcoinWrapper.privateKeyFromSecret(secret, isTestnet: false)
+        privateKey = TLCoreBitcoinWrapper.privateKeyFromSecret(self.coinType, secret: secret, isTestnet: false)
         NSLog("privateKey: %@", privateKey)
         XCTAssertTrue(privateKey == "L4rK1yDtCWekvXuE6oXD9jCYfFNV2cWRpVuPLBcCU2z8TrisoyY1")
-        privateKey = TLCoreBitcoinWrapper.privateKeyFromSecret(secret, isTestnet: true)
+        privateKey = TLCoreBitcoinWrapper.privateKeyFromSecret(self.coinType, secret: secret, isTestnet: true)
         NSLog("privateKey: %@", privateKey)
         XCTAssertTrue(privateKey == "cVDJUtDjdaM25yNVVDLLX3hcHUfth4c7tY3rSc4hy9e8ibtCuj6G")
 
         var pubKeyHash:String
-        pubKeyHash = TLCoreBitcoinWrapper.getStandardPubKeyHashScriptFromAddress("1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV", isTestnet: false)
+        pubKeyHash = TLCoreBitcoinWrapper.getStandardPubKeyHashScriptFromAddress(self.coinType, address: "1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV", isTestnet: false)
         NSLog("pubKeyHash: %@", pubKeyHash)
         XCTAssertTrue(pubKeyHash == "76a9149a1c78a507689f6f54b847ad1cef1e614ee23f1e88ac")
-        pubKeyHash = TLCoreBitcoinWrapper.getStandardPubKeyHashScriptFromAddress("muZpTpBYhxmRFuCjLc7C6BBDF32C8XVJUi", isTestnet: true)
+        pubKeyHash = TLCoreBitcoinWrapper.getStandardPubKeyHashScriptFromAddress(self.coinType, address: "muZpTpBYhxmRFuCjLc7C6BBDF32C8XVJUi", isTestnet: true)
         NSLog("pubKeyHash: %@", pubKeyHash)
         XCTAssertTrue(pubKeyHash == "76a9149a1c78a507689f6f54b847ad1cef1e614ee23f1e88ac")
 
-        address = TLCoreBitcoinWrapper.getAddress("L4rK1yDtCWekvXuE6oXD9jCYfFNV2cWRpVuPLBcCU2z8TrisoyY1", isTestnet: false)
+        address = TLCoreBitcoinWrapper.getAddress(self.coinType, privateKey: "L4rK1yDtCWekvXuE6oXD9jCYfFNV2cWRpVuPLBcCU2z8TrisoyY1", isTestnet: false)
         NSLog("address: %@", address!)
         XCTAssertTrue(address! == "1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV")
-        address = TLCoreBitcoinWrapper.getAddress("5KYZdUEo39z3FPrtuX2QbbwGnNP5zTd7yyr2SC1j299sBCnWjss", isTestnet: false)
+        address = TLCoreBitcoinWrapper.getAddress(self.coinType, privateKey: "5KYZdUEo39z3FPrtuX2QbbwGnNP5zTd7yyr2SC1j299sBCnWjss", isTestnet: false)
         NSLog("address: %@", address!)
         XCTAssertTrue(address! == "1HZwkjkeaoZfTSaJxDw6aKkxp45agDiEzN")
-        address = TLCoreBitcoinWrapper.getAddress("cVDJUtDjdaM25yNVVDLLX3hcHUfth4c7tY3rSc4hy9e8ibtCuj6G", isTestnet: true)
+        address = TLCoreBitcoinWrapper.getAddress(self.coinType, privateKey: "cVDJUtDjdaM25yNVVDLLX3hcHUfth4c7tY3rSc4hy9e8ibtCuj6G", isTestnet: true)
         NSLog("address: %@", address!)
         XCTAssertTrue(address! == "muZpTpBYhxmRFuCjLc7C6BBDF32C8XVJUi")
-        address = TLCoreBitcoinWrapper.getAddress("93KCDD4LdP4BDTNBXrvKUCVES2jo9dAKKvhyWpNEMstuxDauHty", isTestnet: true)
+        address = TLCoreBitcoinWrapper.getAddress(self.coinType, privateKey: "93KCDD4LdP4BDTNBXrvKUCVES2jo9dAKKvhyWpNEMstuxDauHty", isTestnet: true)
         NSLog("address: %@", address!)
         XCTAssertTrue(address! == "mx5u3nqdPpzvEZ3vfnuUQEyHg3gHd8zrrH")
 
         
         let compressedPubKey = "03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd"
-        address = TLCoreBitcoinWrapper.getAddressFromPublicKey(compressedPubKey, isTestnet: false)
+        address = TLCoreBitcoinWrapper.getAddressFromPublicKey(self.coinType, publicKey: compressedPubKey, isTestnet: false)
         NSLog("address: %@", address!)
         XCTAssertTrue(address == "1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV")
-        address = TLCoreBitcoinWrapper.getAddressFromPublicKey(compressedPubKey, isTestnet: true)
+        address = TLCoreBitcoinWrapper.getAddressFromPublicKey(self.coinType, publicKey: compressedPubKey, isTestnet: true)
         NSLog("address: %@", address!)
         XCTAssertTrue(address == "muZpTpBYhxmRFuCjLc7C6BBDF32C8XVJUi")
         let uncompressedPubKey = "04a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd5b8dec5235a0fa8722476c7709c02559e3aa73aa03918ba2d492eea75abea235"
-        address = TLCoreBitcoinWrapper.getAddressFromPublicKey(uncompressedPubKey, isTestnet: false)
+        address = TLCoreBitcoinWrapper.getAddressFromPublicKey(self.coinType, publicKey: uncompressedPubKey, isTestnet: false)
         NSLog("address: %@", address!)
         XCTAssertTrue(address == "1HZwkjkeaoZfTSaJxDw6aKkxp45agDiEzN")
-        address = TLCoreBitcoinWrapper.getAddressFromPublicKey(uncompressedPubKey, isTestnet: true)
+        address = TLCoreBitcoinWrapper.getAddressFromPublicKey(self.coinType, publicKey: uncompressedPubKey, isTestnet: true)
         NSLog("address: %@", address!)
         XCTAssertTrue(address == "mx5u3nqdPpzvEZ3vfnuUQEyHg3gHd8zrrH")
 
-        XCTAssertTrue(TLCoreBitcoinWrapper.isAddressVersion0("1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV", isTestnet: false))
-        XCTAssertTrue(TLCoreBitcoinWrapper.isAddressVersion0("muZpTpBYhxmRFuCjLc7C6BBDF32C8XVJUi", isTestnet: true))
-        XCTAssertTrue(TLCoreBitcoinWrapper.isAddressVersion0("n2MLT38EuTYgK8GcDrL2JQqbVvkSCGGf6S", isTestnet: true))
-        XCTAssertTrue(!TLCoreBitcoinWrapper.isAddressVersion0("3EktnHQD7RiAE6uzMj2ZifT9YgRrkSgzQX", isTestnet: false))
-        XCTAssertTrue(!TLCoreBitcoinWrapper.isAddressVersion0("2MzQwSSnBHWHqSAqtTVQ6v47XtaisrJa1Vc", isTestnet: true))
+        XCTAssertTrue(TLCoreBitcoinWrapper.isAddressVersion0(self.coinType, address: "1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV", isTestnet: false))
+        XCTAssertTrue(TLCoreBitcoinWrapper.isAddressVersion0(self.coinType, address: "muZpTpBYhxmRFuCjLc7C6BBDF32C8XVJUi", isTestnet: true))
+        XCTAssertTrue(TLCoreBitcoinWrapper.isAddressVersion0(self.coinType, address: "n2MLT38EuTYgK8GcDrL2JQqbVvkSCGGf6S", isTestnet: true))
+        XCTAssertTrue(!TLCoreBitcoinWrapper.isAddressVersion0(self.coinType, address: "3EktnHQD7RiAE6uzMj2ZifT9YgRrkSgzQX", isTestnet: false))
+        XCTAssertTrue(!TLCoreBitcoinWrapper.isAddressVersion0(self.coinType, address: "2MzQwSSnBHWHqSAqtTVQ6v47XtaisrJa1Vc", isTestnet: true))
         
         // address = 13adjLZo3iUEZuQEeEAkyRvw2nKKrGLuKJ password = "murray rothbard"
-        XCTAssertTrue(TLCoreBitcoinWrapper.isBIP38EncryptedKey("6PfRr3RtH3GKh7qcRUfEe5rAcFBBcKxJAvQWZPwpksfL6dxTpC9kqMctoE", isTestnet: false))
+        XCTAssertTrue(TLCoreBitcoinWrapper.isBIP38EncryptedKey(self.coinType, privateKey: "6PfRr3RtH3GKh7qcRUfEe5rAcFBBcKxJAvQWZPwpksfL6dxTpC9kqMctoE", isTestnet: false))
         // address = n1nKsF2UvyPgG3QLYupR4mwv1fQwLEJf9b password = "murray rothbard"
-        XCTAssertTrue(TLCoreBitcoinWrapper.isBIP38EncryptedKey("6PfSacWmYziVFFjHqiAHM9nvxsZDMBpDnPtWVQSNgSH9qpo1s1VCCWYEno", isTestnet: true))
+        XCTAssertTrue(TLCoreBitcoinWrapper.isBIP38EncryptedKey(self.coinType, privateKey: "6PfSacWmYziVFFjHqiAHM9nvxsZDMBpDnPtWVQSNgSH9qpo1s1VCCWYEno", isTestnet: true))
         
-        XCTAssertTrue(TLCoreBitcoinWrapper.isValidAddress("1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV", isTestnet: false))
-        XCTAssertTrue(TLCoreBitcoinWrapper.isValidAddress("muZpTpBYhxmRFuCjLc7C6BBDF32C8XVJUi", isTestnet: true))
-        XCTAssertTrue(TLCoreBitcoinWrapper.isValidAddress("3EktnHQD7RiAE6uzMj2ZifT9YgRrkSgzQX", isTestnet: false))
-        XCTAssertTrue(TLCoreBitcoinWrapper.isValidAddress("2MzQwSSnBHWHqSAqtTVQ6v47XtaisrJa1Vc", isTestnet: true))
-        XCTAssertTrue(TLCoreBitcoinWrapper.isValidAddress("vJmujDzf2PyDEcLQEQWyzVNthLpRAXqTi3ZencThu2WCzrRNi64eFYJP6ZyPWj53hSZBKTcUAk8J5Mb8rZC4wvGn77Sj4Z3yP7zE69", isTestnet: false))
-        XCTAssertTrue(TLCoreBitcoinWrapper.isValidAddress("waPUEHTatbqyM6RKtsbdCy63fqyjwW6ksSCi5KhD1NTGdYrvAgvSAneAqDooHxVzpMAx8nZLzZTnhAGM1WxpRFvvp9zF6wFuAA7dNW", isTestnet: true))
+        XCTAssertTrue(TLCoreBitcoinWrapper.isValidAddress(self.coinType, address: "1F3sAm6ZtwLAUnj7d38pGFxtP3RVEvtsbV", isTestnet: false))
+        XCTAssertTrue(TLCoreBitcoinWrapper.isValidAddress(self.coinType, address: "muZpTpBYhxmRFuCjLc7C6BBDF32C8XVJUi", isTestnet: true))
+        XCTAssertTrue(TLCoreBitcoinWrapper.isValidAddress(self.coinType, address: "3EktnHQD7RiAE6uzMj2ZifT9YgRrkSgzQX", isTestnet: false))
+        XCTAssertTrue(TLCoreBitcoinWrapper.isValidAddress(self.coinType, address: "2MzQwSSnBHWHqSAqtTVQ6v47XtaisrJa1Vc", isTestnet: true))
+        XCTAssertTrue(TLCoreBitcoinWrapper.isValidAddress(self.coinType, address: "vJmujDzf2PyDEcLQEQWyzVNthLpRAXqTi3ZencThu2WCzrRNi64eFYJP6ZyPWj53hSZBKTcUAk8J5Mb8rZC4wvGn77Sj4Z3yP7zE69", isTestnet: false))
+        XCTAssertTrue(TLCoreBitcoinWrapper.isValidAddress(self.coinType, address: "waPUEHTatbqyM6RKtsbdCy63fqyjwW6ksSCi5KhD1NTGdYrvAgvSAneAqDooHxVzpMAx8nZLzZTnhAGM1WxpRFvvp9zF6wFuAA7dNW", isTestnet: true))
 
-        XCTAssertTrue(TLCoreBitcoinWrapper.isValidPrivateKey("L4rK1yDtCWekvXuE6oXD9jCYfFNV2cWRpVuPLBcCU2z8TrisoyY1", isTestnet: false))
-        XCTAssertTrue(TLCoreBitcoinWrapper.isValidPrivateKey("cVDJUtDjdaM25yNVVDLLX3hcHUfth4c7tY3rSc4hy9e8ibtCuj6G", isTestnet: true))
+        XCTAssertTrue(TLCoreBitcoinWrapper.isValidPrivateKey(self.coinType, privateKey: "L4rK1yDtCWekvXuE6oXD9jCYfFNV2cWRpVuPLBcCU2z8TrisoyY1", isTestnet: false))
+        XCTAssertTrue(TLCoreBitcoinWrapper.isValidPrivateKey(self.coinType, privateKey: "cVDJUtDjdaM25yNVVDLLX3hcHUfth4c7tY3rSc4hy9e8ibtCuj6G", isTestnet: true))
     }
 
     func testHDWalletWrapper() {
@@ -1672,19 +1674,19 @@ class ArcBitTests: XCTestCase {
         let mainAddressIndex0 = [0,0]
         var mainAddress0:String
         var walletConfig = TLWalletConfig(isTestnet: false)
-        mainAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
+        mainAddress0 = TLHDWalletWrapper.getAddress(self.coinType, extendPubKey:extendPubKey, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("mainAddress0: %@", mainAddress0)
         XCTAssertTrue("1K7fXZeeQydcUvbsfvkMSQmiacV5sKRYQz" == mainAddress0)
         var mainPrivKey0:String
-        mainPrivKey0 = TLHDWalletWrapper.getPrivateKey(extendPrivKey as NSString, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
+        mainPrivKey0 = TLHDWalletWrapper.getPrivateKey(self.coinType, extendPrivKey: extendPrivKey as NSString, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("mainPrivKey0: %@", mainPrivKey0)
         XCTAssertTrue("KwJhkmrjjg3AEX5gvccNAHCDcXnQLwzyZshnp5yK7vXz1mHKqDDq" == mainPrivKey0)
 
         walletConfig = TLWalletConfig(isTestnet: true)
-        mainAddress0 = TLHDWalletWrapper.getAddress(extendPubKey, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
+        mainAddress0 = TLHDWalletWrapper.getAddress(self.coinType, extendPubKey:extendPubKey, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("mainAddress0: %@", mainAddress0)
         XCTAssertTrue("mydcpcjdE14sG35VPVijGKz3Sc5nsbbeo7" == mainAddress0)
-        mainPrivKey0 = TLHDWalletWrapper.getPrivateKey(extendPrivKey as NSString, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
+        mainPrivKey0 = TLHDWalletWrapper.getPrivateKey(self.coinType, extendPrivKey: extendPrivKey as NSString, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("mainPrivKey0: %@", mainPrivKey0)
         XCTAssertTrue("cMfhDgrbAjjRPxYxK2RVXbhHEm5p1Q6fdurFvWRpd3BzGWQYiFw6" == mainPrivKey0)
     }

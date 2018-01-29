@@ -211,9 +211,9 @@ import Foundation
         let scanKey = self.getStealthAddressScanKey()
         let spendKey = self.getStealthAddressSpendKey()
         if let secret = TLStealthAddress.getPaymentAddressPrivateKeySecretFromScript(script, scanPrivateKey: scanKey, spendPrivateKey: spendKey) {
-            let outputAddress = TLCoreBitcoinWrapper.getAddressFromSecret(secret, isTestnet: self.accountObject.appWallet!.walletConfig.isTestnet)
+            let outputAddress = TLCoreBitcoinWrapper.getAddressFromSecret(self.accountObject.coinType, secret: secret, isTestnet: self.accountObject.appWallet!.walletConfig.isTestnet)
             if outputAddress! == expectedAddress {
-                return TLCoreBitcoinWrapper.privateKeyFromSecret(secret, isTestnet: self.accountObject.appWallet!.walletConfig.isTestnet)
+                return TLCoreBitcoinWrapper.privateKeyFromSecret(self.accountObject.coinType, secret: secret, isTestnet: self.accountObject.appWallet!.walletConfig.isTestnet)
             }
         }
         return nil
@@ -242,7 +242,7 @@ import Foundation
         let scanKey = self.getStealthAddressScanKey()
         let spendKey = self.getStealthAddressSpendKey()
         let scanPublicKey = self.getStealthAddressScanPublicKey()
-        let success = TLStealthWallet.watchStealthAddress(stealthAddress, scanPriv: scanKey, spendPriv: spendKey, scanPublicKey: scanPublicKey)
+        let success = self.watchStealthAddress(stealthAddress, scanPriv: scanKey, spendPriv: spendKey, scanPublicKey: scanPublicKey)
         if success {
             let gotOldestPaymentAddressesAndPayments = self.getStealthPayments(stealthAddress,
                 scanPriv: scanKey, spendPriv: spendKey, scanPublicKey: scanPublicKey, offset: 0)
@@ -261,7 +261,7 @@ import Foundation
             let scanKey = self.getStealthAddressScanKey()
             let spendKey = self.getStealthAddressSpendKey()
             let scanPublicKey = self.getStealthAddressScanPublicKey()
-            let success = TLStealthWallet.watchStealthAddress(stealthAddress, scanPriv: scanKey, spendPriv: spendKey, scanPublicKey: scanPublicKey)
+            let success = self.watchStealthAddress(stealthAddress, scanPriv: scanKey, spendPriv: spendKey, scanPublicKey: scanPublicKey)
             if success {
                 let stealthAddressServersDict = self.getStealthAddressServers()
                 let currentServerURL = TLPreferences.getStealthExplorerURL()!
@@ -273,12 +273,12 @@ import Foundation
 
     func getStealthAddressAndSignatureFromChallenge(_ challenge: String) -> (String, String) {
         let privKey = self.getStealthAddressScanKey()
-        let signature = TLCoreBitcoinWrapper.getSignature(privKey, message: challenge);
+        let signature = TLCoreBitcoinWrapper.getSignature(self.accountObject.coinType, privateKey: privKey, message: challenge);
         let stealthAddress = self.getStealthAddress()
         return (stealthAddress, signature);
     }
     
-    class func getChallengeAndSign(_ stealthAddress: String, privKey: String, pubKey: String) -> String? {
+    func getChallengeAndSign(_ stealthAddress: String, privKey: String, pubKey: String) -> String? {
         if TLStealthWallet.Challenge.needsRefreshing == true {
             do {
                 let jsonData = try TLStealthExplorerAPI.instance().getChallenge()
@@ -294,7 +294,7 @@ import Foundation
         let challenge = TLStealthWallet.Challenge.challenge
 
         DLog("getChallengeAndSign \(challenge)")
-        return TLCoreBitcoinWrapper.getSignature(privKey, message: challenge);
+        return TLCoreBitcoinWrapper.getSignature(self.accountObject.coinType, privateKey: privKey, message: challenge);
     }
 
     func addOrSetStealthPaymentsWithStatus(_ txidArray: [String], addressArray: [String], txTimeArray: [UInt64], isAddingPayments: Bool, waitForCompletion: Bool) -> () {
@@ -542,7 +542,7 @@ import Foundation
     
     func getStealthPayments(_ stealthAddress: String, scanPriv: String, spendPriv: String,
         scanPublicKey: String, offset:Int) -> (Bool, UInt64, NSArray?)? {
-            var signature = TLStealthWallet.getChallengeAndSign(stealthAddress, privKey: scanPriv, pubKey: scanPublicKey)
+            var signature = self.getChallengeAndSign(stealthAddress, privKey: scanPriv, pubKey: scanPublicKey)
             
             if signature == nil {
                 return nil
@@ -563,7 +563,7 @@ import Foundation
                                 return nil
                             }
                             TLStealthWallet.Challenge.needsRefreshing = true
-                            signature = TLStealthWallet.getChallengeAndSign(stealthAddress, privKey: scanPriv, pubKey: scanPublicKey)
+                            signature = self.getChallengeAndSign(stealthAddress, privKey: scanPriv, pubKey: scanPublicKey)
                             if signature == nil {
                                 return nil
                             }
@@ -595,7 +595,7 @@ import Foundation
             return (gotOldestPaymentAddresses, latestTxTime, stealthPayments)
     }
     
-    class func watchStealthAddress(_ stealthAddress: String, scanPriv: String, spendPriv: String, scanPublicKey: String) -> Bool {
+    func watchStealthAddress(_ stealthAddress: String, scanPriv: String, spendPriv: String, scanPublicKey: String) -> Bool {
         var signature = self.getChallengeAndSign(stealthAddress, privKey: scanPriv, pubKey: scanPublicKey)
         if signature == nil {
             return false

@@ -351,14 +351,16 @@ import StoreKit
     
         // TODO: better way
         if AppDelegate.instance().scannedEncryptedPrivateKey != nil {
+            let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
             TLPrompts.promptForEncryptedPrivKeyPassword(self, view:self.slidingViewController().topViewController.view,
-                encryptedPrivKey:AppDelegate.instance().scannedEncryptedPrivateKey!,
+                                                        coinType: coinType, encryptedPrivKey:AppDelegate.instance().scannedEncryptedPrivateKey!,
                 success:{(privKey: String!) in
                     if AppDelegate.instance().scannedEncryptedPrivateKey == nil {
                         return
                     }
 
-                    if (!TLCoreBitcoinWrapper.isValidPrivateKey(privKey, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
+                    let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+                    if (!TLCoreBitcoinWrapper.isValidPrivateKey(coinType, privateKey: privKey, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
                         TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.INVALID_PRIVATE_KEY_STRING())
                     } else {
                         let importedAddress = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedSendObject() as! TLImportedAddress?
@@ -520,7 +522,8 @@ import StoreKit
     }
         
     fileprivate func fillToAddressTextField(_ address: String) -> Bool {
-        if (TLCoreBitcoinWrapper.isValidAddress(address, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
+        let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+        if (TLCoreBitcoinWrapper.isValidAddress(coinType, address: address, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
             self.toAddressTextField!.text = address
             TLSendFormData.instance().setAddress(address)
             return true
@@ -555,7 +558,8 @@ import StoreKit
         let bitcoinAmount = self.amountTextField!.text
         let toAddress = self.toAddressTextField!.text
     
-        if (!TLCoreBitcoinWrapper.isValidAddress(toAddress!, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
+        let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+        if (!TLCoreBitcoinWrapper.isValidAddress(coinType, address: toAddress!, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
             TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.INVALID_ADDRESS_STRING())
             return
         }
@@ -641,7 +645,6 @@ import StoreKit
             }
         }
         
-        let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
         if TLPreferences.enabledInAppSettingsKitDynamicFee(coinType) {
             if !AppDelegate.instance().coinWalletsManager!.godSend.haveUpDatedUTXOs() {
                 AppDelegate.instance().coinWalletsManager!.godSend.getAndSetUnspentOutputs({
@@ -658,7 +661,8 @@ import StoreKit
     }
     
     fileprivate func handleTempararyImportPrivateKey(_ privateKey: String) {
-        if (!TLCoreBitcoinWrapper.isValidPrivateKey(privateKey, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
+        let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+        if (!TLCoreBitcoinWrapper.isValidPrivateKey(coinType, privateKey: privateKey, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
             TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.INVALID_PRIVATE_KEY_STRING())
         } else {
             let importedAddress = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedSendObject() as! TLImportedAddress?
@@ -694,8 +698,10 @@ import StoreKit
         } else if (AppDelegate.instance().coinWalletsManager!.godSend.needWatchOnlyAddressPrivateKey()) {
             TLPrompts.promptForTempararyImportPrivateKey(self, success: {
                 (data: String!) in
-                if (TLCoreBitcoinWrapper.isBIP38EncryptedKey(data, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
-                    TLPrompts.promptForEncryptedPrivKeyPassword(self, view:self.slidingViewController().topViewController.view, encryptedPrivKey: data, success: {
+                let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+                if (TLCoreBitcoinWrapper.isBIP38EncryptedKey(coinType, privateKey: data, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)) {
+                    let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+                    TLPrompts.promptForEncryptedPrivKeyPassword(self, view:self.slidingViewController().topViewController.view, coinType:coinType, encryptedPrivKey: data, success: {
                         (privKey: String!) in
                         self.handleTempararyImportPrivateKey(privKey)
                         }, failure: {
@@ -712,7 +718,8 @@ import StoreKit
             
         } else if (AppDelegate.instance().coinWalletsManager!.godSend.needEncryptedPrivateKeyPassword()) {
             let encryptedPrivateKey = AppDelegate.instance().coinWalletsManager!.godSend.getEncryptedPrivateKey()
-            TLPrompts.promptForEncryptedPrivKeyPassword(self, view:self.slidingViewController().topViewController.view, encryptedPrivKey: encryptedPrivateKey, success: {
+            let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+            TLPrompts.promptForEncryptedPrivKeyPassword(self, view:self.slidingViewController().topViewController.view, coinType: coinType, encryptedPrivKey: encryptedPrivateKey, success: {
                 (privKey: String!) in
                 let importedAddress = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedSendObject() as! TLImportedAddress?
                 let success = importedAddress!.setPrivateKeyInMemory(privKey)
@@ -791,6 +798,7 @@ import StoreKit
                 vc.parentViewIsSendVC = true
                 vc.delegate = self
             }
+        } else if (segue.identifier == "selectAccount") {
         }
     }
     
