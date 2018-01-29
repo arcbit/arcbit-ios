@@ -216,10 +216,11 @@ import CoreData
         DLog("txObject hash: \(txObject!.getHash())")
         cell!.dateLabel!.text = txObject!.getTime()
         
-        let amount = TLCurrencyFormat.getProperAmount(AppDelegate.instance().coinWalletsManager!.historySelectedObject.getAccountAmountChangeForTx(txObject!.getHash() as String)!, coinType: AppDelegate.instance().coinWalletsManager!.historySelectedObject.getSelectedObjectCoinType())
+        let historyObjectCurrentCoinType = AppDelegate.instance().coinWalletsManager!.historySelectedObject.getSelectedObjectCoinType()
+        let amount = TLCurrencyFormat.getProperAmount(AppDelegate.instance().coinWalletsManager!.historySelectedObject.getAccountAmountChangeForTx(txObject!.getHash() as String)!, coinType: historyObjectCurrentCoinType)
         let amountType = AppDelegate.instance().coinWalletsManager!.historySelectedObject.getAccountAmountChangeTypeForTx(txObject!.getHash())
         var amountTypeString = ""
-        let txTag = AppDelegate.instance().coinWalletsManager!.getTransactionTag(TLPreferences.getSendFromCoinType(), txObject: txObject!)
+        let txTag = AppDelegate.instance().coinWalletsManager!.getTransactionTag(historyObjectCurrentCoinType, txObject: txObject!)
 
         cell!.descriptionLabel!.adjustsFontSizeToFitWidth = true
         if (amountType == .send) {
@@ -316,17 +317,18 @@ import CoreData
             destructiveButtonTitle: nil,
             otherButtonTitles: otherButtonTitles as [AnyObject],
             tap: {(actionSheet, action, buttonIndex) in
+                let historyObjectCurrentCoinType = AppDelegate.instance().coinWalletsManager!.historySelectedObject.getSelectedObjectCoinType()
                 if (buttonIndex == actionSheet?.firstOtherButtonIndex) {
-                    TLBlockExplorerAPI.instance().openWebViewForTransaction(txObject.getHash())
+                    TLBlockExplorerAPI.instance().openWebViewForTransaction(historyObjectCurrentCoinType, txid: txObject.getHash())
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_TRANSACTION_IN_WEB()),
                         object: nil, userInfo: nil)
                 } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)! + 1) {
                     TLPrompts.promtForInputText(self, title:TLDisplayStrings.EDIT_TRANSACTION_LABEL_STRING(), message: "", textFieldPlaceholder: TLDisplayStrings.LABEL_STRING(), success: {
                         (inputText: String!) in
                         if (inputText == "") {
-                            AppDelegate.instance().coinWalletsManager!.deleteTransactionTag(TLPreferences.getSendFromCoinType(), txObject: txObject)
+                            AppDelegate.instance().coinWalletsManager!.deleteTransactionTag(historyObjectCurrentCoinType, txObject: txObject)
                         } else {
-                            AppDelegate.instance().coinWalletsManager!.setTransactionTag(TLPreferences.getSendFromCoinType(), txid: txObject.getHash(), tag: inputText)
+                            AppDelegate.instance().coinWalletsManager!.setTransactionTag(historyObjectCurrentCoinType, txid: txObject.getHash(), tag: inputText)
                             NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_TAG_TRANSACTION()),
                                 object: nil, userInfo: nil)
                         }

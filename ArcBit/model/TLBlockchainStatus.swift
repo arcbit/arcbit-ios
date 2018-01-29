@@ -24,16 +24,24 @@ import Foundation
 import UIKit
 
 class TLBlockchainStatus {
-    struct STATIC_MEMBERS{
+    struct STATIC_MEMBERS {
         static var _instance:TLBlockchainStatus? = nil
     }
     
-    var blockHeight:UInt64 = 0
-    
+    private lazy var coinType2BlockHeight = [TLCoinType:TLBlockHeightObject]()
+
     class func instance() -> (TLBlockchainStatus) {
         if(STATIC_MEMBERS._instance == nil) {
             STATIC_MEMBERS._instance = TLBlockchainStatus()
         }
         return STATIC_MEMBERS._instance!
+    }
+    
+    func getBlockHeight(_ coinType: TLCoinType) -> UInt64 {
+        return self.coinType2BlockHeight[coinType]?.blockHeight ?? 0
+    }
+    
+    func setBlockHeight(_ coinType: TLCoinType, blockHeight: TLBlockHeightObject) {
+        self.coinType2BlockHeight[coinType] = blockHeight
     }
 }

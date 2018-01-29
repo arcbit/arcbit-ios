@@ -60,13 +60,16 @@ class TLTxOutputObject {
 }
 
 @objc class TLTxObject : NSObject {
+
+    let coinType:TLCoinType
     fileprivate var txDict : NSDictionary
     fileprivate lazy var inputAddressToValueArray = Array<TLTxInputObject>()
     fileprivate lazy var outputAddressToValueArray = Array<TLTxOutputObject>()
     fileprivate var addresses:[String]? = nil
     fileprivate var txid : String?
 
-    init(_ dict: NSDictionary) {
+    init(_ coinType:TLCoinType, dict: NSDictionary) {
+        self.coinType = coinType
         txDict = NSDictionary(dictionary:dict)
         super.init()
         txid = nil
@@ -201,7 +204,7 @@ class TLTxOutputObject {
         }
         
         if (txDict.object(forKey: "block_height") != nil && (txDict.object(forKey: "block_height") as! NSNumber).uint64Value > 0) {
-            let height = UInt64(TLBlockchainStatus.instance().blockHeight)
+            let height = UInt64(TLBlockchainStatus.instance().getBlockHeight(self.coinType))
             let txBlockHeight = UInt64((txDict.object(forKey: "block_height") as! NSNumber).uint64Value) + UInt64(1)
             if txBlockHeight < height {
                 return height - txBlockHeight

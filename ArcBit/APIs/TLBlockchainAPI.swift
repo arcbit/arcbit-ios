@@ -107,13 +107,13 @@ class TLBlockchainAPI {
             success:success, failure:failure)
     }
     
-    func getUnspentOutputsSynchronous(_ addressArray:NSArray) throws -> TLUnspentOutputsObject {
+    func getUnspentOutputsSynchronous(_ addressArray:NSArray) throws -> NSDictionary {
         let endPoint = "unspent"
         let parameters = [
             STATIC_MEMBERS.BC_REQ_ACTIVE:addressArray.componentsJoined(by: "|")
         ]
         let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
-        return TLUnspentOutputsObject(try self.networking.httpGETSynchronous(url!, parameters:parameters as NSDictionary) as! NSDictionary, blockExplorerJSONType: TLBlockExplorer.blockchain)
+        return try self.networking.httpGETSynchronous(url!, parameters:parameters as NSDictionary) as! NSDictionary
     }
     
     func getUnspentOutputs(_ addressArray:Array<String>, success:@escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler) -> () {
@@ -126,13 +126,13 @@ class TLBlockchainAPI {
             success:success, failure:failure)
     }
     
-    func getAddressesInfoSynchronous(_ addressArray:Array<String>) throws -> TLAddressesObject {
+    func getAddressesInfoSynchronous(_ addressArray:Array<String>) throws -> NSDictionary {
         let endPoint = "multiaddr"
         let parameters = [
             STATIC_MEMBERS.BC_REQ_ACTIVE:addressArray.joined(separator: "|"),
             "no_buttons":"true"]
         let url = URL(string:endPoint, relativeTo:URL(string:self.baseURL))
-        return TLAddressesObject(try self.networking.httpGETSynchronous(url!, parameters:parameters as NSDictionary) as! NSDictionary)
+        return try self.networking.httpGETSynchronous(url!, parameters:parameters as NSDictionary) as! NSDictionary
     }
     
     func getAddressesInfo(_ addressArray:Array<String>, success:@escaping TLNetworking.SuccessHandler, failure:@escaping TLNetworking.FailureHandler) -> () {

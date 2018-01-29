@@ -77,13 +77,13 @@ import UIKit
     func rightBarButtonClicked() {
         self.clickRightBarButtonCount += 1
         if (self.clickRightBarButtonCount >= 10) {
-            TLStealthWebSocket.instance().isWebSocketOpen()
-            let av = UIAlertView(title: "Web Socket Server status",
-                message: "Up: \(TLStealthWebSocket.instance().isWebSocketOpen())",
-                delegate: nil,
-                cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
-                otherButtonTitles: TLDisplayStrings.OK_STRING())
-            av.show()
+//            TLStealthWebSocket.instance().isWebSocketOpen()
+//            let av = UIAlertView(title: "Web Socket Server status",
+//                message: "Up: \(TLStealthWebSocket.instance().isWebSocketOpen())",
+//                delegate: nil,
+//                cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
+//                otherButtonTitles: TLDisplayStrings.OK_STRING())
+//            av.show()
         }
     }
     

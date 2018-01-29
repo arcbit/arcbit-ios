@@ -29,8 +29,6 @@ class TLPreferences
         //keys must match keys defined in Settings.bundle/Root.plist
         static let INAPPSETTINGS_KIT_RECEIVING_ADDRESS = "address"
         static let INAPPSETTINGS_KIT_NAME = "name"
-        static let INAPPSETTINGS_KIT_BLOCKEXPLORER_URL = "blockexplorerurl"
-        static let INAPPSETTINGS_KIT_BLOCKEXPLORER_API = "blockexplorerapi"
         static let INAPPSETTINGS_KIT_STEALTH_EXPLORER_URL = "stealthexplorerurl"
         static let INAPPSETTINGS_KIT_STEALTH_WEB_SOCKET_URL = "stealthwebsocketurl"
         static let INAPPSETTINGS_KIT_STEALTH_SERVER_PORT = "stealthwebserverport"
@@ -38,29 +36,39 @@ class TLPreferences
         static let INAPPSETTINGS_KIT_RECEIVING_CURRENCY = "currency"
         static let INAPPSETTINGS_KIT_DISPLAY_LOCAL_CURRENCY = "displaylocalcurrency"
 
-        static let PREFERENCE_BITCOIN_CASH_DISPLAY = "pref-bitcoin-cash-display"
-        static let PREFERENCE_BITCOIN_DISPLAY = "pref-bitcoin-display"
-        static let INAPPSETTINGS_KIT_PREFERENCE_BITCOIN_CASH_DISPLAY = "bitcoincashdisplay"
-        static let INAPPSETTINGS_KIT_PREFERENCE_BITCOIN_DISPLAY = "bitcoindisplay"
+        
         static let INAPPSETTINGS_KIT_TRANSACTION_FEE_BITCOIN = "transactionfee"
         static let INAPPSETTINGS_KIT_TRANSACTION_FEE_BITCOIN_CASH = "transactionfeebitcoincash"
         static let INAPPSETTINGS_KIT_ENABLE_DYNAMIC_FEE_BITCOIN = "enabledynamicfee"
         static let INAPPSETTINGS_KIT_ENABLE_DYNAMIC_FEE_BITCOIN_CASH = "enabledynamicfeebitcoincash"
         static let INAPPSETTINGS_KIT_DYNAMIC_FEE_OPTION_BITCOIN = "dynamicfeeoption"
         static let INAPPSETTINGS_KIT_DYNAMIC_FEE_OPTION_BITCOIN_CASH = "dynamicfeeoptionbitcoincash"
-        
+
+        static let INAPPSETTINGS_KIT_PREFERENCE_BITCOIN_CASH_DISPLAY = "bitcoincashdisplay"
+        static let INAPPSETTINGS_KIT_PREFERENCE_BITCOIN_DISPLAY = "bitcoindisplay"
+        static let PREFERENCE_BITCOIN_CASH_DISPLAY = "pref-bitcoin-cash-display"
+        static let PREFERENCE_BITCOIN_DISPLAY = "pref-bitcoin-display"
+
+        static let INAPPSETTINGS_KIT_BLOCKEXPLORER_URL_BITCOIN = "blockexplorerurl"
+        static let INAPPSETTINGS_KIT_BLOCKEXPLORER_URL_BITCOIN_CASH = "blockexplorerurlbitcoincash"
+        static let PREFERENCE_BLOCKEXPLORER_API_URL_DICT_BITCOIN = "pref-blockexplorer-api-url"
+        static let PREFERENCE_BLOCKEXPLORER_API_URL_DICT_BITCOIN_CASH = "pref-blockexplorer-api-url-bitcoincash"
+
+        static let INAPPSETTINGS_KIT_BLOCKEXPLORER_API_BITCOIN = "blockexplorerapi"
+        static let INAPPSETTINGS_KIT_BLOCKEXPLORER_API_BITCOIN_CASH = "blockexplorerapibitcoincash"
+        static let PREFERENCE_BLOCKEXPLORER_API_BITCOIN = "pref-blockexplorer-api"
+        static let PREFERENCE_BLOCKEXPLORER_API_BITCOIN_CASH = "pref-blockexplorer-api-bitcoincash"
+
         static let ENABLED_BITCOIN = "pref-enabled-cryptocoin-bitcoin"
         static let ENABLED_BITCOIN_CASH = "pref-enabled-cryptocoin-bitcoincash"
         static let INAPPSETTINGS_KIT_ENABLED_BITCOIN = "enabledcryptocoinbitcoin"
         static let INAPPSETTINGS_KIT_ENABLED_BITCOIN_CASH = "enabledcryptocoinbitcoincash"
-        
+
         static let INAPPSETTINGS_KIT_ENABLE_COLD_WALLET = "enablecoldwallet"
         static let PREFERENCE_INSTALL_DATE = "pref-install-date"
         static let PREFERENCE_APP_VERSION = "pref-app-version"
         static let PREFERENCE_PUSH_NOTIFICTION = "pref-push-notification"
         static let PREFERENCE_FIAT_DISPLAY = "pref-fiat-display"
-        static let PREFERENCE_BLOCKEXPLORER_API = "pref-blockexplorer-api"
-        static let PREFERENCE_BLOCKEXPLORER_API_URL_DICT = "pref-blockexplorer-api-url"
         static let PREFERENCE_BTC_SYMBOL_TOGGLED = "pref-btc-symbol-toggled"
         static let PREFERENCE_ENABLE_BACKUP_WITH_ICLOUD = "pref-enable-backup-with-icloud"
         static let INAPPSETTINGS_KIT_ENABLE_BACKUP_WITH_ICLOUD = "enablebackupwithicloud"
@@ -171,42 +179,6 @@ class TLPreferences
         UserDefaults.standard.synchronize()
     }
     
-    
-    class func getBlockExplorerAPI() -> (TLBlockExplorer) {
-        let value = UserDefaults.standard.string(forKey: CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API) as NSString?
-        if(value == nil) {
-            return TLBlockExplorer(rawValue: 0)!
-        }
-        return TLBlockExplorer(rawValue: value!.integerValue)!
-    }
-    
-    class func setBlockExplorerAPI(_ blockexplorerIdx:String) -> () {
-        UserDefaults.standard.set(blockexplorerIdx ,forKey:CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API)
-        UserDefaults.standard.synchronize()
-    }
-    
-    class func getBlockExplorerURL(_ blockExplorer:TLBlockExplorer) -> (String?) {
-        let blockExplorer2blockExplorerURLDict = UserDefaults.standard.object(forKey: CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT) as! NSDictionary
-        let key = String(format:"%ld", blockExplorer.rawValue)
-        return blockExplorer2blockExplorerURLDict.value(forKey: key) as? String
-    }
-    
-    class func setBlockExplorerURL(_ blockExplorer:TLBlockExplorer, value:(String)) -> (){
-        assert(blockExplorer == TLBlockExplorer.insight, "can only change insight URL currently")
-        let blockExplorer2blockExplorerURLDict = (UserDefaults.standard.object(forKey: CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT) as! NSDictionary).mutableCopy() as! NSDictionary
-        blockExplorer2blockExplorerURLDict.setValue(value ,forKey:String(format:"%ld", blockExplorer.rawValue))
-        UserDefaults.standard.set(blockExplorer2blockExplorerURLDict ,forKey:CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT)
-        UserDefaults.standard.synchronize()
-    }
-    
-    class func resetBlockExplorerAPIURL() -> (){
-        let blockExplorer2blockExplorerURLDict = NSMutableDictionary(capacity: 3)
-        blockExplorer2blockExplorerURLDict.setObject("https://blockchain.info/" ,forKey:String(format:"%ld", TLBlockExplorer.blockchain.rawValue) as NSCopying)
-        blockExplorer2blockExplorerURLDict.setObject("https://insight.bitpay.com/" ,forKey:String(format:"%ld", TLBlockExplorer.insight.rawValue) as NSCopying)
-        UserDefaults.standard.set(blockExplorer2blockExplorerURLDict ,forKey:CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT)
-        UserDefaults.standard.synchronize()
-    }
-    
     class func getStealthExplorerURL() -> (String?) {
         return UserDefaults.standard.string(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_STEALTH_EXPLORER_URL)
     }
@@ -244,24 +216,6 @@ class TLPreferences
     
     class func resetStealthWebSocketPort() -> () {
         self.setStealthWebSocketPort(TLStealthServerConfig.instance().getWebSocketServerPort())
-    }
-    
-    class func getInAppSettingsKitBlockExplorerAPI() -> (String?){
-        return UserDefaults.standard.string(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_BLOCKEXPLORER_API)
-    }
-    
-    class func setInAppSettingsKitBlockExplorerAPI(_ value:String) -> () {
-        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_BLOCKEXPLORER_API)
-        UserDefaults.standard.synchronize()
-    }
-    
-    class func getInAppSettingsKitBlockExplorerURL() -> (String?) {
-        return UserDefaults.standard.string(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_BLOCKEXPLORER_URL)
-    }
-    
-    class func setInAppSettingsKitBlockExplorerURL(_ value: String) -> (){
-        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_BLOCKEXPLORER_URL)
-        UserDefaults.standard.synchronize()
     }
     
     class func getInAppSettingsKitCurrencyIdx() -> (String?) {
@@ -600,12 +554,12 @@ extension TLPreferences {
             return self.getBitcoinDenomination()
         }
     }
-    class func setCoinDisplay(_ coinType: TLCoinType, coinDisplayIdx:String) {
+    class func setCoinDisplayUnit(_ coinType: TLCoinType, coinDisplayIdx:String) {
         switch coinType {
         case .BCH:
-            return self.setBitcoinCashDisplay(coinDisplayIdx)
+            return self.setBitcoinCashDisplayUnit(coinDisplayIdx)
         case .BTC:
-            return self.setBitcoinDisplay(coinDisplayIdx)
+            return self.setBitcoinDisplayUnit(coinDisplayIdx)
         }
     }
     
@@ -617,11 +571,8 @@ extension TLPreferences {
         return TLCoinDenomination(rawValue: value!.integerValue)!
     }
     
-    class func setBitcoinCashDisplay(_ displayIdx:String) {
-        //TODO should probably store string not displayidx, very confusing
-        let enumDisplayIdx = String(Int(displayIdx)!+TLWalletUtils.DEFAULT_COIN_DENOMINATION_STARTING_IDX(TLCoinType.BCH))
-        UserDefaults.standard.set(enumDisplayIdx ,forKey:CLASS_STATIC.PREFERENCE_BITCOIN_CASH_DISPLAY)
-        UserDefaults.standard.set(displayIdx ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_PREFERENCE_BITCOIN_CASH_DISPLAY)
+    class func setBitcoinCashDisplayUnit(_ displayIdx:String) {
+        UserDefaults.standard.set(displayIdx ,forKey:CLASS_STATIC.PREFERENCE_BITCOIN_CASH_DISPLAY)
         UserDefaults.standard.synchronize()
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_PREFERENCES_COIN_UNIT_DISPLAY_CHANGED())
             ,object:nil, userInfo:nil)
@@ -635,7 +586,7 @@ extension TLPreferences {
         return TLCoinDenomination(rawValue: value!.integerValue)!
     }
     
-    class func setBitcoinDisplay(_ displayIdx:String) {
+    class func setBitcoinDisplayUnit(_ displayIdx:String) {
         UserDefaults.standard.set(displayIdx ,forKey:CLASS_STATIC.PREFERENCE_BITCOIN_DISPLAY)
         UserDefaults.standard.set(displayIdx ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_PREFERENCE_BITCOIN_DISPLAY)
         UserDefaults.standard.synchronize()
@@ -827,5 +778,240 @@ extension TLPreferences {
             count += 1
         }
         return count
+    }
+    
+    // --------------------------------------------------------------------------------------------------------------------------------------------
+    
+    class func getBlockExplorerAPI(_ coinType: TLCoinType) -> TLBlockExplorer {
+        switch coinType {
+        case .BCH:
+            return self.getBlockExplorerAPIBitcoinCash()
+        case .BTC:
+            return self.getBlockExplorerAPIBitcoin()
+        }
+    }
+    
+    class func setBlockExplorerAPI(_ coinType: TLCoinType, blockexplorerIdx:String) {
+        switch coinType {
+        case .BCH:
+            return self.setBlockExplorerAPIBitcoinCash(blockexplorerIdx)
+        case .BTC:
+            return self.setBlockExplorerAPIBitcoin(blockexplorerIdx)
+        }
+    }
+    
+    class func getBlockExplorerAPIBitcoinCash() -> TLBlockExplorer {
+        let value = UserDefaults.standard.string(forKey: CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_BITCOIN_CASH) as NSString?
+        if(value == nil) {
+            return TLBlockExplorer.bitcoinCash_blockexplorer
+        }
+        return TLBlockExplorer(rawValue: value!.integerValue)!
+    }
+    
+    class func setBlockExplorerAPIBitcoinCash(_ blockexplorerIdx:String) {
+        UserDefaults.standard.set(blockexplorerIdx ,forKey:CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_BITCOIN_CASH)
+        UserDefaults.standard.synchronize()
+    }
+    
+    class func getBlockExplorerAPIBitcoin() -> TLBlockExplorer {
+        let value = UserDefaults.standard.string(forKey: CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_BITCOIN) as NSString?
+        if(value == nil) {
+            return TLBlockExplorer.bitcoin_blockchain
+        }
+        return TLBlockExplorer(rawValue: value!.integerValue)!
+    }
+    
+    class func setBlockExplorerAPIBitcoin(_ blockexplorerIdx:String) {
+        UserDefaults.standard.set(blockexplorerIdx ,forKey:CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_BITCOIN)
+        UserDefaults.standard.synchronize()
+    }
+    
+    // --------------------------------------------------------------------------------------------------------------------------------------------
+    
+    class func getBlockExplorerURL(_ coinType: TLCoinType, blockExplorer:TLBlockExplorer) -> String? {
+        switch coinType {
+        case .BCH:
+            return self.getBlockExplorerURLBitcoinCash(blockExplorer)
+        case .BTC:
+            return self.getBlockExplorerURLBitcoin(blockExplorer)
+        }
+    }
+    
+    class func setBlockExplorerURL(_ coinType: TLCoinType, blockExplorer:TLBlockExplorer, value:String) -> () {
+        switch coinType {
+        case .BCH:
+            return self.setBlockExplorerURLBitcoinCash(blockExplorer, value: value)
+        case .BTC:
+            return self.setBlockExplorerURLBitcoin(blockExplorer, value: value)
+        }
+    }
+    
+    class func resetBlockExplorerAPIURL(_ coinType: TLCoinType) -> () {
+        switch coinType {
+        case .BCH:
+            return self.resetBlockExplorerAPIURLBitcoinCash()
+        case .BTC:
+            return self.resetBlockExplorerAPIURLBitcoin()
+        }
+    }
+    
+    class func getBlockExplorerURLBitcoinCash(_ blockExplorer:TLBlockExplorer) -> (String?) {
+        let blockExplorer2blockExplorerURLDict = UserDefaults.standard.object(forKey: CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT_BITCOIN_CASH) as! NSDictionary
+        let key = String(format:"%ld", blockExplorer.rawValue)
+        return blockExplorer2blockExplorerURLDict.value(forKey: key) as? String
+    }
+    
+    class func setBlockExplorerURLBitcoinCash(_ blockExplorer:TLBlockExplorer, value:String) -> () {
+        assert(blockExplorer == TLBlockExplorer.bitcoinCash_insight, "can only change insight URL currently")
+        let blockExplorer2blockExplorerURLDict = (UserDefaults.standard.object(forKey: CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT_BITCOIN_CASH) as! NSDictionary).mutableCopy() as! NSDictionary
+        blockExplorer2blockExplorerURLDict.setValue(value ,forKey:String(format:"%ld", blockExplorer.rawValue))
+        UserDefaults.standard.set(blockExplorer2blockExplorerURLDict ,forKey:CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT_BITCOIN_CASH)
+        UserDefaults.standard.synchronize()
+    }
+    
+    class func resetBlockExplorerAPIURLBitcoinCash() -> () {
+        let blockExplorer2blockExplorerURLDict = NSMutableDictionary(capacity: 2)
+        //        blockExplorer2blockExplorerURLDict.setObject("https://blockexplorer.com/" ,forKey:String(format:"%ld", TLBlockExplorer.bitcoinCash_blockexplorer.rawValue) as NSCopying)
+        blockExplorer2blockExplorerURLDict.setObject("https://bitcoincash.blockexplorer.com/" ,forKey:String(format:"%ld", TLBlockExplorer.bitcoinCash_blockexplorer.rawValue) as NSCopying)
+        blockExplorer2blockExplorerURLDict.setObject("https://bch-insight.bitpay.com/" ,forKey:String(format:"%ld", TLBlockExplorer.bitcoinCash_insight.rawValue) as NSCopying)
+        UserDefaults.standard.set(blockExplorer2blockExplorerURLDict ,forKey:CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT_BITCOIN_CASH)
+        UserDefaults.standard.synchronize()
+    }
+    
+    class func getBlockExplorerURLBitcoin(_ blockExplorer:TLBlockExplorer) -> (String?) {
+        let blockExplorer2blockExplorerURLDict = UserDefaults.standard.object(forKey: CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT_BITCOIN) as! NSDictionary
+        let key = String(format:"%ld", blockExplorer.rawValue)
+        return blockExplorer2blockExplorerURLDict.value(forKey: key) as? String
+    }
+    
+    class func setBlockExplorerURLBitcoin(_ blockExplorer:TLBlockExplorer, value:String) -> () {
+        assert(blockExplorer == TLBlockExplorer.bitcoin_insight, "can only change insight URL currently")
+        let blockExplorer2blockExplorerURLDict = (UserDefaults.standard.object(forKey: CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT_BITCOIN) as! NSDictionary).mutableCopy() as! NSDictionary
+        blockExplorer2blockExplorerURLDict.setValue(value ,forKey:String(format:"%ld", blockExplorer.rawValue))
+        UserDefaults.standard.set(blockExplorer2blockExplorerURLDict ,forKey:CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT_BITCOIN)
+        UserDefaults.standard.synchronize()
+    }
+    
+    class func resetBlockExplorerAPIURLBitcoin() -> () {
+        let blockExplorer2blockExplorerURLDict = NSMutableDictionary(capacity: 2)
+        blockExplorer2blockExplorerURLDict.setObject("https://blockchain.info/" ,forKey:String(format:"%ld", TLBlockExplorer.bitcoin_blockchain.rawValue) as NSCopying)
+        blockExplorer2blockExplorerURLDict.setObject("https://insight.bitpay.com/" ,forKey:String(format:"%ld", TLBlockExplorer.bitcoin_insight.rawValue) as NSCopying)
+        UserDefaults.standard.set(blockExplorer2blockExplorerURLDict ,forKey:CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT_BITCOIN)
+        UserDefaults.standard.synchronize()
+    }
+    
+    // --------------------------------------------------------------------------------------------------------------------------------------------
+    
+    class func getInAppSettingsKitBlockExplorerAPI(_ coinType: TLCoinType) -> String? {
+        switch coinType {
+        case .BCH:
+            return self.getInAppSettingsKitBlockExplorerAPIBitcoinCash()
+        case .BTC:
+            return self.getInAppSettingsKitBlockExplorerAPIBitcoin()
+        }
+    }
+    
+    class func setInAppSettingsKitBlockExplorerAPI(_ coinType: TLCoinType, value:String) -> () {
+        switch coinType {
+        case .BCH:
+            return self.setInAppSettingsKitBlockExplorerAPIBitcoinCash(value)
+        case .BTC:
+            return self.setInAppSettingsKitBlockExplorerAPIBitcoin(value)
+        }
+    }
+    
+    class func getInAppSettingsKitBlockExplorerAPIBitcoinCash() -> String? {
+        return UserDefaults.standard.string(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_BLOCKEXPLORER_API_BITCOIN_CASH)
+    }
+    
+    class func setInAppSettingsKitBlockExplorerAPIBitcoinCash(_ value:String) -> () {
+        UserDefaults.standard.set(value , forKey:CLASS_STATIC.INAPPSETTINGS_KIT_BLOCKEXPLORER_API_BITCOIN_CASH)
+        UserDefaults.standard.synchronize()
+    }
+    
+    class func getInAppSettingsKitBlockExplorerAPIBitcoin() -> String? {
+        return UserDefaults.standard.string(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_BLOCKEXPLORER_API_BITCOIN)
+    }
+    
+    class func setInAppSettingsKitBlockExplorerAPIBitcoin(_ value:String) -> () {
+        UserDefaults.standard.set(value , forKey:CLASS_STATIC.INAPPSETTINGS_KIT_BLOCKEXPLORER_API_BITCOIN)
+        UserDefaults.standard.synchronize()
+    }
+    
+    // --------------------------------------------------------------------------------------------------------------------------------------------
+
+    
+    class func getInAppSettingsKitBlockExplorerURL(_ coinType: TLCoinType) -> String? {
+        switch coinType {
+        case .BCH:
+            return self.getInAppSettingsKitBlockExplorerURLBitcoinCash()
+        case .BTC:
+            return self.getInAppSettingsKitBlockExplorerURLBitcoin()
+        }
+    }
+    
+    class func setInAppSettingsKitBlockExplorerURL(_ coinType: TLCoinType, value: String) -> () {
+        switch coinType {
+        case .BCH:
+            return self.setInAppSettingsKitBlockExplorerURLBitcoinCash(value)
+        case .BTC:
+            return self.setInAppSettingsKitBlockExplorerURLBitcoin(value)
+        }
+    }
+    
+    class func getInAppSettingsKitBlockExplorerURLBitcoinCash() -> String? {
+        return UserDefaults.standard.string(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_BLOCKEXPLORER_URL_BITCOIN_CASH)
+    }
+    
+    class func setInAppSettingsKitBlockExplorerURLBitcoinCash(_ value: String) -> () {
+        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_BLOCKEXPLORER_URL_BITCOIN_CASH)
+        UserDefaults.standard.synchronize()
+    }
+    
+    class func getInAppSettingsKitBlockExplorerURLBitcoin() -> String? {
+        return UserDefaults.standard.string(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_BLOCKEXPLORER_URL_BITCOIN)
+    }
+    
+    class func setInAppSettingsKitBlockExplorerURLBitcoin(_ value: String) -> () {
+        UserDefaults.standard.set(value ,forKey:CLASS_STATIC.INAPPSETTINGS_KIT_BLOCKEXPLORER_URL_BITCOIN)
+        UserDefaults.standard.synchronize()
+    }
+    
+    // --------------------------------------------------------------------------------------------------------------------------------------------
+    
+    class func getInAppSettingsKitDisplayUnit(_ coinType: TLCoinType) -> String? {
+        switch coinType {
+        case .BCH:
+            return self.getInAppSettingsKitDisplayUnitBitcoinCash()
+        case .BTC:
+            return self.getInAppSettingsKitDisplayUnitBitcoin()
+        }
+    }
+    
+    class func setInAppSettingsKitDisplayUnit(_ coinType: TLCoinType, value:String) -> () {
+        switch coinType {
+        case .BCH:
+            return self.setInAppSettingsKitDisplayUnitBitcoinCash(value)
+        case .BTC:
+            return self.setInAppSettingsKitDisplayUnitBitcoin(value)
+        }
+    }
+    
+    class func getInAppSettingsKitDisplayUnitBitcoinCash() -> String? {
+        return UserDefaults.standard.string(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_PREFERENCE_BITCOIN_CASH_DISPLAY)
+    }
+    
+    class func setInAppSettingsKitDisplayUnitBitcoinCash(_ value:String) -> () {
+        UserDefaults.standard.set(value , forKey:CLASS_STATIC.INAPPSETTINGS_KIT_PREFERENCE_BITCOIN_CASH_DISPLAY)
+        UserDefaults.standard.synchronize()
+    }
+    
+    class func getInAppSettingsKitDisplayUnitBitcoin() -> String? {
+        return UserDefaults.standard.string(forKey: CLASS_STATIC.INAPPSETTINGS_KIT_PREFERENCE_BITCOIN_DISPLAY)
+    }
+    
+    class func setInAppSettingsKitDisplayUnitBitcoin(_ value:String) -> () {
+        UserDefaults.standard.set(value , forKey:CLASS_STATIC.INAPPSETTINGS_KIT_PREFERENCE_BITCOIN_DISPLAY)
+        UserDefaults.standard.synchronize()
     }
 }

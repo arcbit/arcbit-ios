@@ -290,10 +290,6 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     func prepAndBroadcastTx(_ txHex: String, txHash: String) {
-        if (TLSendFormData.instance().getAddress() == AppDelegate.instance().coinWalletsManager!.godSend.getStealthAddress()) {
-            AppDelegate.instance().pendingSelfStealthPaymentTxid = txHash
-        }
-        
         if AppDelegate.instance().coinWalletsManager!.godSend.isPaymentToOwnAccount(TLSendFormData.instance().getAddress()!) {
             self.amountMovedFromAccount = TLSendFormData.instance().feeAmount!
         } else {
@@ -301,7 +297,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         }
         
         for address in self.realToAddresses! {
-            TLTransactionListener.instance().listenToIncomingTransactionForAddress(address)
+            TLTransactionListener.instance().listenToIncomingTransactionForAddress(TLPreferences.getSendFromCoinType(), address: address)
         }
         
         TLSendFormData.instance().beforeSendBalance = AppDelegate.instance().coinWalletsManager!.godSend.getCurrentFromBalance()
@@ -319,7 +315,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                                                                       object: nil, userInfo: nil)
         }
         
-        TLPushTxAPI.instance().sendTx(txHex, txHash: txHash, toAddress: toAddress, success: {
+        TLPushTxAPI.instance().sendTx(TLPreferences.getSendFromCoinType(), txHex: txHex, txHash: txHash, toAddress: toAddress, success: {
             (jsonData) in
             DLog("showPromptReviewTx pushTx: success \(jsonData)")
             

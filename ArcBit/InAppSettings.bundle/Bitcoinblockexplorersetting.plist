@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>Title</key>
+	<string>ADVANCED_TITLE</string>
+	<key>StringsTable</key>
+	<string>Root</string>
+	<key>PreferenceSpecifiers</key>
+	<array>
+        
+        <dict>
+            <key>Title</key>
+            <string>EMPTY</string>
+            <key>Type</key>
+            <string>PSGroupSpecifier</string>
+        </dict>
+        <dict>
+            <key>DefaultValue</key>
+            <string>0</string>
+            <key>Key</key>
+            <string>blockexplorerapi</string>
+            <key>Title</key>
+            <string>BLOCKCHAIN_API_TYPE</string>
+            <key>Titles</key>
+            <array>
+                <string>BLOCKCHAIN_API_TYPE_1</string>
+                <string>BLOCKCHAIN_API_TYPE_2</string>
+            </array>
+            <key>Type</key>
+            <string>PSMultiValueSpecifier</string>
+            <key>Values</key>
+            <array>
+                <string>0</string>
+                <string>1</string>
+            </array>
+        </dict>
+        <dict>
+            <key>Key</key>
+            <string>blockexplorerurl</string>
+            <key>Type</key>
+            <string>PSTitleValueSpecifier</string>
+            <key>IASKTextAlignment</key>
+            <string>IASKUITextAlignmentCenter</string>
+        </dict>
+        <dict>
+            <key>Title</key>
+            <string>CHANGE_BLOCKEXPLORER_URL</string>
+            <key>Key</key>
+            <string>setblockexplorerurl</string>
+            <key>Type</key>
+            <string>IASKButtonSpecifier</string>
+        </dict>
+
+	</array>
+</dict>
+</plist>

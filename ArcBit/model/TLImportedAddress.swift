@@ -90,7 +90,7 @@ import Foundation
         if self.fetchedAccountData == true && self.listeningToIncomingTransactions == false {
             self.listeningToIncomingTransactions = true
             let address = self.getAddress()
-            TLTransactionListener.instance().listenToIncomingTransactionForAddress(address)
+            TLTransactionListener.instance().listenToIncomingTransactionForAddress(self.coinType, address: address)
         }
     }
     
@@ -320,7 +320,7 @@ import Foundation
     }
     
     func getSingleAddressData(_ success: @escaping TLWalletUtils.Success, failure:@escaping TLWalletUtils.Error) -> () {
-        TLBlockExplorerAPI.instance().getAddressesInfo([importedAddress!], success:{(addressesObject) in
+        TLBlockExplorerAPI.instance().getAddressesInfo(self.coinType, addressArray: [importedAddress!], success:{(addressesObject) in
             
             for addressObject in addressesObject.addresses {
                 self.balance = TLCoin(uint64: addressObject.finalBalance)
@@ -346,7 +346,7 @@ import Foundation
         }
         
         do {
-            let addressesObject = try TLBlockExplorerAPI.instance().getAddressesInfoSynchronous([importedAddress!])
+            let addressesObject = try TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(self.coinType, addressArray: [importedAddress!])
             for addressObject in addressesObject.addresses {
                 self.balance = TLCoin(uint64: addressObject.finalBalance)
                 self.processTxArray(addressesObject.txs, shouldUpdateAccountBalance: false)

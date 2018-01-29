@@ -66,8 +66,9 @@ import UIKit
                             DispatchQueue.main.async {
                                 AppDelegate.instance().saveWalletJSONEnabled = true
                                 AppDelegate.instance().saveWalletJsonCloud()
-                                TLTransactionListener.instance().reconnect()
-                                TLStealthWebSocket.instance().reconnect()
+                                TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
+                                    TLTransactionListener.instance().reconnect(coinType)
+                                })
                                 TLHUDWrapper.hideHUDForView(self.view, animated: true)
                                 self.slidingViewController()!.topViewController = self.storyboard!.instantiateViewController(withIdentifier: "SendNav") 
                             }
@@ -90,9 +91,9 @@ import UIKit
     
     fileprivate func initializeWalletAppAndShowInitialScreenAndGoToMainScreen(_ walletPayload: NSDictionary?) -> () {
         AppDelegate.instance().initializeWalletAppAndShowInitialScreen(false, walletPayload: walletPayload)
-        TLTransactionListener.instance().reconnect()
-        TLStealthWebSocket.instance().reconnect()
-
+        TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
+            TLTransactionListener.instance().reconnect(coinType)
+        })
         if self.slidingViewController() != nil {
             self.slidingViewController().topViewController = self.storyboard!.instantiateViewController(withIdentifier: "SendNav") 
         } else {

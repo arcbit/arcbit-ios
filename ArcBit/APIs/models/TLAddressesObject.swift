@@ -23,11 +23,12 @@ class TLAddressObject {
 
 class TLAddressesObject {
     
+    let coinType:TLCoinType
     lazy var addresses = Array<TLAddressObject>()
     lazy var txs = Array<TLTxObject>()
 
-    init(_ jsonDict: NSDictionary) {
-        
+    init(_ coinType: TLCoinType, jsonDict: NSDictionary) {
+        self.coinType = coinType
         let addressesArray = jsonDict.object(forKey: "addresses") as! NSArray
         var balance:UInt64 = 0
         for _addressDict in addressesArray {
@@ -40,7 +41,7 @@ class TLAddressesObject {
         let txArray = jsonDict.object(forKey: "txs") as! NSArray
         for _tx in txArray {
             let tx = _tx as! NSDictionary
-            let txObject = TLTxObject(tx)
+            let txObject = TLTxObject(coinType, dict: tx)
             txs.append(txObject)
         }
     }

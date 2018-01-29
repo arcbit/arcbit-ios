@@ -92,7 +92,7 @@ import Foundation
             return
         }
 
-        TLBlockExplorerAPI.instance().getAddressesInfo(addresses.allObjects as! [String], success:{(addressesObject) in
+        TLBlockExplorerAPI.instance().getAddressesInfo(self.coinType, addressArray: addresses.allObjects as! [String], success:{(addressesObject) in
             for addressObject in addressesObject.addresses {
                 let indexes = (self.addressToIdxDict).object(forKey: addressObject.address) as! NSArray
                 for idx in indexes {
@@ -129,7 +129,7 @@ import Foundation
         }
         
         do {
-            let addressesObject = try TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(addresses.allObjects as! [String])
+            let addressesObject = try TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(self.coinType, addressArray: addresses.allObjects as! [String])
             
             for addressObject in addressesObject.addresses {
                 let indexes = (self.addressToIdxDict).object(forKey: addressObject.address) as! NSArray

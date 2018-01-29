@@ -407,18 +407,6 @@ import UIKit
             self.receiveAddresses!.add(address!)
         }
 
-        if (TLWalletUtils.ENABLE_STEALTH_ADDRESS()) {
-            if (AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.getSelectedObjectType() == .account) {
-                if let stealthAddress = AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.getStealthAddress() {
-                    if (TLPreferences.enabledStealthAddressDefault()) {
-                        self.receiveAddresses!.insert(stealthAddress, at: 0)
-                    } else {
-                        self.receiveAddresses!.add(stealthAddress)
-                    }                    
-                }
-            }
-        }
-
         if (AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.getSelectedObjectType() == .account) {
             self.receiveAddresses!.add("End")
         }

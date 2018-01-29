@@ -35,9 +35,6 @@ import Foundation
         NotificationCenter.default.addObserver(self
             ,selector:#selector(TLCoinWalletsManager.listenToIncomingTransactionForWallet),
              name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_TRANSACTION_LISTENER_OPEN()), object:nil)
-        NotificationCenter.default.addObserver(self
-            ,selector:#selector(TLCoinWalletsManager.setAccountsListeningToStealthPaymentsToFalse),
-             name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_STEALTH_PAYMENT_LISTENER_CLOSE()), object:nil)
         
         
         func updateGodSend() {
@@ -237,20 +234,6 @@ import Foundation
         return self.historySelectedObject.getSelectedObjectCoinType()
     }
     
-    func setAccountsListeningToStealthPaymentsToFalse() {
-        TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
-            let coinWalletObject = self.coinWalletDict[coinType]!
-            coinWalletObject.setAccountsListeningToStealthPaymentsToFalse()
-        })
-    }
-    
-    func respondToStealthChallege(_ challenge: String) {
-        TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
-            let coinWalletObject = self.coinWalletDict[coinType]!
-            coinWalletObject.respondToStealthChallege(challenge)
-        })
-    }
-    
     func setWalletTransactionListenerClosed() {
         TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
             let coinWalletObject = self.coinWalletDict[coinType]!
@@ -276,25 +259,10 @@ import Foundation
         })
     }
     
-    func respondToStealthAddressSubscription(_ stealthAddress: String) {
-        TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
-            let coinWalletObject = self.coinWalletDict[coinType]!
-            coinWalletObject.respondToStealthAddressSubscription(stealthAddress)
-        })
-    }
-    
     func listenToIncomingTransactionForWallet() {
         TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
             let coinWalletObject = self.coinWalletDict[coinType]!
             coinWalletObject.listenToIncomingTransactionForWallet()
-        })
-    }
-    
-    func handleGetTxSuccessForRespondToStealthPayment(_ stealthAddress: String, paymentAddress: String,
-                                                      txid: String, txTime: UInt64, txObject: TLTxObject) {
-        TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
-            let coinWalletObject = self.coinWalletDict[coinType]!
-            coinWalletObject.handleGetTxSuccessForRespondToStealthPayment(stealthAddress, paymentAddress: paymentAddress, txid: txid, txTime: txTime, txObject: txObject)
         })
     }
     

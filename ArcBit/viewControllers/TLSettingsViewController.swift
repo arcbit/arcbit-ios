@@ -78,14 +78,25 @@ import AVFoundation
             hiddenKeys.add("changepincode")
         }
         
-        let blockExplorerAPI = TLPreferences.getBlockExplorerAPI()
-        if (blockExplorerAPI == .blockchain) {
+        let bicoinBlockExplorerAPI = TLPreferences.getBlockExplorerAPIBitcoin()
+        if (bicoinBlockExplorerAPI == .bitcoin_blockchain) {
             hiddenKeys.add("blockexplorerurl")
             hiddenKeys.add("setblockexplorerurl")
         } else {
-            if (blockExplorerAPI == .insight) {
-                let blockExplorerURL = TLPreferences.getBlockExplorerURL(blockExplorerAPI)
-                TLPreferences.setInAppSettingsKitBlockExplorerURL(blockExplorerURL!)
+            if (bicoinBlockExplorerAPI == .bitcoin_insight) {
+                let blockExplorerURL = TLPreferences.getBlockExplorerURLBitcoin(bicoinBlockExplorerAPI)
+                TLPreferences.setInAppSettingsKitBlockExplorerURLBitcoin(blockExplorerURL!)
+            }
+        }
+        
+        let bicoinCashBlockExplorerAPI = TLPreferences.getBlockExplorerAPIBitcoinCash()
+        if (bicoinCashBlockExplorerAPI == .bitcoinCash_blockexplorer) {
+            hiddenKeys.add("blockexplorerurlbitcoincash")
+            hiddenKeys.add("setblockexplorerurlbitcoincash")
+        } else {
+            if (bicoinCashBlockExplorerAPI == .bitcoinCash_insight) {
+                let blockExplorerURL = TLPreferences.getBlockExplorerURLBitcoinCash(bicoinCashBlockExplorerAPI)
+                TLPreferences.setInAppSettingsKitBlockExplorerURLBitcoinCash(blockExplorerURL!)
             }
         }
         
@@ -101,7 +112,7 @@ import AVFoundation
         super.viewWillAppear(animated)
     }
     
-    fileprivate func showPromptForSetBlockExplorerURL() {
+    fileprivate func showPromptForSetBlockExplorerURL(_ coinType: TLCoinType) {
         UIAlertController.showAlert(in: self,
             withTitle: TLDisplayStrings.CHANGE_BLOCK_EXPLORER_URL_STRING(),
             message: "",
@@ -127,8 +138,8 @@ import AVFoundation
                     let candidateURL = URL(string: candidate!)
                     
                     if (candidateURL != nil && candidateURL!.host != nil) {
-                        TLPreferences.setInAppSettingsKitBlockExplorerURL(candidateURL!.absoluteString)
-                        TLPreferences.setBlockExplorerURL(TLPreferences.getBlockExplorerAPI(), value: candidateURL!.absoluteString)
+                        TLPreferences.setInAppSettingsKitBlockExplorerURL(coinType, value: candidateURL!.absoluteString)
+                        TLPreferences.setBlockExplorerURL(coinType, blockExplorer: TLPreferences.getBlockExplorerAPI(coinType), value: candidateURL!.absoluteString)
                         TLPrompts.promptSuccessMessage("", message: TLDisplayStrings.KILL_THIS_APP_DESC_STRING())
                     } else {
                         UIAlertController.showAlert(in: self,
@@ -138,7 +149,7 @@ import AVFoundation
                             destructiveButtonTitle: nil,
                             otherButtonTitles: nil,
                             tap: {(alertView, action, buttonIndex) in
-                                self.showPromptForSetBlockExplorerURL()
+                                self.showPromptForSetBlockExplorerURL(coinType)
                         })
                     }
                 } else if (buttonIndex == alertView!.cancelButtonIndex) {
@@ -235,94 +246,106 @@ import AVFoundation
             guard let didChangeKey = key1 as? String else {
                 return
             }
-        if (didChangeKey == "enablecoldwallet") {
-            let enabled = (userInfo.object(forKey: "enablecoldwallet")) as! Bool
-            TLPreferences.setEnableColdWallet(enabled)
-        } else if (didChangeKey == "enableadvancemode") {
-            let enabled = (userInfo.object(forKey: "enableadvancemode")) as! Bool
-            TLPreferences.setAdvancedMode(enabled)
-        } else if (didChangeKey == "canrestoredeletedapp") {
-            let enabled = (userInfo.object(forKey: "canrestoredeletedapp")) as! Bool
-            
-            TLPreferences.setInAppSettingsCanRestoreDeletedApp(!enabled) // make sure below code completes firstbefore enabling
-            if enabled {
-                // settingDidChange gets called twice on one change, so need to do this
-                if (TLPreferences.getEncryptedWalletPassphraseKey() == nil) {
-                    TLPreferences.setInAppSettingsCanRestoreDeletedApp(enabled)
+            if (didChangeKey == "enablecoldwallet") {
+                let enabled = (userInfo.object(forKey: "enablecoldwallet")) as! Bool
+                TLPreferences.setEnableColdWallet(enabled)
+            } else if (didChangeKey == "enableadvancemode") {
+                let enabled = (userInfo.object(forKey: "enableadvancemode")) as! Bool
+                TLPreferences.setAdvancedMode(enabled)
+            } else if (didChangeKey == "canrestoredeletedapp") {
+                let enabled = (userInfo.object(forKey: "canrestoredeletedapp")) as! Bool
+                
+                TLPreferences.setInAppSettingsCanRestoreDeletedApp(!enabled) // make sure below code completes firstbefore enabling
+                if enabled {
+                    // settingDidChange gets called twice on one change, so need to do this
+                    if (TLPreferences.getEncryptedWalletPassphraseKey() == nil) {
+                        TLPreferences.setInAppSettingsCanRestoreDeletedApp(enabled)
+                        return
+                    }
+                    TLWalletPassphrase.enableRecoverableFeature(TLPreferences.canRestoreDeletedApp())
+                } else {
+                    // settingDidChange gets called twice on one change, so need to do this
+                    if (TLPreferences.getEncryptedWalletPassphraseKey() != nil) {
+                        TLPreferences.setInAppSettingsCanRestoreDeletedApp(enabled)
+                        return
+                    }
+                    TLWalletPassphrase.disableRecoverableFeature(TLPreferences.canRestoreDeletedApp())
+                }
+                TLPreferences.setInAppSettingsCanRestoreDeletedApp(enabled)
+                TLPreferences.setCanRestoreDeletedApp(enabled)
+            } else if (didChangeKey == "enablepincode") {
+                let enabled = userInfo.object(forKey: "enablepincode") as! Bool
+                TLPreferences.setEnablePINCode(enabled)
+                if (!LTHPasscodeViewController.doesPasscodeExist()) {
+                    self.showLockViewForEnablingPasscode()
+                } else {
+                    self.showLockViewForTurningPasscodeOff()
+                }
+            } else if (didChangeKey == "displaylocalcurrency") {
+                let enabled = userInfo.object(forKey: "displaylocalcurrency") as! Bool
+                TLPreferences.setDisplayLocalCurrency(enabled)
+                
+            } else if (didChangeKey == "dynamicfeeoption") {
+            } else if (didChangeKey == "dynamicfeeoptionbitcoincash") {
+            } else if (didChangeKey == "enabledynamicfee") {
+                self.updateHiddenKeys()
+            } else if (didChangeKey == "enabledynamicfeebitcoincash") {
+                self.updateHiddenKeys()
+                
+            } else if (didChangeKey == "currency") {
+                let currencyIdx = userInfo.object(forKey: "currency") as! String
+                TLPreferences.setCurrency(currencyIdx)
+                
+            } else if (didChangeKey == "bitcoincashdisplay") {
+                let displayIdx = userInfo.object(forKey: "bitcoincashdisplay") as! String
+                // TODO need to fix ugly addition, due to bad way how enum is setup
+                let finalDisplayIdx = String(Int(displayIdx)!+TLWalletUtils.DEFAULT_COIN_DENOMINATION_STARTING_IDX(TLCoinType.BCH))
+                TLPreferences.setBitcoinCashDisplayUnit(finalDisplayIdx)
+            } else if (didChangeKey == "bitcoindisplay") {
+                let displayIdx = userInfo.object(forKey: "bitcoindisplay") as! String
+                TLPreferences.setBitcoinDisplayUnit(displayIdx)
+                
+            } else if (didChangeKey == "enabledcryptocoinbitcoincash") {
+                if TLPreferences.getInAppSettingsKitEnabledCryptocoinsCount() == 0 {
+                    // must have at least one coin enabled
+                    TLPreferences.setInAppSettingsKitEnabledBitcoinCash(true)
+                    TLPrompts.promptSuccessMessage("", message: TLDisplayStrings.KILL_THIS_APP_DESC_STRING())
                     return
                 }
-                TLWalletPassphrase.enableRecoverableFeature(TLPreferences.canRestoreDeletedApp())
-            } else {
-                // settingDidChange gets called twice on one change, so need to do this
-                if (TLPreferences.getEncryptedWalletPassphraseKey() != nil) {
-                    TLPreferences.setInAppSettingsCanRestoreDeletedApp(enabled)
+                let enabled = userInfo.object(forKey: "enabledcryptocoinbitcoincash") as! Bool
+                TLPreferences.setEnabledBitcoinCash(enabled)
+            } else if (didChangeKey == "enabledcryptocoinbitcoin") {
+                if TLPreferences.getInAppSettingsKitEnabledCryptocoinsCount() == 0 {
+                    // must have at least one coin enabled
+                    TLPreferences.setInAppSettingsKitEnabledBitcoin(true)
+                    TLPrompts.promptSuccessMessage("", message: TLDisplayStrings.KILL_THIS_APP_DESC_STRING())
                     return
                 }
-                TLWalletPassphrase.disableRecoverableFeature(TLPreferences.canRestoreDeletedApp())
+                let enabled = userInfo.object(forKey: "enabledcryptocoinbitcoin") as! Bool
+                TLPreferences.setEnabledBitcoin(enabled)
+            } else if (didChangeKey == "stealthaddressdefault") {
+                let enabled = userInfo.object(forKey: "stealthaddressdefault") as! Bool
+                TLPreferences.setEnabledStealthAddressDefault(enabled)
+                
+            } else if (didChangeKey == "blockexplorerapi") {
+                let blockexplorerAPIIdx = userInfo.object(forKey: "blockexplorerapi") as! String
+                TLPreferences.setBlockExplorerAPIBitcoin(blockexplorerAPIIdx)
+                TLPreferences.resetBlockExplorerAPIURLBitcoin()
+                self.updateHiddenKeys()
+                
+                AppDelegate.instance().giveExitAppNoticeForBlockExplorerAPIToTakeEffect = true
+                
+                NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_CHANGE_BLOCKEXPLORER_TYPE()), object: nil)
+            } else if (didChangeKey == "blockexplorerapibitcoincash") {
+                let blockexplorerAPIIdx = userInfo.object(forKey: "blockexplorerapibitcoincash") as! String
+                // TODO need to fix ugly addition, due to bad way how enum is setup
+                let finalBlockexplorerIdx = String(Int(blockexplorerAPIIdx)!+TLWalletUtils.DEFAULT_BLOCKEXPLORER_API_STARTING_IDX(TLCoinType.BCH))
+                TLPreferences.setBlockExplorerAPIBitcoinCash(finalBlockexplorerIdx)
+                TLPreferences.resetBlockExplorerAPIURLBitcoinCash()
+                self.updateHiddenKeys()
+                AppDelegate.instance().giveExitAppNoticeForBlockExplorerAPIToTakeEffect = true
+                NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_CHANGE_BLOCKEXPLORER_TYPE()), object: nil)
             }
-            TLPreferences.setInAppSettingsCanRestoreDeletedApp(enabled)
-            TLPreferences.setCanRestoreDeletedApp(enabled)
-        } else if (didChangeKey == "enablepincode") {
-            let enabled = userInfo.object(forKey: "enablepincode") as! Bool
-            TLPreferences.setEnablePINCode(enabled)
-            if (!LTHPasscodeViewController.doesPasscodeExist()) {
-                self.showLockViewForEnablingPasscode()
-            } else {
-                self.showLockViewForTurningPasscodeOff()
-            }
-        } else if (didChangeKey == "displaylocalcurrency") {
-            let enabled = userInfo.object(forKey: "displaylocalcurrency") as! Bool
-            TLPreferences.setDisplayLocalCurrency(enabled)
-            
-        } else if (didChangeKey == "dynamicfeeoption") {
-        } else if (didChangeKey == "dynamicfeeoptionbitcoincash") {
-        } else if (didChangeKey == "enabledynamicfee") {
-            self.updateHiddenKeys()
-        } else if (didChangeKey == "enabledynamicfeebitcoincash") {
-            self.updateHiddenKeys()
-            
-        } else if (didChangeKey == "currency") {
-            let currencyIdx = userInfo.object(forKey: "currency") as! String
-            TLPreferences.setCurrency(currencyIdx)
-
-        } else if (didChangeKey == "bitcoincashdisplay") {
-            let displayIdx = userInfo.object(forKey: "bitcoincashdisplay") as! String
-            TLPreferences.setBitcoinCashDisplay(displayIdx)
-        } else if (didChangeKey == "bitcoindisplay") {
-            let displayIdx = userInfo.object(forKey: "bitcoindisplay") as! String
-            TLPreferences.setBitcoinDisplay(displayIdx)
-
-        } else if (didChangeKey == "enabledcryptocoinbitcoincash") {
-            if TLPreferences.getInAppSettingsKitEnabledCryptocoinsCount() == 0 {
-                // must have at least one coin enabled
-                TLPreferences.setInAppSettingsKitEnabledBitcoinCash(true)
-                TLPrompts.promptSuccessMessage("", message: TLDisplayStrings.KILL_THIS_APP_DESC_STRING())
-                return
-            }
-            let enabled = userInfo.object(forKey: "enabledcryptocoinbitcoincash") as! Bool
-            TLPreferences.setEnabledBitcoinCash(enabled)
-        } else if (didChangeKey == "enabledcryptocoinbitcoin") {
-            if TLPreferences.getInAppSettingsKitEnabledCryptocoinsCount() == 0 {
-                // must have at least one coin enabled
-                TLPreferences.setInAppSettingsKitEnabledBitcoin(true)
-                TLPrompts.promptSuccessMessage("", message: TLDisplayStrings.KILL_THIS_APP_DESC_STRING())
-                return
-            }
-            let enabled = userInfo.object(forKey: "enabledcryptocoinbitcoin") as! Bool
-            TLPreferences.setEnabledBitcoin(enabled)
-        } else if (didChangeKey == "stealthaddressdefault") {
-            let enabled = userInfo.object(forKey: "stealthaddressdefault") as! Bool
-            TLPreferences.setEnabledStealthAddressDefault(enabled)
-        } else if (didChangeKey == "blockexplorerapi") {
-            let blockexplorerAPIIdx = userInfo.object(forKey: "blockexplorerapi") as! String
-            TLPreferences.setBlockExplorerAPI(blockexplorerAPIIdx)
-            TLPreferences.resetBlockExplorerAPIURL()
-            self.updateHiddenKeys()
-            
-            AppDelegate.instance().giveExitAppNoticeForBlockExplorerAPIToTakeEffect = true
-            
-            NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_CHANGE_BLOCKEXPLORER_TYPE()), object: nil)
-        }
         }
     }
     
@@ -342,7 +365,9 @@ import AVFoundation
             self.showPromptForSetTransactionFee(TLCoinType.BCH)
 
         } else if (specifier.key() == "setblockexplorerurl") {
-            self.showPromptForSetBlockExplorerURL()
+            self.showPromptForSetBlockExplorerURL(TLCoinType.BTC)
+        } else if (specifier.key() == "setblockexplorerurlbitcoincash") {
+            self.showPromptForSetBlockExplorerURL(TLCoinType.BCH)
         }
     }
     

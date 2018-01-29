@@ -125,7 +125,7 @@ import StoreKit
         if useDynamicFees {
             if (AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectType() == .account) {
                 let accountObject = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedSendObject() as! TLAccountObject
-                let inputCount = accountObject.stealthPaymentUnspentOutputsCount + accountObject.unspentOutputsCount
+                let inputCount = accountObject.unspentOutputsCount
                 txSizeBytes = TLSpaghettiGodSend.getEstimatedTxSize(inputCount, outputCount: 1)
                 DLog("fillAmountFieldWithWholeBalance TLAccountObject useDynamicFees inputCount txSizeBytes: \(inputCount) \(txSizeBytes)")
             } else {
@@ -866,7 +866,8 @@ import StoreKit
                 return
             }
             func checkToShowStealthPaymentDelayInfo() {
-                if TLSuggestions.instance().enabledShowStealthPaymentDelayInfo() && TLBlockExplorerAPI.STATIC_MEMBERS.blockExplorerAPI == .blockchain {
+                let sendObjectCurrentCoinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+                if TLSuggestions.instance().enabledShowStealthPaymentDelayInfo() && sendObjectCurrentCoinType == TLCoinType.BTC && TLPreferences.getBlockExplorerAPI(sendObjectCurrentCoinType) == .bitcoin_blockchain {
                     let msg = TLDisplayStrings.REUSABLE_ADDRESS_BLOCKCHAIN_API_WARNING_STRING()
                     TLPrompts.promtForOK(self, title:TLDisplayStrings.WARNING_STRING(), message:msg, success: {
                         () in

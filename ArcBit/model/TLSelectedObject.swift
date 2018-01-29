@@ -90,15 +90,6 @@ import Foundation
         return nil
     }
     
-    func getStealthAddress() -> String? {
-        if self.accountObject != nil && self.accountObject!.getAccountType() != .importedWatch {
-            if self.accountObject!.stealthWallet != nil {
-                return self.accountObject!.stealthWallet!.getStealthAddress()
-            }
-        }
-        return nil
-    }
-    
     func hasFetchedCurrentFromData() -> (Bool) {
         if (self.accountObject != nil) {
             return self.accountObject!.hasFetchedAccountData()

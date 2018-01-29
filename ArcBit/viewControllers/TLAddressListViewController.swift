@@ -26,7 +26,6 @@ import UIKit
 @objc(TLAddressListViewController) class TLAddressListViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, CustomIOS7AlertViewDelegate {
 
     struct STATIC_MEMBERS {
-        static let kStealthAddressSection = "kStealthAddressSection"
         static let kActiveMainSection = "kActiveMainSection"
         static let kArchivedMainSection = "kArchivedMainSection"
         static let kActiveChangeSection = "kActiveChangeSection"
@@ -58,12 +57,8 @@ import UIKit
                                                selector: #selector(TLAddressListViewController.reloadAddressListTableView(_:)),
                                                name: NSNotification.Name(rawValue: TLNotificationEvents.EVENT_EXCHANGE_RATE_UPDATED()), object: nil)
 
-        if TLWalletUtils.ENABLE_STEALTH_ADDRESS() {
-            self.sectionArray = [STATIC_MEMBERS.kStealthAddressSection, STATIC_MEMBERS.kActiveMainSection, STATIC_MEMBERS.kArchivedMainSection, STATIC_MEMBERS.kActiveChangeSection, STATIC_MEMBERS.kArchivedChangeSection]
-        } else {
-            self.sectionArray = [STATIC_MEMBERS.kActiveMainSection, STATIC_MEMBERS.kArchivedMainSection, STATIC_MEMBERS.kActiveChangeSection, STATIC_MEMBERS.kArchivedChangeSection]
-        }
-        
+        self.sectionArray = [STATIC_MEMBERS.kActiveMainSection, STATIC_MEMBERS.kArchivedMainSection, STATIC_MEMBERS.kActiveChangeSection, STATIC_MEMBERS.kArchivedChangeSection]
+
         self.addressListTableView!.delegate = self
         self.addressListTableView!.dataSource = self
         self.addressListTableView!.tableFooterView = UIView(frame: CGRect.zero)
@@ -103,7 +98,7 @@ import UIKit
                 tap: {(actionSheet, action, buttonIndex) in
                     
                     if (buttonIndex == actionSheet?.firstOtherButtonIndex) {
-                        TLBlockExplorerAPI.instance().openWebViewForAddress(address)
+                        TLBlockExplorerAPI.instance().openWebViewForAddress(self.currentCoinType, address: address)
                         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_ACCOUNT_ADDRESS_IN_WEB()),
                             object: nil, userInfo: nil)
                         
@@ -167,7 +162,8 @@ import UIKit
     fileprivate func showPrivateKeyQRCodeFinal(_ address: String, addressType: TLAddressType) {
         let privateKey:String
         if (addressType == .stealth) {
-            privateKey = self.accountObject!.stealthWallet!.getPaymentAddressPrivateKey(address)!
+//            privateKey = self.accountObject!.stealthWallet!.getPaymentAddressPrivateKey(address)!
+            privateKey = ""
         } else if (addressType == .main) {
             privateKey = self.accountObject!.getMainPrivateKey(address)
         } else {
@@ -185,10 +181,7 @@ import UIKit
     
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
         let sectionType = self.sectionArray[section]
-        if sectionType == STATIC_MEMBERS.kStealthAddressSection {
-            //there are no archived stealth payment addresses, because old payment addresses are deleted
-            return TLDisplayStrings.REUSABLE_ADDRESS_PAYMENT_ADDRESSES_STRING()
-        } else if sectionType == STATIC_MEMBERS.kActiveMainSection {
+        if sectionType == STATIC_MEMBERS.kActiveMainSection {
             return TLDisplayStrings.ACTIVE_MAIN_ADDRESSES_STRING()
         } else if sectionType == STATIC_MEMBERS.kArchivedMainSection {
             return TLDisplayStrings.ARCHIVED_MAIN_ADDRESSES_STRING()
@@ -204,13 +197,7 @@ import UIKit
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         let count:Int
         let sectionType = self.sectionArray[section]
-        if sectionType == STATIC_MEMBERS.kStealthAddressSection {
-            if TLWalletUtils.ENABLE_STEALTH_ADDRESS() && self.accountObject!.getAccountType() != .importedWatch && self.accountObject!.getAccountType() != .coldWallet {
-                count = self.accountObject!.stealthWallet!.getStealthAddressPaymentsCount()
-            } else {
-                count = 0
-            }
-        } else if sectionType == STATIC_MEMBERS.kActiveMainSection {
+        if sectionType == STATIC_MEMBERS.kActiveMainSection {
             count = self.accountObject!.getMainActiveAddressesCount()
         } else if sectionType == STATIC_MEMBERS.kArchivedMainSection {
             count = self.accountObject!.getMainArchivedAddressesCount()
@@ -233,7 +220,7 @@ import UIKit
                 reuseIdentifier: MyIdentifier) as? TLAddressTableViewCell
         }
         let sectionType = self.sectionArray[(indexPath as NSIndexPath).section]
-        if sectionType == STATIC_MEMBERS.kStealthAddressSection || sectionType == STATIC_MEMBERS.kActiveMainSection || sectionType == STATIC_MEMBERS.kActiveChangeSection {
+        if sectionType == STATIC_MEMBERS.kActiveMainSection || sectionType == STATIC_MEMBERS.kActiveChangeSection {
             cell!.textLabel!.isHidden = true
             cell!.amountButton!.isHidden = false
             cell!.addressLabel!.isHidden = false
@@ -241,22 +228,7 @@ import UIKit
             
             var address = ""
             var balance = ""
-            if sectionType == STATIC_MEMBERS.kStealthAddressSection {
-                if TLWalletUtils.ENABLE_STEALTH_ADDRESS() && self.accountObject!.getAccountType() != .importedWatch && self.accountObject!.getAccountType() != .coldWallet {
-                    if (self.accountObject!.stealthWallet!.getStealthAddressPaymentsCount() == 0) {
-                        address = TL_STRING_NONE_CURRENTLY
-                    } else {
-                        let idx = self.accountObject!.stealthWallet!.getStealthAddressPaymentsCount() - 1 - (indexPath as NSIndexPath).row
-                        address = self.accountObject!.stealthWallet!.getPaymentAddressForIndex(idx)
-                    }
-                } else {
-                    cell!.textLabel!.isHidden = false
-                    cell!.addressLabel!.isHidden = true
-                    cell!.textLabel!.numberOfLines = 0
-                    cell!.textLabel!.text = TL_STRING_NO_STEALTH_PAYMENT_ADDRESSES_INFO
-                    address = TL_STRING_NO_STEALTH_PAYMENT_ADDRESSES_INFO
-                }
-            } else if sectionType == STATIC_MEMBERS.kActiveMainSection {
+            if sectionType == STATIC_MEMBERS.kActiveMainSection {
                 if (self.accountObject!.getMainActiveAddressesCount() == 0) {
                     address = TL_STRING_NONE_CURRENTLY
                 } else {
@@ -274,7 +246,7 @@ import UIKit
             
             cell!.addressLabel!.text = address
             if (self.showBalances && address != TL_STRING_NONE_CURRENTLY && address != TL_STRING_NO_STEALTH_PAYMENT_ADDRESSES_INFO &&
-                (sectionType == STATIC_MEMBERS.kStealthAddressSection || sectionType == STATIC_MEMBERS.kActiveMainSection || sectionType == STATIC_MEMBERS.kActiveChangeSection)) {
+                (sectionType == STATIC_MEMBERS.kActiveMainSection || sectionType == STATIC_MEMBERS.kActiveChangeSection)) {
                     // only show balances of active addresses
                     cell!.amountButton!.isHidden = false
                     balance = TLCurrencyFormat.getProperAmount(self.accountObject!.getAddressBalance(address), coinType: self.currentCoinType) as String
@@ -322,7 +294,7 @@ import UIKit
         let cell = tableView.cellForRow(at: indexPath) as! TLAddressTableViewCell
         
         let sectionType = self.sectionArray[(indexPath as NSIndexPath).section]
-        if sectionType == STATIC_MEMBERS.kStealthAddressSection || sectionType == STATIC_MEMBERS.kActiveMainSection || sectionType == STATIC_MEMBERS.kActiveChangeSection {
+        if sectionType == STATIC_MEMBERS.kActiveMainSection || sectionType == STATIC_MEMBERS.kActiveChangeSection {
             address = cell.addressLabel!.text!
         } else {
             address = cell.textLabel!.text!
@@ -334,10 +306,7 @@ import UIKit
         
         let addressType:TLAddressType
         let title:String
-        if sectionType == STATIC_MEMBERS.kStealthAddressSection {
-            addressType = .stealth
-            title = String(format: TLDisplayStrings.PAYMENT_INDEX_X_STRING(), self.accountObject!.stealthWallet!.getStealthAddressPaymentsCount() - (indexPath as NSIndexPath).row)
-        } else if sectionType == STATIC_MEMBERS.kActiveMainSection || sectionType == STATIC_MEMBERS.kActiveChangeSection {
+        if sectionType == STATIC_MEMBERS.kActiveMainSection || sectionType == STATIC_MEMBERS.kActiveChangeSection {
             addressType = .main
             title = String(format: TLDisplayStrings.ADDRESS_ID_X_STRING_STRING(), self.accountObject!.getAddressHDIndex(address))
         } else {

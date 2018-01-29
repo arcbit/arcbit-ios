@@ -84,6 +84,25 @@ class TLWalletUtils {
         return STATIC_MEMBERS.APP_NAME
     }
     
+    class func DEFAULT_BLOCKEXPLORER_API(_ coinType: TLCoinType) -> TLBlockExplorer {
+        switch coinType {
+        case .BCH:
+            return TLBlockExplorer.bitcoinCash_blockexplorer
+        case .BTC:
+            return TLBlockExplorer.bitcoin_blockchain
+        }
+    }
+
+    class func DEFAULT_BLOCKEXPLORER_API_STARTING_IDX(_ coinType: TLCoinType) -> Int {
+        // base on raw values in TLBlockExplorer
+        switch coinType {
+        case .BCH:
+            return 2
+        case .BTC:
+            return 0
+        }
+    }
+    
     class func DEFAULT_COIN_DENOMINATION_STARTING_IDX(_ coinType: TLCoinType) -> Int {
         // base on raw values in TLCoinDenomination
         switch coinType {
@@ -106,7 +125,7 @@ class TLWalletUtils {
     class func GET_DEFAULT_COIN_DENOMINATION(_ coinType: TLCoinType) -> TLCoinDenomination {
         switch coinType {
         case .BCH:
-            return TLCoinDenomination.bitcoin_bits
+            return TLCoinDenomination.bitcoinCash_bits
         case .BTC:
             return TLCoinDenomination.bitcoin
         }

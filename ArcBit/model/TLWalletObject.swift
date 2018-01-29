@@ -102,13 +102,12 @@ import Foundation
         while true {
             let accountName = String(format:TLDisplayStrings.ACCOUNT_X_STRING(), (accountIdx + 1))
             let accountObject = accounts.createNewAccount(accountName, accountType:.normal, preloadStartingAddresses:false)
-            guard let stealthWallet = accountObject.stealthWallet else { return }
             
             DLog("recoverHDWalletaccountName \(accountName)")
             
             let sumMainAndChangeAddressMaxIdx = accountObject.recoverAccount(false)
             DLog(String(format: "accountName \(accountName) sumMainAndChangeAddressMaxIdx: \(sumMainAndChangeAddressMaxIdx)"))
-            if sumMainAndChangeAddressMaxIdx > -2 || TLWalletUtils.ENABLE_STEALTH_ADDRESS() && stealthWallet.checkIfHaveStealthPayments() {
+            if sumMainAndChangeAddressMaxIdx > -2 {
                 consecutiveUnusedAccountCount = 0
             } else {
                 consecutiveUnusedAccountCount += 1
@@ -144,18 +143,7 @@ import Foundation
             
             guard var activeAddresses = accountObject.getActiveMainAddresses() as? [String] else { return }
             activeAddresses += accountObject.getActiveChangeAddresses() as! [String]
-            
-            if TLWalletUtils.ENABLE_STEALTH_ADDRESS() {
-                if let stealthWallet = accountObject.stealthWallet {
-                    activeAddresses += stealthWallet.getPaymentAddresses()
-                    group.enter()
-                    DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
-                        accountObject.fetchNewStealthPayments(isRestoringWallet)
-                        group.leave()
-                    }
-                }
-            }
-            
+   
             accountObject.getAccountData(activeAddresses, shouldResetAccountBalance: true, success: {
                 () in
                 group.leave()
@@ -176,47 +164,8 @@ import Foundation
         accountObject.updateAccountNeedsRecovering(false)
     }
     
-    func respondToStealthChallege(_ challenge: String) {
-        if (!TLStealthWebSocket.instance().isWebSocketOpen()) {
-            return
-        }
-        for i in stride(from: 0, to: accounts.getNumberOfAccounts(), by: 1) {
-            let accountObject = accounts.getAccountObjectForIdx(i)
-            if accountObject.hasFetchedAccountData() &&
-                accountObject.stealthWallet != nil && accountObject.stealthWallet?.isListeningToStealthPayment == false {
-                if let addrAndSignature = accountObject.stealthWallet?.getStealthAddressAndSignatureFromChallenge(challenge){
-                    TLStealthWebSocket.instance().sendMessageSubscribeToStealthAddress(addrAndSignature.0, signature: addrAndSignature.1)
-                }
-            }
-        }
-        for i in stride(from: 0, to: importedAccounts.getNumberOfAccounts(), by: 1) {
-            let accountObject = importedAccounts.getAccountObjectForIdx(i)
-            if let stealthWallet = accountObject.stealthWallet, accountObject.hasFetchedAccountData() &&
-                stealthWallet.isListeningToStealthPayment == false {
-                let addrAndSignature = stealthWallet.getStealthAddressAndSignatureFromChallenge(challenge)
-                TLStealthWebSocket.instance().sendMessageSubscribeToStealthAddress(addrAndSignature.0, signature: addrAndSignature.1)
-            }
-        }
-    }
-    
-    func setAccountsListeningToStealthPaymentsToFalse() {
-        for i in stride(from: 0, to: accounts.getNumberOfAccounts(), by: 1) {
-            let accountObject = accounts.getAccountObjectForIdx(i)
-            if accountObject.stealthWallet != nil {
-                accountObject.stealthWallet?.isListeningToStealthPayment = false
-            }
-        }
-        
-        for i in stride(from: 0, to: importedAccounts.getNumberOfAccounts(), by: 1) {
-            let accountObject = importedAccounts.getAccountObjectForIdx(i)
-            if let stealthWallet = accountObject.stealthWallet {
-                stealthWallet.isListeningToStealthPayment = false
-            }
-        }
-    }
-    
     func listenToIncomingTransactionForWallet() {
-        if (!TLTransactionListener.instance().isWebSocketOpen()) {
+        if (!TLTransactionListener.instance().isWebSocketOpen(self.coinType)) {
             return
         }
         for i in stride(from: 0, to: accounts.getNumberOfAccounts(), by: 1) {
@@ -226,19 +175,13 @@ import Foundation
             }
             guard let activeMainAddresses = accountObject.getActiveMainAddresses() else { return }
             for address in activeMainAddresses {
-                TLTransactionListener.instance().listenToIncomingTransactionForAddress(address as! String)
+                TLTransactionListener.instance().listenToIncomingTransactionForAddress(self.coinType, address: address as! String)
             }
             guard let activeChangeAddresses = accountObject.getActiveChangeAddresses() else { return }
             for address in activeChangeAddresses {
-                TLTransactionListener.instance().listenToIncomingTransactionForAddress(address as! String)
+                TLTransactionListener.instance().listenToIncomingTransactionForAddress(self.coinType, address: address as! String)
             }
-            
-            if let stealthWallet = accountObject.stealthWallet {
-                let stealthPaymentAddresses = stealthWallet.getUnspentPaymentAddresses()
-                for address in stealthPaymentAddresses {
-                    TLTransactionListener.instance().listenToIncomingTransactionForAddress(address)
-                }
-            }
+    
             accountObject.listeningToIncomingTransactions = true
         }
         
@@ -249,11 +192,11 @@ import Foundation
             }
             guard let activeMainAddresses = accountObject.getActiveMainAddresses() else { return }
             for address in activeMainAddresses {
-                TLTransactionListener.instance().listenToIncomingTransactionForAddress(address as! String)
+                TLTransactionListener.instance().listenToIncomingTransactionForAddress(self.coinType, address: address as! String)
             }
             guard let activeChangeAddresses = accountObject.getActiveChangeAddresses() else { return }
             for address in activeChangeAddresses {
-                TLTransactionListener.instance().listenToIncomingTransactionForAddress(address as! String)
+                TLTransactionListener.instance().listenToIncomingTransactionForAddress(self.coinType, address: address as! String)
             }
             accountObject.listeningToIncomingTransactions = true
         }
@@ -264,19 +207,13 @@ import Foundation
             }
             guard let activeMainAddresses = accountObject.getActiveMainAddresses() else { return }
             for address in activeMainAddresses {
-                TLTransactionListener.instance().listenToIncomingTransactionForAddress(address as! String)
+                TLTransactionListener.instance().listenToIncomingTransactionForAddress(self.coinType, address: address as! String)
             }
             guard let activeChangeAddresses = accountObject.getActiveChangeAddresses() else { return }
             for address in activeChangeAddresses {
-                TLTransactionListener.instance().listenToIncomingTransactionForAddress(address as! String)
+                TLTransactionListener.instance().listenToIncomingTransactionForAddress(self.coinType, address: address as! String)
             }
             
-            if let stealthWallet = accountObject.stealthWallet {
-                let stealthPaymentAddresses = stealthWallet.getUnspentPaymentAddresses()
-                for address in stealthPaymentAddresses {
-                    TLTransactionListener.instance().listenToIncomingTransactionForAddress(address)
-                }
-            }
             accountObject.listeningToIncomingTransactions = true
         }
         
@@ -287,11 +224,11 @@ import Foundation
             }
             guard let activeMainAddresses = accountObject.getActiveMainAddresses() else { return }
             for address in activeMainAddresses {
-                TLTransactionListener.instance().listenToIncomingTransactionForAddress(address as! String)
+                TLTransactionListener.instance().listenToIncomingTransactionForAddress(self.coinType, address: address as! String)
             }
             guard let activeChangeAddresses = accountObject.getActiveChangeAddresses() else { return }
             for address in activeChangeAddresses {
-                TLTransactionListener.instance().listenToIncomingTransactionForAddress(address as! String)
+                TLTransactionListener.instance().listenToIncomingTransactionForAddress(self.coinType, address: address as! String)
             }
             accountObject.listeningToIncomingTransactions = true
         }
@@ -302,7 +239,7 @@ import Foundation
                 continue
             }
             let address = importedAddress.getAddress()
-            TLTransactionListener.instance().listenToIncomingTransactionForAddress(address)
+            TLTransactionListener.instance().listenToIncomingTransactionForAddress(self.coinType, address: address)
             importedAddress.listeningToIncomingTransactions = true
         }
         
@@ -312,7 +249,7 @@ import Foundation
                 continue
             }
             let address = importedAddress.getAddress()
-            TLTransactionListener.instance().listenToIncomingTransactionForAddress(address)
+            TLTransactionListener.instance().listenToIncomingTransactionForAddress(self.coinType, address: address)
             importedAddress.listeningToIncomingTransactions = true
         }
     }
@@ -347,86 +284,6 @@ import Foundation
         for i in stride(from: 0, to: importedWatchAddresses.getCount(), by: 1) {
             let importedAddress = importedWatchAddresses.getAddressObjectAtIdx(i)
             importedAddress.listeningToIncomingTransactions = false
-        }
-    }
-    
-    func handleGetTxSuccessForRespondToStealthPayment(_ stealthAddress: String, paymentAddress: String,
-                                                      txid: String, txTime: UInt64, txObject: TLTxObject) {
-        let inputAddresses = txObject.getInputAddressArray()
-        let outputAddresses = txObject.getOutputAddressArray()
-        
-        if outputAddresses.index(of: paymentAddress) == nil {
-            return
-        }
-        
-        let possibleStealthDataScripts = txObject.getPossibleStealthDataScripts()
-        
-        func processStealthPayment(_ accountObject: TLAccountObject) {
-            if let stealthWallet = accountObject.stealthWallet, stealthWallet.getStealthAddress() == stealthAddress {
-                if accountObject.hasFetchedAccountData() {
-                    for stealthDataScript in possibleStealthDataScripts {
-                        let privateKey = stealthWallet.generateAndAddStealthAddressPaymentKey(stealthDataScript, expectedAddress: paymentAddress,
-                                                                                              txid: txid, txTime: txTime, stealthPaymentStatus: TLStealthPaymentStatus.unspent)
-                        if privateKey != nil {
-                            handleNewTxForAccount(accountObject, txObject: txObject)
-                            break
-                        }
-                    }
-                }
-            } else {
-                // must refresh account balance if a input address belongs to account
-                // this is needed because websocket api does not notify of addresses being used as inputs
-                for address in inputAddresses {
-                    if accountObject.hasFetchedAccountData() && accountObject.isAddressPartOfAccount(address) {
-                        handleNewTxForAccount(accountObject, txObject: txObject)
-                    }
-                }
-            }
-        }
-        
-        for i in stride(from: 0, to: accounts.getNumberOfAccounts(), by: 1) {
-            let accountObject = accounts.getAccountObjectForIdx(i)
-            processStealthPayment(accountObject)
-        }
-        
-        for i in stride(from: 0, to: coldWalletAccounts.getNumberOfAccounts(), by: 1) {
-            let accountObject = coldWalletAccounts.getAccountObjectForIdx(i)
-            for address in inputAddresses {
-                if accountObject.isAddressPartOfAccount(address) {
-                    handleNewTxForAccount(accountObject, txObject: txObject)
-                }
-            }
-        }
-        
-        for i in stride(from: 0, to: importedAccounts.getNumberOfAccounts(), by: 1) {
-            let accountObject = importedAccounts.getAccountObjectForIdx(i)
-            processStealthPayment(accountObject)
-        }
-        for i in stride(from: 0, to: importedWatchAccounts.getNumberOfAccounts(), by: 1) {
-            let accountObject = importedWatchAccounts.getAccountObjectForIdx(i)
-            for address in inputAddresses {
-                if accountObject.isAddressPartOfAccount(address) {
-                    handleNewTxForAccount(accountObject, txObject: txObject)
-                }
-            }
-        }
-        
-        for i in stride(from: 0, to: importedAddresses.getCount(), by: 1) {
-            let importedAddress = importedAddresses.getAddressObjectAtIdx(i)
-            for addr in inputAddresses {
-                if (addr == importedAddress.getAddress()) {
-                    handleNewTxForImportedAddress(importedAddress, txObject: txObject)
-                }
-            }
-        }
-        
-        for i in stride(from: 0, to: importedWatchAddresses.getCount(), by: 1) {
-            let importedAddress = importedWatchAddresses.getAddressObjectAtIdx(i)
-            for addr in inputAddresses {
-                if (addr == importedAddress.getAddress()) {
-                    handleNewTxForImportedAddress(importedAddress, txObject: txObject)
-                }
-            }
         }
     }
     
@@ -513,22 +370,7 @@ import Foundation
             }
         }
     }
-    
-    func respondToStealthAddressSubscription(_ stealthAddress: String) {
-        for i in stride(from: 0, to: accounts.getNumberOfAccounts(), by: 1) {
-            let accountObject = accounts.getAccountObjectForIdx(i)
-            if let stealthWallet = accountObject.stealthWallet, stealthWallet.getStealthAddress() == stealthAddress {
-                stealthWallet.isListeningToStealthPayment = true
-            }
-        }
-        for i in stride(from: 0, to: importedAccounts.getNumberOfAccounts(), by: 1) {
-            let accountObject = importedAccounts.getAccountObjectForIdx(i)
-            if let stealthWallet = accountObject.stealthWallet, stealthWallet.getStealthAddress() == stealthAddress {
-                stealthWallet.isListeningToStealthPayment = true
-            }
-        }
-    }
-    
+
     func handleNewTxForAccount(_ accountObject: TLAccountObject, txObject: TLTxObject) {
         let receivedAmount = accountObject.processNewTx(txObject)
         let receivedTo = accountObject.getAccountNameOrAccountPublicKey()

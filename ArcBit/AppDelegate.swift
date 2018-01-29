@@ -31,7 +31,6 @@ import Crashlytics
     
     let MAX_CONSECUTIVE_FAILED_STEALTH_CHALLENGE_COUNT = 8
     let SAVE_WALLET_PAYLOAD_DELAY = 2.0
-    let DEFAULT_BLOCKEXPLORER_API = TLBlockExplorer.blockchain
     let RESPOND_TO_STEALTH_PAYMENT_GET_TX_TRIES_MAX_TRIES = 3
 
     var window:UIWindow?
@@ -48,12 +47,10 @@ import Crashlytics
     fileprivate var savedPasscodeViewDefaultLabelTextColor: UIColor?
     fileprivate var savedPasscodeViewDefaultPasscodeTextColor: UIColor?
     fileprivate var hasFinishLaunching = false
-    fileprivate var respondToStealthPaymentGetTxTries = 0
     var scannedEncryptedPrivateKey:String? = nil
     var scannedAddressBookAddress:String? = nil
     let pendingOperations = PendingOperations()
     lazy var webSocketNotifiedTxHashSet:NSMutableSet = NSMutableSet()
-    var pendingSelfStealthPaymentTxid: String? = nil
     lazy var txFeeAPI = TLTxFeeAPI();
 
     class func instance() -> AppDelegate {
@@ -199,14 +196,21 @@ import Crashlytics
             TLPreferences.setInAppSettingsKitEnabledDynamicFee(coinType, enabled: true)
             TLPreferences.setInAppSettingsKitDynamicFeeSettingIdx(coinType, dynamicFeeSetting: TLDynamicFeeSetting.FastestFee)
             TLPreferences.setInAppSettingsKitTransactionFee(coinType, value: TLWalletUtils.DEFAULT_FEE_AMOUNT(coinType))
+            TLPreferences.resetBlockExplorerAPIURL(coinType)
+
+            TLPreferences.setBlockExplorerAPI(coinType, blockexplorerIdx: String(format:"%ld", TLWalletUtils.DEFAULT_BLOCKEXPLORER_API(coinType).rawValue))
+            // TODO need to rid weird math, but due to bad way how enum is setup
+            let finalBlockexplorerIdx = String(TLWalletUtils.DEFAULT_BLOCKEXPLORER_API(coinType).rawValue - TLWalletUtils.DEFAULT_BLOCKEXPLORER_API_STARTING_IDX(coinType))
+            TLPreferences.setInAppSettingsKitBlockExplorerAPI(coinType, value: finalBlockexplorerIdx)
+
+            TLPreferences.setCoinDisplayUnit(coinType, coinDisplayIdx: String(format:"%ld", TLWalletUtils.GET_DEFAULT_COIN_DENOMINATION(coinType).rawValue))
+            // TODO need to rid weird math, but due to bad way how enum is setup
+            let finalDisplayUnitIdx = String(TLWalletUtils.GET_DEFAULT_COIN_DENOMINATION(coinType).rawValue-TLWalletUtils.DEFAULT_COIN_DENOMINATION_STARTING_IDX(coinType))
+            TLPreferences.setInAppSettingsKitDisplayUnit(coinType, value: finalDisplayUnitIdx)
         })
         
         TLPreferences.setEnablePINCode(false)
         TLSuggestions.instance().enabledAllSuggestions()
-        TLPreferences.resetBlockExplorerAPIURL()
-        
-        TLPreferences.setBlockExplorerAPI(String(format:"%ld", DEFAULT_BLOCKEXPLORER_API.rawValue))
-        TLPreferences.setInAppSettingsKitBlockExplorerAPI(String(format:"%ld", DEFAULT_BLOCKEXPLORER_API.rawValue))
         
         TLPreferences.resetStealthExplorerAPIURL()
         TLPreferences.resetStealthServerPort()
@@ -217,8 +221,6 @@ import Crashlytics
         let DEFAULT_CURRENCY_IDX = "20"
         TLPreferences.setCurrency(DEFAULT_CURRENCY_IDX)
         TLPreferences.setInAppSettingsKitCurrency(DEFAULT_CURRENCY_IDX)
-        
-        TLPreferences.setBitcoinCashDisplay("2") // idx 2 = bits, as displayed in settings
         TLPreferences.setSendFromCoinType(TLWalletUtils.DEFAULT_COIN_TYPE())
         TLPreferences.setSendFromType(.hdWallet)
         TLPreferences.setSendFromIndex(0)
@@ -236,73 +238,12 @@ import Crashlytics
                 
         //self.appWallet.addAddressBookEntry("vJmwhHhMNevDQh188gSeHd2xxxYGBQmnVuMY2yG2MmVTC31UWN5s3vaM3xsM2Q1bUremdK1W7eNVgPg1BnvbTyQuDtMKAYJanahvse", label: "ArcBit Donation")
     }
-    
-    func respondToStealthChallegeNotification(_ note: Notification) {
-        let responseDict = note.object as! NSDictionary
-        let challenge = responseDict.object(forKey: "challenge") as! String
-        let lock = NSLock()
-        lock.lock()
-        TLStealthWebSocket.instance().challenge = challenge
-        lock.unlock()
-        self.coinWalletsManager!.respondToStealthChallege(challenge)
-    }
-    
-    func respondToStealthAddressSubscription(_ note: Notification) {
-        let responseDict = note.object as! NSDictionary
-        let stealthAddress = responseDict.object(forKey: "addr") as! String
-        let subscriptionSuccess = responseDict.object(forKey: "success") as! String
-        if subscriptionSuccess == "False" && consecutiveFailedStealthChallengeCount < MAX_CONSECUTIVE_FAILED_STEALTH_CHALLENGE_COUNT {
-            consecutiveFailedStealthChallengeCount += 1
-            TLStealthWebSocket.instance().sendMessageGetChallenge()
-            return
-        }
-        consecutiveFailedStealthChallengeCount = 0
-        self.coinWalletsManager!.respondToStealthAddressSubscription(stealthAddress)
-    }
-    
-    func respondToStealthPayment(_ note: Notification) {
-        let responseDict = note.object as! NSDictionary
-        let stealthAddress = responseDict.object(forKey: "stealth_addr") as! String
-        let txid = responseDict.object(forKey: "txid") as! String
-        let paymentAddress = responseDict.object(forKey: "addr") as! String
-        let txTime = UInt64((responseDict.object(forKey: "time") as! NSNumber).uint64Value)
-        DLog("respondToStealthPayment stealthAddress: \(stealthAddress)")
-        DLog("respondToStealthPayment respondToStealthPaymentGetTxTries: \(self.respondToStealthPaymentGetTxTries)")
-
-        if self.respondToStealthPaymentGetTxTries < self.RESPOND_TO_STEALTH_PAYMENT_GET_TX_TRIES_MAX_TRIES {
-            TLBlockExplorerAPI.instance().getTx(txid, success: { (txObject) -> () in
-                self.coinWalletsManager!.handleGetTxSuccessForRespondToStealthPayment(stealthAddress,
-                    paymentAddress: paymentAddress, txid: txid, txTime: txTime, txObject: txObject)
-                
-                    self.respondToStealthPaymentGetTxTries = 0
-                }, failure: { (code, status) -> () in
-                    DLog("respondToStealthPayment getTx fail \(txid)")
-                    self.respondToStealthPayment(note)
-                    self.respondToStealthPaymentGetTxTries += 1
-            })
-        }
-    }
-    
-    func listenToIncomingTransactionForGeneratedAddress(_ note: Notification) {
-        let address: AnyObject? = note.object as AnyObject?
-        
-        TLTransactionListener.instance().listenToIncomingTransactionForAddress(address as! String)
-    }
-    
+ 
     func updateModelWithNewTransaction(_ note: Notification) {
         let txObject = note.object as! TLTxObject
         DLog("updateModelWithNewTransaction txObject: \(txObject)")
         
         DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.background).async {
-            if self.pendingSelfStealthPaymentTxid != nil {
-                // Special case where receiving stealth payment from same sending account. 
-                // Let stealth websocket handle it
-                // Need this cause, must generate private key and add address to account so that the bitcoins can be accounted for.
-                if txObject.getHash() as? String == self.pendingSelfStealthPaymentTxid {
-                    //self.pendingSelfStealthPaymentTxid = nil
-                    return
-                }
-            }
             self.coinWalletsManager!.updateModelWithNewTransaction(txObject)
         }
     }
@@ -328,16 +269,6 @@ import Crashlytics
         }
     }
     
-    func updateModelWithNewBlock(_ note: Notification) {
-        let jsonData = note.object as! NSDictionary
-        let blockHeight = jsonData.object(forKey: "height") as! NSNumber
-        DLog("updateModelWithNewBlock: \(blockHeight)")
-        TLBlockchainStatus.instance().blockHeight = blockHeight.uint64Value
-        
-        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_BLOCK()), object:nil, userInfo:nil)
-        
-    }
-    
     func initializeWalletAppAndShowInitialScreen(_ recoverHDWalletIfNewlyInstalledApp:(Bool), walletPayload:(NSDictionary?)) {
         TLAnalytics.instance()
         
@@ -347,21 +278,6 @@ import Crashlytics
         NotificationCenter.default.addObserver(self
             ,selector:#selector(AppDelegate.updateModelWithNewTransaction(_:)),
             name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_NEW_UNCONFIRMED_TRANSACTION()), object:nil)
-        NotificationCenter.default.addObserver(self
-            ,selector:#selector(AppDelegate.updateModelWithNewBlock(_:)),
-            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_NEW_BLOCK()), object:nil)
-        NotificationCenter.default.addObserver(self
-            ,selector:#selector(AppDelegate.listenToIncomingTransactionForGeneratedAddress(_:)),
-            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_NEW_ADDRESS_GENERATED()), object:nil)
-        NotificationCenter.default.addObserver(self
-            ,selector:#selector(AppDelegate.respondToStealthChallegeNotification(_:)),
-            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_RECEIVED_STEALTH_CHALLENGE()), object:nil)
-        NotificationCenter.default.addObserver(self
-            ,selector:#selector(AppDelegate.respondToStealthAddressSubscription(_:)),
-            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_RECEIVED_STEALTH_ADDRESS_SUBSCRIPTION()), object:nil)
-        NotificationCenter.default.addObserver(self
-            ,selector:#selector(AppDelegate.respondToStealthPayment(_:)),
-            name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_RECEIVED_STEALTH_PAYMENT()), object:nil)
     
         var passphrase = TLWalletPassphrase.getDecryptedWalletPassphrase()
 
@@ -405,7 +321,12 @@ import Crashlytics
             self.appWallet.updateWalletJSONToV3()
             self.coinWalletsManager = TLCoinWalletsManager(self.appWallet)
             self.coinWalletsManager!.createFirstBitcoinCashAccount()
-            TLPreferences.setBitcoinCashDisplay("2") // idx 2 = bits, as displayed in settings
+
+            TLPreferences.setCoinDisplayUnit(TLCoinType.BCH, coinDisplayIdx: String(format:"%ld", TLWalletUtils.GET_DEFAULT_COIN_DENOMINATION(TLCoinType.BCH).rawValue))
+            // TODO need to fix ugly addition, due to bad way how enum is setup
+            let finalDisplayUnitIdx = String(TLWalletUtils.GET_DEFAULT_COIN_DENOMINATION(TLCoinType.BCH).rawValue-TLWalletUtils.DEFAULT_COIN_DENOMINATION_STARTING_IDX(TLCoinType.BCH))
+            TLPreferences.setInAppSettingsKitDisplayUnit(TLCoinType.BCH, value: finalDisplayUnitIdx)
+
             TLUtils.printOutDictionaryAsJSON(appWallet.getWalletsJson()!)
             self.saveWalletJsonCloud()
         } else {
@@ -417,7 +338,7 @@ import Crashlytics
         TLExchangeRate.instance()
         TLAchievements.instance()
         
-        guard let blockExplorerURL = TLPreferences.getBlockExplorerURL(TLPreferences.getBlockExplorerAPI()),
+        guard let blockExplorerURL = TLPreferences.getBlockExplorerURL(.BTC, blockExplorer: TLPreferences.getBlockExplorerAPI(.BTC)),
             let baseURL = URL(string: blockExplorerURL) else { return }
         
         TLNetworking.isReachable(baseURL, reachable:{(reachable: TLDOMAINREACHABLE) in
@@ -427,14 +348,15 @@ import Crashlytics
             }
         })
         
-        TLBlockExplorerAPI.instance().getBlockHeight({(blockHeightObject) in
-            let blockHeight = blockHeightObject.blockHeight
-            DLog("setBlockHeight: \(blockHeight)")
-            TLBlockchainStatus.instance().blockHeight = blockHeight
+        TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
+            TLBlockExplorerAPI.instance().getBlockHeight(coinType, success: {(blockHeightObject) in
+                DLog("setBlockHeight: \(blockHeightObject.blockHeight)")
+                TLBlockchainStatus.instance().setBlockHeight(coinType, blockHeight: blockHeightObject)
             }, failure:{(code, status) in
                 DLog("Error getting block height.")
-//                TLPrompts.promptErrorMessage(TLDisplayStrings.NETWORK_ERROR_STRING(),
-//                    message:String(format:TLDisplayStrings.ERROR_GETTING_BLOCK_HEIGHT_STRING()))
+                //                TLPrompts.promptErrorMessage(TLDisplayStrings.NETWORK_ERROR_STRING(),
+                //                    message:String(format:TLDisplayStrings.ERROR_GETTING_BLOCK_HEIGHT_STRING()))
+            })
         })
     }
     

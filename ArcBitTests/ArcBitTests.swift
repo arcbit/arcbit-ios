@@ -1569,15 +1569,15 @@ class ArcBitTests: XCTestCase {
         
         
                 
-        TLPreferences.setBitcoinDisplay("1")
+        TLPreferences.setBitcoinDisplayUnit("1")
         coin = TLCurrencyFormat.properBitcoinAmountStringToCoin("1000", coinType: coinType)
         XCTAssertTrue(coin.toUInt64() == 100000000)
 
-        TLPreferences.setBitcoinDisplay("2")
+        TLPreferences.setBitcoinDisplayUnit("2")
         coin = TLCurrencyFormat.properBitcoinAmountStringToCoin("1000000", coinType: coinType)
         XCTAssertTrue(coin.toUInt64() == 100000000)
 
-        TLPreferences.setBitcoinDisplay("0")
+        TLPreferences.setBitcoinDisplayUnit("0")
     }
 
     func testCoreBitcoinWrapper() {

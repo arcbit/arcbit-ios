@@ -93,8 +93,9 @@ import UIKit
             object:nil, userInfo:nil)
         
         DispatchQueue.main.async {
-            TLTransactionListener.instance().reconnect()
-            TLStealthWebSocket.instance().reconnect()
+            TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
+                TLTransactionListener.instance().reconnect(coinType)
+            })
             TLHUDWrapper.hideHUDForView(self.view, animated:true)
             self.dismiss(animated: true, completion:nil)
             TLPrompts.promptSuccessMessage(TLDisplayStrings.SUCCESS_STRING(), message:TLDisplayStrings.YOUR_WALLET_IS_NOW_RESTORED_STRING())

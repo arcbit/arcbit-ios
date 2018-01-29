@@ -35,41 +35,41 @@ import Foundation
         static let TIME_TO_WAIT_TO_CHECK_FOR_SPENT_TX:UInt64 = 86400 // 1 day in seconds
     }
     
-    fileprivate var stealthWalletDict: NSDictionary?
+    fileprivate var stealthWalletDict: NSDictionary
     fileprivate var unspentPaymentAddress2PaymentTxid = [String:String]()
     fileprivate var paymentAddress2PrivateKeyDict = [String:String]()
     fileprivate var paymentTxid2PaymentAddressDict = [String:String]()
     fileprivate var scanPublicKey: String? = nil
     fileprivate var spendPublicKey: String? = nil
-    fileprivate var accountObject: TLAccountObject?
+    fileprivate var accountObject: TLAccountObject
     var hasUpdateStealthPaymentStatuses = false
     var isListeningToStealthPayment: Bool = false
 
     init(stealthDict: NSDictionary, accountObject: TLAccountObject, updateStealthPaymentStatuses: Bool) {
-        super.init()
         self.stealthWalletDict = stealthDict
         self.accountObject = accountObject
+        super.init()
         self.setUpStealthPaymentAddresses(updateStealthPaymentStatuses, isSetup: true)
     }
     
     func getStealthAddress() -> String {
-        return self.stealthWalletDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESS) as! String
+        return self.stealthWalletDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESS) as! String
     }
     
     func getStealthAddressScanKey() -> String {
-        return self.stealthWalletDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESS_SCAN_KEY) as! String
+        return self.stealthWalletDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESS_SCAN_KEY) as! String
     }
     
     func getStealthAddressSpendKey() -> String {
-        return self.stealthWalletDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESS_SPEND_KEY) as! String
+        return self.stealthWalletDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESS_SPEND_KEY) as! String
     }
     
     func getStealthAddressLastTxTime() -> UInt64 {
-        return (self.stealthWalletDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LAST_TX_TIME) as! NSNumber).uint64Value
+        return (self.stealthWalletDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LAST_TX_TIME) as! NSNumber).uint64Value
     }
     
     func getStealthAddressServers() -> NSMutableDictionary {
-        return self.stealthWalletDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_SERVERS) as! NSMutableDictionary
+        return self.stealthWalletDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_SERVERS) as! NSMutableDictionary
     }
     
     func paymentTxidExist(_ txid: String) -> Bool {
@@ -92,17 +92,17 @@ import Foundation
     }
     
     func getStealthAddressPayments() -> NSArray {
-        return self.stealthWalletDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_PAYMENTS) as! NSArray
+        return self.stealthWalletDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_PAYMENTS) as! NSArray
     }
     
     func getPaymentAddressForIndex(_ index: Int) -> String {
-        let paymentDict = (self.stealthWalletDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_PAYMENTS)
+        let paymentDict = (self.stealthWalletDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_PAYMENTS)
             as! NSArray).object(at: index) as! NSDictionary
         return paymentDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS) as! String
     }
     
     func getStealthAddressPaymentsCount() -> Int {
-        return (self.stealthWalletDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_PAYMENTS) as! NSArray).count
+        return (self.stealthWalletDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_PAYMENTS) as! NSArray).count
     }
     
     func getPaymentAddresses() -> Array<String> {
@@ -115,7 +115,7 @@ import Foundation
     
     func getStealthAddressSpendPublicKey() -> String {
         if spendPublicKey == nil {
-            let publicKeys = TLStealthAddress.getScanPublicKeyAndSpendPublicKey(self.getStealthAddress(), isTestnet: self.accountObject!.appWallet!.walletConfig.isTestnet)
+            let publicKeys = TLStealthAddress.getScanPublicKeyAndSpendPublicKey(self.getStealthAddress(), isTestnet: self.accountObject.appWallet!.walletConfig.isTestnet)
             scanPublicKey = publicKeys.0
             spendPublicKey = publicKeys.1
         }
@@ -124,7 +124,7 @@ import Foundation
     
     func getStealthAddressScanPublicKey() -> String {
         if scanPublicKey == nil {
-            let publicKeys = TLStealthAddress.getScanPublicKeyAndSpendPublicKey(self.getStealthAddress(), isTestnet: self.accountObject!.appWallet!.walletConfig.isTestnet)
+            let publicKeys = TLStealthAddress.getScanPublicKeyAndSpendPublicKey(self.getStealthAddress(), isTestnet: self.accountObject.appWallet!.walletConfig.isTestnet)
             scanPublicKey = publicKeys.0
             spendPublicKey = publicKeys.1
         }
@@ -132,11 +132,11 @@ import Foundation
     }
     
     func setUpStealthPaymentAddresses(_ updateStealthPaymentStatuses: Bool, isSetup: Bool, async: Bool=true) -> () {
-        DLog("\(self.accountObject!.getAccountIdxNumber()) setUpStealthPaymentAddresses0 \(self.getStealthAddressPayments().count)")
+        DLog("\(self.accountObject.getAccountIdxNumber()) setUpStealthPaymentAddresses0 \(self.getStealthAddressPayments().count)")
         if isSetup {
-            self.accountObject!.removeOldStealthPayments()
+            self.accountObject.removeOldStealthPayments()
         }
-        DLog("\(self.accountObject!.getAccountIdxNumber()) setUpStealthPaymentAddresses1 \(self.getStealthAddressPayments().count)")
+        DLog("\(self.accountObject.getAccountIdxNumber()) setUpStealthPaymentAddresses1 \(self.getStealthAddressPayments().count)")
 
         let paymentsArray = self.getStealthAddressPayments()
 
@@ -211,9 +211,9 @@ import Foundation
         let scanKey = self.getStealthAddressScanKey()
         let spendKey = self.getStealthAddressSpendKey()
         if let secret = TLStealthAddress.getPaymentAddressPrivateKeySecretFromScript(script, scanPrivateKey: scanKey, spendPrivateKey: spendKey) {
-            let outputAddress = TLCoreBitcoinWrapper.getAddressFromSecret(secret, isTestnet: self.accountObject!.appWallet!.walletConfig.isTestnet)
+            let outputAddress = TLCoreBitcoinWrapper.getAddressFromSecret(secret, isTestnet: self.accountObject.appWallet!.walletConfig.isTestnet)
             if outputAddress! == expectedAddress {
-                return TLCoreBitcoinWrapper.privateKeyFromSecret(secret, isTestnet: self.accountObject!.appWallet!.walletConfig.isTestnet)
+                return TLCoreBitcoinWrapper.privateKeyFromSecret(secret, isTestnet: self.accountObject.appWallet!.walletConfig.isTestnet)
             }
         }
         return nil
@@ -225,7 +225,7 @@ import Foundation
         if let stealthServerDict: AnyObject = stealthAddressServersDict.object(forKey: currentServerURL) as AnyObject? {
             return (stealthServerDict as! NSDictionary).object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_WATCHING) as! Bool
         } else {
-            self.accountObject!.setStealthAddressServerStatus(currentServerURL, isWatching: false)
+            self.accountObject.setStealthAddressServerStatus(currentServerURL, isWatching: false)
 
             let serverAttributes = [
                 TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_WATCHING: false,
@@ -266,7 +266,7 @@ import Foundation
                 let stealthAddressServersDict = self.getStealthAddressServers()
                 let currentServerURL = TLPreferences.getStealthExplorerURL()!
                 (stealthAddressServersDict.object(forKey: currentServerURL) as! NSMutableDictionary).setObject(true, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_WATCHING as NSCopying)
-                self.accountObject!.setStealthAddressServerStatus(currentServerURL, isWatching: true)
+                self.accountObject.setStealthAddressServerStatus(currentServerURL, isWatching: true)
             }
         }
     }
@@ -301,7 +301,7 @@ import Foundation
         var unspentOutputsObject:TLUnspentOutputsObject? = nil
         if txidArray.count > 0 {
             do {
-                unspentOutputsObject = try TLBlockExplorerAPI.instance().getUnspentOutputsSynchronous(addressArray as NSArray)
+                unspentOutputsObject = try TLBlockExplorerAPI.instance().getUnspentOutputsSynchronous(self.accountObject.coinType, addressArray: addressArray as NSArray)
             } catch TLNetworkingError.NetworkError(let code, let message) {
                 if code != nil {
                     if message != "No free outputs to spend" {
@@ -310,7 +310,7 @@ import Foundation
                         let unspentOutputsDictionary = [
                             "unspent_outputs": [],
                             ] as [String : Any]
-                        unspentOutputsObject = TLUnspentOutputsObject(NSDictionary(dictionary: unspentOutputsDictionary), blockExplorerJSONType: TLBlockExplorer.blockchain)
+                        unspentOutputsObject = TLUnspentOutputsObject(NSDictionary(dictionary: unspentOutputsDictionary), blockExplorerJSONType: TLBlockExplorer.bitcoin_blockchain)
                     }
                 }
             } catch { //TODO what to do here? cant do above
@@ -346,7 +346,7 @@ import Foundation
                 }
                 // cant figure out whether stealth payments has been spent by getting unspent outputs because
                 // blockexplorer api might receive tx yet, if we are pushing tx from a source that is not the blockexplorer api
-                TLBlockExplorerAPI.instance().getTxBackground(txid, success: { (txObject) -> () in
+                TLBlockExplorerAPI.instance().getTxBackground(self.accountObject.coinType, txHash: txid, success: { (txObject) -> () in
                     // TODO how can jsonData be nil? when anyobject is forced unwrapped in TLNetworking
 //                    if (jsonData == nil) {
 //                        if waitForCompletion {
@@ -375,7 +375,7 @@ import Foundation
                                     DLog("no privateKey for \(paymentAddress)")
                                 }
                             } else {
-                                self.accountObject!.setStealthPaymentStatus(txid, stealthPaymentStatus: TLStealthPaymentStatus.spent, lastCheckTime: nowTime)
+                                self.accountObject.setStealthPaymentStatus(txid, stealthPaymentStatus: TLStealthPaymentStatus.spent, lastCheckTime: nowTime)
                             }
                         } else {
                             if isAddingPayments {
@@ -386,7 +386,7 @@ import Foundation
                                     DLog("no privateKey for \(paymentAddress)")
                                 }
                             } else {
-                                self.accountObject!.setStealthPaymentStatus(txid, stealthPaymentStatus: TLStealthPaymentStatus.claimed, lastCheckTime: nowTime)
+                                self.accountObject.setStealthPaymentStatus(txid, stealthPaymentStatus: TLStealthPaymentStatus.claimed, lastCheckTime: nowTime)
                             }
                         }
                         
@@ -405,7 +405,7 @@ import Foundation
                 if waitForCompletion {
                     group.enter()
                 }
-                TLBlockExplorerAPI.instance().getTxBackground(txid, success: { (txObject) -> () in
+                TLBlockExplorerAPI.instance().getTxBackground(self.accountObject.coinType, txHash: txid, success: { (txObject) -> () in
 //                    if (jsonData == nil) {
 //                        if waitForCompletion {
 //                            group.leave()
@@ -428,7 +428,7 @@ import Foundation
                                 DLog("no privateKey for \(paymentAddress)")
                             }
                         } else {
-                            self.accountObject!.setStealthPaymentStatus(txid, stealthPaymentStatus: TLStealthPaymentStatus.unspent, lastCheckTime: nowTime)
+                            self.accountObject.setStealthPaymentStatus(txid, stealthPaymentStatus: TLStealthPaymentStatus.unspent, lastCheckTime: nowTime)
                         }
                     }
                     if waitForCompletion {
@@ -524,7 +524,7 @@ import Foundation
             self.paymentTxid2PaymentAddressDict[txid] = expectedAddress
             self.setPaymentAddressPrivateKey(expectedAddress, privateKey: privateKey)
 
-            self.accountObject!.addStealthAddressPaymentKey(privateKey, address: expectedAddress, txid: txid, txTime: txTime, stealthPaymentStatus: stealthPaymentStatus)
+            self.accountObject.addStealthAddressPaymentKey(privateKey, address: expectedAddress, txid: txid, txTime: txTime, stealthPaymentStatus: stealthPaymentStatus)
             return privateKey
         } else {
             DLog("error key not found for address \(expectedAddress)")
@@ -536,7 +536,7 @@ import Foundation
         self.unspentPaymentAddress2PaymentTxid[paymentAddress] = txid
         self.paymentTxid2PaymentAddressDict[txid] = paymentAddress
         self.setPaymentAddressPrivateKey(paymentAddress, privateKey: privateKey)
-        self.accountObject!.addStealthAddressPaymentKey(privateKey, address: paymentAddress, txid: txid, txTime: txTime, stealthPaymentStatus: stealthPaymentStatus)
+        self.accountObject.addStealthAddressPaymentKey(privateKey, address: paymentAddress, txid: txid, txTime: txTime, stealthPaymentStatus: stealthPaymentStatus)
         return true
     }
     

@@ -79,9 +79,6 @@
     func isPaymentToOwnAccount(_ address: String) -> Bool {
         if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
             let accountObject = sendFromAccounts!.object(at: 0) as! TLAccountObject
-            if address == accountObject.stealthWallet?.getStealthAddress() {
-                return true
-            }
             if accountObject.isAddressPartOfAccount(address) {
                 return true
             }
@@ -127,14 +124,6 @@
             return importedAddress.getLabel()
         }
         
-        return nil
-    }
-    
-    func getStealthAddress() -> String? {
-        if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
-            let accountObject = sendFromAccounts!.object(at: 0) as! TLAccountObject
-            return accountObject.stealthWallet?.getStealthAddress()
-        }
         return nil
     }
     
@@ -274,7 +263,7 @@
             
             if (addresses.count > 0) {
                 importedAddress.haveUpDatedUTXOs = false
-                TLBlockExplorerAPI.instance().getUnspentOutputs(addresses, success:{(unspentOutputsObject) in
+                TLBlockExplorerAPI.instance().getUnspentOutputs(self.getSelectedObjectCoinType(), addressArray: addresses, success:{(unspentOutputsObject) in
                     var address2UnspentOutputs = Dictionary<String, Array<TLUnspentOutputObject>>(minimumCapacity:addresses.count)
                     
                     for unspentOutput in unspentOutputsObject.unspentOutputs {
@@ -390,57 +379,7 @@
                         if (changeAddress == nil) {
                             changeAddress = accountObject.getCurrentChangeAddress() as NSString?
                         }
-                        
-                        // move some stealth payments to HD wallet as soon as possible
-                        var stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
-                        if accountObject.stealthWallet != nil {
-                            stealthPaymentUnspentOutputs = accountObject.getStealthPaymentUnspentOutputsArray()
-                        }
-                        
-                        var unspentOutputsUsingCount = 0
-                        for unspentOutput in stealthPaymentUnspentOutputs {
-                            if (unspentOutput.value < DUST_AMOUNT) {
-                                // if commented out, app will try to spend dust inputs
-                                dustAmount += unspentOutput.value
-                                continue
-                            }
-                            
-                            valueSelected = valueSelected.add(TLCoin(uint64:unspentOutput.value))
-                            let outputScript = unspentOutput.script
-                            DLog("createSignedSerializedTransactionHex outputScript: \(outputScript)")
-                            
-                            let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(outputScript, isTestnet: self.appWallet.walletConfig.isTestnet)
-                            if (address == nil) {
-                                DLog("address cannot be decoded. not normal pubkeyhash outputScript: \(outputScript)")
-                                continue
-                            }
-                            
-                            if signTx {
-                                inputsData.add([
-                                    "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.txHash)!,
-                                    "txid": TLWalletUtils.hexStringToData(unspentOutput.txHashBigEndian)!,
-                                    "tx_output_n": unspentOutput.txOutputN,
-                                    "script": TLWalletUtils.hexStringToData(outputScript)!,
-                                    "private_key": accountObject.stealthWallet!.getPaymentAddressPrivateKey(address!)!])
-                            } else {
-                                inputsData.add([
-                                    "tx_hash": TLWalletUtils.hexStringToData(unspentOutput.txHash)!,
-                                    "txid": TLWalletUtils.hexStringToData(unspentOutput.txHashBigEndian)!,
-                                    "tx_output_n": unspentOutput.txOutputN,
-                                    "script": TLWalletUtils.hexStringToData(outputScript)!])
-                            }
-                            
-                            unspentOutputsUsingCount += 1
-                            if (valueSelected.greaterOrEqual(valueNeeded) && unspentOutputsUsingCount >= accountObject.MAX_CONSOLIDATE_STEALTH_PAYMENT_UTXOS_COUNT) {
-                                // limit amount of stealth payment unspent outputs to use
-                                break
-                            }
-                        }
-                        
-                        if (valueSelected.greaterOrEqual(valueNeeded)) {
-                            break
-                        }
-                        
+    
                         let unspentOutputs = accountObject.getUnspentArray()
                         for unspentOutput in unspentOutputs {
                             if (unspentOutput.value < DUST_AMOUNT) {

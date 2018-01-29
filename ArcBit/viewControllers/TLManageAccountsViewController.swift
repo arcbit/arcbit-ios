@@ -650,22 +650,12 @@ import UIKit
                 var VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = actionSheet!.firstOtherButtonIndex
                 var VIEW_EXTENDED_PRIVATE_KEY_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+1
                 var VIEW_ADDRESSES_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+2
-                var MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX:NSInteger
-                var RENAME_ACCOUNT_BUTTON_IDX:NSInteger
-                var ARCHIVE_ACCOUNT_BUTTON_IDX:NSInteger
-                if TLWalletUtils.ALLOW_MANUAL_SCAN_FOR_STEALTH_PAYMENT() {
-                    MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+3
-                    RENAME_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+4
-                    ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+5
-                } else {
-                    MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX = -1
-                    RENAME_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+3
-                    ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+4
-                }
+                var RENAME_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+3
+                var ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+4
+
                 if (!TLPreferences.enabledAdvancedMode()) {
                     VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = -1
                     VIEW_EXTENDED_PRIVATE_KEY_BUTTON_IDX = -1
-                    MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX = -1
                     VIEW_ADDRESSES_BUTTON_IDX = actionSheet!.firstOtherButtonIndex
                     RENAME_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+1
                     ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+2
@@ -683,8 +673,6 @@ import UIKit
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_EXTENDED_PRIVATE_KEY()),
                         object: accountObject, userInfo: nil)
                     
-                } else if (buttonIndex == MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX) {
-                    self.promptInfoAndToManuallyScanForStealthTransactionAccount(accountObject)
                 } else if (buttonIndex == VIEW_ADDRESSES_BUTTON_IDX) {
                     self.showAddressListAccountObject = accountObject
                     self.showAddressListShowBalances = true
@@ -790,19 +778,8 @@ import UIKit
                 let VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX = actionSheet!.firstOtherButtonIndex
                 let VIEW_EXTENDED_PRIVATE_KEY_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+1
                 let VIEW_ADDRESSES_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+2
-                let MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX:NSInteger
-                let RENAME_ACCOUNT_BUTTON_IDX:NSInteger
-                let ARCHIVE_ACCOUNT_BUTTON_IDX:NSInteger
-                if TLWalletUtils.ALLOW_MANUAL_SCAN_FOR_STEALTH_PAYMENT() {
-                    MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+3
-                    RENAME_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+4
-                    ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+5
-                } else {
-                    MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX = -1
-                    RENAME_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+3
-                    ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+4
-                }
-     
+                let RENAME_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+3
+                let ARCHIVE_ACCOUNT_BUTTON_IDX = actionSheet!.firstOtherButtonIndex+4
                 
                 if (buttonIndex == VIEW_EXTENDED_PUBLIC_KEY_BUTTON_IDX) {
                     self.QRImageModal = TLQRImageModal(data: accountObject.getExtendedPubKey() as NSString,
@@ -819,9 +796,6 @@ import UIKit
                     self.showAddressListAccountObject = accountObject
                     self.showAddressListShowBalances = true
                     self.performSegue(withIdentifier: "SegueAddressList", sender: self)
-                    
-                } else if (buttonIndex == MANUALLY_SCAN_TX_FOR_STEALTH_TRANSACTION_BUTTON_IDX) {
-                    self.promptInfoAndToManuallyScanForStealthTransactionAccount(accountObject)
                     
                 } else if (buttonIndex == RENAME_ACCOUNT_BUTTON_IDX) {
                     
@@ -929,7 +903,7 @@ import UIKit
                 self.QRImageModal!.show()
 
             } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)!+2) {
-                TLBlockExplorerAPI.instance().openWebViewForAddress(importAddressObject.getAddress())
+                TLBlockExplorerAPI.instance().openWebViewForAddress(self.currentCoinType, address: importAddressObject.getAddress())
 
             } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)!+3) {
 
@@ -996,7 +970,7 @@ import UIKit
                 self.QRImageModal!.show()
 
             } else if (buttonIndex == VIEW_ADDRESS_IN_WEB_BUTTON_IDX) {
-                TLBlockExplorerAPI.instance().openWebViewForAddress(importAddressObject.getAddress())
+                TLBlockExplorerAPI.instance().openWebViewForAddress(self.currentCoinType, address: importAddressObject.getAddress())
 
             } else if (buttonIndex == RENAME_ADDRESS_BUTTON_IDX) {
 
@@ -1039,7 +1013,7 @@ import UIKit
                                                             self.QRImageModal!.show()
                                                             
                                                         } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)!+2) {
-                                                            TLBlockExplorerAPI.instance().openWebViewForAddress(importAddressObject.getAddress())
+                                                            TLBlockExplorerAPI.instance().openWebViewForAddress(self.currentCoinType, address: importAddressObject.getAddress())
                                                             
                                                         } else if (buttonIndex == (actionSheet?.firstOtherButtonIndex)!+3) {
                                                             
@@ -1109,7 +1083,7 @@ import UIKit
                 self.QRImageModal!.show()
 
             } else if (buttonIndex == VIEW_ADDRESS_IN_WEB_BUTTON_IDX) {
-                TLBlockExplorerAPI.instance().openWebViewForAddress(importAddressObject.getAddress())
+                TLBlockExplorerAPI.instance().openWebViewForAddress(self.currentCoinType, address: importAddressObject.getAddress())
 
             } else if (buttonIndex == RENAME_ADDRESS_BUTTON_IDX) {
 
@@ -1285,118 +1259,6 @@ import UIKit
         })
     }
 
-    fileprivate func promptToManuallyScanForStealthTransactionAccount(_ accountObject: TLAccountObject) -> () {
-        func addTextField(_ textField: UITextField!){
-            textField.placeholder = TLDisplayStrings.TRANSACTION_ID_STRING()
-        }
-        
-        UIAlertController.showAlert(in: self,
-            withTitle: TLDisplayStrings.SCAN_FOR_REUSABLE_ADDRESS_TRANSACTION_STRING(),
-            message: "",
-            preferredStyle: .alert,
-            cancelButtonTitle: TLDisplayStrings.CANCEL_STRING(),
-            destructiveButtonTitle: nil,
-            otherButtonTitles: [TLDisplayStrings.YES_STRING()],
-            
-            preShow: {(controller) in
-                controller!.addTextField(configurationHandler: addTextField)
-            }
-            ,
-            tap: {(alertView, action, buttonIndex) in
-                if (buttonIndex == alertView!.firstOtherButtonIndex) {
-                    let txid = (alertView!.textFields![0] ).text
-                    self.manuallyScanForStealthTransactionAccount(accountObject, txid: txid!)
-                } else if (buttonIndex == alertView!.cancelButtonIndex) {
-                    
-                }
-            }
-        )
-    }
-
-    fileprivate func manuallyScanForStealthTransactionAccount(_ accountObject: TLAccountObject, txid: String) -> () {
-        if accountObject.stealthWallet!.paymentTxidExist(txid) {
-            TLPrompts.promptSuccessMessage("", message: String(format: TLDisplayStrings.TRANSACTION_X_ALREADY_ACCOUNTED_FOR_STRING(), txid))
-            return
-        }
-        
-        if txid.characters.count != 64 || TLWalletUtils.hexStringToData(txid) == nil {
-            TLPrompts.promptErrorMessage(TLDisplayStrings.INVALID_TRANSACTION_ID(), message: "")
-            return
-        }
-
-        TLHUDWrapper.showHUDAddedTo(self.slidingViewController().topViewController.view, labelText: TLDisplayStrings.CHECKING_TRANSACTION_STRING(), animated: true)
-
-        TLBlockExplorerAPI.instance().getTx(txid, success: {
-            (txObject) in
-            let stealthDataScriptAndOutputAddresses = TLStealthWallet.getStealthDataScriptAndOutputAddresses(txObject)
-            guard let stealthDataScript = stealthDataScriptAndOutputAddresses.stealthDataScript else {
-                TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                TLPrompts.promptSuccessMessage("", message: TLDisplayStrings.TRANSACTION_NOT_REUSABLE_ADDRESS_TRANSACTION_STRING())
-                return
-            }
-            
-            let scanPriv = accountObject.stealthWallet!.getStealthAddressScanKey()
-            let spendPriv = accountObject.stealthWallet!.getStealthAddressSpendKey()
-            if let secret = TLStealthAddress.getPaymentAddressPrivateKeySecretFromScript(stealthDataScript, scanPrivateKey: scanPriv, spendPrivateKey: spendPriv) {
-                let paymentAddress = TLCoreBitcoinWrapper.getAddressFromSecret(secret, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)
-                if (stealthDataScriptAndOutputAddresses.outputAddresses).index(of: (paymentAddress!)) != nil {
-                    
-                    TLBlockExplorerAPI.instance().getUnspentOutputs([paymentAddress!], success: {
-                        (unspentOutputsObject) in
-                        if (unspentOutputsObject.unspentOutputs.count > 0) {
-                            let privateKey = TLCoreBitcoinWrapper.privateKeyFromSecret(secret, isTestnet: AppDelegate.instance().appWallet.walletConfig.isTestnet)
-                            let txTime = txObject.getTxUnixTime()
-                            accountObject.stealthWallet!.addStealthAddressPaymentKey(privateKey, paymentAddress: paymentAddress!,
-                                txid: txid, txTime: txTime, stealthPaymentStatus: TLStealthPaymentStatus.unspent)
-                            
-                            TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                            TLPrompts.promptSuccessMessage(TLDisplayStrings.SUCCESS_STRING(), message: String(format: TLDisplayStrings.FUNDS_IMPORTED(), txid))
-                            
-                            AppDelegate.instance().pendingOperations.addSetUpAccountOperation(accountObject, fetchDataAgain: true, success: {
-                                self.refreshWalletAccounts(false)
-                                
-                                TLStealthExplorerAPI.instance().lookupTx(accountObject.stealthWallet!.getStealthAddress(), txid: txid, success: { (jsonData) -> () in
-                                    DLog("lookupTx success \(jsonData.description)")
-                                }) { (code, status) -> () in
-                                    DLog("lookupTx failure code: \(code) \(status)")
-                                }
-                            })
-                        } else {
-                            TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                            TLPrompts.promptSuccessMessage("", message: TLDisplayStrings.FUNDS_HAVE_BEEN_CLAIMED_ALREADY_STRING())
-                        }
-                        }, failure: {(code, status) in
-                            TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                            TLPrompts.promptSuccessMessage("", message: TLDisplayStrings.FUNDS_HAVE_BEEN_CLAIMED_ALREADY_STRING())
-                    })
-                } else {
-                    TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                    TLPrompts.promptSuccessMessage("", message: String(format: TLDisplayStrings.TRANSACTION_X_DOES_NOT_BELONG_TO_THIS_ACCOUNT_STRING(), txid))
-                }
-            } else {
-                TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                TLPrompts.promptSuccessMessage("", message: String(format: TLDisplayStrings.TRANSACTION_X_DOES_NOT_BELONG_TO_THIS_ACCOUNT_STRING(), txid))
-            }
-            
-            }, failure: {
-                (code, status) in
-                TLHUDWrapper.hideHUDForView(self.view, animated: true)
-                TLPrompts.promptSuccessMessage(TLDisplayStrings.ERROR_STRING(), message: TLDisplayStrings.ERROR_FETCHING_TRANSACTION_STRING())
-        })
-    }
-    
-    fileprivate func promptInfoAndToManuallyScanForStealthTransactionAccount(_ accountObject: TLAccountObject) -> () {
-        if (TLSuggestions.instance().enabledShowManuallyScanTransactionForStealthTxInfo()) {
-            TLPrompts.promtForOK(self, title:"", message: TLDisplayStrings.MANUALLY_SCAN_TRANSACTION_FOR_STEALTH_TX_INFO_STRING(), success: {
-                () in
-                self.promptToManuallyScanForStealthTransactionAccount(accountObject)
-                TLSuggestions.instance().setEnabledShowManuallyScanTransactionForStealthTxInfo(false)
-            })
-        } else {
-            self.promptToManuallyScanForStealthTransactionAccount(accountObject)
-        }
-    }
-
     fileprivate func promptToUnarchiveAccount(_ accountObject: TLAccountObject) -> () {
         UIAlertController.showAlert(in: self,
             withTitle: TLDisplayStrings.UNARCHIVE_ACCOUNT_STRING(),
@@ -1416,9 +1278,6 @@ import UIKit
                         AppDelegate.instance().coinWalletsManager!.getSelectedWalletObject(self.currentCoinType).importedWatchAccounts.unarchiveAccount(accountObject.getPositionInWalletArray())
                     }
                     
-                    if TLWalletUtils.ALLOW_MANUAL_SCAN_FOR_STEALTH_PAYMENT() && !accountObject.isWatchOnly() && !accountObject.isColdWalletAccount() && !accountObject.stealthWallet!.hasUpdateStealthPaymentStatuses {
-                        accountObject.stealthWallet!.updateStealthPaymentStatusesAsync()
-                    }
                     self._accountsTableViewReloadDataWrapper()
                     AppDelegate.instance().pendingOperations.addSetUpAccountOperation(accountObject, fetchDataAgain: true, success: {
                         self._accountsTableViewReloadDataWrapper()
@@ -1778,7 +1637,6 @@ import UIKit
                     
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_IMPORT_ACCOUNT()),
                         object: nil, userInfo: nil)
-                    TLStealthWebSocket.instance().sendMessageGetChallenge()
                     AppDelegate.instance().pendingOperations.addSetUpAccountOperation(accountObject, fetchDataAgain: true, success: {
                         self.refreshWalletAccounts(false)
                         handleImportAccountSuccess()
@@ -2175,7 +2033,6 @@ import UIKit
                 NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_CREATE_NEW_ACCOUNT()), object: nil, userInfo: nil)
 
                 self.refreshWalletAccounts(false)
-                TLStealthWebSocket.instance().sendMessageGetChallenge()
             }, failure: {
                 (isCanceled: Bool) in
             })

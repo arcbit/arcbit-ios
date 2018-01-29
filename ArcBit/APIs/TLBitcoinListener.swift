@@ -22,16 +22,26 @@
 
 import Foundation
 
-@objc class TLTransactionListener: NSObject, SRWebSocketDelegate {
+@objc class TLTransactionListener: NSObject {
     let MAX_CONSECUTIVE_FAILED_CONNECTIONS = 5
     let SEND_EMPTY_PACKET_TIME_INTERVAL = 60.0
-    fileprivate var blockExplorerAPI: TLBlockExplorer?
-    fileprivate var keepAliveTimer: Timer?
-    fileprivate var socket: SocketIOClient?
-    fileprivate var socketIsConnected: Bool = false
-    fileprivate var webSocket: SRWebSocket?
-    var consecutiveFailedConnections = 0
+
+//    fileprivate var keepAliveTimerBitcoinCash: Timer?
+    fileprivate var socketBitcoinCash: SocketIOClient?
+    fileprivate lazy var socketIsConnectedBitcoinCash: Bool = false
+    fileprivate var webSocketBitcoinCash: SocketIOClient?
+//    fileprivate var webSocketBitcoinCash: SRWebSocket?
+//    fileprivate lazy var consecutiveFailedConnectionsBitcoinCash = 0
+
     
+    fileprivate var keepAliveTimerBitcoin: Timer?
+    fileprivate var socketBitcoin: SocketIOClient?
+    fileprivate lazy var socketIsConnectedBitcoin: Bool = false
+    fileprivate var webSocketBitcoin: SRWebSocket?
+    fileprivate lazy var consecutiveFailedConnectionsBitcoin = 0
+    
+    private lazy var coinType2BlockExplorerAPI = [TLCoinType:TLBlockExplorer]()
+
     struct STATIC_MEMBERS {
         static var instance: TLTransactionListener?
     }
@@ -45,140 +55,318 @@ import Foundation
     
     override init() {
         super.init()
-        blockExplorerAPI = TLPreferences.getBlockExplorerAPI()
+        TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
+            self.coinType2BlockExplorerAPI[coinType] = TLPreferences.getBlockExplorerAPI(coinType)
+        })
     }
     
-    func reconnect() -> () {
-        if (blockExplorerAPI == TLBlockExplorer.blockchain) {
-            DLog("websocket reconnect blockchain.info")
-            self.webSocket?.delegate = nil
-            self.webSocket?.close()
-            
-            self.webSocket = SRWebSocket(urlRequest: URLRequest(url: URL(string: "wss://ws.blockchain.info/inv")!))
-
-            self.webSocket?.delegate = self
-            
-            self.webSocket?.open()
-        } else {
-            DLog("websocket reconnect insight")
-            let url = String(format: "%@", TLPreferences.getBlockExplorerURL(TLBlockExplorer.insight)!)
-            self.socket = SocketIOClient(socketURL: URL(string: url)!, config: [.log(false), .forcePolling(true)])
-            weak var weakSelf = self
-            self.socket?.on("connect") {data, ack in
-                DLog("socketio onConnect")
-                self.consecutiveFailedConnections = 0
-                weakSelf!.socketIsConnected = true
-                NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_TRANSACTION_LISTENER_OPEN()), object: nil, userInfo: nil)
-                weakSelf!.socket!.emit("subscribe", "inv")
-            }
-            self.socket?.on("disconnect") {data, ack in
-                DLog("socketio onDisconnect")
-                NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_TRANSACTION_LISTENER_CLOSE()), object: nil, userInfo: nil)
-                if self.consecutiveFailedConnections < self.MAX_CONSECUTIVE_FAILED_CONNECTIONS {
-                    self.reconnect()
+    func reconnect(_ coinType: TLCoinType) -> () {
+        switch coinType {
+        case .BCH:
+            if (self.coinType2BlockExplorerAPI[coinType] == TLBlockExplorer.bitcoinCash_blockexplorer) {
+                DLog("websocket reconnect blockchain.info")
+                DLog("websocket reconnect insight")
+                let url = String(format: "%@", TLPreferences.getBlockExplorerURL(coinType, blockExplorer: TLBlockExplorer.bitcoinCash_blockexplorer)!)
+                self.webSocketBitcoinCash = SocketIOClient(socketURL: URL(string: url)!, config: [.log(false), .forcePolling(true)])
+                weak var weakSelf = self
+                self.webSocketBitcoinCash?.on("connect") {data, ack in
+                    DLog("socketio onConnect")
+                    self.consecutiveFailedConnectionsBitcoin = 0
+                    weakSelf!.socketIsConnectedBitcoin = true
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_TRANSACTION_LISTENER_OPEN()), object: nil, userInfo: nil)
+                    weakSelf!.webSocketBitcoinCash!.emit("subscribe", "inv")
                 }
-                self.consecutiveFailedConnections += 1
+                self.webSocketBitcoinCash?.on("disconnect") {data, ack in
+                    DLog("socketio onDisconnect")
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_TRANSACTION_LISTENER_CLOSE()), object: nil, userInfo: nil)
+                    if self.consecutiveFailedConnectionsBitcoin < self.MAX_CONSECUTIVE_FAILED_CONNECTIONS {
+                        self.reconnect(coinType)
+                    }
+                    self.consecutiveFailedConnectionsBitcoin += 1
+                }
+                self.webSocketBitcoinCash?.on("error") {data, ack in
+                    DLog("socketio error: \(data as AnyObject)")
+                }
+                self.webSocketBitcoinCash?.on("block") {data, ack in
+                    let dataArray = data as NSArray
+                    let firstObject: AnyObject? = dataArray.firstObject as AnyObject?
+                    // data!.debugDescription is lastest block hash
+                    // can't use this to update confirmations on transactions because insight tx does not contain blockheight field
+                    DLog("socketio received lastest block hash: \(firstObject!.debugDescription)")
+                    
+                }
+                //            self.socket?.on("tx") {data, ack in
+                //                DLog("socketio__ tx \(data)")
+                //            }
+                self.webSocketBitcoinCash?.connect()
+            } else {
+                DLog("websocket reconnect insight")
+                let url = String(format: "%@", TLPreferences.getBlockExplorerURL(coinType, blockExplorer: TLBlockExplorer.bitcoinCash_insight)!)
+                self.socketBitcoinCash = SocketIOClient(socketURL: URL(string: url)!, config: [.log(false), .forcePolling(true)])
+                weak var weakSelf = self
+                self.socketBitcoinCash?.on("connect") {data, ack in
+                    DLog("socketio onConnect")
+                    self.consecutiveFailedConnectionsBitcoin = 0
+                    weakSelf!.socketIsConnectedBitcoin = true
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_TRANSACTION_LISTENER_OPEN()), object: nil, userInfo: nil)
+                    weakSelf!.socketBitcoinCash!.emit("subscribe", "inv")
+                }
+                self.socketBitcoinCash?.on("disconnect") {data, ack in
+                    DLog("socketio onDisconnect")
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_TRANSACTION_LISTENER_CLOSE()), object: nil, userInfo: nil)
+                    if self.consecutiveFailedConnectionsBitcoin < self.MAX_CONSECUTIVE_FAILED_CONNECTIONS {
+                        self.reconnect(coinType)
+                    }
+                    self.consecutiveFailedConnectionsBitcoin += 1
+                }
+                self.socketBitcoinCash?.on("error") {data, ack in
+                    DLog("socketio error: \(data as AnyObject)")
+                }
+                self.socketBitcoinCash?.on("block") {data, ack in
+                    let dataArray = data as NSArray
+                    let firstObject: AnyObject? = dataArray.firstObject as AnyObject?
+                    // data!.debugDescription is lastest block hash
+                    // can't use this to update confirmations on transactions because insight tx does not contain blockheight field
+                    DLog("socketio received lastest block hash: \(firstObject!.debugDescription)")
+                    
+                }
+                //            self.socket?.on("tx") {data, ack in
+                //                DLog("socketio__ tx \(data)")
+                //            }
+                self.socketBitcoinCash?.connect()
             }
-            self.socket?.on("error") {data, ack in
-                DLog("socketio error: \(data as AnyObject)")
-            }
-            self.socket?.on("block") {data, ack in
-                let dataArray = data as NSArray
-                let firstObject: AnyObject? = dataArray.firstObject as AnyObject?
-                // data!.debugDescription is lastest block hash
-                // can't use this to update confirmations on transactions because insight tx does not contain blockheight field
-                DLog("socketio received lastest block hash: \(firstObject!.debugDescription)")
+        case .BTC:
+            if (self.coinType2BlockExplorerAPI[coinType] == TLBlockExplorer.bitcoin_blockchain) {
+                DLog("websocket reconnect blockchain.info")
+                self.webSocketBitcoin?.delegate = nil
+                self.webSocketBitcoin?.close()
                 
+                self.webSocketBitcoin = SRWebSocket(urlRequest: URLRequest(url: URL(string: "wss://ws.blockchain.info/inv")!))
+                
+                self.webSocketBitcoin?.delegate = self
+                
+                self.webSocketBitcoin?.open()
+            } else {
+                DLog("websocket reconnect insight")
+                let url = String(format: "%@", TLPreferences.getBlockExplorerURL(coinType, blockExplorer: TLBlockExplorer.bitcoin_insight)!)
+                self.socketBitcoin = SocketIOClient(socketURL: URL(string: url)!, config: [.log(false), .forcePolling(true)])
+                weak var weakSelf = self
+                self.socketBitcoin?.on("connect") {data, ack in
+                    DLog("socketio onConnect")
+                    self.consecutiveFailedConnectionsBitcoin = 0
+                    weakSelf!.socketIsConnectedBitcoin = true
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_TRANSACTION_LISTENER_OPEN()), object: nil, userInfo: nil)
+                    weakSelf!.socketBitcoin!.emit("subscribe", "inv")
+                }
+                self.socketBitcoin?.on("disconnect") {data, ack in
+                    DLog("socketio onDisconnect")
+                    NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_TRANSACTION_LISTENER_CLOSE()), object: nil, userInfo: nil)
+                    if self.consecutiveFailedConnectionsBitcoin < self.MAX_CONSECUTIVE_FAILED_CONNECTIONS {
+                        self.reconnect(coinType)
+                    }
+                    self.consecutiveFailedConnectionsBitcoin += 1
+                }
+                self.socketBitcoin?.on("error") {data, ack in
+                    DLog("socketio error: \(data as AnyObject)")
+                }
+                self.socketBitcoin?.on("block") {data, ack in
+                    let dataArray = data as NSArray
+                    let firstObject: AnyObject? = dataArray.firstObject as AnyObject?
+                    // data!.debugDescription is lastest block hash
+                    // can't use this to update confirmations on transactions because insight tx does not contain blockheight field
+                    DLog("socketio received lastest block hash: \(firstObject!.debugDescription)")
+                    
+                }
+                //            self.socket?.on("tx") {data, ack in
+                //                DLog("socketio__ tx \(data)")
+                //            }
+                self.socketBitcoin?.connect()
             }
-//            self.socket?.on("tx") {data, ack in
-//                DLog("socketio__ tx \(data)")
-//            }
-            self.socket?.connect()
         }
     }
     
-    func isWebSocketOpen() -> Bool {
-        if (blockExplorerAPI == TLBlockExplorer.blockchain) {
-            guard let webSocket = self.webSocket else { return false }
-            return webSocket.readyState.rawValue == SR_OPEN.rawValue
-        } else {
-            return self.socketIsConnected
+    func isWebSocketOpen(_ coinType: TLCoinType) -> Bool {
+        switch coinType {
+        case .BCH:
+            if (self.coinType2BlockExplorerAPI[coinType] == TLBlockExplorer.bitcoinCash_blockexplorer) {
+                return self.socketIsConnectedBitcoinCash
+            } else {
+                return self.socketIsConnectedBitcoinCash
+            }
+        case .BTC:
+            if (self.coinType2BlockExplorerAPI[coinType] == TLBlockExplorer.bitcoin_blockchain) {
+                guard let webSocket = self.webSocketBitcoin else { return false }
+                return webSocket.readyState.rawValue == SR_OPEN.rawValue
+            } else {
+                return self.socketIsConnectedBitcoin
+            }
         }
     }
     
-    fileprivate func sendWebSocketMessage(_ msg: String) -> Bool {
-        DLog("sendWebSocketMessage msg: \(msg)")
-        if self.isWebSocketOpen() {
-            self.webSocket?.send(msg)
+    fileprivate func sendWebSocketMessage(_ coinType: TLCoinType, msg: String) -> Bool {
+        switch coinType {
+        case .BCH:
+            // bitcoin cash not using blockchain.info
             return true
-        } else {
-            DLog("Websocket Error: not connect to websocket server")
-            return false
-        }
-    }
-    
-    @discardableResult func listenToIncomingTransactionForAddress(_ address: String) -> Bool {
-        //DLog("listen address: %@", address)
-        if (blockExplorerAPI == TLBlockExplorer.blockchain) {
-            if self.isWebSocketOpen() {
-                let msg = String(format: "{\"op\":\"addr_sub\", \"addr\":\"%@\"}", address)
-                self.sendWebSocketMessage(msg)
+        case .BTC:
+            DLog("sendWebSocketMessage msg: \(msg)")
+            if self.isWebSocketOpen(coinType) {
+                self.webSocketBitcoin?.send(msg)
                 return true
             } else {
                 DLog("Websocket Error: not connect to websocket server")
                 return false
             }
-        } else {
-            if (self.socketIsConnected) {
-                guard let socket = self.socket else { return false }
-
-                //DLog("socketio emit address: \(address)")
-                socket.emit("unsubscribe", "bitcoind/addresstxid", [address])
-                socket.emit("subscribe", "bitcoind/addresstxid", [address])
-                
-                socket.on("bitcoind/addresstxid") {data, ack in
-                    DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
-                        DLog("socketio on data: \(data)")
-                        let dataArray = data as NSArray
-                        let dataDictionary = dataArray.firstObject as! NSDictionary
-                        let addr = dataDictionary["address"] as! String
-                        //bad api design, this on is not address specific, will call for every subscribe address
-                        if (addr == address) {
-                            let txHash = dataDictionary["txid"] as! String
-                            //DLog("socketio on address: \(addr)")
-                            //DLog("socketio transaction: \(txHash)")
-                            TLBlockExplorerAPI.instance().getTx(txHash, success: {
-                                (txObject) in
-//                                if let txDict = txDict { // TODO test before remove commented out code
+        }
+    }
+    
+    @discardableResult func listenToIncomingTransactionForAddress(_ coinType: TLCoinType, address: String) -> Bool {
+        switch coinType {
+        case .BCH:
+            //DLog("listen address: %@", address)
+            if (self.coinType2BlockExplorerAPI[coinType] == TLBlockExplorer.bitcoinCash_blockexplorer) {
+                if (self.socketIsConnectedBitcoinCash) {
+                    guard let socket = self.webSocketBitcoinCash else { return false }
+                    
+                    //DLog("socketio emit address: \(address)")
+                    socket.emit("unsubscribe", "bitcoind/addresstxid", [address])
+                    socket.emit("subscribe", "bitcoind/addresstxid", [address])
+                    
+                    socket.on("bitcoind/addresstxid") {data, ack in
+                        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
+                            DLog("socketio on data: \(data)")
+                            let dataArray = data as NSArray
+                            let dataDictionary = dataArray.firstObject as! NSDictionary
+                            let addr = dataDictionary["address"] as! String
+                            //bad api design, this on is not address specific, will call for every subscribe address
+                            if (addr == address) {
+                                let txHash = dataDictionary["txid"] as! String
+                                //DLog("socketio on address: \(addr)")
+                                //DLog("socketio transaction: \(txHash)")
+                                TLBlockExplorerAPI.instance().getTx(coinType, txHash: txHash, success: {
+                                    (txObject) in
+                                    //                                if let txDict = txDict { // TODO test before remove commented out code
                                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_NEW_UNCONFIRMED_TRANSACTION()), object: txObject, userInfo: nil)
-//                                }
+                                    //                                }
                                 }, failure: {
                                     (code, status) in
-                            })
+                                })
+                            }
                         }
                     }
+                    return true
+                } else {
+                    return false
                 }
-                return true
             } else {
-                return false
+                if (self.socketIsConnectedBitcoinCash) {
+                    guard let socket = self.socketBitcoinCash else { return false }
+                    
+                    //DLog("socketio emit address: \(address)")
+                    socket.emit("unsubscribe", "bitcoind/addresstxid", [address])
+                    socket.emit("subscribe", "bitcoind/addresstxid", [address])
+                    
+                    socket.on("bitcoind/addresstxid") {data, ack in
+                        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
+                            DLog("socketio on data: \(data)")
+                            let dataArray = data as NSArray
+                            let dataDictionary = dataArray.firstObject as! NSDictionary
+                            let addr = dataDictionary["address"] as! String
+                            //bad api design, this on is not address specific, will call for every subscribe address
+                            if (addr == address) {
+                                let txHash = dataDictionary["txid"] as! String
+                                //DLog("socketio on address: \(addr)")
+                                //DLog("socketio transaction: \(txHash)")
+                                TLBlockExplorerAPI.instance().getTx(coinType, txHash: txHash, success: {
+                                    (txObject) in
+                                    //                                if let txDict = txDict { // TODO test before remove commented out code
+                                    NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_NEW_UNCONFIRMED_TRANSACTION()), object: txObject, userInfo: nil)
+                                    //                                }
+                                }, failure: {
+                                    (code, status) in
+                                })
+                            }
+                        }
+                    }
+                    return true
+                } else {
+                    return false
+                }
+            }
+        case .BTC:
+            //DLog("listen address: %@", address)
+            if (self.coinType2BlockExplorerAPI[coinType] == TLBlockExplorer.bitcoin_blockchain) {
+                if self.isWebSocketOpen(coinType) {
+                    let msg = String(format: "{\"op\":\"addr_sub\", \"addr\":\"%@\"}", address)
+                    self.sendWebSocketMessage(coinType, msg: msg)
+                    return true
+                } else {
+                    DLog("Websocket Error: not connect to websocket server")
+                    return false
+                }
+            } else {
+                if (self.socketIsConnectedBitcoin) {
+                    guard let socket = self.socketBitcoin else { return false }
+                    
+                    //DLog("socketio emit address: \(address)")
+                    socket.emit("unsubscribe", "bitcoind/addresstxid", [address])
+                    socket.emit("subscribe", "bitcoind/addresstxid", [address])
+                    
+                    socket.on("bitcoind/addresstxid") {data, ack in
+                        DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.high).async {
+                            DLog("socketio on data: \(data)")
+                            let dataArray = data as NSArray
+                            let dataDictionary = dataArray.firstObject as! NSDictionary
+                            let addr = dataDictionary["address"] as! String
+                            //bad api design, this on is not address specific, will call for every subscribe address
+                            if (addr == address) {
+                                let txHash = dataDictionary["txid"] as! String
+                                //DLog("socketio on address: \(addr)")
+                                //DLog("socketio transaction: \(txHash)")
+                                TLBlockExplorerAPI.instance().getTx(coinType, txHash: txHash, success: {
+                                    (txObject) in
+                                    //                                if let txDict = txDict { // TODO test before remove commented out code
+                                    NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_NEW_UNCONFIRMED_TRANSACTION()), object: txObject, userInfo: nil)
+                                    //                                }
+                                }, failure: {
+                                    (code, status) in
+                                })
+                            }
+                        }
+                    }
+                    return true
+                } else {
+                    return false
+                }
             }
         }
     }
     
-    func close() -> () {
-        if (blockExplorerAPI == TLBlockExplorer.blockchain) {
-            DLog("closing blockchain.info websocket")
-            self.webSocket?.close()
-        } else {
-            DLog("closing socketio")
-            self.socket?.disconnect()
+    func close(_ coinType: TLCoinType) -> () {
+        switch coinType {
+        case .BCH:
+            if (self.coinType2BlockExplorerAPI[coinType] == TLBlockExplorer.bitcoinCash_blockexplorer) {
+                DLog("closing blockchain.info websocket")
+                self.webSocketBitcoinCash?.disconnect()
+            } else {
+                DLog("closing socketio")
+                self.socketBitcoin?.disconnect()
+            }
+        case .BTC:
+            if (self.coinType2BlockExplorerAPI[coinType] == TLBlockExplorer.bitcoin_blockchain) {
+                DLog("closing blockchain.info websocket")
+                self.webSocketBitcoin?.close()
+            } else {
+                DLog("closing socketio")
+                self.socketBitcoin?.disconnect()
+            }
         }
     }
     
     fileprivate func keepAlive() -> () {
-        keepAliveTimer?.invalidate()
-        keepAliveTimer = nil
-        keepAliveTimer = Timer.scheduledTimer(timeInterval: SEND_EMPTY_PACKET_TIME_INTERVAL,
+        keepAliveTimerBitcoin?.invalidate()
+        keepAliveTimerBitcoin = nil
+        keepAliveTimerBitcoin = Timer.scheduledTimer(timeInterval: SEND_EMPTY_PACKET_TIME_INTERVAL,
             target: self,
             selector: #selector(TLTransactionListener.sendEmptyPacket),
             userInfo: nil,
@@ -187,15 +375,25 @@ import Foundation
     
     func sendEmptyPacket() -> () {
         DLog("blockchain.info Websocket sendEmptyPacket")
-        if self.isWebSocketOpen() {
-            self.sendWebSocketMessage("")
+        if self.isWebSocketOpen(TLCoinType.BTC) {
+            self.sendWebSocketMessage(TLCoinType.BTC, msg: "")
         }
     }
- 
+    
+    func updateModelWithNewBlock(_ jsonData: NSDictionary) {
+        let blockHeight = jsonData.object(forKey: "height") as! NSNumber
+        let blockHeightObject = TLBlockHeightObject(jsonDict:  ["height": UInt64(blockHeight.uint64Value) as AnyObject])
+        DLog("updateModelWithNewBlock: \(blockHeightObject.blockHeight)")
+        TLBlockchainStatus.instance().setBlockHeight(TLCoinType.BTC, blockHeight: blockHeightObject)
+        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_BLOCK()), object:nil, userInfo:nil)
+    }
+}
+
+extension TLTransactionListener : SRWebSocketDelegate {
     func webSocketDidOpen(_ webSocket: SRWebSocket) -> () {
         DLog("blockchain.info webSocketDidOpen")
-        consecutiveFailedConnections = 0
-        self.sendWebSocketMessage("{\"op\":\"blocks_sub\"}")
+        consecutiveFailedConnectionsBitcoin = 0
+        self.sendWebSocketMessage(TLCoinType.BTC, msg: "{\"op\":\"blocks_sub\"}")
 
         self.keepAlive()
         
@@ -205,13 +403,13 @@ import Foundation
     func webSocket(_ webSocket:SRWebSocket, didFailWithError error:NSError) -> () {
         DLog("blockchain.info Websocket didFailWithError \(error.description)")
         
-        self.webSocket?.delegate = nil
-        self.webSocket?.close()
-        self.webSocket = nil
-        if consecutiveFailedConnections < MAX_CONSECUTIVE_FAILED_CONNECTIONS {
-            self.reconnect()
+        self.webSocketBitcoin?.delegate = nil
+        self.webSocketBitcoin?.close()
+        self.webSocketBitcoin = nil
+        if consecutiveFailedConnectionsBitcoin < MAX_CONSECUTIVE_FAILED_CONNECTIONS {
+            self.reconnect(TLCoinType.BTC)
         }
-        consecutiveFailedConnections += 1
+        consecutiveFailedConnectionsBitcoin += 1
     }
     
     public func webSocket(_ webSocket: SRWebSocket!, didReceiveMessage message: Any!) {
@@ -222,10 +420,10 @@ import Foundation
             DLog("blockchain.info didReceiveMessage \(jsonDict.description)")
 
             if (jsonDict.object(forKey: "op") as! String == "utx") {
-                let txObject = TLTxObject(jsonDict.object(forKey: "x") as! NSDictionary)
+                let txObject = TLTxObject(TLCoinType.BTC, dict: jsonDict.object(forKey: "x") as! NSDictionary)
                 NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_NEW_UNCONFIRMED_TRANSACTION()), object: txObject, userInfo: nil)
             } else if (jsonDict.object(forKey: "op") as! String == "block") {
-                NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_NEW_BLOCK()), object: jsonDict.object(forKey: "x"), userInfo: nil)
+                self.updateModelWithNewBlock(jsonDict.object(forKey: "x") as! NSDictionary)
             }
         }
     }
@@ -237,13 +435,13 @@ import Foundation
             DLog("blockchain.info Websocket didCloseWithCode With Error \(code) \(reason)")
         }
         
-        self.webSocket?.delegate = nil
-        self.webSocket?.close()
-        self.webSocket = nil
-        if consecutiveFailedConnections < MAX_CONSECUTIVE_FAILED_CONNECTIONS {
-            self.reconnect()
+        self.webSocketBitcoin?.delegate = nil
+        self.webSocketBitcoin?.close()
+        self.webSocketBitcoin = nil
+        if consecutiveFailedConnectionsBitcoin < MAX_CONSECUTIVE_FAILED_CONNECTIONS {
+            self.reconnect(TLCoinType.BTC)
         }
-        consecutiveFailedConnections += 1
+        consecutiveFailedConnectionsBitcoin += 1
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_TRANSACTION_LISTENER_CLOSE()), object: nil, userInfo: nil)
     }
 }

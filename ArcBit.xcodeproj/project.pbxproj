@@ -197,7 +197,6 @@
 		C0A1930E1ABF744E00BED648 /* TLInsightAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193051ABF744E00BED648 /* TLInsightAPI.swift */; };
 		C0A1930F1ABF744E00BED648 /* TLNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193061ABF744E00BED648 /* TLNetworking.swift */; };
 		C0A193101ABF744E00BED648 /* TLStealthServerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193071ABF744E00BED648 /* TLStealthServerAPI.swift */; };
-		C0A193111ABF744E00BED648 /* TLStealthWebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193081ABF744E00BED648 /* TLStealthWebSocket.swift */; };
 		C0A1931A1ABF751800BED648 /* BreadWalletTests.m in Sources */ = {isa = PBXBuildFile; fileRef = C0A193191ABF751800BED648 /* BreadWalletTests.m */; };
 		C0A1931C1ABF81CB00BED648 /* TLStealthAddress.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190641ABF53A100BED648 /* TLStealthAddress.swift */; };
 		C0A1931D1ABF81D100BED648 /* TLWalletJson.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A190691ABF53A100BED648 /* TLWalletJson.swift */; };
@@ -226,7 +225,6 @@
 		C0A193361ABF82EA00BED648 /* TLExchangeRate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193041ABF744E00BED648 /* TLExchangeRate.swift */; };
 		C0A193371ABF82EC00BED648 /* TLInsightAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193051ABF744E00BED648 /* TLInsightAPI.swift */; };
 		C0A193381ABF82EF00BED648 /* TLNetworking.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193061ABF744E00BED648 /* TLNetworking.swift */; };
-		C0A193391ABF82F100BED648 /* TLStealthWebSocket.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193081ABF744E00BED648 /* TLStealthWebSocket.swift */; };
 		C0A1933A1ABF82F300BED648 /* TLStealthServerAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A193071ABF744E00BED648 /* TLStealthServerAPI.swift */; };
 		C0A1933E1ABF830000BED648 /* TLNotificationEvents.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A192F31ABF744300BED648 /* TLNotificationEvents.swift */; };
 		C0A6AD751C42E80F00B8C22B /* TLLinksViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A6AD741C42E80F00B8C22B /* TLLinksViewController.swift */; };
@@ -516,7 +514,6 @@
 		C0A193051ABF744E00BED648 /* TLInsightAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLInsightAPI.swift; sourceTree = "<group>"; };
 		C0A193061ABF744E00BED648 /* TLNetworking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLNetworking.swift; sourceTree = "<group>"; };
 		C0A193071ABF744E00BED648 /* TLStealthServerAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStealthServerAPI.swift; sourceTree = "<group>"; };
-		C0A193081ABF744E00BED648 /* TLStealthWebSocket.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLStealthWebSocket.swift; sourceTree = "<group>"; };
 		C0A193181ABF751700BED648 /* ArcBitTests-Bridging-Header.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ArcBitTests-Bridging-Header.h"; sourceTree = "<group>"; };
 		C0A193191ABF751800BED648 /* BreadWalletTests.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BreadWalletTests.m; sourceTree = "<group>"; };
 		C0A6AD741C42E80F00B8C22B /* TLLinksViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLLinksViewController.swift; sourceTree = "<group>"; };
@@ -1151,7 +1148,6 @@
 				C0AD2C581AC3DE3200FEF982 /* TLBlockrAPI.swift */,
 				C0A193061ABF744E00BED648 /* TLNetworking.swift */,
 				C0A193071ABF744E00BED648 /* TLStealthServerAPI.swift */,
-				C0A193081ABF744E00BED648 /* TLStealthWebSocket.swift */,
 				C0AB0A321AC52A8400B456DB /* TLPushTxAPI.swift */,
 				C0607FCC1AEEB3CD007203F8 /* TLStealthServerConfig.swift */,
 			);
@@ -1691,7 +1687,6 @@
 				C0A190EF1ABF53A100BED648 /* TLAccounts.swift in Sources */,
 				C0A190F21ABF53A100BED648 /* TLCoreBitcoinWrapper.swift in Sources */,
 				C0A190EA1ABF53A100BED648 /* UINavigationBar+FixedHeightWhenStatusBarHidden.m in Sources */,
-				C0A193111ABF744E00BED648 /* TLStealthWebSocket.swift in Sources */,
 				C05F82E61EF5D13E0016F0FC /* SocketEnginePacketType.swift in Sources */,
 				C0A1930E1ABF744E00BED648 /* TLInsightAPI.swift in Sources */,
 				F338F9581B79718900C02F74 /* TLCrypto.swift in Sources */,
@@ -1782,7 +1777,6 @@
 				C0A193251ABF829E00BED648 /* TLAccountObject.swift in Sources */,
 				C05F83051EF5D15C0016F0FC /* SocketIOClientConfiguration.swift in Sources */,
 				C0607FCE1AEEB716007203F8 /* TLStealthServerConfig.swift in Sources */,
-				C0A193391ABF82F100BED648 /* TLStealthWebSocket.swift in Sources */,
 				C0E5393E1AD4555C00651FE4 /* TLHelpDoc.swift in Sources */,
 				C0A1931F1ABF822000BED648 /* TLHDWalletWrapper.swift in Sources */,
 				C0A18FAA1ABF51C200BED648 /* ArcBitTests.swift in Sources */,

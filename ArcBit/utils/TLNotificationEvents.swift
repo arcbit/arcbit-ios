@@ -33,18 +33,11 @@ class TLNotificationEvents {
     class func EVENT_FETCHED_ADDRESS() -> String { return "api.address"}
     class func EVENT_FETCHED_ADDRESSES_DATA() -> String { return "api.multiaddress"}
     class func EVENT_NEW_UNCONFIRMED_TRANSACTION() -> String { return "api.newunconfirmedtx"}
-    class func EVENT_NEW_BLOCK() -> String { return "api.newblock"}
     class func EVENT_TRANSACTION_LISTENER_OPEN() -> String { return "api.transaction.listener.open"}
     class func EVENT_TRANSACTION_LISTENER_CLOSE() -> String { return "api.transaction.listener.close"}
-    class func EVENT_STEALTH_PAYMENT_LISTENER_OPEN() -> String { return "api.stealth.payment.listener.open"}
-    class func EVENT_STEALTH_PAYMENT_LISTENER_CLOSE() -> String { return "api.stealth.payment.listener.close"}
-    class func EVENT_RECEIVED_STEALTH_CHALLENGE() -> String { return "api.stealth.challenge"}
-    class func EVENT_RECEIVED_STEALTH_ADDRESS_SUBSCRIPTION() -> String { return "api.stealth.address.subscription"}
-    class func EVENT_RECEIVED_STEALTH_PAYMENT() -> String { return "api.stealth.payment"}
     class func EVENT_EXCHANGE_RATE_UPDATED() -> String { return "api.updated.exchangerate"}
     class func EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION() -> String { return "model.updated.newunconfirmedtx"}
     class func EVENT_MODEL_UPDATED_NEW_BLOCK() -> String { return "model.updated.newblock"}
-    class func EVENT_NEW_ADDRESS_GENERATED() -> String { return "app.newaddressgenerated"}
     class func EVENT_UPDATED_RECEIVING_ADDRESSES() -> String { return "app.updatedreceivingaddresses"}
     class func EVENT_VIEW_QR_CODE_PRIVATE_KEY() -> String { return "trigger.feature.qrcode.private.key"}
     class func EVENT_VIEW_QR_CODE_ADDRESS() -> String { return "trigger.feature.qrcode.address"}

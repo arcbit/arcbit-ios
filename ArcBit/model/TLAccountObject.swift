@@ -36,7 +36,6 @@ import Foundation
     fileprivate var accountDict: NSMutableDictionary?
     lazy var haveUpDatedUTXOs: Bool = false
     lazy var unspentOutputsCount: Int = 0
-    lazy var stealthPaymentUnspentOutputsCount: Int = 0
     var unspentOutputs: Array<TLUnspentOutputObject>?
     var stealthPaymentUnspentOutputs: Array<TLUnspentOutputObject>?
     fileprivate var mainActiveAddresses = [String]()
@@ -63,7 +62,6 @@ import Foundation
     var listeningToIncomingTransactions = false
     fileprivate var positionInWalletArray = 0
     fileprivate var extendedPrivateKey: String?
-    var stealthWallet: TLStealthWallet?
     var downloadState:TLDownloadState = .notDownloading
 
     class func MAX_ACCOUNT_WAIT_TO_RECEIVE_ADDRESS() -> (Int) {
@@ -201,21 +199,6 @@ import Foundation
             //set later in accounts
         } else if (accountType == TLAccountType.importedWatch) {
             //set later in accounts
-        }
-        
-        if TLWalletUtils.ALLOW_MANUAL_SCAN_FOR_STEALTH_PAYMENT() && accountType != TLAccountType.importedWatch && accountType != TLAccountType.coldWallet {
-            let stealthAddressArray = accountDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STEALTH_ADDRESSES) as! NSArray
-            let stealthWalletDict = stealthAddressArray.object(at: 0) as! NSDictionary
-            self.stealthWallet = TLStealthWallet(stealthDict: stealthWalletDict, accountObject: self,
-                updateStealthPaymentStatuses: !self.isArchived())
-            
-            
-            //add default zero balance so that if user goes to address list view before account data downloaded,
-            // then accountObject will return a 0 balance for payment address instead of getting optional unwrap nil error
-            for i in 0 ..< self.stealthWallet!.getStealthAddressPaymentsCount() {
-                let address = self.stealthWallet!.getPaymentAddressForIndex(i)
-                address2BalanceDict[address] = TLCoin.zero()
-            }
         }
     }
     
@@ -388,11 +371,7 @@ import Foundation
     }
     
     func isAddressPartOfAccount(_ address: String) -> Bool {
-        if  self.stealthWallet == nil {
-            return self.isHDWalletAddress(address)
-        } else {
-            return self.isHDWalletAddress(address) || self.stealthWallet!.isPaymentAddress(address)            
-        }
+        return self.isHDWalletAddress(address)
     }
     
     func getBalance() -> TLCoin {
@@ -484,12 +463,6 @@ import Foundation
                             let ntxs = getNumberOfTransactionsForAddress(address)
                             address2NumberOfTransactions[address] = ntxs + 1
                     }
-                } else if self.stealthWallet != nil && self.stealthWallet!.isPaymentAddress(address) {
-                    currentTxAdd += value
-                    //DLog("addToAddressBalance: stealth \(address) \(value)")
-                    if shouldUpdateAccountBalance {
-                        addToAddressBalance(address as NSString, amount: TLCoin(uint64: value))
-                    }
                 } else {
                 }
             }
@@ -515,12 +488,6 @@ import Foundation
                     address2hasUpdatedNTxCount.setObject("", forKey: address as NSCopying)
                     let ntxs = getNumberOfTransactionsForAddress(address)
                     address2NumberOfTransactions[address] = ntxs + 1
-                }
-            } else if self.stealthWallet != nil && self.stealthWallet!.isPaymentAddress(address) {
-                currentTxSubtract += value
-                //DLog("subtractToAddressBalance: stealth \(address) \(value)")
-                if shouldUpdateAccountBalance {
-                    subtractToAddressBalance(address, amount: TLCoin(uint64: value))
                 }
             } else {
             }
@@ -780,8 +747,8 @@ import Foundation
         mainActiveAddresses.append(address)
         activeAddressesDict[address] = true
         
-        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_NEW_ADDRESS_GENERATED()), object: address)
-        
+        TLTransactionListener.instance().listenToIncomingTransactionForAddress(self.coinType, address: address as! String)
+
         return address
     }
     
@@ -808,8 +775,8 @@ import Foundation
         changeActiveAddresses.append(address)
         activeAddressesDict[address] = true
         
-        NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_NEW_ADDRESS_GENERATED()), object: address)
-        
+        TLTransactionListener.instance().listenToIncomingTransactionForAddress(self.coinType, address: address as! String)
+
         return address
     }
     
@@ -1019,7 +986,7 @@ import Foundation
             }
 
             do {
-                let addressesObject = try TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(addresses)
+                let addressesObject = try TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(self.coinType, addressArray: addresses)
             
                 var balance:UInt64 = 0
                 for addressObject in addressesObject.addresses {
@@ -1078,7 +1045,7 @@ import Foundation
             }
             
             do {
-                let addressesObject = try TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(addresses)
+                let addressesObject = try TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(self.coinType, addressArray: addresses)
                 
                 var balance:UInt64 = 0
                 for addressObject in addressesObject.addresses {
@@ -1124,14 +1091,6 @@ import Foundation
         checkToArchiveAddresses()
         updateReceivingAddresses()
         updateChangeAddresses()
-        if recoverStealthPayments && self.stealthWallet != nil {
-            let semaphore = DispatchSemaphore(value: 0)
-            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
-                self.fetchNewStealthPayments(recoverStealthPayments)
-                semaphore.signal()
-            }
-            semaphore.wait(timeout: DispatchTime.distantFuture)
-        }
         
         updateAccountNeedsRecovering(false)
         return accountMainAddressMaxIdx + accountChangeAddressMaxIdx
@@ -1191,10 +1150,6 @@ import Foundation
         return unspentOutputs!
     }
     
-    func getStealthPaymentUnspentOutputsArray() -> Array<TLUnspentOutputObject> {
-        return stealthPaymentUnspentOutputs!
-    }
-    
     func getTotalUnspentSum() -> TLCoin {
         if (totalUnspentOutputsSum != nil) {
             return totalUnspentOutputsSum!
@@ -1205,12 +1160,6 @@ import Foundation
         }
         
         var totalUnspentOutputsSumTemp:UInt64 = 0
-        
-        if let stealthPaymentUnspentOutputs = stealthPaymentUnspentOutputs {
-            for unspentOutput in stealthPaymentUnspentOutputs {
-                totalUnspentOutputsSumTemp += unspentOutput.value
-            }
-        }
         
         for unspentOutput in unspentOutputs {
             totalUnspentOutputsSumTemp += unspentOutput.value
@@ -1223,21 +1172,7 @@ import Foundation
     func getInputsNeededToConsume(_ amountNeeded: TLCoin) -> Int {
         var valueSelected:UInt64 = 0
         var inputCount = 0
-        if let stealthPaymentUnspentOutputs = stealthPaymentUnspentOutputs {
-            for unspentOutput in stealthPaymentUnspentOutputs {
-                valueSelected += unspentOutput.value
-                inputCount += 1
-                if (valueSelected >= amountNeeded.toUInt64() && inputCount >= MAX_CONSOLIDATE_STEALTH_PAYMENT_UTXOS_COUNT) {
-                    break
-                }
-            }
-        }
-
-        
-        if valueSelected >= amountNeeded.toUInt64() {
-            return inputCount
-        }
-        
+  
         if let unspentOutputs = unspentOutputs {
             for unspentOutput in unspentOutputs {
                 valueSelected += unspentOutput.value
@@ -1254,22 +1189,15 @@ import Foundation
         var activeAddresses = getActiveMainAddresses()! as! [String]
         activeAddresses += getActiveChangeAddresses()! as! [String]
         
-        if self.stealthWallet != nil {
-            activeAddresses += self.stealthWallet!.getUnspentPaymentAddresses()
-        }
-        
         unspentOutputs = nil
         totalUnspentOutputsSum = nil
-        stealthPaymentUnspentOutputs = nil
         unspentOutputsCount = 0
-        stealthPaymentUnspentOutputsCount = 0
         haveUpDatedUTXOs = false
         
-        TLBlockExplorerAPI.instance().getUnspentOutputs(activeAddresses, success: {
+        TLBlockExplorerAPI.instance().getUnspentOutputs(self.coinType, addressArray: activeAddresses, success: {
             (unspentOutputsObject) in
 //            let unspentOutputs = (jsonData as! NSDictionary).object(forKey: "unspent_outputs") as! NSArray!
             self.unspentOutputs = Array<TLUnspentOutputObject>()
-            self.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
             
             for unspentOutput in unspentOutputsObject.unspentOutputs {
                 let outputScript = (unspentOutput as AnyObject).object(forKey: "script") as! String
@@ -1279,26 +1207,11 @@ import Foundation
                     DLog("address cannot be decoded. not normal pubkeyhash outputScript: \(outputScript)")
                     continue
                 }
-                if self.stealthWallet != nil && self.stealthWallet!.isPaymentAddress(address!) == true {
-                    self.stealthPaymentUnspentOutputs?.append(unspentOutput)
-                    self.stealthPaymentUnspentOutputsCount += 1
-                } else {
-                    self.unspentOutputs?.append(unspentOutput)
-                    self.unspentOutputsCount += 1
-                }
+                self.unspentOutputs?.append(unspentOutput)
+                self.unspentOutputsCount += 1
             }
         
             self.unspentOutputs!.sort { (obj1, obj2) -> Bool in
-                if  (obj1 as TLUnspentOutputObject).confirmations >  (obj2 as TLUnspentOutputObject).confirmations {
-                    return true
-                } else if (obj1 as TLUnspentOutputObject).confirmations < (obj2 as TLUnspentOutputObject).confirmations {
-                    return false
-                } else {
-                    return true
-                }
-            }
-
-            self.stealthPaymentUnspentOutputs!.sort { (obj1, obj2) -> Bool in
                 if  (obj1 as TLUnspentOutputObject).confirmations >  (obj2 as TLUnspentOutputObject).confirmations {
                     return true
                 } else if (obj1 as TLUnspentOutputObject).confirmations < (obj2 as TLUnspentOutputObject).confirmations {
@@ -1314,44 +1227,11 @@ import Foundation
                 failure()
         })
     }
-    
-    func fetchNewStealthPayments(_ isRestoringAccount: Bool) {
-        self.stealthWallet!.checkToWatchStealthAddress()
-        var offset = 0
-        var currentLatestTxTime:UInt64 = 0
-        while true {
-            let ret = self.stealthWallet!.getAndStoreStealthPayments(offset)
-            if ret == nil {
-                break
-            }
-            let latestTxTime = ret!.1
-            if latestTxTime > currentLatestTxTime {
-                currentLatestTxTime = latestTxTime
-            }
-            let gotOldestPaymentAddresses = ret!.0
-            let newStealthPaymentAddresses = ret!.2
-            DLog("getAccountData  \(self.getAccountIdxNumber()) newStealthPaymentAddresses \(newStealthPaymentAddresses.description)")
-            //TODO: txarray will not be in chronological order because of this, fix this
-            if newStealthPaymentAddresses.count > 0 {
-                self.getAccountDataO(newStealthPaymentAddresses, shouldResetAccountBalance: false)
-            }
-            if gotOldestPaymentAddresses {
-                break
-            }
-            offset += TLStealthExplorerAPI.STATIC_MEMBERS.STEALTH_PAYMENTS_FETCH_COUNT
-        }
-        
-        self.setStealthAddressLastTxTime(TLPreferences.getStealthExplorerURL()!, lastTxTime: currentLatestTxTime)
-        
-        if isRestoringAccount {
-            self.stealthWallet!.setUpStealthPaymentAddresses(true, isSetup: true, async: false)
-        }
-    }
-    
+
     func getAccountData(_ addresses: Array<String>, shouldResetAccountBalance: Bool,
         success: @escaping TLWalletUtils.Success, failure:@escaping TLWalletUtils.Error) -> () {
             
-            TLBlockExplorerAPI.instance().getAddressesInfo(addresses, success: {
+            TLBlockExplorerAPI.instance().getAddressesInfo(self.coinType, addressArray: addresses, success: {
                 (addressesObject) in
                 if (shouldResetAccountBalance) {
                     self.resetAccountBalances()
@@ -1383,7 +1263,7 @@ import Foundation
     
     fileprivate func getAccountDataSynchronous(_ addresses: Array<String>, shouldResetAccountBalance: Bool, shouldProcessTxArray: Bool) {
         do {
-            let addressesObject = try TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(addresses)
+            let addressesObject = try TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(self.coinType, addressArray: addresses)
             var balance:UInt64 = 0
             for addressObject in addressesObject.addresses {
                 self.address2NumberOfTransactions[addressObject.address] = addressObject.nTx
@@ -1529,20 +1409,12 @@ import Foundation
 
         var activeAddresses = getActiveMainAddresses()! as! [String]
         activeAddresses += getActiveChangeAddresses()! as! [String]
-        
-        if self.stealthWallet != nil {
-            activeAddresses += self.stealthWallet!.getPaymentAddresses()
-            DispatchQueue.global(priority: DispatchQueue.GlobalQueuePriority.default).async {
-                self.fetchNewStealthPayments(false)
-            }
-        }
-        
         self.getAccountDataO(activeAddresses, shouldResetAccountBalance: true)
     }
     
     fileprivate func getAccountDataO(_ addresses: Array<String>, shouldResetAccountBalance: Bool) -> () {
         do {
-            let addressesObject = try TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(addresses)
+            let addressesObject = try TLBlockExplorerAPI.instance().getAddressesInfoSynchronous(self.coinType, addressArray: addresses)
             
             if (shouldResetAccountBalance) {
                 self.resetAccountBalances()
@@ -1579,23 +1451,11 @@ import Foundation
             self.listeningToIncomingTransactions = true
             let activeMainAddresses = self.getActiveMainAddresses()
             for address in activeMainAddresses! {
-                TLTransactionListener.instance().listenToIncomingTransactionForAddress(address as! String)
+                TLTransactionListener.instance().listenToIncomingTransactionForAddress(self.coinType, address: address as! String)
             }
             let activeChangeAddresses = self.getActiveChangeAddresses()
             for address in activeChangeAddresses! {
-                TLTransactionListener.instance().listenToIncomingTransactionForAddress(address as! String)
-            }
-        }
-        if self.stealthWallet != nil {
-            let stealthPaymentAddresses = self.stealthWallet!.getUnspentPaymentAddresses()
-            for address in stealthPaymentAddresses {
-                TLTransactionListener.instance().listenToIncomingTransactionForAddress(address)
-            }
-            
-            if self.stealthWallet!.isListeningToStealthPayment == false {
-                let challenge = TLStealthWebSocket.instance().challenge
-                let addrAndSignature = self.stealthWallet!.getStealthAddressAndSignatureFromChallenge(challenge)
-                TLStealthWebSocket.instance().sendMessageSubscribeToStealthAddress(addrAndSignature.0, signature: addrAndSignature.1)
+                TLTransactionListener.instance().listenToIncomingTransactionForAddress(self.coinType, address: address as! String)
             }
         }
     }
