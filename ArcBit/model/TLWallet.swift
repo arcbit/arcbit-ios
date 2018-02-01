@@ -28,7 +28,6 @@ class TLWallet {
     fileprivate var rootDict: NSMutableDictionary?
     fileprivate var currentHDWalletIdx: Int?
     fileprivate var masterHex: String?
-    fileprivate var coinType = TLCoinType.BTC
 
     init(walletName: String, walletConfig: TLWalletConfig) {
         self.walletName = walletName
@@ -51,7 +50,7 @@ class TLWallet {
         return stealthAddressDict
     }
     
-    fileprivate func createAccountDictWithPreload(_ accountName: String, extendedKey: String,
+    fileprivate func createAccountDictWithPreload(_ coinType: TLCoinType, accountName: String, extendedKey: String,
         isPrivateExtendedKey: Bool, accountIdx: Int,
         preloadStartingAddresses: Bool) -> (NSMutableDictionary) {
             
@@ -97,7 +96,7 @@ class TLWallet {
                 let mainAddressIdx = i
                 let mainAddressSequence = [TLAddressType.main.rawValue, (mainAddressIdx)]
                 
-                let address = TLHDWalletWrapper.getAddress(self.coinType, extendPubKey: extendedPublicKey, sequence: mainAddressSequence as NSArray, isTestnet: self.walletConfig.isTestnet)
+                let address = TLHDWalletWrapper.getAddress(coinType, extendPubKey: extendedPublicKey, sequence: mainAddressSequence as NSArray, isTestnet: self.walletConfig.isTestnet)
                 mainAddressDict.setObject(address, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS as NSCopying)
                 mainAddressDict.setObject(TLAddressStatus.active.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS as NSCopying)
                 mainAddressDict.setObject(i, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_INDEX as NSCopying)
@@ -109,7 +108,7 @@ class TLWallet {
             let changeAddressIdx = 0
             let changeAddressSequence = [TLAddressType.change.rawValue, changeAddressIdx]
             
-            let address = TLHDWalletWrapper.getAddress(self.coinType, extendPubKey: extendedPublicKey, sequence: changeAddressSequence as NSArray, isTestnet: self.walletConfig.isTestnet)
+            let address = TLHDWalletWrapper.getAddress(coinType, extendPubKey: extendedPublicKey, sequence: changeAddressSequence as NSArray, isTestnet: self.walletConfig.isTestnet)
             changeAddressDict.setObject(address, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS as NSCopying)
             changeAddressDict.setObject(TLAddressStatus.active.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS as NSCopying)
             changeAddressDict.setObject(0, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_INDEX as NSCopying)
@@ -362,25 +361,25 @@ class TLWallet {
     
     func getNewMainAddressFromHDWallet(_ coinType: TLCoinType, accountIdx: Int, expectedAddressIndex: Int) -> (NSDictionary) {
         let accountDict = getAccountDict(coinType, accountIdx: accountIdx)
-        return getNewMainAddress(accountDict, expectedAddressIndex: expectedAddressIndex)
+        return getNewMainAddress(coinType, accountDict: accountDict, expectedAddressIndex: expectedAddressIndex)
     }
     
     func getNewMainAddressFromColdWalletAccount(_ coinType: TLCoinType, idx: Int, expectedAddressIndex: Int) -> (NSDictionary) {
         let accountDict = getColdWalletAccountAtIndex(coinType, idx: idx)
-        return getNewMainAddress(accountDict, expectedAddressIndex: expectedAddressIndex)
+        return getNewMainAddress(coinType, accountDict: accountDict, expectedAddressIndex: expectedAddressIndex)
     }
     
     func getNewMainAddressFromImportedAccount(_ coinType: TLCoinType, idx: Int, expectedAddressIndex: Int) -> (NSDictionary) {
         let accountDict = getImportedAccountAtIndex(coinType, idx: idx)
-        return getNewMainAddress(accountDict, expectedAddressIndex: expectedAddressIndex)
+        return getNewMainAddress(coinType, accountDict: accountDict, expectedAddressIndex: expectedAddressIndex)
     }
     
     func getNewMainAddressFromImportedWatchAccount(_ coinType: TLCoinType, idx: Int, expectedAddressIndex: Int) -> (NSDictionary) {
         let accountDict = getImportedWatchOnlyAccountAtIndex(coinType, idx: idx)
-        return getNewMainAddress(accountDict, expectedAddressIndex: expectedAddressIndex)
+        return getNewMainAddress(coinType, accountDict: accountDict, expectedAddressIndex: expectedAddressIndex)
     }
     
-    fileprivate func getNewMainAddress(_ accountDict: NSDictionary, expectedAddressIndex: Int) -> (NSDictionary) {
+    fileprivate func getNewMainAddress(_ coinType: TLCoinType, accountDict: NSDictionary, expectedAddressIndex: Int) -> (NSDictionary) {
         let mainAddressesArray = accountDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MAIN_ADDRESSES) as! NSMutableArray
         
         DLog(String(format:"getNewMainAddress expectedAddressIndex %lu mainAddressesArray.count %lu", expectedAddressIndex, mainAddressesArray.count))
@@ -404,7 +403,7 @@ class TLWallet {
         let mainAddressDict = NSMutableDictionary()
         
         let extendedPublicKey = accountDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PUBLIC_KEY) as! String
-        let address = TLHDWalletWrapper.getAddress(self.coinType, extendPubKey: extendedPublicKey, sequence: mainAddressSequence as NSArray, isTestnet: self.walletConfig.isTestnet)
+        let address = TLHDWalletWrapper.getAddress(coinType, extendPubKey: extendedPublicKey, sequence: mainAddressSequence as NSArray, isTestnet: self.walletConfig.isTestnet)
         
         mainAddressDict.setObject(address, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS as NSCopying)
         mainAddressDict.setObject((TLAddressStatus.active.rawValue), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS as NSCopying)
@@ -421,25 +420,25 @@ class TLWallet {
     //----------------------------------------------------------------------------------------------------------------
     func getNewChangeAddressFromHDWallet(_ coinType: TLCoinType, accountIdx: Int, expectedAddressIndex: Int) -> (NSDictionary) {
         let accountDict = getAccountDict(coinType, accountIdx: accountIdx)
-        return getNewChangeAddress(accountDict, expectedAddressIndex: expectedAddressIndex)
+        return getNewChangeAddress(coinType, accountDict: accountDict, expectedAddressIndex: expectedAddressIndex)
     }
     
     func getNewChangeAddressFromColdWalletAccount(_ coinType: TLCoinType, idx: UInt, expectedAddressIndex: Int) -> (NSDictionary) {
         let accountDict = getColdWalletAccountAtIndex(coinType, idx: Int(idx))
-        return getNewChangeAddress(accountDict, expectedAddressIndex: expectedAddressIndex)
+        return getNewChangeAddress(coinType, accountDict: accountDict, expectedAddressIndex: expectedAddressIndex)
     }
     
     func getNewChangeAddressFromImportedAccount(_ coinType: TLCoinType, idx: Int, expectedAddressIndex: Int) -> (NSDictionary) {
         let accountDict = getImportedAccountAtIndex(coinType, idx: idx)
-        return getNewChangeAddress(accountDict, expectedAddressIndex: expectedAddressIndex)
+        return getNewChangeAddress(coinType, accountDict: accountDict, expectedAddressIndex: expectedAddressIndex)
     }
     
     func getNewChangeAddressFromImportedWatchAccount(_ coinType: TLCoinType, idx: UInt, expectedAddressIndex: Int) -> (NSDictionary) {
         let accountDict = getImportedWatchOnlyAccountAtIndex(coinType, idx: Int(idx))
-        return getNewChangeAddress(accountDict, expectedAddressIndex: expectedAddressIndex)
+        return getNewChangeAddress(coinType, accountDict: accountDict, expectedAddressIndex: expectedAddressIndex)
     }
     
-    fileprivate func getNewChangeAddress(_ accountDict: NSDictionary, expectedAddressIndex: Int) -> (NSDictionary) {
+    fileprivate func getNewChangeAddress(_ coinType: TLCoinType, accountDict: NSDictionary, expectedAddressIndex: Int) -> (NSDictionary) {
         
         let changeAddressesArray = accountDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_CHANGE_ADDRESSES) as! NSMutableArray
         
@@ -463,7 +462,7 @@ class TLWallet {
         let changeAddressDict = NSMutableDictionary()
         
         let extendedPublicKey = accountDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_EXTENDED_PUBLIC_KEY) as! String
-        let address = TLHDWalletWrapper.getAddress(self.coinType, extendPubKey: extendedPublicKey, sequence: changeAddressSequence as NSArray, isTestnet: self.walletConfig.isTestnet)
+        let address = TLHDWalletWrapper.getAddress(coinType, extendPubKey: extendedPublicKey, sequence: changeAddressSequence as NSArray, isTestnet: self.walletConfig.isTestnet)
         changeAddressDict.setObject(address, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_ADDRESS as NSCopying)
         changeAddressDict.setObject(TLAddressStatus.active.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS as NSCopying)
         changeAddressDict.setObject(changeAddressIdx, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_INDEX as NSCopying)
@@ -605,7 +604,7 @@ class TLWallet {
             let accountsArray = getAccountsArray(coinType)
             let maxAccountIDCreated = hdWalletDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MAX_ACCOUNTS_CREATED) as! Int
             let extendPrivKey = TLHDWalletWrapper.getExtendPrivKey(self.masterHex!, accountIdx: UInt(maxAccountIDCreated))
-            let accountDict = createAccountDictWithPreload(accountName, extendedKey: extendPrivKey,
+        let accountDict = createAccountDictWithPreload(coinType, accountName: accountName, extendedKey: extendPrivKey,
                 isPrivateExtendedKey: true, accountIdx: Int(maxAccountIDCreated), preloadStartingAddresses: preloadStartingAddresses)
             accountsArray.add(accountDict)
             hdWalletDict.setObject((maxAccountIDCreated + 1), forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MAX_ACCOUNTS_CREATED as NSCopying)
@@ -704,7 +703,7 @@ class TLWallet {
         let coldWalletAccountsArray = importedKeysDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_COLD_WALLET_ACCOUNTS) as! NSMutableArray
         
         let accountIdx = coldWalletAccountsArray.count // "accountIdx" key is different for ImportedAccount then hdwallet account
-        let coldWalletAccountDict = createAccountDictWithPreload("", extendedKey: extendedPublicKey, isPrivateExtendedKey: false, accountIdx: accountIdx, preloadStartingAddresses: false)
+        let coldWalletAccountDict = createAccountDictWithPreload(coinType, accountName: "", extendedKey: extendedPublicKey, isPrivateExtendedKey: false, accountIdx: accountIdx, preloadStartingAddresses: false)
         coldWalletAccountsArray.add(coldWalletAccountDict)
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED()), object: nil, userInfo: nil)
         return TLAccountObject(appWallet: self, coinType: coinType, dict: coldWalletAccountDict, accountType: .coldWallet)
@@ -745,7 +744,7 @@ class TLWallet {
         let importedAccountsArray = importedKeysDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_IMPORTED_ACCOUNTS) as! NSMutableArray
         
         let accountIdx = importedAccountsArray.count // "accountIdx" key is different for ImportedAccount then hdwallet account
-        let accountDict = createAccountDictWithPreload("", extendedKey: extendedPrivateKey, isPrivateExtendedKey: true, accountIdx: accountIdx, preloadStartingAddresses: false)
+        let accountDict = createAccountDictWithPreload(coinType, accountName: "", extendedKey: extendedPrivateKey, isPrivateExtendedKey: true, accountIdx: accountIdx, preloadStartingAddresses: false)
         importedAccountsArray.add(accountDict)
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED()), object: nil, userInfo: nil)
         
@@ -786,7 +785,7 @@ class TLWallet {
         let watchOnlyAccountsArray = importedKeysDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_WATCH_ONLY_ACCOUNTS) as! NSMutableArray
         
         let accountIdx = watchOnlyAccountsArray.count // "accountIdx" key is different for ImportedAccount then hdwallet account
-        let watchOnlyAccountDict = createAccountDictWithPreload("", extendedKey: extendedPublicKey, isPrivateExtendedKey: false, accountIdx: accountIdx, preloadStartingAddresses: false)
+        let watchOnlyAccountDict = createAccountDictWithPreload(coinType, accountName: "", extendedKey: extendedPublicKey, isPrivateExtendedKey: false, accountIdx: accountIdx, preloadStartingAddresses: false)
         watchOnlyAccountsArray.add(watchOnlyAccountDict)
         NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_WALLET_PAYLOAD_UPDATED()), object: nil, userInfo: nil)
         return TLAccountObject(appWallet: self, coinType: coinType, dict: watchOnlyAccountDict, accountType: .importedWatch)

@@ -87,7 +87,8 @@ class TLWalletUtils {
     class func DEFAULT_BLOCKEXPLORER_API(_ coinType: TLCoinType) -> TLBlockExplorer {
         switch coinType {
         case .BCH:
-            return TLBlockExplorer.bitcoinCash_blockexplorer
+            return TLBlockExplorer.bitcoinCash_insight
+//            return TLBlockExplorer.bitcoinCash_blockexplorer
         case .BTC:
             return TLBlockExplorer.bitcoin_blockchain
         }
@@ -132,7 +133,8 @@ class TLWalletUtils {
     }
     
     class func DEFAULT_COIN_TYPE() ->TLCoinType {
-        return TLCoinType.BTC
+        return TLCoinType.BCH
+//        return TLCoinType.BTC
     }
     
     class func SUPPORT_COIN_TYPES() -> ([TLCoinType]) {

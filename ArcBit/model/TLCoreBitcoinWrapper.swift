@@ -21,68 +21,169 @@
 //   MA 02110-1301  USA
 
 import Foundation
+import JavaScriptCore
 
 class TLCoreBitcoinWrapper {
+    enum TLBitcoinCashAddressFormat: String { // raw string values needs to match thingy in bitcoinCashWrapper.js
+        case LegacyFormat = "LegacyFormat"
+        case BitpayFormat = "BitpayFormat"
+        case CashAddrFormat = "CashAddrFormat"
+    }
+    
+    struct STATIC_MEMBERS {
+        static let DEFAULT_BITCOIN_CASH_ADDRESS_FORMAT = TLBitcoinCashAddressFormat.CashAddrFormat
+        static var context: JSContext? = {
+            let context = JSContext()
+            
+            guard let
+                bitcoinCashLibraryJSPath = Bundle.main.path(forResource: "bitcoincash-0.1.10", ofType: "js"),
+                let bitcoinCashWrapperJSPath = Bundle.main.path(forResource: "bitcoinCashWrapper", ofType: "js") else {
+                    print("Unable to read resource files.")
+                    return nil
+            }
+            
+            do {
+                let bitcoinCashLibrary = try String(contentsOfFile: bitcoinCashLibraryJSPath, encoding: String.Encoding.utf8)
+                let bitcoinCashWrapper = try String(contentsOfFile: bitcoinCashWrapperJSPath, encoding: String.Encoding.utf8)
+                
+                _ = context?.evaluateScript(bitcoinCashLibrary)
+                _ = context?.evaluateScript(bitcoinCashWrapper)
+            } catch (let error) {
+                print("Error while processing script file: \(error)")
+            }
+            
+            return context
+        }()
+    }
     
     // WARNING: returns compressed address only
     class func getAddressFromOutputScript(_ coinType:TLCoinType, scriptHex:String, isTestnet:Bool) -> (String?) {
-        let scriptData = TLWalletUtils.hexStringToData(scriptHex)!
-        let script = BTCScript(data:scriptData)
-        if let address = script?.standardAddress {
-            if !isTestnet {
-                return address.string
-            } else {
-                return BTCPublicKeyAddressTestnet(data: script?.standardAddress.data)!.string
+        switch coinType {
+        case .BCH:
+            let scriptData = TLWalletUtils.hexStringToData(scriptHex)!
+            let script = BTCScript(data:scriptData)
+            if let address = script?.standardAddress {
+                if !isTestnet {
+                    return TLCoreBitcoinWrapper.getBitcoinCashAddressFormat(address.string, format: STATIC_MEMBERS.DEFAULT_BITCOIN_CASH_ADDRESS_FORMAT)
+                } else {
+                    return TLCoreBitcoinWrapper.getBitcoinCashAddressFormat(BTCPublicKeyAddressTestnet(data: script?.standardAddress.data)!.string, format: STATIC_MEMBERS.DEFAULT_BITCOIN_CASH_ADDRESS_FORMAT)
+                }
             }
+            
+            return nil
+        case .BTC:
+            let scriptData = TLWalletUtils.hexStringToData(scriptHex)!
+            let script = BTCScript(data:scriptData)
+            if let address = script?.standardAddress {
+                if !isTestnet {
+                    return address.string
+                } else {
+                    return BTCPublicKeyAddressTestnet(data: script?.standardAddress.data)!.string
+                }
+            }
+            
+            return nil
         }
-        
-        return nil
     }
    
     class func getStandardPubKeyHashScriptFromAddress(_ coinType:TLCoinType, address:String, isTestnet:Bool) -> String {
-        let scriptData = BTCScript(address: BTCAddress(base58String: address))
-        return scriptData!.hex
+        switch coinType {
+        case .BCH:
+            let legacyAddress = TLCoreBitcoinWrapper.getBitcoinCashAddressFormat(address, format: TLBitcoinCashAddressFormat.LegacyFormat)
+            let scriptData = BTCScript(address: BTCAddress(base58String: legacyAddress))
+            return scriptData!.hex
+        case .BTC:
+            let scriptData = BTCScript(address: BTCAddress(base58String: address))
+            return scriptData!.hex
+        }
     }
     
     class func getAddress(_ coinType:TLCoinType, privateKey:String, isTestnet:Bool) -> (String?){
-        if let key = BTCKey(wif: privateKey) {
-            if !isTestnet {
-                return key.address.string
+        switch coinType {
+        case .BCH:
+            if let key = BTCKey(wif: privateKey) {
+                if !isTestnet {
+                    return TLCoreBitcoinWrapper.getBitcoinCashAddressFormat(key.address.string, format: STATIC_MEMBERS.DEFAULT_BITCOIN_CASH_ADDRESS_FORMAT)
+                } else {
+                    // TODO never tested isTestnet
+                    return TLCoreBitcoinWrapper.getBitcoinCashAddressFormat(key.addressTestnet.string, format: STATIC_MEMBERS.DEFAULT_BITCOIN_CASH_ADDRESS_FORMAT)
+                }
             } else {
-                return key.addressTestnet.string
+                return nil
             }
-        } else {
-            return nil
+        case .BTC:
+            if let key = BTCKey(wif: privateKey) {
+                if !isTestnet {
+                    return key.address.string
+                } else {
+                    return key.addressTestnet.string
+                }
+            } else {
+                return nil
+            }
         }
     }
     
     class func getAddressFromPublicKey(_ coinType:TLCoinType, publicKey:String, isTestnet:Bool) -> (String?){
-        if !isTestnet {
-            if let key = BTCKey(publicKey: TLWalletUtils.hexStringToData(publicKey)!) {
-                return key.address.string
+        switch coinType {
+        case .BCH:
+            if !isTestnet {
+                if let key = BTCKey(publicKey: TLWalletUtils.hexStringToData(publicKey)!) {
+                    return TLCoreBitcoinWrapper.getBitcoinCashAddressFormat(key.address.string, format: STATIC_MEMBERS.DEFAULT_BITCOIN_CASH_ADDRESS_FORMAT)
+                } else {
+                    return nil
+                }
             } else {
-                return nil
+                if let key = BTCKey(publicKey:  TLWalletUtils.hexStringToData(publicKey)!) {
+                    // TODO never tested isTestnet
+                    return TLCoreBitcoinWrapper.getBitcoinCashAddressFormat(key.addressTestnet.string, format: STATIC_MEMBERS.DEFAULT_BITCOIN_CASH_ADDRESS_FORMAT)
+                } else {
+                    return nil
+                }
             }
-        } else {
-            if let key = BTCKey(publicKey:  TLWalletUtils.hexStringToData(publicKey)!) {
-                return key.addressTestnet.string
+        case .BTC:
+            if !isTestnet {
+                if let key = BTCKey(publicKey: TLWalletUtils.hexStringToData(publicKey)!) {
+                    return key.address.string
+                } else {
+                    return nil
+                }
             } else {
-                return nil
+                if let key = BTCKey(publicKey:  TLWalletUtils.hexStringToData(publicKey)!) {
+                    return key.addressTestnet.string
+                } else {
+                    return nil
+                }
             }
         }
     }
     
     // WARNING: returns compressed address only
     class func getAddressFromSecret(_ coinType:TLCoinType, secret:String, isTestnet:Bool) -> (String?){
-        if let key = BTCKey(privateKey: BTCDataFromHex(secret)) {
-            if !isTestnet {
-                return key.compressedPublicKeyAddress.string
+        switch coinType {
+        case .BCH:
+            if let key = BTCKey(privateKey: BTCDataFromHex(secret)) {
+                if !isTestnet {
+                    return TLCoreBitcoinWrapper.getBitcoinCashAddressFormat(key.compressedPublicKeyAddress.string, format: STATIC_MEMBERS.DEFAULT_BITCOIN_CASH_ADDRESS_FORMAT)
+                } else {
+                    key.isPublicKeyCompressed = true
+                    // TODO never tested isTestnet
+                    return TLCoreBitcoinWrapper.getBitcoinCashAddressFormat(key.addressTestnet.string, format: STATIC_MEMBERS.DEFAULT_BITCOIN_CASH_ADDRESS_FORMAT)
+                }
             } else {
-                key.isPublicKeyCompressed = true
-                return key.addressTestnet.string
+                return nil
             }
-        } else {
-            return nil
+        case .BTC:
+            if let key = BTCKey(privateKey: BTCDataFromHex(secret)) {
+                if !isTestnet {
+                    return key.compressedPublicKeyAddress.string
+                } else {
+                    key.isPublicKeyCompressed = true
+                    return key.addressTestnet.string
+                }
+            } else {
+                return nil
+            }
         }
     }
     
@@ -105,10 +206,16 @@ class TLCoreBitcoinWrapper {
     }
     
     class func isAddressVersion0(_ coinType:TLCoinType, address:String, isTestnet:Bool) -> (Bool){
-        if !isTestnet {
-            return address.hasPrefix("1")
-        } else {
-            return address.hasPrefix("m") || address.hasPrefix("n")
+        switch coinType {
+        case .BCH:
+            // TODO
+            return true
+        case .BTC:
+            if !isTestnet {
+                return address.hasPrefix("1")
+            } else {
+                return address.hasPrefix("m") || address.hasPrefix("n")
+            }
         }
     }
     
@@ -124,7 +231,15 @@ class TLCoreBitcoinWrapper {
     */
     
     class func isValidAddress(_ coinType:TLCoinType, address:String, isTestnet:Bool) -> (Bool){
-        return address.isValidBitcoinAddress(isTestnet) || TLStealthAddress.isStealthAddress(address, isTestnet:isTestnet)
+        switch coinType {
+        case .BCH:
+            if let legacyAddress = TLCoreBitcoinWrapper.getBitcoinCashAddressFormat(address, format: TLBitcoinCashAddressFormat.LegacyFormat) {
+                return legacyAddress.isValidBitcoinAddress(isTestnet)
+            }
+            return false
+        case .BTC:
+            return address.isValidBitcoinAddress(isTestnet) || TLStealthAddress.isStealthAddress(address, isTestnet:isTestnet)
+        }
     }
     
     class func isValidPrivateKey(_ coinType:TLCoinType, privateKey:String, isTestnet:Bool) -> Bool{
@@ -205,4 +320,17 @@ class TLCoreBitcoinWrapper {
         return txHexAndTxHash
     }
 
+    class func getBitcoinCashAddressFormat(_ address:String, format: TLBitcoinCashAddressFormat) -> String? {
+        guard let context = STATIC_MEMBERS.context else {
+            DLog("JSContext not found.")
+            return nil
+        }
+        let getBitcoinCashAddressFormatFunction = context.objectForKeyedSubscript("getBitcoinCashAddressFormat")
+        guard let result = getBitcoinCashAddressFormatFunction?.call(withArguments: [address, format.rawValue]).toString() else {
+            DLog("getBitcoinCashAddressFormat no result")
+            return nil
+        }
+        DLog("getBitcoinCashAddressFormat result \(result)")
+        return result
+    }
 }

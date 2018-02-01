@@ -79,6 +79,8 @@
 		C0649CA51E256B52007E3965 /* TLTransactionTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0649CA21E256B52007E3965 /* TLTransactionTableViewCell.swift */; };
 		C0649CA71E256E16007E3965 /* TLDisplayStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0649CA61E256E16007E3965 /* TLDisplayStrings.swift */; };
 		C0649CA81E25969D007E3965 /* TLDisplayStrings.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0649CA61E256E16007E3965 /* TLDisplayStrings.swift */; };
+		C07BEC4D202322D600F89512 /* bitcoincash-0.1.10.js in Resources */ = {isa = PBXBuildFile; fileRef = C07BEC4B202322D600F89512 /* bitcoincash-0.1.10.js */; };
+		C07BEC4E202322D600F89512 /* bitcoinCashWrapper.js in Resources */ = {isa = PBXBuildFile; fileRef = C07BEC4C202322D600F89512 /* bitcoinCashWrapper.js */; };
 		C09D416C1DC9B05200E2D09A /* TLColdWallet.swift in Sources */ = {isa = PBXBuildFile; fileRef = C01681AB1DBD9ED8004D5FD7 /* TLColdWallet.swift */; };
 		C0A18F941ABF51C200BED648 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = C0A18F931ABF51C200BED648 /* AppDelegate.swift */; };
 		C0A18F9B1ABF51C200BED648 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = C0A18F9A1ABF51C200BED648 /* Images.xcassets */; };
@@ -357,6 +359,8 @@
 		C0649CA11E256B52007E3965 /* TLAddressTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLAddressTableViewCell.swift; sourceTree = "<group>"; };
 		C0649CA21E256B52007E3965 /* TLTransactionTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLTransactionTableViewCell.swift; sourceTree = "<group>"; };
 		C0649CA61E256E16007E3965 /* TLDisplayStrings.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TLDisplayStrings.swift; sourceTree = "<group>"; };
+		C07BEC4B202322D600F89512 /* bitcoincash-0.1.10.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = "bitcoincash-0.1.10.js"; sourceTree = "<group>"; };
+		C07BEC4C202322D600F89512 /* bitcoinCashWrapper.js */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.javascript; path = bitcoinCashWrapper.js; sourceTree = "<group>"; };
 		C0920A971FA82DB6008A0745 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/Main.strings"; sourceTree = "<group>"; };
 		C0920A981FA82DB6008A0745 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/LaunchScreen.strings"; sourceTree = "<group>"; };
 		C0920A991FA82DB6008A0745 /* zh-Hant */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = "zh-Hant"; path = "zh-Hant.lproj/IASKLocalizable.strings"; sourceTree = "<group>"; };
@@ -754,6 +758,15 @@
 			path = walletTableViewCells;
 			sourceTree = "<group>";
 		};
+		C07BEC4A202322D600F89512 /* bitcoincash */ = {
+			isa = PBXGroup;
+			children = (
+				C07BEC4B202322D600F89512 /* bitcoincash-0.1.10.js */,
+				C07BEC4C202322D600F89512 /* bitcoinCashWrapper.js */,
+			);
+			path = bitcoincash;
+			sourceTree = "<group>";
+		};
 		C0A18F851ABF51C200BED648 = {
 			isa = PBXGroup;
 			children = (
@@ -893,6 +906,7 @@
 		C0A18FDE1ABF53A100BED648 /* External */ = {
 			isa = PBXGroup;
 			children = (
+				C07BEC4A202322D600F89512 /* bitcoincash */,
 				C0AE417B1F788BD700682CDE /* InAppSettingsKit */,
 				C05F82C61EF5D13E0016F0FC /* socket.io-client-swift-10.0.0 */,
 				C0B4E7861AFAAEA200DC9B65 /* MySocketRocketExtras */,
@@ -1398,6 +1412,7 @@
 				C0A190A51ABF53A100BED648 /* data@2x.png in Resources */,
 				C0A190AD1ABF53A100BED648 /* newspaper-alt.png in Resources */,
 				C0A190A11ABF53A100BED648 /* book.png in Resources */,
+				C07BEC4E202322D600F89512 /* bitcoinCashWrapper.js in Resources */,
 				C0EE6D6B1B1B7E6000982692 /* 1200X1200logo.png in Resources */,
 				C0A190A81ABF53A100BED648 /* download@2x.png in Resources */,
 				C0A190AE1ABF53A100BED648 /* newspaper-alt@2x.png in Resources */,
@@ -1408,6 +1423,7 @@
 				C0A18F9E1ABF51C200BED648 /* LaunchScreen.xib in Resources */,
 				C0BD70011B4E2BE300A5788D /* Localizable.strings in Resources */,
 				C0A190B41ABF53A100BED648 /* upload@2x.png in Resources */,
+				C07BEC4D202322D600F89512 /* bitcoincash-0.1.10.js in Resources */,
 				C0A190A41ABF53A100BED648 /* data.png in Resources */,
 				C0AE41BA1F788BD700682CDE /* IASKLocalizable.strings in Resources */,
 				C0D7B2DB1B16FDA10096E599 /* live.cer in Resources */,

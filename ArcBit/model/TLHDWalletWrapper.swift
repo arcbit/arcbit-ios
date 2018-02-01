@@ -138,17 +138,34 @@ class TLHDWalletWrapper {
     }
     
     class func getAddress(_ coinType:TLCoinType, extendPubKey:String, sequence:NSArray, isTestnet:Bool) -> String{
-        var keyChain = BTCKeychain(extendedKey:extendPubKey)
-        
-        for _idx in sequence {
-            let idx = _idx as! Int
-            keyChain = keyChain?.derivedKeychain(at: UInt32(idx), hardened:false)
-        }
-        
-        if !isTestnet {
-            return keyChain!.key.compressedPublicKeyAddress.string
-        } else {
-            return keyChain!.key.addressTestnet.string
+        switch coinType {
+        case .BCH:
+            var keyChain = BTCKeychain(extendedKey:extendPubKey)
+            
+            for _idx in sequence {
+                let idx = _idx as! Int
+                keyChain = keyChain?.derivedKeychain(at: UInt32(idx), hardened:false)
+            }
+            
+            if !isTestnet {
+                return TLCoreBitcoinWrapper.getBitcoinCashAddressFormat(keyChain!.key.compressedPublicKeyAddress.string, format: TLCoreBitcoinWrapper.STATIC_MEMBERS.DEFAULT_BITCOIN_CASH_ADDRESS_FORMAT)!
+            } else {
+                // TODO never tested isTestnet
+                return TLCoreBitcoinWrapper.getBitcoinCashAddressFormat(keyChain!.key.addressTestnet.string, format: TLCoreBitcoinWrapper.STATIC_MEMBERS.DEFAULT_BITCOIN_CASH_ADDRESS_FORMAT)!
+            }
+        case .BTC:
+            var keyChain = BTCKeychain(extendedKey:extendPubKey)
+            
+            for _idx in sequence {
+                let idx = _idx as! Int
+                keyChain = keyChain?.derivedKeychain(at: UInt32(idx), hardened:false)
+            }
+            
+            if !isTestnet {
+                return keyChain!.key.compressedPublicKeyAddress.string
+            } else {
+                return keyChain!.key.addressTestnet.string
+            }
         }
     }
     
