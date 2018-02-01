@@ -24,14 +24,14 @@
             <string>BLOCKCHAIN_API_TYPE</string>
             <key>Titles</key>
             <array>
-                <string>BLOCKCHAIN_API_TYPE_3</string>
+<!--                <string>BLOCKCHAIN_API_TYPE_3</string> TODO_NUMBER_1 temporary disable until https://bitcoincash.blockexplorer.com/ uses cash address --> 
                 <string>BLOCKCHAIN_API_TYPE_2</string>
             </array>
             <key>Type</key>
             <string>PSMultiValueSpecifier</string>
             <key>Values</key>
             <array>
-                <string>0</string>
+<!--                <string>0</string>-->
                 <string>1</string>
             </array>
         </dict>
