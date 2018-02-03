@@ -139,7 +139,7 @@ class TLColdWallet {
             let mnemonicExtendedPrivateKey:String
             if TLHDWalletWrapper.phraseIsValid(mnemonicOrExtendedPrivateKey) {
                 let masterHex = TLHDWalletWrapper.getMasterHex(mnemonicOrExtendedPrivateKey)
-                mnemonicExtendedPrivateKey = TLHDWalletWrapper.getExtendPrivKey(masterHex, accountIdx: UInt(accountIdx))
+                mnemonicExtendedPrivateKey = TLHDWalletWrapper.getExtendPrivKey(coinType, masterHex: masterHex, accountIdx: UInt(accountIdx))
                 DLog("createSignedTxAipGapData xxxx1 : \(mnemonicExtendedPrivateKey)")
             } else if TLHDWalletWrapper.isValidExtendedPrivateKey(mnemonicOrExtendedPrivateKey) {
                 mnemonicExtendedPrivateKey = mnemonicOrExtendedPrivateKey

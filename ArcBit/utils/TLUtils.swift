@@ -61,6 +61,21 @@ class TLUtils {
         return NSString(data: jsonData!, encoding: String.Encoding.utf8.rawValue)! as String
     }
     
+    class func JSONStringToObject(_ jsonString: String) -> Any? {
+        var error: NSError? = nil
+        let jsonData = jsonString.data(using: String.Encoding.utf8)
+        let jsonDict:Any?
+        do {
+            jsonDict = try JSONSerialization.jsonObject(with: jsonData!,
+                                                        options: JSONSerialization.ReadingOptions.mutableContainers)
+        } catch let error1 as NSError {
+            error = error1
+            jsonDict = nil
+        }
+        assert(error == nil, "Invalid JSON string")
+        return jsonDict
+    }
+    
     class func JSONStringToDictionary(_ jsonString: String) -> NSDictionary {
         var error: NSError? = nil
         let jsonData = jsonString.data(using: String.Encoding.utf8)

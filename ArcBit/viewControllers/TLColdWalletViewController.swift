@@ -101,15 +101,14 @@ import UIKit
                 vc.navigationItem.title = TLDisplayStrings.SELECT_COIN()
             }
         } else if (segue.identifier == "SegueCreateColdWallet") {
-            let vc = segue.destination
-            vc.navigationItem.title = TLDisplayStrings.CREATE_COLD_WALLET_STRING()
-        } else if (segue.identifier == "SegueSpendColdWallet") {
-            let vc = segue.destination
-            vc.navigationItem.title = TLDisplayStrings.AUTHORIZE_PAYMENT_STRING()
+            if let vc = segue.destination as? TLCreateColdWalletViewController {
+                vc.currentCoinType = self.currentCoinType
+                vc.navigationItem.title = TLDisplayStrings.CREATE_COLD_WALLET_STRING()
+            }
         } else if (segue.identifier == "SegueSpendColdWallet") {
             if let vc = segue.destination as? TLAuthorizeColdWalletPaymentViewController {
                 vc.currentCoinType = self.currentCoinType
-                vc.navigationItem.title = ""
+                vc.navigationItem.title = TLDisplayStrings.AUTHORIZE_PAYMENT_STRING()
             }
         } else if (segue.identifier == "SegueSeeWalletData") {
             if let vc = segue.destination as? TLBrainWalletViewController {

@@ -1200,11 +1200,9 @@ import Foundation
             self.unspentOutputs = Array<TLUnspentOutputObject>()
             
             for unspentOutput in unspentOutputsObject.unspentOutputs {
-                let outputScript = (unspentOutput as AnyObject).object(forKey: "script") as! String
-                
-                let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(self.coinType, scriptHex: outputScript, isTestnet: self.appWallet!.walletConfig.isTestnet)
+                let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(self.coinType, scriptHex: unspentOutput.script, isTestnet: self.appWallet!.walletConfig.isTestnet)
                 if (address == nil) {
-                    DLog("address cannot be decoded. not normal pubkeyhash outputScript: \(outputScript)")
+                    DLog("address cannot be decoded. not normal pubkeyhash outputScript: \(unspentOutput.script)")
                     continue
                 }
                 self.unspentOutputs?.append(unspentOutput)

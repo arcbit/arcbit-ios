@@ -44,7 +44,8 @@ protocol TLNewWalletTableViewCellDelegate {
     @IBOutlet var accountPublicKeyTextView:UITextView!
     @IBOutlet var showAccountPublicKeyQRButton:UIButton!
     var delegate: TLNewWalletTableViewCellDelegate?
-    
+    lazy var currentCoinType = TLWalletUtils.DEFAULT_COIN_TYPE()
+
     override init(style:UITableViewCellStyle, reuseIdentifier:String?) {
         super.init(style:style, reuseIdentifier:reuseIdentifier)
     }
@@ -106,11 +107,11 @@ protocol TLNewWalletTableViewCellDelegate {
     func didUpdateMnemonic(_ mnemonicPassphrase: String) {
         let masterHex = TLHDWalletWrapper.getMasterHex(mnemonicPassphrase)
         if let accountID = UInt(self.accountIDTextField.text!) {
-            let extendedPublicKey = TLHDWalletWrapper.getExtendPubKeyFromMasterHex(masterHex, accountIdx: accountID)
+            let extendedPublicKey = TLHDWalletWrapper.getExtendPubKeyFromMasterHex(self.currentCoinType, masterHex: masterHex, accountIdx: accountID)
             self.updateAccountPublicKeyTextView(extendedPublicKey)
         } else {
             self.accountIDTextField.text = "0"
-            let extendedPublicKey = TLHDWalletWrapper.getExtendPubKeyFromMasterHex(masterHex, accountIdx: 0)
+            let extendedPublicKey = TLHDWalletWrapper.getExtendPubKeyFromMasterHex(self.currentCoinType, masterHex: masterHex, accountIdx: 0)
             self.updateAccountPublicKeyTextView(extendedPublicKey)
         }
     }

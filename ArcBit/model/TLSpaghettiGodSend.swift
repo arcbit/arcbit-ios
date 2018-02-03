@@ -266,11 +266,9 @@
                 TLBlockExplorerAPI.instance().getUnspentOutputs(self.getSelectedObjectCoinType(), addressArray: addresses, success:{(unspentOutputsObject) in
                     var address2UnspentOutputs = Dictionary<String, Array<TLUnspentOutputObject>>(minimumCapacity:addresses.count)
                     
-                    for unspentOutput in unspentOutputsObject.unspentOutputs {
-                        let outputScript = unspentOutput.script
-                        
-                        guard let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(self.getSelectedObjectCoinType(), scriptHex: outputScript, isTestnet: self.appWallet.walletConfig.isTestnet) else {
-                            DLog("address cannot be decoded. not normal pubkeyhash outputScript: \(outputScript)")
+                    for unspentOutput in unspentOutputsObject.unspentOutputs {                        
+                        guard let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(self.getSelectedObjectCoinType(), scriptHex: unspentOutput.script, isTestnet: self.appWallet.walletConfig.isTestnet) else {
+                            DLog("address cannot be decoded. not normal pubkeyhash outputScript: \(unspentOutput.script)")
                             continue
                         }
                         

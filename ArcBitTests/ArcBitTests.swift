@@ -184,7 +184,7 @@ class ArcBitTests: XCTestCase {
         XCTAssertTrue(masterHex == "ae3ff5936bf70293eda11b5ea5ee9585fe9b22c9a80b610ee37251a22120e970c75a18bbd95219a0348c7dee40eeb44a4d2480900be8f931d0cf85203f9d94ce")
         
         
-        let extendPrivKey = TLHDWalletWrapper.getExtendPrivKey(masterHex, accountIdx:0)
+        let extendPrivKey = TLHDWalletWrapper.getExtendPrivKey(self.coinType, masterHex: masterHex, accountIdx:0)
         NSLog("extendPrivKey: %@", extendPrivKey)
         XCTAssertTrue("xprv9z2LgaTwJsrjcHqwG9ZFManHWbiUQqwSMYdMvDN4Pr8i7sVf3x8Us9JSQ8FFCT8f7wBDzEVEhTFX3wJdNx2pchEZJ2HNTa4U7NKgM9uWoK6" == extendPrivKey)
         
@@ -281,7 +281,7 @@ class ArcBitTests: XCTestCase {
         var backupPassphrase = "slogan lottery zone helmet fatigue rebuild solve best hint frown conduct ill"
         let masterHex = TLHDWalletWrapper.getMasterHex(backupPassphrase)
         let walletConfig = TLWalletConfig(isTestnet: false)
-        let extendPrivKey = TLHDWalletWrapper.getExtendPrivKey(masterHex, accountIdx:0)
+        let extendPrivKey = TLHDWalletWrapper.getExtendPrivKey(self.coinType, masterHex: masterHex, accountIdx:0)
         
         let extendPubKey = TLHDWalletWrapper.getExtendPubKey(extendPrivKey)
         let mainAddressIndex0 = [0,0]
@@ -1690,4 +1690,60 @@ class ArcBitTests: XCTestCase {
         NSLog("mainPrivKey0: %@", mainPrivKey0)
         XCTAssertTrue("cMfhDgrbAjjRPxYxK2RVXbhHEm5p1Q6fdurFvWRpd3BzGWQYiFw6" == mainPrivKey0)
     }
+    
+    func testBitcoinCashAddressConversion() {
+//        let cashAddress = TLCoreBitcoinWrapper.getBitcoinCashAddressFormat("17XBj6iFEsf8kzDMGQk5ghZipxX49VXuaV", format: TLCoreBitcoinWrapper.TLBitcoinCashAddressFormat.CashAddrFormat)
+//        let legacyAddress = TLCoreBitcoinWrapper.getBitcoinCashAddressFormat("17XBj6iFEsf8kzDMGQk5ghZipxX49VXuaV", format: TLCoreBitcoinWrapper.TLBitcoinCashAddressFormat.LegacyFormat)
+//        XCTAssertTrue("qprcvtlpvhnpyxhcp4wau8ktg78dzuzktvetlc7g9s" == cashAddress)
+//        XCTAssertTrue("17XBj6iFEsf8kzDMGQk5ghZipxX49VXuaV" == legacyAddress)
+//    }
+//
+//    func testBitcoinCashTransaction() {
+//        let hashes = ["115e8f72f39fad874cfab0deed11a80f24f967a84079fb56ddf53ea02e308986"]
+//        let inputIndexes = [0]
+//        let inputScripts = ["76a91447862fe165e6121af80d5dde1ecb478ed170565b88ac"]
+//        let outputAddresses = ["1Gokm82v6DmtwKEB8AiVhm82hyFSsEvBDK"]
+//        let outputAmounts = [15000]
+//        let privateKeys = ["L1uyy5qTuGrVXrmrsvHWHgVzW9kKdrp27wBC7Vs6nZDTF2BRUVwy"]
+//        // test signed tx
+//        var txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(TLCoinType.BCH, hashes: hashes as NSArray, inputIndexes: inputIndexes as NSArray, inputScripts: inputScripts as NSArray, outputAddresses: outputAddresses as NSArray, outputAmounts: outputAmounts as NSArray, privateKeys: privateKeys as NSArray, outputScripts: nil, signTx: true, isTestnet: false)
+//        var txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
+//        var txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
+//        var txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
+//        XCTAssertTrue(txHash == "a1b0b4d7f0e3400a7babb2af7b73769381bffc5c1eaa42fbf9629da04f2e3640")
+//        XCTAssertTrue(txHex == "01000000018689302ea03ef5dd56fb7940a867f9240fa811eddeb0fa4c87ad9ff3728f5e11000000006a473044022035b688770d9301c988db1c7a3404395a0a4ed603288fb0afbd49480b28a5733e02203ac34215f382a347622e2c450ec57079fdf0563d1c8b65f4771fd4b273ded0024121029f50f51d63b345039a290c94bffd3180c99ed659ff6ea6b1242bca47eb93b59fffffffff01983a0000000000001976a914ad618cf4333b3b248f9744e8e81db2964d0ae39788ac00000000")
+//        XCTAssertTrue(txSize.uintValue == 191)
+//
+//
+//        // test unsigned tx
+//        txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(TLCoinType.BCH, hashes: hashes as NSArray, inputIndexes: inputIndexes as NSArray, inputScripts: inputScripts as NSArray, outputAddresses: outputAddresses as NSArray, outputAmounts: outputAmounts as NSArray, privateKeys: privateKeys as NSArray, outputScripts: nil, signTx: false, isTestnet: false)
+//        txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
+//        txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
+//        txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
+//        XCTAssertTrue(txHash == "f4f116dd0db68b0c15dd6668526494fdaa6640efbd82db13d7c197e08cf52bdc")
+//        XCTAssertTrue(txHex == "01000000018689302ea03ef5dd56fb7940a867f9240fa811eddeb0fa4c87ad9ff3728f5e110000000000ffffffff01983a0000000000001976a914ad618cf4333b3b248f9744e8e81db2964d0ae39788ac00000000")
+//        XCTAssertTrue(txSize.uintValue == 85)
+    }
+    
+    func testBitcoinCashTransaction2() {
+//        let hashes = ["7d44620c6a57c29b168b6b936feac3b847501b967d996b14559a772b9a2c7a03"]
+        let hashes = [TLWalletUtils.hexStringToData("7d44620c6a57c29b168b6b936feac3b847501b967d996b14559a772b9a2c7a03")]
+        let inputIndexes = [0]
+//        let inputScripts = ["76a9143a0ac0c9bdeec13749298db992166f0d428a3d3d88ac"]
+        let inputScripts = [TLWalletUtils.hexStringToData("76a9143a0ac0c9bdeec13749298db992166f0d428a3d3d88ac")]
+//        let outputAddresses = ["1KRfJnCnuZNC9q2UeixKg4m49Zm8aW7euc"]
+        let outputAddresses = ["qr9pcw2sg82kvyf7zcvgh2fkztkhey3pcc8gar7pmr"]
+        let outputAmounts = [49997970]
+        let privateKeys = ["KxPiZNgFf6n44KwrZoqmm2aJMijFAffY5SX7pyXu9xB671BwEzK6"]
+        // test signed tx
+        let txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(TLCoinType.BCH, hashes: hashes as NSArray, inputIndexes: inputIndexes as NSArray, inputScripts: inputScripts as NSArray, outputAddresses: outputAddresses as NSArray, outputAmounts: outputAmounts as NSArray, privateKeys: privateKeys as NSArray, outputScripts: nil, signTx: true, isTestnet: false)
+//        NSLog("txHexAndTxHash: %@", txHexAndTxHash)
+        let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
+        let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
+        let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
+        XCTAssertTrue(txHash == "981aa925deb1d6f5ee11260bbcae3de1cb1d4c7c84c19c1728edb8e9decc3a21")
+        XCTAssertTrue(txHex == "0100000001037a2c9a2b779a55146b997d961b5047b8c3ea6f936b8b169bc2576a0c62447d000000006a473044022035a5b87aefcec9c1d7dd36f70e6b4d39775a490e7cfba035e63afc2f9e28039e022040ca8e6aaa90001b507785309e8fcb796b6d17189eee61127cb46322e67ecc314121033a29c8b9a3c811a6f747167c0ee1bd64615695269b394b2d58a95171ad7b6ec8ffffffff0192e8fa02000000001976a914ca1c395041d566113e16188ba93612ed7c9221c688ac00000000")
+        XCTAssertTrue(txSize.uintValue == 191)
+    }
 }
+

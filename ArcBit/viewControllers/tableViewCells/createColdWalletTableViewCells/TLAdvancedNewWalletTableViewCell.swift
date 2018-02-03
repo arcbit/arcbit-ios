@@ -315,10 +315,10 @@ protocol TLAdvancedNewWalletTableViewCellDelegate {
             }
 
             self.updateAccountIDTextField(true)
-            let extendedPublicKey = TLHDWalletWrapper.getExtendPubKeyFromMasterHex(masterHex, accountIdx: UInt(HDAccountID!))
+            let extendedPublicKey = TLHDWalletWrapper.getExtendPubKeyFromMasterHex(self.currentCoinType, masterHex: masterHex, accountIdx: UInt(HDAccountID!))
             self.accountPublicKeyTextView.text = extendedPublicKey
             self.updateAccountPublicKeyTextView(extendedPublicKey)
-            let extendedPrivateKey = TLHDWalletWrapper.getExtendPrivKey(masterHex, accountIdx: UInt(HDAccountID!))
+            let extendedPrivateKey = TLHDWalletWrapper.getExtendPrivKey(self.currentCoinType, masterHex: masterHex, accountIdx: UInt(HDAccountID!))
             self.accountPrivateKeyTextView.text = extendedPrivateKey
             self.updateAccountPrivateKeyTextView(extendedPrivateKey)
   

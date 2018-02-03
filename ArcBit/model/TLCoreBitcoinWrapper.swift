@@ -26,7 +26,6 @@ import JavaScriptCore
 class TLCoreBitcoinWrapper {
     enum TLBitcoinCashAddressFormat: String { // raw string values needs to match thingy in bitcoinCashWrapper.js
         case LegacyFormat = "LegacyFormat"
-        case BitpayFormat = "BitpayFormat"
         case CashAddrFormat = "CashAddrFormat"
     }
     
@@ -257,18 +256,21 @@ class TLCoreBitcoinWrapper {
         return signature!.base64EncodedString(options: NSData.Base64EncodingOptions.lineLength64Characters);
     }
     
-    class func createSignedSerializedTransactionHex(_ coinType:TLCoinType, hashes:NSArray, inputIndexes indexes:NSArray, inputScripts scripts:NSArray,
-                                                    outputAddresses:NSArray, outputAmounts amounts:NSArray, privateKeys:NSArray,
+    class func createSignedSerializedTransactionHex(_ coinType:TLCoinType, hashes:NSArray, inputIndexes:NSArray, inputScripts:NSArray,
+                                                    outputAddresses:NSArray, outputAmounts:NSArray, privateKeys:NSArray,
                                                     outputScripts:NSArray?, isTestnet:Bool) -> NSDictionary? {
-        return createSignedSerializedTransactionHex(coinType, hashes: hashes, inputIndexes: indexes, inputScripts: scripts, outputAddresses: outputAddresses, outputAmounts: amounts, privateKeys: privateKeys, outputScripts: outputScripts, signTx: true, isTestnet: isTestnet)
+        return createSignedSerializedTransactionHex(coinType, hashes: hashes, inputIndexes: inputIndexes, inputScripts: inputScripts, outputAddresses: outputAddresses, outputAmounts: outputAmounts, privateKeys: privateKeys, outputScripts: outputScripts, signTx: true, isTestnet: isTestnet)
     }
     
-    class func createSignedSerializedTransactionHex(_ coinType:TLCoinType, hashes:NSArray, inputIndexes indexes:NSArray, inputScripts scripts:NSArray,
-                                                    outputAddresses:NSArray, outputAmounts amounts:NSArray, privateKeys:NSArray,
+    class func createSignedSerializedTransactionHex(_ coinType:TLCoinType, hashes:NSArray, inputIndexes:NSArray, inputScripts:NSArray,
+                                                    outputAddresses:NSArray, outputAmounts:NSArray, privateKeys:NSArray,
                                                     outputScripts:NSArray?, signTx: Bool, isTestnet:Bool) -> NSDictionary? {
-            
-            let tx = BRTransaction(inputHashes:hashes as [AnyObject], inputIndexes:indexes as [AnyObject],inputScripts:scripts as [AnyObject],
-                outputAddresses:outputAddresses as [AnyObject], outputAmounts:amounts as [AnyObject], isTestnet:isTestnet)
+        switch coinType {
+        case .BCH:
+            return createBitcoinCashSerializedTransactionHex(hashes, inputIndexes: inputIndexes, inputScripts: inputScripts, outputAddresses: outputAddresses, outputAmounts: outputAmounts, privateKeys: privateKeys, outputScripts: outputScripts, signTx: signTx, isTestnet: isTestnet)
+        case .BTC:
+            let tx = BRTransaction(inputHashes:hashes as [AnyObject], inputIndexes:inputIndexes as [AnyObject],inputScripts:inputScripts as [AnyObject],
+                                   outputAddresses:outputAddresses as [AnyObject], outputAmounts:outputAmounts as [AnyObject], isTestnet:isTestnet)
             
             if (outputScripts != nil) {
                 for i in stride(from: 0, to: outputScripts!.count, by: 1) {
@@ -276,7 +278,7 @@ class TLCoreBitcoinWrapper {
                     tx?.insertOutputScript(TLWalletUtils.hexStringToData(outputScript), amount:UInt64(0), isTestnet:isTestnet)
                 }
             }
-        
+            
             if !signTx {
                 let inputHexScripts = NSMutableArray(capacity: tx!.inputScripts.count)
                 for script in tx!.inputScripts {
@@ -287,12 +289,12 @@ class TLCoreBitcoinWrapper {
                     "txHex": TLWalletUtils.dataToHexString(tx!.data),
                 ]
             }
-        
+            
             tx?.sign(withPrivateKeys: privateKeys as [AnyObject], isTestnet:isTestnet)
             assert((tx?.isSigned)!, "tx is not signed")
-
+            
             let txFromHexData = BRTransaction(message: tx?.data, isTestnet: isTestnet)
-
+            
             var expectedOutputCount = outputAddresses.count
             if outputScripts != nil {
                 expectedOutputCount += outputScripts!.count
@@ -300,12 +302,13 @@ class TLCoreBitcoinWrapper {
             if txFromHexData?.outputScripts.count != expectedOutputCount {
                 return nil
             }
-
+            
             return [
                 "txHex": TLWalletUtils.dataToHexString(tx!.data),
                 "txHash": TLWalletUtils.reverseHexString(TLWalletUtils.dataToHexString(tx!.txHash)),
                 "txSize": tx!.size
             ]
+        }
     }
 
     class func createSignedSerializedTransactionHex(_ coinType:TLCoinType, unsignedTx:Data, inputScripts:NSArray, privateKeys:NSArray, isTestnet:Bool) -> NSDictionary? {
@@ -320,6 +323,57 @@ class TLCoreBitcoinWrapper {
         return txHexAndTxHash
     }
 
+    class func createBitcoinCashSerializedTransactionHex(_ hashes:NSArray, inputIndexes:NSArray, inputScripts:NSArray,
+                                                                 outputAddresses:NSArray, outputAmounts:NSArray, privateKeys:NSArray,
+                                                                 outputScripts:NSArray?, signTx: Bool, isTestnet:Bool) -> NSDictionary? {
+
+        if outputScripts != nil {
+            // TODO have not handled outputScripts yet, remove stealth txs feature so ok for now
+            return nil
+        }
+        guard let context = STATIC_MEMBERS.context else {
+            DLog("JSContext not found.")
+            return nil
+        }
+        let hexStringHashes = NSMutableArray()
+        for hash in hashes {
+            hexStringHashes.add(TLWalletUtils.dataToHexString(hash as! Data))
+        }
+        let hexStringInputScripts = NSMutableArray()
+        for inputScript in inputScripts {
+            hexStringInputScripts.add(TLWalletUtils.dataToHexString(inputScript as! Data))
+        }
+//        NSLog("createBitcoinCashSerializedTransactionHex hashes: \(hashes.debugDescription)")
+        NSLog("createBitcoinCashSerializedTransactionHex hashes: \(hexStringHashes.debugDescription)")
+        NSLog("createBitcoinCashSerializedTransactionHex inputIndexes: \(inputIndexes.debugDescription)")
+        NSLog("createBitcoinCashSerializedTransactionHex inputScripts: \(hexStringInputScripts.debugDescription)")
+//        NSLog("createBitcoinCashSerializedTransactionHex inputScripts: \(inputScripts.debugDescription)")
+        NSLog("createBitcoinCashSerializedTransactionHex outputAddresses: \(outputAddresses.debugDescription)")
+        NSLog("createBitcoinCashSerializedTransactionHex outputAmounts: \(outputAmounts.debugDescription)")
+        NSLog("createBitcoinCashSerializedTransactionHex privateKeys: \(privateKeys.debugDescription)")
+        NSLog("createBitcoinCashSerializedTransactionHex signTx: \(signTx)")
+
+        let createBitcoinCashSerializedTransactionHexFunction = context.objectForKeyedSubscript("createSerializedTransactionHex")
+//        guard let result = createBitcoinCashSerializedTransactionHexFunction?.call(withArguments: [hashes, inputIndexes, inputScripts, outputAddresses, outputAmounts, privateKeys, signTx, isTestnet]).toDictionary() else {
+        guard let result = createBitcoinCashSerializedTransactionHexFunction?.call(withArguments: [hexStringHashes, inputIndexes, hexStringInputScripts, outputAddresses, outputAmounts, privateKeys, signTx, isTestnet]).toDictionary() else {
+            NSLog("createBitcoinCashSerializedTransactionHexFunction no result")
+            return nil
+        }
+        DLog("createBitcoinCashSerializedTransactionHexFunction result \(result)")
+        
+        let txHex = result["txHex"] as! String
+        let txHash = result["txHash"] as! String
+        let txSize = result["txSize"] as! UInt64
+        NSLog("createBitcoinCashSerializedTransactionHexFunction txHex \(txHex)")
+        NSLog("createBitcoinCashSerializedTransactionHexFunction txHash \(txHash)")
+        NSLog("createBitcoinCashSerializedTransactionHexFunction txSize \(txSize)")
+        return [
+            "txHex": txHex,
+            "txHash": txHash,
+            "txSize": txSize
+        ]
+    }
+    
     class func getBitcoinCashAddressFormat(_ address:String, format: TLBitcoinCashAddressFormat) -> String? {
         guard let context = STATIC_MEMBERS.context else {
             DLog("JSContext not found.")

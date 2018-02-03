@@ -38,7 +38,7 @@ class TLUnspentOutputsObject {
                 let unspentOutput = _unspentOutput as! NSDictionary
                 self.unspentOutputs.append(TLUnspentOutputObject(unspentOutput))
             }
-        case .bitcoin_insight:
+        case .bitcoin_insight, .bitcoinCash_blockexplorer, .bitcoinCash_insight:
 //            let transansformedJsonData = insightUnspentOutputsToBlockchainUnspentOutputs(jsonDict as! NSArray) as NSDictionary
 //            let unspent_outputs = transansformedJsonData.object(forKey: "unspent_outputs") as! NSArray
 //            for _unspentOutput in unspent_outputs {
@@ -51,12 +51,6 @@ class TLUnspentOutputsObject {
                 let unspentOutput = _unspentOutput as! NSDictionary
                 self.unspentOutputs.append(TLUnspentOutputObject(unspentOutput))
             }
-        case .bitcoinCash_blockexplorer:
-            // TODO
-            break
-        case .bitcoinCash_insight:
-            // TODO
-            break
         }
     }
     

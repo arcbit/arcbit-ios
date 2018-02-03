@@ -46,6 +46,7 @@ import UIKit
     fileprivate var createNewWalletRowArray: Array<String>?
     fileprivate var newWalletTableViewCell: TLNewWalletTableViewCell?
     fileprivate var tapGesture: UITapGestureRecognizer?
+    lazy var currentCoinType = TLWalletUtils.DEFAULT_COIN_TYPE()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -129,7 +130,7 @@ import UIKit
                 let mnemonicPassphrase = self.newWalletTableViewCell?.mnemonicTextView.text
                 if mnemonicPassphrase != nil && TLHDWalletWrapper.phraseIsValid(mnemonicPassphrase!) {
                     let masterHex = TLHDWalletWrapper.getMasterHex(mnemonicPassphrase!)
-                    let extendedPublicKey = TLHDWalletWrapper.getExtendPubKeyFromMasterHex(masterHex, accountIdx: accountID)
+                    let extendedPublicKey = TLHDWalletWrapper.getExtendPubKeyFromMasterHex(self.currentCoinType, masterHex: masterHex, accountIdx: accountID)
                     self.newWalletTableViewCell?.accountPublicKeyTextView.text = extendedPublicKey
                     self.newWalletTableViewCell?.updateAccountPublicKeyTextView(extendedPublicKey)
                 } else {
@@ -226,6 +227,7 @@ import UIKit
                 cell?.mnemonicTextView.delegate = self
                 cell?.accountIDTextField.delegate = self
                 cell?.accountPublicKeyTextView.delegate = self
+                cell?.currentCoinType = self.currentCoinType
                 self.newWalletTableViewCell = cell
                 return cell!
             }

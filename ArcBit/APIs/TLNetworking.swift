@@ -179,7 +179,13 @@ class TLNetworking {
                 failure:{(operation, error) in
                     DLog("httpGET: requestFailed url \(url.absoluteString)")
                     if (failure != nil) {
-                        failure!(operation?.response == nil ? 0 : (operation?.response.statusCode)!, operation?.response == nil ? "" : operation?.responseString)
+                        // adding this cuz for some reason https://bch-insight.bitpay.com/api/addrs/<addresses>/utxo is giving failure with code 200
+                        if operation!.response.statusCode == 200 {
+                            let responseObject = TLUtils.JSONStringToObject(operation!.responseString!)
+                            success!(responseObject as AnyObject)
+                        } else {
+                            failure!(operation?.response == nil ? 0 : (operation?.response.statusCode)!, operation?.response == nil ? "" : operation?.responseString)
+                        }
                     }
             })
     }

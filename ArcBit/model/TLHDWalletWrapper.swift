@@ -24,11 +24,19 @@ import Foundation
 
 class TLHDWalletWrapper {
     
-    class func getBIP44KeyChain(_ masterHex:NSString, accountIdx:UInt) -> BTCKeychain{
+    class func getBIP44KeyChain(_ coinType:TLCoinType, masterHex:NSString, accountIdx:UInt) -> BTCKeychain{
         let seed = BTCDataWithHexCString(masterHex.utf8String)
         let masterChain = BTCKeychain(seed:seed)
         let purposeKeychain = masterChain?.derivedKeychain(at: 44, hardened:true)
-        let coinTypeKeychain = purposeKeychain?.derivedKeychain(at: 0, hardened:true)
+        
+        let coinTypeKeychain:BTCKeychain?
+        switch coinType {
+        case .BCH:
+            // path 145 came from https://github.com/satoshilabs/slips/blob/master/slip-0044.md
+            coinTypeKeychain = purposeKeychain?.derivedKeychain(at: 145, hardened:true) // need to move coins before adding this
+        default:
+            coinTypeKeychain = purposeKeychain?.derivedKeychain(at: 0, hardened:true)
+        }
         let accountKeychain = coinTypeKeychain?.derivedKeychain(at: UInt32(accountIdx), hardened:true)
         return accountKeychain!
     }
@@ -126,13 +134,13 @@ class TLHDWalletWrapper {
         return keyChain!.extendedPublicKey
     }
     
-    class func getExtendPubKeyFromMasterHex(_ masterHex:String, accountIdx:UInt) -> String{
-        let accountKeychain = getBIP44KeyChain(masterHex as NSString, accountIdx:accountIdx)
+    class func getExtendPubKeyFromMasterHex(_ coinType:TLCoinType, masterHex:String, accountIdx:UInt) -> String{
+        let accountKeychain = getBIP44KeyChain(coinType, masterHex:masterHex as NSString, accountIdx:accountIdx)
         return accountKeychain.extendedPublicKey
     }
     
-    class func getExtendPrivKey(_ masterHex:String, accountIdx:UInt) -> String{
-        let accountKeychain = getBIP44KeyChain(masterHex as NSString, accountIdx:accountIdx)
+    class func getExtendPrivKey(_ coinType:TLCoinType, masterHex:String, accountIdx:UInt) -> String{
+        let accountKeychain = getBIP44KeyChain(coinType, masterHex:masterHex as NSString, accountIdx:accountIdx)
         
         return accountKeychain.extendedPrivateKey
     }

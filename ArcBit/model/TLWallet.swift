@@ -603,7 +603,7 @@ class TLWallet {
             let hdWalletDict = getHDWallet(coinType)
             let accountsArray = getAccountsArray(coinType)
             let maxAccountIDCreated = hdWalletDict.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_MAX_ACCOUNTS_CREATED) as! Int
-            let extendPrivKey = TLHDWalletWrapper.getExtendPrivKey(self.masterHex!, accountIdx: UInt(maxAccountIDCreated))
+            let extendPrivKey = TLHDWalletWrapper.getExtendPrivKey(coinType, masterHex: self.masterHex!, accountIdx: UInt(maxAccountIDCreated))
         let accountDict = createAccountDictWithPreload(coinType, accountName: accountName, extendedKey: extendPrivKey,
                 isPrivateExtendedKey: true, accountIdx: Int(maxAccountIDCreated), preloadStartingAddresses: preloadStartingAddresses)
             accountsArray.add(accountDict)

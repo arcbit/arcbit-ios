@@ -348,16 +348,16 @@ import Crashlytics
             }
         })
         
-        TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
-            TLBlockExplorerAPI.instance().getBlockHeight(coinType, success: {(blockHeightObject) in
-                DLog("setBlockHeight: \(blockHeightObject.blockHeight)")
-                TLBlockchainStatus.instance().setBlockHeight(coinType, blockHeight: blockHeightObject)
-            }, failure:{(code, status) in
-                DLog("Error getting block height.")
-                //                TLPrompts.promptErrorMessage(TLDisplayStrings.NETWORK_ERROR_STRING(),
-                //                    message:String(format:TLDisplayStrings.ERROR_GETTING_BLOCK_HEIGHT_STRING()))
-            })
-        })
+//        TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
+//            TLBlockExplorerAPI.instance().getBlockHeight(coinType, success: {(blockHeightObject) in
+//                DLog("setBlockHeight: \(blockHeightObject.blockHeight)")
+//                TLBlockchainStatus.instance().setBlockHeight(coinType, blockHeight: blockHeightObject)
+//            }, failure:{(code, status) in
+//                DLog("Error getting block height.")
+//                //                TLPrompts.promptErrorMessage(TLDisplayStrings.NETWORK_ERROR_STRING(),
+//                //                    message:String(format:TLDisplayStrings.ERROR_GETTING_BLOCK_HEIGHT_STRING()))
+//            })
+//        })
     }
     
     fileprivate func setUpLocalNotification() {
