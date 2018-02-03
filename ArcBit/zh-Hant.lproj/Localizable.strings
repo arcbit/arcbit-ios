@@ -2,19 +2,19 @@
 
 "%@ is not allowed to access the camera" = "%@不允許訪問相機";
 
-"%@ servers not reachable." = "%@服務器無法訪問。";
+"%@ servers not reachable." = "%@伺服器無法訪問。";
 
 "%d/%d parts scanned." = "%d/%d個部分進行掃描。";
 
-"%llu confirmations" = "%llu確認書";
+"%llu confirmations" = "%llu個確認深度";
 
-"1 Confirmation" = "1確認";
+"1 Confirmation" = "1個確認深度";
 
-"A bitcoin address typically begins with a '1' or '3'. You can see the transactions and track the balance of an address, but you cannot spend from an imported address.\nYou can temporarily import this watch addresses private key to spend its bitcoins. Simply go the Send screen and select a watch address to spend from and you will be prompted to temporarily import your addresses' private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen." = "A bitcoin address typically begins with a '1' or '3'. You can see the transactions and track the balance of an address, but you cannot spend from an imported address.\nYou can temporarily import this watch addresses private key to spend its bitcoins. Simply go the Send screen and select a watch address to spend from and you will be prompted to temporarily import your addresses' private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen.";
+"A bitcoin address typically begins with a '1' or '3'. You can see the transactions and track the balance of an address, but you cannot spend from an imported address.\nYou can temporarily import this watch addresses private key to spend its bitcoins. Simply go the Send screen and select a watch address to spend from and you will be prompted to temporarily import your addresses' private key when you click 'Review Payment' in the Send screen. The private key will stay in memory until the app exits or until you remove it manually in the Accounts screen." = "比特幣位址通常以“1”或“3”開頭。 您可以查看交易並跟蹤位址的餘額，但無法從導入的地址消費。\n您可以暫時導入此監控位址私密金鑰以使用比特幣。 只需進入發送螢幕並選擇一個監控位址，然後在發送螢幕中點擊“審查付款”時，系統會提示您臨時導入位址的私密金鑰。 私密金鑰將保留在記憶體中，直到應用程式退出或直到您在“帳戶”螢幕中手動刪除它。";
 
-"A bitcoin wallet is a software application that allows people to send, receive and manage their bitcoins.\nBe aware of how other bitcoin applications store your bitcoins' private keys, which are needed to spend your bitcoins.\nThere are generally three different ways applications can your store your bitcoins.\n1.\nThe banking model, where your bitcoin private keys are held for you by someone else.\n2.\nThe security box model, where your bitcoin private keys are stored encrypted on someone else’s servers.\n3.\nThe wallet model, where your bitcoin private keys are stored only on your device." = "A bitcoin wallet is a software application that allows people to send, receive and manage their bitcoins.\nBe aware of how other bitcoin applications store your bitcoins' private keys, which are needed to spend your bitcoins.\nThere are generally three different ways applications can your store your bitcoins.\n1.\nThe banking model, where your bitcoin private keys are held for you by someone else.\n2.\nThe security box model, where your bitcoin private keys are stored encrypted on someone else’s servers.\n3.\nThe wallet model, where your bitcoin private keys are stored only on your device.";
+"A bitcoin wallet is a software application that allows people to send, receive and manage their bitcoins.\nBe aware of how other bitcoin applications store your bitcoins' private keys, which are needed to spend your bitcoins.\nThere are generally three different ways applications can your store your bitcoins.\n1.\nThe banking model, where your bitcoin private keys are held for you by someone else.\n2.\nThe security box model, where your bitcoin private keys are stored encrypted on someone else’s servers.\n3.\nThe wallet model, where your bitcoin private keys are stored only on your device." = "比特幣錢包是一種允許人們發送、接收和管理比特幣的軟體應用程式。\n請注意其他比特幣應用程式如何存儲您的比特幣私密金鑰（這是比特幣支付所必需的）。\n對APP而言通常可以有三種不同的方式存儲您的比特幣私密金鑰。\n1.\n銀行模式，您的比特幣私密金鑰由其他人持有。\n2.\n安全箱模式，您的比特幣私密金鑰在其他人的伺服器上加密存儲。\n3.\n錢包模式，您的比特幣私密金鑰只存儲在您的設備上。";
 
-"A private key begins with an 'L', 'K', or '5'.\nBIP 38 encrypted private keys can also be imported. They can either be imported encrypted or unencrypted. If you choose to import it encrypted, you will need to input the password each time you spend from your encrypted private key." = "A private key begins with an 'L', 'K', or '5'.\nBIP 38 encrypted private keys can also be imported. They can either be imported encrypted or unencrypted. If you choose to import it encrypted, you will need to input the password each time you spend from your encrypted private key.";
+"A private key begins with an 'L', 'K', or '5'.\nBIP 38 encrypted private keys can also be imported. They can either be imported encrypted or unencrypted. If you choose to import it encrypted, you will need to input the password each time you spend from your encrypted private key." = "私密金鑰以字元“L”，“K”或“5”打頭。\nBIP38加密的私密金鑰也可以導入。您可以將它們以加密或不加密方式導入。如果您選擇加密導入，則每次使用加密私密金鑰時都需要輸入密碼。";
 
 "Account %@ imported" = "帳戶%@已導入";
 
@@ -22,9 +22,9 @@
 
 "Account 1" = "帳戶 1";
 
-"Account ID" = "帳戶ID：";
+"Account ID" = "帳戶ID";
 
-"Account ID: %u" = "帳戶ID %u";
+"Account ID: %u" = "帳戶ID: %u";
 
 "Account Private Key" = "帳戶私密金鑰";
 
@@ -36,17 +36,17 @@
 
 "Accounts" = "帳戶列表";
 
-"Achievement List" = "Achievement List";
+"Achievement List" = "成就列表";
 
-"Achievements" = "Achievements";
+"Achievements" = "成就";
 
 "Actions" = "操作";
 
-"Active Change Addresses" = "活動的找零地址";
+"Active Change Addresses" = "活躍的找零地址";
 
-"Active Main Addresses" = "活動的主地址";
+"Active Main Addresses" = "活躍的主地址";
 
-"Add Contacts Entry" = "Add Contacts Entry";
+"Add Contacts Entry" = "添加連絡人條目";
 
 "Address" = "地址";
 
@@ -56,189 +56,189 @@
 
 "Addresses" = "地址清單";
 
-"Advanced Achievement List" = "Advanced Achievement List";
+"Advanced Achievement List" = "高級成就列表";
 
-"Advanced FAQ" = "Advanced FAQ";
+"Advanced FAQ" = "高級常見問題";
 
-"Advanced how To:" = "Advanced how To:";
+"Advanced how To:" = "高級操作說明:";
 
-"After a transaction is broadcast to the Bitcoin network, it may be included in a block that is published to the network. When that happens, it is said that the transaction has been mined at a depth of 1 block. With each subsequent block that is found, the number of blocks deep is increased by one. To be secure against double spending, a transaction should not be considered as confirmed until it is a certain number of blocks deep.\nA good rule of thumb is that 1 confirmation is good for small value amounts of bitcoins and a user should wait for more confirmations for larger value amounts.\nArcBit will display the confirmation number up until the 6th confirmation." = "After a transaction is broadcast to the Bitcoin network, it may be included in a block that is published to the network. When that happens, it is said that the transaction has been mined at a depth of 1 block. With each subsequent block that is found, the number of blocks deep is increased by one. To be secure against double spending, a transaction should not be considered as confirmed until it is a certain number of blocks deep.\nA good rule of thumb is that 1 confirmation is good for small value amounts of bitcoins and a user should wait for more confirmations for larger value amounts.\nArcBit will display the confirmation number up until the 6th confirmation.";
+"After a transaction is broadcast to the Bitcoin network, it may be included in a block that is published to the network. When that happens, it is said that the transaction has been mined at a depth of 1 block. With each subsequent block that is found, the number of blocks deep is increased by one. To be secure against double spending, a transaction should not be considered as confirmed until it is a certain number of blocks deep.\nA good rule of thumb is that 1 confirmation is good for small value amounts of bitcoins and a user should wait for more confirmations for larger value amounts.\nArcBit will display the confirmation number up until the 6th confirmation." = "在交易被廣播到比特幣網路之後，它可能被包含在發佈到網路的塊中。當這種情況發生時，意味著這筆交易已經被開採了1個區塊的深度。隨著後續區塊的陸續開採，此塊的深度逐步增加。為了防止雙重支出，交易在達到一定的區塊深度之前不應該被視為得到確認。\n一個較好的經驗法則是，對於小額支付，1個確認深度是合適的；對於較大的金額，用戶應該等待更多的確認深度。\nArcBit將顯示確認深度直到達到6個。";
 
-"Amount:" = "量：";
+"Amount:" = "數量：";
 
-"An account is a collection of bitcoin addresses. With accounts, you will no longer have to manage bitcoin addresses directly anymore. Since address reuse results in a loss of privacy for people using Bitcoin, ArcBit’s HD wallet account system will automatically handle the cycling of bitcoin addresses for you. This ensures you don’t use the same bitcoin address more then once.\nEach account also has a reusable address. You can find it in your Receive screen. Swipe all the way to right on the QRCode in your Receive screen and you will find a reusable address.\nYou can create an unlimited amount of accounts with ArcBit. See the help section on how to create a new account in ArcBit." = "An account is a collection of bitcoin addresses. With accounts, you will no longer have to manage bitcoin addresses directly anymore. Since address reuse results in a loss of privacy for people using Bitcoin, ArcBit’s HD wallet account system will automatically handle the cycling of bitcoin addresses for you. This ensures you don’t use the same bitcoin address more then once.\nEach account also has a reusable address. You can find it in your Receive screen. Swipe all the way to right on the QRCode in your Receive screen and you will find a reusable address.\nYou can create an unlimited amount of accounts with ArcBit. See the help section on how to create a new account in ArcBit.";
+"An account is a collection of bitcoin addresses. With accounts, you will no longer have to manage bitcoin addresses directly anymore. Since address reuse results in a loss of privacy for people using Bitcoin, ArcBit’s HD wallet account system will automatically handle the cycling of bitcoin addresses for you. This ensures you don’t use the same bitcoin address more then once.\nEach account also has a reusable address. You can find it in your Receive screen. Swipe all the way to right on the QRCode in your Receive screen and you will find a reusable address.\nYou can create an unlimited amount of accounts with ArcBit. See the help section on how to create a new account in ArcBit." = "一個帳戶是若干比特幣位址的集合。有了帳戶，您將不再需要直接管理比特幣位址了。由於位址重用會導致比特幣用戶損失隱私，ArcBit的HD錢包帳戶系統將自動為您處理比特幣位址的迴圈。這可以確保您不會重複使用同一個比特幣位址。\n每個帳戶也有一個可重用位址。您可以在接收螢幕中找到它。在接收螢幕上一直滑動到最右側的二維碼，您將找到可重用地址。\n您可以使用ArcBit創建任意數量的帳戶。請參閱説明部分瞭解如何在ArcBit中創建新帳戶。";
 
-"An account private key begins with the letters 'xprv'. You can see, spend and recover the transactions and bitcoins of an entire account from an account private key." = "An account private key begins with the letters 'xprv'. You can see, spend and recover the transactions and bitcoins of an entire account from an account private key.";
+"An account private key begins with the letters 'xprv'. You can see, spend and recover the transactions and bitcoins of an entire account from an account private key." = "一個帳號私密金鑰以字母“xprv”開頭。您可以通過帳戶私密金鑰查看、支付和恢復整個帳戶的交易和比特幣。";
 
-"An account public key begins with the letters 'xpub'. You can see the transactions and bitcoins of an entire account from an account private key, with the exception of reusable address payments. Future releases will address this issue.\nYou can temporarily import the corresponding account private key for this accounts' account public key to spend your watch accounts' bitcoins. Simply go to the Send screen and select a watch account to spend from and you will be prompted to temporarily import your account's private key when you click 'Review Payment' on the Send screen. The private key will stay in memory until the app exits or until you remove it manually on the Accounts screen." = "An account public key begins with the letters 'xpub'. You can see the transactions and bitcoins of an entire account from an account private key, with the exception of reusable address payments. Future releases will address this issue.\nYou can temporarily import the corresponding account private key for this accounts' account public key to spend your watch accounts' bitcoins. Simply go to the Send screen and select a watch account to spend from and you will be prompted to temporarily import your account's private key when you click 'Review Payment' on the Send screen. The private key will stay in memory until the app exits or until you remove it manually on the Accounts screen.";
+"An account public key begins with the letters 'xpub'. You can see the transactions and bitcoins of an entire account from an account private key, with the exception of reusable address payments. Future releases will address this issue.\nYou can temporarily import the corresponding account private key for this accounts' account public key to spend your watch accounts' bitcoins. Simply go to the Send screen and select a watch account to spend from and you will be prompted to temporarily import your account's private key when you click 'Review Payment' on the Send screen. The private key will stay in memory until the app exits or until you remove it manually on the Accounts screen." = "帳號公開金鑰以字母“xpub”開頭。您可以通過帳戶私密金鑰查看整個帳戶的交易和比特幣，但可重用地址付款除外。未來的版本將解決這個問題。\n您可以臨時導入帳戶相對應的私密金鑰以支付您的監視帳戶中的比特幣。只需進入發送螢幕，選擇一個監視帳戶，然後在發送螢幕上按一下“審查付款”，此時系統會提示您臨時導入帳戶的私密金鑰。私密金鑰將保留在記憶體中，直到應用程式退出，或您在“帳戶”螢幕上手動刪除它。";
 
-"ArcBit Brain Wallet" = "Arcbit腦錢包";
+"ArcBit Brain Wallet" = "ArcBit腦錢包";
 
-"ArcBit Web Wallet" = "ArcBit網絡錢包";
+"ArcBit Web Wallet" = "ArcBit網頁錢包";
 
-"ArcBit uses the the bitcoin wallet model (See the section ’What is a bitcoin wallet?’ to understand the 3 different security models of bitcoin software). However, if you use iCloud to backup your wallet, you will be using the security box model. It is recommended that you do not use iCloud and be responsible for your bitcoins yourself. For those who don’t want to remember a simple backup passphrase, iCloud backup is a good alternative." = "ArcBit uses the the bitcoin wallet model (See the section ’What is a bitcoin wallet?’ to understand the 3 different security models of bitcoin software). However, if you use iCloud to backup your wallet, you will be using the security box model. It is recommended that you do not use iCloud and be responsible for your bitcoins yourself. For those who don’t want to remember a simple backup passphrase, iCloud backup is a good alternative.";
+"ArcBit uses the the bitcoin wallet model (See the section ’What is a bitcoin wallet?’ to understand the 3 different security models of bitcoin software). However, if you use iCloud to backup your wallet, you will be using the security box model. It is recommended that you do not use iCloud and be responsible for your bitcoins yourself. For those who don’t want to remember a simple backup passphrase, iCloud backup is a good alternative." = "ArcBit使用比特幣錢包模型（請參閱“什麼是比特幣錢包”以瞭解比特幣軟體的三種不同安全模型）。但是，如果您使用iCloud備份您的錢包，則將使用安全箱模型。建議您不要使用iCloud並自行負責您的比特幣。對於那些不想記住簡單的備份短語的人來說，iCloud備份是一個不錯的選擇。";
 
-"Archive Account" = "存檔賬戶";
+"Archive Account" = "封存帳戶";
 
-"Archive address" = "存檔地址";
+"Archive address" = "封存地址";
 
-"Archived Accounts" = "存檔帳戶列表";
+"Archived Accounts" = "封存帳戶列表";
 
-"Archived Change Addresses" = "存檔活動的找零地址";
+"Archived Change Addresses" = "封存活躍的找零地址";
 
-"Archived Cold Wallet Accounts" = "存檔的冷錢包帳戶列表";
+"Archived Cold Wallet Accounts" = "封存的冷錢包帳戶列表";
 
-"Archived Imported Accounts" = "已歸檔的導入帳戶列表";
+"Archived Imported Accounts" = "已封存的導入帳戶列表";
 
-"Archived Imported Addresses" = "已歸檔的導入地址清單";
+"Archived Imported Addresses" = "已封存的導入地址清單";
 
-"Archived Imported Watch Accounts" = "已歸檔的導入的監視帳戶清單";
+"Archived Imported Watch Accounts" = "已封存的導入的監視帳戶清單";
 
-"Archived Imported Watch Addresses" = "已歸檔的導入的監視地址清單";
+"Archived Imported Watch Addresses" = "已封存的導入的監視地址清單";
 
-"Archived Main Addresses" = "已歸檔的主地址";
+"Archived Main Addresses" = "已封存的主地址";
 
-"Are you sure you want to archive account %@?" = "您確定要歸檔帳戶%@嗎？";
+"Are you sure you want to archive account %@?" = "您確定要封存帳戶%@嗎？";
 
-"Are you sure you want to archive address %@?" = "您確定要存檔地址%@嗎？";
+"Are you sure you want to archive address %@?" = "您確定要封存位址%@嗎？";
 
-"Are you sure you want to delete this account?" = "你確定要刪除這個帳戶嗎？";
+"Are you sure you want to delete this account?" = "您確定要刪除這個帳戶嗎？";
 
-"Are you sure you want to unarchive account %@" = "你確定你想解除封存帳戶%1$s嗎？";
+"Are you sure you want to unarchive account %@" = "您確定您想解除封存帳戶%@嗎？";
 
-"Are you sure you want to unarchive address %@?" = "你確定你想解除封存地址%1$s嗎？";
+"Are you sure you want to unarchive address %@?" = "您確定您想解除封存位址%@嗎？";
 
 "Authorize Cold Wallet Account Payment" = "授權冷錢包帳戶付款";
 
 "Authorize Payment" = "授權付款";
 
-"Backup Passphrase" = "備份密碼短語";
+"Backup Passphrase" = "備份短語";
 
 "Backup wallet" = "備份錢包";
 
 "Backup local wallet" = "備份本地錢包";
 
-"Backup passphrase found in keychain" = "在鑰匙扣中找到備份密碼";
+"Backup passphrase found in keychain" = "在鑰匙扣中找到備份短語";
 
-"Bitcoin cuts out the middleman and allows you to send money anywhere in the world with an internet connection with minimum to zero fees." = "Bitcoin cuts out the middleman and allows you to send money anywhere in the world with an internet connection with minimum to zero fees.";
+"Bitcoin cuts out the middleman and allows you to send money anywhere in the world with an internet connection with minimum to zero fees." = "比特幣免去了中間商，並允許您通過互聯網向世界任何地方匯款，收費最低為零。";
 
-"Bitcoin, uppercase 'B', is an online payment system invented in 2008 and released as open-source software in 2009 by a programmer named Satoshi Nakamoto. The system is decentralized and peer-to-peer allowing users to transact directly without needing an intermediary.\nBitcoin is also a platform of which other decentralized applications can be built upon. Bitcoin, lowercase 'b' is the currency unit that Bitcoin uses." = "Bitcoin, uppercase 'B', is an online payment system invented in 2008 and released as open-source software in 2009 by a programmer named Satoshi Nakamoto. The system is decentralized and peer-to-peer allowing users to transact directly without needing an intermediary.\nBitcoin is also a platform of which other decentralized applications can be built upon. Bitcoin, lowercase 'b' is the currency unit that Bitcoin uses.";
+"Bitcoin, uppercase 'B', is an online payment system invented in 2008 and released as open-source software in 2009 by a programmer named Satoshi Nakamoto. The system is decentralized and peer-to-peer allowing users to transact directly without needing an intermediary.\nBitcoin is also a platform of which other decentralized applications can be built upon. Bitcoin, lowercase 'b' is the currency unit that Bitcoin uses." = "比特幣（大寫字母'B'）是一個線上支付系統。中本聰于2008年發明了該系統，並于2009年作為開源軟體發佈。 該系統是去中心化的、對等的，允許使用者直接進行交易，而不需要中間人。\n比特幣也是一個平臺，允許其他去中心化的應用程式建立在這個平臺上。 比特幣（小寫字母'b'）是比特幣使用的貨幣單位。";
 
-"Bitcoins can be purchased from various bitcoin exchanges. ArcBit is not a bitcoin exchange. ArcBit is a bitcoin wallet. After you purchase some bitcoins from an exchange, you can move it to a bitcoin wallet." = "Bitcoins can be purchased from various bitcoin exchanges. ArcBit is not a bitcoin exchange. ArcBit is a bitcoin wallet. After you purchase some bitcoins from an exchange, you can move it to a bitcoin wallet.";
+"Bitcoins can be purchased from various bitcoin exchanges. ArcBit is not a bitcoin exchange. ArcBit is a bitcoin wallet. After you purchase some bitcoins from an exchange, you can move it to a bitcoin wallet." = "您可以從很多比特幣交易所買到比特幣。 ArcBit不是比特幣交易所，而是比特幣錢包。您從交易所購買比特幣後，可以將其轉移到比特幣錢包。";
 
 "Cancel" = "取消";
 
-"Cannot archive your default account" = "不能存檔默認帳戶";
+"Cannot archive your default account" = "不能封存默認帳戶";
 
-"Cannot archive your one and only account" = "不能存檔的唯一帳戶";
+"Cannot archive your one and only account" = "不能封存唯一的帳戶";
 
-"Cannot create transactions with outputs less then %@" = "無法創建輸出小於%@的事務";
+"Cannot create transactions with outputs less then %@" = "無法創建輸出小於%@的交易";
 
 "Cannot decrypt iCloud backup wallet." = "無法解密iCloud備份錢包。";
 
-"Cannot import reusable address" = "無法導入可重複使用的地址";
+"Cannot import reusable address" = "無法導入可重用地址";
 
 "Change Address ID " = "找零地址ID ";
 
-"Change Automatic Transaction Fee" = "Change Automatic Transaction Fee";
+"Change Automatic Transaction Fee" = "更改自動交易費";
 
-"Change Block Explorer URL" = "更改阻止瀏覽器網址";
+"Change Block Explorer URL" = "更改區塊流覽器網址";
 
-"Change Blockexplorer Type" = "Change Blockexplorer Type";
+"Change Blockexplorer Type" = "更改區塊流覽器類型";
 
-"Check out the ArcBit Brain Wallet" = "退房ArcBit腦錢包";
+"Check out the ArcBit Brain Wallet" = "檢查ArcBit腦錢包";
 
-"Check out the ArcBit Web Wallet" = "退房ArcBit網絡錢包";
+"Check out the ArcBit Web Wallet" = "檢查ArcBit網頁錢包";
 
-"Check out the ArcBit Web Wallet!" = "退房ArcBit網絡錢包!";
+"Check out the ArcBit Web Wallet!" = "檢查ArcBit網頁錢包!";
 
-"Checking Transaction" = "檢查事務";
+"Checking Transaction" = "檢查交易";
 
-"Clear account private key from memory" = "從內存中清除帳戶私密金鑰";
+"Clear account private key from memory" = "從記憶體中清除帳戶私密金鑰";
 
-"Clear private key from memory" = "從內存中清除私密金鑰";
+"Clear private key from memory" = "從記憶體中清除私密金鑰";
 
-"Cleared from memory" = "从内存中清除账户私钥";
+"Cleared from memory" = "已從記憶體中清除";
 
-"Click an address" = "Click an address";
+"Click an address" = "點擊一個位址";
 
-"Click the button with the arrow" = "Click the button with the arrow";
+"Click the button with the arrow" = "點擊帶有箭頭的按鍵";
 
-"Click the plus button at the top right" = "Click the plus button at the top right";
+"Click the plus button at the top right" = "點擊右上角的加號鍵";
 
-"Click the ‘Contacts’ button" = "Click the ‘Contacts’ button";
+"Click the ‘Contacts’ button" = "點擊“連絡人”按鍵";
 
-"Click ‘Accounts’" = "Click ‘Accounts’";
+"Click ‘Accounts’" = "點擊“帳戶”";
 
-"Click ‘Advanced settings’" = "Click ‘Advanced settings’";
+"Click ‘Advanced settings’" = "點擊“高級設置”";
 
-"Click ‘Archive Account’" = "Click ‘Archive Account’";
+"Click ‘Archive Account’" = "點擊“封存帳戶”";
 
-"Click ‘Create New Account’" = "Click ‘Create New Account’";
+"Click ‘Create New Account’" = "點擊“創建新帳戶”";
 
-"Click ‘Delete’" = "Click ‘Delete’";
+"Click ‘Delete’" = "點擊“刪除”";
 
-"Click ‘Done’" = "Click ‘Done’";
+"Click ‘Done’" = "點擊“完成”";
 
-"Click ‘Edit Account Name’" = "Click ‘Edit Account Name’";
+"Click ‘Edit Account Name’" = "點擊“編輯帳戶名稱”";
 
-"Click ‘Edit’" = "Click ‘Edit’";
+"Click ‘Edit’" = "點擊“編輯”";
 
-"Click ‘Enable PIN Code’" = "Click ‘Enable PIN Code’";
+"Click ‘Enable PIN Code’" = "點擊“啟用PIN代碼”";
 
-"Click ‘History’" = "Click ‘History’";
+"Click ‘History’" = "點擊“歷史”";
 
-"Click ‘Import Account’" = "Click ‘Import Account’";
+"Click ‘Import Account’" = "點擊“導入帳戶”";
 
-"Click ‘Import Private Key’" = "Click ‘Import Private Key’";
+"Click ‘Import Private Key’" = "點擊“導入私密金鑰”";
 
-"Click ‘Import Watch Only Account’" = "Click ‘Import Watch Only Account’";
+"Click ‘Import Watch Only Account’" = "點擊“導入監視帳戶”";
 
-"Click ‘Import Watch Only Address’" = "Click ‘Import Watch Only Address’";
+"Click ‘Import Watch Only Address’" = "點擊“導入監視位址”";
 
-"Click ‘Label transaction’" = "Click ‘Label transaction’";
+"Click ‘Label transaction’" = "點擊“給交易貼標籤”";
 
-"Click ‘Restore Wallet’" = "Click ‘Restore Wallet’";
+"Click ‘Restore Wallet’" = "點擊“恢復錢包”";
 
-"Click ‘Restore’" = "Click ‘Restore’";
+"Click ‘Restore’" = "點擊“恢復”";
 
-"Click ‘Review Payment’" = "Click ‘Review Payment’";
+"Click ‘Review Payment’" = "點擊“審查付款”";
 
-"Click ‘Send’" = "Click ‘Send’";
+"Click ‘Send’" = "點擊“發送”";
 
-"Click ‘Set Transaction Fee’" = "Click ‘Set Transaction Fee’";
+"Click ‘Set Transaction Fee’" = "點擊“設置交易費”";
 
-"Click ‘Settings’" = "Click ‘Settings’";
+"Click ‘Settings’" = "點擊“設置”";
 
-"Click ‘Show Backup Passphrase’" = "Click ‘Show Backup Passphrase’";
+"Click ‘Show Backup Passphrase’" = "點擊“顯示備份短語”";
 
-"Click ‘View Addresses’" = "Click ‘View Addresses’";
+"Click ‘View Addresses’" = "點擊“查看地址清單”";
 
-"Click ‘View account private key QR code’" = "Click ‘View account private key QR code’";
+"Click ‘View account private key QR code’" = "點擊“查看帳戶私密金鑰二維碼”";
 
-"Click ‘View account public key QR code’" = "Click ‘View account public key QR code’";
+"Click ‘View account public key QR code’" = "點擊“查看帳戶公開金鑰二維碼”";
 
-"Click ‘View address QR code’" = "Click ‘View address QR code’";
+"Click ‘View address QR code’" = "點擊“查看地址二維碼”";
 
-"Click ‘View in web’" = "Click ‘View in web’";
+"Click ‘View in web’" = "點擊“在網頁中查看”";
 
-"Click ‘View private key QR code’" = "Click ‘View private key QR code’";
+"Click ‘View private key QR code’" = "點擊“查看私密金鑰二維碼”";
 
-"Click ‘blockexplorer API type’" = "Click ‘blockexplorer API type’";
+"Click ‘blockexplorer API type’" = "點擊“區塊流覽器API類型”";
 
-"Click ’Receive’" = "Click ’Receive’";
+"Click ’Receive’" = "點擊“接收”";
 
-"Close" = "關";
+"Close" = "關閉";
 
 "Cold Wallet" = "冷錢包";
 
 "Cold Wallet Accounts" = "冷錢包帳戶列表";
 
-"Cold Wallet Accounts can't see reusable address payments, thus this accounts' reusable address is not available." = "冷錢包帳戶無法看到可重複使用的地址付款，因而該賬戶“，可重複使用的地址不可用。";
+"Cold Wallet Accounts can't see reusable address payments, thus this accounts' reusable address is not available." = "冷錢包帳戶無法查看可重用地址付款，因而該帳戶的可重用地址不可用。";
 
 "Cold Wallet Overview" = "冷錢包概述";
 
-"Cold wallet private keys are not stored here and cannot be viewed" = "冷錢包私鑰不存儲在這裡，並且不能觀看。";
+"Cold wallet private keys are not stored here and cannot be viewed" = "冷錢包私密金鑰不存儲在這裡，無法查看。";
 
 "Complete" = "完成";
 
@@ -248,77 +248,77 @@
 
 "Confirm Pin Code" = "確認PIN碼";
 
-"Contacts" = "往來";
+"Contacts" = "連絡人";
 
 "Continue" = "繼續";
 
-"Copied To clipboard" = "複製到剪貼板";
+"Copied To clipboard" = "已複製到剪貼板";
 
 "Copy" = "複製";
 
-"Copy Transaction ID to Clipboard" = "複製事務ID到剪貼板";
+"Copy Transaction ID to Clipboard" = "複製交易ID到剪貼板";
 
-"Create Cold Wallet" = "創建冷錢包";
+"Create Cold Wallet" = "新建冷錢包";
 
-"Create New Account" = "建立新帳戶";
+"Create New Account" = "新建新帳戶";
 
-"Create new contact" = "新建聯繫人";
+"Create new contact" = "新建連絡人";
 
-"Customize Fee" = "定制費用";
+"Customize Fee" = "定制交易費";
 
 "Decrypting" = "解密";
 
 "Delete" = "刪除";
 
-"Delete %@" = "刪除%@";
+"Delete %@" = "刪除 %@";
 
 "Delete Account" = "刪除帳戶";
 
-"Delete Contact" = "刪除聯繫人";
+"Delete Contact" = "刪除連絡人";
 
 "Delete address" = "刪除地址";
 
-"Do not use the QR code from here to receive bitcoins. Go to the Receive screen to get a QR code to receive bitcoins." = "不要使用QR碼在這裡接受比特幣。進入接收畫面得到一個QR碼接收比特幣。";
+"Do not use the QR code from here to receive bitcoins. Go to the Receive screen to get a QR code to receive bitcoins." = "不要使用這裡的二維碼接受比特幣。進入接收螢幕得到一個QR二維碼以接收比特幣。";
 
-"Do you like using ArcBit?" = "你喜歡用ArcBit？";
+"Do you like using ArcBit?" = "您喜歡用ArcBit嗎？";
 
-"Do you want to load and backup your current local wallet file?" = "您要加載和備份您當前的本地錢包文件嗎？";
+"Do you want to load and backup your current local wallet file?" = "您要載入和備份您當前的本地錢包檔嗎？";
 
-"Do you want to load local wallet file?" = "你要加載本地錢包文件嗎？";
+"Do you want to load local wallet file?" = "要載入本地錢包檔嗎？";
 
-"Do you want to restore from your backup passphrase or start a new wallet?" = "你想從您的備份密碼恢復或啟動一個新的錢包？";
+"Do you want to restore from your backup passphrase or start a new wallet?" = "您想從您的備份短語恢復或啟動一個新的錢包？";
 
-"Do you want to temporary import your account private key?" = "你想臨時進口帳戶私密金鑰？";
+"Do you want to temporary import your account private key?" = "您想臨時導入帳戶私密金鑰？";
 
-"Do you want to temporary import your private key?" = "你想臨時進口私密金鑰？";
+"Do you want to temporary import your private key?" = "您想臨時導入私密金鑰？";
 
 "Don't remind me" = "不要提醒我";
 
-"Done" = "做";
+"Done" = "完成";
 
-"Each account has a public and private account key. Account keys should be kept secret as they are used to view the account's transactions and spend the account's bitcoins." = "Each account has a public and private account key. Account keys should be kept secret as they are used to view the account's transactions and spend the account's bitcoins.";
+"Each account has a public and private account key. Account keys should be kept secret as they are used to view the account's transactions and spend the account's bitcoins." = "每個帳戶都有一個公開金鑰和一個私密金鑰。帳戶公開金鑰和私密金鑰都應當妥善保管，因為它們可以被用來查看帳戶的交易，以及支付帳戶裡的比特幣。";
 
 "Edit" = "編輯";
 
 "Edit Account Name" = "編輯帳戶名稱";
 
-"Edit Contact Name" = "編輯聯繫人姓名";
+"Edit Contact Name" = "編輯連絡人姓名";
 
 "Edit Label" = "編輯標籤";
 
-"Edit Transaction label" = "編輯事務標籤";
+"Edit Transaction label" = "編輯交易標籤";
 
-"Email Support" = "電子郵件支持";
+"Email Support" = "電子郵件支援";
 
-"Enable PIN code in settings to better secure your wallet." = "在設置中啟用PIN碼才能更好地保護你的錢包。";
+"Enable PIN code in settings to better secure your wallet." = "在設置中啟用PIN碼以更好地保護您的錢包";
 
 "Enable Pin Code" = "啟用PIN碼";
 
-"Enable Transaction Fee" = "Enable Transaction Fee";
+"Enable Transaction Fee" = "啟用交易費";
 
 "Enable advanced mode" = "啟用高級模式";
 
-"Encountered error creating transaction. Please try again." = "遇到錯誤創建事務。請再試一次。";
+"Encountered error creating transaction. Please try again." = "創建交易時遇到錯誤。請再試一次。";
 
 "Encrypted" = "加密";
 
@@ -326,7 +326,7 @@
 
 "Enter PIN" = "輸入PIN碼";
 
-"Enter a wallet backup passphrase to wipe the current wallet and start/restore another." = "輸入一個錢包備份密碼擦拭目前的錢包和啟動/還原其他。";
+"Enter a wallet backup passphrase to wipe the current wallet and start/restore another." = "輸入一個錢包備份短語以擦除當前的錢包，並啟用/還原另一個。";
 
 "Enter account private key" = "輸入帳戶私密金鑰";
 
@@ -334,91 +334,91 @@
 
 "Enter address" = "輸入網址";
 
-"Enter an account ID and click 'QR Code'. Then on your primary online device, enable Cold Wallet in settings. Then go to the Accounts screen and click 'Import Cold Wallet Account' and scan the Account Public Key QR Code. Afterwards use this cold wallet account as you would a normal account and deposit bitcoins into it. When you want to make a payment from a cold wallet account, go to the next section on the previous screen and follow the step by step instructions there." = "輸入帳戶ID，然後點擊“QR碼”。然後在主要在線設備上，在設置中啟用冷錢包。然後轉到帳戶屏幕，點擊“導入冷錢包帳戶”並掃描帳戶公開金鑰QR碼。之後使用這個冷錢包帳戶，因為你會正常的帳戶和存款比特幣到它。當您要從冷錢包帳戶進行付款時，請轉到上一屏幕中的下一部分，並按照一步一步的說明操作。";
+"Enter an account ID and click 'QR Code'. Then on your primary online device, enable Cold Wallet in settings. Then go to the Accounts screen and click 'Import Cold Wallet Account' and scan the Account Public Key QR Code. Afterwards use this cold wallet account as you would a normal account and deposit bitcoins into it. When you want to make a payment from a cold wallet account, go to the next section on the previous screen and follow the step by step instructions there." = "首先輸入一個帳戶ID並點擊“二維碼”。然後在您的線上主設備上，在設置中啟用冷錢包。然後進入帳戶螢幕，點擊“導入冷錢包帳戶”並掃描帳戶公開金鑰二維碼。之後像使用正常帳戶一樣使用這個冷錢包帳戶，並將比特幣存入其中。如果您想從冷錢包帳戶中支付，請轉至上一螢幕的下一部分，然後按照說明進行操作。";
 
-"Enter backup passphrase" = "Enter backup passphrase";
+"Enter backup passphrase" = "輸入備份短語";
 
-"Enter passphrase for your iCloud backup wallet." = "為您的iCloud備份錢包輸入密碼。";
+"Enter passphrase for your iCloud backup wallet." = "為您的iCloud備份錢包輸入短語。";
 
-"Enter password for encrypted private key" = "輸入加密私鑰的密碼";
+"Enter password for encrypted private key" = "輸入加密私密金鑰的密碼";
 
-"Enter the 12 word passphrase that belongs to the cold wallet account that you want to make a payment from. This is the passphrase that was used to generate your account public key that was generated on the 'Create Cold Wallet' section found on the previous screen." = "輸入屬於您要進行付款的冷錢包帳戶的12個字的密碼。這是用於生成您在上一個屏幕中找到的“創建冷錢包”部分中生成的帳戶公開金鑰的密碼。";
+"Enter the 12 word passphrase that belongs to the cold wallet account that you want to make a payment from. This is the passphrase that was used to generate your account public key that was generated on the 'Create Cold Wallet' section found on the previous screen." = "輸入您要從中付款的冷錢包帳戶所對應的12個單詞的短語。這是前面的螢幕中的“創建冷錢包”部分生成的12單詞短語，該短語被用來生成帳戶公開金鑰。";
 
 "Error" = "錯誤";
 
-"Error fetching Transaction." = "錯誤獲取交易";
+"Error fetching Transaction." = "獲取交易時遇到錯誤";
 
-"Error fetching unspent outputs. Try again later." = "錯誤獲取未使用的輸出。稍後再試。";
+"Error fetching unspent outputs. Try again later." = "獲取未使用的輸出時遇到錯誤。請稍後再試。";
 
-"Error fetching unspent outputs. Try again." = "錯誤獲取未使用的輸出。再試一次。";
+"Error fetching unspent outputs. Try again." = "獲取未使用的輸出時遇到錯誤。請再試一次。";
 
-"Error getting block height." = "獲取塊高度時出錯。";
+"Error getting block height." = "獲取塊高度時遇到錯誤。";
 
-"Error importing account" = "錯誤導入帳戶";
+"Error importing account" = "導入帳戶時出錯";
 
-"Error loading wallet JSON file" = "加載錢包JSON文件時出錯";
+"Error loading wallet JSON file" = "載入錢包JSON檔時出錯";
 
-"Explanation" = "Explanation";
+"Explanation" = "說明";
 
-"FAQ" = "FAQ";
+"FAQ" = "常見問題";
 
-"Fee:" = "費用:";
+"Fee:" = "費用：";
 
-"Fill address field" = "Fill address field";
+"Fill address field" = "填充地址域";
 
-"Finished Passing Transaction Data" = "成品合格交易數據";
+"Finished Passing Transaction Data" = "交易資料傳送已完成";
 
-"First make sure you are using your secondary offline device for this screen (as mentioned in the overview on the previous screen). Click 'New Wallet' and write down or memorize the generated 12 word passphrase. This passphrase can recover and generate all your accounts and the bitcoins associated with it, so keep it safe and to yourself. Also instead of creating a new wallet, you can also input an existing 12 word passphrase that was generated here to create additional accounts." = "首先，請確保您使用的輔助設備離線此屏幕（如前面的屏幕概覽中所提到）。點擊“新建錢包”，並寫下或存儲所產生的12字密碼。該密碼可以恢復，並生成所有帳戶和與之相關的比特幣，所以保持它的安全和自己。此外，而不是創建一個新的錢包，你也可以輸入被這裡生成的現有12字密碼創建其他帳戶。";
+"First make sure you are using your secondary offline device for this screen (as mentioned in the overview on the previous screen). Click 'New Wallet' and write down or memorize the generated 12 word passphrase. This passphrase can recover and generate all your accounts and the bitcoins associated with it, so keep it safe and to yourself. Also instead of creating a new wallet, you can also input an existing 12 word passphrase that was generated here to create additional accounts." = "首先請確保您正在使用您的離線輔設備打開此螢幕（如前一螢幕中的概述所述）。點擊“新錢包”，記下或記住生成的12個單詞的短語。這個短語可以恢復並生成所有的帳戶、以及與之相關的比特幣，所以請務必注意保密。或者，有別於創建一個新的錢包，您也可以輸入這裡生成的12個單詞短語來創建額外的帳戶。";
 
 "Follow us on Twitter" = "在推特上關注我們";
 
 "From:" = "從：";
 
-"Funds have been claimed already." = "基金已經被宣稱。";
+"Funds have been claimed already." = "資金已經被申報。";
 
-"Funds imported" = "资金导入完毕";
+"Funds imported" = "資金導入完畢";
 
-"Go" = "走";
+"Go" = "出發";
 
-"Go to the side menu" = "Go to the side menu";
+"Go to the side menu" = "轉到側邊菜單";
 
-"Have sender scan QR code" = "Have sender scan QR code";
+"Have sender scan QR code" = "讓付款人掃描二維碼";
 
-"Have sender send you payment" = "Have sender send you payment";
+"Have sender send you payment" = "讓付款人向您發送付款";
 
-"Help" = "幫幫我";
+"Help" = "幫助";
 
-"Here are some features that no other mobile bitcoin wallet supports.\n- Reusable address support\n- Ability to import individual account (extended) keys\n- iCloud backup support\n- Over 150 local currencies supported" = "Here are some features that no other mobile bitcoin wallet supports.\n- Reusable address support\n- Ability to import individual account (extended) keys\n- iCloud backup support\n- Over 150 local currencies supported";
+"Here are some features that no other mobile bitcoin wallet supports.\n- Reusable address support\n- Ability to import individual account (extended) keys\n- iCloud backup support\n- Over 150 local currencies supported" = "這裡有一些ArcBit獨有的功能。\n-可重用位址支持\n-能夠導入個人帳戶（擴展）金鑰\n- iCloud備份支持\n-支持150多種本地貨幣";
 
-"Hierarchical Deterministic Wallet" = "Hierarchical Deterministic Wallet";
+"Hierarchical Deterministic Wallet" = "分層確定性錢包";
 
 "History" = "歷史";
 
-"How To:" = "How To:";
+"How To:" = "如何:";
 
-"How do I get bitcoins?" = "How do I get bitcoins?";
+"How do I get bitcoins?" = "如何獲得比特幣？";
 
-"How does ArcBit Wallet work?" = "How does ArcBit Wallet work?";
+"How does ArcBit Wallet work?" = "ArcBit錢包是如何工作的？";
 
 "Import Account" = "導入帳戶";
 
-"Import Cold Wallet Account" = "進口冷錢包賬戶";
+"Import Cold Wallet Account" = "導入冷錢包帳戶";
 
-"Import Feature" = "Import Feature";
+"Import Feature" = "導入特性";
 
-"Import Private Key" = "進口私密金鑰";
+"Import Private Key" = "導入私密金鑰";
 
-"Import Private/Encrypted Key" = "Import Private/Encrypted Key";
+"Import Private/Encrypted Key" = "導入私有/加密金鑰";
 
-"Import Watch Account" = "進口監視帳戶";
+"Import Watch Account" = "導入監視帳戶";
 
-"Import Watch Address" = "進口監視地址";
+"Import Watch Address" = "導入監視位址";
 
-"Import private key encrypted or unencrypted?" = "進口私密金鑰加密的或未加密的？";
+"Import private key encrypted or unencrypted?" = "將私密金鑰導入為加密形式還是不加密形式？";
 
-"Import with QR code" = "導入與QR碼";
+"Import with QR code" = "以二維碼導入";
 
-"Import with text input" = "導入與文本輸入";
+"Import with text input" = "以文本輸入導入";
 
 "Imported Account %@" = "導入的帳戶%@";
 
@@ -428,153 +428,153 @@
 
 "Imported Addresses" = "導入的地址清單";
 
-"Imported Cold Wallet Account %@" = "進口冷錢包賬戶%@";
+"Imported Cold Wallet Account %@" = "導入冷錢包帳戶%@";
 
-"Imported Watch Account %@" = "進口監視帳戶%@";
+"Imported Watch Account %@" = "導入監視帳戶%@";
 
 "Imported Watch Accounts" = "導入的監視帳戶清單";
 
 "Imported Watch Addresses" = "導入的監視地址清單";
 
-"Imported Watch Only Accounts can't see reusable address payments, thus this accounts' reusable address is not available. If you want see the reusable address for this account, import the account private key that corresponds to this accounts public key." = "導入的监视帐户無法看到可重複使用的地址付款，因此此帳戶的可重用地址不可用。如果您想查看此帳戶的可重用地址，請導入與此帳戶對應的帳戶私密金鑰。";
+"Imported Watch Only Accounts can't see reusable address payments, thus this accounts' reusable address is not available. If you want see the reusable address for this account, import the account private key that corresponds to this accounts public key." = "導入的監視帳戶清單無法看到可重用位址上的付款，因此此帳戶的可重用位址不可用。如果您想查看此帳戶的可重用位址，請導入與此帳戶對應的私密金鑰。";
 
 "Importing Account" = "正在導入帳戶";
 
-"Importing Cold Wallet Account" = "正在導入冷錢包賬戶";
+"Importing Cold Wallet Account" = "正在導入冷錢包帳戶";
 
-"Importing a Private Key" = "Importing a Private Key";
+"Importing a Private Key" = "正在導入私密金鑰";
 
-"Importing a Watch Only Account" = "Importing a Watch Only Account";
+"Importing a Watch Only Account" = "正在導入監視帳戶";
 
-"Importing a Watch Only Address" = "Importing a Watch Only Address";
+"Importing a Watch Only Address" = "正在導入監視位址";
 
-"Importing an Account" = "Importing an Account";
+"Importing an Account" = "正在導入帳戶";
 
-"Importing an encrypted key will require you to input the password every time you want to send bitcoins from it." = "導入密鑰加密將需要您在每次想要從其中匯款時輸入密碼。";
+"Importing an encrypted key will require you to input the password every time you want to send bitcoins from it." = "將金鑰導入為加密形式將會在您每次從中付款時要求輸入密碼。";
 
-"In advanced mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word passphrase cannot recover your bitcoins, so it is recommended that you backup imported keys and addresses separately." = "In advanced mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word passphrase cannot recover your bitcoins, so it is recommended that you backup imported keys and addresses separately.";
+"In advanced mode, you can import bitcoin keys and addresses from other sources. You can import account private keys, account public keys, private keys, and addresses.\nPlease note that your 12 word passphrase cannot recover your bitcoins, so it is recommended that you backup imported keys and addresses separately." = "在高級模式下，您可以從其他來源導入比特幣金鑰和位址。您可以導入帳戶私密金鑰、帳戶公開金鑰、私密金鑰和地址。\n請注意，您的12個單詞短語無法恢復您以此種方式導入的比特幣，因此建議您單獨備份這些導入的金鑰和位址。";
 
-"Incomplete" = "殘缺";
+"Incomplete" = "不完整";
 
-"Incorrect passphrase, could not decrypt iCloud wallet backup." = "密碼錯誤，無法解密iCloud錢包備份。";
+"Incorrect passphrase, could not decrypt iCloud wallet backup." = "短語錯誤，無法解密iCloud錢包備份。";
 
-"Input a bitcoin address" = "Input a bitcoin address";
+"Input a bitcoin address" = "輸入一個比特幣位址";
 
-"Input a label" = "Input a label";
+"Input a label" = "輸入一個標籤";
 
-"Input a new label" = "Input a new label";
+"Input a new label" = "輸入一個新標籤";
 
-"Input a recommended amount. Somewhere between %@ and %@ BTC" = "Input a recommended amount. Somewhere between %@ and %@ BTC";
+"Input a recommended amount. Somewhere between %@ and %@ BTC" = "輸入一個推薦值（介於 %@ 和 %@ BTC之間）";
 
-"Input amount" = "Input amount";
+"Input amount" = "輸入數量";
 
-"Input label" = "Input label";
+"Input label" = "輸入標籤";
 
-"Input new account name" = "Input new account name";
+"Input new account name" = "輸入新帳戶名稱";
 
-"Input transaction fee in bitcoins" = "Input transaction fee in bitcoins";
+"Input transaction fee in bitcoins" = "輸入交易費（以比特幣為單位）";
 
-"Instructions" = "Instructions";
+"Instructions" = "指令";
 
-"Insufficient Funds" = "不充足的資金";
+"Insufficient Funds" = "資金不足";
 
-"Insufficient Funds. Account balance is %@ when %@ is required." = "不充足的資金。當需要%@的賬戶餘額為%@。";
+"Insufficient Funds. Account balance is %@ when %@ is required." = "資金不足。帳戶餘額為%@，但需要%@。";
 
-"Insufficient Funds. Account contains bitcoin dust. You can only send up to %@ for now." = "不充足的資金。帳戶包含比特幣的灰塵。您只能發送最多%@現在。";
+"Insufficient Funds. Account contains bitcoin dust. You can only send up to %@ for now." = "資金不足。帳戶內有比特幣灰塵。當前您最多可以支出%@。";
 
-"Internal Wallet Data" = "內部數據錢包";
+"Internal Wallet Data" = "內部錢包資料";
 
-"Internal account transfer" = "內部轉賬";
+"Internal account transfer" = "內部轉帳";
 
-"Invalid Address" = "比特幣的無效地址";
+"Invalid Address" = "無效的地址";
 
-"Invalid Passphrase" = "口令無效";
+"Invalid Passphrase" = "無效短語";
 
 "Invalid URL" = "無效的網址";
 
-"Invalid account private key" = "無效帳戶公鑰";
+"Invalid account private key" = "無效帳戶私密金鑰";
 
-"Invalid account public Key" = "無效帳戶私鑰";
+"Invalid account public Key" = "無效帳戶公開金鑰";
 
-"Invalid amount" = "金額無效";
+"Invalid amount" = "無效數量";
 
-"Invalid backup passphrase" = "無效的備份密碼";
+"Invalid backup passphrase" = "無效的備份短語";
 
 "Invalid private key" = "無效私密金鑰";
 
-"Invalid scanned data" = "無效的掃描數據";
+"Invalid scanned data" = "無效的掃描資料";
 
-"Invalid transaction ID" = "無效的事務ID";
+"Invalid transaction ID" = "無效的交易ID";
 
-"It is not recommended that you manually manage private keys yourself. A leak of a private key can lead to the compromise of your accounts." = "我們不建議您手動自己管理私鑰。私有密鑰的洩漏可能會導致你的賬戶的妥協。";
+"It is not recommended that you manually manage private keys yourself. A leak of a private key can lead to the compromise of your accounts." = "我們不建議您自己手工管理私密金鑰。私密金鑰的洩漏可能會導致您的帳戶受到損害。";
 
-"It is not recommended that you use a regular bitcoin address for multiple payments, but instead you should import a reusable address. Add address anyways?" = "我們不建議您使用常規的地址多次付款，而是你應該導入一個可重用的地址。反正添加地址？";
+"It is not recommended that you use a regular bitcoin address for multiple payments, but instead you should import a reusable address. Add address anyways?" = "我們不建議您使用常規的位址多次付款，建議您導入一個可重用的位址。仍然堅持添加地址嗎？";
 
 "Label" = "標籤";
 
-"Label Transaction" = "標注交易";
+"Label Transaction" = "給交易加標籤";
 
 "Local backup to wallet failed!" = "本地備份到錢包失敗了！";
 
-"Local wallet will be lost. Are you sure you want to restore wallet from iCloud?" = "本地錢包將會丟失。你確定要從iCloud還原錢包嗎？";
+"Local wallet will be lost. Are you sure you want to restore wallet from iCloud?" = "本地錢包將會丟失。您確定要從iCloud還原錢包嗎？";
 
-"Maximum accounts reached" = "最大的帳戶達到";
+"Maximum accounts reached" = "達到最大的帳戶數量";
 
 "More" = "更多";
 
 "Name" = "名稱";
 
-"Network Error" = "網絡錯誤";
+"Network Error" = "網路錯誤";
 
-"New Wallet" = "新建钱包";
+"New Wallet" = "新建錢包";
 
-"New addresses will be automatically generated and cycled for you as you use your current available addresses." = "您使用當前可用地址的時候將為您自動生成新地址並迴圈。";
+"New addresses will be automatically generated and cycled for you as you use your current available addresses." = "您使用當前可用位址的時候將為您自動生成新位址並迴圈。";
 
 "Next" = "下一個";
 
 "No" = "沒有";
 
-"None currently" = "目前無";
+"None currently" = "目前沒有";
 
 "Not now" = "不是現在";
 
-"Now authorize the transaction on your air gap device. When you have done so, click continue on this device to scan the authorized transaction data and make your payment." = "現在，您的授權空氣間隙設備上的交易。當你這樣做單擊繼續在此設備上掃描授權的交易數據，並進行付款。";
+"Now authorize the transaction on your air gap device. When you have done so, click continue on this device to scan the authorized transaction data and make your payment." = "現在，請在您的離線輔設備上授權此交易。然後，在此設備上按一下“繼續”以掃描授權的交易資料並進行付款。";
 
 "OK" = "OK";
 
-"On your primary online device, when you want to make a payment from a cold wallet account, simply do it as you normally would on a normal account. When you click 'Send' on the Review Payment screen, instead of the payment going out immediately, you will be prompted to pass the unauthorized transaction data. Then on your secondary offline device, within this screen click 'Scan' to import the transaction so it can be authorized." = "在您的主要在線設備上，當您想通過冷錢包帳戶付款時，只需按照通常在正常帳戶中的方式進行付款。當您在“審核付款”屏幕上點擊“發送”時，系統會提示您通過未經授權的交易數據，而不是立即付款。然後在您的輔助離線設備上，在此屏幕中單擊“掃描”以導入交易，以便可以授權。";
+"On your primary online device, when you want to make a payment from a cold wallet account, simply do it as you normally would on a normal account. When you click 'Send' on the Review Payment screen, instead of the payment going out immediately, you will be prompted to pass the unauthorized transaction data. Then on your secondary offline device, within this screen click 'Scan' to import the transaction so it can be authorized." = "在您的線上主設備上，當您想通過冷錢包帳戶付款時，只需按照通常在正常帳戶中的方式進行付款。當您在“審核付款”螢幕上點擊“發送”時，系統會提示您傳遞未經授權的交易資料，而不是立即付款。然後在您的離線輔設備上，在此螢幕中按一下“掃描”以導入交易，以便完成對交易的授權。";
 
-"Once the transaction has been authorized by completing the above two steps, pass the authorized transaction back to your primary online device to finalize your payment." = "一旦該交易已被授權通過完成以上兩個步驟，通過授權交易回主聯機設備來完成付款。";
+"Once the transaction has been authorized by completing the above two steps, pass the authorized transaction back to your primary online device to finalize your payment." = "一旦該交易已通過以上兩個步驟完成授權，將已授權交易送回線上主設備以最終完成支付。";
 
-"Other Links" = "其它鏈接";
+"Other Links" = "其它連結";
 
-"Pass" = "通过";
+"Pass" = "通過";
 
-"Passphrase" = "密碼";
+"Passphrase" = "短語";
 
-"Passphrase does not match the transaction" = "密碼不匹配的交易";
+"Passphrase does not match the transaction" = "短語不匹配交易";
 
 "Password" = "密碼";
 
-"Payment Index: %lu" = "付款指數： %lu";
+"Payment Index: %lu" = "付款索引： %lu";
 
 "Private key does not match address" = "私密金鑰不匹配地址";
 
 "Private key missing" = "私密金鑰缺失";
 
-"QR code" = "QR二維碼";
+"QR code" = "二維碼";
 
-"Quit and re-enter app" = "Quit and re-enter app";
+"Quit and re-enter app" = "退出並重新進入APP";
 
-"Rate" = "率";
+"Rate" = "比率";
 
-"Rate us in the App Store!" = "我們評分在App商店！";
+"Rate us in the App Store!" = "在App商店給我們評分！";
 
 "Receive" = "接收";
 
-"Receive Payment" = "Receive Payment";
+"Receive Payment" = "接收付款";
 
-"Receive Payment From Reusable Address" = "Receive Payment From Reusable Address";
+"Receive Payment From Reusable Address" = "從可重用位址接收付款";
 
 "Remind me Later" = "稍後提醒我";
 
@@ -588,268 +588,269 @@
 
 "Retry" = "重試";
 
-"Reusable Address Payment Addresses" = "可重複使用的地址付款地址";
+"Reusable Address Payment Addresses" = "可重用地址付款地址";
 
-"Reusable Address:" = "可重複使用的地址:";
+"Reusable Address:" = "可重用地址:";
 
-"Reusable Addresses" = "Reusable Addresses";
+"Reusable Addresses" = "可重用地址清單";
 
 "Review Payment" = "審查付款";
 
 "Save" = "保存";
 
-"Scan" = "扫描";
+"Scan" = "掃描";
 
-"Scan For Reusable Address Payment" = "掃描可重複使用的地址付款";
+"Scan For Reusable Address Payment" = "掃描支付到可重用位址的付款";
 
-"Scan QR Code" = "掃描QR二維碼";
+"Scan QR Code" = "掃描二維碼";
 
-"Scan for reusable address transaction" = "掃描可重複使用的地址交易";
+"Scan for reusable address transaction" = "掃描可重用位址交易";
 
 "Scan next part" = "掃描下一部分";
 
-"Scroll down to the section ‘Account Actions’" = "Scroll down to the section ‘Account Actions’";
+"Scroll down to the section ‘Account Actions’" = "向下滾動到“帳戶操作”部分";
 
 "Select Account" = "選擇帳戶";
 
-"Select and click a blockexplorer API" = "Select and click a blockexplorer API";
+"Select and click a blockexplorer API" = "選擇並點擊一個區塊流覽API";
 
-"Select and click a transaction" = "Select and click a transaction";
+"Select and click a transaction" = "選擇並點擊一個交易";
 
-"Select and click an account" = "Select and click an account";
+"Select and click an account" = "選擇並點擊一個帳戶";
 
-"Select and click an account to receive from" = "Select and click an account to receive from";
+"Select and click an account to receive from" = "選擇並點擊一個帳戶以從中收款";
 
-"Select and click an account to view it’s transaction history" = "Select and click an account to view it’s transaction history";
+"Select and click an account to view it’s transaction history" = "選擇並點擊一個帳戶以查看其交易歷史記錄";
 
-"Select and click an address" = "Select and click an address";
+"Select and click an address" = "選擇並點擊一個位址";
 
 "Send" = "發送";
 
 "Send Payment" = "發送付款";
 
-"Send To Address In Contacts" = "Send To Address In Contacts";
+"Send To Address In Contacts" = "發送到連絡人的地址";
 
-"Send authorized payment?" = "發送授權付款？";
+"Send authorized payment?" = "發送已授權的付款？";
 
 "Sending" = "發送中";
 
-"Sending payment to a reusable address might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For reusable address payments to show up faster, configure your app to use the Insight API in advance settings." = "發送付款可重複使用的地址可能需要較長時間才能顯示出來，然後用blockchain.info API正常交易。您可能必須等到至少1確認為交易出現。這是由於blockchain.info API的限制。對於可重複使用的地址付款更快地顯現出來，配置您的應用程序使用Insight API預先設置。";
+"Sending payment to a reusable address might take longer to show up then a normal transaction with the blockchain.info API. You might have to wait until at least 1 confirmation for the transaction to show up. This is due to the limitations of the blockchain.info API. For reusable address payments to show up faster, configure your app to use the Insight API in advance settings." = "在使用blockchain.info API時，比起正常交易，發送款項到可重用位址可能需要較長時間才能顯示出來。您可能不得不至少等到該交易得到1次確認。這是由blockchain.info API的限制導致的。如果希望發送到可重用位址的款項能夠儘快地顯示，請在高級設置中配置您的應用程式使用Insight API。";
 
 "Sent %@ to %@" = "已發送%@到%@";
 
-"Set Transaction Fee in %@" = "%@設定交易費";
+"Set Transaction Fee in %@" = "在%@中設置交易費";
 
 "Settings" = "設置";
 
-"Some funds may be pending confirmation and cannot be spent yet. (Check your account history) Account only has a spendable balance of %@" = "一些基金可能正在申請確認，不能尚未度過。 （請檢查您的帳戶歷史記錄）賬戶僅有的%1$s的一個可支配餘額";
+"Some funds may be pending confirmation and cannot be spent yet. (Check your account history) Account only has a spendable balance of %@" = "一些資金尚處於待確認狀態，暫時不能使用。（請檢查您的帳戶歷史記錄）帳戶僅有%@的可支付餘額";
 
-"Some people have compared bitcoin addresses to a bank routing number. It is a good analogy, however bitcoin addresses are public. So if you reuse the same bitcoin address for multiple payments like you would a routing number, people will be able to figure out how much bitcoin you have. Thus it is recommended that you only use one address per payment.\nThis causes usability issues making the user use a new address whenever receiving a payment is cumbersome.\nStealth/reusable addresses provides a better solution. When you give a sender a reusable address, the sender will derive a one time regular bitcoin address from the reusable address. Then the sender will send a payment to that regular bitcoin address. Now you can give many people just one reusable address and have them all send you payments without letting other people know how much bitcoin you have.\nA reusable address looks like this vJmxthatTBXibYe9aZavx18iAT9gyiJETGkhwPX2WbHQGuzX83YvQXynD2t8yHU4Xjfonu5x9m6B4yxquytFP1c2CRbVR9mecxesvE. A reusable address is a lot longer then a regular bitcoin address, it is 102 characters in length.\nReusable addresses are great, however there are no other mobile bitcoin wallets but ArcBit that supports reusable addresses for now. Which is why ArcBit supports receiving payments from both regular bitcoin addresses and reusable addresses.\nFor each account, you have one reusable address. You can find it on your Receive screen. Swipe all the way to right on the QRCode on your Receive screen and you will find a reusable address." = "Some people have compared bitcoin addresses to a bank routing number. It is a good analogy, however bitcoin addresses are public. So if you reuse the same bitcoin address for multiple payments like you would a routing number, people will be able to figure out how much bitcoin you have. Thus it is recommended that you only use one address per payment.\nThis causes usability issues making the user use a new address whenever receiving a payment is cumbersome.\nStealth/reusable addresses provides a better solution. When you give a sender a reusable address, the sender will derive a one time regular bitcoin address from the reusable address. Then the sender will send a payment to that regular bitcoin address. Now you can give many people just one reusable address and have them all send you payments without letting other people know how much bitcoin you have.\nA reusable address looks like this vJmxthatTBXibYe9aZavx18iAT9gyiJETGkhwPX2WbHQGuzX83YvQXynD2t8yHU4Xjfonu5x9m6B4yxquytFP1c2CRbVR9mecxesvE. A reusable address is a lot longer then a regular bitcoin address, it is 102 characters in length.\nReusable addresses are great, however there are no other mobile bitcoin wallets but ArcBit that supports reusable addresses for now. Which is why ArcBit supports receiving payments from both regular bitcoin addresses and reusable addresses.\nFor each account, you have one reusable address. You can find it on your Receive screen. Swipe all the way to right on the QRCode on your Receive screen and you will find a reusable address.";
+"Some people have compared bitcoin addresses to a bank routing number. It is a good analogy, however bitcoin addresses are public. So if you reuse the same bitcoin address for multiple payments like you would a routing number, people will be able to figure out how much bitcoin you have. Thus it is recommended that you only use one address per payment.\nThis causes usability issues making the user use a new address whenever receiving a payment is cumbersome.\nStealth/reusable addresses provides a better solution. When you give a sender a reusable address, the sender will derive a one time regular bitcoin address from the reusable address. Then the sender will send a payment to that regular bitcoin address. Now you can give many people just one reusable address and have them all send you payments without letting other people know how much bitcoin you have.\nA reusable address looks like this vJmxthatTBXibYe9aZavx18iAT9gyiJETGkhwPX2WbHQGuzX83YvQXynD2t8yHU4Xjfonu5x9m6B4yxquytFP1c2CRbVR9mecxesvE. A reusable address is a lot longer then a regular bitcoin address, it is 102 characters in length.\nReusable addresses are great, however there are no other mobile bitcoin wallets but ArcBit that supports reusable addresses for now. Which is why ArcBit supports receiving payments from both regular bitcoin addresses and reusable addresses.\nFor each account, you have one reusable address. You can find it on your Receive screen. Swipe all the way to right on the QRCode on your Receive screen and you will find a reusable address." = "有些人將比特幣位址與銀行路由號碼進行了比較。這是一個很好的比喻。不過，比特幣地址是公開的。因此，如果您重複使用相同的比特幣位址進行多次付款（就像您的路由號碼），則人們將能夠計算出您擁有多少比特幣。因此，建議您每個位址只收一次款。\n但是要求用戶在每次收款時換用新地址是很麻煩的，這會導致可用性問題。\n隱形地址/可重用地址提供了更好的解決方案。當您給付款人一個可重用位址時，付款人將從可重用位址得到一個一次性的比特幣位址。然後付款人會發送一個支付到該位址。現在您可以給許多人同一個可重用位址，讓他們都給您付款，而不會讓別人知道您有多少比特幣。\n一個可重用位址看起來像這樣：vJmxthatTBXibYe9aZavx18iAT9gyiJETGkhwPX2WbHQGuzX83YvQXynD2t8yHU4Xjfonu5x9m6B4yxquytFP1c2CRbVR9mecxesvE。可重用位址的長度為102個字元，比普通的比特幣位址長得多。\n可重用位址非常棒，但是到目前為止，除了ArcBit，還沒有其他比特幣手機錢包支持。這就是為什麼ArcBit支援從常規比特幣位址和可重用位址接收付款的原因。\n對於每個帳戶，您都有一個可重用位址。在接收螢幕上一直向右滑動二維碼，您就可以找到它。";
 
-"Spending from a cold wallet account" = "從寒冷的錢包帳戶支出";
+"Spending from a cold wallet account" = "從冷錢包帳戶支出";
 
-"Start fresh" = "開始新鮮";
+"Start fresh" = "全新開始";
 
-"Start/Restore Another Wallet" = "Start/Restore Another Wallet";
+"Start/Restore Another Wallet" = "開始/恢復另一個錢包";
 
 "Starting Change address ID:" = "找零地址ID:";
 
-"Starting Receiving Address ID:" = "起始接收地址ID：";
+"Starting Receiving Address ID:" = "起始接收位址ID：";
 
-"Step 1: Scan transaction to authorize" = "第1步：掃描事務授權";
+"Step 1: Scan transaction to authorize" = "第1步：掃描交易授權";
 
-"Step 2: Input 12 word backup passphrase" = "第2步：輸入12字備份密碼";
+"Step 2: Input 12 word backup passphrase" = "第2步：輸入12字備份短語";
 
-"Step 3: Pass authorized transaction data" = "第3步：通過授權的交易數據";
+"Step 3: Pass authorized transaction data" = "第3步：傳遞經過授權的交易資料";
 
-"Steps" = "Steps";
+"Steps" = "步驟";
 
 "Success" = "成功";
 
-"Swipe right on an address" = "Swipe right on an address";
+"Swipe right on an address" = "在地址上向右滑動";
 
-"Swipe to the right on the QR Code Image until you see the reusable address" = "Swipe to the right on the QR Code Image until you see the reusable address";
+"Swipe to the right on the QR Code Image until you see the reusable address" = "在二維碼圖像上向右滑動，直到看到可重用地址";
 
-"Temporarily import account private key" = "暫時進口帳戶私密金鑰";
+"Temporarily import account private key" = "臨時導入帳戶私密金鑰";
 
-"Temporarily import private key" = "暫時進口私密金鑰";
+"Temporarily import private key" = "臨時導入私密金鑰";
 
-"The cold wallet feature will allow you to create accounts which offer better security compared to normal online wallets. You will need 2 devices to use this feature. Your normal day to day device that is connected to the internet and a secondary device that is not connected to the internet (Your secondary device would need to be online once to download the ArcBit app. Afterwards keep the secondary device offline for maximum security). This feature allows you to authorize bitcoin payments from an offline device so that the keys to your bitcoins will never need to be stored on your online device. Follow the step by step instructions by clicking the info buttons within the below sections." = "冷錢包功能將允許您創建一個提供更好的安全性再進行正常的在線錢包賬戶。您將需要2個設備使用此功能。正常的日常設備連接到互聯網，並沒有連接到互聯網的輔助設備（您的輔助設備將需要上網一次下載ArcBit應用程序。輔助設備離線最大的安全性之後保持）。此功能允許您授權從脫機設備比特幣付款，這樣的鍵將比特幣將永遠不需要存儲您的在線設備上。通過點擊下面的章節中的信息按鈕，按照分步說明。";
+"The cold wallet feature will allow you to create accounts which offer better security compared to normal online wallets. You will need 2 devices to use this feature. Your normal day to day device that is connected to the internet and a secondary device that is not connected to the internet (Your secondary device would need to be online once to download the ArcBit app. Afterwards keep the secondary device offline for maximum security). This feature allows you to authorize bitcoin payments from an offline device so that the keys to your bitcoins will never need to be stored on your online device. Follow the step by step instructions by clicking the info buttons within the below sections." = "冷錢包功能將允許您創建比普通線上錢包更安全的帳戶。您需要2個設備才能使用此功能。您連接到互聯網的日常使用設備和不連接到互聯網的輔助設備（您的輔助設備需要線上一次以下載ArcBit應用程式，然後請保持輔助設備永久性離線以保證最大的安全性）。 此功能允許您從離線設備授權比特幣付款，這樣比特幣的金鑰永遠不需要存儲在您的線上設備上。點擊下面的部分中的資訊按鈕，按照分步指令的指引進行操作。";
 
-"The cold wallet feature will allow you to create accounts which offer better security compared to normal online wallets. You will need 2 devices to use this feature. Your normal day to day device that is connected to the internet and a secondary device that is not connected to the internet (Your secondary device would need to be online once to download the ArcBit app. Afterwards keep the secondary device offline for maximum security). This feature allows you to authorize bitcoin payments from an offline device so that the keys to your bitcoins will never need to be stored on your online device. You can enable the cold wallet feature by going into advanced settings." = "The cold wallet feature will allow you to create accounts which offer better security compared to normal online wallets. You will need 2 devices to use this feature. Your normal day to day device that is connected to the internet and a secondary device that is not connected to the internet (Your secondary device would need to be online once to download the ArcBit app. Afterwards keep the secondary device offline for maximum security). This feature allows you to authorize bitcoin payments from an offline device so that the keys to your bitcoins will never need to be stored on your online device. You can enable the cold wallet feature by going into advanced settings.";
+"The cold wallet feature will allow you to create accounts which offer better security compared to normal online wallets. You will need 2 devices to use this feature. Your normal day to day device that is connected to the internet and a secondary device that is not connected to the internet (Your secondary device would need to be online once to download the ArcBit app. Afterwards keep the secondary device offline for maximum security). This feature allows you to authorize bitcoin payments from an offline device so that the keys to your bitcoins will never need to be stored on your online device. You can enable the cold wallet feature by going into advanced settings." = "冷錢包功能將允許您創建比普通線上錢包更安全的帳戶。您需要2個設備才能使用此功能。您連接到互聯網的普通日常設備和不連接到互聯網的輔助設備（您的輔助設備需要線上一次以下載ArcBit應用程式，然後請保持輔助設備永久性離線以獲得最大的安全性）。 此功能允許您從離線設備授權比特幣付款，這樣比特幣的金鑰永遠不需要存儲在您的線上設備上。您可以在高級設置中啟用冷錢包功能。";
 
-"This account type can't see reusable address payments" = "此帳戶類型不能重複使用的看到支付地址";
+"This account type can't see reusable address payments" = "此帳戶類型不能看到可重用位址的支付";
 
-"This feature allows you to manually input a transaction ID and see if the corresponding transaction contains a reusable address payment to your reusable address. If so, then the funds will be added to your wallet. Normally the app will discover reusable address payments automatically for you, but if you believe a payment is missing you can use this feature." = "此功能可讓您手動輸入事務ID，看看相應的交易包含一個轉發支付給您的可重複使用的地址。如果是這樣，那麼資金將被添加到你的錢包。通常情況下，應用程序將自動發現代理費給你，但如果你認為付款丟失，您可以使用此功能。";
+"This feature allows you to manually input a transaction ID and see if the corresponding transaction contains a reusable address payment to your reusable address. If so, then the funds will be added to your wallet. Normally the app will discover reusable address payments automatically for you, but if you believe a payment is missing you can use this feature." = "此功能可讓您手工輸入交易ID，以查看相應的交易是否包含支付到您的可重用位址的付款。如果包含，資金將被添加到您的錢包。通常情況下，應用程式將自動發現支付到您的可重用位址的付款，但如果您確信付款丟失了，您可以使用此功能。";
 
 "To:" = "至：";
 
 "Today" = "今天";
 
-"Toggle Automatic Transaction Fee" = "Toggle Automatic Transaction Fee";
+"Toggle Automatic Transaction Fee" = "切換動態交易費";
 
-"Toggle ‘Enable Transaction Fee’" = "Toggle ‘Enable Transaction Fee’";
+"Toggle ‘Enable Transaction Fee’" = "切換“啟用交易費”";
 
-"Toggle ’Enable advanced mode’" = "Toggle ’Enable advanced mode’";
+"Toggle ’Enable advanced mode’" = "切換“啟用高級模式”";
 
-"Total:" = "總:";
+"Total:" = "總計:";
 
-"Transaction %@ already accounted for." = "事务%@已入账。";
+"Transaction %@ already accounted for." = "交易%@已入帳。";
 
-"Transaction %@ does not belong to this account." = "事務%@已入賬。";
+"Transaction %@ does not belong to this account." = "交易%@不屬於此帳戶。";
 
 "Transaction Fee" = "手續費";
 
-"Transaction ID" = "事務ID";
+"Transaction ID" = "交易ID";
 
-"Transaction ID: %@" = "事務ID: %@";
+"Transaction ID: %@" = "交易ID: %@";
 
 "Transaction authorized" = "交易授權";
 
-"Transaction confirmations" = "Transaction confirmations";
+"Transaction confirmations" = "交易確認深度";
 
-"Transaction fees impact how quickly the Bitcoin network will confirm your transactions. Higher fees means faster confirmation times. Default fee behavior can be configured in settings." = "交易費用影響比特幣網絡如何快速確認您的交易。更高的費用意味著更快的確認時間。可以在設置中配置默認費用行為。";
+"Transaction fees impact how quickly the Bitcoin network will confirm your transactions. Higher fees means faster confirmation times. Default fee behavior can be configured in settings." = "交易費用影響比特幣網路確認您的交易的速度。費用越高，確認越快。可以在設置中配置預設交易費規則。";
 
-"Transaction is not a reusable address transaction." = "交易不是一個可重用的地址交易。";
+"Transaction is not a reusable address transaction." = "交易不是一個可重用位址交易。";
 
-"Transaction needs to be authorized by an offline and air gap device. Send transaction to an offline device for authorization?" = "交易需要由離線和氣隙裝置被授權。發送交易到脫機設備授權？";
+"Transaction needs to be authorized by an offline and air gap device. Send transaction to an offline device for authorization?" = "交易需要由離線輔設備授權。發送交易到離線輔設備進行授權？";
 
-"Transaction needs to be passed back to your online device in order for the payment to be sent" = "交易需要傳遞回您的在線設備，以便對要發送的付款";
+"Transaction needs to be passed back to your online device in order for the payment to be sent" = "交易需要傳遞回您的線上主設備，以便發送付款";
 
 "Try Again" = "再試一次";
 
 "Try our new cold wallet feature!" = "嘗試我們的冷錢包功能！";
 
-"URL does not contain an address." = "網址不包含地址。";
+"URL does not contain an address." = "網址不包含位址。";
 
-"Unable to get dynamic fees. Falling back on fixed transaction fee. (fee can be configured on review payment)" = "無法獲得動態的費用。回落固定交易費。（費可以在審核支付進行配置）";
+"Unable to get dynamic fees. Falling back on fixed transaction fee. (fee can be configured on review payment)" = "無法獲得動態的費用。仍舊使用固定交易費。（費用可以在審核支付時修改）";
 
-"Unarchive Account" = "取消封存賬戶";
+"Unarchive Account" = "解除封存帳戶";
 
-"Unarchive address" = "取消封存地址";
+"Unarchive address" = "解除封存地址";
 
-"Unarchived address" = "未存檔地址";
+"Unarchived address" = "未封存地址";
 
 "Unconfirmed" = "未確認";
 
 "Unencrypted" = "未加密";
 
-"Use ArcBit on your browser to complement the mobile app. The web wallet has all the features that the mobile wallet has plus more!" = "使用您的瀏覽器ArcBit為補充的移動應用程序。該網站的錢包所有的移動錢包以及更多功能！";
+"Use ArcBit on your browser to complement the mobile app. The web wallet has all the features that the mobile wallet has plus more!" = "在您的流覽器中使用ArcBit作為移動APP的補充！網頁版錢包包含所有的移動錢包功能，以及一些額外的功能！";
 
 "Use all funds" = "使用所有資金";
 
-"View Account Address" = "View Account Address";
+"View Account Address" = "查看帳戶地址";
 
-"View Account Address In Web" = "View Account Address In Web";
+"View Account Address In Web" = "在網頁中查看帳戶地址";
 
-"View Account Addresses" = "View Account Addresses";
+"View Account Addresses" = "查看帳戶地址清單";
 
-"View Account Private Key" = "View Account Private Key";
+"View Account Private Key" = "查看帳戶私密金鑰";
 
-"View Account Public Key" = "View Account Public Key";
+"View Account Public Key" = "查看帳戶公開金鑰";
 
-"View Achievements" = "View Achievements";
+"View Achievements" = "查看成就";
 
 "View Addresses" = "查看地址清單";
 
 "View ArcBit Brain Wallet Details" = "查看ArcBit腦錢包詳情";
 
-"View ArcBit Web Wallet Details" = "查看ArcBit網絡錢包詳情";
+"View ArcBit Web Wallet Details" = "查看ArcBit網頁錢包詳情";
 
-"View History" = "View History";
+"View History" = "查看歷史";
 
-"View Private Key" = "View Private Key";
+"View Private Key" = "查看私密金鑰";
 
-"View Transaction In Web" = "View Transaction In Web";
+"View Transaction In Web" = "在網頁中查看交易";
 
-"View account private key QR code" = "查看帳戶私密金鑰QR碼";
+"View account private key QR code" = "查看帳戶私密金鑰二維碼";
 
-"View account public key QR code" = "查看帳戶公開金鑰QR碼";
+"View account public key QR code" = "查看帳戶公開金鑰二維碼";
 
-"View address QR code" = "查看地址QR碼";
+"View address QR code" = "查看地址二維碼";
 
-"View address in web" = "在網絡中查看地址";
+"View address in web" = "在網路中查看位址";
 
-"View in web" = "鑑於網站";
+"View in web" = "在網頁中查看";
 
-"View private key QR code" = "查看私密金鑰QR碼";
+"View private key QR code" = "查看私密金鑰二維碼";
 
 "Visit our home page" = "訪問我們的主頁";
 
-"Wallet backup passphrase" = "錢包備份密碼";
+"Wallet backup passphrase" = "錢包備份短語";
 
 "Warning" = "警告";
 
-"Welcome to ArcBit, a user only controlled Bitcoin wallet. Start using the app now by depositing your Bitcoins here." = "歡迎來到ArcBit，用戶只能控制比特幣錢包。現在開始使用應用程序通過存儲您的比特幣在這裡。";
+"Welcome to ArcBit, a user only controlled Bitcoin wallet. Start using the app now by depositing your Bitcoins here." = "歡迎來到ArcBit——一款完全由用戶控制的比特幣錢包。將您的比特幣轉入ArcBit，現在就開始使用它！";
 
 "Welcome!" = "歡迎！";
 
-"What are Account/Extended Keys?" = "What are Account/Extended Keys?";
+"What are Account/Extended Keys?" = "什麼是帳戶/擴展金鑰？";
 
-"What are accounts?" = "What are accounts?";
+"What are accounts?" = "什麼是帳戶？";
 
-"What are reusable addresses?" = "What are reusable addresses?";
+"What are reusable addresses?" = "什麼是可重用地址？";
 
-"What are the benefits and advantages of Bitcoin?" = "What are the benefits and advantages of Bitcoin?";
+"What are the benefits and advantages of Bitcoin?" = "比特幣有什麼好處？";
 
-"What are transaction confirmations?" = "What are transaction confirmations?";
+"What are transaction confirmations?" = "交易確認數是什麼意思？";
 
-"What is ArcBit's cold wallet feature?" = "What is ArcBit's cold wallet feature?";
+"What is ArcBit's cold wallet feature?" = "ArcBit的冷錢包功能是什麼？";
 
-"What is Bitcoin?" = "What is Bitcoin?";
+"What is Bitcoin?" = "什麼是比特幣？";
 
-"What is a bitcoin wallet?" = "What is a bitcoin wallet?";
+"What is a bitcoin wallet?" = "什麼是比特幣錢包？";
 
-"What makes ArcBit different from other bitcoin wallets?" = "What makes ArcBit different from other bitcoin wallets?";
+"What makes ArcBit different from other bitcoin wallets?" = "ArcBit與其他錢包的區別在哪裡？";
 
-"With an ArcBit cold wallet feature, you can create wallets and make payments offline without exposing your private keys to an internet connected device. This feature is great for storing large amounts of bitcoin or for the security conscious minded. Check out this feature in the cold wallet section in the side menu." = "使用ArcBit冷錢包功能，您可以創建錢包和離線付款，而不會將您的私人密鑰暴露給互聯網連接的設備。這個功能非常適合存儲大量的比特幣或者有意識的安全意識。在側邊菜單的冷錢包部分查看此功能。";
+"With an ArcBit cold wallet feature, you can create wallets and make payments offline without exposing your private keys to an internet connected device. This feature is great for storing large amounts of bitcoin or for the security conscious minded. Check out this feature in the cold wallet section in the side menu." = "使用ArcBit冷錢包功能，您可以創建錢包並離線付款，而不會將您的私密金鑰暴露給連接到互聯網的設備。這個功能非常適合存儲大量的比特幣或者對安全敏感的用戶。請在側邊功能表的冷錢包部分查看此功能。";
 
-"Write down backup passphrase" = "Write down backup passphrase";
+"Write down backup passphrase" = "寫下備份短語";
 
-"Write down or memorize your 12 word wallet backup passphrase. You can view it by clicking \"Show backup passphrase\" in Settings. Your wallet backup passphrase is needed to recover your bitcoins." = "寫下或記住你的12字錢包備份密碼，這可以在設置中找到。您的錢包備份密碼需要恢復您的比特幣。";
+"Write down or memorize your 12 word wallet backup passphrase. You can view it by clicking \"Show backup passphrase\" in Settings. Your wallet backup passphrase is needed to recover your bitcoins." = "寫下或記住您的12單詞錢包備份短語。在設置中按一下“顯示備份短語”可以查看。您的錢包備份短語可以用來恢復您的比特幣。";
 
-"Write down the 12 word passphrase below and keep it safe. This passphrase alone can restore your entire wallets\' bitcoins (excluding imports)." = "記下下面的12字口令，並保持安全。這個密碼短語可以恢復你的整個錢包的比特幣（不包括進口）";
+"Write down the 12 word passphrase below and keep it safe. This passphrase alone can restore your entire wallets\' bitcoins (excluding imports)." = "記下下麵的12單詞短語，並妥善保管。這個短語可以恢復您的整個錢包的比特幣（但不包括導入的）";
 
-"Write down the 12 word passphrase below and keep it safe. This passphrase alone can restore your entire wallets\' bitcoins." = "記下下面的12字口令，並保持安全。這個密碼短語可以恢復你的整個錢包的比特幣。";
+"Write down the 12 word passphrase below and keep it safe. This passphrase alone can restore your entire wallets\' bitcoins." = "記下下麵的12單詞短語，並妥善保管。這個短語可以恢復您的整個錢包的比特幣。";
 
 "Yes" = "是";
 
-"You are making a payment to a reusable address. Make sure that the receiver can see the payment made to them. (All ArcBit reusable addresses are compatible with other ArcBit wallets)" = "您正在向可重複使用的地址付款。確保接收方可以看到對他們的付款。（所有ArcBit可重用地址都與其他ArcBit錢包兼容）";
+"You are making a payment to a reusable address. Make sure that the receiver can see the payment made to them. (All ArcBit reusable addresses are compatible with other ArcBit wallets)" = "您正在向可重用地址付款。確保接收方可以看到對他們的付款。（所有ArcBit可重用地址都與其他ArcBit錢包相容）";
 
-"You have %@, but %@ is needed. (This includes the transactions fee)" = "你有%@，但需要%@。（包括交易費用）";
+"You have %@, but %@ is needed. (This includes the transactions fee)" = "您有%@，但需要%@（包括交易費用）。";
 
-"You must exit and kill this app in order for this to take effect." = "您必須退出並殺死此應用程序，以使此生效。";
+"You must exit and kill this app in order for this to take effect." = "您必須退出並殺死此APP，以使此修改生效。";
 
-"Your current wallet will be deleted. Your can restore your current wallet later with the wallet passphrase, but any imported accounts or addresses created in advanced mode cannot be recovered. Do you wish to continue?" = "您目前的錢包將被刪除。您可以稍後使用錢包密碼復原您當前的錢包，但無法恢復在高級模式下創建的任何導入的帳戶或地址。你想繼續嗎？";
+"Your current wallet will be deleted. Your can restore your current wallet later with the wallet passphrase, but any imported accounts or addresses created in advanced mode cannot be recovered. Do you wish to continue?" = "您目前的錢包將被刪除。您可以稍後使用錢包短語恢復您當前的錢包，但無法恢復在高級模式下創建的任何導入的帳戶或位址。您想繼續嗎？";
 
-"Your iCloud backup was last saved on %@. Do you want to restore your wallet from iCloud or backup your local wallet to iCloud?" = "您的iCloud備份上次保存在％@上。您要從iCloud還原您的錢包還是將本地錢包備份到iCloud？";
+"Your iCloud backup was last saved on %@. Do you want to restore your wallet from iCloud or backup your local wallet to iCloud?" = "您的iCloud備份最後保存於%@。您要從iCloud還原您的錢包，還是將本地錢包備份到iCloud？";
 
 "Your new transaction fee is too high" = "您的新交易費太高";
 
 "Your wallet is now restored" = "您的錢包現在已恢復";
 
-"\nAllow camera access in\n Settings->Privacy->Camera->%@" = "\n允許相機訪問\n 設置->隱私->相機->%@";
+"\nAllow camera access in\n Settings->Privacy->Camera->%@" = "\n允許相機訪問於\n 設置->隱私->相機->%@";
 
-"\tArcBit Web Wallet is a Chrome extension. It has all the features of the mobile wallet plus more. Highlights include the ability to create multiple wallets instead of just one, and a new non-cumbersome way to generate wallets, store and spend bitcoins all from cold storage! ArcBit's new way to manage your cold storage bitcoins also offers a more compelling reason to use ArcBit's watch account feature. Now you can safely watch the balance of your cold storage bitcoins by enabling advance mode in ArcBit and importing your cold storage account public keys.\n\tUse ArcBit Web Wallet in whatever way you wish. You can create a new wallet, or you can input your current 12 word backup passphrase to manage the same bitcoins across different devices. Check out the ArcBit Web Wallet in the Chrome Web Store for more details!\n" = "\tArcBit網絡錢包是一款Chrome擴展程序。它具有移動錢包的所有功能加上更多。亮點包括創建多個錢包而不只是一個的能力，以及一種新的非繁瑣的方式來生成錢包，存儲和花費比特幣從冷存儲！ ArcBit的新管理您的冷存儲比特幣的方式也提供了一個更令人信服的理由使用ArcBit的手錶帳戶功能。現在，您可以通過在ArcBit中啟用預先模式並導入冷存儲帳戶公鑰，安全地觀察冷庫存比特幣的餘額。\n\t使用ArcBit網絡錢包以任何你想要的方式。您可以創建一個新的錢包，或者您可以輸入您當前的12字備份密碼，以管理不同設備上的相同比特幣。有關更多詳細信息，請參閱Chrome網上應用店中的ArcBit Web Wallet。\n";
+"\tArcBit Web Wallet is a Chrome extension. It has all the features of the mobile wallet plus more. Highlights include the ability to create multiple wallets instead of just one, and a new non-cumbersome way to generate wallets, store and spend bitcoins all from cold storage! ArcBit's new way to manage your cold storage bitcoins also offers a more compelling reason to use ArcBit's watch account feature. Now you can safely watch the balance of your cold storage bitcoins by enabling advance mode in ArcBit and importing your cold storage account public keys.\n\tUse ArcBit Web Wallet in whatever way you wish. You can create a new wallet, or you can input your current 12 word backup passphrase to manage the same bitcoins across different devices. Check out the ArcBit Web Wallet in the Chrome Web Store for more details!\n" = "\tArcBit網頁錢包是一款Chrome擴展程式。它比手機錢包具備更多功能。亮點包括可以創建多個錢包，以一種新的簡便方式來生成錢包，以及從冷錢包中存儲和支付比特幣！ArcBit的管理冷錢包的新方法也為使用ArcBit的監視帳戶提供了令人信服的理由。現在，您可以通過在ArcBit中啟用高級模式並導入冷錢包帳戶公開金鑰，安全地觀察冷錢包的比特幣餘額。\n\t您可以以任何您希望的方式使用ArcBit網頁錢包。您可以創建一個新的錢包，或者您也可以輸入您當前的12單詞備份短語，以管理不同設備上的相同比特幣。更多詳細資訊，請參閱Chrome應用商店中的ArcBit網頁錢包。\n";
 
-"\tWith the Arcbit Brain Wallet you can safely spend your bitcoins without ever having your private keys be exposed to the internet. It can be use in conjunction with your Arcbit Wallet or as a stand alone wallet.\n" = "\t使用Arcbit腦錢包，你可以安全地消費你的比特幣，而不必讓你的私鑰暴露在互聯網。它可以與您的Arcbit錢包一起使用或作為獨立的錢包使用。\n";
+"\tWith the Arcbit Brain Wallet you can safely spend your bitcoins without ever having your private keys be exposed to the internet. It can be use in conjunction with your Arcbit Wallet or as a stand alone wallet.\n" = "\t使用Arcbit腦錢包，您可以安全地支付您的比特幣，而不必讓您的私密金鑰暴露在互聯網。它可以與您的Arcbit錢包一起使用或作為獨立的錢包使用。\n";
 
 "iCloud Error: %@" = "iCloud錯誤: %@";
 
-"iCloud backup found" = "找到iCloud备份";
+"iCloud backup found" = "找到iCloud備份";
 
-"iCloud backup not found" = "找到iCloud備份";
+"iCloud backup not found" = "未找到iCloud備份";
 
-"iCloud backup will be lost. Are you sure you want to backup your local wallet to iCloud?" = "iCloud備份將丟失。您確定要將當地的錢包備份到iCloud嗎？";
+"iCloud backup will be lost. Are you sure you want to backup your local wallet to iCloud?" = "iCloud備份將丟失。您確定要將本地的錢包備份到iCloud嗎？";
 
-"Wallet backup passphrase will be shown" = "將顯示電子錢包備份密碼";
+"Wallet backup passphrase will be shown" = "將顯示錢包備份短語";
 
-"Write down or memorize your wallet backup passphrase. If you lose your backup passphrase, your wallet cannot be recovered." = "記下或記住您的錢包備份密碼。如果您丟失了備份密碼，您的錢包將無法恢復。";
+"Write down or memorize your wallet backup passphrase. If you lose your backup passphrase, your wallet cannot be recovered." = "記下或記住您的錢包備份短語。如果您丟失了備份短語，您的錢包將無法恢復。";
 
 "I understand" = "我明白";
 
-"iCloud support for ArcBit discontinued" = "iCloud對ArcBit的支持正在停止";
+"iCloud support for ArcBit discontinued" = "iCloud對ArcBit的支持已經停止";
 
-"iCloud support for ArcBit is being discontinued. If your backup passphrase has not been backed up already, please do so." = "iCloud對ArcBit的支持正在停止。如果您的備份口令尚未備份，請執行此操作。";
+"iCloud support for ArcBit is being discontinued. If your backup passphrase has not been backed up already, please do so." = "iCloud即將停止對ArcBit的支持。如果您尚未備份您的備份短語，請備份之。";
 
-"Reusable address payments are disabled until further notice." = "可重複使用的地址付款被禁用，直至另行通知。";
+"Reusable address payments are disabled until further notice." = "可重用地址付款被禁用，直至另行通知。";
+
