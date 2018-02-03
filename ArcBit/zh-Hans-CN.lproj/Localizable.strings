@@ -368,7 +368,7 @@
 
 "Finished Passing Transaction Data" = "交易数据传送已完成";
 
-"First make sure you are using your secondary offline device for this screen (as mentioned in the overview on the previous screen). Click 'New Wallet' and write down or memorize the generated 12 word passphrase. This passphrase can recover and generate all your accounts and the bitcoins associated with it, so keep it safe and to yourself. Also instead of creating a new wallet, you can also input an existing 12 word passphrase that was generated here to create additional accounts." = "首先请确保您正在使用您的离线辅设备打开此屏幕（如前一屏幕中的概述所述）。点击“新钱包”，记下或记住生成的12个单词的短语。这个短语可以恢复并生成所有的账户、以及与之相关的比特币，所以请务必注意保密。或者，有别于创建一个新的钱包，您也可以输入这里生成的12个单词短语来创建额外的账户。";
+"First make sure you are using your secondary offline device for this screen (as mentioned in the overview on the previous screen). Click 'New Wallet' and write down or memorize the generated 12 word passphrase. This passphrase can recover and generate all your accounts and the bitcoins associated with it, so keep it safe and to yourself. Also instead of creating a new wallet, you can also input an existing 12 word passphrase that was generated here to create additional accounts." = "首先请确保您正在使用您的离线辅设备打开此屏幕（如前一屏幕中的概述所述）。点击“新建钱包”，记下或记住生成的12个单词的短语。这个短语可以恢复并生成所有的账户、以及与之相关的比特币，所以请务必注意保密。或者，有别于创建一个新的钱包，您也可以输入这里生成的12个单词短语来创建额外的账户。";
 
 "Follow us on Twitter" = "在推特上关注我们";
 
@@ -508,7 +508,7 @@
 
 "It is not recommended that you manually manage private keys yourself. A leak of a private key can lead to the compromise of your accounts." = "我们不建议您自己手工管理私钥。私钥的泄漏可能会导致您的账户受到损害。";
 
-"It is not recommended that you use a regular bitcoin address for multiple payments, but instead you should import a reusable address. Add address anyways?" = "我们不建议您使用常规的地址多次付款，建议您导入一个可重用的地址。仍然坚持添加地址吗？";
+"It is not recommended that you use a regular bitcoin address for multiple payments, but instead you should import a reusable address. Add address anyways?" = "我们不建议您使用常规的地址多次付款，建议您导入一个可重用地址。仍然坚持添加地址吗？";
 
 "Label" = "标签";
 
@@ -714,15 +714,15 @@
 
 "Transaction needs to be authorized by an offline and air gap device. Send transaction to an offline device for authorization?" = "交易需要由离线辅设备授权。发送交易到离线辅设备进行授权？";
 
-"Transaction needs to be passed back to your online device in order for the payment to be sent" = "交易需要传递回您的在线主设备，以便发送付款";
+"Transaction needs to be passed back to your online device in order for the payment to be sent" = "交易需要传递回您的在线主设备，以便将付款交易发送到网络";
 
 "Try Again" = "再试一次";
 
-"Try our new cold wallet feature!" = "尝试我们的冷钱包功能！";
+"Try our new cold wallet feature!" = "尝试我们的冷钱包特性！";
 
 "URL does not contain an address." = "网址不包含地址。";
 
-"Unable to get dynamic fees. Falling back on fixed transaction fee. (fee can be configured on review payment)" = "无法获得动态的费用。仍旧使用固定交易费。（费用可以在审核支付时修改）";
+"Unable to get dynamic fees. Falling back on fixed transaction fee. (fee can be configured on review payment)" = "无法获得动态的费用，仍旧使用固定交易费（费用可以在审核支付时修改）。";
 
 "Unarchive Account" = "解除封存账户";
 
