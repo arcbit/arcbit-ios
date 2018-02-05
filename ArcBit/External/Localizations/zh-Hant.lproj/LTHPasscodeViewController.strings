@@ -21,6 +21,6 @@
 
 "Passcodes did not match. Try again." = "密碼不匹配。再試一次";
 
-"1 Passcode Failed Attempt" = "1密碼失敗嘗試";
+"1 Passcode Failed Attempt" = "密碼嘗試失敗一次";
 
-"%i Passcode Failed Attempts" = "%i 密碼失敗嘗試";
+"%i Passcode Failed Attempts" = "%i 次密碼失敗嘗試";
