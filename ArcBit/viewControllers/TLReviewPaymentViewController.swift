@@ -113,6 +113,11 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         
         self.sendButton.backgroundColor = TLColors.mainAppColor()
         self.sendButton.setTitleColor(TLColors.mainAppOppositeColor(), for: UIControlState())
+        
+        let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+        let sendButtonTitleName = TLDisplayStrings.SEND_STRING() + " " +  TLWalletUtils.GET_CRYPTO_COIN_FULL_NAME(coinType)
+        self.sendButton.setTitle(sendButtonTitleName, for: .normal)
+        
         NotificationCenter.default.addObserver(self
             ,selector:#selector(TLReviewPaymentViewController.finishSend(_:)),
              name:NSNotification.Name(rawValue: TLNotificationEvents.EVENT_MODEL_UPDATED_NEW_UNCONFIRMED_TRANSACTION()), object:nil)
@@ -296,8 +301,9 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             self.amountMovedFromAccount = TLSendFormData.instance().toAmount!.add(TLSendFormData.instance().feeAmount!)
         }
         
+        let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
         for address in self.realToAddresses! {
-            TLTransactionListener.instance().listenToIncomingTransactionForAddress(TLPreferences.getSendFromCoinType(), address: address)
+            TLTransactionListener.instance().listenToIncomingTransactionForAddress(coinType, address: address)
         }
         
         TLSendFormData.instance().beforeSendBalance = AppDelegate.instance().coinWalletsManager!.godSend.getCurrentFromBalance()
@@ -315,7 +321,8 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                                                                       object: nil, userInfo: nil)
         }
         
-        TLPushTxAPI.instance().sendTx(TLPreferences.getSendFromCoinType(), txHex: txHex, txHash: txHash, toAddress: toAddress, success: {
+        let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+        TLPushTxAPI.instance().sendTx(coinType, txHex: txHex, txHash: txHash, toAddress: toAddress, success: {
             (jsonData) in
             DLog("showPromptReviewTx pushTx: success \(jsonData)")
             
@@ -329,8 +336,9 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                 }
             }
             
-            if let label = AppDelegate.instance().coinWalletsManager!.getLabelForAddress(TLPreferences.getSendFromCoinType(), address: toAddress) {
-                AppDelegate.instance().coinWalletsManager!.setTransactionTag(TLPreferences.getSendFromCoinType(), txid: txHash, tag: label)
+            let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+            if let label = AppDelegate.instance().coinWalletsManager!.getLabelForAddress(coinType, address: toAddress) {
+                AppDelegate.instance().coinWalletsManager!.setTransactionTag(coinType, txid: txHash, tag: label)
             }
             handlePushTxSuccess()
             
