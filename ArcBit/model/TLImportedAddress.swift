@@ -268,30 +268,23 @@ import Foundation
         var currentTxAdd:UInt64 = 0
         var doesTxInvolveAddress = false
         let ouputAddressToValueArray = txObject.getOutputAddressToValueArray()
-        for output in ouputAddressToValueArray as! [NSDictionary] {
-            var value:UInt64 = 0;
-            if let v = output.object(forKey: "value") as? NSNumber {
-                value = UInt64(v.uint64Value)
+        for txOutputObject in ouputAddressToValueArray {
+            var value:UInt64 = 0
+            if let v = txOutputObject.value {
+                value = v
             }
-            let address = output.object(forKey: "addr") as? String
-            if (address != nil && address == importedAddress) {
+            if let address = txOutputObject.addr, address == importedAddress {
                 currentTxAdd += value
                 doesTxInvolveAddress = true
             }
         }
         
         let inputAddressToValueArray = txObject.getInputAddressToValueArray()
-        for input in inputAddressToValueArray as! [NSDictionary] {
-            var value:UInt64 = 0;
-            if let v = input.object(forKey: "value") as? NSNumber {
-                value = UInt64(v.uint64Value)
-            }
-            let address = input.object(forKey: "addr") as? String
-            if (address != nil && address == importedAddress) {
-                currentTxSubtract += value
+        for txInputObject in inputAddressToValueArray {
+            if txInputObject.prevOut.addr == importedAddress {
+                currentTxSubtract += txInputObject.prevOut.value
                 doesTxInvolveAddress = true
             }
-            
         }
         
         if (shouldUpdateAccountBalance) {
