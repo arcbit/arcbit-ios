@@ -262,7 +262,7 @@ import Foundation
                 if (self.socketIsConnectedBitcoinCash) {
                     guard let socket = self.socketBitcoinCash else { return false }
                     
-                    //DLog("socketio emit address: \(address)")
+                    DLog("socketio emit address: \(address)")
                     socket.emit("unsubscribe", "bitcoind/addresstxid", [address])
                     socket.emit("subscribe", "bitcoind/addresstxid", [address])
                     

@@ -70,7 +70,7 @@ class TLPushTxAPI {
                     //if txid == nil { return }
                     
                     TLStealthExplorerAPI.instance().lookupTx(toAddress, txid: txid, success: { (jsonData) -> () in
-                        DLog("TLPushTxAPI TLStealthExplorerAPI success \(jsonData.description)")
+                        DLog("TLPushTxAPI TLStealthExplorerAPI success \(jsonData?.description)")
                         if let errorCode = (jsonData as! NSDictionary).object(forKey: TLStealthExplorerAPI.STATIC_MEMBERS.SERVER_ERROR_CODE) as? Int {
                             let errorMsg = (jsonData as! NSDictionary).object(forKey: TLStealthExplorerAPI.STATIC_MEMBERS.SERVER_ERROR_MSG) as! String
                             DLog(String(format: "TLPushTxAPI TLStealthExplorerAPI success failure \(errorCode) \(errorMsg)"))
@@ -105,7 +105,7 @@ class TLPushTxAPI {
                 let pushTxMethod = TLBlockExplorerAPI.instance().bitcoinInsightAPI!.pushTx
                 
                 pushTxMethod(txHex, { (jsonData) -> () in
-                    DLog("TLPushTxAPI pushTxMethod \(jsonData)")
+                    DLog("TLPushTxAPI pushTxMethod \(String(describing: jsonData))")
                         
                     func getTxidFromInsightPushTx(_ jsonData:NSDictionary) -> String {
                         return jsonData.object(forKey: "txid") as! String
@@ -126,7 +126,7 @@ class TLPushTxAPI {
                     //if txid == nil { return }
                     
                     TLStealthExplorerAPI.instance().lookupTx(toAddress, txid: txid, success: { (jsonData) -> () in
-                        DLog("TLPushTxAPI TLStealthExplorerAPI success \(jsonData.description)")
+                        DLog("TLPushTxAPI TLStealthExplorerAPI success \(String(describing: jsonData?.description))")
                         if let errorCode = (jsonData as! NSDictionary).object(forKey: TLStealthExplorerAPI.STATIC_MEMBERS.SERVER_ERROR_CODE) as? Int {
                             let errorMsg = (jsonData as! NSDictionary).object(forKey: TLStealthExplorerAPI.STATIC_MEMBERS.SERVER_ERROR_MSG) as! String
                             DLog(String(format: "TLPushTxAPI TLStealthExplorerAPI success failure \(errorCode) \(errorMsg)"))
