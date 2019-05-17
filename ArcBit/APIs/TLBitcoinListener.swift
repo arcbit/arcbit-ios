@@ -72,7 +72,7 @@ import Foundation
                 self.webSocketBitcoinCash?.on("connect") {data, ack in
                     DLog("socketio onConnect")
                     self.consecutiveFailedConnectionsBitcoin = 0
-                    weakSelf!.socketIsConnectedBitcoin = true
+                    weakSelf!.socketIsConnectedBitcoinCash = true
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_TRANSACTION_LISTENER_OPEN()), object: nil, userInfo: nil)
                     weakSelf!.webSocketBitcoinCash!.emit("subscribe", "inv")
                 }
@@ -107,7 +107,7 @@ import Foundation
                 self.socketBitcoinCash?.on("connect") {data, ack in
                     DLog("socketio onConnect")
                     self.consecutiveFailedConnectionsBitcoin = 0
-                    weakSelf!.socketIsConnectedBitcoin = true
+                    weakSelf!.socketIsConnectedBitcoinCash = true
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_TRANSACTION_LISTENER_OPEN()), object: nil, userInfo: nil)
                     weakSelf!.socketBitcoinCash!.emit("subscribe", "inv")
                 }
