@@ -306,7 +306,7 @@ import UIKit
         
         let addressType:TLAddressType
         let title:String
-        if sectionType == STATIC_MEMBERS.kActiveMainSection || sectionType == STATIC_MEMBERS.kActiveChangeSection {
+        if sectionType == STATIC_MEMBERS.kActiveMainSection || sectionType == STATIC_MEMBERS.kArchivedMainSection {
             addressType = .main
             title = String(format: TLDisplayStrings.ADDRESS_ID_X_STRING_STRING(), self.accountObject!.getAddressHDIndex(address))
         } else {
