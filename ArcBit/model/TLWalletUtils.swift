@@ -164,6 +164,7 @@ class TLWalletUtils {
         return TLCoinType.BTC
     }
     
+    // NOTE: once add a new supported coin type, can't really unadd it
     class func SUPPORT_COIN_TYPES() -> ([TLCoinType]) {
         return [TLCoinType.BTC]
 //        return [TLCoinType.BTC, TLCoinType.BTC]
