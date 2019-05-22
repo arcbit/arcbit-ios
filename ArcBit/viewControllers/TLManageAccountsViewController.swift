@@ -500,7 +500,7 @@ import UIKit
         
         var sectionCounter = 0
         
-        if TLPreferences.getEnabledCryptocoinsCount() > 1 {
+        if TLPreferences.getEnabledCryptocoinsCount() > 1 && TLWalletUtils.SUPPORT_COIN_TYPES().count > 1 {
             selectCryptoCoinSection = sectionCounter
             sectionCounter += 1
             numberOfSections += 1
@@ -2102,7 +2102,7 @@ import UIKit
     }
 
     func tableView(_ tableView: UITableView, titleForHeaderInSection section: Int) -> String? {
-        if TLPreferences.getEnabledCryptocoinsCount() > 1 && section == selectCryptoCoinSection {
+        if TLPreferences.getEnabledCryptocoinsCount() > 1 && TLWalletUtils.SUPPORT_COIN_TYPES().count > 1 && section == selectCryptoCoinSection {
             return ""
         }
         if (TLPreferences.enabledAdvancedMode()) {
@@ -2149,7 +2149,7 @@ import UIKit
     }
 
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        if TLPreferences.getEnabledCryptocoinsCount() > 1 && section == selectCryptoCoinSection {
+        if TLPreferences.getEnabledCryptocoinsCount() > 1 && TLWalletUtils.SUPPORT_COIN_TYPES().count > 1 && section == selectCryptoCoinSection {
             return 1
         }
         if (TLPreferences.enabledAdvancedMode()) {
@@ -2316,7 +2316,7 @@ import UIKit
     }
 
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        if TLPreferences.getEnabledCryptocoinsCount() > 1 && (indexPath as NSIndexPath).section == selectCryptoCoinSection {
+        if TLPreferences.getEnabledCryptocoinsCount() > 1 && TLWalletUtils.SUPPORT_COIN_TYPES().count > 1 && (indexPath as NSIndexPath).section == selectCryptoCoinSection {
             performSegue(withIdentifier: "SegueSelectCryptoCoinManageAccounts", sender:self)
             return nil
         }
