@@ -409,21 +409,6 @@
                 <string>PSGroupSpecifier</string>
             </dict>
             <dict>
-                <key>Type</key>
-                <string>PSChildPaneSpecifier</string>
-                <key>Title</key>
-                <string>ENABLED_COINS</string>
-                <key>File</key>
-                <string>Enablecryptocoin</string>
-            </dict>
-            
-            <dict>
-                <key>Title</key>
-                <string>EMPTY</string>
-                <key>Type</key>
-                <string>PSGroupSpecifier</string>
-            </dict>
-            <dict>
                 <key>Title</key>
                 <string>SHOW_PASSPHRASE</string>
                 <key>Key</key>
@@ -462,7 +447,17 @@
                 <key>File</key>
                 <string>Advanced</string>
             </dict>
-
+            <dict>
+                <key>Type</key>
+                <string>PSChildPaneSpecifier</string>
+                <key>Key</key>
+                <string>enablecoinskey</string>
+                <key>Title</key>
+                <string>ENABLED_COINS</string>
+                <key>File</key>
+                <string>Enablecryptocoin</string>
+            </dict>
+            
         </array>
         <key>StringsTable</key>
         <string>Root</string>

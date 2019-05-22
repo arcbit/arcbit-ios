@@ -65,7 +65,11 @@ import UIKit
         setLogoImageView()
         
         self.navigationController!.view.addGestureRecognizer(self.slidingViewController().panGesture)
-        self.currentCoinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+        if let godSend = AppDelegate.instance().coinWalletsManager!.godSend {
+            self.currentCoinType = godSend.getSelectedObjectCoinType()
+        } else {
+            self.currentCoinType = TLWalletUtils.DEFAULT_COIN_TYPE()
+        }
 
         if (TLPreferences.enabledAdvancedMode()) {
             if TLPreferences.getEnabledCryptocoinsCount() > 1 {

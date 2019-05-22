@@ -128,10 +128,6 @@
 
 "Cancel" = "Cancel";
 
-"Cannot archive your default account" = "Cannot archive your default account";
-
-"Cannot archive your one and only account" = "Cannot archive your one and only account";
-
 "Cannot create transactions with outputs less then %@" = "Cannot create transactions with outputs less then %@";
 
 "Cannot decrypt iCloud backup wallet." = "Cannot decrypt iCloud backup wallet.";

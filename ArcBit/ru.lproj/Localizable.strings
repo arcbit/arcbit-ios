@@ -128,10 +128,6 @@
 
 "Cancel" = "Отмена";
 
-"Cannot archive your default account" = "Не удается активировать Вашу учетную запись по умолчанию";
-
-"Cannot archive your one and only account" = "Не удается заархивировать Вашу единственную учетную запись";
-
 "Cannot create transactions with outputs less then %@" = "Невозможно создать транзакции с неизрасходованными средствами, менее чем %@";
 
 "Cannot decrypt iCloud backup wallet." = "Невозможно расшифровать резервный кошелек iCloud.";

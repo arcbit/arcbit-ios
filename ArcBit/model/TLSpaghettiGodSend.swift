@@ -20,291 +20,17 @@
 //   Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston,
 //   MA 02110-1301  USA
 
-
 @objc class TLSpaghettiGodSend:NSObject {
     
-    let DUST_AMOUNT:UInt64 = 546
-
-    fileprivate var appWallet: TLWallet
-    fileprivate var sendFromAccounts:NSMutableArray?
-    fileprivate var sendFromAddresses:NSMutableArray?
-
     struct STATIC_MEMBERS {
-        static var instance:TLSpaghettiGodSend?
-    }
-    
-    init(appWallet: TLWallet) {
-        self.appWallet = appWallet
-        sendFromAccounts = NSMutableArray()
-        sendFromAddresses = NSMutableArray()
-        super.init()
-    }
-    
-    fileprivate func clearFromAccountsAndAddresses() -> () {
-        sendFromAccounts = NSMutableArray()
-        sendFromAddresses = NSMutableArray()
-    }
-    
-    func getSelectedObjectCoinType() -> TLCoinType {
-        if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
-            let accountObject = sendFromAccounts!.object(at: 0) as! TLAccountObject
-            return accountObject.coinType
-        } else {
-            let importedAddress = sendFromAddresses!.object(at: 0) as! TLImportedAddress
-            return importedAddress.coinType
-        }
-    }
-    
-    func getSelectedSendObject() -> AnyObject? {
-        if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
-            return sendFromAccounts!.object(at: 0) as AnyObject?
-        } else if (sendFromAddresses != nil && sendFromAddresses!.count != 0) {
-            return sendFromAddresses!.object(at: 0) as AnyObject?
-        }
-        
-        return nil
-    }
-    
-    func getSelectedObjectType() -> (TLSelectObjectType) {
-        if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
-            return TLSelectObjectType.account
-        } else if (sendFromAddresses != nil && sendFromAddresses!.count != 0) {
-            return TLSelectObjectType.address
-        }
-        
-        return TLSelectObjectType.unknown
-    }
-    
-    
-    func isPaymentToOwnAccount(_ address: String) -> Bool {
-        if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
-            let accountObject = sendFromAccounts!.object(at: 0) as! TLAccountObject
-            if accountObject.isAddressPartOfAccount(address) {
-                return true
-            }
-            return false
-        } else if (sendFromAddresses != nil && sendFromAddresses!.count != 0) {
-            let importedAddress = sendFromAddresses!.object(at: 0) as! TLImportedAddress
-            if address == importedAddress.getAddress() {
-                return true
-            }
-            return false
-        }
-        return false
-    }
-    
-    func haveUpDatedUTXOs() -> Bool {
-        if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
-            let accountObject = sendFromAccounts!.object(at: 0) as! TLAccountObject
-            return accountObject.haveUpDatedUTXOs
-        } else if (sendFromAddresses != nil && sendFromAddresses!.count != 0) {
-            let importedAddress = sendFromAddresses!.object(at: 0) as! TLImportedAddress
-            return importedAddress.haveUpDatedUTXOs
-        }
-        return false
-    }
-    
-    fileprivate func getLabelForSelectedSendObject() -> String? {
-        if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
-            let accountObject = sendFromAccounts!.object(at: 0) as! TLAccountObject
-            return accountObject.getAccountName()
-        } else if (sendFromAddresses != nil && sendFromAddresses!.count != 0) {
-            let importedAddress = sendFromAddresses!.object(at: 0) as! TLImportedAddress
-            return importedAddress.getLabel()
-        }
-        return nil
-    }
-    
-    func getCurrentFromLabel() -> String? {
-        if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
-            let accountObject = sendFromAccounts!.object(at: 0) as! TLAccountObject
-            return accountObject.getAccountName()
-        } else if (sendFromAddresses != nil && sendFromAddresses!.count != 0) {
-            let importedAddress = sendFromAddresses!.object(at: 0) as! TLImportedAddress
-            return importedAddress.getLabel()
-        }
-        
-        return nil
-    }
-    
-    func getExtendedPubKey() -> String? {
-        if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
-            let accountObject = sendFromAccounts!.object(at: 0) as! TLAccountObject
-            return accountObject.getExtendedPubKey()
-        }
-        return nil
-    }
-    
-    func setOnlyFromAccount(_ accountObject:TLAccountObject) -> () {
-        sendFromAddresses = nil
-        sendFromAccounts = NSMutableArray(objects:accountObject)
-    }
-    
-    func setOnlyFromAddress(_ importedAddress:TLImportedAddress) -> () {
-        sendFromAccounts = nil
-        sendFromAddresses = NSMutableArray(objects:importedAddress)
-    }
-    
-    fileprivate func  addSendAccount(_ accountObject: TLAccountObject) -> () {
-        sendFromAccounts!.add(accountObject)
-    }
-    
-    fileprivate func addImportedAddress(_ importedAddress:TLImportedAddress) -> () {
-        sendFromAddresses!.add(importedAddress)
-    }
-
-    func isColdWalletAccount() -> (Bool) {
-        if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
-            let accountObject = sendFromAccounts!.object(at: 0) as! TLAccountObject
-            return accountObject.isColdWalletAccount()
-        }
-        return false
-    }
-    
-    func needWatchOnlyAccountPrivateKey() -> (Bool) {
-        if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
-            let accountObject = sendFromAccounts!.object(at: 0) as! TLAccountObject
-            return accountObject.isWatchOnly() && !accountObject.hasSetExtendedPrivateKeyInMemory()
-        }
-        return false
-    }
-    
-    func needWatchOnlyAddressPrivateKey() -> (Bool) {
-        if (sendFromAddresses != nil && sendFromAddresses!.count != 0) {
-            let importedAddress = sendFromAddresses!.object(at: 0) as! TLImportedAddress
-            return importedAddress.isWatchOnly() && !importedAddress.hasSetPrivateKeyInMemory()
-        }
-        return false
-    }
-    
-    func needEncryptedPrivateKeyPassword() -> Bool {
-        if (sendFromAddresses != nil && sendFromAddresses!.count != 0) {
-            let importedAddress = sendFromAddresses!.object(at: 0) as! TLImportedAddress
-            if (importedAddress.isWatchOnly()) {
-                return false
-            } else {
-                return importedAddress.isPrivateKeyEncrypted() && !importedAddress.hasSetPrivateKeyInMemory()
-            }
-        }
-        return false
-    }
-    
-    func getEncryptedPrivateKey () -> (String) {
-        assert(sendFromAddresses!.count != 0, "sendFromAddresses!.count == 0")
-        let importedAddress = sendFromAddresses!.object(at: 0) as! TLImportedAddress
-        assert(importedAddress.isPrivateKeyEncrypted() != false, "! importedAddress isPrivateKeyEncrypted]")
-        return importedAddress.getEncryptedPrivateKey()!
-    }
-    
-    func hasFetchedCurrentFromData() -> (Bool) {
-        if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
-            let accountObject = sendFromAccounts!.object(at: 0) as! TLAccountObject
-            return accountObject.hasFetchedAccountData()
-        } else if (sendFromAddresses != nil && sendFromAddresses!.count != 0) {
-            let importedAddress = sendFromAddresses!.object(at: 0) as! TLImportedAddress
-            return importedAddress.hasFetchedAccountData()
-        }
-        return true
-    }
-
-    func setCurrentFromBalance(_ balance: TLCoin) {
-        if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
-            let accountObject = sendFromAccounts!.object(at: 0) as! TLAccountObject
-            accountObject.accountBalance = balance
-        } else if (sendFromAddresses != nil && sendFromAddresses!.count != 0) {
-            let importedAddress = sendFromAddresses!.object(at: 0) as! TLImportedAddress
-            importedAddress.balance = balance
-        }
-    }
-    
-    func getCurrentFromBalance() -> (TLCoin) {
-        if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
-            let accountObject = sendFromAccounts!.object(at: 0) as! TLAccountObject
-            return accountObject.getBalance()
-        } else if (sendFromAddresses != nil && sendFromAddresses!.count != 0) {
-            let importedAddress = sendFromAddresses!.object(at: 0) as! TLImportedAddress
-            return importedAddress.getBalance()!
-        }
-        return TLCoin.zero()
-    }
-    
-    func getCurrentFromUnspentOutputsSum() -> (TLCoin) {
-        if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
-            let accountObject = sendFromAccounts!.object(at: 0) as! TLAccountObject
-            return accountObject.getTotalUnspentSum()
-        } else if (sendFromAddresses != nil && sendFromAddresses!.count != 0) {
-            let importedAddress = sendFromAddresses!.object(at: 0) as! TLImportedAddress
-            return importedAddress.getUnspentSum()!
-        }
-        return TLCoin.zero()
-    }
-    
-    func getAndSetUnspentOutputs(_ success:@escaping TLWalletUtils.Success, failure:@escaping TLWalletUtils.Error) -> () {
-        if (sendFromAccounts != nil && sendFromAccounts!.count != 0) {
-            let accountObject  = sendFromAccounts!.object(at: 0) as! TLAccountObject
-            let amount = accountObject.getBalance()
-            if (amount.greater(TLCoin.zero())) {
-                accountObject.getUnspentOutputs({() in
-                    success()
-                    }, failure:{() in
-                        failure()
-                    }
-                )
-            }
-            
-        } else {
-            var addresses: [String] = []
-            addresses.reserveCapacity(sendFromAddresses!.count)
-            let importedAddress = sendFromAddresses!.object(at: 0) as! TLImportedAddress
-            let amount = importedAddress.getBalance()
-            if (amount!.greater(TLCoin.zero())) {
-                addresses.append(importedAddress.getAddress())
-            }
-            
-            if (addresses.count > 0) {
-                importedAddress.haveUpDatedUTXOs = false
-                TLBlockExplorerAPI.instance().getUnspentOutputs(self.getSelectedObjectCoinType(), addressArray: addresses, success:{(unspentOutputsObject) in
-                    var address2UnspentOutputs = Dictionary<String, Array<TLUnspentOutputObject>>(minimumCapacity:addresses.count)
-                    
-                    for unspentOutput in unspentOutputsObject.unspentOutputs {                        
-                        guard let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(self.getSelectedObjectCoinType(), scriptHex: unspentOutput.script, isTestnet: self.appWallet.walletConfig.isTestnet) else {
-                            DLog("address cannot be decoded. not normal pubkeyhash outputScript: \(unspentOutput.script)")
-                            continue
-                        }
-                        
-                        var cachedUnspentOutputs:Array<TLUnspentOutputObject>? = address2UnspentOutputs[address]
-                        if (cachedUnspentOutputs == nil) {
-                            cachedUnspentOutputs = Array<TLUnspentOutputObject>()
-                            address2UnspentOutputs[address] = cachedUnspentOutputs
-                        }
-                        cachedUnspentOutputs!.append(unspentOutput)
-                    }
-                    
-                    for _address in address2UnspentOutputs {
-                        let address = _address.key as! String
-                        let idx = addresses.index(of: address)
-                        let importedAddress = self.sendFromAddresses!.object(at: idx!) as! TLImportedAddress
-                        if let unspentOutputsArray = address2UnspentOutputs[address] {
-                            importedAddress.unspentOutputsCount = unspentOutputsArray.count
-                            importedAddress.setUnspentOutputs(unspentOutputsArray)
-                            importedAddress.haveUpDatedUTXOs = true
-                        }
-                    }
-                    
-                    success()
-                    }, failure:{(code, status) in
-                        failure()
-                    }
-                )
-            }
-        }
+        static let DUST_AMOUNT:UInt64 = 546
     }
     
     class func getEstimatedTxSize(_ inputCount: Int, outputCount: Int) -> UInt64 {
         return UInt64(10 + 159*inputCount + 34*outputCount)
     }
         
-    func createSignedSerializedTransactionHex(_ toAddressesAndAmounts:NSArray,
+    class func createSignedSerializedTransactionHex(_ isTestnet: Bool, coinType: TLCoinType, sendFromAccounts: Array<TLAccountObject>?, sendFromAddresses: Array<TLImportedAddress>?, toAddressesAndAmounts:NSArray,
                                               feeAmount:TLCoin, signTx: Bool = true, nonce: UInt32? = nil, ephemeralPrivateKeyHex: String? = nil, error:TLWalletUtils.ErrorWithString) -> (NSDictionary?, Array<String>, NSArray?) {
             let inputsData = NSMutableArray()
             let outputsData = NSMutableArray()
@@ -321,9 +47,8 @@
             var changeAddress:NSString? = nil
             var dustAmount:UInt64 = 0
             
-            if sendFromAddresses != nil {
-                for _importedAddress in sendFromAddresses! {
-                    let importedAddress = _importedAddress as! TLImportedAddress
+            if let sendFromAddresses = sendFromAddresses {
+                for importedAddress in sendFromAddresses {
                     if (changeAddress == nil) {
                         changeAddress = importedAddress.getAddress() as NSString?
                     }
@@ -331,7 +56,7 @@
                     let unspentOutputs = importedAddress.getUnspentArray()
                     for unspentOutput in unspentOutputs {
                         let amount = unspentOutput.value
-                        if (amount < DUST_AMOUNT) {
+                        if (amount < STATIC_MEMBERS.DUST_AMOUNT) {
                             dustAmount += amount
                             continue
                         }
@@ -340,7 +65,7 @@
                         
                         let outputScript = unspentOutput.script
                         
-                        let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(self.getSelectedObjectCoinType(), scriptHex: outputScript, isTestnet: self.appWallet.walletConfig.isTestnet)
+                        let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(coinType, scriptHex: outputScript, isTestnet: isTestnet)
                         if (address == nil) {
                             DLog("address cannot be decoded. not normal pubkeyhash outputScript: \(outputScript)")
                             continue
@@ -370,17 +95,16 @@
             }
             if (valueSelected.less(valueNeeded)) {
                 changeAddress = nil
-                if sendFromAccounts != nil {
+                if let sendFromAccounts = sendFromAccounts {
                     
-                    for _accountObject in sendFromAccounts! {
-                        let accountObject = _accountObject as! TLAccountObject
+                    for accountObject in sendFromAccounts {
                         if (changeAddress == nil) {
                             changeAddress = accountObject.getCurrentChangeAddress() as NSString?
                         }
     
                         let unspentOutputs = accountObject.getUnspentArray()
                         for unspentOutput in unspentOutputs {
-                            if (unspentOutput.value < DUST_AMOUNT) {
+                            if (unspentOutput.value < STATIC_MEMBERS.DUST_AMOUNT) {
                                 // if commented out, app will try to spend dust inputs
                                 dustAmount += unspentOutput.value
                                 continue
@@ -391,7 +115,7 @@
                             let outputScript = unspentOutput.script
                             DLog("createSignedSerializedTransactionHex outputScript: \(outputScript)")
                             
-                            let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(self.getSelectedObjectCoinType(), scriptHex: outputScript, isTestnet: self.appWallet.walletConfig.isTestnet)
+                            let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(coinType, scriptHex: outputScript, isTestnet: isTestnet)
                             if (address == nil) {
                                 DLog("address cannot be decoded. not normal pubkeyhash outputScript: \(outputScript)")
                                 continue
@@ -432,13 +156,13 @@
                     DLog("createSignedSerializedTransactionHex dustAmount \(Int(dustAmount))")
                     DLog("createSignedSerializedTransactionHex dustCoinAmount \(dustCoinAmount.toString())")
                     DLog("createSignedSerializedTransactionHex valueNeeded \(valueNeeded.toString())")
-                    let amountCanSendString = TLCurrencyFormat.coinToProperBitcoinAmountString(valueNeeded.subtract(dustCoinAmount), coinType: self.getSelectedObjectCoinType())
-                    error(String(format: TLDisplayStrings.INSUFFICIENT_FUNDS_ACCOUNT_CONTAINS_BITCOIN_DUST_STRING(), "\(amountCanSendString) \(TLCurrencyFormat.getBitcoinDisplay(self.getSelectedObjectCoinType()))"))
+                    let amountCanSendString = TLCurrencyFormat.coinToProperBitcoinAmountString(valueNeeded.subtract(dustCoinAmount), coinType: coinType)
+                    error(String(format: TLDisplayStrings.INSUFFICIENT_FUNDS_ACCOUNT_CONTAINS_BITCOIN_DUST_STRING(), "\(amountCanSendString) \(TLCurrencyFormat.getBitcoinDisplay(coinType))"))
                     return (nil, realToAddresses, nil)
                 }
-                let valueSelectedString = TLCurrencyFormat.coinToProperBitcoinAmountString(valueSelected, coinType: self.getSelectedObjectCoinType())
-                let valueNeededString = TLCurrencyFormat.coinToProperBitcoinAmountString(valueNeeded, coinType: self.getSelectedObjectCoinType())
-                error(String(format: TLDisplayStrings.INSUFFICIENT_FUNDS_ACCOUNT_BALANCE_IS_STRING(), "\(valueSelectedString) \(TLCurrencyFormat.getBitcoinDisplay(self.getSelectedObjectCoinType()))", "\(valueNeededString) \(TLCurrencyFormat.getBitcoinDisplay(self.getSelectedObjectCoinType()))"))
+                let valueSelectedString = TLCurrencyFormat.coinToProperBitcoinAmountString(valueSelected, coinType: coinType)
+                let valueNeededString = TLCurrencyFormat.coinToProperBitcoinAmountString(valueNeeded, coinType: coinType)
+                error(String(format: TLDisplayStrings.INSUFFICIENT_FUNDS_ACCOUNT_BALANCE_IS_STRING(), "\(valueSelectedString) \(TLCurrencyFormat.getBitcoinDisplay(coinType))", "\(valueNeededString) \(TLCurrencyFormat.getBitcoinDisplay(coinType))"))
                 return (nil, realToAddresses, nil)
             }
             
@@ -447,7 +171,7 @@
                 let toAddress = (toAddressesAndAmounts.object(at: i) as AnyObject).object(forKey: "address") as! String
                 let amount = (toAddressesAndAmounts.object(at: i) as AnyObject).object(forKey: "amount") as! TLCoin!
                 
-                if (!TLStealthAddress.isStealthAddress(toAddress, isTestnet:self.appWallet.walletConfig.isTestnet)) {
+                if (!TLStealthAddress.isStealthAddress(toAddress, isTestnet:isTestnet)) {
                     realToAddresses.append(toAddress)
                     
                     outputsData.add([
@@ -462,7 +186,7 @@
                     let ephemeralPrivateKey = ephemeralPrivateKeyHex != nil ? ephemeralPrivateKeyHex! : TLStealthAddress.generateEphemeralPrivkey()
                     let stealthDataScriptNonce = nonce != nil ? nonce! : TLStealthAddress.generateNonce()
                     let stealthDataScriptAndPaymentAddress = TLStealthAddress.createDataScriptAndPaymentAddress(toAddress,
-                        ephemeralPrivateKey: ephemeralPrivateKey, nonce: stealthDataScriptNonce, isTestnet: self.appWallet.walletConfig.isTestnet)
+                        ephemeralPrivateKey: ephemeralPrivateKey, nonce: stealthDataScriptNonce, isTestnet: isTestnet)
                     
                     DLog("createSignedSerializedTransactionHex stealthDataScript: \(stealthDataScriptAndPaymentAddress.0)")
                     DLog("createSignedSerializedTransactionHex paymentAddress: \(stealthDataScriptAndPaymentAddress.1)")
@@ -496,8 +220,8 @@
             
             for outputData in outputsData {
                 let outputAmount = ((outputData as! NSDictionary).object(forKey: "amount") as! NSNumber).uint64Value
-                if outputAmount <= DUST_AMOUNT {
-                    let dustAmountBitcoins = TLCurrencyFormat.coinToProperBitcoinAmountString(TLCoin(uint64: DUST_AMOUNT), coinType: self.getSelectedObjectCoinType(), withCode: true)
+                if outputAmount <= STATIC_MEMBERS.DUST_AMOUNT {
+                    let dustAmountBitcoins = TLCurrencyFormat.coinToProperBitcoinAmountString(TLCoin(uint64: STATIC_MEMBERS.DUST_AMOUNT), coinType: coinType, withCode: true)
                     error(String(format: TLDisplayStrings.CANNOT_CREATE_TRANSACTIONS_WITH_OUTPUTS_LESS_THEN_X_BITCOINS_STRING(), dustAmountBitcoins))
                     return (nil, realToAddresses, nil)
                 }
@@ -567,8 +291,8 @@
                     let firstAddress = (obj1 as! NSDictionary).object(forKey: "to_address") as! String
                     let secondAddress = (obj2 as! NSDictionary).object(forKey: "to_address") as! String
                     
-                    let firstScript = TLCoreBitcoinWrapper.getStandardPubKeyHashScriptFromAddress(self.getSelectedObjectCoinType(), address: firstAddress, isTestnet: self.appWallet.walletConfig.isTestnet)
-                    let secondScript = TLCoreBitcoinWrapper.getStandardPubKeyHashScriptFromAddress(self.getSelectedObjectCoinType(), address: secondAddress, isTestnet: self.appWallet.walletConfig.isTestnet)
+                    let firstScript = TLCoreBitcoinWrapper.getStandardPubKeyHashScriptFromAddress(coinType, address: firstAddress, isTestnet: isTestnet)
+                    let secondScript = TLCoreBitcoinWrapper.getStandardPubKeyHashScriptFromAddress(coinType, address: secondAddress, isTestnet: isTestnet)
                     
                     let firstScriptData = TLWalletUtils.hexStringToData(firstScript)!
                     let secondScriptData = TLWalletUtils.hexStringToData(secondScript)!
@@ -604,9 +328,9 @@
             DLog("createSignedSerializedTransactionHex outputAmounts: \(outputAmounts.debugDescription)")
             DLog("createSignedSerializedTransactionHex privateKeys: \(privateKeys.debugDescription)")
             for _ in 0...3 {
-                let txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(self.getSelectedObjectCoinType(), hashes:hashes, inputIndexes:inputIndexes, inputScripts:inputScripts,
+                let txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(coinType, hashes:hashes, inputIndexes:inputIndexes, inputScripts:inputScripts,
                     outputAddresses:outputAddresses, outputAmounts:outputAmounts, privateKeys:privateKeys,
-                    outputScripts:stealthOutputScripts, signTx: signTx, isTestnet: self.appWallet.walletConfig.isTestnet)
+                    outputScripts:stealthOutputScripts, signTx: signTx, isTestnet: isTestnet)
                 DLog("createSignedSerializedTransactionHex txHexAndTxHash: \(txHexAndTxHash.debugDescription)")
                 if txHexAndTxHash != nil {
                     return (txHexAndTxHash!, realToAddresses, isInputsAllFromHDAccountAddresses ? txInputsAccountHDIdxes : nil)

@@ -128,10 +128,6 @@
 
 "Cancel" = "Abbrechen";
 
-"Cannot archive your default account" = "Der standard Account kann nicht archiviert werden.";
-
-"Cannot archive your one and only account" = "Der einzige Account kann nicht archiviert werden.";
-
 "Cannot create transactions with outputs less then %@" = "Transaktionen können nicht erstellt werden mit Outputs weniger als %@";
 
 "Cannot decrypt iCloud backup wallet." = "Kann iCloud-Backup-Wallet nicht entschlüsseln.";

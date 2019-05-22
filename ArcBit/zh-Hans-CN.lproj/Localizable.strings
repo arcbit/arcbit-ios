@@ -128,10 +128,6 @@
 
 "Cancel" = "取消";
 
-"Cannot archive your default account" = "不能存档默认帐户";
-
-"Cannot archive your one and only account" = "不能存档的唯一帐户";
-
 "Cannot create transactions with outputs less then %@" = "无法创建输出小于%@的事务";
 
 "Cannot decrypt iCloud backup wallet." = "无法解密iCloud备份钱包。";

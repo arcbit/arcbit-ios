@@ -417,8 +417,11 @@ import Crashlytics
         }
         
         let reader = TLQRCodeScannerViewController(success:{(data: String?) in
-            
-            let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+            guard let godSend = AppDelegate.instance().coinWalletsManager!.godSend else {
+                TLPrompts.promptErrorMessage(TLDisplayStrings.ERROR_STRING(), message: "You need to select an account first.")
+                return
+            }
+            let coinType = godSend.getSelectedObjectCoinType()
             if let data = data, TLCoreBitcoinWrapper.isBIP38EncryptedKey(coinType, privateKey: data, isTestnet: self.appWallet.walletConfig.isTestnet) {
                 self.scannedEncryptedPrivateKey = data
             }

@@ -127,13 +127,24 @@ import UIKit
         
         if (TLSuggestions.instance().conditionToPromptToSuggestedBackUpWalletPassphraseSatisfied()) {
             TLSuggestions.instance().promptToSuggestBackUpWalletPassphrase(self)
-        } else if let balance = AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.getBalanceForSelectedObject(), balance.greater(TLCoin.zero()) && !TLPreferences.hasShownBackupPassphrase() {
-            self.showPromptThenPassphraseViewController()
+        } else {
+            guard let receiveSelectedObject = AppDelegate.instance().coinWalletsManager!.receiveSelectedObject else {
+                return
+            }
+            if let balance = receiveSelectedObject.getBalanceForSelectedObject(), balance.greater(TLCoin.zero()) && !TLPreferences.hasShownBackupPassphrase() {
+                self.showPromptThenPassphraseViewController()
+            }
         }
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    func updateViewToNoneSelectedObject() {
+        self.accountNameLabel!.text = ""
+        self.accountBalanceLabel!.text = ""
+        self.balanceActivityIndicatorView!.isHidden = true
     }
     
     func refreshSelectedAccountAgain() {
@@ -155,9 +166,14 @@ import UIKit
     }
     
     fileprivate func refreshSelectedAccount(_ fetchDataAgain: Bool) {
-        if (!AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.hasFetchedCurrentFromData() || fetchDataAgain) {
-            if (AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.getSelectedObjectType() == .account) {
-                let accountObject = AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.getSelectedObject() as! TLAccountObject
+        guard let receiveSelectedObject = AppDelegate.instance().coinWalletsManager!.receiveSelectedObject else {
+            self.updateViewToNoneSelectedObject()
+            return
+        }
+
+        if (!receiveSelectedObject.hasFetchedCurrentFromData() || fetchDataAgain) {
+            if receiveSelectedObject.getSelectedObjectType() == .account {
+                let accountObject = receiveSelectedObject.getSelectedObject() as! TLAccountObject
                 self.balanceActivityIndicatorView!.isHidden = false
                 self.accountBalanceLabel!.isHidden = true
                 self.balanceActivityIndicatorView!.startAnimating()
@@ -170,8 +186,8 @@ import UIKit
                     }
                 })
                 
-            } else if (AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.getSelectedObjectType() == .address) {
-                let importedAddress = AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.getSelectedObject() as! TLImportedAddress
+            } else if receiveSelectedObject.getSelectedObjectType() == .address {
+                let importedAddress = receiveSelectedObject.getSelectedObject() as! TLImportedAddress
                 self.balanceActivityIndicatorView!.isHidden = false
                 self.accountBalanceLabel!.isHidden = true
                 self.balanceActivityIndicatorView!.startAnimating()
@@ -185,8 +201,8 @@ import UIKit
                 })
             }
         } else {
-            let coinType = AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.getSelectedObjectCoinType()
-            let balance = TLCurrencyFormat.getProperAmount(AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.getBalanceForSelectedObject()!, coinType: coinType)
+            let coinType = receiveSelectedObject.getSelectedObjectCoinType()
+            let balance = TLCurrencyFormat.getProperAmount(receiveSelectedObject.getBalanceForSelectedObject()!, coinType: coinType)
             accountBalanceLabel!.text = balance as String
             self.balanceActivityIndicatorView!.isHidden = true
         }
@@ -207,7 +223,7 @@ import UIKit
         iToast.makeText(TLDisplayStrings.COPIED_TO_CLIPBOARD_STRING()).setGravity(iToastGravityCenter).setDuration(1000).show()
     }
     
-    @IBAction fileprivate func scrollViewClicked(_ sender: AnyObject) {
+    @IBAction func scrollViewClicked(_ sender: AnyObject) {
         if self.receiveAddresses == nil {
             // receiveAddresses not loaded yet
             return
@@ -309,8 +325,8 @@ import UIKit
                 y: 0,
                 width: QRCodeImageWidth,
                 height: QRCodeImageWidth)
-            
-            if (i < self.receiveAddresses!.count - 1 || AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.getSelectedObjectType() == .address) {
+            let receiveSelectedObject = AppDelegate.instance().coinWalletsManager!.receiveSelectedObject
+            if (i < self.receiveAddresses!.count - 1 || receiveSelectedObject?.getSelectedObjectType() == .address) {
                     
                     
                 let address = self.receiveAddresses!.object(at: i) as! String
@@ -364,9 +380,12 @@ import UIKit
                     //QRCodeImageView.backgroundColor = UIColor.orangeColor()
                 }
             } else {
-                if AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.getAccountType() == .coldWallet {
+                guard let receiveSelectedObject = AppDelegate.instance().coinWalletsManager!.receiveSelectedObject else {
+                    return
+                }
+                if receiveSelectedObject.getAccountType() == .coldWallet {
                     pageView.addSubview(self.getAddressInfoLabel(imageViewFrame, text: coldWalletAccountStealthAddressInfoText))
-                } else if AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.getAccountType() == .importedWatch {
+                } else if receiveSelectedObject.getAccountType() == .importedWatch {
                     pageView.addSubview(self.getAddressInfoLabel(imageViewFrame, text: importedWatchAccountStealthAddressInfoText))
                 } else {
                     pageView.addSubview(self.getAddressInfoLabel(imageViewFrame, text: newAddressInfoText))
@@ -400,14 +419,17 @@ import UIKit
     }
 
     fileprivate func updateReceiveAddressArray() {
-        let receivingAddressesCount = AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.getReceivingAddressesCount()
-        self.receiveAddresses = NSMutableArray(capacity: Int(receivingAddressesCount))
+        guard let receiveSelectedObject = AppDelegate.instance().coinWalletsManager!.receiveSelectedObject else {
+            return
+        }
+        let receivingAddressesCount = receiveSelectedObject.getReceivingAddressesCount()
+        self.receiveAddresses = NSMutableArray(capacity: receivingAddressesCount)
         for i in stride(from: 0, to: Int(receivingAddressesCount), by: 1) {
-            let address = AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.getReceivingAddressForSelectedObject(i)
+            let address = receiveSelectedObject.getReceivingAddressForSelectedObject(i)
             self.receiveAddresses!.add(address!)
         }
 
-        if (AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.getSelectedObjectType() == .account) {
+        if receiveSelectedObject.getSelectedObjectType() == .account {
             self.receiveAddresses!.add("End")
         }
     }
@@ -419,13 +441,17 @@ import UIKit
     func updateViewToNewSelectedObject() {
         DispatchQueue.main.async {
             self.updateAccountBalance()
-            let receivingAddressesCount = AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.getReceivingAddressesCount()
+            guard let receiveSelectedObject = AppDelegate.instance().coinWalletsManager!.receiveSelectedObject else {
+                self.updateViewToNoneSelectedObject()
+                return
+            }
+            let receivingAddressesCount = receiveSelectedObject.getReceivingAddressesCount()
             if (receivingAddressesCount == 0) {
                 // this happens if receiving addresses have not been computed yet (cuz it requires look ups), thus don't update UI yet
                 // EVENT_UPDATED_RECEIVING_ADDRESSES will fire and this method be called
                 return
             }
-            let label = AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.getLabelForSelectedObject()
+            let label = receiveSelectedObject.getLabelForSelectedObject()
             self.accountNameLabel!.text = label
             self.updateReceiveAddressArray()
             self.updateReceiveAddressesView()
@@ -434,11 +460,15 @@ import UIKit
     }
 
     fileprivate func updateAccountBalance() {
-        let balance = AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.getBalanceForSelectedObject()
-        let coinType = AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.getSelectedObjectCoinType()
+        guard let receiveSelectedObject = AppDelegate.instance().coinWalletsManager!.receiveSelectedObject else {
+            self.updateViewToNoneSelectedObject()
+            return
+        }
+        let balance = receiveSelectedObject.getBalanceForSelectedObject()
+        let coinType = receiveSelectedObject.getSelectedObjectCoinType()
         let balanceString = TLCurrencyFormat.getProperAmount(balance!, coinType: coinType)
         
-        if AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.getDownloadState() == .downloaded {
+        if receiveSelectedObject.getDownloadState() == .downloaded {
             self.balanceActivityIndicatorView!.stopAnimating()
             self.balanceActivityIndicatorView!.isHidden = true
             self.accountBalanceLabel!.text = balanceString as String
@@ -526,7 +556,11 @@ import UIKit
 
 extension TLReceiveViewController {
     func updateViewForEnabledCryptoCoinsIfChanged() {
-        let receivedObjectCurrentCoinType = AppDelegate.instance().coinWalletsManager!.receiveSelectedObject.getSelectedObjectCoinType()
+        guard let receiveSelectedObject = AppDelegate.instance().coinWalletsManager!.receiveSelectedObject else {
+            self.updateViewToNoneSelectedObject()
+            return
+        }
+        let receivedObjectCurrentCoinType = receiveSelectedObject.getSelectedObjectCoinType()
         if !TLPreferences.isCryptoCoinEnabled(receivedObjectCurrentCoinType) {
             AppDelegate.instance().coinWalletsManager!.updateSelectedObjectsToEnabledCoin(TLSelectAccountObjectType.receive)
             self.updateViewToNewSelectedObject()

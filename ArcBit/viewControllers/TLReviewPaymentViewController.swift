@@ -79,7 +79,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     var toAmount:TLCoin?
     var amountMovedFromAccount: TLCoin? = nil
     var realToAddresses: Array<String>? = nil
-    
+
 
     
     private var scannedSignedTxAirGapDataPartsDict = [Int:String]()
@@ -114,7 +114,10 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         self.sendButton.backgroundColor = TLColors.mainAppColor()
         self.sendButton.setTitleColor(TLColors.mainAppOppositeColor(), for: UIControlState())
         
-        let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+        guard let godSend = AppDelegate.instance().coinWalletsManager!.godSend else {
+            return
+        }
+        let coinType = godSend.getSelectedObjectCoinType()
         let sendButtonTitleName = TLDisplayStrings.SEND_STRING() + " " +  TLWalletUtils.GET_CRYPTO_COIN_FULL_NAME(coinType)
         self.sendButton.setTitle(sendButtonTitleName, for: .normal)
         
@@ -145,9 +148,12 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     func updateView() {
+        guard let godSend = AppDelegate.instance().coinWalletsManager!.godSend else {
+            return
+        }
         self.fromLabel.text = TLSendFormData.instance().fromLabel
         self.toLabel.text = TLSendFormData.instance().getAddress()
-        let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+        let coinType = godSend.getSelectedObjectCoinType()
         self.unitLabel.text = TLCurrencyFormat.getBitcoinDisplay(coinType)
         self.fiatUnitLabel.text = TLCurrencyFormat.getFiatCurrency()
         self.toAmountLabel.text = TLCurrencyFormat.coinToProperBitcoinAmountString(TLSendFormData.instance().toAmount!, coinType: coinType, withCode: false)
@@ -160,7 +166,10 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
     
     fileprivate func showPromptForSetTransactionFee() {
-        let msg = String(format: TLDisplayStrings.SET_TRANSACTION_FEE_IN_X_STRING(), TLCurrencyFormat.getBitcoinDisplay(AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()))
+        guard let godSend = AppDelegate.instance().coinWalletsManager!.godSend else {
+            return
+        }
+        let msg = String(format: TLDisplayStrings.SET_TRANSACTION_FEE_IN_X_STRING(), TLCurrencyFormat.getBitcoinDisplay(godSend.getSelectedObjectCoinType()))
 
         func addTextField(_ textField: UITextField!){
             textField.placeholder = ""
@@ -184,10 +193,10 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                                                         if (buttonIndex == alertView!.firstOtherButtonIndex) {
                                                             let feeAmountString = (alertView!.textFields![0]).text
                                                             
-                                                            let feeAmount = TLCurrencyFormat.properBitcoinAmountStringToCoin(feeAmountString!, coinType: AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType())
+                                                            let feeAmount = TLCurrencyFormat.properBitcoinAmountStringToCoin(feeAmountString!, coinType: godSend.getSelectedObjectCoinType())
                                                             
                                                             let amountNeeded = TLSendFormData.instance().toAmount!.add(feeAmount)
-                                                            let sendFromBalance = AppDelegate.instance().coinWalletsManager!.godSend.getCurrentFromBalance()
+                                                            let sendFromBalance = godSend.getCurrentFromBalance()
                                                             if (amountNeeded.greater(sendFromBalance)) {
                                                                 TLPrompts.promptErrorMessage(TLDisplayStrings.INSUFFICIENT_FUNDS_STRING(), message: TLDisplayStrings.YOUR_NEW_TRANSACTION_FEE_IS_TOO_HIGH_STRING())
                                                                 return
@@ -202,8 +211,11 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     func showPromptPaymentSent(_ txHash: String, address: String, amount: TLCoin) {
+        guard let godSend = AppDelegate.instance().coinWalletsManager!.godSend else {
+            return
+        }
         DLog("showPromptPaymentSent \(txHash)")
-        let msg = String(format:TLDisplayStrings.SENT_X_TO_Y_STRING(), TLCurrencyFormat.getProperAmount(amount, coinType: AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()), address)
+        let msg = String(format:TLDisplayStrings.SENT_X_TO_Y_STRING(), TLCurrencyFormat.getProperAmount(amount, coinType: godSend.getSelectedObjectCoinType()), address)
         TLHUDWrapper.hideHUDForView(self.view, animated: true)
         TLPrompts.promtForOK(self, title: "", message: msg, success: {
             self.dismiss(animated: true, completion: nil)
@@ -216,12 +228,15 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     func retryFinishSend() {
+        guard let godSend = AppDelegate.instance().coinWalletsManager!.godSend else {
+            return
+        }
         DLog("retryFinishSend \(self.sendTxHash)")
         if !AppDelegate.instance().webSocketNotifiedTxHashSet.contains(self.sendTxHash!) {
-            let nonUpdatedBalance = AppDelegate.instance().coinWalletsManager!.godSend.getCurrentFromBalance()
+            let nonUpdatedBalance = godSend.getCurrentFromBalance()
             let accountNewBalance = nonUpdatedBalance.subtract(self.amountMovedFromAccount!)
             DLog("retryFinishSend 2 \(self.sendTxHash)")
-            AppDelegate.instance().coinWalletsManager!.godSend.setCurrentFromBalance(accountNewBalance)
+            godSend.setCurrentFromBalance(accountNewBalance)
         }
 
         if !self.showedPromptedForSentPaymentTxHashSet.contains(self.sendTxHash!) {
@@ -242,12 +257,15 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     func initiateSend() {
-        let unspentOutputsSum = AppDelegate.instance().coinWalletsManager!.godSend.getCurrentFromUnspentOutputsSum()
+        guard let godSend = AppDelegate.instance().coinWalletsManager!.godSend else {
+            return
+        }
+        let unspentOutputsSum = godSend.getCurrentFromUnspentOutputsSum()
         if (unspentOutputsSum.less(TLSendFormData.instance().toAmount!)) {
             // can only happen if unspentOutputsSum is for some reason less then the balance computed from the transactions, which it shouldn't
             cancelSend()
-            let unspentOutputsSumString = TLCurrencyFormat.coinToProperBitcoinAmountString(unspentOutputsSum, coinType: AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType())
-            TLPrompts.promptErrorMessage(TLDisplayStrings.INSUFFICIENT_FUNDS_STRING(), message: String(format: TLDisplayStrings.SOME_FUNDS_MAY_BE_PENDING_CONFIRMATION_DESC_STRING(), "\(unspentOutputsSumString) \(TLCurrencyFormat.getBitcoinDisplay(AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()))"))
+            let unspentOutputsSumString = TLCurrencyFormat.coinToProperBitcoinAmountString(unspentOutputsSum, coinType: godSend.getSelectedObjectCoinType())
+            TLPrompts.promptErrorMessage(TLDisplayStrings.INSUFFICIENT_FUNDS_STRING(), message: String(format: TLDisplayStrings.SOME_FUNDS_MAY_BE_PENDING_CONFIRMATION_DESC_STRING(), "\(unspentOutputsSumString) \(TLCurrencyFormat.getBitcoinDisplay(godSend.getSelectedObjectCoinType()))"))
             return
         }
         
@@ -256,8 +274,16 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
         toAddressesAndAmount.setObject(TLSendFormData.instance().toAmount!, forKey: "amount" as NSCopying)
         let toAddressesAndAmounts = NSArray(objects: toAddressesAndAmount)
         
-        let signTx = !AppDelegate.instance().coinWalletsManager!.godSend.isColdWalletAccount()
-        let ret = AppDelegate.instance().coinWalletsManager!.godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts,
+        let signTx = !godSend.isColdWalletAccount()
+        var sendFromAccounts: Array<TLAccountObject>? = nil
+        var sendFromAddresses: Array<TLImportedAddress>? = nil
+        if let godSend = godSend as? TLAccountObject {
+            sendFromAccounts = [godSend]
+        } else if let godSend = godSend as? TLImportedAddress {
+            sendFromAddresses = [godSend]
+        }
+        let isTestnet = AppDelegate.instance().appWallet.walletConfig.isTestnet
+        let ret = TLSpaghettiGodSend.createSignedSerializedTransactionHex(isTestnet, coinType: godSend.getSelectedObjectCoinType(),  sendFromAccounts: sendFromAccounts, sendFromAddresses: sendFromAddresses, toAddressesAndAmounts: toAddressesAndAmounts,
                                                                                        feeAmount: TLSendFormData.instance().feeAmount!,
                                                                                        signTx: signTx,
                                                                                        error: {
@@ -283,7 +309,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
             return
         }
         
-        if AppDelegate.instance().coinWalletsManager!.godSend.isColdWalletAccount() {
+        if godSend.isColdWalletAccount() {
             cancelSend()
             let txInputsAccountHDIdxes = ret.2
             let inputScripts = txHexAndTxHash!.object(forKey: "inputScripts") as! NSArray
@@ -295,18 +321,21 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
 
     func prepAndBroadcastTx(_ txHex: String, txHash: String) {
-        if AppDelegate.instance().coinWalletsManager!.godSend.isPaymentToOwnAccount(TLSendFormData.instance().getAddress()!) {
+        guard let godSend = AppDelegate.instance().coinWalletsManager!.godSend else {
+            return
+        }
+        if godSend.isPaymentToOwnAccount(TLSendFormData.instance().getAddress()!) {
             self.amountMovedFromAccount = TLSendFormData.instance().feeAmount!
         } else {
             self.amountMovedFromAccount = TLSendFormData.instance().toAmount!.add(TLSendFormData.instance().feeAmount!)
         }
         
-        let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+        let coinType = godSend.getSelectedObjectCoinType()
         for address in self.realToAddresses! {
             TLTransactionListener.instance().listenToIncomingTransactionForAddress(coinType, address: address)
         }
         
-        TLSendFormData.instance().beforeSendBalance = AppDelegate.instance().coinWalletsManager!.godSend.getCurrentFromBalance()
+        TLSendFormData.instance().beforeSendBalance = godSend.getCurrentFromBalance()
         self.sendTxHash = txHash
         self.toAddress = TLSendFormData.instance().getAddress()
         self.toAmount = TLSendFormData.instance().toAmount
@@ -316,12 +345,15 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
     
     func broadcastTx(_ txHex: String, txHash: String, toAddress: String) {
+        guard let godSend = AppDelegate.instance().coinWalletsManager!.godSend else {
+            return
+        }
         let handlePushTxSuccess = { () -> () in
             NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_SEND_PAYMENT()),
                                                                       object: nil, userInfo: nil)
         }
         
-        let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+        let coinType = godSend.getSelectedObjectCoinType()
         TLPushTxAPI.instance().sendTx(coinType, txHex: txHex, txHash: txHash, toAddress: toAddress, success: {
             (jsonData) in
             DLog("showPromptReviewTx pushTx: success \(jsonData)")
@@ -336,7 +368,7 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
                 }
             }
             
-            let coinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+            let coinType = godSend.getSelectedObjectCoinType()
             if let label = AppDelegate.instance().coinWalletsManager!.getLabelForAddress(coinType, address: toAddress) {
                 AppDelegate.instance().coinWalletsManager!.setTransactionTag(coinType, txid: txHash, tag: label)
             }
@@ -365,8 +397,12 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
     
     func promptToSignTransaction(_ unSignedTx: String, inputScripts:NSArray, txInputsAccountHDIdxes:NSArray) {
-        let extendedPublicKey = AppDelegate.instance().coinWalletsManager!.godSend.getExtendedPubKey()
-        if let airGapDataBase64 = TLColdWallet.createSerializedUnsignedTxAipGapData(unSignedTx, extendedPublicKey: extendedPublicKey!, inputScripts: inputScripts, txInputsAccountHDIdxes: txInputsAccountHDIdxes) {
+        guard let godSend = AppDelegate.instance().coinWalletsManager!.godSend else {
+            return
+        }
+        let accountObject = AppDelegate.instance().coinWalletsManager!.godSend as! TLAccountObject
+        let extendedPublicKey = accountObject.getExtendedPubKey()
+        if let airGapDataBase64 = TLColdWallet.createSerializedUnsignedTxAipGapData(unSignedTx, extendedPublicKey: extendedPublicKey, inputScripts: inputScripts, txInputsAccountHDIdxes: txInputsAccountHDIdxes) {
             self.airGapDataBase64PartsArray = TLColdWallet.splitStringToArray(airGapDataBase64)
             DLog("airGapDataBase64PartsArray \(airGapDataBase64PartsArray)")
             TLPrompts.promtForOKCancel(self, title: TLDisplayStrings.SPENDING_FROM_A_COLD_WALLET_ACCOUNT_STRING(), message: TLDisplayStrings.SPENDING_FROM_A_COLD_WALLET_ACCOUNT_DESC_STRING(), success: {
@@ -387,9 +423,12 @@ fileprivate func > <T : Comparable>(lhs: T?, rhs: T?) -> Bool {
     }
     
     @IBAction func sendButtonClicked(_ sender: AnyObject) {
+        guard let godSend = AppDelegate.instance().coinWalletsManager!.godSend else {
+            return
+        }
         self.startSendTimer()
-        if !AppDelegate.instance().coinWalletsManager!.godSend.haveUpDatedUTXOs() {
-            AppDelegate.instance().coinWalletsManager!.godSend.getAndSetUnspentOutputs({
+        if !godSend.haveUpDatedUnspentOutputs() {
+            godSend.getAndSetUnspentOutputs({
                 self.initiateSend()
                 }, failure: {
                     self.cancelSend()

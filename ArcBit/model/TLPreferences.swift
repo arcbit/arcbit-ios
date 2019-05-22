@@ -871,8 +871,8 @@ extension TLPreferences {
     
     class func resetBlockExplorerAPIURLBitcoinCash() -> () {
         let blockExplorer2blockExplorerURLDict = NSMutableDictionary(capacity: 2)
-        blockExplorer2blockExplorerURLDict.setObject("https://bitcoincash.blockexplorer.com/" ,forKey:String(format:"%ld", TLBlockExplorer.bitcoinCash_blockexplorer.rawValue) as NSCopying)
-        blockExplorer2blockExplorerURLDict.setObject("https://bch-insight.bitpay.com/" ,forKey:String(format:"%ld", TLBlockExplorer.bitcoinCash_insight.rawValue) as NSCopying)
+        blockExplorer2blockExplorerURLDict.setObject(TLWalletUtils.BLOCK_EXPLORER_API_STRING(.BCH, blockExplorer: TLBlockExplorer.bitcoinCash_blockexplorer) ,forKey:String(format:"%ld", TLBlockExplorer.bitcoinCash_blockexplorer.rawValue) as NSCopying)
+        blockExplorer2blockExplorerURLDict.setObject(TLWalletUtils.BLOCK_EXPLORER_API_STRING(.BCH, blockExplorer: TLBlockExplorer.bitcoinCash_insight) ,forKey:String(format:"%ld", TLBlockExplorer.bitcoinCash_insight.rawValue) as NSCopying)
         UserDefaults.standard.set(blockExplorer2blockExplorerURLDict ,forKey:CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT_BITCOIN_CASH)
         UserDefaults.standard.synchronize()
     }
@@ -893,8 +893,8 @@ extension TLPreferences {
     
     class func resetBlockExplorerAPIURLBitcoin() -> () {
         let blockExplorer2blockExplorerURLDict = NSMutableDictionary(capacity: 2)
-        blockExplorer2blockExplorerURLDict.setObject("https://blockchain.info/" ,forKey:String(format:"%ld", TLBlockExplorer.bitcoin_blockchain.rawValue) as NSCopying)
-        blockExplorer2blockExplorerURLDict.setObject("https://insight.bitpay.com/" ,forKey:String(format:"%ld", TLBlockExplorer.bitcoin_insight.rawValue) as NSCopying)
+        blockExplorer2blockExplorerURLDict.setObject(TLWalletUtils.BLOCK_EXPLORER_API_STRING(.BTC, blockExplorer: TLBlockExplorer.bitcoin_blockchain) ,forKey:String(format:"%ld", TLBlockExplorer.bitcoin_blockchain.rawValue) as NSCopying)
+        blockExplorer2blockExplorerURLDict.setObject(TLWalletUtils.BLOCK_EXPLORER_API_STRING(.BTC, blockExplorer: TLBlockExplorer.bitcoin_insight) ,forKey:String(format:"%ld", TLBlockExplorer.bitcoin_insight.rawValue) as NSCopying)
         UserDefaults.standard.set(blockExplorer2blockExplorerURLDict ,forKey:CLASS_STATIC.PREFERENCE_BLOCKEXPLORER_API_URL_DICT_BITCOIN)
         UserDefaults.standard.synchronize()
     }

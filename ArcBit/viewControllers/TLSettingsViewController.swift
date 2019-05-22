@@ -105,6 +105,23 @@ import AVFoundation
             hiddenKeys.add("stealthaddressfooter")
         }
         
+
+        // hide disabled coins setting options
+        TLCoinType.allCases.forEach {
+            TLWalletUtils.COIN_SETTINGS_KEYS($0).forEach({ (key) in
+                hiddenKeys.add(key)
+            })
+        }
+        TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
+            TLWalletUtils.COIN_SETTINGS_KEYS(coinType).forEach({ (key) in
+                hiddenKeys.remove(key)
+            })
+        })
+
+        if TLWalletUtils.SUPPORT_COIN_TYPES().count <= 1 {
+            hiddenKeys.add("enablecoinskey")
+        }
+        
         self.setHiddenKeys(hiddenKeys as Set<NSObject>, animated: true)
     }
     

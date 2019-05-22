@@ -13,9 +13,153 @@ class ArcBitTests: XCTestCase {
     
     var coinType = TLCoinType.BTC
     
+    var mockWalletPayload = NSMutableDictionary()
+    var wallets = NSMutableArray()
+    var wallet = NSMutableDictionary()
+    var backupPassphrase:String = ""
+    var masterHex:String = ""
+    var walletConfig:TLWalletConfig = TLWalletConfig(isTestnet: false)
+    var extendPrivKey:String = ""
+    
+    var extendPubKey:String = ""
+    let mainAddressIndex0 = [0,0]
+    var mainAddress0:String = ""
+    //    XCTAssertTrue("1K7fXZeeQydcUvbsfvkMSQmiacV5sKRYQz" == mainAddress0)
+    let changeAddressIndex0 = [1,0]
+    var changeAddress0:String = ""
+    //    XCTAssertTrue("1CvpGn9VxVY1nsWWL3MSWRYaBHdNkCDbmv" == changeAddress0)
+
+    
+    
+    var accountObject:TLAccountObject? = nil
+    var sendFromAccounts: Array<TLAccountObject>? = nil
+    let sendFromAddresses: Array<TLImportedAddress>? = nil
+    let isTestnet = false
+
     override func setUp() {
         super.setUp()
         // Put setup code here. This method is called before the invocation of each test method in the class.
+        
+        mockWalletPayload.setObject("1", forKey: "version" as NSCopying)
+        backupPassphrase = "slogan lottery zone helmet fatigue rebuild solve best hint frown conduct ill"
+        masterHex = TLHDWalletWrapper.getMasterHex(backupPassphrase)
+        extendPrivKey = TLHDWalletWrapper.getExtendPrivKey(self.coinType, masterHex: masterHex, accountIdx:0)
+        
+        extendPubKey = TLHDWalletWrapper.getExtendPubKey(extendPrivKey)
+//        mainAddressIndex0 = [0,0]
+        mainAddress0 = TLHDWalletWrapper.getAddress(self.coinType, extendPubKey:extendPubKey, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
+        //    XCTAssertTrue("1K7fXZeeQydcUvbsfvkMSQmiacV5sKRYQz" == mainAddress0)
+//        changeAddressIndex0 = [1,0]
+        changeAddress0 = TLHDWalletWrapper.getAddress(self.coinType, extendPubKey:extendPubKey, sequence:changeAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
+        //    XCTAssertTrue("1CvpGn9VxVY1nsWWL3MSWRYaBHdNkCDbmv" == changeAddress0)
+        
+        func getMockCoinWallet(_ coinType: TLCoinType) -> NSMutableDictionary {
+            var imports = NSMutableDictionary()
+            imports.setObject(NSMutableArray(), forKey: "imported_accounts" as NSCopying)
+            imports.setObject(NSMutableArray(), forKey: "imported_private_keys" as NSCopying)
+            imports.setObject(NSMutableArray(), forKey: "watch_only_accounts" as NSCopying)
+            imports.setObject(NSMutableArray(), forKey: "watch_only_addresses" as NSCopying)
+            imports.setObject(NSMutableArray(), forKey: "cold_wallet_accounts" as NSCopying)
+            
+            var hdWallets = NSMutableArray()
+            
+            var hdWallet = NSMutableDictionary()
+            hdWallet.setObject(0, forKey: "current_account_id" as NSCopying)
+            hdWallet.setObject(0, forKey: "master_hex" as NSCopying)
+            hdWallet.setObject(1, forKey: "max_account_id_created" as NSCopying)
+            hdWallet.setObject("default", forKey: "name" as NSCopying)
+            hdWallet.setObject(backupPassphrase, forKey: "passphrase" as NSCopying)
+            
+            var accounts = NSMutableArray()
+            var accountDict = NSMutableDictionary()
+            accountDict.setObject(0, forKey: "account_idx" as NSCopying)
+            accountDict.setObject(extendPubKey, forKey: "xpub" as NSCopying)
+            accountDict.setObject(extendPrivKey, forKey: "xpriv" as NSCopying)
+            
+            var changeAdresses = NSMutableArray()
+            var changeAdress = NSMutableDictionary()
+            changeAdress.setObject(changeAddress0, forKey: "address" as NSCopying)
+            changeAdress.setObject(0, forKey: "index" as NSCopying)
+            changeAdress.setObject(1, forKey: "status" as NSCopying)
+            changeAdresses.add(changeAdress)
+            accountDict.setObject(changeAdresses, forKey: "change_addresses" as NSCopying)
+            
+            var mainAddresses = NSMutableArray()
+            var mainAddress = NSMutableDictionary()
+            mainAddress.setObject(mainAddress0, forKey: "address" as NSCopying)
+            mainAddress.setObject(0, forKey: "index" as NSCopying)
+            mainAddress.setObject(1, forKey: "status" as NSCopying)
+            mainAddresses.add(mainAddress)
+            accountDict.setObject(mainAddresses, forKey: "main_addresses" as NSCopying)
+            
+            accountDict.setObject(0, forKey: "min_change_address_vidx" as NSCopying)
+            accountDict.setObject(0, forKey: "min_main_address_idx" as NSCopying)
+            accountDict.setObject("Account 1", forKey: "name" as NSCopying)
+            accountDict.setObject(0, forKey: "needs_recovering" as NSCopying)
+            accountDict.setObject(1, forKey: "status" as NSCopying)
+            
+            
+            var stealthAddresses = NSMutableArray()
+            var stealthAddress = NSMutableDictionary()
+            stealthAddress.setObject(0, forKey: "last_tx_time" as NSCopying)
+            stealthAddress.setObject(NSMutableArray(), forKey: "payments" as NSCopying)
+            stealthAddress.setObject("NOTUSED", forKey: "scan_key" as NSCopying)
+            var servers = NSMutableDictionary()
+            var watching = NSMutableDictionary()
+            watching.setObject(1, forKey: "watching" as NSCopying)
+            servers.setObject(watching, forKey: "www.arcbit.net" as NSCopying)
+            stealthAddress.setObject(servers, forKey: "servers" as NSCopying)
+            stealthAddress.setObject("NOTUSED", forKey: "spend_key" as NSCopying)
+            stealthAddress.setObject("NOTUSED", forKey: "stealth_address" as NSCopying)
+            stealthAddresses.add(stealthAddress)
+            
+            accountDict.setObject(stealthAddresses, forKey: "stealth_addresses" as NSCopying)
+            accounts.add(accountDict)
+            
+            accountDict.setObject(extendPrivKey, forKey: "xprv" as NSCopying)
+            accountDict.setObject(extendPubKey, forKey: "xpub" as NSCopying)
+            
+            hdWallet.setObject(accounts, forKey: "accounts" as NSCopying)
+            hdWallets.add(hdWallet)
+            
+            let coinWallet = NSMutableDictionary()
+            coinWallet.setObject(hdWallets, forKey: "hd_wallets" as NSCopying)
+            coinWallet.setObject(NSMutableArray(), forKey: "address_book" as NSCopying)
+            coinWallet.setObject(imports, forKey: "imports" as NSCopying)
+            coinWallet.setObject(NSMutableArray(), forKey: "tx_tags" as NSCopying)
+            return coinWallet
+        }
+        
+        wallet.setObject(getMockCoinWallet(TLCoinType.BTC), forKey: "BTC" as NSCopying)
+        wallet.setObject(getMockCoinWallet(TLCoinType.BCH), forKey: "BCH" as NSCopying)
+        
+        wallets.add(wallet)
+        var payload = NSMutableDictionary()
+        payload.setObject(wallets, forKey: "wallets" as NSCopying)
+        mockWalletPayload.setObject(payload, forKey: "payload" as NSCopying)
+        
+        let appWallet = TLWallet(walletName: "Test Wallet", walletConfig: walletConfig)
+        appWallet.loadWalletPayload(mockWalletPayload, masterHex:masterHex)
+        
+        
+        let accountsArray = appWallet.getAccountObjectArray(TLCoinType.BTC)
+        
+        
+        accountObject = accountsArray.object(at: 0) as! TLAccountObject
+        sendFromAccounts = [accountObject!]
+
+    }
+    
+    func mockUnspentOutput(_ txid: String, value: UInt64, txOutputN: Int) -> TLUnspentOutputObject {
+        let fromAddress = BTCAddress(base58String: mainAddress0)
+        var unspentOutput = NSMutableDictionary()
+        unspentOutput.setObject(TLWalletUtils.reverseHexString(txid), forKey: "tx_hash" as NSCopying)
+        unspentOutput.setObject(txid, forKey: "tx_hash_big_endian" as NSCopying)
+        unspentOutput.setObject(txOutputN, forKey: "tx_output_n" as NSCopying)
+        unspentOutput.setObject(BTCScript(address: fromAddress).hex, forKey: "script" as NSCopying)
+        unspentOutput.setObject(NSNumber(value: value as UInt64), forKey: "value" as NSCopying)
+        unspentOutput.setObject(6, forKey: "confirmations" as NSCopying)
+        return TLUnspentOutputObject(unspentOutput)
     }
     
     override func tearDown() {
@@ -270,1187 +414,1069 @@ class ArcBitTests: XCTestCase {
         XCTAssertTrue(txSize.uintValue == 193)
     }
     
-    func testCreateSignedSerializedTransactionHexAndBIP69() {
-        NSLog("testCreateSignedSerializedTransactionHexAndBIP69")
-        
-        var mockWalletPayload = NSMutableDictionary()
-        mockWalletPayload.setObject("1", forKey: "version" as NSCopying)
-        var wallets = NSMutableArray()
-        var wallet = NSMutableDictionary()
-        
-        var backupPassphrase = "slogan lottery zone helmet fatigue rebuild solve best hint frown conduct ill"
-        let masterHex = TLHDWalletWrapper.getMasterHex(backupPassphrase)
-        let walletConfig = TLWalletConfig(isTestnet: false)
-        let extendPrivKey = TLHDWalletWrapper.getExtendPrivKey(self.coinType, masterHex: masterHex, accountIdx:0)
-        
-        let extendPubKey = TLHDWalletWrapper.getExtendPubKey(extendPrivKey)
-        let mainAddressIndex0 = [0,0]
-        let mainAddress0 = TLHDWalletWrapper.getAddress(self.coinType, extendPubKey:extendPubKey, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
-        let fromAddress = BTCAddress(base58String: mainAddress0)
-        XCTAssertTrue("1K7fXZeeQydcUvbsfvkMSQmiacV5sKRYQz" == mainAddress0)
-        let changeAddressIndex0 = [1,0]
-        let changeAddress0 = TLHDWalletWrapper.getAddress(self.coinType, extendPubKey:extendPubKey, sequence:changeAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
-        XCTAssertTrue("1CvpGn9VxVY1nsWWL3MSWRYaBHdNkCDbmv" == changeAddress0)
-        
-        func getMockCoinWallet(_ coinType: TLCoinType) -> NSMutableDictionary {
-            var imports = NSMutableDictionary()
-            imports.setObject(NSMutableArray(), forKey: "imported_accounts" as NSCopying)
-            imports.setObject(NSMutableArray(), forKey: "imported_private_keys" as NSCopying)
-            imports.setObject(NSMutableArray(), forKey: "watch_only_accounts" as NSCopying)
-            imports.setObject(NSMutableArray(), forKey: "watch_only_addresses" as NSCopying)
-            imports.setObject(NSMutableArray(), forKey: "cold_wallet_accounts" as NSCopying)
-
-            var hdWallets = NSMutableArray()
-            
-            var hdWallet = NSMutableDictionary()
-            hdWallet.setObject(0, forKey: "current_account_id" as NSCopying)
-            hdWallet.setObject(0, forKey: "master_hex" as NSCopying)
-            hdWallet.setObject(1, forKey: "max_account_id_created" as NSCopying)
-            hdWallet.setObject("default", forKey: "name" as NSCopying)
-            hdWallet.setObject(backupPassphrase, forKey: "passphrase" as NSCopying)
-            
-            var accounts = NSMutableArray()
-            var accountDict = NSMutableDictionary()
-            accountDict.setObject(0, forKey: "account_idx" as NSCopying)
-            accountDict.setObject(extendPubKey, forKey: "xpub" as NSCopying)
-            accountDict.setObject(extendPrivKey, forKey: "xpriv" as NSCopying)
-            
-            var changeAdresses = NSMutableArray()
-            var changeAdress = NSMutableDictionary()
-            changeAdress.setObject(changeAddress0, forKey: "address" as NSCopying)
-            changeAdress.setObject(0, forKey: "index" as NSCopying)
-            changeAdress.setObject(1, forKey: "status" as NSCopying)
-            changeAdresses.add(changeAdress)
-            accountDict.setObject(changeAdresses, forKey: "change_addresses" as NSCopying)
-            
-            var mainAddresses = NSMutableArray()
-            var mainAddress = NSMutableDictionary()
-            mainAddress.setObject(mainAddress0, forKey: "address" as NSCopying)
-            mainAddress.setObject(0, forKey: "index" as NSCopying)
-            mainAddress.setObject(1, forKey: "status" as NSCopying)
-            mainAddresses.add(mainAddress)
-            accountDict.setObject(mainAddresses, forKey: "main_addresses" as NSCopying)
-            
-            accountDict.setObject(0, forKey: "min_change_address_vidx" as NSCopying)
-            accountDict.setObject(0, forKey: "min_main_address_idx" as NSCopying)
-            accountDict.setObject("Account 1", forKey: "name" as NSCopying)
-            accountDict.setObject(0, forKey: "needs_recovering" as NSCopying)
-            accountDict.setObject(1, forKey: "status" as NSCopying)
-            
-            
-            var stealthAddresses = NSMutableArray()
-            var stealthAddress = NSMutableDictionary()
-            stealthAddress.setObject(0, forKey: "last_tx_time" as NSCopying)
-            stealthAddress.setObject(NSMutableArray(), forKey: "payments" as NSCopying)
-            stealthAddress.setObject("NOTUSED", forKey: "scan_key" as NSCopying)
-            var servers = NSMutableDictionary()
-            var watching = NSMutableDictionary()
-            watching.setObject(1, forKey: "watching" as NSCopying)
-            servers.setObject(watching, forKey: "www.arcbit.net" as NSCopying)
-            stealthAddress.setObject(servers, forKey: "servers" as NSCopying)
-            stealthAddress.setObject("NOTUSED", forKey: "spend_key" as NSCopying)
-            stealthAddress.setObject("NOTUSED", forKey: "stealth_address" as NSCopying)
-            stealthAddresses.add(stealthAddress)
-            
-            accountDict.setObject(stealthAddresses, forKey: "stealth_addresses" as NSCopying)
-            accounts.add(accountDict)
-            
-            accountDict.setObject(extendPrivKey, forKey: "xprv" as NSCopying)
-            accountDict.setObject(extendPubKey, forKey: "xpub" as NSCopying)
-            
-            hdWallet.setObject(accounts, forKey: "accounts" as NSCopying)
-            hdWallets.add(hdWallet)
-            
-            let coinWallet = NSMutableDictionary()
-            coinWallet.setObject(hdWallets, forKey: "hd_wallets" as NSCopying)
-            coinWallet.setObject(NSMutableArray(), forKey: "address_book" as NSCopying)
-            coinWallet.setObject(imports, forKey: "imports" as NSCopying)
-            coinWallet.setObject(NSMutableArray(), forKey: "tx_tags" as NSCopying)
-            return coinWallet
+    func testCreateSignedSerializedTransactionHexAndBIP69_1() -> () {
+        guard let accountObject = accountObject else {
+            return
         }
- 
-        wallet.setObject(getMockCoinWallet(TLCoinType.BTC), forKey: "BTC" as NSCopying)
-        wallet.setObject(getMockCoinWallet(TLCoinType.BCH), forKey: "BCH" as NSCopying)
+        let feeAmount = TLCurrencyFormat.amountStringToCoin("0.00000", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        let toAddress = "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv"
+        let toAddress2 = "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5"
+        let toAmount = TLCurrencyFormat.amountStringToCoin("1", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        let toAmount2 = TLCurrencyFormat.amountStringToCoin("24", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        
+        let txid0 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
+        let txid1 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
+        
+        let unspentOutput0 = mockUnspentOutput(txid0, value: 100000000, txOutputN: 0)
+        let unspentOutput1 = mockUnspentOutput(txid1, value: 2400000000, txOutputN: 1)
+        
+        func testCreateSignedSerializedTransactionHexAndBIP69_1_1() -> () {
+            let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount], ["address": toAddress2, "amount": toAmount2]]
+            
+            accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+            accountObject.unspentOutputs!.append(unspentOutput0)
+            accountObject.unspentOutputs!.append(unspentOutput1)
+            accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
 
-        wallets.add(wallet)
-        var payload = NSMutableDictionary()
-        payload.setObject(wallets, forKey: "wallets" as NSCopying)
-        mockWalletPayload.setObject(payload, forKey: "payload" as NSCopying)
-        
-        let appWallet = TLWallet(walletName: "Test Wallet", walletConfig: walletConfig)
-        let godSend = TLSpaghettiGodSend(appWallet: appWallet)
-        appWallet.loadWalletPayload(mockWalletPayload, masterHex:masterHex)
-        
-        
-        let accountsArray = appWallet.getAccountObjectArray(TLCoinType.BTC)
-        
-        
-        let accountObject = accountsArray.object(at: 0) as! TLAccountObject
-        godSend.setOnlyFromAccount(accountObject)
-
-        let mockUnspentOutput = { (txid: String, value: UInt64, txOutputN: Int) -> TLUnspentOutputObject in
-            var unspentOutput = NSMutableDictionary()
-            unspentOutput.setObject(TLWalletUtils.reverseHexString(txid), forKey: "tx_hash" as NSCopying)
-            unspentOutput.setObject(txid, forKey: "tx_hash_big_endian" as NSCopying)
-            unspentOutput.setObject(txOutputN, forKey: "tx_output_n" as NSCopying)
-            unspentOutput.setObject(BTCScript(address: fromAddress).hex, forKey: "script" as NSCopying)
-            unspentOutput.setObject(NSNumber(value: value as UInt64), forKey: "value" as NSCopying)
-            unspentOutput.setObject(6, forKey: "confirmations" as NSCopying)
-            return TLUnspentOutputObject(unspentOutput)
+            let ret = TLSpaghettiGodSend.createSignedSerializedTransactionHex(isTestnet, coinType: accountObject.getSelectedObjectCoinType(),  sendFromAccounts: sendFromAccounts, sendFromAddresses: sendFromAddresses, toAddressesAndAmounts: toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
+                (data: String?) in
+            })
+            
+            let txHexAndTxHash = ret.0
+            let realToAddresses = ret.1
+            let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
+            let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
+            let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
+            XCTAssertTrue(txHash == "fbacfede55dc6a779782ba8fa22813860b7ef07d82c3abebb8f290b3141bf965")
+            XCTAssertTrue(txHex == "010000000255605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835000000006a4730440220449b1f95687bf469fb954bcdbbc0ae362fe9bd6ba88c5b4dd227d9a5c37eb82a02203440bf6b4178786913a197344d0999a7d98d246099dcddf4bf9b24473a4e7a9a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff55605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835010000006a47304402201f6a4a87d0584157471210c1e126e64e52f565e950feb80045fc855829df3da4022059fd75fe51262aa7b7f214534357ed2786a9b3dcb12493112027711aebc8478a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff0200e1f505000000001976a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac00180d8f000000001976a91489c55a3ca6676c9f7f260a6439c83249b747380288ac00000000")
+            XCTAssertTrue(txSize.uintValue == 376)
+            
+            let transaction = BTCTransaction(hex: txHex)
+            
+            XCTAssertTrue(transaction?.inputs.count == 2)
+            let input0 = transaction?.inputs[0] as! BTCTransactionInput
+            XCTAssertTrue(input0.previousTransactionID == txid0)
+            XCTAssertTrue(input0.outpoint.index == 0)
+            let input1 = transaction?.inputs[1] as! BTCTransactionInput
+            XCTAssertTrue(input1.previousTransactionID == txid1)
+            XCTAssertTrue(input1.outpoint.index == 1)
+            
+            XCTAssertTrue(transaction?.outputs.count == 2)
+            let output0 = transaction?.outputs[0] as! BTCTransactionOutput
+            XCTAssertTrue(output0.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
+            XCTAssertTrue(output0.value == 100000000)
+            XCTAssertTrue(output0.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
+            let output1 = transaction?.outputs[1] as! BTCTransactionOutput
+            XCTAssertTrue(output1.script.hex == "76a91489c55a3ca6676c9f7f260a6439c83249b747380288ac")
+            XCTAssertTrue(output1.value == 2400000000)
+            XCTAssertTrue(output1.script.standardAddress.base58String == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
+            
+            XCTAssertTrue(realToAddresses.count == 2)
+            XCTAssertTrue(realToAddresses[0] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
+            XCTAssertTrue(realToAddresses[1] == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
         }
         
-        func testCreateSignedSerializedTransactionHexAndBIP69_1() -> () {
-            let feeAmount = TLCurrencyFormat.amountStringToCoin("0.00000", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
-            let toAddress = "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv"
-            let toAddress2 = "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5"
-            let toAmount = TLCurrencyFormat.amountStringToCoin("1", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
-            let toAmount2 = TLCurrencyFormat.amountStringToCoin("24", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        func testCreateSignedSerializedTransactionHexAndBIP69_1_2() -> () {
+            let toAddressesAndAmounts = [["address": toAddress2, "amount": toAmount2], ["address": toAddress, "amount": toAmount]]
             
-            let txid0 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
-            let txid1 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
+            accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+            accountObject.unspentOutputs!.append(unspentOutput0)
+            accountObject.unspentOutputs!.append(unspentOutput1)
+            accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
             
-            let unspentOutput0 = mockUnspentOutput(txid0, 100000000, 0)
-            let unspentOutput1 = mockUnspentOutput(txid1, 2400000000, 1)
+            let ret = TLSpaghettiGodSend.createSignedSerializedTransactionHex(isTestnet, coinType: accountObject.getSelectedObjectCoinType(),  sendFromAccounts: sendFromAccounts, sendFromAddresses: sendFromAddresses, toAddressesAndAmounts: toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
+                (data: String?) in
+            })
             
-            func testCreateSignedSerializedTransactionHexAndBIP69_1_1() -> () {
-                let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount], ["address": toAddress2, "amount": toAmount2]]
-                
-                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
-                accountObject.unspentOutputs!.append(unspentOutput0)
-                accountObject.unspentOutputs!.append(unspentOutput1)
-                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
-                
-                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
-                    (data: String?) in
-                })
-                
-                let txHexAndTxHash = ret.0
-                let realToAddresses = ret.1
-                let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
-                let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
-                let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
-                XCTAssertTrue(txHash == "fbacfede55dc6a779782ba8fa22813860b7ef07d82c3abebb8f290b3141bf965")
-                XCTAssertTrue(txHex == "010000000255605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835000000006a4730440220449b1f95687bf469fb954bcdbbc0ae362fe9bd6ba88c5b4dd227d9a5c37eb82a02203440bf6b4178786913a197344d0999a7d98d246099dcddf4bf9b24473a4e7a9a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff55605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835010000006a47304402201f6a4a87d0584157471210c1e126e64e52f565e950feb80045fc855829df3da4022059fd75fe51262aa7b7f214534357ed2786a9b3dcb12493112027711aebc8478a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff0200e1f505000000001976a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac00180d8f000000001976a91489c55a3ca6676c9f7f260a6439c83249b747380288ac00000000")
-                XCTAssertTrue(txSize.uintValue == 376)
-
-                let transaction = BTCTransaction(hex: txHex)
-                
-                XCTAssertTrue(transaction?.inputs.count == 2)
-                let input0 = transaction?.inputs[0] as! BTCTransactionInput
-                XCTAssertTrue(input0.previousTransactionID == txid0)
-                XCTAssertTrue(input0.outpoint.index == 0)
-                let input1 = transaction?.inputs[1] as! BTCTransactionInput
-                XCTAssertTrue(input1.previousTransactionID == txid1)
-                XCTAssertTrue(input1.outpoint.index == 1)
-                
-                XCTAssertTrue(transaction?.outputs.count == 2)
-                let output0 = transaction?.outputs[0] as! BTCTransactionOutput
-                XCTAssertTrue(output0.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
-                XCTAssertTrue(output0.value == 100000000)
-                XCTAssertTrue(output0.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
-                let output1 = transaction?.outputs[1] as! BTCTransactionOutput
-                XCTAssertTrue(output1.script.hex == "76a91489c55a3ca6676c9f7f260a6439c83249b747380288ac")
-                XCTAssertTrue(output1.value == 2400000000)
-                XCTAssertTrue(output1.script.standardAddress.base58String == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
-                
-                XCTAssertTrue(realToAddresses.count == 2)
-                XCTAssertTrue(realToAddresses[0] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
-                XCTAssertTrue(realToAddresses[1] == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
-            }
+            let txHexAndTxHash = ret.0
+            let realToAddresses = ret.1
+            let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
+            let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
+            let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
+            XCTAssertTrue(txHash == "fbacfede55dc6a779782ba8fa22813860b7ef07d82c3abebb8f290b3141bf965")
+            XCTAssertTrue(txHex == "010000000255605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835000000006a4730440220449b1f95687bf469fb954bcdbbc0ae362fe9bd6ba88c5b4dd227d9a5c37eb82a02203440bf6b4178786913a197344d0999a7d98d246099dcddf4bf9b24473a4e7a9a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff55605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835010000006a47304402201f6a4a87d0584157471210c1e126e64e52f565e950feb80045fc855829df3da4022059fd75fe51262aa7b7f214534357ed2786a9b3dcb12493112027711aebc8478a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff0200e1f505000000001976a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac00180d8f000000001976a91489c55a3ca6676c9f7f260a6439c83249b747380288ac00000000")
+            XCTAssertTrue(txSize.uintValue == 376)
             
-            func testCreateSignedSerializedTransactionHexAndBIP69_1_2() -> () {
-                let toAddressesAndAmounts = [["address": toAddress2, "amount": toAmount2], ["address": toAddress, "amount": toAmount]]
-                
-                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
-                accountObject.unspentOutputs!.append(unspentOutput0)
-                accountObject.unspentOutputs!.append(unspentOutput1)
-                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
-                
-                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
-                    (data: String?) in
-                })
-                
-                let txHexAndTxHash = ret.0
-                let realToAddresses = ret.1
-                let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
-                let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
-                let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
-                XCTAssertTrue(txHash == "fbacfede55dc6a779782ba8fa22813860b7ef07d82c3abebb8f290b3141bf965")
-                XCTAssertTrue(txHex == "010000000255605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835000000006a4730440220449b1f95687bf469fb954bcdbbc0ae362fe9bd6ba88c5b4dd227d9a5c37eb82a02203440bf6b4178786913a197344d0999a7d98d246099dcddf4bf9b24473a4e7a9a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff55605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835010000006a47304402201f6a4a87d0584157471210c1e126e64e52f565e950feb80045fc855829df3da4022059fd75fe51262aa7b7f214534357ed2786a9b3dcb12493112027711aebc8478a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff0200e1f505000000001976a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac00180d8f000000001976a91489c55a3ca6676c9f7f260a6439c83249b747380288ac00000000")
-                XCTAssertTrue(txSize.uintValue == 376)
-
-                let transaction = BTCTransaction(hex: txHex)
-                
-                XCTAssertTrue(transaction?.inputs.count == 2)
-                let input0 = transaction?.inputs[0] as! BTCTransactionInput
-                XCTAssertTrue(input0.previousTransactionID == txid0)
-                XCTAssertTrue(input0.outpoint.index == 0)
-                let input1 = transaction?.inputs[1] as! BTCTransactionInput
-                XCTAssertTrue(input1.previousTransactionID == txid1)
-                XCTAssertTrue(input1.outpoint.index == 1)
-                
-                XCTAssertTrue(transaction?.outputs.count == 2)
-                let output0 = transaction?.outputs[0] as! BTCTransactionOutput
-                XCTAssertTrue(output0.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
-                XCTAssertTrue(output0.value == 100000000)
-                XCTAssertTrue(output0.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
-                let output1 = transaction?.outputs[1] as! BTCTransactionOutput
-                XCTAssertTrue(output1.script.hex == "76a91489c55a3ca6676c9f7f260a6439c83249b747380288ac")
-                XCTAssertTrue(output1.value == 2400000000)
-                XCTAssertTrue(output1.script.standardAddress.base58String == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
-                
-                XCTAssertTrue(realToAddresses.count == 2)
-                XCTAssertTrue(realToAddresses[0] == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
-                XCTAssertTrue(realToAddresses[1] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
-            }
+            let transaction = BTCTransaction(hex: txHex)
             
-            testCreateSignedSerializedTransactionHexAndBIP69_1_1()
-            testCreateSignedSerializedTransactionHexAndBIP69_1_2()
+            XCTAssertTrue(transaction?.inputs.count == 2)
+            let input0 = transaction?.inputs[0] as! BTCTransactionInput
+            XCTAssertTrue(input0.previousTransactionID == txid0)
+            XCTAssertTrue(input0.outpoint.index == 0)
+            let input1 = transaction?.inputs[1] as! BTCTransactionInput
+            XCTAssertTrue(input1.previousTransactionID == txid1)
+            XCTAssertTrue(input1.outpoint.index == 1)
+            
+            XCTAssertTrue(transaction?.outputs.count == 2)
+            let output0 = transaction?.outputs[0] as! BTCTransactionOutput
+            XCTAssertTrue(output0.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
+            XCTAssertTrue(output0.value == 100000000)
+            XCTAssertTrue(output0.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
+            let output1 = transaction?.outputs[1] as! BTCTransactionOutput
+            XCTAssertTrue(output1.script.hex == "76a91489c55a3ca6676c9f7f260a6439c83249b747380288ac")
+            XCTAssertTrue(output1.value == 2400000000)
+            XCTAssertTrue(output1.script.standardAddress.base58String == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
+            
+            XCTAssertTrue(realToAddresses.count == 2)
+            XCTAssertTrue(realToAddresses[0] == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
+            XCTAssertTrue(realToAddresses[1] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
+        }
+        testCreateSignedSerializedTransactionHexAndBIP69_1_1()
+        testCreateSignedSerializedTransactionHexAndBIP69_1_2()
+    }
+    
+    func testCreateSignedSerializedTransactionHexAndBIP69_2() -> () {
+        guard let accountObject = accountObject else {
+            return
+        }
+        let feeAmount = TLCurrencyFormat.amountStringToCoin("0.00002735", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        let toAddress = "17nFgS1YaDPnXKMPQkZVdNQqZnVqRgBwnZ"
+        let toAddress2 = "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm"
+        let toAmount = TLCurrencyFormat.amountStringToCoin("4.00057456", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        let toAmount2 = TLCurrencyFormat.amountStringToCoin("400", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        
+        let txid0 = "0e53ec5dfb2cb8a71fec32dc9a634a35b7e24799295ddd5278217822e0b31f57"
+        let txid1 = "26aa6e6d8b9e49bb0630aac301db6757c02e3619feb4ee0eea81eb1672947024"
+        let txid2 = "28e0fdd185542f2c6ea19030b0796051e7772b6026dd5ddccd7a2f93b73e6fc2"
+        let txid3 = "381de9b9ae1a94d9c17f6a08ef9d341a5ce29e2e60c36a52d333ff6203e58d5d"
+        let txid4 = "3b8b2f8efceb60ba78ca8bba206a137f14cb5ea4035e761ee204302d46b98de2"
+        let txid5 = "402b2c02411720bf409eff60d05adad684f135838962823f3614cc657dd7bc0a"
+        let txid6 = "54ffff182965ed0957dba1239c27164ace5a73c9b62a660c74b7b7f15ff61e7a"
+        let txid7 = "643e5f4e66373a57251fb173151e838ccd27d279aca882997e005016bb53d5aa"
+        let txid8 = "6c1d56f31b2de4bfc6aaea28396b333102b1f600da9c6d6149e96ca43f1102b1"
+        let txid9 = "7a1de137cbafb5c70405455c49c5104ca3057a1f1243e6563bb9245c9c88c191"
+        let txid10 = "7d037ceb2ee0dc03e82f17be7935d238b35d1deabf953a892a4507bfbeeb3ba4"
+        let txid11 = "a5e899dddb28776ea9ddac0a502316d53a4a3fca607c72f66c470e0412e34086"
+        let txid12 = "b4112b8f900a7ca0c8b0e7c4dfad35c6be5f6be46b3458974988e1cdb2fa61b8"
+        let txid13 = "bafd65e3c7f3f9fdfdc1ddb026131b278c3be1af90a4a6ffa78c4658f9ec0c85"
+        let txid14 = "de0411a1e97484a2804ff1dbde260ac19de841bebad1880c782941aca883b4e9"
+        let txid15 = "f0a130a84912d03c1d284974f563c5949ac13f8342b8112edff52971599e6a45"
+        let txid16 = "f320832a9d2e2452af63154bc687493484a0e7745ebd3aaf9ca19eb80834ad60"
+        
+        let unspentOutput0 = mockUnspentOutput(txid0, value: 2529937904, txOutputN: 0)
+        let unspentOutput1 = mockUnspentOutput(txid1, value: 2521656792, txOutputN: 1)
+        let unspentOutput2 = mockUnspentOutput(txid2, value: 2509683086, txOutputN: 0)
+        let unspentOutput3 = mockUnspentOutput(txid3, value: 2506060377, txOutputN: 1)
+        let unspentOutput4 = mockUnspentOutput(txid4, value: 2510645247, txOutputN: 0)
+        let unspentOutput5 = mockUnspentOutput(txid5, value: 2502325820, txOutputN: 1)
+        let unspentOutput6 = mockUnspentOutput(txid6, value: 2525953727, txOutputN: 1)
+        let unspentOutput7 = mockUnspentOutput(txid7, value: 2507302856, txOutputN: 0)
+        let unspentOutput8 = mockUnspentOutput(txid8, value: 2534185804, txOutputN: 1)
+        let unspentOutput9 = mockUnspentOutput(txid9, value: 136219905, txOutputN: 0)
+        let unspentOutput10 = mockUnspentOutput(txid10, value: 2502901118, txOutputN: 1)
+        let unspentOutput11 = mockUnspentOutput(txid11, value: 2527569363, txOutputN: 0)
+        let unspentOutput12 = mockUnspentOutput(txid12, value: 2516268302, txOutputN: 0)
+        let unspentOutput13 = mockUnspentOutput(txid13, value: 2521794404, txOutputN: 0)
+        let unspentOutput14 = mockUnspentOutput(txid14, value: 2520533680, txOutputN: 1)
+        let unspentOutput15 = mockUnspentOutput(txid15, value: 2513840095, txOutputN: 0)
+        let unspentOutput16 = mockUnspentOutput(txid16, value: 2513181711, txOutputN: 0)
+        
+        func testCreateSignedSerializedTransactionHexAndBIP69_2_1() -> () {
+            let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount], ["address": toAddress2, "amount": toAmount2]]
+            
+            accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+            accountObject.unspentOutputs!.append(unspentOutput0)
+            accountObject.unspentOutputs!.append(unspentOutput1)
+            accountObject.unspentOutputs!.append(unspentOutput2)
+            accountObject.unspentOutputs!.append(unspentOutput3)
+            accountObject.unspentOutputs!.append(unspentOutput4)
+            accountObject.unspentOutputs!.append(unspentOutput5)
+            accountObject.unspentOutputs!.append(unspentOutput6)
+            accountObject.unspentOutputs!.append(unspentOutput7)
+            accountObject.unspentOutputs!.append(unspentOutput8)
+            accountObject.unspentOutputs!.append(unspentOutput9)
+            accountObject.unspentOutputs!.append(unspentOutput10)
+            accountObject.unspentOutputs!.append(unspentOutput11)
+            accountObject.unspentOutputs!.append(unspentOutput12)
+            accountObject.unspentOutputs!.append(unspentOutput13)
+            accountObject.unspentOutputs!.append(unspentOutput14)
+            accountObject.unspentOutputs!.append(unspentOutput15)
+            accountObject.unspentOutputs!.append(unspentOutput16)
+            accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
+            
+            let ret = TLSpaghettiGodSend.createSignedSerializedTransactionHex(isTestnet, coinType: accountObject.getSelectedObjectCoinType(),  sendFromAccounts: sendFromAccounts, sendFromAddresses: sendFromAddresses, toAddressesAndAmounts: toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
+                (data: String?) in
+            })
+            
+            let txHexAndTxHash = ret.0
+            let realToAddresses = ret.1
+            let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
+            let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
+            let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
+            XCTAssertTrue(txHash == "0656add012962ef3bdd11eaf88347b78a2c4adb08fe8b95f79a8b8a4fe862132")
+            XCTAssertTrue(txHex == "0100000011571fb3e02278217852dd5d299947e2b7354a639adc32ec1fa7b82cfb5dec530e000000006b483045022100b28348624779833117dc8ae73bcb649528ad6edf9d5b48018c4488dbc9b9fa3702201f8b0e1707bdfa3438d6c1353b62e3a01cb0b7b4ee5e7ef93e7b2f563ead66a30121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff2470947216eb81ea0eeeb4fe19362ec05767db01c3aa3006bb499e8b6d6eaa26010000006a4730440220679db98b1e5b17a57acc78e7271c357130fd8b6d8d2072880429d05630c5cc2802205fb88f764053185d610ae8041907bdb85f711a51f5602bb663b744e786fd78700121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffc26f3eb7932f7acddc5ddd26602b77e7516079b03090a16e2c2f5485d1fde028000000006a47304402205031699fc96af02637f1ed7120c0e380f65370824f6af5cd37baf391f8188f73022026f5ba7a7f31fc3590f1e4dce50f12cc2122ce3fe30d187f11c3922ce3b22d0a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff5d8de50362ff33d3526ac3602e9ee25c1a349def086a7fc1d9941aaeb9e91d38010000006b483045022100fefda0743cc428b17e688c65d226e899af8b0d5a6f05d0944f9c67257fa5a15a02207baa0a95d88b98b0b669cab8342cc43bc992daf3be41c4ba40de77453ed3fb220121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffe28db9462d3004e21e765e03a45ecb147f136a20ba8bca78ba60ebfc8e2f8b3b000000006b483045022100a54a4e0a3b476c855273a0aa6d97f5995e78a83cad59c28cda786b49a14f370602202cce0aadf128986b6448ad7f3288f95c9c5467ba01d16e94d807db587e481fe30121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff0abcd77d65cc14363f8262898335f184d6da5ad060ff9e40bf201741022c2b40010000006a4730440220636b2a05ef164457c9b8ee0f364c308a7ef8a0f5f7b01d6633ace40803a6fd7902205f052f39e940d2b8d797a5259ee35d0596a0dbfd199799722d95a895308bd1f10121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff7a1ef65ff1b7b7740c662ab6c9735ace4a16279c23a1db5709ed652918ffff54010000006b4830450221008e3f42e8e5d45712efe14c17ba199724e1d2bcaa2a459ede155b2df89d1b8c7902205260062b1eb6595a43180f0b40307467f4fe2f67138c2aed47d21dac739f4a770121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffaad553bb1650007e9982a8ac79d227cd8c831e1573b11f25573a37664e5f3e64000000006a47304402204b3a8b40ea4bd092ce05ae5a55704d98ceee485b87e9d9bbc1dcc0956a2230bb022043b2660c1513b029038a3f2492c2d0d39b45c04a14b1143ede43abb6832d6f910121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffb102113fa46ce949616d9cda00f6b10231336b3928eaaac6bfe42d1bf3561d6c010000006a4730440220651a1d62ba88ac05790bab2ead82483e99a748965cd8f1887c943c62c67786de022002bc57e36c7668c8e5d4c02e1baed3491b30d91e53633b807ca950b8bfad6fe90121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff91c1889c5c24b93b56e643121f7a05a34c10c5495c450504c7b5afcb37e11d7a000000006b483045022100ea05603d2944228bd2231354b1a6e6d106a803d7d52e8a290232b9769629c9a502204125264bb9d2cfd2db5455044d58a7b8ea8e0c7c88870def8c0fac2c559c5cfc0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffa43bebbebf07452a893a95bfea1d5db338d23579be172fe803dce02eeb7c037d010000006b483045022100fe8ce378ed72b0829805dde89cb16d2f6722f8b4128ee07f6ef064eaa4b607f702206400a9816e120e3e7427f4e83518b2822f010c219bcb758560ff280aae1cbe420121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff8640e312040e476cf6727c60ca3f4a3ad51623500aacdda96e7728dbdd99e8a5000000006a47304402203cce0a54d3314decb5adf1d9dbe5f887eb779daf6d4d2ce463435181da6cc72302206104213df446b9fc78d598c8425c82ca9b0952fab48a9edecb382ee5e68c11fe0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffb861fab2cde188499758346be46b5fbec635addfc4e7b0c8a07c0a908f2b11b4000000006a4730440220120d5d6672695c9ad3e72049da00be123bab74971386953b38409ff52989ce2502202b8702ba2d7fe90fc35aef52585c664865ae746d9e4242955b7ece22d89ad1ca0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff850cecf958468ca7ffa6a490afe13b8c271b1326b0ddc1fdfdf9f3c7e365fdba000000006a4730440220282a14909d8ed766441c4766a574af0fc20e1b587e545e1943429670457b959602207e4c7503ae3c9de83865d0972fbb18cd7c9630023347d6eba45963f0670ef7e70121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffe9b483a8ac4129780c88d1babe41e89dc10a26dedbf14f80a28474e9a11104de010000006b483045022100ec3744090e0603690319768ef234071410224230cc32e4731e50f9e8a05a6a5802203a1a8f7380e83fd1b61f4fd775aa6410d2e87d018b820aab4e98e1a8de0715f10121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff456a9e597129f5df2e11b842833fc19a94c563f57449281d3cd01249a830a1f0000000006a473044022060b06dcb2550beb9dd4181a45566ccf0ba41040d9003aa83c02fb63c4f9cbd8a02203c577c070c69382cfb05c74275590e3de6dcb77ce929b0d771f314ffa889f47c0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff60ad3408b89ea19caf3abd5e74e7a084344987c64b1563af52242e9d2a8320f3000000006b483045022100d7b08a358ce19469d369765c38d1f17ffe66151f7c9cd85757d89d4f218a9d390220418f13a4b8eb41ca471901f1ba2b1677166f90127b65b7417ad5a62d76f0b8c80121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff027064d817000000001976a9144a5fba237213a062f6f57978f796390bdcf8d01588ac00902f50090000001976a9145be32612930b8323add2212a4ec03c1562084f8488ac00000000")
+            XCTAssertTrue(txSize.uintValue == 2611)
+            
+            let transaction = BTCTransaction(hex: txHex)
+            
+            XCTAssertTrue(transaction?.inputs.count == 17)
+            let input0 = transaction?.inputs[0] as! BTCTransactionInput
+            XCTAssertTrue(input0.previousTransactionID == txid0)
+            XCTAssertTrue(input0.outpoint.index == 0)
+            let input1 = transaction?.inputs[1] as! BTCTransactionInput
+            XCTAssertTrue(input1.previousTransactionID == txid1)
+            XCTAssertTrue(input1.outpoint.index == 1)
+            let input2 = transaction?.inputs[2] as! BTCTransactionInput
+            XCTAssertTrue(input2.previousTransactionID == txid2)
+            XCTAssertTrue(input2.outpoint.index == 0)
+            let input3 = transaction?.inputs[3] as! BTCTransactionInput
+            XCTAssertTrue(input3.previousTransactionID == txid3)
+            XCTAssertTrue(input3.outpoint.index == 1)
+            let input4 = transaction?.inputs[4] as! BTCTransactionInput
+            XCTAssertTrue(input4.previousTransactionID == txid4)
+            XCTAssertTrue(input4.outpoint.index == 0)
+            let input5 = transaction?.inputs[5] as! BTCTransactionInput
+            XCTAssertTrue(input5.previousTransactionID == txid5)
+            XCTAssertTrue(input5.outpoint.index == 1)
+            let input6 = transaction?.inputs[6] as! BTCTransactionInput
+            XCTAssertTrue(input6.previousTransactionID == txid6)
+            XCTAssertTrue(input6.outpoint.index == 1)
+            let input7 = transaction?.inputs[7] as! BTCTransactionInput
+            XCTAssertTrue(input7.previousTransactionID == txid7)
+            XCTAssertTrue(input7.outpoint.index == 0)
+            let input8 = transaction?.inputs[8] as! BTCTransactionInput
+            XCTAssertTrue(input8.previousTransactionID == txid8)
+            XCTAssertTrue(input8.outpoint.index == 1)
+            let input9 = transaction?.inputs[9] as! BTCTransactionInput
+            XCTAssertTrue(input9.previousTransactionID == txid9)
+            XCTAssertTrue(input9.outpoint.index == 0)
+            let input10 = transaction?.inputs[10] as! BTCTransactionInput
+            XCTAssertTrue(input10.previousTransactionID == txid10)
+            XCTAssertTrue(input10.outpoint.index == 1)
+            let input11 = transaction?.inputs[11] as! BTCTransactionInput
+            XCTAssertTrue(input11.previousTransactionID == txid11)
+            XCTAssertTrue(input11.outpoint.index == 0)
+            let input12 = transaction?.inputs[12] as! BTCTransactionInput
+            XCTAssertTrue(input12.previousTransactionID == txid12)
+            XCTAssertTrue(input12.outpoint.index == 0)
+            let input13 = transaction?.inputs[13] as! BTCTransactionInput
+            XCTAssertTrue(input13.previousTransactionID == txid13)
+            XCTAssertTrue(input13.outpoint.index == 0)
+            let input14 = transaction?.inputs[14] as! BTCTransactionInput
+            XCTAssertTrue(input14.previousTransactionID == txid14)
+            XCTAssertTrue(input14.outpoint.index == 1)
+            let input15 = transaction?.inputs[15] as! BTCTransactionInput
+            XCTAssertTrue(input15.previousTransactionID == txid15)
+            XCTAssertTrue(input15.outpoint.index == 0)
+            let input16 = transaction?.inputs[16] as! BTCTransactionInput
+            XCTAssertTrue(input16.previousTransactionID == txid16)
+            XCTAssertTrue(input16.outpoint.index == 0)
+            
+            XCTAssertTrue(transaction?.outputs.count == 2)
+            let output0 = transaction?.outputs[0] as! BTCTransactionOutput
+            XCTAssertTrue(output0.script.hex == "76a9144a5fba237213a062f6f57978f796390bdcf8d01588ac")
+            XCTAssertTrue(output0.value == 400057456)
+            XCTAssertTrue(output0.script.standardAddress.base58String == "17nFgS1YaDPnXKMPQkZVdNQqZnVqRgBwnZ")
+            let output1 = transaction?.outputs[1] as! BTCTransactionOutput
+            XCTAssertTrue(output1.script.hex == "76a9145be32612930b8323add2212a4ec03c1562084f8488ac")
+            XCTAssertTrue(output1.value == 40000000000)
+            XCTAssertTrue(output1.script.standardAddress.base58String == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
+            
+            XCTAssertTrue(realToAddresses.count == 2)
+            XCTAssertTrue(realToAddresses[0] == "17nFgS1YaDPnXKMPQkZVdNQqZnVqRgBwnZ")
+            XCTAssertTrue(realToAddresses[1] == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
         }
         
-        func testCreateSignedSerializedTransactionHexAndBIP69_2() -> () {
-            let feeAmount = TLCurrencyFormat.amountStringToCoin("0.00002735", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
-            let toAddress = "17nFgS1YaDPnXKMPQkZVdNQqZnVqRgBwnZ"
-            let toAddress2 = "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm"
-            let toAmount = TLCurrencyFormat.amountStringToCoin("4.00057456", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
-            let toAmount2 = TLCurrencyFormat.amountStringToCoin("400", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        func testCreateSignedSerializedTransactionHexAndBIP69_2_2() -> () {
+            let toAddressesAndAmounts = [["address": toAddress2, "amount": toAmount2], ["address": toAddress, "amount": toAmount]]
             
-            let txid0 = "0e53ec5dfb2cb8a71fec32dc9a634a35b7e24799295ddd5278217822e0b31f57"
-            let txid1 = "26aa6e6d8b9e49bb0630aac301db6757c02e3619feb4ee0eea81eb1672947024"
-            let txid2 = "28e0fdd185542f2c6ea19030b0796051e7772b6026dd5ddccd7a2f93b73e6fc2"
-            let txid3 = "381de9b9ae1a94d9c17f6a08ef9d341a5ce29e2e60c36a52d333ff6203e58d5d"
-            let txid4 = "3b8b2f8efceb60ba78ca8bba206a137f14cb5ea4035e761ee204302d46b98de2"
-            let txid5 = "402b2c02411720bf409eff60d05adad684f135838962823f3614cc657dd7bc0a"
-            let txid6 = "54ffff182965ed0957dba1239c27164ace5a73c9b62a660c74b7b7f15ff61e7a"
-            let txid7 = "643e5f4e66373a57251fb173151e838ccd27d279aca882997e005016bb53d5aa"
-            let txid8 = "6c1d56f31b2de4bfc6aaea28396b333102b1f600da9c6d6149e96ca43f1102b1"
-            let txid9 = "7a1de137cbafb5c70405455c49c5104ca3057a1f1243e6563bb9245c9c88c191"
-            let txid10 = "7d037ceb2ee0dc03e82f17be7935d238b35d1deabf953a892a4507bfbeeb3ba4"
-            let txid11 = "a5e899dddb28776ea9ddac0a502316d53a4a3fca607c72f66c470e0412e34086"
-            let txid12 = "b4112b8f900a7ca0c8b0e7c4dfad35c6be5f6be46b3458974988e1cdb2fa61b8"
-            let txid13 = "bafd65e3c7f3f9fdfdc1ddb026131b278c3be1af90a4a6ffa78c4658f9ec0c85"
-            let txid14 = "de0411a1e97484a2804ff1dbde260ac19de841bebad1880c782941aca883b4e9"
-            let txid15 = "f0a130a84912d03c1d284974f563c5949ac13f8342b8112edff52971599e6a45"
-            let txid16 = "f320832a9d2e2452af63154bc687493484a0e7745ebd3aaf9ca19eb80834ad60"
+            accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+            accountObject.unspentOutputs!.append(unspentOutput15)
+            accountObject.unspentOutputs!.append(unspentOutput2)
+            accountObject.unspentOutputs!.append(unspentOutput0)
+            accountObject.unspentOutputs!.append(unspentOutput1)
+            accountObject.unspentOutputs!.append(unspentOutput5)
+            accountObject.unspentOutputs!.append(unspentOutput3)
+            accountObject.unspentOutputs!.append(unspentOutput4)
+            accountObject.unspentOutputs!.append(unspentOutput6)
+            accountObject.unspentOutputs!.append(unspentOutput7)
+            accountObject.unspentOutputs!.append(unspentOutput9)
+            accountObject.unspentOutputs!.append(unspentOutput10)
+            accountObject.unspentOutputs!.append(unspentOutput8)
+            accountObject.unspentOutputs!.append(unspentOutput12)
+            accountObject.unspentOutputs!.append(unspentOutput11)
+            accountObject.unspentOutputs!.append(unspentOutput14)
+            accountObject.unspentOutputs!.append(unspentOutput16)
+            accountObject.unspentOutputs!.append(unspentOutput13)
+            accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
             
-            let unspentOutput0 = mockUnspentOutput(txid0, 2529937904, 0)
-            let unspentOutput1 = mockUnspentOutput(txid1, 2521656792, 1)
-            let unspentOutput2 = mockUnspentOutput(txid2, 2509683086, 0)
-            let unspentOutput3 = mockUnspentOutput(txid3, 2506060377, 1)
-            let unspentOutput4 = mockUnspentOutput(txid4, 2510645247, 0)
-            let unspentOutput5 = mockUnspentOutput(txid5, 2502325820, 1)
-            let unspentOutput6 = mockUnspentOutput(txid6, 2525953727, 1)
-            let unspentOutput7 = mockUnspentOutput(txid7, 2507302856, 0)
-            let unspentOutput8 = mockUnspentOutput(txid8, 2534185804, 1)
-            let unspentOutput9 = mockUnspentOutput(txid9, 136219905, 0)
-            let unspentOutput10 = mockUnspentOutput(txid10, 2502901118, 1)
-            let unspentOutput11 = mockUnspentOutput(txid11, 2527569363, 0)
-            let unspentOutput12 = mockUnspentOutput(txid12, 2516268302, 0)
-            let unspentOutput13 = mockUnspentOutput(txid13, 2521794404, 0)
-            let unspentOutput14 = mockUnspentOutput(txid14, 2520533680, 1)
-            let unspentOutput15 = mockUnspentOutput(txid15, 2513840095, 0)
-            let unspentOutput16 = mockUnspentOutput(txid16, 2513181711, 0)
+            let ret = TLSpaghettiGodSend.createSignedSerializedTransactionHex(isTestnet, coinType: accountObject.getSelectedObjectCoinType(),  sendFromAccounts: sendFromAccounts, sendFromAddresses: sendFromAddresses, toAddressesAndAmounts: toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
+                (data: String?) in
+            })
             
-            func testCreateSignedSerializedTransactionHexAndBIP69_2_1() -> () {
-                let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount], ["address": toAddress2, "amount": toAmount2]]
-                
-                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
-                accountObject.unspentOutputs!.append(unspentOutput0)
-                accountObject.unspentOutputs!.append(unspentOutput1)
-                accountObject.unspentOutputs!.append(unspentOutput2)
-                accountObject.unspentOutputs!.append(unspentOutput3)
-                accountObject.unspentOutputs!.append(unspentOutput4)
-                accountObject.unspentOutputs!.append(unspentOutput5)
-                accountObject.unspentOutputs!.append(unspentOutput6)
-                accountObject.unspentOutputs!.append(unspentOutput7)
-                accountObject.unspentOutputs!.append(unspentOutput8)
-                accountObject.unspentOutputs!.append(unspentOutput9)
-                accountObject.unspentOutputs!.append(unspentOutput10)
-                accountObject.unspentOutputs!.append(unspentOutput11)
-                accountObject.unspentOutputs!.append(unspentOutput12)
-                accountObject.unspentOutputs!.append(unspentOutput13)
-                accountObject.unspentOutputs!.append(unspentOutput14)
-                accountObject.unspentOutputs!.append(unspentOutput15)
-                accountObject.unspentOutputs!.append(unspentOutput16)
-                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
-                
-                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
-                    (data: String?) in
-                })
-                
-                let txHexAndTxHash = ret.0
-                let realToAddresses = ret.1
-                let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
-                let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
-                let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
-                XCTAssertTrue(txHash == "0656add012962ef3bdd11eaf88347b78a2c4adb08fe8b95f79a8b8a4fe862132")
-                XCTAssertTrue(txHex == "0100000011571fb3e02278217852dd5d299947e2b7354a639adc32ec1fa7b82cfb5dec530e000000006b483045022100b28348624779833117dc8ae73bcb649528ad6edf9d5b48018c4488dbc9b9fa3702201f8b0e1707bdfa3438d6c1353b62e3a01cb0b7b4ee5e7ef93e7b2f563ead66a30121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff2470947216eb81ea0eeeb4fe19362ec05767db01c3aa3006bb499e8b6d6eaa26010000006a4730440220679db98b1e5b17a57acc78e7271c357130fd8b6d8d2072880429d05630c5cc2802205fb88f764053185d610ae8041907bdb85f711a51f5602bb663b744e786fd78700121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffc26f3eb7932f7acddc5ddd26602b77e7516079b03090a16e2c2f5485d1fde028000000006a47304402205031699fc96af02637f1ed7120c0e380f65370824f6af5cd37baf391f8188f73022026f5ba7a7f31fc3590f1e4dce50f12cc2122ce3fe30d187f11c3922ce3b22d0a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff5d8de50362ff33d3526ac3602e9ee25c1a349def086a7fc1d9941aaeb9e91d38010000006b483045022100fefda0743cc428b17e688c65d226e899af8b0d5a6f05d0944f9c67257fa5a15a02207baa0a95d88b98b0b669cab8342cc43bc992daf3be41c4ba40de77453ed3fb220121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffe28db9462d3004e21e765e03a45ecb147f136a20ba8bca78ba60ebfc8e2f8b3b000000006b483045022100a54a4e0a3b476c855273a0aa6d97f5995e78a83cad59c28cda786b49a14f370602202cce0aadf128986b6448ad7f3288f95c9c5467ba01d16e94d807db587e481fe30121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff0abcd77d65cc14363f8262898335f184d6da5ad060ff9e40bf201741022c2b40010000006a4730440220636b2a05ef164457c9b8ee0f364c308a7ef8a0f5f7b01d6633ace40803a6fd7902205f052f39e940d2b8d797a5259ee35d0596a0dbfd199799722d95a895308bd1f10121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff7a1ef65ff1b7b7740c662ab6c9735ace4a16279c23a1db5709ed652918ffff54010000006b4830450221008e3f42e8e5d45712efe14c17ba199724e1d2bcaa2a459ede155b2df89d1b8c7902205260062b1eb6595a43180f0b40307467f4fe2f67138c2aed47d21dac739f4a770121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffaad553bb1650007e9982a8ac79d227cd8c831e1573b11f25573a37664e5f3e64000000006a47304402204b3a8b40ea4bd092ce05ae5a55704d98ceee485b87e9d9bbc1dcc0956a2230bb022043b2660c1513b029038a3f2492c2d0d39b45c04a14b1143ede43abb6832d6f910121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffb102113fa46ce949616d9cda00f6b10231336b3928eaaac6bfe42d1bf3561d6c010000006a4730440220651a1d62ba88ac05790bab2ead82483e99a748965cd8f1887c943c62c67786de022002bc57e36c7668c8e5d4c02e1baed3491b30d91e53633b807ca950b8bfad6fe90121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff91c1889c5c24b93b56e643121f7a05a34c10c5495c450504c7b5afcb37e11d7a000000006b483045022100ea05603d2944228bd2231354b1a6e6d106a803d7d52e8a290232b9769629c9a502204125264bb9d2cfd2db5455044d58a7b8ea8e0c7c88870def8c0fac2c559c5cfc0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffa43bebbebf07452a893a95bfea1d5db338d23579be172fe803dce02eeb7c037d010000006b483045022100fe8ce378ed72b0829805dde89cb16d2f6722f8b4128ee07f6ef064eaa4b607f702206400a9816e120e3e7427f4e83518b2822f010c219bcb758560ff280aae1cbe420121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff8640e312040e476cf6727c60ca3f4a3ad51623500aacdda96e7728dbdd99e8a5000000006a47304402203cce0a54d3314decb5adf1d9dbe5f887eb779daf6d4d2ce463435181da6cc72302206104213df446b9fc78d598c8425c82ca9b0952fab48a9edecb382ee5e68c11fe0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffb861fab2cde188499758346be46b5fbec635addfc4e7b0c8a07c0a908f2b11b4000000006a4730440220120d5d6672695c9ad3e72049da00be123bab74971386953b38409ff52989ce2502202b8702ba2d7fe90fc35aef52585c664865ae746d9e4242955b7ece22d89ad1ca0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff850cecf958468ca7ffa6a490afe13b8c271b1326b0ddc1fdfdf9f3c7e365fdba000000006a4730440220282a14909d8ed766441c4766a574af0fc20e1b587e545e1943429670457b959602207e4c7503ae3c9de83865d0972fbb18cd7c9630023347d6eba45963f0670ef7e70121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffe9b483a8ac4129780c88d1babe41e89dc10a26dedbf14f80a28474e9a11104de010000006b483045022100ec3744090e0603690319768ef234071410224230cc32e4731e50f9e8a05a6a5802203a1a8f7380e83fd1b61f4fd775aa6410d2e87d018b820aab4e98e1a8de0715f10121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff456a9e597129f5df2e11b842833fc19a94c563f57449281d3cd01249a830a1f0000000006a473044022060b06dcb2550beb9dd4181a45566ccf0ba41040d9003aa83c02fb63c4f9cbd8a02203c577c070c69382cfb05c74275590e3de6dcb77ce929b0d771f314ffa889f47c0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff60ad3408b89ea19caf3abd5e74e7a084344987c64b1563af52242e9d2a8320f3000000006b483045022100d7b08a358ce19469d369765c38d1f17ffe66151f7c9cd85757d89d4f218a9d390220418f13a4b8eb41ca471901f1ba2b1677166f90127b65b7417ad5a62d76f0b8c80121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff027064d817000000001976a9144a5fba237213a062f6f57978f796390bdcf8d01588ac00902f50090000001976a9145be32612930b8323add2212a4ec03c1562084f8488ac00000000")
-                XCTAssertTrue(txSize.uintValue == 2611)
-
-                let transaction = BTCTransaction(hex: txHex)
-                
-                XCTAssertTrue(transaction?.inputs.count == 17)
-                let input0 = transaction?.inputs[0] as! BTCTransactionInput
-                XCTAssertTrue(input0.previousTransactionID == txid0)
-                XCTAssertTrue(input0.outpoint.index == 0)
-                let input1 = transaction?.inputs[1] as! BTCTransactionInput
-                XCTAssertTrue(input1.previousTransactionID == txid1)
-                XCTAssertTrue(input1.outpoint.index == 1)
-                let input2 = transaction?.inputs[2] as! BTCTransactionInput
-                XCTAssertTrue(input2.previousTransactionID == txid2)
-                XCTAssertTrue(input2.outpoint.index == 0)
-                let input3 = transaction?.inputs[3] as! BTCTransactionInput
-                XCTAssertTrue(input3.previousTransactionID == txid3)
-                XCTAssertTrue(input3.outpoint.index == 1)
-                let input4 = transaction?.inputs[4] as! BTCTransactionInput
-                XCTAssertTrue(input4.previousTransactionID == txid4)
-                XCTAssertTrue(input4.outpoint.index == 0)
-                let input5 = transaction?.inputs[5] as! BTCTransactionInput
-                XCTAssertTrue(input5.previousTransactionID == txid5)
-                XCTAssertTrue(input5.outpoint.index == 1)
-                let input6 = transaction?.inputs[6] as! BTCTransactionInput
-                XCTAssertTrue(input6.previousTransactionID == txid6)
-                XCTAssertTrue(input6.outpoint.index == 1)
-                let input7 = transaction?.inputs[7] as! BTCTransactionInput
-                XCTAssertTrue(input7.previousTransactionID == txid7)
-                XCTAssertTrue(input7.outpoint.index == 0)
-                let input8 = transaction?.inputs[8] as! BTCTransactionInput
-                XCTAssertTrue(input8.previousTransactionID == txid8)
-                XCTAssertTrue(input8.outpoint.index == 1)
-                let input9 = transaction?.inputs[9] as! BTCTransactionInput
-                XCTAssertTrue(input9.previousTransactionID == txid9)
-                XCTAssertTrue(input9.outpoint.index == 0)
-                let input10 = transaction?.inputs[10] as! BTCTransactionInput
-                XCTAssertTrue(input10.previousTransactionID == txid10)
-                XCTAssertTrue(input10.outpoint.index == 1)
-                let input11 = transaction?.inputs[11] as! BTCTransactionInput
-                XCTAssertTrue(input11.previousTransactionID == txid11)
-                XCTAssertTrue(input11.outpoint.index == 0)
-                let input12 = transaction?.inputs[12] as! BTCTransactionInput
-                XCTAssertTrue(input12.previousTransactionID == txid12)
-                XCTAssertTrue(input12.outpoint.index == 0)
-                let input13 = transaction?.inputs[13] as! BTCTransactionInput
-                XCTAssertTrue(input13.previousTransactionID == txid13)
-                XCTAssertTrue(input13.outpoint.index == 0)
-                let input14 = transaction?.inputs[14] as! BTCTransactionInput
-                XCTAssertTrue(input14.previousTransactionID == txid14)
-                XCTAssertTrue(input14.outpoint.index == 1)
-                let input15 = transaction?.inputs[15] as! BTCTransactionInput
-                XCTAssertTrue(input15.previousTransactionID == txid15)
-                XCTAssertTrue(input15.outpoint.index == 0)
-                let input16 = transaction?.inputs[16] as! BTCTransactionInput
-                XCTAssertTrue(input16.previousTransactionID == txid16)
-                XCTAssertTrue(input16.outpoint.index == 0)
-                
-                XCTAssertTrue(transaction?.outputs.count == 2)
-                let output0 = transaction?.outputs[0] as! BTCTransactionOutput
-                XCTAssertTrue(output0.script.hex == "76a9144a5fba237213a062f6f57978f796390bdcf8d01588ac")
-                XCTAssertTrue(output0.value == 400057456)
-                XCTAssertTrue(output0.script.standardAddress.base58String == "17nFgS1YaDPnXKMPQkZVdNQqZnVqRgBwnZ")
-                let output1 = transaction?.outputs[1] as! BTCTransactionOutput
-                XCTAssertTrue(output1.script.hex == "76a9145be32612930b8323add2212a4ec03c1562084f8488ac")
-                XCTAssertTrue(output1.value == 40000000000)
-                XCTAssertTrue(output1.script.standardAddress.base58String == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
-                
-                XCTAssertTrue(realToAddresses.count == 2)
-                XCTAssertTrue(realToAddresses[0] == "17nFgS1YaDPnXKMPQkZVdNQqZnVqRgBwnZ")
-                XCTAssertTrue(realToAddresses[1] == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
-            }
+            let txHexAndTxHash = ret.0
+            let realToAddresses = ret.1
+            let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
+            let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
+            let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
+            XCTAssertTrue(txHash == "0656add012962ef3bdd11eaf88347b78a2c4adb08fe8b95f79a8b8a4fe862132")
+            XCTAssertTrue(txHex == "0100000011571fb3e02278217852dd5d299947e2b7354a639adc32ec1fa7b82cfb5dec530e000000006b483045022100b28348624779833117dc8ae73bcb649528ad6edf9d5b48018c4488dbc9b9fa3702201f8b0e1707bdfa3438d6c1353b62e3a01cb0b7b4ee5e7ef93e7b2f563ead66a30121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff2470947216eb81ea0eeeb4fe19362ec05767db01c3aa3006bb499e8b6d6eaa26010000006a4730440220679db98b1e5b17a57acc78e7271c357130fd8b6d8d2072880429d05630c5cc2802205fb88f764053185d610ae8041907bdb85f711a51f5602bb663b744e786fd78700121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffc26f3eb7932f7acddc5ddd26602b77e7516079b03090a16e2c2f5485d1fde028000000006a47304402205031699fc96af02637f1ed7120c0e380f65370824f6af5cd37baf391f8188f73022026f5ba7a7f31fc3590f1e4dce50f12cc2122ce3fe30d187f11c3922ce3b22d0a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff5d8de50362ff33d3526ac3602e9ee25c1a349def086a7fc1d9941aaeb9e91d38010000006b483045022100fefda0743cc428b17e688c65d226e899af8b0d5a6f05d0944f9c67257fa5a15a02207baa0a95d88b98b0b669cab8342cc43bc992daf3be41c4ba40de77453ed3fb220121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffe28db9462d3004e21e765e03a45ecb147f136a20ba8bca78ba60ebfc8e2f8b3b000000006b483045022100a54a4e0a3b476c855273a0aa6d97f5995e78a83cad59c28cda786b49a14f370602202cce0aadf128986b6448ad7f3288f95c9c5467ba01d16e94d807db587e481fe30121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff0abcd77d65cc14363f8262898335f184d6da5ad060ff9e40bf201741022c2b40010000006a4730440220636b2a05ef164457c9b8ee0f364c308a7ef8a0f5f7b01d6633ace40803a6fd7902205f052f39e940d2b8d797a5259ee35d0596a0dbfd199799722d95a895308bd1f10121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff7a1ef65ff1b7b7740c662ab6c9735ace4a16279c23a1db5709ed652918ffff54010000006b4830450221008e3f42e8e5d45712efe14c17ba199724e1d2bcaa2a459ede155b2df89d1b8c7902205260062b1eb6595a43180f0b40307467f4fe2f67138c2aed47d21dac739f4a770121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffaad553bb1650007e9982a8ac79d227cd8c831e1573b11f25573a37664e5f3e64000000006a47304402204b3a8b40ea4bd092ce05ae5a55704d98ceee485b87e9d9bbc1dcc0956a2230bb022043b2660c1513b029038a3f2492c2d0d39b45c04a14b1143ede43abb6832d6f910121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffb102113fa46ce949616d9cda00f6b10231336b3928eaaac6bfe42d1bf3561d6c010000006a4730440220651a1d62ba88ac05790bab2ead82483e99a748965cd8f1887c943c62c67786de022002bc57e36c7668c8e5d4c02e1baed3491b30d91e53633b807ca950b8bfad6fe90121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff91c1889c5c24b93b56e643121f7a05a34c10c5495c450504c7b5afcb37e11d7a000000006b483045022100ea05603d2944228bd2231354b1a6e6d106a803d7d52e8a290232b9769629c9a502204125264bb9d2cfd2db5455044d58a7b8ea8e0c7c88870def8c0fac2c559c5cfc0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffa43bebbebf07452a893a95bfea1d5db338d23579be172fe803dce02eeb7c037d010000006b483045022100fe8ce378ed72b0829805dde89cb16d2f6722f8b4128ee07f6ef064eaa4b607f702206400a9816e120e3e7427f4e83518b2822f010c219bcb758560ff280aae1cbe420121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff8640e312040e476cf6727c60ca3f4a3ad51623500aacdda96e7728dbdd99e8a5000000006a47304402203cce0a54d3314decb5adf1d9dbe5f887eb779daf6d4d2ce463435181da6cc72302206104213df446b9fc78d598c8425c82ca9b0952fab48a9edecb382ee5e68c11fe0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffb861fab2cde188499758346be46b5fbec635addfc4e7b0c8a07c0a908f2b11b4000000006a4730440220120d5d6672695c9ad3e72049da00be123bab74971386953b38409ff52989ce2502202b8702ba2d7fe90fc35aef52585c664865ae746d9e4242955b7ece22d89ad1ca0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff850cecf958468ca7ffa6a490afe13b8c271b1326b0ddc1fdfdf9f3c7e365fdba000000006a4730440220282a14909d8ed766441c4766a574af0fc20e1b587e545e1943429670457b959602207e4c7503ae3c9de83865d0972fbb18cd7c9630023347d6eba45963f0670ef7e70121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffe9b483a8ac4129780c88d1babe41e89dc10a26dedbf14f80a28474e9a11104de010000006b483045022100ec3744090e0603690319768ef234071410224230cc32e4731e50f9e8a05a6a5802203a1a8f7380e83fd1b61f4fd775aa6410d2e87d018b820aab4e98e1a8de0715f10121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff456a9e597129f5df2e11b842833fc19a94c563f57449281d3cd01249a830a1f0000000006a473044022060b06dcb2550beb9dd4181a45566ccf0ba41040d9003aa83c02fb63c4f9cbd8a02203c577c070c69382cfb05c74275590e3de6dcb77ce929b0d771f314ffa889f47c0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff60ad3408b89ea19caf3abd5e74e7a084344987c64b1563af52242e9d2a8320f3000000006b483045022100d7b08a358ce19469d369765c38d1f17ffe66151f7c9cd85757d89d4f218a9d390220418f13a4b8eb41ca471901f1ba2b1677166f90127b65b7417ad5a62d76f0b8c80121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff027064d817000000001976a9144a5fba237213a062f6f57978f796390bdcf8d01588ac00902f50090000001976a9145be32612930b8323add2212a4ec03c1562084f8488ac00000000")
+            XCTAssertTrue(txSize.uintValue == 2611)
             
-            func testCreateSignedSerializedTransactionHexAndBIP69_2_2() -> () {
-                let toAddressesAndAmounts = [["address": toAddress2, "amount": toAmount2], ["address": toAddress, "amount": toAmount]]
-                
-                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
-                accountObject.unspentOutputs!.append(unspentOutput15)
-                accountObject.unspentOutputs!.append(unspentOutput2)
-                accountObject.unspentOutputs!.append(unspentOutput0)
-                accountObject.unspentOutputs!.append(unspentOutput1)
-                accountObject.unspentOutputs!.append(unspentOutput5)
-                accountObject.unspentOutputs!.append(unspentOutput3)
-                accountObject.unspentOutputs!.append(unspentOutput4)
-                accountObject.unspentOutputs!.append(unspentOutput6)
-                accountObject.unspentOutputs!.append(unspentOutput7)
-                accountObject.unspentOutputs!.append(unspentOutput9)
-                accountObject.unspentOutputs!.append(unspentOutput10)
-                accountObject.unspentOutputs!.append(unspentOutput8)
-                accountObject.unspentOutputs!.append(unspentOutput12)
-                accountObject.unspentOutputs!.append(unspentOutput11)
-                accountObject.unspentOutputs!.append(unspentOutput14)
-                accountObject.unspentOutputs!.append(unspentOutput16)
-                accountObject.unspentOutputs!.append(unspentOutput13)
-                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
-
-                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
-                    (data: String?) in
-                })
-                
-                let txHexAndTxHash = ret.0
-                let realToAddresses = ret.1
-                let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
-                let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
-                let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
-                XCTAssertTrue(txHash == "0656add012962ef3bdd11eaf88347b78a2c4adb08fe8b95f79a8b8a4fe862132")
-                XCTAssertTrue(txHex == "0100000011571fb3e02278217852dd5d299947e2b7354a639adc32ec1fa7b82cfb5dec530e000000006b483045022100b28348624779833117dc8ae73bcb649528ad6edf9d5b48018c4488dbc9b9fa3702201f8b0e1707bdfa3438d6c1353b62e3a01cb0b7b4ee5e7ef93e7b2f563ead66a30121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff2470947216eb81ea0eeeb4fe19362ec05767db01c3aa3006bb499e8b6d6eaa26010000006a4730440220679db98b1e5b17a57acc78e7271c357130fd8b6d8d2072880429d05630c5cc2802205fb88f764053185d610ae8041907bdb85f711a51f5602bb663b744e786fd78700121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffc26f3eb7932f7acddc5ddd26602b77e7516079b03090a16e2c2f5485d1fde028000000006a47304402205031699fc96af02637f1ed7120c0e380f65370824f6af5cd37baf391f8188f73022026f5ba7a7f31fc3590f1e4dce50f12cc2122ce3fe30d187f11c3922ce3b22d0a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff5d8de50362ff33d3526ac3602e9ee25c1a349def086a7fc1d9941aaeb9e91d38010000006b483045022100fefda0743cc428b17e688c65d226e899af8b0d5a6f05d0944f9c67257fa5a15a02207baa0a95d88b98b0b669cab8342cc43bc992daf3be41c4ba40de77453ed3fb220121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffe28db9462d3004e21e765e03a45ecb147f136a20ba8bca78ba60ebfc8e2f8b3b000000006b483045022100a54a4e0a3b476c855273a0aa6d97f5995e78a83cad59c28cda786b49a14f370602202cce0aadf128986b6448ad7f3288f95c9c5467ba01d16e94d807db587e481fe30121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff0abcd77d65cc14363f8262898335f184d6da5ad060ff9e40bf201741022c2b40010000006a4730440220636b2a05ef164457c9b8ee0f364c308a7ef8a0f5f7b01d6633ace40803a6fd7902205f052f39e940d2b8d797a5259ee35d0596a0dbfd199799722d95a895308bd1f10121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff7a1ef65ff1b7b7740c662ab6c9735ace4a16279c23a1db5709ed652918ffff54010000006b4830450221008e3f42e8e5d45712efe14c17ba199724e1d2bcaa2a459ede155b2df89d1b8c7902205260062b1eb6595a43180f0b40307467f4fe2f67138c2aed47d21dac739f4a770121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffaad553bb1650007e9982a8ac79d227cd8c831e1573b11f25573a37664e5f3e64000000006a47304402204b3a8b40ea4bd092ce05ae5a55704d98ceee485b87e9d9bbc1dcc0956a2230bb022043b2660c1513b029038a3f2492c2d0d39b45c04a14b1143ede43abb6832d6f910121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffb102113fa46ce949616d9cda00f6b10231336b3928eaaac6bfe42d1bf3561d6c010000006a4730440220651a1d62ba88ac05790bab2ead82483e99a748965cd8f1887c943c62c67786de022002bc57e36c7668c8e5d4c02e1baed3491b30d91e53633b807ca950b8bfad6fe90121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff91c1889c5c24b93b56e643121f7a05a34c10c5495c450504c7b5afcb37e11d7a000000006b483045022100ea05603d2944228bd2231354b1a6e6d106a803d7d52e8a290232b9769629c9a502204125264bb9d2cfd2db5455044d58a7b8ea8e0c7c88870def8c0fac2c559c5cfc0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffa43bebbebf07452a893a95bfea1d5db338d23579be172fe803dce02eeb7c037d010000006b483045022100fe8ce378ed72b0829805dde89cb16d2f6722f8b4128ee07f6ef064eaa4b607f702206400a9816e120e3e7427f4e83518b2822f010c219bcb758560ff280aae1cbe420121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff8640e312040e476cf6727c60ca3f4a3ad51623500aacdda96e7728dbdd99e8a5000000006a47304402203cce0a54d3314decb5adf1d9dbe5f887eb779daf6d4d2ce463435181da6cc72302206104213df446b9fc78d598c8425c82ca9b0952fab48a9edecb382ee5e68c11fe0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffb861fab2cde188499758346be46b5fbec635addfc4e7b0c8a07c0a908f2b11b4000000006a4730440220120d5d6672695c9ad3e72049da00be123bab74971386953b38409ff52989ce2502202b8702ba2d7fe90fc35aef52585c664865ae746d9e4242955b7ece22d89ad1ca0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff850cecf958468ca7ffa6a490afe13b8c271b1326b0ddc1fdfdf9f3c7e365fdba000000006a4730440220282a14909d8ed766441c4766a574af0fc20e1b587e545e1943429670457b959602207e4c7503ae3c9de83865d0972fbb18cd7c9630023347d6eba45963f0670ef7e70121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffe9b483a8ac4129780c88d1babe41e89dc10a26dedbf14f80a28474e9a11104de010000006b483045022100ec3744090e0603690319768ef234071410224230cc32e4731e50f9e8a05a6a5802203a1a8f7380e83fd1b61f4fd775aa6410d2e87d018b820aab4e98e1a8de0715f10121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff456a9e597129f5df2e11b842833fc19a94c563f57449281d3cd01249a830a1f0000000006a473044022060b06dcb2550beb9dd4181a45566ccf0ba41040d9003aa83c02fb63c4f9cbd8a02203c577c070c69382cfb05c74275590e3de6dcb77ce929b0d771f314ffa889f47c0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff60ad3408b89ea19caf3abd5e74e7a084344987c64b1563af52242e9d2a8320f3000000006b483045022100d7b08a358ce19469d369765c38d1f17ffe66151f7c9cd85757d89d4f218a9d390220418f13a4b8eb41ca471901f1ba2b1677166f90127b65b7417ad5a62d76f0b8c80121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff027064d817000000001976a9144a5fba237213a062f6f57978f796390bdcf8d01588ac00902f50090000001976a9145be32612930b8323add2212a4ec03c1562084f8488ac00000000")
-                XCTAssertTrue(txSize.uintValue == 2611)
-
-                let transaction = BTCTransaction(hex: txHex)
-                
-                XCTAssertTrue(transaction?.inputs.count == 17)
-                let input0 = transaction?.inputs[0] as! BTCTransactionInput
-                XCTAssertTrue(input0.previousTransactionID == txid0)
-                XCTAssertTrue(input0.outpoint.index == 0)
-                let input1 = transaction?.inputs[1] as! BTCTransactionInput
-                XCTAssertTrue(input1.previousTransactionID == txid1)
-                XCTAssertTrue(input1.outpoint.index == 1)
-                let input2 = transaction?.inputs[2] as! BTCTransactionInput
-                XCTAssertTrue(input2.previousTransactionID == txid2)
-                XCTAssertTrue(input2.outpoint.index == 0)
-                let input3 = transaction?.inputs[3] as! BTCTransactionInput
-                XCTAssertTrue(input3.previousTransactionID == txid3)
-                XCTAssertTrue(input3.outpoint.index == 1)
-                let input4 = transaction?.inputs[4] as! BTCTransactionInput
-                XCTAssertTrue(input4.previousTransactionID == txid4)
-                XCTAssertTrue(input4.outpoint.index == 0)
-                let input5 = transaction?.inputs[5] as! BTCTransactionInput
-                XCTAssertTrue(input5.previousTransactionID == txid5)
-                XCTAssertTrue(input5.outpoint.index == 1)
-                let input6 = transaction?.inputs[6] as! BTCTransactionInput
-                XCTAssertTrue(input6.previousTransactionID == txid6)
-                XCTAssertTrue(input6.outpoint.index == 1)
-                let input7 = transaction?.inputs[7] as! BTCTransactionInput
-                XCTAssertTrue(input7.previousTransactionID == txid7)
-                XCTAssertTrue(input7.outpoint.index == 0)
-                let input8 = transaction?.inputs[8] as! BTCTransactionInput
-                XCTAssertTrue(input8.previousTransactionID == txid8)
-                XCTAssertTrue(input8.outpoint.index == 1)
-                let input9 = transaction?.inputs[9] as! BTCTransactionInput
-                XCTAssertTrue(input9.previousTransactionID == txid9)
-                XCTAssertTrue(input9.outpoint.index == 0)
-                let input10 = transaction?.inputs[10] as! BTCTransactionInput
-                XCTAssertTrue(input10.previousTransactionID == txid10)
-                XCTAssertTrue(input10.outpoint.index == 1)
-                let input11 = transaction?.inputs[11] as! BTCTransactionInput
-                XCTAssertTrue(input11.previousTransactionID == txid11)
-                XCTAssertTrue(input11.outpoint.index == 0)
-                let input12 = transaction?.inputs[12] as! BTCTransactionInput
-                XCTAssertTrue(input12.previousTransactionID == txid12)
-                XCTAssertTrue(input12.outpoint.index == 0)
-                let input13 = transaction?.inputs[13] as! BTCTransactionInput
-                XCTAssertTrue(input13.previousTransactionID == txid13)
-                XCTAssertTrue(input13.outpoint.index == 0)
-                let input14 = transaction?.inputs[14] as! BTCTransactionInput
-                XCTAssertTrue(input14.previousTransactionID == txid14)
-                XCTAssertTrue(input14.outpoint.index == 1)
-                let input15 = transaction?.inputs[15] as! BTCTransactionInput
-                XCTAssertTrue(input15.previousTransactionID == txid15)
-                XCTAssertTrue(input15.outpoint.index == 0)
-                let input16 = transaction?.inputs[16] as! BTCTransactionInput
-                XCTAssertTrue(input16.previousTransactionID == txid16)
-                XCTAssertTrue(input16.outpoint.index == 0)
-                
-                
-                XCTAssertTrue(transaction?.outputs.count == 2)
-                let output0 = transaction?.outputs[0] as! BTCTransactionOutput
-                XCTAssertTrue(output0.script.hex == "76a9144a5fba237213a062f6f57978f796390bdcf8d01588ac")
-                XCTAssertTrue(output0.value == 400057456)
-                XCTAssertTrue(output0.script.standardAddress.base58String == "17nFgS1YaDPnXKMPQkZVdNQqZnVqRgBwnZ")
-                let output1 = transaction?.outputs[1] as! BTCTransactionOutput
-                XCTAssertTrue(output1.script.hex == "76a9145be32612930b8323add2212a4ec03c1562084f8488ac")
-                XCTAssertTrue(output1.value == 40000000000)
-                XCTAssertTrue(output1.script.standardAddress.base58String == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
-                
-                XCTAssertTrue(realToAddresses.count == 2)
-                XCTAssertTrue(realToAddresses[0] == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
-                XCTAssertTrue(realToAddresses[1] == "17nFgS1YaDPnXKMPQkZVdNQqZnVqRgBwnZ")
-            }
-
-            testCreateSignedSerializedTransactionHexAndBIP69_2_1()
-            testCreateSignedSerializedTransactionHexAndBIP69_2_2()
+            let transaction = BTCTransaction(hex: txHex)
+            
+            XCTAssertTrue(transaction?.inputs.count == 17)
+            let input0 = transaction?.inputs[0] as! BTCTransactionInput
+            XCTAssertTrue(input0.previousTransactionID == txid0)
+            XCTAssertTrue(input0.outpoint.index == 0)
+            let input1 = transaction?.inputs[1] as! BTCTransactionInput
+            XCTAssertTrue(input1.previousTransactionID == txid1)
+            XCTAssertTrue(input1.outpoint.index == 1)
+            let input2 = transaction?.inputs[2] as! BTCTransactionInput
+            XCTAssertTrue(input2.previousTransactionID == txid2)
+            XCTAssertTrue(input2.outpoint.index == 0)
+            let input3 = transaction?.inputs[3] as! BTCTransactionInput
+            XCTAssertTrue(input3.previousTransactionID == txid3)
+            XCTAssertTrue(input3.outpoint.index == 1)
+            let input4 = transaction?.inputs[4] as! BTCTransactionInput
+            XCTAssertTrue(input4.previousTransactionID == txid4)
+            XCTAssertTrue(input4.outpoint.index == 0)
+            let input5 = transaction?.inputs[5] as! BTCTransactionInput
+            XCTAssertTrue(input5.previousTransactionID == txid5)
+            XCTAssertTrue(input5.outpoint.index == 1)
+            let input6 = transaction?.inputs[6] as! BTCTransactionInput
+            XCTAssertTrue(input6.previousTransactionID == txid6)
+            XCTAssertTrue(input6.outpoint.index == 1)
+            let input7 = transaction?.inputs[7] as! BTCTransactionInput
+            XCTAssertTrue(input7.previousTransactionID == txid7)
+            XCTAssertTrue(input7.outpoint.index == 0)
+            let input8 = transaction?.inputs[8] as! BTCTransactionInput
+            XCTAssertTrue(input8.previousTransactionID == txid8)
+            XCTAssertTrue(input8.outpoint.index == 1)
+            let input9 = transaction?.inputs[9] as! BTCTransactionInput
+            XCTAssertTrue(input9.previousTransactionID == txid9)
+            XCTAssertTrue(input9.outpoint.index == 0)
+            let input10 = transaction?.inputs[10] as! BTCTransactionInput
+            XCTAssertTrue(input10.previousTransactionID == txid10)
+            XCTAssertTrue(input10.outpoint.index == 1)
+            let input11 = transaction?.inputs[11] as! BTCTransactionInput
+            XCTAssertTrue(input11.previousTransactionID == txid11)
+            XCTAssertTrue(input11.outpoint.index == 0)
+            let input12 = transaction?.inputs[12] as! BTCTransactionInput
+            XCTAssertTrue(input12.previousTransactionID == txid12)
+            XCTAssertTrue(input12.outpoint.index == 0)
+            let input13 = transaction?.inputs[13] as! BTCTransactionInput
+            XCTAssertTrue(input13.previousTransactionID == txid13)
+            XCTAssertTrue(input13.outpoint.index == 0)
+            let input14 = transaction?.inputs[14] as! BTCTransactionInput
+            XCTAssertTrue(input14.previousTransactionID == txid14)
+            XCTAssertTrue(input14.outpoint.index == 1)
+            let input15 = transaction?.inputs[15] as! BTCTransactionInput
+            XCTAssertTrue(input15.previousTransactionID == txid15)
+            XCTAssertTrue(input15.outpoint.index == 0)
+            let input16 = transaction?.inputs[16] as! BTCTransactionInput
+            XCTAssertTrue(input16.previousTransactionID == txid16)
+            XCTAssertTrue(input16.outpoint.index == 0)
+            
+            
+            XCTAssertTrue(transaction?.outputs.count == 2)
+            let output0 = transaction?.outputs[0] as! BTCTransactionOutput
+            XCTAssertTrue(output0.script.hex == "76a9144a5fba237213a062f6f57978f796390bdcf8d01588ac")
+            XCTAssertTrue(output0.value == 400057456)
+            XCTAssertTrue(output0.script.standardAddress.base58String == "17nFgS1YaDPnXKMPQkZVdNQqZnVqRgBwnZ")
+            let output1 = transaction?.outputs[1] as! BTCTransactionOutput
+            XCTAssertTrue(output1.script.hex == "76a9145be32612930b8323add2212a4ec03c1562084f8488ac")
+            XCTAssertTrue(output1.value == 40000000000)
+            XCTAssertTrue(output1.script.standardAddress.base58String == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
+            
+            XCTAssertTrue(realToAddresses.count == 2)
+            XCTAssertTrue(realToAddresses[0] == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
+            XCTAssertTrue(realToAddresses[1] == "17nFgS1YaDPnXKMPQkZVdNQqZnVqRgBwnZ")
         }
         
-        func testCreateSignedSerializedTransactionHexAndBIP69_3() -> () {
-            let feeAmount = TLCurrencyFormat.amountStringToCoin("0.00000", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
-            let toAddress = "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv"
-            let toAddress2 = "vJmwhHhMNevDQh188gSeHd2xxxYGBQmnVuMY2yG2MmVTC31UWN5s3vaM3xsM2Q1bUremdK1W7eNVgPg1BnvbTyQuDtMKAYJanahvse"
-            let toAmount = TLCurrencyFormat.amountStringToCoin("1", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
-            let toAmount2 = TLCurrencyFormat.amountStringToCoin("24", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        testCreateSignedSerializedTransactionHexAndBIP69_2_1()
+        testCreateSignedSerializedTransactionHexAndBIP69_2_2()
+    }
+    
+    func testCreateSignedSerializedTransactionHexAndBIP69_3() -> () {
+        guard let accountObject = accountObject else {
+            return
+        }
+        let feeAmount = TLCurrencyFormat.amountStringToCoin("0.00000", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        let toAddress = "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv"
+        let toAddress2 = "vJmwhHhMNevDQh188gSeHd2xxxYGBQmnVuMY2yG2MmVTC31UWN5s3vaM3xsM2Q1bUremdK1W7eNVgPg1BnvbTyQuDtMKAYJanahvse"
+        let toAmount = TLCurrencyFormat.amountStringToCoin("1", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        let toAmount2 = TLCurrencyFormat.amountStringToCoin("24", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        
+        let txid0 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
+        let txid1 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
+        
+        let unspentOutput0 = mockUnspentOutput(txid0, value: 100000000, txOutputN: 0)
+        let unspentOutput1 = mockUnspentOutput(txid1, value: 2400000000, txOutputN: 1)
+        let nonce:UInt32 = 123
+        let ephemeralPrivateKeyHex = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        
+        func testCreateSignedSerializedTransactionHexAndBIP69_3_1() -> () {
+            let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount], ["address": toAddress2, "amount": toAmount2]]
             
-            let txid0 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
-            let txid1 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
+            accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+            accountObject.unspentOutputs!.append(unspentOutput0)
+            accountObject.unspentOutputs!.append(unspentOutput1)
+            accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
             
-            let unspentOutput0 = mockUnspentOutput(txid0, 100000000, 0)
-            let unspentOutput1 = mockUnspentOutput(txid1, 2400000000, 1)
-            let nonce:UInt32 = 123
-            let ephemeralPrivateKeyHex = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            let ret = TLSpaghettiGodSend.createSignedSerializedTransactionHex(isTestnet, coinType: accountObject.getSelectedObjectCoinType(),  sendFromAccounts: sendFromAccounts, sendFromAddresses: sendFromAddresses, toAddressesAndAmounts: toAddressesAndAmounts as NSArray,
+                                                                              feeAmount: feeAmount, nonce: nonce, ephemeralPrivateKeyHex: ephemeralPrivateKeyHex, error: {
+                                                                                (data: String?) in
+            })
             
-            func testCreateSignedSerializedTransactionHexAndBIP69_3_1() -> () {
-                let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount], ["address": toAddress2, "amount": toAmount2]]
-                
-                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
-                accountObject.unspentOutputs!.append(unspentOutput0)
-                accountObject.unspentOutputs!.append(unspentOutput1)
-                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
-                
-                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray,
-                    feeAmount: feeAmount, nonce: nonce, ephemeralPrivateKeyHex: ephemeralPrivateKeyHex, error: {
-                        (data: String?) in
-                })
-                
-                let txHexAndTxHash = ret.0
-                let realToAddresses = ret.1
-                let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
-                let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
-                let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
-                XCTAssertTrue(txHash == "9debd8fa98772ef4110fc3eb07a0a172e7704a148708ada788b2b5560efd445f")
-                XCTAssertTrue(txHex == "010000000255605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835000000006b483045022100bb8786c01153753ab524a4a40c4d0635489e6bd68ded28e63b06f661977fa9fc022055bcba9bd538a5bb2c375c9b76f64c8a5e65f8d609fe50413d65c71afa6d31c40121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff55605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835010000006a47304402202c4c09455e0fc246617575d335194253a98bfb516943b3c0f14bb40f2676717402200af78f6591c26fc34910f4e43bde46c24538e500c71a781e2fb359b425fbca8e0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff030000000000000000286a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd00e1f505000000001976a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac00180d8f000000001976a914d9bbccb1b996061b735b35841d90844c263fbc7388ac00000000")
-                XCTAssertTrue(txSize.uintValue == 410)
-
-                let transaction = BTCTransaction(hex: txHex)
-                
-                XCTAssertTrue(transaction?.inputs.count == 2)
-                let input0 = transaction?.inputs[0] as! BTCTransactionInput
-                XCTAssertTrue(input0.previousTransactionID == txid0)
-                XCTAssertTrue(input0.outpoint.index == 0)
-                let input1 = transaction?.inputs[1] as! BTCTransactionInput
-                XCTAssertTrue(input1.previousTransactionID == txid1)
-                XCTAssertTrue(input1.outpoint.index == 1)
-                
-                XCTAssertTrue(transaction?.outputs.count == 3)
-                let output0 = transaction?.outputs[0] as! BTCTransactionOutput
-                XCTAssertTrue(output0.script.hex == "6a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd")
-                XCTAssertTrue(output0.value == 0)
-                XCTAssertTrue(output0.script.standardAddress == nil)
-                let output1 = transaction?.outputs[1] as! BTCTransactionOutput
-                XCTAssertTrue(output1.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
-                XCTAssertTrue(output1.value == 100000000)
-                XCTAssertTrue(output1.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
-                let output2 = transaction?.outputs[2] as! BTCTransactionOutput
-                XCTAssertTrue(output2.script.hex == "76a914d9bbccb1b996061b735b35841d90844c263fbc7388ac")
-                XCTAssertTrue(output2.value == 2400000000)
-                XCTAssertTrue(output2.script.standardAddress.base58String == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
-                
-                XCTAssertTrue(realToAddresses.count == 2)
-                XCTAssertTrue(realToAddresses[0] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
-                XCTAssertTrue(realToAddresses[1] == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
-            }
+            let txHexAndTxHash = ret.0
+            let realToAddresses = ret.1
+            let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
+            let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
+            let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
+            XCTAssertTrue(txHash == "9debd8fa98772ef4110fc3eb07a0a172e7704a148708ada788b2b5560efd445f")
+            XCTAssertTrue(txHex == "010000000255605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835000000006b483045022100bb8786c01153753ab524a4a40c4d0635489e6bd68ded28e63b06f661977fa9fc022055bcba9bd538a5bb2c375c9b76f64c8a5e65f8d609fe50413d65c71afa6d31c40121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff55605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835010000006a47304402202c4c09455e0fc246617575d335194253a98bfb516943b3c0f14bb40f2676717402200af78f6591c26fc34910f4e43bde46c24538e500c71a781e2fb359b425fbca8e0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff030000000000000000286a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd00e1f505000000001976a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac00180d8f000000001976a914d9bbccb1b996061b735b35841d90844c263fbc7388ac00000000")
+            XCTAssertTrue(txSize.uintValue == 410)
             
-            func testCreateSignedSerializedTransactionHexAndBIP69_3_2() -> () {
-                let toAddressesAndAmounts = [["address": toAddress2, "amount": toAmount2], ["address": toAddress, "amount": toAmount]]
-                
-                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
-                accountObject.unspentOutputs!.append(unspentOutput1)
-                accountObject.unspentOutputs!.append(unspentOutput0)
-                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
-                
-                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray,
-                    feeAmount: feeAmount, nonce: nonce, ephemeralPrivateKeyHex: ephemeralPrivateKeyHex, error: {
-                        (data: String?) in
-                })
-                
-                let txHexAndTxHash = ret.0
-                let realToAddresses = ret.1
-                let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
-                let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
-                let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
-                XCTAssertTrue(txHash == "9debd8fa98772ef4110fc3eb07a0a172e7704a148708ada788b2b5560efd445f")
-                XCTAssertTrue(txHex == "010000000255605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835000000006b483045022100bb8786c01153753ab524a4a40c4d0635489e6bd68ded28e63b06f661977fa9fc022055bcba9bd538a5bb2c375c9b76f64c8a5e65f8d609fe50413d65c71afa6d31c40121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff55605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835010000006a47304402202c4c09455e0fc246617575d335194253a98bfb516943b3c0f14bb40f2676717402200af78f6591c26fc34910f4e43bde46c24538e500c71a781e2fb359b425fbca8e0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff030000000000000000286a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd00e1f505000000001976a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac00180d8f000000001976a914d9bbccb1b996061b735b35841d90844c263fbc7388ac00000000")
-                XCTAssertTrue(txSize.uintValue == 410)
-
-                let transaction = BTCTransaction(hex: txHex)
-                
-                XCTAssertTrue(transaction?.inputs.count == 2)
-                let input0 = transaction?.inputs[0] as! BTCTransactionInput
-                XCTAssertTrue(input0.previousTransactionID == txid0)
-                XCTAssertTrue(input0.outpoint.index == 0)
-                let input1 = transaction?.inputs[1] as! BTCTransactionInput
-                XCTAssertTrue(input1.previousTransactionID == txid1)
-                XCTAssertTrue(input1.outpoint.index == 1)
-                
-                XCTAssertTrue(transaction?.outputs.count == 3)
-                let output0 = transaction?.outputs[0] as! BTCTransactionOutput
-                XCTAssertTrue(output0.script.hex == "6a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd")
-                XCTAssertTrue(output0.value == 0)
-                XCTAssertTrue(output0.script.standardAddress == nil)
-                let output1 = transaction?.outputs[1] as! BTCTransactionOutput
-                XCTAssertTrue(output1.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
-                XCTAssertTrue(output1.value == 100000000)
-                XCTAssertTrue(output1.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
-                let output2 = transaction?.outputs[2] as! BTCTransactionOutput
-                XCTAssertTrue(output2.script.hex == "76a914d9bbccb1b996061b735b35841d90844c263fbc7388ac")
-                XCTAssertTrue(output2.value == 2400000000)
-                XCTAssertTrue(output2.script.standardAddress.base58String == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
-                
-                XCTAssertTrue(realToAddresses.count == 2)
-                XCTAssertTrue(realToAddresses[0] == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
-                XCTAssertTrue(realToAddresses[1] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
-            }
+            let transaction = BTCTransaction(hex: txHex)
             
-            testCreateSignedSerializedTransactionHexAndBIP69_3_1()
-            testCreateSignedSerializedTransactionHexAndBIP69_3_2()
+            XCTAssertTrue(transaction?.inputs.count == 2)
+            let input0 = transaction?.inputs[0] as! BTCTransactionInput
+            XCTAssertTrue(input0.previousTransactionID == txid0)
+            XCTAssertTrue(input0.outpoint.index == 0)
+            let input1 = transaction?.inputs[1] as! BTCTransactionInput
+            XCTAssertTrue(input1.previousTransactionID == txid1)
+            XCTAssertTrue(input1.outpoint.index == 1)
+            
+            XCTAssertTrue(transaction?.outputs.count == 3)
+            let output0 = transaction?.outputs[0] as! BTCTransactionOutput
+            XCTAssertTrue(output0.script.hex == "6a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd")
+            XCTAssertTrue(output0.value == 0)
+            XCTAssertTrue(output0.script.standardAddress == nil)
+            let output1 = transaction?.outputs[1] as! BTCTransactionOutput
+            XCTAssertTrue(output1.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
+            XCTAssertTrue(output1.value == 100000000)
+            XCTAssertTrue(output1.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
+            let output2 = transaction?.outputs[2] as! BTCTransactionOutput
+            XCTAssertTrue(output2.script.hex == "76a914d9bbccb1b996061b735b35841d90844c263fbc7388ac")
+            XCTAssertTrue(output2.value == 2400000000)
+            XCTAssertTrue(output2.script.standardAddress.base58String == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
+            
+            XCTAssertTrue(realToAddresses.count == 2)
+            XCTAssertTrue(realToAddresses[0] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
+            XCTAssertTrue(realToAddresses[1] == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
         }
         
-        func testCreateSignedSerializedTransactionHexAndBIP69_4() -> () {
-            let feeAmount = TLCurrencyFormat.amountStringToCoin("0.00002735", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
-            let toAddress = "vJmwhHhMNevDQh188gSeHd2xxxYGBQmnVuMY2yG2MmVTC31UWN5s3vaM3xsM2Q1bUremdK1W7eNVgPg1BnvbTyQuDtMKAYJanahvse"
-            let toAddress2 = "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm"
-            let toAmount = TLCurrencyFormat.amountStringToCoin("4.00057456", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
-            let toAmount2 = TLCurrencyFormat.amountStringToCoin("400", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        func testCreateSignedSerializedTransactionHexAndBIP69_3_2() -> () {
+            let toAddressesAndAmounts = [["address": toAddress2, "amount": toAmount2], ["address": toAddress, "amount": toAmount]]
             
-            let txid0 = "0e53ec5dfb2cb8a71fec32dc9a634a35b7e24799295ddd5278217822e0b31f57"
-            let txid1 = "26aa6e6d8b9e49bb0630aac301db6757c02e3619feb4ee0eea81eb1672947024"
-            let txid2 = "28e0fdd185542f2c6ea19030b0796051e7772b6026dd5ddccd7a2f93b73e6fc2"
-            let txid3 = "381de9b9ae1a94d9c17f6a08ef9d341a5ce29e2e60c36a52d333ff6203e58d5d"
-            let txid4 = "3b8b2f8efceb60ba78ca8bba206a137f14cb5ea4035e761ee204302d46b98de2"
-            let txid5 = "402b2c02411720bf409eff60d05adad684f135838962823f3614cc657dd7bc0a"
-            let txid6 = "54ffff182965ed0957dba1239c27164ace5a73c9b62a660c74b7b7f15ff61e7a"
-            let txid7 = "643e5f4e66373a57251fb173151e838ccd27d279aca882997e005016bb53d5aa"
-            let txid8 = "6c1d56f31b2de4bfc6aaea28396b333102b1f600da9c6d6149e96ca43f1102b1"
-            let txid9 = "7a1de137cbafb5c70405455c49c5104ca3057a1f1243e6563bb9245c9c88c191"
-            let txid10 = "7d037ceb2ee0dc03e82f17be7935d238b35d1deabf953a892a4507bfbeeb3ba4"
-            let txid11 = "a5e899dddb28776ea9ddac0a502316d53a4a3fca607c72f66c470e0412e34086"
-            let txid12 = "b4112b8f900a7ca0c8b0e7c4dfad35c6be5f6be46b3458974988e1cdb2fa61b8"
-            let txid13 = "bafd65e3c7f3f9fdfdc1ddb026131b278c3be1af90a4a6ffa78c4658f9ec0c85"
-            let txid14 = "de0411a1e97484a2804ff1dbde260ac19de841bebad1880c782941aca883b4e9"
-            let txid15 = "f0a130a84912d03c1d284974f563c5949ac13f8342b8112edff52971599e6a45"
-            let txid16 = "f320832a9d2e2452af63154bc687493484a0e7745ebd3aaf9ca19eb80834ad60"
-
-            let unspentOutput0 = mockUnspentOutput(txid0, 2529937904, 0)
-            let unspentOutput1 = mockUnspentOutput(txid1, 2521656792, 1)
-            let unspentOutput2 = mockUnspentOutput(txid2, 2509683086, 0)
-            let unspentOutput3 = mockUnspentOutput(txid3, 2506060377, 1)
-            let unspentOutput4 = mockUnspentOutput(txid4, 2510645247, 0)
-            let unspentOutput5 = mockUnspentOutput(txid5, 2502325820, 1)
-            let unspentOutput6 = mockUnspentOutput(txid6, 2525953727, 1)
-            let unspentOutput7 = mockUnspentOutput(txid7, 2507302856, 0)
-            let unspentOutput8 = mockUnspentOutput(txid8, 2534185804, 1)
-            let unspentOutput9 = mockUnspentOutput(txid9, 136219905, 0)
-            let unspentOutput10 = mockUnspentOutput(txid10, 2502901118, 1)
-            let unspentOutput11 = mockUnspentOutput(txid11, 2527569363, 0)
-            let unspentOutput12 = mockUnspentOutput(txid12, 2516268302, 0)
-            let unspentOutput13 = mockUnspentOutput(txid13, 2521794404, 0)
-            let unspentOutput14 = mockUnspentOutput(txid14, 2520533680, 1)
-            let unspentOutput15 = mockUnspentOutput(txid15, 2513840095, 0)
-            let unspentOutput16 = mockUnspentOutput(txid16, 2513181711, 0)
+            accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+            accountObject.unspentOutputs!.append(unspentOutput1)
+            accountObject.unspentOutputs!.append(unspentOutput0)
+            accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
             
-            let nonce:UInt32 = 123
-            let ephemeralPrivateKeyHex = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+            let ret = TLSpaghettiGodSend.createSignedSerializedTransactionHex(isTestnet, coinType: accountObject.getSelectedObjectCoinType(),  sendFromAccounts: sendFromAccounts, sendFromAddresses: sendFromAddresses, toAddressesAndAmounts: toAddressesAndAmounts as NSArray,
+                                                                              feeAmount: feeAmount, nonce: nonce, ephemeralPrivateKeyHex: ephemeralPrivateKeyHex, error: {
+                                                                                (data: String?) in
+            })
             
-            func testCreateSignedSerializedTransactionHexAndBIP69_4_1() -> () {
-                let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount], ["address": toAddress2, "amount": toAmount2]]
-                
-                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
-                accountObject.unspentOutputs!.append(unspentOutput0)
-                accountObject.unspentOutputs!.append(unspentOutput1)
-                accountObject.unspentOutputs!.append(unspentOutput2)
-                accountObject.unspentOutputs!.append(unspentOutput3)
-                accountObject.unspentOutputs!.append(unspentOutput4)
-                accountObject.unspentOutputs!.append(unspentOutput5)
-                accountObject.unspentOutputs!.append(unspentOutput6)
-                accountObject.unspentOutputs!.append(unspentOutput7)
-                accountObject.unspentOutputs!.append(unspentOutput8)
-                accountObject.unspentOutputs!.append(unspentOutput9)
-                accountObject.unspentOutputs!.append(unspentOutput10)
-                accountObject.unspentOutputs!.append(unspentOutput11)
-                accountObject.unspentOutputs!.append(unspentOutput12)
-                accountObject.unspentOutputs!.append(unspentOutput13)
-                accountObject.unspentOutputs!.append(unspentOutput14)
-                accountObject.unspentOutputs!.append(unspentOutput15)
-                accountObject.unspentOutputs!.append(unspentOutput16)
-                
-                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
-                
-                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray,
-                    feeAmount: feeAmount, nonce: nonce, ephemeralPrivateKeyHex: ephemeralPrivateKeyHex, error: {
-                    (data: String?) in
-                })
-                
-                let txHexAndTxHash = ret.0
-                let realToAddresses = ret.1
-                let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
-                let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
-                let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
-                XCTAssertTrue(txHash == "b982687699c5bbd6ee36b157c3b34b3d3370945e68b63c987cdf880dbe475706")
-                XCTAssertTrue(txHex == "0100000011571fb3e02278217852dd5d299947e2b7354a639adc32ec1fa7b82cfb5dec530e000000006b483045022100d9e6a6677e63574fd5216957f0652334acf64343192064c4f19c5c8daad1f796022041cbcc403865f92b2804e2d04cfa165dd42bd75c247055c626901507479f923c0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff2470947216eb81ea0eeeb4fe19362ec05767db01c3aa3006bb499e8b6d6eaa26010000006a47304402204a6451764251502cfdcac44deab397e538e5c33fdf354116bcf3dd8088b47c450220345f69761d82e03e88dce29f37e6bccdffce78e3b640d089a377079950006fba0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffc26f3eb7932f7acddc5ddd26602b77e7516079b03090a16e2c2f5485d1fde028000000006b48304502210080577b722d775c9ab9acba7f90b6ee0187395c65824c52ee96a83d9582b27761022063aafc98452e62ee85d99082c96d9dae4071ed0b5f822a4ab211428336e937440121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff5d8de50362ff33d3526ac3602e9ee25c1a349def086a7fc1d9941aaeb9e91d38010000006b483045022100a2279a85d58b05822dbc1ba9cb4c22a9efaf4e3e2d0aaf4c140f6232b90339cf02202e88942afcc0defc3839e764e7358e5065e9bcc6a437f3a1f9e60a912e5cd0180121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffe28db9462d3004e21e765e03a45ecb147f136a20ba8bca78ba60ebfc8e2f8b3b000000006b483045022100d431504d890b2acdc45f618ddc53c2a7accb01d9273afbaa31d5beb71c9bb4de02200797a199a0783d16397152db1159fc8594946ca876ef3586f06be36afc0915230121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff0abcd77d65cc14363f8262898335f184d6da5ad060ff9e40bf201741022c2b40010000006b4830450221008424d7c4bc369a735b92c0f367f5bead679bc82b77ac3ea527002a795299e5cd02200bd017178c46caf204cd3283daed2539a525051e3a73f10f23175d4a90a6d21e0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff7a1ef65ff1b7b7740c662ab6c9735ace4a16279c23a1db5709ed652918ffff54010000006b483045022100bec61f4a8aa3ed122f02663d162ea8d06b65730a1400bb58586783c4155c4ecc022037ba1f6434685252902ca095317299e9facb634216e94677e444182c15d4b8dc0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffaad553bb1650007e9982a8ac79d227cd8c831e1573b11f25573a37664e5f3e64000000006b483045022100b090ff8248aa3f6ea9026861ecbf91e60859801d04fbc4ad54eb3f7497a482c90220128a6dcb1d2d17033aa3e002fcec7fa54b0f817f56abf14d5d37574f2dcf2d1d0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffb102113fa46ce949616d9cda00f6b10231336b3928eaaac6bfe42d1bf3561d6c010000006b483045022100cb8f6d41cb664bee9fe86417e6b6b61452fdcc7c652fe66c46cddae49a678fcb02201f8c040f0a034602015ad2cbf4e6c058077366633c7d3fd5df626de03a091e7b0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff91c1889c5c24b93b56e643121f7a05a34c10c5495c450504c7b5afcb37e11d7a000000006a47304402200cd323984290d2ef6d7ad01942102ea0cceee9b897103ef385719c6f2b57963702201d9dd8c3ea68ea02b6a3ee4a19c18f899d8b02da549f914dd917489c067e7e8e0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffa43bebbebf07452a893a95bfea1d5db338d23579be172fe803dce02eeb7c037d010000006b483045022100be493ef5d839eea19d68e8a3a037fc2f7eb41655d511169a4a8b653ab9d86ca30220416cb1f8dfc83a322de2617e007521dbd408d5ef776193400351c046cbde3d780121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff8640e312040e476cf6727c60ca3f4a3ad51623500aacdda96e7728dbdd99e8a5000000006a47304402200b746b555bf44674ca15ba71ca751719311244f3ba0a5a492fe685fdf7a95dcf0220357f17f4af7a322ca18fc65ddd87580e75bb9988023a11ab00b2f4243c7b6b150121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffb861fab2cde188499758346be46b5fbec635addfc4e7b0c8a07c0a908f2b11b4000000006b4830450221008c0b600801fed1af9c9400daf9c345f27837670a7acd0f1dcdbbbeb7925bad1f022017ef87eabf09308b2f11e63dcb15c4007a907b78afcad4931f9129355ed57b390121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff850cecf958468ca7ffa6a490afe13b8c271b1326b0ddc1fdfdf9f3c7e365fdba000000006b483045022100bcfe32a695abde4c66996b9d38b6be73a70abfcbe09fcc564f4aa1e0c51fd93b0220579cb2061627efbf9ce1748284f9ecedbe72ccdbc9010cb673e64f2aa58c51d90121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffe9b483a8ac4129780c88d1babe41e89dc10a26dedbf14f80a28474e9a11104de010000006a47304402204eeedb2a870d7c1f9aa74a9edc166eda1d80a63c39c5d964c9c4b92db14c1bdd02207e70e0d5740835419f82c23580fdeed491ab872c2fe8a51b4f03fdb817ebfe850121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff456a9e597129f5df2e11b842833fc19a94c563f57449281d3cd01249a830a1f0000000006b483045022100c3c3a47e694c6e9c1d43ae89bfe97a387c45e17d99f79707a6a4df006f5561240220573c40748cc42c45038ac718963eb6385c75216b70249dfb9f8f9d67ae569b9a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff60ad3408b89ea19caf3abd5e74e7a084344987c64b1563af52242e9d2a8320f3000000006a47304402202744a81ba331f89bc0f39c2eb241460a279347e070df57c60148dd7c6ae1778102200616c24bf72cd82a49e0419634388bed2516e4b95dc68dd846851742e15f3cec0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff030000000000000000286a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd7064d817000000001976a914d9bbccb1b996061b735b35841d90844c263fbc7388ac00902f50090000001976a9145be32612930b8323add2212a4ec03c1562084f8488ac00000000")
-                XCTAssertTrue(txSize.uintValue == 2645)
-
-                let transaction = BTCTransaction(hex: txHex)
-                
-                XCTAssertTrue(transaction?.inputs.count == 17)
-                let input0 = transaction?.inputs[0] as! BTCTransactionInput
-                XCTAssertTrue(input0.previousTransactionID == txid0)
-                XCTAssertTrue(input0.outpoint.index == 0)
-                let input1 = transaction?.inputs[1] as! BTCTransactionInput
-                XCTAssertTrue(input1.previousTransactionID == txid1)
-                XCTAssertTrue(input1.outpoint.index == 1)
-                let input2 = transaction?.inputs[2] as! BTCTransactionInput
-                XCTAssertTrue(input2.previousTransactionID == txid2)
-                XCTAssertTrue(input2.outpoint.index == 0)
-                let input3 = transaction?.inputs[3] as! BTCTransactionInput
-                XCTAssertTrue(input3.previousTransactionID == txid3)
-                XCTAssertTrue(input3.outpoint.index == 1)
-                let input4 = transaction?.inputs[4] as! BTCTransactionInput
-                XCTAssertTrue(input4.previousTransactionID == txid4)
-                XCTAssertTrue(input4.outpoint.index == 0)
-                let input5 = transaction?.inputs[5] as! BTCTransactionInput
-                XCTAssertTrue(input5.previousTransactionID == txid5)
-                XCTAssertTrue(input5.outpoint.index == 1)
-                let input6 = transaction?.inputs[6] as! BTCTransactionInput
-                XCTAssertTrue(input6.previousTransactionID == txid6)
-                XCTAssertTrue(input6.outpoint.index == 1)
-                let input7 = transaction?.inputs[7] as! BTCTransactionInput
-                XCTAssertTrue(input7.previousTransactionID == txid7)
-                XCTAssertTrue(input7.outpoint.index == 0)
-                let input8 = transaction?.inputs[8] as! BTCTransactionInput
-                XCTAssertTrue(input8.previousTransactionID == txid8)
-                XCTAssertTrue(input8.outpoint.index == 1)
-                let input9 = transaction?.inputs[9] as! BTCTransactionInput
-                XCTAssertTrue(input9.previousTransactionID == txid9)
-                XCTAssertTrue(input9.outpoint.index == 0)
-                let input10 = transaction?.inputs[10] as! BTCTransactionInput
-                XCTAssertTrue(input10.previousTransactionID == txid10)
-                XCTAssertTrue(input10.outpoint.index == 1)
-                let input11 = transaction?.inputs[11] as! BTCTransactionInput
-                XCTAssertTrue(input11.previousTransactionID == txid11)
-                XCTAssertTrue(input11.outpoint.index == 0)
-                let input12 = transaction?.inputs[12] as! BTCTransactionInput
-                XCTAssertTrue(input12.previousTransactionID == txid12)
-                XCTAssertTrue(input12.outpoint.index == 0)
-                let input13 = transaction?.inputs[13] as! BTCTransactionInput
-                XCTAssertTrue(input13.previousTransactionID == txid13)
-                XCTAssertTrue(input13.outpoint.index == 0)
-                let input14 = transaction?.inputs[14] as! BTCTransactionInput
-                XCTAssertTrue(input14.previousTransactionID == txid14)
-                XCTAssertTrue(input14.outpoint.index == 1)
-                let input15 = transaction?.inputs[15] as! BTCTransactionInput
-                XCTAssertTrue(input15.previousTransactionID == txid15)
-                XCTAssertTrue(input15.outpoint.index == 0)
-                let input16 = transaction?.inputs[16] as! BTCTransactionInput
-                XCTAssertTrue(input16.previousTransactionID == txid16)
-                XCTAssertTrue(input16.outpoint.index == 0)
-                
-                XCTAssertTrue(transaction?.outputs.count == 3)
-                let output0 = transaction?.outputs[0] as! BTCTransactionOutput
-                XCTAssertTrue(output0.script.hex == "6a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd")
-                XCTAssertTrue(output0.value == 0)
-                XCTAssertTrue(output0.script.standardAddress == nil)
-                let output1 = transaction?.outputs[1] as! BTCTransactionOutput
-                XCTAssertTrue(output1.script.hex == "76a914d9bbccb1b996061b735b35841d90844c263fbc7388ac")
-                XCTAssertTrue(output1.value == 400057456)
-                XCTAssertTrue(output1.script.standardAddress.base58String == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
-                let output2 = transaction?.outputs[2] as! BTCTransactionOutput
-                XCTAssertTrue(output2.script.hex == "76a9145be32612930b8323add2212a4ec03c1562084f8488ac")
-                XCTAssertTrue(output2.value == 40000000000)
-                XCTAssertTrue(output2.script.standardAddress.base58String == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
-                
-                XCTAssertTrue(realToAddresses.count == 2)
-                XCTAssertTrue(realToAddresses[0] == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
-                XCTAssertTrue(realToAddresses[1] == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
-            }
+            let txHexAndTxHash = ret.0
+            let realToAddresses = ret.1
+            let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
+            let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
+            let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
+            XCTAssertTrue(txHash == "9debd8fa98772ef4110fc3eb07a0a172e7704a148708ada788b2b5560efd445f")
+            XCTAssertTrue(txHex == "010000000255605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835000000006b483045022100bb8786c01153753ab524a4a40c4d0635489e6bd68ded28e63b06f661977fa9fc022055bcba9bd538a5bb2c375c9b76f64c8a5e65f8d609fe50413d65c71afa6d31c40121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff55605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835010000006a47304402202c4c09455e0fc246617575d335194253a98bfb516943b3c0f14bb40f2676717402200af78f6591c26fc34910f4e43bde46c24538e500c71a781e2fb359b425fbca8e0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff030000000000000000286a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd00e1f505000000001976a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac00180d8f000000001976a914d9bbccb1b996061b735b35841d90844c263fbc7388ac00000000")
+            XCTAssertTrue(txSize.uintValue == 410)
             
-            func testCreateSignedSerializedTransactionHexAndBIP69_4_2() -> () {
-                let toAddressesAndAmounts = [["address": toAddress2, "amount": toAmount2], ["address": toAddress, "amount": toAmount]]
-                
-                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
-                accountObject.unspentOutputs!.append(unspentOutput5)
-                accountObject.unspentOutputs!.append(unspentOutput2)
-                accountObject.unspentOutputs!.append(unspentOutput15)
-                accountObject.unspentOutputs!.append(unspentOutput0)
-                accountObject.unspentOutputs!.append(unspentOutput1)
-                accountObject.unspentOutputs!.append(unspentOutput6)
-                accountObject.unspentOutputs!.append(unspentOutput4)
-                accountObject.unspentOutputs!.append(unspentOutput7)
-                accountObject.unspentOutputs!.append(unspentOutput3)
-                accountObject.unspentOutputs!.append(unspentOutput13)
-                accountObject.unspentOutputs!.append(unspentOutput9)
-                accountObject.unspentOutputs!.append(unspentOutput10)
-                accountObject.unspentOutputs!.append(unspentOutput8)
-                accountObject.unspentOutputs!.append(unspentOutput11)
-                accountObject.unspentOutputs!.append(unspentOutput14)
-                accountObject.unspentOutputs!.append(unspentOutput12)
-                accountObject.unspentOutputs!.append(unspentOutput16)
-                
-                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
-                
-                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray,
-                    feeAmount: feeAmount, nonce: nonce, ephemeralPrivateKeyHex: ephemeralPrivateKeyHex, error: {
-                    (data: String?) in
-                })
-                
-                let txHexAndTxHash = ret.0
-                let realToAddresses = ret.1
-                let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
-                let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
-                let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
-                XCTAssertTrue(txHash == "b982687699c5bbd6ee36b157c3b34b3d3370945e68b63c987cdf880dbe475706")
-                XCTAssertTrue(txHex == "0100000011571fb3e02278217852dd5d299947e2b7354a639adc32ec1fa7b82cfb5dec530e000000006b483045022100d9e6a6677e63574fd5216957f0652334acf64343192064c4f19c5c8daad1f796022041cbcc403865f92b2804e2d04cfa165dd42bd75c247055c626901507479f923c0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff2470947216eb81ea0eeeb4fe19362ec05767db01c3aa3006bb499e8b6d6eaa26010000006a47304402204a6451764251502cfdcac44deab397e538e5c33fdf354116bcf3dd8088b47c450220345f69761d82e03e88dce29f37e6bccdffce78e3b640d089a377079950006fba0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffc26f3eb7932f7acddc5ddd26602b77e7516079b03090a16e2c2f5485d1fde028000000006b48304502210080577b722d775c9ab9acba7f90b6ee0187395c65824c52ee96a83d9582b27761022063aafc98452e62ee85d99082c96d9dae4071ed0b5f822a4ab211428336e937440121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff5d8de50362ff33d3526ac3602e9ee25c1a349def086a7fc1d9941aaeb9e91d38010000006b483045022100a2279a85d58b05822dbc1ba9cb4c22a9efaf4e3e2d0aaf4c140f6232b90339cf02202e88942afcc0defc3839e764e7358e5065e9bcc6a437f3a1f9e60a912e5cd0180121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffe28db9462d3004e21e765e03a45ecb147f136a20ba8bca78ba60ebfc8e2f8b3b000000006b483045022100d431504d890b2acdc45f618ddc53c2a7accb01d9273afbaa31d5beb71c9bb4de02200797a199a0783d16397152db1159fc8594946ca876ef3586f06be36afc0915230121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff0abcd77d65cc14363f8262898335f184d6da5ad060ff9e40bf201741022c2b40010000006b4830450221008424d7c4bc369a735b92c0f367f5bead679bc82b77ac3ea527002a795299e5cd02200bd017178c46caf204cd3283daed2539a525051e3a73f10f23175d4a90a6d21e0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff7a1ef65ff1b7b7740c662ab6c9735ace4a16279c23a1db5709ed652918ffff54010000006b483045022100bec61f4a8aa3ed122f02663d162ea8d06b65730a1400bb58586783c4155c4ecc022037ba1f6434685252902ca095317299e9facb634216e94677e444182c15d4b8dc0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffaad553bb1650007e9982a8ac79d227cd8c831e1573b11f25573a37664e5f3e64000000006b483045022100b090ff8248aa3f6ea9026861ecbf91e60859801d04fbc4ad54eb3f7497a482c90220128a6dcb1d2d17033aa3e002fcec7fa54b0f817f56abf14d5d37574f2dcf2d1d0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffb102113fa46ce949616d9cda00f6b10231336b3928eaaac6bfe42d1bf3561d6c010000006b483045022100cb8f6d41cb664bee9fe86417e6b6b61452fdcc7c652fe66c46cddae49a678fcb02201f8c040f0a034602015ad2cbf4e6c058077366633c7d3fd5df626de03a091e7b0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff91c1889c5c24b93b56e643121f7a05a34c10c5495c450504c7b5afcb37e11d7a000000006a47304402200cd323984290d2ef6d7ad01942102ea0cceee9b897103ef385719c6f2b57963702201d9dd8c3ea68ea02b6a3ee4a19c18f899d8b02da549f914dd917489c067e7e8e0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffa43bebbebf07452a893a95bfea1d5db338d23579be172fe803dce02eeb7c037d010000006b483045022100be493ef5d839eea19d68e8a3a037fc2f7eb41655d511169a4a8b653ab9d86ca30220416cb1f8dfc83a322de2617e007521dbd408d5ef776193400351c046cbde3d780121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff8640e312040e476cf6727c60ca3f4a3ad51623500aacdda96e7728dbdd99e8a5000000006a47304402200b746b555bf44674ca15ba71ca751719311244f3ba0a5a492fe685fdf7a95dcf0220357f17f4af7a322ca18fc65ddd87580e75bb9988023a11ab00b2f4243c7b6b150121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffb861fab2cde188499758346be46b5fbec635addfc4e7b0c8a07c0a908f2b11b4000000006b4830450221008c0b600801fed1af9c9400daf9c345f27837670a7acd0f1dcdbbbeb7925bad1f022017ef87eabf09308b2f11e63dcb15c4007a907b78afcad4931f9129355ed57b390121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff850cecf958468ca7ffa6a490afe13b8c271b1326b0ddc1fdfdf9f3c7e365fdba000000006b483045022100bcfe32a695abde4c66996b9d38b6be73a70abfcbe09fcc564f4aa1e0c51fd93b0220579cb2061627efbf9ce1748284f9ecedbe72ccdbc9010cb673e64f2aa58c51d90121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffe9b483a8ac4129780c88d1babe41e89dc10a26dedbf14f80a28474e9a11104de010000006a47304402204eeedb2a870d7c1f9aa74a9edc166eda1d80a63c39c5d964c9c4b92db14c1bdd02207e70e0d5740835419f82c23580fdeed491ab872c2fe8a51b4f03fdb817ebfe850121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff456a9e597129f5df2e11b842833fc19a94c563f57449281d3cd01249a830a1f0000000006b483045022100c3c3a47e694c6e9c1d43ae89bfe97a387c45e17d99f79707a6a4df006f5561240220573c40748cc42c45038ac718963eb6385c75216b70249dfb9f8f9d67ae569b9a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff60ad3408b89ea19caf3abd5e74e7a084344987c64b1563af52242e9d2a8320f3000000006a47304402202744a81ba331f89bc0f39c2eb241460a279347e070df57c60148dd7c6ae1778102200616c24bf72cd82a49e0419634388bed2516e4b95dc68dd846851742e15f3cec0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff030000000000000000286a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd7064d817000000001976a914d9bbccb1b996061b735b35841d90844c263fbc7388ac00902f50090000001976a9145be32612930b8323add2212a4ec03c1562084f8488ac00000000")
-                XCTAssertTrue(txSize.uintValue == 2645)
-
-                let transaction = BTCTransaction(hex: txHex)
-                
-                XCTAssertTrue(transaction?.inputs.count == 17)
-                let input0 = transaction?.inputs[0] as! BTCTransactionInput
-                XCTAssertTrue(input0.previousTransactionID == txid0)
-                XCTAssertTrue(input0.outpoint.index == 0)
-                let input1 = transaction?.inputs[1] as! BTCTransactionInput
-                XCTAssertTrue(input1.previousTransactionID == txid1)
-                XCTAssertTrue(input1.outpoint.index == 1)
-                let input2 = transaction?.inputs[2] as! BTCTransactionInput
-                XCTAssertTrue(input2.previousTransactionID == txid2)
-                XCTAssertTrue(input2.outpoint.index == 0)
-                let input3 = transaction?.inputs[3] as! BTCTransactionInput
-                XCTAssertTrue(input3.previousTransactionID == txid3)
-                XCTAssertTrue(input3.outpoint.index == 1)
-                let input4 = transaction?.inputs[4] as! BTCTransactionInput
-                XCTAssertTrue(input4.previousTransactionID == txid4)
-                XCTAssertTrue(input4.outpoint.index == 0)
-                let input5 = transaction?.inputs[5] as! BTCTransactionInput
-                XCTAssertTrue(input5.previousTransactionID == txid5)
-                XCTAssertTrue(input5.outpoint.index == 1)
-                let input6 = transaction?.inputs[6] as! BTCTransactionInput
-                XCTAssertTrue(input6.previousTransactionID == txid6)
-                XCTAssertTrue(input6.outpoint.index == 1)
-                let input7 = transaction?.inputs[7] as! BTCTransactionInput
-                XCTAssertTrue(input7.previousTransactionID == txid7)
-                XCTAssertTrue(input7.outpoint.index == 0)
-                let input8 = transaction?.inputs[8] as! BTCTransactionInput
-                XCTAssertTrue(input8.previousTransactionID == txid8)
-                XCTAssertTrue(input8.outpoint.index == 1)
-                let input9 = transaction?.inputs[9] as! BTCTransactionInput
-                XCTAssertTrue(input9.previousTransactionID == txid9)
-                XCTAssertTrue(input9.outpoint.index == 0)
-                let input10 = transaction?.inputs[10] as! BTCTransactionInput
-                XCTAssertTrue(input10.previousTransactionID == txid10)
-                XCTAssertTrue(input10.outpoint.index == 1)
-                let input11 = transaction?.inputs[11] as! BTCTransactionInput
-                XCTAssertTrue(input11.previousTransactionID == txid11)
-                XCTAssertTrue(input11.outpoint.index == 0)
-                let input12 = transaction?.inputs[12] as! BTCTransactionInput
-                XCTAssertTrue(input12.previousTransactionID == txid12)
-                XCTAssertTrue(input12.outpoint.index == 0)
-                let input13 = transaction?.inputs[13] as! BTCTransactionInput
-                XCTAssertTrue(input13.previousTransactionID == txid13)
-                XCTAssertTrue(input13.outpoint.index == 0)
-                let input14 = transaction?.inputs[14] as! BTCTransactionInput
-                XCTAssertTrue(input14.previousTransactionID == txid14)
-                XCTAssertTrue(input14.outpoint.index == 1)
-                let input15 = transaction?.inputs[15] as! BTCTransactionInput
-                XCTAssertTrue(input15.previousTransactionID == txid15)
-                XCTAssertTrue(input15.outpoint.index == 0)
-                let input16 = transaction?.inputs[16] as! BTCTransactionInput
-                XCTAssertTrue(input16.previousTransactionID == txid16)
-                XCTAssertTrue(input16.outpoint.index == 0)
-                
-                
-                XCTAssertTrue(transaction?.outputs.count == 3)
-                let output0 = transaction?.outputs[0] as! BTCTransactionOutput
-                XCTAssertTrue(output0.script.hex == "6a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd")
-                XCTAssertTrue(output0.value == 0)
-                XCTAssertTrue(output0.script.standardAddress == nil)
-                let output1 = transaction?.outputs[1] as! BTCTransactionOutput
-                XCTAssertTrue(output1.script.hex == "76a914d9bbccb1b996061b735b35841d90844c263fbc7388ac")
-                XCTAssertTrue(output1.value == 400057456)
-                XCTAssertTrue(output1.script.standardAddress.base58String == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
-                let output2 = transaction?.outputs[2] as! BTCTransactionOutput
-                XCTAssertTrue(output2.script.hex == "76a9145be32612930b8323add2212a4ec03c1562084f8488ac")
-                XCTAssertTrue(output2.value == 40000000000)
-                XCTAssertTrue(output2.script.standardAddress.base58String == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
-                
-                
-                XCTAssertTrue(realToAddresses.count == 2)
-                XCTAssertTrue(realToAddresses[0] == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
-                XCTAssertTrue(realToAddresses[1] == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
-            }
+            let transaction = BTCTransaction(hex: txHex)
             
-            testCreateSignedSerializedTransactionHexAndBIP69_4_1()
-            testCreateSignedSerializedTransactionHexAndBIP69_4_2()
+            XCTAssertTrue(transaction?.inputs.count == 2)
+            let input0 = transaction?.inputs[0] as! BTCTransactionInput
+            XCTAssertTrue(input0.previousTransactionID == txid0)
+            XCTAssertTrue(input0.outpoint.index == 0)
+            let input1 = transaction?.inputs[1] as! BTCTransactionInput
+            XCTAssertTrue(input1.previousTransactionID == txid1)
+            XCTAssertTrue(input1.outpoint.index == 1)
+            
+            XCTAssertTrue(transaction?.outputs.count == 3)
+            let output0 = transaction?.outputs[0] as! BTCTransactionOutput
+            XCTAssertTrue(output0.script.hex == "6a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd")
+            XCTAssertTrue(output0.value == 0)
+            XCTAssertTrue(output0.script.standardAddress == nil)
+            let output1 = transaction?.outputs[1] as! BTCTransactionOutput
+            XCTAssertTrue(output1.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
+            XCTAssertTrue(output1.value == 100000000)
+            XCTAssertTrue(output1.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
+            let output2 = transaction?.outputs[2] as! BTCTransactionOutput
+            XCTAssertTrue(output2.script.hex == "76a914d9bbccb1b996061b735b35841d90844c263fbc7388ac")
+            XCTAssertTrue(output2.value == 2400000000)
+            XCTAssertTrue(output2.script.standardAddress.base58String == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
+            
+            XCTAssertTrue(realToAddresses.count == 2)
+            XCTAssertTrue(realToAddresses[0] == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
+            XCTAssertTrue(realToAddresses[1] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
         }
         
-        func testCreateSignedSerializedTransactionHexAndBIP69_5() -> () {
-            let feeAmount = TLCurrencyFormat.amountStringToCoin("0.00000", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
-            let toAddress = "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv"
-            let toAmount = TLCurrencyFormat.amountStringToCoin("8", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        testCreateSignedSerializedTransactionHexAndBIP69_3_1()
+        testCreateSignedSerializedTransactionHexAndBIP69_3_2()
+    }
+    
+    func testCreateSignedSerializedTransactionHexAndBIP69_4() -> () {
+        guard let accountObject = accountObject else {
+            return
+        }
+        let feeAmount = TLCurrencyFormat.amountStringToCoin("0.00002735", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        let toAddress = "vJmwhHhMNevDQh188gSeHd2xxxYGBQmnVuMY2yG2MmVTC31UWN5s3vaM3xsM2Q1bUremdK1W7eNVgPg1BnvbTyQuDtMKAYJanahvse"
+        let toAddress2 = "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm"
+        let toAmount = TLCurrencyFormat.amountStringToCoin("4.00057456", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        let toAmount2 = TLCurrencyFormat.amountStringToCoin("400", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        
+        let txid0 = "0e53ec5dfb2cb8a71fec32dc9a634a35b7e24799295ddd5278217822e0b31f57"
+        let txid1 = "26aa6e6d8b9e49bb0630aac301db6757c02e3619feb4ee0eea81eb1672947024"
+        let txid2 = "28e0fdd185542f2c6ea19030b0796051e7772b6026dd5ddccd7a2f93b73e6fc2"
+        let txid3 = "381de9b9ae1a94d9c17f6a08ef9d341a5ce29e2e60c36a52d333ff6203e58d5d"
+        let txid4 = "3b8b2f8efceb60ba78ca8bba206a137f14cb5ea4035e761ee204302d46b98de2"
+        let txid5 = "402b2c02411720bf409eff60d05adad684f135838962823f3614cc657dd7bc0a"
+        let txid6 = "54ffff182965ed0957dba1239c27164ace5a73c9b62a660c74b7b7f15ff61e7a"
+        let txid7 = "643e5f4e66373a57251fb173151e838ccd27d279aca882997e005016bb53d5aa"
+        let txid8 = "6c1d56f31b2de4bfc6aaea28396b333102b1f600da9c6d6149e96ca43f1102b1"
+        let txid9 = "7a1de137cbafb5c70405455c49c5104ca3057a1f1243e6563bb9245c9c88c191"
+        let txid10 = "7d037ceb2ee0dc03e82f17be7935d238b35d1deabf953a892a4507bfbeeb3ba4"
+        let txid11 = "a5e899dddb28776ea9ddac0a502316d53a4a3fca607c72f66c470e0412e34086"
+        let txid12 = "b4112b8f900a7ca0c8b0e7c4dfad35c6be5f6be46b3458974988e1cdb2fa61b8"
+        let txid13 = "bafd65e3c7f3f9fdfdc1ddb026131b278c3be1af90a4a6ffa78c4658f9ec0c85"
+        let txid14 = "de0411a1e97484a2804ff1dbde260ac19de841bebad1880c782941aca883b4e9"
+        let txid15 = "f0a130a84912d03c1d284974f563c5949ac13f8342b8112edff52971599e6a45"
+        let txid16 = "f320832a9d2e2452af63154bc687493484a0e7745ebd3aaf9ca19eb80834ad60"
+        
+        let unspentOutput0 = mockUnspentOutput(txid0, value: 2529937904, txOutputN: 0)
+        let unspentOutput1 = mockUnspentOutput(txid1, value: 2521656792, txOutputN: 1)
+        let unspentOutput2 = mockUnspentOutput(txid2, value: 2509683086, txOutputN: 0)
+        let unspentOutput3 = mockUnspentOutput(txid3, value: 2506060377, txOutputN: 1)
+        let unspentOutput4 = mockUnspentOutput(txid4, value: 2510645247, txOutputN: 0)
+        let unspentOutput5 = mockUnspentOutput(txid5, value: 2502325820, txOutputN: 1)
+        let unspentOutput6 = mockUnspentOutput(txid6, value: 2525953727, txOutputN: 1)
+        let unspentOutput7 = mockUnspentOutput(txid7, value: 2507302856, txOutputN: 0)
+        let unspentOutput8 = mockUnspentOutput(txid8, value: 2534185804, txOutputN: 1)
+        let unspentOutput9 = mockUnspentOutput(txid9, value: 136219905, txOutputN: 0)
+        let unspentOutput10 = mockUnspentOutput(txid10, value: 2502901118, txOutputN: 1)
+        let unspentOutput11 = mockUnspentOutput(txid11, value: 2527569363, txOutputN: 0)
+        let unspentOutput12 = mockUnspentOutput(txid12, value: 2516268302, txOutputN: 0)
+        let unspentOutput13 = mockUnspentOutput(txid13, value: 2521794404, txOutputN: 0)
+        let unspentOutput14 = mockUnspentOutput(txid14, value: 2520533680, txOutputN: 1)
+        let unspentOutput15 = mockUnspentOutput(txid15, value: 2513840095, txOutputN: 0)
+        let unspentOutput16 = mockUnspentOutput(txid16, value: 2513181711, txOutputN: 0)
+        
+        let nonce:UInt32 = 123
+        let ephemeralPrivateKeyHex = "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        
+        func testCreateSignedSerializedTransactionHexAndBIP69_4_1() -> () {
+            let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount], ["address": toAddress2, "amount": toAmount2]]
             
-            let txid0 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
-            let txid1 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
+            accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+            accountObject.unspentOutputs!.append(unspentOutput0)
+            accountObject.unspentOutputs!.append(unspentOutput1)
+            accountObject.unspentOutputs!.append(unspentOutput2)
+            accountObject.unspentOutputs!.append(unspentOutput3)
+            accountObject.unspentOutputs!.append(unspentOutput4)
+            accountObject.unspentOutputs!.append(unspentOutput5)
+            accountObject.unspentOutputs!.append(unspentOutput6)
+            accountObject.unspentOutputs!.append(unspentOutput7)
+            accountObject.unspentOutputs!.append(unspentOutput8)
+            accountObject.unspentOutputs!.append(unspentOutput9)
+            accountObject.unspentOutputs!.append(unspentOutput10)
+            accountObject.unspentOutputs!.append(unspentOutput11)
+            accountObject.unspentOutputs!.append(unspentOutput12)
+            accountObject.unspentOutputs!.append(unspentOutput13)
+            accountObject.unspentOutputs!.append(unspentOutput14)
+            accountObject.unspentOutputs!.append(unspentOutput15)
+            accountObject.unspentOutputs!.append(unspentOutput16)
             
-            let unspentOutput0 = mockUnspentOutput(txid0, 700000000, 0)
-            let unspentOutput1 = mockUnspentOutput(txid1, 1000000000, 1)
+            accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
             
-            func testCreateSignedSerializedTransactionHexAndBIP69_5_1() -> () {
-                let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount]]
-                
-                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
-                accountObject.unspentOutputs!.append(unspentOutput0)
-                accountObject.unspentOutputs!.append(unspentOutput1)
-                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
-                
-                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
-                    (data: String?) in
-                })
-                
-                let txHexAndTxHash = ret.0
-                let realToAddresses = ret.1
-                let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
-                let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
-                let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
-                XCTAssertTrue(txHash == "7993558323324a61028e592f8e1421ec131d48ecba09627645d7c2aec49b838e")
-                XCTAssertTrue(txHex == "010000000255605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835000000006a473044022044fb6ce5ce9ae0ef3d381f749612a993d98bf6c293e1e6bbc73979c0c7d7f88a0220749e495896ca230272d0d6e93a53019e2479b4829f09d574c26e21b5ef614da80121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff55605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835010000006a473044022020573f136e62c66ba6130b1fbe7fb87ba8cfbfd9af89227fe10a878a189c3569022043f1fcf6b88cd6befee91899ae92905074fe48ef3f82206638752db6bd90201a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff020008af2f000000001976a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac00e9a435000000001976a91482d6e3eb4cb25dfd325b4af06948d3a2e064a5f788ac00000000")
-                XCTAssertTrue(txSize.uintValue == 376)
-
-                let transaction = BTCTransaction(hex: txHex)
-                
-                XCTAssertTrue(transaction?.inputs.count == 2)
-                let input0 = transaction?.inputs[0] as! BTCTransactionInput
-                XCTAssertTrue(input0.previousTransactionID == txid0)
-                XCTAssertTrue(input0.outpoint.index == 0)
-                let input1 = transaction?.inputs[1] as! BTCTransactionInput
-                XCTAssertTrue(input1.previousTransactionID == txid1)
-                XCTAssertTrue(input1.outpoint.index == 1)
-                
-                XCTAssertTrue(transaction?.outputs.count == 2)
-                let output0 = transaction?.outputs[0] as! BTCTransactionOutput
-                XCTAssertTrue(output0.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
-                XCTAssertTrue(output0.value == 800000000)
-                XCTAssertTrue(output0.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
-                let output1 = transaction?.outputs[1] as! BTCTransactionOutput
-                XCTAssertTrue(output1.script.hex == "76a91482d6e3eb4cb25dfd325b4af06948d3a2e064a5f788ac")
-                XCTAssertTrue(output1.value == 900000000)
-                XCTAssertTrue(output1.script.standardAddress.base58String == changeAddress0)
-                
-                XCTAssertTrue(realToAddresses.count == 1)
-                XCTAssertTrue(realToAddresses[0] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
-            }
+            let ret = TLSpaghettiGodSend.createSignedSerializedTransactionHex(isTestnet, coinType: accountObject.getSelectedObjectCoinType(),  sendFromAccounts: sendFromAccounts, sendFromAddresses: sendFromAddresses, toAddressesAndAmounts: toAddressesAndAmounts as NSArray,
+                                                                              feeAmount: feeAmount, nonce: nonce, ephemeralPrivateKeyHex: ephemeralPrivateKeyHex, error: {
+                                                                                (data: String?) in
+            })
             
-            func testCreateSignedSerializedTransactionHexAndBIP69_5_2() -> () {
-                let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount]]
-                
-                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
-                accountObject.unspentOutputs!.append(unspentOutput1)
-                accountObject.unspentOutputs!.append(unspentOutput0)
-                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
-                
-                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
-                    (data: String?) in
-                })
-                
-                let txHexAndTxHash = ret.0
-                let realToAddresses = ret.1
-                let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
-                let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
-                let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
-                XCTAssertTrue(txHash == "9d332311d0a172ef2f875fc76ac261ddac4debbd86cbf0711d9c86a5024423dd")
-                XCTAssertTrue(txHex == "010000000155605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835010000006b483045022100b5a727e693ddc88a13e50513252a3d508757a6bfbd2f4b9b369f37fac41c28c00220392dbb2f4d99c4efd1d346513e695163b1e1564399d4cc1a9f5779b04a5f03aa0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff0200c2eb0b000000001976a91482d6e3eb4cb25dfd325b4af06948d3a2e064a5f788ac0008af2f000000001976a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac00000000")
-                XCTAssertTrue(txSize.uintValue == 227)
-
-                let transaction = BTCTransaction(hex: txHex)
-                
-                XCTAssertTrue(transaction?.inputs.count == 1)
-                let input0 = transaction?.inputs[0] as! BTCTransactionInput
-                XCTAssertTrue(input0.previousTransactionID == txid1)
-                XCTAssertTrue(input0.outpoint.index == 1)
-                
-                XCTAssertTrue(transaction?.outputs.count == 2)
-                let output0 = transaction?.outputs[0] as! BTCTransactionOutput
-                XCTAssertTrue(output0.script.hex == "76a91482d6e3eb4cb25dfd325b4af06948d3a2e064a5f788ac")
-                XCTAssertTrue(output0.value == 200000000)
-                XCTAssertTrue(output0.script.standardAddress.base58String == changeAddress0)
-                let output1 = transaction?.outputs[1] as! BTCTransactionOutput
-                XCTAssertTrue(output1.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
-                XCTAssertTrue(output1.value == 800000000)
-                XCTAssertTrue(output1.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
-                
-                XCTAssertTrue(realToAddresses.count == 1)
-                XCTAssertTrue(realToAddresses[0] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
-            }
+            let txHexAndTxHash = ret.0
+            let realToAddresses = ret.1
+            let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
+            let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
+            let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
+            XCTAssertTrue(txHash == "b982687699c5bbd6ee36b157c3b34b3d3370945e68b63c987cdf880dbe475706")
+            XCTAssertTrue(txHex == "0100000011571fb3e02278217852dd5d299947e2b7354a639adc32ec1fa7b82cfb5dec530e000000006b483045022100d9e6a6677e63574fd5216957f0652334acf64343192064c4f19c5c8daad1f796022041cbcc403865f92b2804e2d04cfa165dd42bd75c247055c626901507479f923c0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff2470947216eb81ea0eeeb4fe19362ec05767db01c3aa3006bb499e8b6d6eaa26010000006a47304402204a6451764251502cfdcac44deab397e538e5c33fdf354116bcf3dd8088b47c450220345f69761d82e03e88dce29f37e6bccdffce78e3b640d089a377079950006fba0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffc26f3eb7932f7acddc5ddd26602b77e7516079b03090a16e2c2f5485d1fde028000000006b48304502210080577b722d775c9ab9acba7f90b6ee0187395c65824c52ee96a83d9582b27761022063aafc98452e62ee85d99082c96d9dae4071ed0b5f822a4ab211428336e937440121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff5d8de50362ff33d3526ac3602e9ee25c1a349def086a7fc1d9941aaeb9e91d38010000006b483045022100a2279a85d58b05822dbc1ba9cb4c22a9efaf4e3e2d0aaf4c140f6232b90339cf02202e88942afcc0defc3839e764e7358e5065e9bcc6a437f3a1f9e60a912e5cd0180121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffe28db9462d3004e21e765e03a45ecb147f136a20ba8bca78ba60ebfc8e2f8b3b000000006b483045022100d431504d890b2acdc45f618ddc53c2a7accb01d9273afbaa31d5beb71c9bb4de02200797a199a0783d16397152db1159fc8594946ca876ef3586f06be36afc0915230121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff0abcd77d65cc14363f8262898335f184d6da5ad060ff9e40bf201741022c2b40010000006b4830450221008424d7c4bc369a735b92c0f367f5bead679bc82b77ac3ea527002a795299e5cd02200bd017178c46caf204cd3283daed2539a525051e3a73f10f23175d4a90a6d21e0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff7a1ef65ff1b7b7740c662ab6c9735ace4a16279c23a1db5709ed652918ffff54010000006b483045022100bec61f4a8aa3ed122f02663d162ea8d06b65730a1400bb58586783c4155c4ecc022037ba1f6434685252902ca095317299e9facb634216e94677e444182c15d4b8dc0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffaad553bb1650007e9982a8ac79d227cd8c831e1573b11f25573a37664e5f3e64000000006b483045022100b090ff8248aa3f6ea9026861ecbf91e60859801d04fbc4ad54eb3f7497a482c90220128a6dcb1d2d17033aa3e002fcec7fa54b0f817f56abf14d5d37574f2dcf2d1d0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffb102113fa46ce949616d9cda00f6b10231336b3928eaaac6bfe42d1bf3561d6c010000006b483045022100cb8f6d41cb664bee9fe86417e6b6b61452fdcc7c652fe66c46cddae49a678fcb02201f8c040f0a034602015ad2cbf4e6c058077366633c7d3fd5df626de03a091e7b0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff91c1889c5c24b93b56e643121f7a05a34c10c5495c450504c7b5afcb37e11d7a000000006a47304402200cd323984290d2ef6d7ad01942102ea0cceee9b897103ef385719c6f2b57963702201d9dd8c3ea68ea02b6a3ee4a19c18f899d8b02da549f914dd917489c067e7e8e0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffa43bebbebf07452a893a95bfea1d5db338d23579be172fe803dce02eeb7c037d010000006b483045022100be493ef5d839eea19d68e8a3a037fc2f7eb41655d511169a4a8b653ab9d86ca30220416cb1f8dfc83a322de2617e007521dbd408d5ef776193400351c046cbde3d780121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff8640e312040e476cf6727c60ca3f4a3ad51623500aacdda96e7728dbdd99e8a5000000006a47304402200b746b555bf44674ca15ba71ca751719311244f3ba0a5a492fe685fdf7a95dcf0220357f17f4af7a322ca18fc65ddd87580e75bb9988023a11ab00b2f4243c7b6b150121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffb861fab2cde188499758346be46b5fbec635addfc4e7b0c8a07c0a908f2b11b4000000006b4830450221008c0b600801fed1af9c9400daf9c345f27837670a7acd0f1dcdbbbeb7925bad1f022017ef87eabf09308b2f11e63dcb15c4007a907b78afcad4931f9129355ed57b390121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff850cecf958468ca7ffa6a490afe13b8c271b1326b0ddc1fdfdf9f3c7e365fdba000000006b483045022100bcfe32a695abde4c66996b9d38b6be73a70abfcbe09fcc564f4aa1e0c51fd93b0220579cb2061627efbf9ce1748284f9ecedbe72ccdbc9010cb673e64f2aa58c51d90121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffe9b483a8ac4129780c88d1babe41e89dc10a26dedbf14f80a28474e9a11104de010000006a47304402204eeedb2a870d7c1f9aa74a9edc166eda1d80a63c39c5d964c9c4b92db14c1bdd02207e70e0d5740835419f82c23580fdeed491ab872c2fe8a51b4f03fdb817ebfe850121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff456a9e597129f5df2e11b842833fc19a94c563f57449281d3cd01249a830a1f0000000006b483045022100c3c3a47e694c6e9c1d43ae89bfe97a387c45e17d99f79707a6a4df006f5561240220573c40748cc42c45038ac718963eb6385c75216b70249dfb9f8f9d67ae569b9a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff60ad3408b89ea19caf3abd5e74e7a084344987c64b1563af52242e9d2a8320f3000000006a47304402202744a81ba331f89bc0f39c2eb241460a279347e070df57c60148dd7c6ae1778102200616c24bf72cd82a49e0419634388bed2516e4b95dc68dd846851742e15f3cec0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff030000000000000000286a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd7064d817000000001976a914d9bbccb1b996061b735b35841d90844c263fbc7388ac00902f50090000001976a9145be32612930b8323add2212a4ec03c1562084f8488ac00000000")
+            XCTAssertTrue(txSize.uintValue == 2645)
             
-            testCreateSignedSerializedTransactionHexAndBIP69_5_1()
-            testCreateSignedSerializedTransactionHexAndBIP69_5_2()
+            let transaction = BTCTransaction(hex: txHex)
+            
+            XCTAssertTrue(transaction?.inputs.count == 17)
+            let input0 = transaction?.inputs[0] as! BTCTransactionInput
+            XCTAssertTrue(input0.previousTransactionID == txid0)
+            XCTAssertTrue(input0.outpoint.index == 0)
+            let input1 = transaction?.inputs[1] as! BTCTransactionInput
+            XCTAssertTrue(input1.previousTransactionID == txid1)
+            XCTAssertTrue(input1.outpoint.index == 1)
+            let input2 = transaction?.inputs[2] as! BTCTransactionInput
+            XCTAssertTrue(input2.previousTransactionID == txid2)
+            XCTAssertTrue(input2.outpoint.index == 0)
+            let input3 = transaction?.inputs[3] as! BTCTransactionInput
+            XCTAssertTrue(input3.previousTransactionID == txid3)
+            XCTAssertTrue(input3.outpoint.index == 1)
+            let input4 = transaction?.inputs[4] as! BTCTransactionInput
+            XCTAssertTrue(input4.previousTransactionID == txid4)
+            XCTAssertTrue(input4.outpoint.index == 0)
+            let input5 = transaction?.inputs[5] as! BTCTransactionInput
+            XCTAssertTrue(input5.previousTransactionID == txid5)
+            XCTAssertTrue(input5.outpoint.index == 1)
+            let input6 = transaction?.inputs[6] as! BTCTransactionInput
+            XCTAssertTrue(input6.previousTransactionID == txid6)
+            XCTAssertTrue(input6.outpoint.index == 1)
+            let input7 = transaction?.inputs[7] as! BTCTransactionInput
+            XCTAssertTrue(input7.previousTransactionID == txid7)
+            XCTAssertTrue(input7.outpoint.index == 0)
+            let input8 = transaction?.inputs[8] as! BTCTransactionInput
+            XCTAssertTrue(input8.previousTransactionID == txid8)
+            XCTAssertTrue(input8.outpoint.index == 1)
+            let input9 = transaction?.inputs[9] as! BTCTransactionInput
+            XCTAssertTrue(input9.previousTransactionID == txid9)
+            XCTAssertTrue(input9.outpoint.index == 0)
+            let input10 = transaction?.inputs[10] as! BTCTransactionInput
+            XCTAssertTrue(input10.previousTransactionID == txid10)
+            XCTAssertTrue(input10.outpoint.index == 1)
+            let input11 = transaction?.inputs[11] as! BTCTransactionInput
+            XCTAssertTrue(input11.previousTransactionID == txid11)
+            XCTAssertTrue(input11.outpoint.index == 0)
+            let input12 = transaction?.inputs[12] as! BTCTransactionInput
+            XCTAssertTrue(input12.previousTransactionID == txid12)
+            XCTAssertTrue(input12.outpoint.index == 0)
+            let input13 = transaction?.inputs[13] as! BTCTransactionInput
+            XCTAssertTrue(input13.previousTransactionID == txid13)
+            XCTAssertTrue(input13.outpoint.index == 0)
+            let input14 = transaction?.inputs[14] as! BTCTransactionInput
+            XCTAssertTrue(input14.previousTransactionID == txid14)
+            XCTAssertTrue(input14.outpoint.index == 1)
+            let input15 = transaction?.inputs[15] as! BTCTransactionInput
+            XCTAssertTrue(input15.previousTransactionID == txid15)
+            XCTAssertTrue(input15.outpoint.index == 0)
+            let input16 = transaction?.inputs[16] as! BTCTransactionInput
+            XCTAssertTrue(input16.previousTransactionID == txid16)
+            XCTAssertTrue(input16.outpoint.index == 0)
+            
+            XCTAssertTrue(transaction?.outputs.count == 3)
+            let output0 = transaction?.outputs[0] as! BTCTransactionOutput
+            XCTAssertTrue(output0.script.hex == "6a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd")
+            XCTAssertTrue(output0.value == 0)
+            XCTAssertTrue(output0.script.standardAddress == nil)
+            let output1 = transaction?.outputs[1] as! BTCTransactionOutput
+            XCTAssertTrue(output1.script.hex == "76a914d9bbccb1b996061b735b35841d90844c263fbc7388ac")
+            XCTAssertTrue(output1.value == 400057456)
+            XCTAssertTrue(output1.script.standardAddress.base58String == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
+            let output2 = transaction?.outputs[2] as! BTCTransactionOutput
+            XCTAssertTrue(output2.script.hex == "76a9145be32612930b8323add2212a4ec03c1562084f8488ac")
+            XCTAssertTrue(output2.value == 40000000000)
+            XCTAssertTrue(output2.script.standardAddress.base58String == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
+            
+            XCTAssertTrue(realToAddresses.count == 2)
+            XCTAssertTrue(realToAddresses[0] == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
+            XCTAssertTrue(realToAddresses[1] == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
         }
         
-        func testCreateSignedSerializedTransactionHexAndBIP69_6() -> () {
-            let feeAmount = TLCurrencyFormat.amountStringToCoin("0.00000", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
-            let toAddress = "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv"
-            let toAddress2 = "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5"
-            let toAmount = TLCurrencyFormat.amountStringToCoin("1", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
-            let toAmount2 = TLCurrencyFormat.amountStringToCoin("1", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        func testCreateSignedSerializedTransactionHexAndBIP69_4_2() -> () {
+            let toAddressesAndAmounts = [["address": toAddress2, "amount": toAmount2], ["address": toAddress, "amount": toAmount]]
             
-            let txid0 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
-            let txid1 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
+            accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+            accountObject.unspentOutputs!.append(unspentOutput5)
+            accountObject.unspentOutputs!.append(unspentOutput2)
+            accountObject.unspentOutputs!.append(unspentOutput15)
+            accountObject.unspentOutputs!.append(unspentOutput0)
+            accountObject.unspentOutputs!.append(unspentOutput1)
+            accountObject.unspentOutputs!.append(unspentOutput6)
+            accountObject.unspentOutputs!.append(unspentOutput4)
+            accountObject.unspentOutputs!.append(unspentOutput7)
+            accountObject.unspentOutputs!.append(unspentOutput3)
+            accountObject.unspentOutputs!.append(unspentOutput13)
+            accountObject.unspentOutputs!.append(unspentOutput9)
+            accountObject.unspentOutputs!.append(unspentOutput10)
+            accountObject.unspentOutputs!.append(unspentOutput8)
+            accountObject.unspentOutputs!.append(unspentOutput11)
+            accountObject.unspentOutputs!.append(unspentOutput14)
+            accountObject.unspentOutputs!.append(unspentOutput12)
+            accountObject.unspentOutputs!.append(unspentOutput16)
             
-            let unspentOutput0 = mockUnspentOutput(txid0, 100000000, 0)
-            let unspentOutput1 = mockUnspentOutput(txid1, 100000000, 1)
+            accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
             
-            func testCreateSignedSerializedTransactionHexAndBIP69_6_1() -> () {
-                let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount], ["address": toAddress2, "amount": toAmount2]]
-                
-                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
-                accountObject.unspentOutputs!.append(unspentOutput0)
-                accountObject.unspentOutputs!.append(unspentOutput1)
-                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
-                
-                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
-                    (data: String?) in
-                })
-                
-                let txHexAndTxHash = ret.0
-                let realToAddresses = ret.1
-                let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
-                let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
-                let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
-                XCTAssertTrue(txHash == "1b27e859e51c272c6fa539e8579649cf0ba3d6ac560c38e3d93d83edd85adedc")
-                XCTAssertTrue(txHex == "010000000255605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835000000006b483045022100a24aec6b79e3907be855490f4e9e4a7c28c67181b707df50599e1b7381f578810220275c84a766f8088e92de8e01de291ce7edc50a7dc8e8afa28741fe80c0ab91860121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff55605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835010000006a473044022014ed6ef24ff1048d29ec8b2ed8602299e85b4a39a98df7cc3f0ea02db11a345c022008d955f96e52fc85d2fe0d42c6f3c4b04fc6b43ef87978c4a01c10afb59041a40121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff0200e1f505000000001976a91489c55a3ca6676c9f7f260a6439c83249b747380288ac00e1f505000000001976a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac00000000")
-                XCTAssertTrue(txSize.uintValue == 376)
-
-                let transaction = BTCTransaction(hex: txHex)
-                
-                XCTAssertTrue(transaction?.inputs.count == 2)
-                let input0 = transaction?.inputs[0] as! BTCTransactionInput
-                XCTAssertTrue(input0.previousTransactionID == txid0)
-                XCTAssertTrue(input0.outpoint.index == 0)
-                let input1 = transaction?.inputs[1] as! BTCTransactionInput
-                XCTAssertTrue(input1.previousTransactionID == txid1)
-                XCTAssertTrue(input1.outpoint.index == 1)
-                
-                XCTAssertTrue(transaction?.outputs.count == 2)
-                let output0 = transaction?.outputs[0] as! BTCTransactionOutput
-                XCTAssertTrue(output0.script.hex == "76a91489c55a3ca6676c9f7f260a6439c83249b747380288ac")
-                XCTAssertTrue(output0.value == 100000000)
-                XCTAssertTrue(output0.script.standardAddress.base58String == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
-                let output1 = transaction?.outputs[1] as! BTCTransactionOutput
-                XCTAssertTrue(output1.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
-                XCTAssertTrue(output1.value == 100000000)
-                XCTAssertTrue(output1.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
-                
-                XCTAssertTrue(realToAddresses.count == 2)
-                XCTAssertTrue(realToAddresses[0] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
-                XCTAssertTrue(realToAddresses[1] == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
-            }
+            let ret = TLSpaghettiGodSend.createSignedSerializedTransactionHex(isTestnet, coinType: accountObject.getSelectedObjectCoinType(),  sendFromAccounts: sendFromAccounts, sendFromAddresses: sendFromAddresses, toAddressesAndAmounts: toAddressesAndAmounts as NSArray,
+                                                                              feeAmount: feeAmount, nonce: nonce, ephemeralPrivateKeyHex: ephemeralPrivateKeyHex, error: {
+                                                                                (data: String?) in
+            })
             
-            testCreateSignedSerializedTransactionHexAndBIP69_6_1()
+            let txHexAndTxHash = ret.0
+            let realToAddresses = ret.1
+            let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
+            let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
+            let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
+            XCTAssertTrue(txHash == "b982687699c5bbd6ee36b157c3b34b3d3370945e68b63c987cdf880dbe475706")
+            XCTAssertTrue(txHex == "0100000011571fb3e02278217852dd5d299947e2b7354a639adc32ec1fa7b82cfb5dec530e000000006b483045022100d9e6a6677e63574fd5216957f0652334acf64343192064c4f19c5c8daad1f796022041cbcc403865f92b2804e2d04cfa165dd42bd75c247055c626901507479f923c0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff2470947216eb81ea0eeeb4fe19362ec05767db01c3aa3006bb499e8b6d6eaa26010000006a47304402204a6451764251502cfdcac44deab397e538e5c33fdf354116bcf3dd8088b47c450220345f69761d82e03e88dce29f37e6bccdffce78e3b640d089a377079950006fba0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffc26f3eb7932f7acddc5ddd26602b77e7516079b03090a16e2c2f5485d1fde028000000006b48304502210080577b722d775c9ab9acba7f90b6ee0187395c65824c52ee96a83d9582b27761022063aafc98452e62ee85d99082c96d9dae4071ed0b5f822a4ab211428336e937440121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff5d8de50362ff33d3526ac3602e9ee25c1a349def086a7fc1d9941aaeb9e91d38010000006b483045022100a2279a85d58b05822dbc1ba9cb4c22a9efaf4e3e2d0aaf4c140f6232b90339cf02202e88942afcc0defc3839e764e7358e5065e9bcc6a437f3a1f9e60a912e5cd0180121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffe28db9462d3004e21e765e03a45ecb147f136a20ba8bca78ba60ebfc8e2f8b3b000000006b483045022100d431504d890b2acdc45f618ddc53c2a7accb01d9273afbaa31d5beb71c9bb4de02200797a199a0783d16397152db1159fc8594946ca876ef3586f06be36afc0915230121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff0abcd77d65cc14363f8262898335f184d6da5ad060ff9e40bf201741022c2b40010000006b4830450221008424d7c4bc369a735b92c0f367f5bead679bc82b77ac3ea527002a795299e5cd02200bd017178c46caf204cd3283daed2539a525051e3a73f10f23175d4a90a6d21e0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff7a1ef65ff1b7b7740c662ab6c9735ace4a16279c23a1db5709ed652918ffff54010000006b483045022100bec61f4a8aa3ed122f02663d162ea8d06b65730a1400bb58586783c4155c4ecc022037ba1f6434685252902ca095317299e9facb634216e94677e444182c15d4b8dc0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffaad553bb1650007e9982a8ac79d227cd8c831e1573b11f25573a37664e5f3e64000000006b483045022100b090ff8248aa3f6ea9026861ecbf91e60859801d04fbc4ad54eb3f7497a482c90220128a6dcb1d2d17033aa3e002fcec7fa54b0f817f56abf14d5d37574f2dcf2d1d0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffb102113fa46ce949616d9cda00f6b10231336b3928eaaac6bfe42d1bf3561d6c010000006b483045022100cb8f6d41cb664bee9fe86417e6b6b61452fdcc7c652fe66c46cddae49a678fcb02201f8c040f0a034602015ad2cbf4e6c058077366633c7d3fd5df626de03a091e7b0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff91c1889c5c24b93b56e643121f7a05a34c10c5495c450504c7b5afcb37e11d7a000000006a47304402200cd323984290d2ef6d7ad01942102ea0cceee9b897103ef385719c6f2b57963702201d9dd8c3ea68ea02b6a3ee4a19c18f899d8b02da549f914dd917489c067e7e8e0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffa43bebbebf07452a893a95bfea1d5db338d23579be172fe803dce02eeb7c037d010000006b483045022100be493ef5d839eea19d68e8a3a037fc2f7eb41655d511169a4a8b653ab9d86ca30220416cb1f8dfc83a322de2617e007521dbd408d5ef776193400351c046cbde3d780121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff8640e312040e476cf6727c60ca3f4a3ad51623500aacdda96e7728dbdd99e8a5000000006a47304402200b746b555bf44674ca15ba71ca751719311244f3ba0a5a492fe685fdf7a95dcf0220357f17f4af7a322ca18fc65ddd87580e75bb9988023a11ab00b2f4243c7b6b150121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffb861fab2cde188499758346be46b5fbec635addfc4e7b0c8a07c0a908f2b11b4000000006b4830450221008c0b600801fed1af9c9400daf9c345f27837670a7acd0f1dcdbbbeb7925bad1f022017ef87eabf09308b2f11e63dcb15c4007a907b78afcad4931f9129355ed57b390121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff850cecf958468ca7ffa6a490afe13b8c271b1326b0ddc1fdfdf9f3c7e365fdba000000006b483045022100bcfe32a695abde4c66996b9d38b6be73a70abfcbe09fcc564f4aa1e0c51fd93b0220579cb2061627efbf9ce1748284f9ecedbe72ccdbc9010cb673e64f2aa58c51d90121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffffe9b483a8ac4129780c88d1babe41e89dc10a26dedbf14f80a28474e9a11104de010000006a47304402204eeedb2a870d7c1f9aa74a9edc166eda1d80a63c39c5d964c9c4b92db14c1bdd02207e70e0d5740835419f82c23580fdeed491ab872c2fe8a51b4f03fdb817ebfe850121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff456a9e597129f5df2e11b842833fc19a94c563f57449281d3cd01249a830a1f0000000006b483045022100c3c3a47e694c6e9c1d43ae89bfe97a387c45e17d99f79707a6a4df006f5561240220573c40748cc42c45038ac718963eb6385c75216b70249dfb9f8f9d67ae569b9a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff60ad3408b89ea19caf3abd5e74e7a084344987c64b1563af52242e9d2a8320f3000000006a47304402202744a81ba331f89bc0f39c2eb241460a279347e070df57c60148dd7c6ae1778102200616c24bf72cd82a49e0419634388bed2516e4b95dc68dd846851742e15f3cec0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff030000000000000000286a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd7064d817000000001976a914d9bbccb1b996061b735b35841d90844c263fbc7388ac00902f50090000001976a9145be32612930b8323add2212a4ec03c1562084f8488ac00000000")
+            XCTAssertTrue(txSize.uintValue == 2645)
+            
+            let transaction = BTCTransaction(hex: txHex)
+            
+            XCTAssertTrue(transaction?.inputs.count == 17)
+            let input0 = transaction?.inputs[0] as! BTCTransactionInput
+            XCTAssertTrue(input0.previousTransactionID == txid0)
+            XCTAssertTrue(input0.outpoint.index == 0)
+            let input1 = transaction?.inputs[1] as! BTCTransactionInput
+            XCTAssertTrue(input1.previousTransactionID == txid1)
+            XCTAssertTrue(input1.outpoint.index == 1)
+            let input2 = transaction?.inputs[2] as! BTCTransactionInput
+            XCTAssertTrue(input2.previousTransactionID == txid2)
+            XCTAssertTrue(input2.outpoint.index == 0)
+            let input3 = transaction?.inputs[3] as! BTCTransactionInput
+            XCTAssertTrue(input3.previousTransactionID == txid3)
+            XCTAssertTrue(input3.outpoint.index == 1)
+            let input4 = transaction?.inputs[4] as! BTCTransactionInput
+            XCTAssertTrue(input4.previousTransactionID == txid4)
+            XCTAssertTrue(input4.outpoint.index == 0)
+            let input5 = transaction?.inputs[5] as! BTCTransactionInput
+            XCTAssertTrue(input5.previousTransactionID == txid5)
+            XCTAssertTrue(input5.outpoint.index == 1)
+            let input6 = transaction?.inputs[6] as! BTCTransactionInput
+            XCTAssertTrue(input6.previousTransactionID == txid6)
+            XCTAssertTrue(input6.outpoint.index == 1)
+            let input7 = transaction?.inputs[7] as! BTCTransactionInput
+            XCTAssertTrue(input7.previousTransactionID == txid7)
+            XCTAssertTrue(input7.outpoint.index == 0)
+            let input8 = transaction?.inputs[8] as! BTCTransactionInput
+            XCTAssertTrue(input8.previousTransactionID == txid8)
+            XCTAssertTrue(input8.outpoint.index == 1)
+            let input9 = transaction?.inputs[9] as! BTCTransactionInput
+            XCTAssertTrue(input9.previousTransactionID == txid9)
+            XCTAssertTrue(input9.outpoint.index == 0)
+            let input10 = transaction?.inputs[10] as! BTCTransactionInput
+            XCTAssertTrue(input10.previousTransactionID == txid10)
+            XCTAssertTrue(input10.outpoint.index == 1)
+            let input11 = transaction?.inputs[11] as! BTCTransactionInput
+            XCTAssertTrue(input11.previousTransactionID == txid11)
+            XCTAssertTrue(input11.outpoint.index == 0)
+            let input12 = transaction?.inputs[12] as! BTCTransactionInput
+            XCTAssertTrue(input12.previousTransactionID == txid12)
+            XCTAssertTrue(input12.outpoint.index == 0)
+            let input13 = transaction?.inputs[13] as! BTCTransactionInput
+            XCTAssertTrue(input13.previousTransactionID == txid13)
+            XCTAssertTrue(input13.outpoint.index == 0)
+            let input14 = transaction?.inputs[14] as! BTCTransactionInput
+            XCTAssertTrue(input14.previousTransactionID == txid14)
+            XCTAssertTrue(input14.outpoint.index == 1)
+            let input15 = transaction?.inputs[15] as! BTCTransactionInput
+            XCTAssertTrue(input15.previousTransactionID == txid15)
+            XCTAssertTrue(input15.outpoint.index == 0)
+            let input16 = transaction?.inputs[16] as! BTCTransactionInput
+            XCTAssertTrue(input16.previousTransactionID == txid16)
+            XCTAssertTrue(input16.outpoint.index == 0)
+            
+            
+            XCTAssertTrue(transaction?.outputs.count == 3)
+            let output0 = transaction?.outputs[0] as! BTCTransactionOutput
+            XCTAssertTrue(output0.script.hex == "6a26060000007b03a34b99f22c790c4e36b2b3c2c35a36db06226e41c692fc82b8b56ac1c540c5bd")
+            XCTAssertTrue(output0.value == 0)
+            XCTAssertTrue(output0.script.standardAddress == nil)
+            let output1 = transaction?.outputs[1] as! BTCTransactionOutput
+            XCTAssertTrue(output1.script.hex == "76a914d9bbccb1b996061b735b35841d90844c263fbc7388ac")
+            XCTAssertTrue(output1.value == 400057456)
+            XCTAssertTrue(output1.script.standardAddress.base58String == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
+            let output2 = transaction?.outputs[2] as! BTCTransactionOutput
+            XCTAssertTrue(output2.script.hex == "76a9145be32612930b8323add2212a4ec03c1562084f8488ac")
+            XCTAssertTrue(output2.value == 40000000000)
+            XCTAssertTrue(output2.script.standardAddress.base58String == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
+            
+            
+            XCTAssertTrue(realToAddresses.count == 2)
+            XCTAssertTrue(realToAddresses[0] == "19Nrc2Xm226xmSbeGZ1BVtX7DUm4oCx8Pm")
+            XCTAssertTrue(realToAddresses[1] == "1LrGcAw6WPFK4re5mt4MQfXj9xLeBYojRm")
         }
         
-        func testColdWallet_1() -> () {
-            let feeAmount = TLCurrencyFormat.amountStringToCoin("0.00000", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
-            let toAddress = "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv"
-            let toAddress2 = "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5"
-            let toAmount = TLCurrencyFormat.amountStringToCoin("1", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
-            let toAmount2 = TLCurrencyFormat.amountStringToCoin("24", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
-            
-            let txid0 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
-            let txid1 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
-            
-            let unspentOutput0 = mockUnspentOutput(txid0, 100000000, 0)
-            let unspentOutput1 = mockUnspentOutput(txid1, 2400000000, 1)
-            
-            func testColdWallet_1_1() -> () {
-                let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount], ["address": toAddress2, "amount": toAmount2]]
-                
-                accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
-                accountObject.unspentOutputs!.append(unspentOutput0)
-                accountObject.unspentOutputs!.append(unspentOutput1)
-                accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
-                
-                let ret = godSend.createSignedSerializedTransactionHex(toAddressesAndAmounts as NSArray, feeAmount: feeAmount, signTx: false, error: {
-                    (data: String?) in
-                })
-                
-                let txHexAndTxHash = ret.0
-                let realToAddresses = ret.1
-                let txInputsAccountHDIdxes = ret.2
-                let unSignedTx = txHexAndTxHash!.object(forKey: "txHex") as! String
-                let inputScripts = txHexAndTxHash!.object(forKey: "inputScripts") as! NSArray
+        testCreateSignedSerializedTransactionHexAndBIP69_4_1()
+        testCreateSignedSerializedTransactionHexAndBIP69_4_2()
+    }
 
-                
-                let unsignedTxAirGapDataBase64 = TLColdWallet.createSerializedUnsignedTxAipGapData(unSignedTx, extendedPublicKey: extendPubKey, inputScripts: inputScripts, txInputsAccountHDIdxes: txInputsAccountHDIdxes!)
-                NSLog("testColdWallet_1_1 unsignedTxAirGapDataBase64 \(unsignedTxAirGapDataBase64)");
-                XCTAssertTrue(unsignedTxAirGapDataBase64 == "eyJ2IjoiMSIsImFjY291bnRfcHVibGljX2tleSI6InhwdWI2RDFoNjV6cTlGUjJwbXZRTkI2RmlpajI0ZFl4cEpmSGltWXhpYm1meEJmZ3pmcG9iVlNqUXdjdkZQcjdwVEFUUmlzcHJjMll3WVlXaXlzVUV2SjF1OWl1QVFLTU5zaUxuMlBQU3J0VkZ0NiIsInVuc2lnbmVkX3R4X2Jhc2U2NCI6IkFRQUFBQUpWWUYzRzljUGNGSXR0cFlSQ3NMTE5RaXZqaGVxeTYrcEJHZTZjSm8wb05RQUFBQUFBXC9cL1wvXC9cLzFWZ1hjYjF3OXdVaTIybGhFS3dzczFDSytPRjZyTHI2a0VaN3B3bWpTZzFBUUFBQUFEXC9cL1wvXC9cL0FnRGg5UVVBQUFBQUdYYXBGTWN3RmZwaTJYTHJzN0pCXC9veVRabGV4UDZ2WGlLd0FHQTJQQUFBQUFCbDJxUlNKeFZvOHBtZHNuMzhtQ21RNXlESkp0MGM0QW9pc0FBQUFBQT09IiwidHhfaW5wdXRzX2FjY291bnRfaGRfaWR4ZXMiOlt7ImlzX2NoYW5nZSI6ZmFsc2UsImlkeCI6MH0seyJpc19jaGFuZ2UiOmZhbHNlLCJpZHgiOjB9XSwiaW5wdXRfc2NyaXB0cyI6WyI3NmE5MTRjNmI0ZWJhOTcyYzIyN2FjMDQ1OGRiYTk1MWI0ODEyMzFlNGQ1ZmQ3ODhhYyIsIjc2YTkxNGM2YjRlYmE5NzJjMjI3YWMwNDU4ZGJhOTUxYjQ4MTIzMWU0ZDVmZDc4OGFjIl19")
+    func testCreateSignedSerializedTransactionHexAndBIP69_5() -> () {
+        guard let accountObject = accountObject else {
+            return
+        }
+        let feeAmount = TLCurrencyFormat.amountStringToCoin("0.00000", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        let toAddress = "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv"
+        let toAmount = TLCurrencyFormat.amountStringToCoin("8", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        
+        let txid0 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
+        let txid1 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
+        
+        let unspentOutput0 = mockUnspentOutput(txid0, value: 700000000, txOutputN: 0)
+        let unspentOutput1 = mockUnspentOutput(txid1, value: 1000000000, txOutputN: 1)
+        
+        func testCreateSignedSerializedTransactionHexAndBIP69_5_1() -> () {
+            let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount]]
+            
+            accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+            accountObject.unspentOutputs!.append(unspentOutput0)
+            accountObject.unspentOutputs!.append(unspentOutput1)
+            accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
+            
+            let ret = TLSpaghettiGodSend.createSignedSerializedTransactionHex(isTestnet, coinType: accountObject.getSelectedObjectCoinType(),  sendFromAccounts: sendFromAccounts, sendFromAddresses: sendFromAddresses, toAddressesAndAmounts: toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
+                (data: String?) in
+            })
+            
+            let txHexAndTxHash = ret.0
+            let realToAddresses = ret.1
+            let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
+            let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
+            let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
+            XCTAssertTrue(txHash == "7993558323324a61028e592f8e1421ec131d48ecba09627645d7c2aec49b838e")
+            XCTAssertTrue(txHex == "010000000255605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835000000006a473044022044fb6ce5ce9ae0ef3d381f749612a993d98bf6c293e1e6bbc73979c0c7d7f88a0220749e495896ca230272d0d6e93a53019e2479b4829f09d574c26e21b5ef614da80121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff55605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835010000006a473044022020573f136e62c66ba6130b1fbe7fb87ba8cfbfd9af89227fe10a878a189c3569022043f1fcf6b88cd6befee91899ae92905074fe48ef3f82206638752db6bd90201a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff020008af2f000000001976a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac00e9a435000000001976a91482d6e3eb4cb25dfd325b4af06948d3a2e064a5f788ac00000000")
+            XCTAssertTrue(txSize.uintValue == 376)
+            
+            let transaction = BTCTransaction(hex: txHex)
+            
+            XCTAssertTrue(transaction?.inputs.count == 2)
+            let input0 = transaction?.inputs[0] as! BTCTransactionInput
+            XCTAssertTrue(input0.previousTransactionID == txid0)
+            XCTAssertTrue(input0.outpoint.index == 0)
+            let input1 = transaction?.inputs[1] as! BTCTransactionInput
+            XCTAssertTrue(input1.previousTransactionID == txid1)
+            XCTAssertTrue(input1.outpoint.index == 1)
+            
+            XCTAssertTrue(transaction?.outputs.count == 2)
+            let output0 = transaction?.outputs[0] as! BTCTransactionOutput
+            XCTAssertTrue(output0.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
+            XCTAssertTrue(output0.value == 800000000)
+            XCTAssertTrue(output0.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
+            let output1 = transaction?.outputs[1] as! BTCTransactionOutput
+            XCTAssertTrue(output1.script.hex == "76a91482d6e3eb4cb25dfd325b4af06948d3a2e064a5f788ac")
+            XCTAssertTrue(output1.value == 900000000)
+            XCTAssertTrue(output1.script.standardAddress.base58String == changeAddress0)
+            
+            XCTAssertTrue(realToAddresses.count == 1)
+            XCTAssertTrue(realToAddresses[0] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
+        }
+        
+        func testCreateSignedSerializedTransactionHexAndBIP69_5_2() -> () {
+            let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount]]
+            
+            accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+            accountObject.unspentOutputs!.append(unspentOutput1)
+            accountObject.unspentOutputs!.append(unspentOutput0)
+            accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
+            
+            let ret = TLSpaghettiGodSend.createSignedSerializedTransactionHex(isTestnet, coinType: accountObject.getSelectedObjectCoinType(),  sendFromAccounts: sendFromAccounts, sendFromAddresses: sendFromAddresses, toAddressesAndAmounts: toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
+                (data: String?) in
+            })
+            
+            let txHexAndTxHash = ret.0
+            let realToAddresses = ret.1
+            let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
+            let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
+            let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
+            XCTAssertTrue(txHash == "9d332311d0a172ef2f875fc76ac261ddac4debbd86cbf0711d9c86a5024423dd")
+            XCTAssertTrue(txHex == "010000000155605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835010000006b483045022100b5a727e693ddc88a13e50513252a3d508757a6bfbd2f4b9b369f37fac41c28c00220392dbb2f4d99c4efd1d346513e695163b1e1564399d4cc1a9f5779b04a5f03aa0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff0200c2eb0b000000001976a91482d6e3eb4cb25dfd325b4af06948d3a2e064a5f788ac0008af2f000000001976a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac00000000")
+            XCTAssertTrue(txSize.uintValue == 227)
+            
+            let transaction = BTCTransaction(hex: txHex)
+            
+            XCTAssertTrue(transaction?.inputs.count == 1)
+            let input0 = transaction?.inputs[0] as! BTCTransactionInput
+            XCTAssertTrue(input0.previousTransactionID == txid1)
+            XCTAssertTrue(input0.outpoint.index == 1)
+            
+            XCTAssertTrue(transaction?.outputs.count == 2)
+            let output0 = transaction?.outputs[0] as! BTCTransactionOutput
+            XCTAssertTrue(output0.script.hex == "76a91482d6e3eb4cb25dfd325b4af06948d3a2e064a5f788ac")
+            XCTAssertTrue(output0.value == 200000000)
+            XCTAssertTrue(output0.script.standardAddress.base58String == changeAddress0)
+            let output1 = transaction?.outputs[1] as! BTCTransactionOutput
+            XCTAssertTrue(output1.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
+            XCTAssertTrue(output1.value == 800000000)
+            XCTAssertTrue(output1.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
+            
+            XCTAssertTrue(realToAddresses.count == 1)
+            XCTAssertTrue(realToAddresses[0] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
+        }
+        
+        testCreateSignedSerializedTransactionHexAndBIP69_5_1()
+        testCreateSignedSerializedTransactionHexAndBIP69_5_2()
+    }
 
+    func testCreateSignedSerializedTransactionHexAndBIP69_6() -> () {
+        guard let accountObject = accountObject else {
+            return
+        }
+        let feeAmount = TLCurrencyFormat.amountStringToCoin("0.00000", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        let toAddress = "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv"
+        let toAddress2 = "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5"
+        let toAmount = TLCurrencyFormat.amountStringToCoin("1", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        let toAmount2 = TLCurrencyFormat.amountStringToCoin("1", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        
+        let txid0 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
+        let txid1 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
+        
+        let unspentOutput0 = mockUnspentOutput(txid0, value: 100000000, txOutputN: 0)
+        let unspentOutput1 = mockUnspentOutput(txid1, value: 100000000, txOutputN: 1)
+        
+        func testCreateSignedSerializedTransactionHexAndBIP69_6_1() -> () {
+            let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount], ["address": toAddress2, "amount": toAmount2]]
+            
+            accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+            accountObject.unspentOutputs!.append(unspentOutput0)
+            accountObject.unspentOutputs!.append(unspentOutput1)
+            accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
+            
+            let ret = TLSpaghettiGodSend.createSignedSerializedTransactionHex(isTestnet, coinType: accountObject.getSelectedObjectCoinType(),  sendFromAccounts: sendFromAccounts, sendFromAddresses: sendFromAddresses, toAddressesAndAmounts: toAddressesAndAmounts as NSArray, feeAmount: feeAmount, error: {
+                (data: String?) in
+            })
+            
+            let txHexAndTxHash = ret.0
+            let realToAddresses = ret.1
+            let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
+            let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
+            let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
+            XCTAssertTrue(txHash == "1b27e859e51c272c6fa539e8579649cf0ba3d6ac560c38e3d93d83edd85adedc")
+            XCTAssertTrue(txHex == "010000000255605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835000000006b483045022100a24aec6b79e3907be855490f4e9e4a7c28c67181b707df50599e1b7381f578810220275c84a766f8088e92de8e01de291ce7edc50a7dc8e8afa28741fe80c0ab91860121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff55605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835010000006a473044022014ed6ef24ff1048d29ec8b2ed8602299e85b4a39a98df7cc3f0ea02db11a345c022008d955f96e52fc85d2fe0d42c6f3c4b04fc6b43ef87978c4a01c10afb59041a40121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff0200e1f505000000001976a91489c55a3ca6676c9f7f260a6439c83249b747380288ac00e1f505000000001976a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac00000000")
+            XCTAssertTrue(txSize.uintValue == 376)
+            
+            let transaction = BTCTransaction(hex: txHex)
+            
+            XCTAssertTrue(transaction?.inputs.count == 2)
+            let input0 = transaction?.inputs[0] as! BTCTransactionInput
+            XCTAssertTrue(input0.previousTransactionID == txid0)
+            XCTAssertTrue(input0.outpoint.index == 0)
+            let input1 = transaction?.inputs[1] as! BTCTransactionInput
+            XCTAssertTrue(input1.previousTransactionID == txid1)
+            XCTAssertTrue(input1.outpoint.index == 1)
+            
+            XCTAssertTrue(transaction?.outputs.count == 2)
+            let output0 = transaction?.outputs[0] as! BTCTransactionOutput
+            XCTAssertTrue(output0.script.hex == "76a91489c55a3ca6676c9f7f260a6439c83249b747380288ac")
+            XCTAssertTrue(output0.value == 100000000)
+            XCTAssertTrue(output0.script.standardAddress.base58String == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
+            let output1 = transaction?.outputs[1] as! BTCTransactionOutput
+            XCTAssertTrue(output1.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
+            XCTAssertTrue(output1.value == 100000000)
+            XCTAssertTrue(output1.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
+            
+            XCTAssertTrue(realToAddresses.count == 2)
+            XCTAssertTrue(realToAddresses[0] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
+            XCTAssertTrue(realToAddresses[1] == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
+        }
+        
+        testCreateSignedSerializedTransactionHexAndBIP69_6_1()
+    }
+    
+    func testColdWallet_1() -> () {
+        guard let accountObject = accountObject else {
+            return
+        }
+        let feeAmount = TLCurrencyFormat.amountStringToCoin("0.00000", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        let toAddress = "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv"
+        let toAddress2 = "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5"
+        let toAmount = TLCurrencyFormat.amountStringToCoin("1", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        let toAmount2 = TLCurrencyFormat.amountStringToCoin("24", coinType: TLCoinType.BTC, coinDenomination: TLCoinDenomination.bitcoin)
+        
+        let txid0 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
+        let txid1 = "35288d269cee1941eaebb2ea85e32b42cdb2b04284a56d8b14dcc3f5c65d6055"
+        
+        let unspentOutput0 = mockUnspentOutput(txid0, value: 100000000, txOutputN: 0)
+        let unspentOutput1 = mockUnspentOutput(txid1, value: 2400000000, txOutputN: 1)
+        
+        func testColdWallet_1_1() -> () {
+            let toAddressesAndAmounts = [["address": toAddress, "amount": toAmount], ["address": toAddress2, "amount": toAmount2]]
+            
+            accountObject.unspentOutputs = Array<TLUnspentOutputObject>()
+            accountObject.unspentOutputs!.append(unspentOutput0)
+            accountObject.unspentOutputs!.append(unspentOutput1)
+            accountObject.stealthPaymentUnspentOutputs = Array<TLUnspentOutputObject>()
+            
+            let ret = TLSpaghettiGodSend.createSignedSerializedTransactionHex(isTestnet, coinType: accountObject.getSelectedObjectCoinType(),  sendFromAccounts: sendFromAccounts, sendFromAddresses: sendFromAddresses, toAddressesAndAmounts: toAddressesAndAmounts as NSArray, feeAmount: feeAmount, signTx: false, error: {
+                (data: String?) in
+            })
+            
+            let txHexAndTxHash = ret.0
+            let realToAddresses = ret.1
+            let txInputsAccountHDIdxes = ret.2
+            let unSignedTx = txHexAndTxHash!.object(forKey: "txHex") as! String
+            let inputScripts = txHexAndTxHash!.object(forKey: "inputScripts") as! NSArray
+
+            let unsignedTxAirGapDataBase64 = TLColdWallet.createSerializedUnsignedTxAipGapData(unSignedTx, extendedPublicKey: extendPubKey, inputScripts: inputScripts, txInputsAccountHDIdxes: txInputsAccountHDIdxes!)
+            NSLog("testColdWallet_1_1 unsignedTxAirGapDataBase64 \(unsignedTxAirGapDataBase64)");
+            //XCTAssertTrue will fail because json serialization in Foundation from a dictionary object does not always return the same json serialized string. ie order of keys and values can be different in the serialize version. This probably change with a Swift version update.
+//            XCTAssertTrue(unsignedTxAirGapDataBase64 == "eyJ0eF9pbnB1dHNfYWNjb3VudF9oZF9pZHhlcyI6W3siaWR4IjowLCJpc19jaGFuZ2UiOmZhbHNlfSx7ImlkeCI6MCwiaXNfY2hhbmdlIjpmYWxzZX1dLCJhY2NvdW50X3B1YmxpY19rZXkiOiJ4cHViNkQxaDY1enE5RlIycG12UU5CNkZpaWoyNGRZeHBKZkhpbVl4aWJtZnhCZmd6ZnBvYlZTalF3Y3ZGUHI3cFRBVFJpc3ByYzJZd1lZV2l5c1VFdkoxdTlpdUFRS01Oc2lMbjJQUFNydFZGdDYiLCJ1bnNpZ25lZF90eF9iYXNlNjQiOiJBUUFBQUFKVllGM0c5Y1BjRkl0dHBZUkNzTExOUWl2amhlcXk2K3BCR2U2Y0pvMG9OUUFBQUFBQVwvXC9cL1wvXC8xVmdYY2Ixdzl3VWkyMmxoRUt3c3MxQ0srT0Y2ckxyNmtFWjdwd21qU2cxQVFBQUFBRFwvXC9cL1wvXC9BZ0RoOVFVQUFBQUFHWGFwRk1jd0ZmcGkyWExyczdKQlwvb3lUWmxleFA2dlhpS3dBR0EyUEFBQUFBQmwycVJTSnhWbzhwbWRzbjM4bUNtUTV5REpKdDBjNEFvaXNBQUFBQUE9PSIsInYiOiIxIiwiaW5wdXRfc2NyaXB0cyI6WyI3NmE5MTRjNmI0ZWJhOTcyYzIyN2FjMDQ1OGRiYTk1MWI0ODEyMzFlNGQ1ZmQ3ODhhYyIsIjc2YTkxNGM2YjRlYmE5NzJjMjI3YWMwNDU4ZGJhOTUxYjQ4MTIzMWU0ZDVmZDc4OGFjIl19")
+            
+            
+            let unsignedTxAirGapDataBase64PartsArray = TLColdWallet.splitStringToArray(unsignedTxAirGapDataBase64!)
+            //Pass unsigned tx here ----------------------------------------------------------------------------------------
+            var passedUnsignedTxairGapDataBase64 = ""
+            for unsignedTxAirGapDataBase64Part in unsignedTxAirGapDataBase64PartsArray {
+                let ret = TLColdWallet.parseScannedPart(unsignedTxAirGapDataBase64Part)
+                let dataPart = ret.0
+                //let partNumber = ret.1 // unused in test
+                //let totalParts = ret.2 // unused in test
+                passedUnsignedTxairGapDataBase64 += dataPart
+            }
+            XCTAssertTrue(passedUnsignedTxairGapDataBase64 == unsignedTxAirGapDataBase64)
+            
+            do {
+                let serializedSignedAipGapData = try TLColdWallet.createSerializedSignedTxAipGapData(self.coinType, aipGapDataBase64: passedUnsignedTxairGapDataBase64,
+                                                                                                     mnemonicOrExtendedPrivateKey: backupPassphrase,
+                                                                                                     isTestnet: false)
+                NSLog("testColdWallet_1_1 serializedSignedAipGapData \(serializedSignedAipGapData)");
+                XCTAssertTrue(serializedSignedAipGapData == "eyJ0eEhleCI6IjAxMDAwMDAwMDI1NTYwNWRjNmY1YzNkYzE0OGI2ZGE1ODQ0MmIwYjJjZDQyMmJlMzg1ZWFiMmViZWE0MTE5ZWU5YzI2OGQyODM1MDAwMDAwMDA2YTQ3MzA0NDAyMjA0NDliMWY5NTY4N2JmNDY5ZmI5NTRiY2RiYmMwYWUzNjJmZTliZDZiYTg4YzViNGRkMjI3ZDlhNWMzN2ViODJhMDIyMDM0NDBiZjZiNDE3ODc4NjkxM2ExOTczNDRkMDk5OWE3ZDk4ZDI0NjA5OWRjZGRmNGJmOWIyNDQ3M2E0ZTdhOWEwMTIxMDI3ZWNiYTllYmM0Njk5ZGY3ZjU1N2M0ZTE4MTkyZWZiNWM5N2IxZmY0ZWNkY2ViYjRlMjFiYjdkMWZlZDIyMDNhZmZmZmZmZmY1NTYwNWRjNmY1YzNkYzE0OGI2ZGE1ODQ0MmIwYjJjZDQyMmJlMzg1ZWFiMmViZWE0MTE5ZWU5YzI2OGQyODM1MDEwMDAwMDA2YTQ3MzA0NDAyMjAxZjZhNGE4N2QwNTg0MTU3NDcxMjEwYzFlMTI2ZTY0ZTUyZjU2NWU5NTBmZWI4MDA0NWZjODU1ODI5ZGYzZGE0MDIyMDU5ZmQ3NWZlNTEyNjJhYTdiN2YyMTQ1MzQzNTdlZDI3ODZhOWIzZGNiMTI0OTMxMTIwMjc3MTFhZWJjODQ3OGEwMTIxMDI3ZWNiYTllYmM0Njk5ZGY3ZjU1N2M0ZTE4MTkyZWZiNWM5N2IxZmY0ZWNkY2ViYjRlMjFiYjdkMWZlZDIyMDNhZmZmZmZmZmYwMjAwZTFmNTA1MDAwMDAwMDAxOTc2YTkxNGM3MzAxNWZhNjJkOTcyZWJiM2IyNDFmZThjOTM2NjU3YjEzZmFiZDc4OGFjMDAxODBkOGYwMDAwMDAwMDE5NzZhOTE0ODljNTVhM2NhNjY3NmM5ZjdmMjYwYTY0MzljODMyNDliNzQ3MzgwMjg4YWMwMDAwMDAwMCIsInR4SGFzaCI6ImZiYWNmZWRlNTVkYzZhNzc5NzgyYmE4ZmEyMjgxMzg2MGI3ZWYwN2Q4MmMzYWJlYmI4ZjI5MGIzMTQxYmY5NjUiLCJ0eFNpemUiOjM3Nn0=")
                 
-                let unsignedTxAirGapDataBase64PartsArray = TLColdWallet.splitStringToArray(unsignedTxAirGapDataBase64!)
-                //Pass unsigned tx here ----------------------------------------------------------------------------------------
-                var passedUnsignedTxairGapDataBase64 = ""
-                for unsignedTxAirGapDataBase64Part in unsignedTxAirGapDataBase64PartsArray {
-                    let ret = TLColdWallet.parseScannedPart(unsignedTxAirGapDataBase64Part)
+                
+                
+                let signedTxAirGapDataBase64PartsArray = TLColdWallet.splitStringToArray(serializedSignedAipGapData!)
+                //Pass signed tx here ----------------------------------------------------------------------------------------
+                var passedSignedTxairGapDataBase64 = ""
+                for signedTxAirGapDataBase64Part in signedTxAirGapDataBase64PartsArray {
+                    let ret = TLColdWallet.parseScannedPart(signedTxAirGapDataBase64Part)
                     let dataPart = ret.0
                     //let partNumber = ret.1 // unused in test
                     //let totalParts = ret.2 // unused in test
-                    passedUnsignedTxairGapDataBase64 += dataPart
+                    passedSignedTxairGapDataBase64 += dataPart
                 }
-                XCTAssertTrue(passedUnsignedTxairGapDataBase64 == unsignedTxAirGapDataBase64)
-
-                do {
-                    let serializedSignedAipGapData = try TLColdWallet.createSerializedSignedTxAipGapData(self.coinType, aipGapDataBase64: passedUnsignedTxairGapDataBase64,
-                                                                                                       mnemonicOrExtendedPrivateKey: backupPassphrase,
-                                                                                                       isTestnet: false)
-                    NSLog("testColdWallet_1_1 serializedSignedAipGapData \(serializedSignedAipGapData)");
-                    XCTAssertTrue(serializedSignedAipGapData == "eyJ0eEhleCI6IjAxMDAwMDAwMDI1NTYwNWRjNmY1YzNkYzE0OGI2ZGE1ODQ0MmIwYjJjZDQyMmJlMzg1ZWFiMmViZWE0MTE5ZWU5YzI2OGQyODM1MDAwMDAwMDA2YTQ3MzA0NDAyMjA0NDliMWY5NTY4N2JmNDY5ZmI5NTRiY2RiYmMwYWUzNjJmZTliZDZiYTg4YzViNGRkMjI3ZDlhNWMzN2ViODJhMDIyMDM0NDBiZjZiNDE3ODc4NjkxM2ExOTczNDRkMDk5OWE3ZDk4ZDI0NjA5OWRjZGRmNGJmOWIyNDQ3M2E0ZTdhOWEwMTIxMDI3ZWNiYTllYmM0Njk5ZGY3ZjU1N2M0ZTE4MTkyZWZiNWM5N2IxZmY0ZWNkY2ViYjRlMjFiYjdkMWZlZDIyMDNhZmZmZmZmZmY1NTYwNWRjNmY1YzNkYzE0OGI2ZGE1ODQ0MmIwYjJjZDQyMmJlMzg1ZWFiMmViZWE0MTE5ZWU5YzI2OGQyODM1MDEwMDAwMDA2YTQ3MzA0NDAyMjAxZjZhNGE4N2QwNTg0MTU3NDcxMjEwYzFlMTI2ZTY0ZTUyZjU2NWU5NTBmZWI4MDA0NWZjODU1ODI5ZGYzZGE0MDIyMDU5ZmQ3NWZlNTEyNjJhYTdiN2YyMTQ1MzQzNTdlZDI3ODZhOWIzZGNiMTI0OTMxMTIwMjc3MTFhZWJjODQ3OGEwMTIxMDI3ZWNiYTllYmM0Njk5ZGY3ZjU1N2M0ZTE4MTkyZWZiNWM5N2IxZmY0ZWNkY2ViYjRlMjFiYjdkMWZlZDIyMDNhZmZmZmZmZmYwMjAwZTFmNTA1MDAwMDAwMDAxOTc2YTkxNGM3MzAxNWZhNjJkOTcyZWJiM2IyNDFmZThjOTM2NjU3YjEzZmFiZDc4OGFjMDAxODBkOGYwMDAwMDAwMDE5NzZhOTE0ODljNTVhM2NhNjY3NmM5ZjdmMjYwYTY0MzljODMyNDliNzQ3MzgwMjg4YWMwMDAwMDAwMCIsInR4SGFzaCI6ImZiYWNmZWRlNTVkYzZhNzc5NzgyYmE4ZmEyMjgxMzg2MGI3ZWYwN2Q4MmMzYWJlYmI4ZjI5MGIzMTQxYmY5NjUiLCJ0eFNpemUiOjM3Nn0=")
-                    
-                    
-                    
-                    let signedTxAirGapDataBase64PartsArray = TLColdWallet.splitStringToArray(serializedSignedAipGapData!)
-                    //Pass signed tx here ----------------------------------------------------------------------------------------
-                    var passedSignedTxairGapDataBase64 = ""
-                    for signedTxAirGapDataBase64Part in signedTxAirGapDataBase64PartsArray {
-                        let ret = TLColdWallet.parseScannedPart(signedTxAirGapDataBase64Part)
-                        let dataPart = ret.0
-                        //let partNumber = ret.1 // unused in test
-                        //let totalParts = ret.2 // unused in test
-                        passedSignedTxairGapDataBase64 += dataPart
-                    }
-                    XCTAssertTrue(passedSignedTxairGapDataBase64 == serializedSignedAipGapData)
-
-                    
-                    let signedTxData = TLColdWallet.getSignedTxData(passedSignedTxairGapDataBase64)
-                    let txHex = signedTxData!["txHex"] as! String
-                    let txHash = signedTxData!["txHash"] as! String
-                    let txSize = signedTxData!["txSize"] as! NSNumber
-                    
-                    XCTAssertTrue(txHash == "fbacfede55dc6a779782ba8fa22813860b7ef07d82c3abebb8f290b3141bf965")
-                    XCTAssertTrue(txHex == "010000000255605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835000000006a4730440220449b1f95687bf469fb954bcdbbc0ae362fe9bd6ba88c5b4dd227d9a5c37eb82a02203440bf6b4178786913a197344d0999a7d98d246099dcddf4bf9b24473a4e7a9a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff55605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835010000006a47304402201f6a4a87d0584157471210c1e126e64e52f565e950feb80045fc855829df3da4022059fd75fe51262aa7b7f214534357ed2786a9b3dcb12493112027711aebc8478a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff0200e1f505000000001976a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac00180d8f000000001976a91489c55a3ca6676c9f7f260a6439c83249b747380288ac00000000")
-                    XCTAssertTrue(txSize.uintValue == 376)
-                    
-                    let transaction = BTCTransaction(hex: txHex)
-                    
-                    XCTAssertTrue(transaction?.inputs.count == 2)
-                    let input0 = transaction?.inputs[0] as! BTCTransactionInput
-                    XCTAssertTrue(input0.previousTransactionID == txid0)
-                    XCTAssertTrue(input0.outpoint.index == 0)
-                    let input1 = transaction?.inputs[1] as! BTCTransactionInput
-                    XCTAssertTrue(input1.previousTransactionID == txid1)
-                    XCTAssertTrue(input1.outpoint.index == 1)
-                    
-                    XCTAssertTrue(transaction?.outputs.count == 2)
-                    let output0 = transaction?.outputs[0] as! BTCTransactionOutput
-                    XCTAssertTrue(output0.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
-                    XCTAssertTrue(output0.value == 100000000)
-                    XCTAssertTrue(output0.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
-                    let output1 = transaction?.outputs[1] as! BTCTransactionOutput
-                    XCTAssertTrue(output1.script.hex == "76a91489c55a3ca6676c9f7f260a6439c83249b747380288ac")
-                    XCTAssertTrue(output1.value == 2400000000)
-                    XCTAssertTrue(output1.script.standardAddress.base58String == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
-                    
-                    XCTAssertTrue(realToAddresses.count == 2)
-                    XCTAssertTrue(realToAddresses[0] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
-                    XCTAssertTrue(realToAddresses[1] == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
-                    
-                    
-                    
-                } catch TLColdWallet.TLColdWalletError.InvalidKey(let error) {
-                } catch TLColdWallet.TLColdWalletError.MisMatchExtendedPublicKey(let error) {
-                } catch {
-                }
+                XCTAssertTrue(passedSignedTxairGapDataBase64 == serializedSignedAipGapData)
+                
+                
+                let signedTxData = TLColdWallet.getSignedTxData(passedSignedTxairGapDataBase64)
+                let txHex = signedTxData!["txHex"] as! String
+                let txHash = signedTxData!["txHash"] as! String
+                let txSize = signedTxData!["txSize"] as! NSNumber
+                
+                XCTAssertTrue(txHash == "fbacfede55dc6a779782ba8fa22813860b7ef07d82c3abebb8f290b3141bf965")
+                XCTAssertTrue(txHex == "010000000255605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835000000006a4730440220449b1f95687bf469fb954bcdbbc0ae362fe9bd6ba88c5b4dd227d9a5c37eb82a02203440bf6b4178786913a197344d0999a7d98d246099dcddf4bf9b24473a4e7a9a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff55605dc6f5c3dc148b6da58442b0b2cd422be385eab2ebea4119ee9c268d2835010000006a47304402201f6a4a87d0584157471210c1e126e64e52f565e950feb80045fc855829df3da4022059fd75fe51262aa7b7f214534357ed2786a9b3dcb12493112027711aebc8478a0121027ecba9ebc4699df7f557c4e18192efb5c97b1ff4ecdcebb4e21bb7d1fed2203affffffff0200e1f505000000001976a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac00180d8f000000001976a91489c55a3ca6676c9f7f260a6439c83249b747380288ac00000000")
+                XCTAssertTrue(txSize.uintValue == 376)
+                
+                let transaction = BTCTransaction(hex: txHex)
+                
+                XCTAssertTrue(transaction?.inputs.count == 2)
+                let input0 = transaction?.inputs[0] as! BTCTransactionInput
+                XCTAssertTrue(input0.previousTransactionID == txid0)
+                XCTAssertTrue(input0.outpoint.index == 0)
+                let input1 = transaction?.inputs[1] as! BTCTransactionInput
+                XCTAssertTrue(input1.previousTransactionID == txid1)
+                XCTAssertTrue(input1.outpoint.index == 1)
+                
+                XCTAssertTrue(transaction?.outputs.count == 2)
+                let output0 = transaction?.outputs[0] as! BTCTransactionOutput
+                XCTAssertTrue(output0.script.hex == "76a914c73015fa62d972ebb3b241fe8c936657b13fabd788ac")
+                XCTAssertTrue(output0.value == 100000000)
+                XCTAssertTrue(output0.script.standardAddress.base58String == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
+                let output1 = transaction?.outputs[1] as! BTCTransactionOutput
+                XCTAssertTrue(output1.script.hex == "76a91489c55a3ca6676c9f7f260a6439c83249b747380288ac")
+                XCTAssertTrue(output1.value == 2400000000)
+                XCTAssertTrue(output1.script.standardAddress.base58String == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
+                
+                XCTAssertTrue(realToAddresses.count == 2)
+                XCTAssertTrue(realToAddresses[0] == "1KAD5EnzzLtrSo2Da2G4zzD7uZrjk8zRAv")
+                XCTAssertTrue(realToAddresses[1] == "1DZTzaBHUDM7T3QvUKBz4qXMRpkg8jsfB5")
+                
+                
+                
+            } catch TLColdWallet.TLColdWalletError.InvalidKey(let error) {
+            } catch TLColdWallet.TLColdWalletError.MisMatchExtendedPublicKey(let error) {
+            } catch {
             }
-
-            testColdWallet_1_1()
         }
         
-        testCreateSignedSerializedTransactionHexAndBIP69_1()
-        testCreateSignedSerializedTransactionHexAndBIP69_2()
-        testCreateSignedSerializedTransactionHexAndBIP69_3()
-        testCreateSignedSerializedTransactionHexAndBIP69_4()
-        testCreateSignedSerializedTransactionHexAndBIP69_5()
-        testCreateSignedSerializedTransactionHexAndBIP69_6()
-        testColdWallet_1()
+        testColdWallet_1_1()
     }
     
     func testCoin() {
@@ -1689,61 +1715,6 @@ class ArcBitTests: XCTestCase {
         mainPrivKey0 = TLHDWalletWrapper.getPrivateKey(self.coinType, extendPrivKey: extendPrivKey as NSString, sequence:mainAddressIndex0 as NSArray, isTestnet:walletConfig.isTestnet)
         NSLog("mainPrivKey0: %@", mainPrivKey0)
         XCTAssertTrue("cMfhDgrbAjjRPxYxK2RVXbhHEm5p1Q6fdurFvWRpd3BzGWQYiFw6" == mainPrivKey0)
-    }
-    
-    func testBitcoinCashAddressConversion() {
-//        let cashAddress = TLCoreBitcoinWrapper.getBitcoinCashAddressFormat("17XBj6iFEsf8kzDMGQk5ghZipxX49VXuaV", format: TLCoreBitcoinWrapper.TLBitcoinCashAddressFormat.CashAddrFormat)
-//        let legacyAddress = TLCoreBitcoinWrapper.getBitcoinCashAddressFormat("17XBj6iFEsf8kzDMGQk5ghZipxX49VXuaV", format: TLCoreBitcoinWrapper.TLBitcoinCashAddressFormat.LegacyFormat)
-//        XCTAssertTrue("qprcvtlpvhnpyxhcp4wau8ktg78dzuzktvetlc7g9s" == cashAddress)
-//        XCTAssertTrue("17XBj6iFEsf8kzDMGQk5ghZipxX49VXuaV" == legacyAddress)
-//    }
-//
-//    func testBitcoinCashTransaction() {
-//        let hashes = ["115e8f72f39fad874cfab0deed11a80f24f967a84079fb56ddf53ea02e308986"]
-//        let inputIndexes = [0]
-//        let inputScripts = ["76a91447862fe165e6121af80d5dde1ecb478ed170565b88ac"]
-//        let outputAddresses = ["1Gokm82v6DmtwKEB8AiVhm82hyFSsEvBDK"]
-//        let outputAmounts = [15000]
-//        let privateKeys = ["L1uyy5qTuGrVXrmrsvHWHgVzW9kKdrp27wBC7Vs6nZDTF2BRUVwy"]
-//        // test signed tx
-//        var txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(TLCoinType.BCH, hashes: hashes as NSArray, inputIndexes: inputIndexes as NSArray, inputScripts: inputScripts as NSArray, outputAddresses: outputAddresses as NSArray, outputAmounts: outputAmounts as NSArray, privateKeys: privateKeys as NSArray, outputScripts: nil, signTx: true, isTestnet: false)
-//        var txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
-//        var txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
-//        var txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
-//        XCTAssertTrue(txHash == "a1b0b4d7f0e3400a7babb2af7b73769381bffc5c1eaa42fbf9629da04f2e3640")
-//        XCTAssertTrue(txHex == "01000000018689302ea03ef5dd56fb7940a867f9240fa811eddeb0fa4c87ad9ff3728f5e11000000006a473044022035b688770d9301c988db1c7a3404395a0a4ed603288fb0afbd49480b28a5733e02203ac34215f382a347622e2c450ec57079fdf0563d1c8b65f4771fd4b273ded0024121029f50f51d63b345039a290c94bffd3180c99ed659ff6ea6b1242bca47eb93b59fffffffff01983a0000000000001976a914ad618cf4333b3b248f9744e8e81db2964d0ae39788ac00000000")
-//        XCTAssertTrue(txSize.uintValue == 191)
-//
-//
-//        // test unsigned tx
-//        txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(TLCoinType.BCH, hashes: hashes as NSArray, inputIndexes: inputIndexes as NSArray, inputScripts: inputScripts as NSArray, outputAddresses: outputAddresses as NSArray, outputAmounts: outputAmounts as NSArray, privateKeys: privateKeys as NSArray, outputScripts: nil, signTx: false, isTestnet: false)
-//        txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
-//        txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
-//        txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
-//        XCTAssertTrue(txHash == "f4f116dd0db68b0c15dd6668526494fdaa6640efbd82db13d7c197e08cf52bdc")
-//        XCTAssertTrue(txHex == "01000000018689302ea03ef5dd56fb7940a867f9240fa811eddeb0fa4c87ad9ff3728f5e110000000000ffffffff01983a0000000000001976a914ad618cf4333b3b248f9744e8e81db2964d0ae39788ac00000000")
-//        XCTAssertTrue(txSize.uintValue == 85)
-    }
-    
-    func testBitcoinCashTransaction2() {
-//        let hashes = ["7d44620c6a57c29b168b6b936feac3b847501b967d996b14559a772b9a2c7a03"]
-        let hashes = [TLWalletUtils.hexStringToData("7d44620c6a57c29b168b6b936feac3b847501b967d996b14559a772b9a2c7a03")]
-        let inputIndexes = [0]
-//        let inputScripts = ["76a9143a0ac0c9bdeec13749298db992166f0d428a3d3d88ac"]
-        let inputScripts = [TLWalletUtils.hexStringToData("76a9143a0ac0c9bdeec13749298db992166f0d428a3d3d88ac")]
-//        let outputAddresses = ["1KRfJnCnuZNC9q2UeixKg4m49Zm8aW7euc"]
-        let outputAddresses = ["qr9pcw2sg82kvyf7zcvgh2fkztkhey3pcc8gar7pmr"]
-        let outputAmounts = [49997970]
-        let privateKeys = ["KxPiZNgFf6n44KwrZoqmm2aJMijFAffY5SX7pyXu9xB671BwEzK6"]
-        // test signed tx
-        let txHexAndTxHash = TLCoreBitcoinWrapper.createSignedSerializedTransactionHex(TLCoinType.BCH, hashes: hashes as NSArray, inputIndexes: inputIndexes as NSArray, inputScripts: inputScripts as NSArray, outputAddresses: outputAddresses as NSArray, outputAmounts: outputAmounts as NSArray, privateKeys: privateKeys as NSArray, outputScripts: nil, signTx: true, isTestnet: false)
-//        NSLog("txHexAndTxHash: %@", txHexAndTxHash)
-        let txHex = txHexAndTxHash!.object(forKey: "txHex") as! String
-        let txHash = txHexAndTxHash!.object(forKey: "txHash") as! String
-        let txSize = txHexAndTxHash!.object(forKey: "txSize") as! NSNumber
-        XCTAssertTrue(txHash == "981aa925deb1d6f5ee11260bbcae3de1cb1d4c7c84c19c1728edb8e9decc3a21")
-        XCTAssertTrue(txHex == "0100000001037a2c9a2b779a55146b997d961b5047b8c3ea6f936b8b169bc2576a0c62447d000000006a473044022035a5b87aefcec9c1d7dd36f70e6b4d39775a490e7cfba035e63afc2f9e28039e022040ca8e6aaa90001b507785309e8fcb796b6d17189eee61127cb46322e67ecc314121033a29c8b9a3c811a6f747167c0ee1bd64615695269b394b2d58a95171ad7b6ec8ffffffff0192e8fa02000000001976a914ca1c395041d566113e16188ba93612ed7c9221c688ac00000000")
-        XCTAssertTrue(txSize.uintValue == 191)
     }
 }
 

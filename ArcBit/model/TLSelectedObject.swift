@@ -21,157 +21,33 @@
 //   MA 02110-1301  USA
 
 import Foundation
-@objc class TLSelectedObject:NSObject {
-    fileprivate var accountObject:TLAccountObject?
-    fileprivate var importedAddress:TLImportedAddress?
-    
-    func getSelectedObjectCoinType() -> TLCoinType {
-        if (self.accountObject != nil) {
-            return self.accountObject!.coinType
-        } else {
-            return self.importedAddress!.coinType
-        }
-    }
 
-    func setSelectedAccount(_ accountObject: TLAccountObject) -> () {
-        self.accountObject = accountObject
-        self.importedAddress = nil
-    }
-    
-    func setSelectedAddress(_ importedAddress: TLImportedAddress) -> () {
-        self.importedAddress = importedAddress
-        self.accountObject = nil
-    }
-    
-    func getDownloadState() -> (TLDownloadState) {
-        if (self.accountObject != nil) {
-            return self.accountObject!.downloadState
-        } else if (self.importedAddress != nil) {
-            return self.importedAddress!.downloadState
-        }
-        
-        return .failed
-    }
-    
-    func getBalanceForSelectedObject() -> (TLCoin?) {
-        if (self.accountObject != nil) {
-            return self.accountObject!.getBalance()
-        } else if (self.importedAddress != nil) {
-            return self.importedAddress!.getBalance()
-        }
-        return nil
-    }
-    
-    func getLabelForSelectedObject() -> (String?) {
-        if (self.accountObject != nil) {
-            return self.accountObject!.getAccountName()
-        } else if (self.importedAddress != nil) {
-            return self.importedAddress!.getLabel()
-        }
-        return nil
-    }
-    
-    func getReceivingAddressesCount() -> (UInt) {
-        if (self.accountObject != nil) {
-            return UInt(self.accountObject!.getReceivingAddressesCount())
-        } else if (self.importedAddress != nil) {
-            return 1
-        }
-        return 0
-    }
-    
-    func getReceivingAddressForSelectedObject(_ idx:Int) -> (String?) {
-        if (self.accountObject != nil) {
-            return self.accountObject!.getReceivingAddress(idx)
-        } else if (self.importedAddress != nil) {
-            return self.importedAddress!.getAddress()
-        }
-        
-        return nil
-    }
-    
-    func hasFetchedCurrentFromData() -> (Bool) {
-        if (self.accountObject != nil) {
-            return self.accountObject!.hasFetchedAccountData()
-        } else if (self.importedAddress != nil) {
-            return self.importedAddress!.hasFetchedAccountData()
-        }
-        
-        return true
-    }
-    
-    
-    func isAddressPartOfAccount(_ address: String) -> (Bool) {
-        if (self.accountObject != nil) {
-            return self.accountObject!.isAddressPartOfAccount(address)
-        } else if (self.importedAddress != nil) {
-            return self.importedAddress!.getAddress() == address
-        }
-        
-        return true
-    }
-    
-    func getTxObjectCount() -> (UInt) {
-        if (self.accountObject != nil) {
-            return UInt(self.accountObject!.getTxObjectCount())
-        } else if (self.importedAddress != nil) {
-            return UInt(self.importedAddress!.getTxObjectCount())
-        }
-        
-        return 1
-    }
-    
-    func getTxObject(_ txIdx:Int) -> (TLTxObject?) {
-        if (self.accountObject != nil) {
-            return self.accountObject!.getTxObject(txIdx)
-        } else if (self.importedAddress != nil) {
-            return self.importedAddress!.getTxObject(txIdx)
-        }
-        
-        return nil
-    }
-    
-    func getAccountAmountChangeForTx(_ txHash: String) -> (TLCoin?) {
-        if (self.accountObject != nil) {
-            return self.accountObject!.getAccountAmountChangeForTx(txHash)!
-        } else if (self.importedAddress != nil) {
-            return self.importedAddress!.getAccountAmountChangeForTx(txHash)
-        }
-        
-        return nil
-    }
-    
-    func getAccountAmountChangeTypeForTx(_ txHash: String) -> (TLAccountTxType) {
-        if (self.accountObject != nil) {
-            return self.accountObject!.getAccountAmountChangeTypeForTx(txHash)
-        } else if (self.importedAddress != nil) {
-            return self.importedAddress!.getAccountAmountChangeTypeForTx(txHash)
-        }
-        
-        return TLAccountTxType(rawValue: 0)!
-    }
-    
-    func getSelectedObjectType() -> (TLSelectObjectType) {
-        if (self.accountObject != nil) {
-            return TLSelectObjectType.account
-        } else {
-            return TLSelectObjectType.address
-        }
-    }
-    
-    func getSelectedObject() -> AnyObject? {
-        if (self.accountObject != nil) {
-            return self.accountObject
-        } else {
-            return self.importedAddress
-        }
-    }
-    
-    func getAccountType() -> (TLAccountType) {
-        if (self.accountObject != nil) {
-            return self.accountObject!.getAccountType()
-        } else {
-            return TLAccountType.unknown
-        }
-    }
+protocol TLSelectedObject {
+    func getSelectedObjectCoinType() -> TLCoinType
+    func getDownloadState() -> TLDownloadState
+    func getBalanceForSelectedObject() -> TLCoin?
+    func getLabelForSelectedObject() -> String?
+    func getReceivingAddressesCount() -> Int
+    func getReceivingAddressForSelectedObject(_ idx:Int) -> String?
+    func hasFetchedCurrentFromData() -> Bool
+    func isAddressPartOfAccount(_ address: String) -> Bool
+    func getTxObjectCount() -> Int
+    func getTxObject(_ txIdx:Int) -> TLTxObject?
+    func getAccountAmountChangeForTx(_ txHash: String) -> TLCoin?
+    func getAccountAmountChangeTypeForTx(_ txHash: String) -> TLAccountTxType
+    func getSelectedObjectType() -> TLSelectObjectType
+    func getSelectedObject() -> AnyObject?
+    func getAccountType() -> TLAccountType
+
+    func isPaymentToOwnAccount(_ address: String) -> Bool
+    func haveUpDatedUnspentOutputs() -> Bool
+    func getCurrentFromLabel() -> String?
+    func isColdWalletAccount() -> Bool
+    func needWatchOnlyAccountPrivateKey() -> Bool
+    func needWatchOnlyAddressPrivateKey() -> Bool
+    func needEncryptedPrivateKeyPassword() -> Bool
+    func setCurrentFromBalance(_ balance: TLCoin)
+    func getCurrentFromBalance() -> TLCoin
+    func getCurrentFromUnspentOutputsSum() -> TLCoin
+    func getAndSetUnspentOutputs(_ success:@escaping TLWalletUtils.Success, failure:@escaping TLWalletUtils.Error)
 }

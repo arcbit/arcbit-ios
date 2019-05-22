@@ -112,15 +112,26 @@ import CoreData
         self.refreshSelectedAccount(false)
     }
     
+    func updateViewToNoneSelectedObject() {
+        self.accountNameLabel!.text = ""
+        self.accountBalanceLabel!.text = ""
+        self.balanceActivityIndicatorView!.isHidden = true
+        self._updateTransactionsTableView()
+    }
+    
     func refresh(_ refreshControl: UIRefreshControl) {
         self.refreshSelectedAccount(true)
         accountRefreshControl!.endRefreshing()
     }
     
     fileprivate func refreshSelectedAccount(_ fetchDataAgain: Bool) {
-        if (!AppDelegate.instance().coinWalletsManager!.historySelectedObject.hasFetchedCurrentFromData() || fetchDataAgain) {
-            if (AppDelegate.instance().coinWalletsManager!.historySelectedObject.getSelectedObjectType() == .account) {
-                let accountObject = AppDelegate.instance().coinWalletsManager!.historySelectedObject.getSelectedObject() as! TLAccountObject
+        guard let historySelectedObject = AppDelegate.instance().coinWalletsManager!.historySelectedObject else {
+            self.updateViewToNoneSelectedObject()
+            return
+        }
+        if !historySelectedObject.hasFetchedCurrentFromData() || fetchDataAgain {
+            if historySelectedObject.getSelectedObjectType() == .account {
+                let accountObject = historySelectedObject.getSelectedObject() as! TLAccountObject
                 self.balanceActivityIndicatorView!.isHidden = false
                 self.accountBalanceLabel!.isHidden = true
                 self.balanceActivityIndicatorView!.startAnimating()
@@ -133,8 +144,8 @@ import CoreData
                     }
                 })
                 
-            } else if (AppDelegate.instance().coinWalletsManager!.historySelectedObject.getSelectedObjectType() == .address) {
-                let importedAddress = AppDelegate.instance().coinWalletsManager!.historySelectedObject.getSelectedObject() as! TLImportedAddress
+            } else if historySelectedObject.getSelectedObjectType() == .address {
+                let importedAddress = historySelectedObject.getSelectedObject() as! TLImportedAddress
                 self.balanceActivityIndicatorView!.isHidden = false
                 self.accountBalanceLabel!.isHidden = true
                 AppDelegate.instance().pendingOperations.addSetUpImportedAddressOperation(importedAddress, fetchDataAgain: fetchDataAgain, success: {
@@ -147,14 +158,18 @@ import CoreData
                 })
             }
         } else {
-            let balance = TLCurrencyFormat.getProperAmount(AppDelegate.instance().coinWalletsManager!.historySelectedObject.getBalanceForSelectedObject()!, coinType: AppDelegate.instance().coinWalletsManager!.historySelectedObject.getSelectedObjectCoinType())
+            let balance = TLCurrencyFormat.getProperAmount(historySelectedObject.getBalanceForSelectedObject()!, coinType: historySelectedObject.getSelectedObjectCoinType())
             accountBalanceLabel!.text = balance as String
             self.balanceActivityIndicatorView!.isHidden = true
         }
     }
     
     func updateViewToNewSelectedObject() {
-        let label = AppDelegate.instance().coinWalletsManager!.historySelectedObject.getLabelForSelectedObject()
+        guard let historySelectedObject = AppDelegate.instance().coinWalletsManager!.historySelectedObject else {
+            self.updateViewToNoneSelectedObject()
+            return
+        }
+        let label = historySelectedObject.getLabelForSelectedObject()
         self.accountNameLabel!.text = label
         self.updateAccountBalance()
         self._updateTransactionsTableView()
@@ -178,8 +193,12 @@ import CoreData
     }
     
     fileprivate func updateAccountBalance() {
-        let balance = AppDelegate.instance().coinWalletsManager!.historySelectedObject.getBalanceForSelectedObject()
-        let balanceString = TLCurrencyFormat.getProperAmount(balance!, coinType: AppDelegate.instance().coinWalletsManager!.historySelectedObject.getSelectedObjectCoinType())
+        guard let historySelectedObject = AppDelegate.instance().coinWalletsManager!.historySelectedObject else {
+            self.updateViewToNoneSelectedObject()
+            return
+        }
+        let balance = historySelectedObject.getBalanceForSelectedObject()
+        let balanceString = TLCurrencyFormat.getProperAmount(balance!, coinType: historySelectedObject.getSelectedObjectCoinType())
     
         self.balanceActivityIndicatorView!.stopAnimating()
         self.balanceActivityIndicatorView!.isHidden = true
@@ -199,7 +218,10 @@ import CoreData
     }
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return Int(AppDelegate.instance().coinWalletsManager!.historySelectedObject.getTxObjectCount())
+        guard let historySelectedObject = AppDelegate.instance().coinWalletsManager!.historySelectedObject else {
+            return 0
+        }
+        return historySelectedObject.getTxObjectCount()
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -212,13 +234,16 @@ import CoreData
         }
         
         cell!.amountButton!.titleEdgeInsets = UIEdgeInsetsMake(0.0, 5.0, 0.0, 5.0)
-        let txObject = AppDelegate.instance().coinWalletsManager!.historySelectedObject.getTxObject((indexPath as NSIndexPath).row)
+        guard let historySelectedObject = AppDelegate.instance().coinWalletsManager!.historySelectedObject else {
+            return cell!
+        }
+        let txObject = historySelectedObject.getTxObject((indexPath as NSIndexPath).row)
         DLog("txObject hash: \(txObject!.getHash())")
         cell!.dateLabel!.text = txObject!.getTime()
         
-        let historyObjectCurrentCoinType = AppDelegate.instance().coinWalletsManager!.historySelectedObject.getSelectedObjectCoinType()
-        let amount = TLCurrencyFormat.getProperAmount(AppDelegate.instance().coinWalletsManager!.historySelectedObject.getAccountAmountChangeForTx(txObject!.getHash() as String)!, coinType: historyObjectCurrentCoinType)
-        let amountType = AppDelegate.instance().coinWalletsManager!.historySelectedObject.getAccountAmountChangeTypeForTx(txObject!.getHash())
+        let historyObjectCurrentCoinType = historySelectedObject.getSelectedObjectCoinType()
+        let amount = TLCurrencyFormat.getProperAmount(historySelectedObject.getAccountAmountChangeForTx(txObject!.getHash() as String)!, coinType: historyObjectCurrentCoinType)
+        let amountType = historySelectedObject.getAccountAmountChangeTypeForTx(txObject!.getHash())
         var amountTypeString = ""
         let txTag = AppDelegate.instance().coinWalletsManager!.getTransactionTag(historyObjectCurrentCoinType, txObject: txObject!)
 
@@ -230,7 +255,7 @@ import CoreData
                 let outputAddressToValueArray = txObject!.getOutputAddressToValueArray()
                 for txOutputObject in outputAddressToValueArray {
                     if let address = txOutputObject.addr {
-                        if AppDelegate.instance().coinWalletsManager!.historySelectedObject.isAddressPartOfAccount(address) {
+                        if historySelectedObject.isAddressPartOfAccount(address) {
                             cell!.descriptionLabel!.text = address
                         } else {
                             cell!.descriptionLabel!.text = address
@@ -301,7 +326,10 @@ import CoreData
     }
     
     func tableView(_ tableView: UITableView, willSelectRowAt indexPath: IndexPath) -> IndexPath? {
-        let txObject = AppDelegate.instance().coinWalletsManager!.historySelectedObject.getTxObject((indexPath as NSIndexPath).row)
+        guard let historySelectedObject = AppDelegate.instance().coinWalletsManager!.historySelectedObject else {
+            return nil
+        }
+        let txObject = historySelectedObject.getTxObject((indexPath as NSIndexPath).row)
         self.promptTransactionActionSheet(txObject!)
         return nil
     }
@@ -317,7 +345,10 @@ import CoreData
             destructiveButtonTitle: nil,
             otherButtonTitles: otherButtonTitles as [AnyObject],
             tap: {(actionSheet, action, buttonIndex) in
-                let historyObjectCurrentCoinType = AppDelegate.instance().coinWalletsManager!.historySelectedObject.getSelectedObjectCoinType()
+                guard let historySelectedObject = AppDelegate.instance().coinWalletsManager!.historySelectedObject else {
+                    return
+                }
+                let historyObjectCurrentCoinType = historySelectedObject.getSelectedObjectCoinType()
                 if (buttonIndex == actionSheet?.firstOtherButtonIndex) {
                     TLBlockExplorerAPI.instance().openWebViewForTransaction(historyObjectCurrentCoinType, txid: txObject.getHash())
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_VIEW_TRANSACTION_IN_WEB()),
@@ -349,7 +380,10 @@ import CoreData
         let moreAction = UITableViewRowAction(style: .default, title: TLDisplayStrings.MORE_STRING(), handler: {
             (action: UITableViewRowAction, indexPath: IndexPath) in
             tableView.isEditing = false
-            let txObject = AppDelegate.instance().coinWalletsManager!.historySelectedObject.getTxObject((indexPath as NSIndexPath).row)
+            guard let historySelectedObject = AppDelegate.instance().coinWalletsManager!.historySelectedObject else {
+                return
+            }
+            let txObject = historySelectedObject.getTxObject((indexPath as NSIndexPath).row)
             
             self.promptTransactionActionSheet(txObject!)
         })
@@ -369,7 +403,11 @@ import CoreData
 
 extension TLHistoryViewController {
     func updateViewForEnabledCryptoCoinsIfChanged() {
-        let historyObjectCurrentCoinType = AppDelegate.instance().coinWalletsManager!.historySelectedObject.getSelectedObjectCoinType()
+        guard let historySelectedObject = AppDelegate.instance().coinWalletsManager!.historySelectedObject else {
+            self.updateViewToNoneSelectedObject()
+            return
+        }
+        let historyObjectCurrentCoinType = historySelectedObject.getSelectedObjectCoinType()
         if !TLPreferences.isCryptoCoinEnabled(historyObjectCurrentCoinType) {
             AppDelegate.instance().coinWalletsManager!.updateSelectedObjectsToEnabledCoin(TLSelectAccountObjectType.history)
             self.updateViewToNewSelectedObject()

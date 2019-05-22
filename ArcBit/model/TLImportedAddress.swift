@@ -221,24 +221,7 @@ import Foundation
             return addressDict!.object(forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_LABEL) as! String
         }
     }
-    
-    func getTxObjectCount() -> (Int) {
-        return txObjectArray!.count
-    }
-    
-    func getTxObject(_ txIdx: Int) -> TLTxObject {
-        return txObjectArray!.object(at: txIdx) as! TLTxObject
-    }
-    
-    func getAccountAmountChangeForTx(_ txHash: String) -> TLCoin? {
-        return txidToAccountAmountDict!.object(forKey: txHash) as? TLCoin
-    }
-    
-    func getAccountAmountChangeTypeForTx(_ txHash:String) -> TLAccountTxType {
-        return TLAccountTxType(rawValue: Int(txidToAccountAmountTypeDict!.object(forKey: txHash) as! Int))!
-    }
-    
-    
+
     func processNewTx(_ txObject: TLTxObject) -> TLCoin? {
         if (processedTxSet!.contains(txObject.getHash())) {
             // happens when you send coins to the same account, so you get the same tx from the websockets more then once
@@ -366,5 +349,161 @@ import Foundation
         txObjectArray = NSMutableArray()
         txidToAccountAmountDict = NSMutableDictionary()
         txidToAccountAmountTypeDict = NSMutableDictionary()
+    }
+}
+
+extension TLImportedAddress: TLSelectedObject {
+    func getSelectedObjectCoinType() -> TLCoinType {
+        return self.coinType
+    }
+    
+    func getDownloadState() -> TLDownloadState {
+        return self.downloadState
+    }
+    
+    func getBalanceForSelectedObject() -> (TLCoin?) {
+        return self.getBalance()
+    }
+    
+    func getLabelForSelectedObject() -> String? {
+        return self.getLabel()
+    }
+    
+    func getReceivingAddressesCount() -> Int {
+        return 1
+    }
+    
+    func getReceivingAddressForSelectedObject(_ idx:Int) -> String? {
+        return self.getAddress()
+    }
+    
+    func hasFetchedCurrentFromData() -> Bool {
+        return self.hasFetchedAccountData()
+    }
+    
+    func isAddressPartOfAccount(_ address: String) -> Bool {
+        return self.getAddress() == address
+    }
+    
+    func getTxObjectCount() -> Int {
+        return txObjectArray!.count
+    }
+    
+    func getTxObject(_ txIdx:Int) -> TLTxObject? {
+        return txObjectArray!.object(at: txIdx) as! TLTxObject
+    }
+    
+    func getAccountAmountChangeForTx(_ txHash: String) -> TLCoin? {
+        return txidToAccountAmountDict!.object(forKey: txHash) as? TLCoin
+    }
+    
+    func getAccountAmountChangeTypeForTx(_ txHash: String) -> TLAccountTxType {
+        return TLAccountTxType(rawValue: Int(txidToAccountAmountTypeDict!.object(forKey: txHash) as! Int))!
+    }
+    
+    func getSelectedObjectType() -> TLSelectObjectType {
+        return TLSelectObjectType.address
+    }
+    
+    func getSelectedObject() -> AnyObject? {
+        return self
+    }
+    
+    func getAccountType() -> TLAccountType {
+        return TLAccountType.unknown
+    }
+
+
+    
+    
+    func isPaymentToOwnAccount(_ address: String) -> Bool {
+        if address == self.getAddress() {
+            return true
+        }
+        return false
+    }
+    
+    func haveUpDatedUnspentOutputs() -> Bool {
+        return self.haveUpDatedUTXOs
+    }
+    
+    func getCurrentFromLabel() -> String? {
+        return self.getLabel()
+    }
+    
+    func isColdWalletAccount() -> Bool {
+        return false
+    }
+    
+    func needWatchOnlyAccountPrivateKey() -> (Bool) {
+        return false
+    }
+    
+    func needWatchOnlyAddressPrivateKey() -> (Bool) {
+        return self.isWatchOnly() && !self.hasSetPrivateKeyInMemory()
+    }
+    
+    func needEncryptedPrivateKeyPassword() -> Bool {
+        if self.isWatchOnly() {
+            return false
+        } else {
+            return self.isPrivateKeyEncrypted() && !self.hasSetPrivateKeyInMemory()
+        }
+    }
+    
+    func setCurrentFromBalance(_ balance: TLCoin) {
+        self.balance = balance
+    }
+    
+    func getCurrentFromBalance() -> (TLCoin) {
+        return self.getBalance()!
+    }
+    
+    func getCurrentFromUnspentOutputsSum() -> TLCoin {
+        return self.getUnspentSum()!
+
+    }
+    
+    func getAndSetUnspentOutputs(_ success:@escaping TLWalletUtils.Success, failure:@escaping TLWalletUtils.Error) -> () {
+        var addresses: [String] = []
+        let amount = self.getBalance()
+        if (amount!.greater(TLCoin.zero())) {
+            addresses.append(self.getAddress())
+        }
+        
+        if (addresses.count > 0) {
+            self.haveUpDatedUTXOs = false
+            TLBlockExplorerAPI.instance().getUnspentOutputs(self.getSelectedObjectCoinType(), addressArray: addresses, success:{(unspentOutputsObject) in
+                var address2UnspentOutputs = Dictionary<String, Array<TLUnspentOutputObject>>(minimumCapacity:addresses.count)
+                
+                for unspentOutput in unspentOutputsObject.unspentOutputs {
+                    guard let address = TLCoreBitcoinWrapper.getAddressFromOutputScript(self.getSelectedObjectCoinType(), scriptHex: unspentOutput.script, isTestnet: self.appWallet!.walletConfig.isTestnet) else {
+                        DLog("address cannot be decoded. not normal pubkeyhash outputScript: \(unspentOutput.script)")
+                        continue
+                    }
+                    
+                    var cachedUnspentOutputs:Array<TLUnspentOutputObject>? = address2UnspentOutputs[address]
+                    if (cachedUnspentOutputs == nil) {
+                        cachedUnspentOutputs = Array<TLUnspentOutputObject>()
+                        address2UnspentOutputs[address] = cachedUnspentOutputs
+                    }
+                    cachedUnspentOutputs!.append(unspentOutput)
+                }
+                
+                for _address in address2UnspentOutputs {
+                    let address = _address.key as! String
+                    if let unspentOutputsArray = address2UnspentOutputs[address] {
+                        self.unspentOutputsCount = unspentOutputsArray.count
+                        self.setUnspentOutputs(unspentOutputsArray)
+                        self.haveUpDatedUTXOs = true
+                    }
+                }
+                
+                success()
+            }, failure:{(code, status) in
+                failure()
+            }
+            )
+        }
     }
 }

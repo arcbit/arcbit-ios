@@ -206,10 +206,6 @@ import Foundation
         return accountType == TLAccountType.importedWatch
     }
     
-    func isColdWalletAccount() -> (Bool) {
-        return accountType == TLAccountType.coldWallet
-    }
-    
     func hasSetExtendedPrivateKeyInMemory() -> (Bool) {
         assert(accountType == TLAccountType.importedWatch, "")
         return extendedPrivateKey != nil
@@ -346,14 +342,6 @@ import Foundation
         }
     }
     
-    func getTxObjectCount() -> Int {
-        return txObjectArray.count
-    }
-    
-    func getTxObject(_ txIdx: Int) -> TLTxObject {
-        return txObjectArray[txIdx]
-    }
-    
     fileprivate func isAddressPartOfAccountActiveChangeAddresses(_ address: String) -> (Bool) {
         return changeActiveAddresses.index(of: address) != nil
     }
@@ -370,26 +358,10 @@ import Foundation
         return address2HDIndexDict[address] != nil
     }
     
-    func isAddressPartOfAccount(_ address: String) -> Bool {
-        return self.isHDWalletAddress(address)
-    }
-    
     func getBalance() -> TLCoin {
         return self.accountBalance
     }
-    
-    func getAccountType() -> TLAccountType {
-        return accountType!
-    }
-    
-    func getAccountAmountChangeForTx(_ txHash: String) -> TLCoin? {
-        return txidToAccountAmountDict[txHash]
-    }
-    
-    func getAccountAmountChangeTypeForTx(_ txHash: String) -> TLAccountTxType {
-        return TLAccountTxType(rawValue: txidToAccountAmountTypeDict[txHash]!)!
-    }
-    
+
     fileprivate func addToAddressBalance(_ address: NSString, amount: TLCoin) -> () {
         var addressBalance = address2BalanceDict[address as String]
         if (addressBalance == nil) {
@@ -514,10 +486,6 @@ import Foundation
             txidToAccountAmountTypeDict[txObject.getHash() as String] = Int(TLAccountTxType.moveBetweenAccount.rawValue)
             return nil
         }
-    }
-    
-    func getReceivingAddressesCount() -> Int {
-        return receivingAddressesArray.count
     }
     
     func getReceivingAddress(_ idx: Int) -> (String) {
@@ -1455,6 +1423,126 @@ import Foundation
             for address in activeChangeAddresses! {
                 TLTransactionListener.instance().listenToIncomingTransactionForAddress(self.coinType, address: address as! String)
             }
+        }
+    }
+}
+
+extension TLAccountObject: TLSelectedObject {
+    func getSelectedObjectCoinType() -> TLCoinType {
+        return self.coinType
+    }
+    
+    func getDownloadState() -> TLDownloadState {
+        return self.downloadState
+    }
+    
+    func getBalanceForSelectedObject() -> (TLCoin?) {
+        return self.getBalance()
+    }
+    
+    func getLabelForSelectedObject() -> String? {
+        return self.getAccountName()
+    }
+    
+    func getReceivingAddressesCount() -> Int {
+        return receivingAddressesArray.count
+    }
+    
+    func getReceivingAddressForSelectedObject(_ idx:Int) -> String? {
+        return self.getReceivingAddress(idx)
+    }
+    
+    func hasFetchedCurrentFromData() -> Bool {
+        return self.hasFetchedAccountData()
+    }
+    
+    func isAddressPartOfAccount(_ address: String) -> Bool {
+        return self.isHDWalletAddress(address)
+    }
+    
+    func getTxObjectCount() -> Int {
+        return txObjectArray.count
+    }
+    
+    func getTxObject(_ txIdx:Int) -> TLTxObject? {
+        return txObjectArray[txIdx]
+    }
+    
+    func getAccountAmountChangeForTx(_ txHash: String) -> TLCoin? {
+        return txidToAccountAmountDict[txHash]
+    }
+    
+    func getAccountAmountChangeTypeForTx(_ txHash: String) -> TLAccountTxType {
+        return TLAccountTxType(rawValue: txidToAccountAmountTypeDict[txHash]!)!
+    }
+    
+    func getSelectedObjectType() -> TLSelectObjectType {
+        return TLSelectObjectType.account
+    }
+    
+    func getSelectedObject() -> AnyObject? {
+        return self
+    }
+    
+    func getAccountType() -> TLAccountType {
+        return accountType!
+    }
+
+ 
+    
+    
+    func isPaymentToOwnAccount(_ address: String) -> Bool {
+        if self.isAddressPartOfAccount(address) {
+            return true
+        }
+        return false
+    }
+    
+    func haveUpDatedUnspentOutputs() -> Bool {
+        return self.haveUpDatedUTXOs
+    }
+    
+    func getCurrentFromLabel() -> String? {
+        return self.getAccountName()
+    }
+    
+    func isColdWalletAccount() -> Bool {
+        return accountType == TLAccountType.coldWallet
+    }
+    
+    func needWatchOnlyAccountPrivateKey() -> Bool {
+        return self.isWatchOnly() && !self.hasSetExtendedPrivateKeyInMemory()
+    }
+    
+    func needWatchOnlyAddressPrivateKey() -> Bool {
+        return false
+    }
+    
+    func needEncryptedPrivateKeyPassword() -> Bool {
+        return false
+    }
+    
+    func setCurrentFromBalance(_ balance: TLCoin) {
+        self.accountBalance = balance
+    }
+    
+    func getCurrentFromBalance() -> TLCoin {
+        return self.getBalance()
+    }
+    
+    func getCurrentFromUnspentOutputsSum() -> TLCoin {
+        return self.getTotalUnspentSum()
+    }
+    
+    func getAndSetUnspentOutputs(_ success:@escaping TLWalletUtils.Success, failure:@escaping TLWalletUtils.Error) {
+        let amount = self.getBalance()
+        if (amount.greater(TLCoin.zero())) {
+            self.getUnspentOutputs({() in
+                success()
+            }, failure:{() in
+                failure()
+            }
+            )
         }
     }
 }

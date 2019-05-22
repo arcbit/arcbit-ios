@@ -27,6 +27,33 @@ enum TLCoinType: String {
     case BCH = "BCH"
 }
 
+// https://stackoverflow.com/questions/24007461/how-to-enumerate-an-enum-with-string-type
+#if !swift(>=4.2)
+public protocol CaseIterable {
+    associatedtype AllCases: Collection where AllCases.Element == Self
+    static var allCases: AllCases { get }
+}
+extension CaseIterable where Self: Hashable {
+    static var allCases: [Self] {
+        return [Self](AnySequence { () -> AnyIterator<Self> in
+            var raw = 0
+            var first: Self?
+            return AnyIterator {
+                let current = withUnsafeBytes(of: &raw) { $0.load(as: Self.self) }
+                if raw == 0 {
+                    first = current
+                } else if current == first {
+                    return nil
+                }
+                raw += 1
+                return current
+            }
+        })
+    }
+}
+#endif
+extension TLCoinType: CaseIterable {}
+
 enum TLSendFromType: Int {
     case hdWallet = 0
     case importedAccount = 1
@@ -34,6 +61,7 @@ enum TLSendFromType: Int {
     case importedAddress = 3
     case importedWatchAddress = 4
     case coldWalletAccount = 5
+    case none = 6
 }
 
 enum TLSelectAccountObjectType: Int {
@@ -133,12 +161,12 @@ class TLWalletUtils {
     }
     
     class func DEFAULT_COIN_TYPE() ->TLCoinType {
-        return TLCoinType.BCH
-//        return TLCoinType.BTC
+        return TLCoinType.BTC
     }
     
     class func SUPPORT_COIN_TYPES() -> ([TLCoinType]) {
-        return [TLCoinType.BCH, TLCoinType.BTC]
+        return [TLCoinType.BTC]
+//        return [TLCoinType.BTC, TLCoinType.BTC]
     }
     class func DEFAULT_FEE_AMOUNT(_ coinType: TLCoinType) -> (String) {
         switch coinType {
@@ -147,6 +175,35 @@ class TLWalletUtils {
         default:
             return DEFAULT_FEE_AMOUNT_IN_BITCOIN()
         }
+    }
+    
+    class func COIN_SETTINGS_KEYS(_ coinType: TLCoinType) -> [String] {
+        switch coinType {
+        case .BCH:
+            return ["bitcoincashdisplay", "bitcoincashblockexplorersettingkey", "bitcoincashfeesettingkey", "enabledcryptocoinbitcoincash"]
+        default:
+            return ["bitcoindisplay", "bitcoinblockexplorersettingkey", "bitcoinfeesettingkey", "enabledcryptocoinbitcoin"]
+        }
+    }
+    
+    class func BLOCK_EXPLORER_API_STRING(_ coinType: TLCoinType, blockExplorer: TLBlockExplorer) -> String {
+        switch coinType {
+        case .BCH:
+            if blockExplorer == .bitcoinCash_blockexplorer {
+                return "https://bitcoincash.blockexplorer.com/"
+//                return "https://blockchain.info/" //debug to use pretend bch use btc blockchain
+            } else if blockExplorer == .bitcoinCash_insight {
+                return "https://bch-insight.bitpay.com/"
+//                return "https://insight.bitpay.com/" //debug to use pretend bch use btc blockchain
+            }
+        default:
+            if blockExplorer == .bitcoin_blockchain {
+                return "https://blockchain.info/"
+            } else if blockExplorer == .bitcoin_insight {
+                return "https://insight.bitpay.com/"
+            }
+        }
+        return "" //TODO not clean to have return empty string
     }
     
     fileprivate class func DEFAULT_FEE_AMOUNT_IN_BITCOIN() -> (String) {

@@ -18,6 +18,8 @@
         <dict>
             <key>Type</key>
             <string>PSChildPaneSpecifier</string>
+            <key>Key</key>
+            <string>bitcoincashfeesettingkey</string>
             <key>Title</key>
             <string>BITCOIN_CASH_DISPLAY_1</string>
             <key>File</key>
@@ -26,6 +28,8 @@
         <dict>
             <key>Type</key>
             <string>PSChildPaneSpecifier</string>
+            <key>Key</key>
+            <string>bitcoinfeesettingkey</string>
             <key>Title</key>
             <string>BITCOIN_DISPLAY_1</string>
             <key>File</key>

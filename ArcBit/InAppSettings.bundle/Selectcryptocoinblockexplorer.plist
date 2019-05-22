@@ -20,6 +20,8 @@
             <string>PSChildPaneSpecifier</string>
             <key>Title</key>
             <string>BITCOIN_CASH_DISPLAY_1</string>
+            <key>Key</key>
+            <string>bitcoincashblockexplorersettingkey</string>
             <key>File</key>
             <string>Bitcoincashblockexplorersetting</string>
         </dict>
@@ -28,6 +30,8 @@
             <string>PSChildPaneSpecifier</string>
             <key>Title</key>
             <string>BITCOIN_DISPLAY_1</string>
+            <key>Key</key>
+            <string>bitcoinblockexplorersettingkey</string>
             <key>File</key>
             <string>Bitcoinblockexplorersetting</string>
         </dict>

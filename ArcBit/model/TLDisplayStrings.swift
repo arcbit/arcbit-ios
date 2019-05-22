@@ -90,8 +90,6 @@ class TLDisplayStrings {
     class func WHAT_IS_BITCOIN_DESC_STRING() -> String { return "Bitcoin, uppercase 'B', is an online payment system invented in 2008 and released as open-source software in 2009 by a programmer named Satoshi Nakamoto. The system is decentralized and peer-to-peer allowing users to transact directly without needing an intermediary.\nBitcoin is also a platform of which other decentralized applications can be built upon. Bitcoin, lowercase 'b' is the currency unit that Bitcoin uses.".localized }
     class func HOW_DO_I_GET_BITCOINS_DESC_STRING() -> String { return "Bitcoins can be purchased from various bitcoin exchanges. ArcBit is not a bitcoin exchange. ArcBit is a bitcoin wallet. After you purchase some bitcoins from an exchange, you can move it to a bitcoin wallet.".localized }
     class func CANCEL_STRING() -> String { return "Cancel".localized }
-    class func CANNOT_ARCHIVE_YOUR_DEFAULT_ACCOUNT_STRING() -> String { return "Cannot archive your default account".localized }
-    class func CANNOT_ARCHIVE_YOUR_ONE_AND_ONLY_ACCOUNT_STRING() -> String { return "Cannot archive your one and only account".localized }
     class func CANNOT_CREATE_TRANSACTIONS_WITH_OUTPUTS_LESS_THEN_X_BITCOINS_STRING() -> String { return "Cannot create transactions with outputs less then %@".localized }
     class func CANNOT_DECRYPT_ICLOUD_BACKUP_WALLET_STRING() -> String { return "Cannot decrypt iCloud backup wallet.".localized }
     class func CANNOT_IMPORT_REUSABLE_ADDRESS_STRING() -> String { return "Cannot import reusable address".localized }

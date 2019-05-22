@@ -62,7 +62,11 @@ import UIKit
         self.navigationController!.view.addGestureRecognizer(self.slidingViewController().panGesture)
 
         self.updateViewForEnabledCryptoCoinsIfChanged()
-        self.currentCoinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+        if let godSend = AppDelegate.instance().coinWalletsManager!.godSend {
+            self.currentCoinType = godSend.getSelectedObjectCoinType()
+        } else {
+            self.currentCoinType = TLWalletUtils.DEFAULT_COIN_TYPE()
+        }
         accountListSection = 0
 
         self.accountsTableView!.delegate = self
@@ -690,8 +694,7 @@ import UIKit
                             (isCanceled: Bool) in
                         }))
                 } else if (buttonIndex == ARCHIVE_ACCOUNT_BUTTON_IDX) {
-                    self.promptToArchiveAccountHDWalletAccount(accountObject)
-                    
+                    self.promptToArchiveAccount(accountObject)
                 } else if (buttonIndex == actionSheet!.cancelButtonIndex) {
                     
                 }
@@ -1288,6 +1291,58 @@ import UIKit
         )
     }
 
+    fileprivate func checkToResetSelectedObject(_ accountObject: TLAccountObject) {
+        if let currentSendAccountObject = AppDelegate.instance().coinWalletsManager!.godSend as? TLAccountObject {
+            if accountObject.getAccountIdxNumber() == currentSendAccountObject.getAccountIdxNumber() &&
+                accountObject.getAccountType() == currentSendAccountObject.getAccountType() &&
+                accountObject.getSelectedObjectCoinType() == currentSendAccountObject.getSelectedObjectCoinType() {
+                TLPreferences.setSendFromType(TLSendFromType.none)
+                TLPreferences.setSendFromIndex(0)
+                AppDelegate.instance().coinWalletsManager?.godSend = nil
+            }
+        }
+        if let currentReceiveAccountObject = AppDelegate.instance().coinWalletsManager!.receiveSelectedObject as? TLAccountObject {
+            if accountObject.getAccountIdxNumber() == currentReceiveAccountObject.getAccountIdxNumber() &&
+                accountObject.getAccountType() == currentReceiveAccountObject.getAccountType() &&
+                accountObject.getSelectedObjectCoinType() == currentReceiveAccountObject.getSelectedObjectCoinType() {
+                AppDelegate.instance().coinWalletsManager?.receiveSelectedObject = nil
+            }
+        }
+        if let currentHistoryAccountObject = AppDelegate.instance().coinWalletsManager!.historySelectedObject as? TLAccountObject {
+            if accountObject.getAccountIdxNumber() == currentHistoryAccountObject.getAccountIdxNumber() &&
+                accountObject.getAccountType() == currentHistoryAccountObject.getAccountType() &&
+                accountObject.getSelectedObjectCoinType() == currentHistoryAccountObject.getSelectedObjectCoinType() {
+                AppDelegate.instance().coinWalletsManager?.historySelectedObject = nil
+            }
+        }
+    }
+
+    fileprivate func checkToResetSelectedObject(_ importedAddress: TLImportedAddress) {
+        if let currentSendAccountObject = AppDelegate.instance().coinWalletsManager!.godSend as? TLImportedAddress {
+            if importedAddress.getPositionInWalletArray() == currentSendAccountObject.getPositionInWalletArray() &&
+                importedAddress.isWatchOnly() == currentSendAccountObject.isWatchOnly() &&
+                importedAddress.getSelectedObjectCoinType() == currentSendAccountObject.getSelectedObjectCoinType() {
+                TLPreferences.setSendFromType(TLSendFromType.none)
+                TLPreferences.setSendFromIndex(0)
+                AppDelegate.instance().coinWalletsManager?.godSend = nil
+            }
+        }
+        if let currentReceiveAccountObject = AppDelegate.instance().coinWalletsManager!.receiveSelectedObject as? TLImportedAddress {
+            if importedAddress.getPositionInWalletArray() == currentReceiveAccountObject.getPositionInWalletArray() &&
+                importedAddress.isWatchOnly() == currentReceiveAccountObject.isWatchOnly() &&
+                importedAddress.getSelectedObjectCoinType() == currentReceiveAccountObject.getSelectedObjectCoinType() {
+                AppDelegate.instance().coinWalletsManager?.receiveSelectedObject = nil
+            }
+        }
+        if let currentHistoryAccountObject = AppDelegate.instance().coinWalletsManager!.historySelectedObject as? TLImportedAddress {
+            if importedAddress.getPositionInWalletArray() == currentHistoryAccountObject.getPositionInWalletArray() &&
+                importedAddress.isWatchOnly() == currentHistoryAccountObject.isWatchOnly() &&
+                importedAddress.getSelectedObjectCoinType() == currentHistoryAccountObject.getSelectedObjectCoinType() {
+                AppDelegate.instance().coinWalletsManager?.historySelectedObject = nil
+            }
+        }
+    }
+    
     fileprivate func promptToArchiveAccount(_ accountObject: TLAccountObject) -> () {
         UIAlertController.showAlert(in: self,
             withTitle:  TLDisplayStrings.ARCHIVE_ACCOUNT_STRING(),
@@ -1300,12 +1355,16 @@ import UIKit
                 if (buttonIndex == alertView?.firstOtherButtonIndex) {
                     if (accountObject.getAccountType() == .hdWallet) {
                         AppDelegate.instance().coinWalletsManager!.getSelectedWalletObject(self.currentCoinType).accounts.archiveAccount(accountObject.getAccountIdxNumber())
+                            self.checkToResetSelectedObject(accountObject)
                     } else if (accountObject.getAccountType() == .coldWallet) {
                         AppDelegate.instance().coinWalletsManager!.getSelectedWalletObject(self.currentCoinType).coldWalletAccounts.archiveAccount(accountObject.getPositionInWalletArray())
+                        self.checkToResetSelectedObject(accountObject)
                     } else if (accountObject.getAccountType() == .imported) {
                         AppDelegate.instance().coinWalletsManager!.getSelectedWalletObject(self.currentCoinType).importedAccounts.archiveAccount(accountObject.getPositionInWalletArray())
+                        self.checkToResetSelectedObject(accountObject)
                     } else if (accountObject.getAccountType() == .importedWatch) {
                         AppDelegate.instance().coinWalletsManager!.getSelectedWalletObject(self.currentCoinType).importedWatchAccounts.archiveAccount(accountObject.getPositionInWalletArray())
+                        self.checkToResetSelectedObject(accountObject)
                     }
                     self._accountsTableViewReloadDataWrapper()
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_ARCHIVE_ACCOUNT()), object: nil, userInfo: nil)
@@ -1313,28 +1372,6 @@ import UIKit
                 }
             }
         )
-    }
-
-    fileprivate func promptToArchiveAccountHDWalletAccount(_ accountObject: TLAccountObject) -> () {
-        if (accountObject.getAccountIdxNumber() == 0) {
-            let av = UIAlertView(title: TLDisplayStrings.CANNOT_ARCHIVE_YOUR_DEFAULT_ACCOUNT_STRING(),
-                    message: "",
-                    delegate: nil,
-                    cancelButtonTitle: nil,
-                    otherButtonTitles: TLDisplayStrings.OK_STRING())
-
-            av.show()
-        } else if (AppDelegate.instance().coinWalletsManager!.getSelectedWalletObject(self.currentCoinType).accounts.getNumberOfAccounts() <= 1) {
-            let av = UIAlertView(title: TLDisplayStrings.CANNOT_ARCHIVE_YOUR_ONE_AND_ONLY_ACCOUNT_STRING(),
-                    message: "",
-                    delegate: nil,
-                    cancelButtonTitle: nil,
-                    otherButtonTitles: TLDisplayStrings.OK_STRING())
-
-            av.show()
-        } else {
-            self.promptToArchiveAccount(accountObject)
-        }
     }
 
     fileprivate func promptToArchiveAddress(_ importedAddressObject: TLImportedAddress) -> () {
@@ -1348,8 +1385,10 @@ import UIKit
                 if (buttonIndex == alertView?.firstOtherButtonIndex) {
                     if (importedAddressObject.isWatchOnly()) {
                         AppDelegate.instance().coinWalletsManager!.getSelectedWalletObject(self.currentCoinType).importedWatchAddresses.archiveAddress(Int(importedAddressObject.getPositionInWalletArrayNumber()))
+                        self.checkToResetSelectedObject(importedAddressObject)
                     } else {
                         AppDelegate.instance().coinWalletsManager!.getSelectedWalletObject(self.currentCoinType).importedAddresses.archiveAddress(Int(importedAddressObject.getPositionInWalletArrayNumber()))
+                        self.checkToResetSelectedObject(importedAddressObject)
                     }
                     self._accountsTableViewReloadDataWrapper()
                     NotificationCenter.default.post(name: Notification.Name(rawValue: TLNotificationEvents.EVENT_ARCHIVE_ACCOUNT()), object: nil, userInfo: nil)
@@ -2362,7 +2401,10 @@ import UIKit
 
 extension TLManageAccountsViewController {
     func updateViewForEnabledCryptoCoinsIfChanged() {
-        let sendObjectCurrentCoinType = AppDelegate.instance().coinWalletsManager!.godSend.getSelectedObjectCoinType()
+        guard let godSend = AppDelegate.instance().coinWalletsManager!.godSend else {
+            return
+        }
+        let sendObjectCurrentCoinType = godSend.getSelectedObjectCoinType()
         if !TLPreferences.isCryptoCoinEnabled(sendObjectCurrentCoinType) {
             self.currentCoinType = AppDelegate.instance().coinWalletsManager!.updateSelectedObjectsToEnabledCoin(TLSelectAccountObjectType.send)
             self._accountsTableViewReloadDataWrapper()
