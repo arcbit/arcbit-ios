@@ -544,7 +544,6 @@ class TLWallet {
     
     func archiveAccountHDWallet(_ coinType: TLCoinType, accountIdx: Int, enabled: Bool) -> () {
         let accountsArray = getAccountsArray(coinType)
-        assert(accountsArray.count > 1, "")
         let accountDict = accountsArray.object(at: accountIdx) as! NSDictionary
         let status = enabled ? TLAddressStatus.archived : TLAddressStatus.active
         accountDict.setValue(status.rawValue, forKey: TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_KEY_STATUS)
