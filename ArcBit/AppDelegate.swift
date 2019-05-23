@@ -316,22 +316,26 @@ import Crashlytics
             }
         }
         
+        // uncommented out code to update wallet to v3, (would need to test everything again)
         // Update wallet json to v3
-        if self.appWallet.getWalletJsonVersion() == TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_VERSION_TWO {
-            self.appWallet.updateWalletJSONToV3()
-            self.coinWalletsManager = TLCoinWalletsManager(self.appWallet)
-            self.coinWalletsManager!.createFirstBitcoinCashAccount()
+//        if self.appWallet.getWalletJsonVersion() == TLWalletJSONKeys.STATIC_MEMBERS.WALLET_PAYLOAD_VERSION_TWO {
+//            self.appWallet.updateWalletJSONToV3()
+//            self.coinWalletsManager = TLCoinWalletsManager(self.appWallet)
+//            self.coinWalletsManager!.createFirstBitcoinCashAccount()
+//
+//            TLPreferences.setCoinDisplayUnit(TLCoinType.BCH, coinDisplayIdx: String(format:"%ld", TLWalletUtils.GET_DEFAULT_COIN_DENOMINATION(TLCoinType.BCH).rawValue))
+//            // TODO need to fix ugly addition, due to bad way how enum is setup
+//            let finalDisplayUnitIdx = String(TLWalletUtils.GET_DEFAULT_COIN_DENOMINATION(TLCoinType.BCH).rawValue-TLWalletUtils.DEFAULT_COIN_DENOMINATION_STARTING_IDX(TLCoinType.BCH))
+//            TLPreferences.setInAppSettingsKitDisplayUnit(TLCoinType.BCH, value: finalDisplayUnitIdx)
+//
+//            TLUtils.printOutDictionaryAsJSON(appWallet.getWalletsJson()!)
+//            self.saveWalletJsonCloud()
+//        } else {
+//            self.coinWalletsManager = TLCoinWalletsManager(self.appWallet)
+//        }
+        self.coinWalletsManager = TLCoinWalletsManager(self.appWallet)
 
-            TLPreferences.setCoinDisplayUnit(TLCoinType.BCH, coinDisplayIdx: String(format:"%ld", TLWalletUtils.GET_DEFAULT_COIN_DENOMINATION(TLCoinType.BCH).rawValue))
-            // TODO need to fix ugly addition, due to bad way how enum is setup
-            let finalDisplayUnitIdx = String(TLWalletUtils.GET_DEFAULT_COIN_DENOMINATION(TLCoinType.BCH).rawValue-TLWalletUtils.DEFAULT_COIN_DENOMINATION_STARTING_IDX(TLCoinType.BCH))
-            TLPreferences.setInAppSettingsKitDisplayUnit(TLCoinType.BCH, value: finalDisplayUnitIdx)
-
-            TLUtils.printOutDictionaryAsJSON(appWallet.getWalletsJson()!)
-            self.saveWalletJsonCloud()
-        } else {
-            self.coinWalletsManager = TLCoinWalletsManager(self.appWallet)
-        }
+        
         TLUtils.printOutDictionaryAsJSON(appWallet.getWalletsJson()!)
 
         TLBlockExplorerAPI.instance()
