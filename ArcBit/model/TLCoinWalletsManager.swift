@@ -15,13 +15,10 @@ import Foundation
     
     lazy fileprivate var coinWalletDict = [TLCoinType:TLWalletObject]()
     var godSend:TLSelectedObject? = nil
-//    lazy var sendSelectedObject:TLSelectedObject? = nil
     lazy var receiveSelectedObject:TLSelectedObject? = nil
     lazy var historySelectedObject:TLSelectedObject? = nil
     
     init(_ appWallet: TLWallet) {
-
-//        self.godSend = TLSpaghettiGodSend(appWallet: appWallet)
 
         super.init()
         TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
@@ -76,8 +73,6 @@ import Foundation
             self.updateGodSend(sendFromCoinType, sendFromType: sendFromType, sendFromIndex:sendFromIndex)
         }
         
-        // create first account if first account not created
-        createFirstAccount()
         updateGodSend()
         self.receiveSelectedObject = godSend
         self.historySelectedObject = godSend

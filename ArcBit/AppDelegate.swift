@@ -289,11 +289,11 @@ import Crashlytics
                 self.refreshApp(passphrase!)
                 
                 self.coinWalletsManager!.createFirstAccount()
-                
-                self.coinWalletsManager!.updateGodSend(TLPreferences.getSendFromCoinType(), sendFromType: TLSendFromType.hdWallet, sendFromIndex:0)
-                self.coinWalletsManager!.updateReceiveSelectedObject(TLPreferences.getSendFromCoinType(), sendFromType: TLSendFromType.hdWallet, sendFromIndex:0)
-                self.coinWalletsManager!.updateHistorySelectedObject(TLPreferences.getSendFromCoinType(), sendFromType: TLSendFromType.hdWallet, sendFromIndex:0)
             }
+            self.coinWalletsManager!.updateGodSend(TLPreferences.getSendFromCoinType(), sendFromType: TLSendFromType.hdWallet, sendFromIndex:0)
+            self.coinWalletsManager!.updateReceiveSelectedObject(TLPreferences.getSendFromCoinType(), sendFromType: TLSendFromType.hdWallet, sendFromIndex:0)
+            self.coinWalletsManager!.updateHistorySelectedObject(TLPreferences.getSendFromCoinType(), sendFromType: TLSendFromType.hdWallet, sendFromIndex:0)
+
             justSetupHDWallet = true
             guard let password = TLWalletJson.getDecryptedEncryptedWalletJSONPassphrase(),
                 let walletsJson = appWallet.getWalletsJson() else { return }
