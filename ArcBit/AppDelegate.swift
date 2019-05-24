@@ -193,7 +193,7 @@ import Crashlytics
         TLPreferences.setInAppSettingsKitEnableBackupWithiCloud(false)
         
         TLWalletUtils.SUPPORT_COIN_TYPES().forEach({ (coinType) in
-            TLPreferences.setInAppSettingsKitEnabledDynamicFee(coinType, enabled: true)
+            TLPreferences.setInAppSettingsKitEnabledDynamicFee(coinType, enabled: false)
             TLPreferences.setInAppSettingsKitDynamicFeeSettingIdx(coinType, dynamicFeeSetting: TLDynamicFeeSetting.FastestFee)
             TLPreferences.setInAppSettingsKitTransactionFee(coinType, value: TLWalletUtils.DEFAULT_FEE_AMOUNT(coinType))
             TLPreferences.resetBlockExplorerAPIURL(coinType)
